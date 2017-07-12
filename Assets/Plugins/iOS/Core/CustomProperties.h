@@ -1,9 +1,6 @@
+// Copyright (c) Microsoft Corporation. All rights reserved.
 //
-//  CustomProperties.h
-//
-//  Created by Alexander Chocron on 6/9/17.
-//  Copyright © 2017 Alexander Chocron. All rights reserved.
-//
+// Licensed under the MIT license.
 
 #import <MobileCenter/MobileCenter.h>
 #import <Foundation/Foundation.h>

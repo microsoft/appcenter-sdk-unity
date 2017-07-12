@@ -1,4 +1,8 @@
-﻿#if UNITY_IOS && !UNITY_EDITOR
+﻿// Copyright (c) Microsoft Corporation. All rights reserved.
+//
+// Licensed under the MIT license.
+
+#if UNITY_IOS && !UNITY_EDITOR
 using System;
 using System.Runtime.InteropServices;
 using AOT;

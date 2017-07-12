@@ -1,4 +1,8 @@
-﻿namespace Microsoft.Azure.Mobile.Unity
+﻿// Copyright (c) Microsoft Corporation. All rights reserved.
+//
+// Licensed under the MIT license.
+
+namespace Microsoft.Azure.Mobile.Unity
 {
     /// <summary>
     /// Log level threshold for logs emitted by the SDK.

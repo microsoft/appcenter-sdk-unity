@@ -1,10 +1,6 @@
+// Copyright (c) Microsoft Corporation. All rights reserved.
 //
-//  unityMCtest.m
-//  unityMCtest
-//
-//  Created by Alexander Chocron on 6/9/17.
-//  Copyright © 2017 Alexander Chocron. All rights reserved.
-//
+// Licensed under the MIT license.
 
 #import "PushUnity.h"
 #import <MobileCenterPush/MobileCenterPush.h>

@@ -1,10 +1,6 @@
+// Copyright (c) Microsoft Corporation. All rights reserved.
 //
-//  unityMCtest.h
-//  unityMCtest
-//
-//  Created by Alexander Chocron on 6/9/17.
-//  Copyright © 2017 Alexander Chocron. All rights reserved.
-//
+// Licensed under the MIT license.
 
 extern "C" char* mobile_center_unity_crashes_error_report_incident_identifier(void* errorReport);
 

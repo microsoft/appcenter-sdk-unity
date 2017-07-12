@@ -1,10 +1,6 @@
+// Copyright (c) Microsoft Corporation. All rights reserved.
 //
-//  unityMCtest.h
-//  unityMCtest
-//
-//  Created by Alexander Chocron on 6/9/17.
-//  Copyright © 2017 Alexander Chocron. All rights reserved.
-//
+// Licensed under the MIT license.
 
 #ifndef NS_STRING_DICTIONARY_HELPER_H
 #define NS_STRING_DICTIONARY_HELPER_H

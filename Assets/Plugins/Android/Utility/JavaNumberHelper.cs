@@ -1,4 +1,8 @@
-﻿#if UNITY_ANDROID
+﻿// Copyright (c) Microsoft Corporation. All rights reserved.
+//
+// Licensed under the MIT license.
+
+#if UNITY_ANDROID
 using UnityEngine;
 
 namespace Microsoft.Azure.Mobile.Internal.Utility
