@@ -1,4 +1,8 @@
-﻿namespace Microsoft.Azure.Mobile.Unity.Distribute
+﻿// Copyright (c) Microsoft Corporation. All rights reserved.
+//
+// Licensed under the MIT license.
+
+namespace Microsoft.Azure.Mobile.Unity.Distribute
 {
 	/// <summary>
 	/// User update action.

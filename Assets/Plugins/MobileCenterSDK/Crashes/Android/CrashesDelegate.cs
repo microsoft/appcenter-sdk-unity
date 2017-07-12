@@ -4,19 +4,37 @@
 
 #if UNITY_ANDROID && !UNITY_EDITOR
 using System;
-using System.Runtime.InteropServices;
-using AOT;
+using UnityEngine;
 
-namespace Microsoft.Azure.Mobile.Crashes.Internal
+namespace Microsoft.Azure.Mobile.Unity.Crashes.Internal
 {
-	public class CrashesDelegate
+	public class CrashesDelegate : AndroidJavaProxy
 	{
-		public static void mobile_center_unity_crashes_set_delegate()
+        private CrashesDelegate() : base("com.microsoft.azure.mobile.crashes.CrashesListener")
         {
         }
-		static CrashesDelegate()
-		{
-		}
+
+		public static void mobile_center_unity_crashes_set_delegate()
+        {
+			var crashes = new AndroidJavaClass("com.microsoft.azure.mobile.crashes.Crashes");
+			crashes.CallStatic("setListener", new CrashesDelegate());
+        }
+
+        //TODO bind error report; implement these
+	    void onBeforeSending(AndroidJavaObject report)
+        {
+            
+        }
+ 
+	    void onSendingFailed(AndroidJavaObject report, AndroidJavaObject exception)
+        {
+            
+        }
+    
+	    void onSendingSucceeded(AndroidJavaObject report)
+        {
+            
+        }
 	}
 }
 #endif

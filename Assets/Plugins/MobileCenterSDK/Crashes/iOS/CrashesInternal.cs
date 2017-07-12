@@ -1,4 +1,4 @@
-﻿// Copyright (c) Microsoft Corporation. All rights reserved.
+// Copyright (c) Microsoft Corporation. All rights reserved.
 //
 // Licensed under the MIT license.
 
@@ -6,7 +6,7 @@
 using System;
 using System.Runtime.InteropServices;
 
-namespace Microsoft.Azure.Mobile.Crashes.Internal
+namespace Microsoft.Azure.Mobile.Unity.Crashes.Internal
 {
 	class CrashesInternal
     {
@@ -19,6 +19,9 @@ namespace Microsoft.Azure.Mobile.Crashes.Internal
         [DllImport("__Internal")]
         public static extern bool mobile_center_unity_crashes_is_enabled();
 
+        public static void TrackException(Models.Exception e)
+        {
+        }
 	}
 }
 #endif

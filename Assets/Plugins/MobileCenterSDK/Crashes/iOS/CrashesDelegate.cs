@@ -7,7 +7,7 @@ using System;
 using System.Runtime.InteropServices;
 using AOT;
 
-namespace Microsoft.Azure.Mobile.Crashes.Internal
+namespace Microsoft.Azure.Mobile.Unity.Crashes.Internal
 {
 	public class CrashesDelegate
 	{
