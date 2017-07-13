@@ -1,13 +1,11 @@
-﻿// Copyright (c) Microsoft Corporation. All rights reserved.
+﻿﻿// Copyright (c) Microsoft Corporation. All rights reserved.
 //
 // Licensed under the MIT license.
 
-#if !UNITY_WSA_10_0 || UNITY_EDITOR
-
 using System;
-using Microsoft.Azure.Mobile.Push.Internal;
+using Microsoft.Azure.Mobile.Unity.Push.Internal;
 
-namespace Microsoft.Azure.Mobile.Push
+namespace Microsoft.Azure.Mobile.Unity.Push
 {
 	public class Push
 	{        
@@ -48,4 +46,3 @@ namespace Microsoft.Azure.Mobile.Push
         }
 	}
 }
-#endif
