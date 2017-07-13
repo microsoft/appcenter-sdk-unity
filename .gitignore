@@ -36,7 +36,7 @@ artifacts/
 **/Properties/launchSettings.json
 
 # Cake
-tools/**
+tools/
 !tools/packages.config
 
 #binary/bundles
