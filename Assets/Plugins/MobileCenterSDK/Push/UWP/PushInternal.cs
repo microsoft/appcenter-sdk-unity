@@ -6,30 +6,34 @@
 using System;
 using Windows.ApplicationModel.Activation;
 
-namespace Microsoft.Azure.Mobile.Push.Internal
+namespace Microsoft.Azure.Mobile.Push.Unity.Internal
 {
-    using UWPMobileCenter = Microsoft.Azure.Mobile.MobileCenter;
+    using UWPPush = Microsoft.Azure.Mobile.Push.Push;
 
     class PushInternal
     {
-		public static IntPtr mobile_center_unity_push_get_type()
+		public static Type mobile_center_unity_push_get_type()
         {
-			return (IntPtr)UWPMobileCenter.GetType();
+            return typeof(UWPPush);
 		}
 
         public static void mobile_center_unity_push_set_enabled(bool isEnabled)
         {
-            UWPMobileCenter.Enabled = isEnabled;
+            UWPPush.Enabled = isEnabled;
         }
 
         public static bool mobile_center_unity_push_is_enabled()
         {
-			return UWPMobileCenter.Enabled;
+			return UWPPush.Enabled;
 		}
 
         public static void mobile_center_unity_push_check_launched_from_notification(LaunchActivatedEventArgs e)
         {
-            UWPMobileCenter.CheckLaunchedFromNotification(e)
+            UWPPush.CheckLaunchedFromNotification(e)
+        }
+
+        public static void mobile_center_unity_push_enable_firebase_analytics()
+        {
         }
 	}
 }

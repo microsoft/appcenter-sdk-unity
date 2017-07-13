@@ -2,12 +2,10 @@
 //
 // Licensed under the MIT license.
 
-#if !UNITY_WSA_10_0 || UNITY_EDITOR
-
 using System;
 using System.Collections.Generic;
 
-namespace Microsoft.Azure.Mobile.Push
+namespace Microsoft.Azure.Mobile.Unity.Push
 {
 	/// <summary>
 	/// Event args for event that occurs when a push notification is received.
@@ -31,5 +29,3 @@ namespace Microsoft.Azure.Mobile.Push
 		public string Message;
 	}
 }
-
-#endif

@@ -5,18 +5,23 @@
 #if UNITY_EDITOR
 using System;
 
-namespace Microsoft.Azure.Mobile.Push.Internal
+namespace Microsoft.Azure.Mobile.Unity.Push.Internal
 {
+#if UNITY_IOS || UNITY_ANDROID
+	using RawType = System.IntPtr;
+#else
+    using RawType = System.Type;
+#endif
+
 	class PushInternal
     {
-
 		public static void Initialize()
 		{
 		}
 
-        public static IntPtr mobile_center_unity_push_get_type()
+        public static RawType mobile_center_unity_push_get_type()
         {
-            return IntPtr.Zero;
+            return default(RawType);
         }
 
         public static void mobile_center_unity_push_set_enabled(bool isEnabled)

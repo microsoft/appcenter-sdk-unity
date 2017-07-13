@@ -6,7 +6,7 @@
 using System;
 using System.Runtime.InteropServices;
 
-namespace Microsoft.Azure.Mobile.Push.Internal
+namespace Microsoft.Azure.Mobile.Unity.Push.Internal
 {
 	class PushInternal  {
         public static void Initialize()
@@ -22,6 +22,10 @@ namespace Microsoft.Azure.Mobile.Push.Internal
 
         [DllImport("__Internal")]
         public static extern bool mobile_center_unity_push_is_enabled();
+
+        public static void mobile_center_unity_push_enable_firebase_analytics()
+        {
+        }
 	}
 }
 #endif

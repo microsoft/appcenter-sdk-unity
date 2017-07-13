@@ -8,8 +8,8 @@ using System.Threading;
 using UnityEngine;
 using Microsoft.Azure.Mobile.Unity;
 using Microsoft.Azure.Mobile.Unity.Analytics;
-using Microsoft.Azure.Mobile.Push;
 using Microsoft.Azure.Mobile.Unity.Crashes;
+using Microsoft.Azure.Mobile.Unity.Push;
 using Microsoft.Azure.Mobile.Unity.Distribute;
 
 public class MobileCenterBehavior : MonoBehaviour
