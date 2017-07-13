@@ -6,7 +6,7 @@
 using UnityEngine;
 using System;
 
-namespace Microsoft.Azure.Mobile.Push.Internal
+namespace Microsoft.Azure.Mobile.Unity.Push.Internal
 {
     class PushInternal
     {

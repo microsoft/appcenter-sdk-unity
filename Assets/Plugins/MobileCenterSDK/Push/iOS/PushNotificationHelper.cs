@@ -7,7 +7,7 @@ using System;
 using System.Runtime.InteropServices;
 using Microsoft.Azure.Mobile.Unity.Internal.Utility;
 
-namespace Microsoft.Azure.Mobile.Push.Internal
+namespace Microsoft.Azure.Mobile.Unity.Push.Internal
 {
     class PushNotificationHelper
     {
