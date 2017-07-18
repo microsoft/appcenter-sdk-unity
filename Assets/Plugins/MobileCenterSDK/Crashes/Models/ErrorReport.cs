@@ -30,7 +30,7 @@ namespace Microsoft.Azure.Mobile.Unity.Crashes.Models
 		/// Gets the device that the crashed app was being run on.
 		/// </summary>
 		/// <value>Device information at the crash time.</value>
-		public Device Device { get; private set; }
+		//public Device Device { get; private set; }
 
 		/// <summary>
 		/// Gets the model exception associated with the error.
@@ -39,5 +39,6 @@ namespace Microsoft.Azure.Mobile.Unity.Crashes.Models
 		public Models.Exception Exception { get; private set; }
 
         //TODO don't have android or ios details
+        //TODO bind device
 	}
 }
