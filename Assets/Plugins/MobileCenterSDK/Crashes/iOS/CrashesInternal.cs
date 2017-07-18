@@ -18,7 +18,6 @@ namespace Microsoft.Azure.Mobile.Crashes.Internal
 
         [DllImport("__Internal")]
         public static extern bool mobile_center_unity_crashes_is_enabled();
-
 	}
 }
 #endif

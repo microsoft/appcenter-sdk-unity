@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		350B29D31F18047C009B91CF /* WrapperExceptionManager.mm in Sources */ = {isa = PBXBuildFile; fileRef = 350B29D21F18047C009B91CF /* WrapperExceptionManager.mm */; };
 		354C7FE91EFAE42700EE7EDD /* MobileCenterPush.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 35E9FC301EFAE00700556A1F /* MobileCenterPush.framework */; };
 		354C7FEA1EFAE42700EE7EDD /* MobileCenterDistribute.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 35E9FC2E1EFAE00400556A1F /* MobileCenterDistribute.framework */; };
 		354C7FEB1EFAE42700EE7EDD /* MobileCenterCrashes.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 35E9FC2C1EFAE00000556A1F /* MobileCenterCrashes.framework */; };
@@ -44,6 +45,7 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
+		350B29D21F18047C009B91CF /* WrapperExceptionManager.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; name = WrapperExceptionManager.mm; path = ../Assets/Plugins/iOS/Crashes/WrapperExceptionManager.mm; sourceTree = "<group>"; };
 		3574C2B91F01BE380028338F /* CustomProperties.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; name = CustomProperties.mm; path = ../Assets/Plugins/iOS/Core/CustomProperties.mm; sourceTree = "<group>"; };
 		3574C2BB1F02C9020028338F /* NSNumberHelper.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; name = NSNumberHelper.mm; path = ../Assets/Plugins/iOS/Core/Utility/NSNumberHelper.mm; sourceTree = "<group>"; };
 		3574C2BD1F02CC4D0028338F /* NSDateHelper.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; name = NSDateHelper.mm; path = ../Assets/Plugins/iOS/Core/Utility/NSDateHelper.mm; sourceTree = "<group>"; };
@@ -88,6 +90,7 @@
 		35E9FBCE1EFADE5A00556A1F = {
 			isa = PBXGroup;
 			children = (
+				350B29D21F18047C009B91CF /* WrapperExceptionManager.mm */,
 				359195381F103CF200F9CB86 /* DistributeDelegate.mm */,
 				359195361F10388200F9CB86 /* ReleaseDetails.mm */,
 				359195341F10365B00F9CB86 /* DistributeUnity.mm */,
@@ -192,6 +195,7 @@
 				35E9FC4A1EFAE16000556A1F /* CrashesDelegate.mm in Sources */,
 				35E9FC4B1EFAE16000556A1F /* CrashesUnity.mm in Sources */,
 				35E9FC4C1EFAE16000556A1F /* ErrorReport.mm in Sources */,
+				350B29D31F18047C009B91CF /* WrapperExceptionManager.mm in Sources */,
 				3574C2BE1F02CC4D0028338F /* NSDateHelper.mm in Sources */,
 				3574C2BC1F02C9020028338F /* NSNumberHelper.mm in Sources */,
 				359195371F10388200F9CB86 /* ReleaseDetails.mm in Sources */,

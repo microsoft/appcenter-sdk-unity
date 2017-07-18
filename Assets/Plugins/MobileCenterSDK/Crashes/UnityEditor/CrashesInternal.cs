@@ -21,6 +21,6 @@ namespace Microsoft.Azure.Mobile.Crashes.Internal
 		{
             return false;
 		}
-	}
+    }
 }
 #endif
