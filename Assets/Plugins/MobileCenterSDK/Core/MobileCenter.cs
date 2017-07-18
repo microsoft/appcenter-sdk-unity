@@ -1,4 +1,4 @@
-﻿﻿// Copyright (c) Microsoft Corporation. All rights reserved.
+﻿// Copyright (c) Microsoft Corporation. All rights reserved.
 //
 // Licensed under the MIT license.
 
@@ -83,6 +83,7 @@ namespace Microsoft.Azure.Mobile.Unity
         {
             SetWrapperSdk();
             var nativeServiceTypes = ServicesToNativeTypes(services);
+            InitializeServices(services);
             MobileCenterInternal.mobile_center_unity_start_services(nativeServiceTypes, services.Length);
         }
 
@@ -96,7 +97,8 @@ namespace Microsoft.Azure.Mobile.Unity
         {
 			SetWrapperSdk();
 			var nativeServiceTypes = ServicesToNativeTypes(services);
-            MobileCenterInternal.mobile_center_unity_start(appSecret, nativeServiceTypes, services.Length);
+			InitializeServices(services);
+			MobileCenterInternal.mobile_center_unity_start(appSecret, nativeServiceTypes, services.Length);
         }
 
 #if UNITY_IOS
@@ -153,12 +155,16 @@ namespace Microsoft.Azure.Mobile.Unity
         }
 #endif
 
-        private static void InitializeService(Type serviceType)
+        private static void InitializeServices(params Type[] services)
         {
-            var method = serviceType.GetMethod("Initialize");
-            if (method != null)
+            // TODO handle case where initialization has already occurred
+            foreach (var serviceType in services)
             {
-                method.Invoke(null, null);
+                var method = serviceType.GetMethod("Initialize");
+                if (method != null)
+                {
+                    method.Invoke(null, null);
+                }
             }
         }
 
