@@ -1,27 +1,28 @@
-﻿// Copyright (c) Microsoft Corporation. All rights reserved.
+// Copyright (c) Microsoft Corporation. All rights reserved.
 //
 // Licensed under the MIT license.
 
-#if !UNITY_WSA_10_0 || UNITY_EDITOR
-using Microsoft.Azure.Mobile.Crashes.Internal;
+using Microsoft.Azure.Mobile.Unity.Crashes.Internal;
 using System;
-using System.Runtime.InteropServices;
+using Microsoft.Azure.Mobile.Unity.Crashes.Models;
+using UnityEngine;
 
-namespace Microsoft.Azure.Mobile.Crashes
+namespace Microsoft.Azure.Mobile.Unity.Crashes
 {
-    public class ErrorReport
-    {
-        
-    }
+#if UNITY_IOS || UNITY_ANDROID
+    using RawType = System.IntPtr;
+#else
+    using RawType = System.Type;
+#endif
 
-	public class Crashes
+    public class Crashes
 	{
         public static void Initialize()
         {
 			CrashesDelegate.mobile_center_unity_crashes_set_delegate();
 		}
 
-		public static IntPtr GetNativeType()
+        public static RawType GetNativeType()
 		{
             return CrashesInternal.mobile_center_unity_crashes_get_type();
 		}
@@ -37,8 +38,5 @@ namespace Microsoft.Azure.Mobile.Crashes
                 CrashesInternal.mobile_center_unity_crashes_set_enabled(value);
             }
         }
-
-
 	}
 }
-#endif

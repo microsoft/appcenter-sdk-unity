@@ -34,12 +34,12 @@ bool mobile_center_unity_crashes_has_crashes_in_last_session()
   return [MSCrashes hasCrashedInLastSession];
 }
 
-extern "C" void* mobile_center_unity_crashes_last_session_crash_report()
+MSErrorReport* mobile_center_unity_crashes_last_session_crash_report()
 {
-  return (__bridge void*)[MSCrashes lastSessionCrashReport];
+  return [MSCrashes lastSessionCrashReport];
 }
 
-extern "C" void mobile_center_unity_crashes_set_user_confirmation_handler(void* userConfirmationHandler);
-
-extern "C" void mobile_center_unity_crashes_notify_with_user_confirmation(int userConfirmation);
-
+//void mobile_center_unity_crashes_set_user_confirmation_handler(void* userConfirmationHandler);
+//
+//void mobile_center_unity_crashes_notify_with_user_confirmation(int userConfirmation);
+//
