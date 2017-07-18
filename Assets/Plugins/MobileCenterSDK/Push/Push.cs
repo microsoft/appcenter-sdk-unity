@@ -7,6 +7,12 @@ using Microsoft.Azure.Mobile.Unity.Push.Internal;
 
 namespace Microsoft.Azure.Mobile.Unity.Push
 {
+#if UNITY_IOS || UNITY_ANDROID
+    using RawType = System.IntPtr;
+#else
+	using RawType = System.Type;
+#endif
+
 	public class Push
 	{        
         public static event EventHandler<PushNotificationReceivedEventArgs> PushNotificationReceived;
@@ -16,7 +22,7 @@ namespace Microsoft.Azure.Mobile.Unity.Push
             PushInternal.Initialize();
         }
 
-        public static IntPtr GetNativeType()
+        public static RawType GetNativeType()
         {
             return PushInternal.mobile_center_unity_push_get_type();
         }
