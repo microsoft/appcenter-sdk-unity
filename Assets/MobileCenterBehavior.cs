@@ -1,4 +1,4 @@
-// Copyright (c) Microsoft Corporation. All rights reserved.
+﻿// Copyright (c) Microsoft Corporation. All rights reserved.
 //
 // Licensed under the MIT license.
 
@@ -28,7 +28,7 @@ public class MobileCenterBehavior : MonoBehaviour
         const string appSecret = "secret";
 #endif
         MobileCenter.SetLogUrl("https://in-integration.dev.avalanch.es");
-        MobileCenter.Start(appSecret, typeof(Crashes), typeof(Analytics), typeof(Distribute));
+        MobileCenter.Start(appSecret, typeof(Crashes), typeof(Push), typeof(Analytics), typeof(Distribute));
         SimpleLog("Found Install ID: " + MobileCenter.InstallId);
 
         Analytics.Enabled = false;

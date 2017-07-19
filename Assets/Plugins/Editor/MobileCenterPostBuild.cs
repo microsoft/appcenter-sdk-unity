@@ -5,9 +5,11 @@
 using System;
 using System.IO;
 using System.Text.RegularExpressions;
+using System.Collections.Generic;
 using UnityEngine;
 using UnityEditor;
 using UnityEditor.Callbacks;
+using UnityEditor.iOS.Xcode;
 
 public class MobileCenterPostBuild
 {
@@ -16,14 +18,22 @@ public class MobileCenterPostBuild
     {
         if (target == BuildTarget.WSAPlayer)
         {
+            // If UWP, need to add NuGet packages
             var projectJson = pathToBuiltProject + "/" + PlayerSettings.productName + "/project.json";
             AddDependenciesToProjectJson(projectJson);
 
             var nuget = EditorApplication.applicationContentsPath + "/PlaybackEngines/MetroSupport/Tools/nuget.exe";
             ExecuteCommand(nuget, "restore \"" + projectJson + "\" -NonInteractive");
         }
+        else if (target == BuildTarget.iOS)
+        {
+			// For iOS, need to add "-lsqlite3" linker flag to PBXProject due to
+			// SQLite dependency
+			AddLinkerFlagToXcodeProject("-lsqlite3", pathToBuiltProject);
+		}
     }
 
+    #region UWP Methods
     private static void AddDependenciesToProjectJson(string projectJsonPath)
     {
         if (!File.Exists(projectJsonPath))
@@ -77,4 +87,28 @@ public class MobileCenterPostBuild
             Debug.LogException(exception);
         }
     }
+    #endregion
+
+    #region iOS Methods
+
+    private static void AddLinkerFlagToXcodeProject(string linkerFlag, string pathToBuiltProject)
+    {
+		// Linker flags are added to the setting "Other linker flags" which has
+		// an ID of "OTHER_LDFLAGS"
+		var setting = "OTHER_LDFLAGS";
+
+		// Find the .pbxproj file and read into memory
+		var pbxPath = PBXProject.GetPBXProjectPath(pathToBuiltProject);
+		var pbxProject = new PBXProject();
+		pbxProject.ReadFromFile(pbxPath);
+
+		// The target we want to add to is created by Unity
+		var targetGuid = pbxProject.TargetGuidByName("Unity-iPhone");
+
+		pbxProject.UpdateBuildProperty(targetGuid, setting, new List<string> { linkerFlag }, null);
+
+		pbxProject.WriteToFile(pbxPath);
+    }
+
+    #endregion
 }
