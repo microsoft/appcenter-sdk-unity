@@ -15,21 +15,21 @@ using Microsoft.Azure.Mobile.Unity.Distribute;
 public class MobileCenterBehavior : MonoBehaviour
 {
     private static PushNotificationReceivedEventArgs _pushEventArgs = null;
-
+    private static object _pushLock = new object();
 	void Start()
     {
 		MobileCenter.LogLevel = LogLevel.Verbose;
 #if UNITY_IOS
         const string appSecret = "dcf0de16-000e-477a-a55f-232380938aa8";
 #elif UNITY_ANDROID
-		const string appSecret = "06ab97fd-84f4-46c3-a390-544b796da178";
+		const string appSecret = "56638f03-9802-4b53-95d4-e08ba9c9ac24";
 #elif UNITY_WSA_10_0
         const string appSecret = "630db31d-f6b3-480e-925f-cbc1c5b12cdc";
 #else
 		const string appSecret = "secret";
 #endif
 
-		//MobileCenter.SetLogUrl("https://in-integration.dev.avalanch.es");
+		MobileCenter.SetLogUrl("https://in-integration.dev.avalanch.es");
 		MobileCenter.Start(appSecret, typeof(Crashes), typeof(Push), typeof(Analytics), typeof(Distribute));
 		//SimpleLog("Found Install ID: " + MobileCenter.InstallId);
 
@@ -51,7 +51,7 @@ public class MobileCenterBehavior : MonoBehaviour
 		//MobileCenter.SetCustomProperties(properties);
         Push.PushNotificationReceived += (sender, e) =>
 		{
-			lock (_pushEventArgs)
+			lock (_pushLock)
 			{
 				_pushEventArgs = e;
 			}
@@ -61,7 +61,7 @@ public class MobileCenterBehavior : MonoBehaviour
 	// Update is called once per frame
 	void Update()
 	{
-		lock (_pushEventArgs)
+		lock (_pushLock)
 		{
 			if (_pushEventArgs != null)
 			{
