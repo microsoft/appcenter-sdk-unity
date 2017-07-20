@@ -1,4 +1,4 @@
-﻿﻿﻿// Copyright (c) Microsoft Corporation. All rights reserved.
+﻿﻿﻿﻿// Copyright (c) Microsoft Corporation. All rights reserved.
 //
 // Licensed under the MIT license.
 
@@ -31,22 +31,22 @@ public class MobileCenterBehavior : MonoBehaviour
 
 		MobileCenter.SetLogUrl("https://in-integration.dev.avalanch.es");
 		MobileCenter.Start(appSecret, typeof(Crashes), typeof(Push), typeof(Analytics), typeof(Distribute));
-		//SimpleLog("Found Install ID: " + MobileCenter.InstallId);
+		SimpleLog("Found Install ID: " + MobileCenter.InstallId);
 
-		//Analytics.Enabled = false;
-		//Analytics.TrackEvent("should not be sent");
-		//Analytics.Enabled = true;
+		Analytics.Enabled = false;
+		Analytics.TrackEvent("should not be sent");
+		Analytics.Enabled = true;
 
-		//Analytics.TrackEvent("event without properties");
-		//Analytics.TrackEvent("event with properties", new Dictionary<string, string> { { "key1", "value1" }, { "key2", "value2" } });
+		Analytics.TrackEvent("event without properties");
+		Analytics.TrackEvent("event with properties", new Dictionary<string, string> { { "key1", "value1" }, { "key2", "value2" } });
 
-		//Crashes.Enabled = true;
+		Crashes.Enabled = true;
 
-		//var properties = new CustomProperties();
-		//properties.Set("stringkey", "stringval").Set("intkey", 4)
-		//            .Set("floatkey", 9.25f).Set("longkey", (long)43)
-		//            .Set("doublekey", (double)4.1349).Set("boolkey", false)
-		//            .Set("datekey", new DateTime(2017, 1, 4));
+		var properties = new CustomProperties();
+		properties.Set("stringkey", "stringval").Set("intkey", 4)
+		            .Set("floatkey", 9.25f).Set("longkey", (long)43)
+		            .Set("doublekey", (double)4.1349).Set("boolkey", false)
+		            .Set("datekey", new DateTime(2017, 1, 4));
 
 		//MobileCenter.SetCustomProperties(properties);
         Push.PushNotificationReceived += (sender, e) =>
