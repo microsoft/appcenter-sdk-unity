@@ -20,14 +20,14 @@ namespace Microsoft.Azure.Mobile.Unity.Crashes.Internal
             return default(RawType);
         }
 
-		public static void mobile_center_unity_crashes_set_enabled(bool isEnabled)
-		{
-		}
+        public static void mobile_center_unity_crashes_set_enabled(bool isEnabled)
+        {
+        }
 
-		public static bool mobile_center_unity_crashes_is_enabled()
-		{
+        public static bool mobile_center_unity_crashes_is_enabled()
+        {
             return false;
-		}
+        }
     }
 }
 #endif

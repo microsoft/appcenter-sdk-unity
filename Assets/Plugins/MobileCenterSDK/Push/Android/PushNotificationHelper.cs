@@ -25,6 +25,6 @@ namespace Microsoft.Azure.Mobile.Unity.Push.Internal
                 Title = title
             };
         }
-	}
+    }
 }
 #endif

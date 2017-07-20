@@ -19,13 +19,13 @@ namespace Microsoft.Azure.Mobile.Unity.Push.Internal
         {
             var push = new AndroidJavaClass("com.microsoft.azure.mobile.push.Push");
             push.CallStatic("setListener", new PushDelegate());
-	    }
+        }
 
         void onPushNotificationReceived(AndroidJavaObject activity, AndroidJavaObject pushNotification)
         {
-			var eventArgs = PushNotificationHelper.PushConvert(pushNotification);
-			Push.NotifyPushNotificationReceived(eventArgs);
+            var eventArgs = PushNotificationHelper.PushConvert(pushNotification);
+            Push.NotifyPushNotificationReceived(eventArgs);
         }
-	}
+    }
 }
 #endif

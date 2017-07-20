@@ -32,10 +32,10 @@ public class PuppetControls : MonoBehaviour
             CrashWithNullReferenceException();
         }
 
-		if (GUI.Button(GetControlRect(++controlRectIdx), "Track event"))
-		{
+        if (GUI.Button(GetControlRect(++controlRectIdx), "Track event"))
+        {
             Microsoft.Azure.Mobile.Unity.Analytics.Analytics.TrackEvent("hi");
-		}
+        }
     }
 
     private void CrashWithDivideByZeroException()
@@ -50,16 +50,16 @@ public class PuppetControls : MonoBehaviour
     }
 
     public void AutoResize(int screenWidth, int screenHeight)
-	{
-		Vector2 resizeRatio = new Vector2((float)Screen.width / screenWidth, (float)Screen.height / screenHeight);
-		GUI.matrix = Matrix4x4.TRS(Vector3.zero, Quaternion.identity, new Vector3(resizeRatio.x, resizeRatio.y, 1.0f));
-	}
+    {
+        Vector2 resizeRatio = new Vector2((float)Screen.width / screenWidth, (float)Screen.height / screenHeight);
+        GUI.matrix = Matrix4x4.TRS(Vector3.zero, Quaternion.identity, new Vector3(resizeRatio.x, resizeRatio.y, 1.0f));
+    }
 
-	private Rect GetControlRect(int controlIndex)
-	{
-		return new Rect(horizontalMargin,
-						controlIndex * (controlHeight + space),
-						640 - (2 * horizontalMargin),
-						controlHeight);
-	}
+    private Rect GetControlRect(int controlIndex)
+    {
+        return new Rect(horizontalMargin,
+                        controlIndex * (controlHeight + space),
+                        640 - (2 * horizontalMargin),
+                        controlHeight);
+    }
 }

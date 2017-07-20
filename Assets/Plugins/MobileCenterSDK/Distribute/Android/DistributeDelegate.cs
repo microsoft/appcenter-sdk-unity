@@ -26,8 +26,8 @@ namespace Microsoft.Azure.Mobile.Unity.Distribute.Internal
                 return false;
             }
             var releaseDetails = ReleaseDetailsHelper.ReleaseDetailsConvert(details);
-			return Distribute.ReleaseAvailable.Invoke(releaseDetails);
-		}
+            return Distribute.ReleaseAvailable.Invoke(releaseDetails);
+        }
     }
 }
 #endif

@@ -10,7 +10,7 @@ using UnityEngine;
 namespace Microsoft.Azure.Mobile.Unity
 {
 #if UNITY_IOS || UNITY_ANDROID
-	using ServiceType = System.IntPtr;
+    using ServiceType = System.IntPtr;
 #else
     using ServiceType = System.Type;
 #endif
@@ -95,36 +95,36 @@ namespace Microsoft.Azure.Mobile.Unity
         /// <param name="services">List of services to use.</param>
         public static void Start(string appSecret, params Type[] services)
         {
-			SetWrapperSdk();
-			var nativeServiceTypes = ServicesToNativeTypes(services);
-			InitializeServices(services);
-			MobileCenterInternal.mobile_center_unity_start(appSecret, nativeServiceTypes, services.Length);
+            SetWrapperSdk();
+            var nativeServiceTypes = ServicesToNativeTypes(services);
+            InitializeServices(services);
+            MobileCenterInternal.mobile_center_unity_start(appSecret, nativeServiceTypes, services.Length);
         }
 
 #if UNITY_IOS
         private static ServiceType[] ServicesToNativeTypes(Type[] services)
         {
-			IntPtr[] classPointers = new IntPtr[services.Length];
-			int currentIdx = 0;
-			foreach (var serviceType in services)
-			{                IntPtr nativeType = (IntPtr)serviceType.GetMethod("GetNativeType").Invoke(null, null);
-				classPointers[currentIdx++] = nativeType;
-			}
-			return classPointers;
+            IntPtr[] classPointers = new IntPtr[services.Length];
+            int currentIdx = 0;
+            foreach (var serviceType in services)
+            {                IntPtr nativeType = (IntPtr)serviceType.GetMethod("GetNativeType").Invoke(null, null);
+                classPointers[currentIdx++] = nativeType;
+            }
+            return classPointers;
         }
 #elif UNITY_ANDROID
-		private static ServiceType[] ServicesToNativeTypes(Type[] services)
-		{
-			var classClass = AndroidJNI.FindClass("java/lang/Class");
-			var array = AndroidJNI.NewObjectArray(services.Length, classClass, classClass);
+        private static ServiceType[] ServicesToNativeTypes(Type[] services)
+        {
+            var classClass = AndroidJNI.FindClass("java/lang/Class");
+            var array = AndroidJNI.NewObjectArray(services.Length, classClass, classClass);
             int currentIdx = 0;
-			foreach (var serviceType in services)
-			{
-				ServiceType nativeType = (ServiceType)serviceType.GetMethod("GetNativeType").Invoke(null, null);
+            foreach (var serviceType in services)
+            {
+                ServiceType nativeType = (ServiceType)serviceType.GetMethod("GetNativeType").Invoke(null, null);
                 AndroidJNI.SetObjectArrayElement(array, currentIdx++, nativeType);
-			}
+            }
             return new ServiceType[] { array };
-		}
+        }
 #elif UNITY_WSA_10_0
 #pragma warning disable IDE0001
         private static ServiceType[] ServicesToNativeTypes(Type[] services)
@@ -168,12 +168,12 @@ namespace Microsoft.Azure.Mobile.Unity
             }
         }
 
-		/// <summary>
-		/// Set the custom properties.
-		/// </summary>
-		/// <param name="customProperties">Custom properties object.</param>
-		public static void SetCustomProperties(Unity.CustomProperties customProperties)
-		{
+        /// <summary>
+        /// Set the custom properties.
+        /// </summary>
+        /// <param name="customProperties">Custom properties object.</param>
+        public static void SetCustomProperties(Unity.CustomProperties customProperties)
+        {
             var rawCustomProperties = customProperties.GetRawObject();
             MobileCenterInternal.mobile_center_unity_set_custom_properties(rawCustomProperties);
         }
@@ -181,9 +181,9 @@ namespace Microsoft.Azure.Mobile.Unity
         private static void SetWrapperSdk()
         {
             UnityEngine.Debug.Log("Wrapper runtime version = " + WrapperSdk.WrapperRuntimeVersion);
-			MobileCenterInternal.mobile_center_unity_set_wrapper_sdk(WrapperSdk.WrapperSdkVersion, 
+            MobileCenterInternal.mobile_center_unity_set_wrapper_sdk(WrapperSdk.WrapperSdkVersion, 
                                                                      WrapperSdk.Name, 
                                                                      WrapperSdk.WrapperRuntimeVersion, null, null, null);
-		}
+        }
     }
 }

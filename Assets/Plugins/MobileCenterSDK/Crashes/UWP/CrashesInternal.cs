@@ -3,7 +3,7 @@ using System;
 
 namespace Microsoft.Azure.Mobile.Unity.Crashes.Internal
 {
-	class CrashesInternal
+    class CrashesInternal
     {
         public static Type mobile_center_unity_crashes_get_type()
         {
@@ -18,6 +18,6 @@ namespace Microsoft.Azure.Mobile.Unity.Crashes.Internal
         {
             return false;
         }
-	}
+    }
 }
 #endif

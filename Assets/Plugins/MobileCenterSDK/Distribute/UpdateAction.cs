@@ -4,19 +4,19 @@
 
 namespace Microsoft.Azure.Mobile.Unity.Distribute
 {
-	/// <summary>
-	/// User update action.
-	/// </summary>
-	public enum UpdateAction
-	{
-		/// <summary>
-		/// Action to trigger the download of the release.
-		/// </summary>
-		Update,
+    /// <summary>
+    /// User update action.
+    /// </summary>
+    public enum UpdateAction
+    {
+        /// <summary>
+        /// Action to trigger the download of the release.
+        /// </summary>
+        Update,
 
-		/// <summary>
-		/// Action to postpone optional updates for 1 day.
-		/// </summary>
-		Postpone
-	}
+        /// <summary>
+        /// Action to postpone optional updates for 1 day.
+        /// </summary>
+        Postpone
+    }
 }

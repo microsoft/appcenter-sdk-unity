@@ -8,13 +8,13 @@ using UnityEngine;
 
 namespace Microsoft.Azure.Mobile.Unity.Analytics.Internal
 {
-	class AnalyticsInternal
+    class AnalyticsInternal
     {
         private static AndroidJavaClass _analytics = new AndroidJavaClass("com.microsoft.azure.mobile.analytics.Analytics");
 
         public static IntPtr mobile_center_unity_analytics_get_type()
         {
-			return AndroidJNI.FindClass("com/microsoft/azure/mobile/analytics/Analytics");
+            return AndroidJNI.FindClass("com/microsoft/azure/mobile/analytics/Analytics");
         }
 
         public static void mobile_center_unity_analytics_track_event(string eventName)
@@ -41,6 +41,6 @@ namespace Microsoft.Azure.Mobile.Unity.Analytics.Internal
         {
             return _analytics.CallStatic<bool>("isEnabled");
         }
-	}
+    }
 }
 #endif
