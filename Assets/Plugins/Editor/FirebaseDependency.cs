@@ -1,8 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.ComponentModel;
 using System.IO;
-using GooglePlayServices;
+using System.Linq;
 using UnityEditor;
 using UnityEngine;
 
@@ -93,10 +92,10 @@ public class FirebaseDependency : AssetPostprocessor
     static List<string> ReadBundleIds(string googleServicesFile)
     {
         SortedDictionary<string, string> sortedDictionary = new SortedDictionary<string, string>();
-        CommandLine.Result result = RunResourceGenerator("-i \"" + googleServicesFile + "\" -l");
-        if (result.exitCode == 0)
+        string output = RunResourceGenerator("-i \"" + googleServicesFile + "\" -l");
+        if (output != null)
         {
-            foreach (string index in result.stdout.Split('\r', '\n'))
+            foreach (string index in output.Split('\r', '\n'))
             {
                 if (!string.IsNullOrEmpty(index))
                     sortedDictionary[index] = index;
@@ -122,7 +121,7 @@ public class FirebaseDependency : AssetPostprocessor
     static string FindGoogleServicesFile()
     {
         var bundleIdsByConfigFile = ReadBundleIdsFromGoogleServicesFiles();
-        var bundleId = UnityCompat.ApplicationId;
+        var bundleId = GetApplicationId();
         if (bundleIdsByConfigFile.Count == 0)
         {
             return null;
@@ -133,6 +132,12 @@ public class FirebaseDependency : AssetPostprocessor
             if (keyValuePair.Value.Contains(bundleId))
                 str = keyValuePair.Key;
         }
+        if (str == null)
+        {
+            Debug.LogError(string.Format("Project Bundle ID {0} does not match any bundle IDs in your google-services.json files\n" +
+                          "This will result in an app that will fail to initialize.\n\nAvailable Bundle IDs:\n{1}",
+                bundleId, string.Join("\n", bundleIdsByConfigFile.SelectMany(i => i.Value).ToArray())));
+        }
         return str;
     }
 
@@ -141,30 +146,64 @@ public class FirebaseDependency : AssetPostprocessor
         return Path.Combine(Application.dataPath, "..");
     }
 
-    static CommandLine.Result RunResourceGenerator(string arguments)
+    static string GetApplicationId()
     {
-        bool flag = Application.platform == RuntimePlatform.WindowsEditor;
-        string str1 = Path.Combine(Path.Combine(GetProjectDir(), EXECUTABLE_LOCATION), !flag ? EXECUTABLE_NAME_GENERIC : EXECUTABLE_NAME_WINDOWS);
-        string toolPath;
+#if UNITY_5_6_OR_NEWER
+        return PlayerSettings.applicationIdentifier;
+#else
+        return PlayerSettings.bundleIdentifier;
+#endif
+    }
+
+    static string RunResourceGenerator(string arguments)
+    {
+        string command;
+        string executable;
         string arguments1;
-        if (flag)
+        if (Application.platform == RuntimePlatform.WindowsEditor)
         {
-            toolPath = str1;
+            executable = Path.Combine(Path.Combine(GetProjectDir(), EXECUTABLE_LOCATION), EXECUTABLE_NAME_WINDOWS);
+            command = executable;
             arguments1 = arguments;
         }
         else
         {
-            toolPath = "python";
-            arguments1 = "\"" + str1 + "\" " + arguments;
+            executable = Path.Combine(Path.Combine(GetProjectDir(), EXECUTABLE_LOCATION), EXECUTABLE_NAME_GENERIC);
+            command = "python";
+            arguments1 = "\"" + executable + "\" " + arguments;
         }
         try
         {
-            return CommandLine.Run(toolPath, arguments1);
+            var buildProcess = new System.Diagnostics.Process
+            {
+                StartInfo =
+                {
+                    FileName = command,
+                    Arguments = arguments1,
+                    RedirectStandardOutput = true,
+                    RedirectStandardError = true,
+                    UseShellExecute = false,
+                    CreateNoWindow = true
+                }
+            };
+            buildProcess.Start();
+            buildProcess.WaitForExit();
+            if (buildProcess.ExitCode == 0)
+            {
+                return buildProcess.StandardOutput.ReadToEnd();
+            }
+            else
+            {
+                string error = buildProcess.StandardError.ReadToEnd();
+                if (!string.IsNullOrEmpty(error))
+                    Debug.LogError(error);
+                return null;
+            }
         }
-        catch (Win32Exception ex)
+        catch (Exception exception)
         {
-            Debug.LogException(ex);
-            return new CommandLine.Result { exitCode = 1 };
+            Debug.LogException(exception);
+            return null;
         }
     }
 
@@ -188,7 +227,7 @@ public class FirebaseDependency : AssetPostprocessor
         string path2 = Path.Combine(projectDir, GOOGLE_SERVICES_OUTPUT_PATH);
         if (File.Exists(path2) && File.GetLastWriteTime(path2).CompareTo(File.GetLastWriteTime(str)) >= 0)
             return;
-        RunResourceGenerator("-i \"" + str + "\" -o \"" + path2 + "\" -p \"" + UnityCompat.ApplicationId + "\"");
+        RunResourceGenerator("-i \"" + str + "\" -o \"" + path2 + "\" -p \"" + GetApplicationId() + "\"");
     }
 
     static void UpdateJson()
