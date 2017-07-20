@@ -47,7 +47,7 @@ tools/
 *.apk
 *.ipa
 
-#secrets
+# Secrets
 google-services.json*
 *.pfx*
 
@@ -55,3 +55,10 @@ google-services.json*
 Library/
 *.csproj
 *.sln
+
+# Firebase
+Assets/Plugins/Android/firebase-*
+Assets/Plugins/Android/support-*
+Assets/Plugins/Android/Firebase
+Assets/Plugins/Android/Firebase.meta
+!Assets/Firebase/**/*.exe
