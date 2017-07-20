@@ -1,4 +1,4 @@
-﻿﻿// Copyright (c) Microsoft Corporation. All rights reserved.
+﻿﻿﻿// Copyright (c) Microsoft Corporation. All rights reserved.
 //
 // Licensed under the MIT license.
 
@@ -14,17 +14,19 @@ using Microsoft.Azure.Mobile.Unity.Distribute;
 
 public class MobileCenterBehavior : MonoBehaviour
 {
+    private static PushNotificationReceivedEventArgs _pushEventArgs = null;
+
 	void Start()
     {
 		MobileCenter.LogLevel = LogLevel.Verbose;
 #if UNITY_IOS
-        const string appSecret = "3f8b0dee-d85b-41d0-9a2d-430916efdcc6";
+        const string appSecret = "dcf0de16-000e-477a-a55f-232380938aa8";
 #elif UNITY_ANDROID
-		const string appSecret = "2cc66426-e9b3-4e33-93e6-8bb3de8144dc";
+		const string appSecret = "06ab97fd-84f4-46c3-a390-544b796da178";
 #elif UNITY_WSA_10_0
         const string appSecret = "630db31d-f6b3-480e-925f-cbc1c5b12cdc";
 #else
-        const string appSecret = "secret";
+		const string appSecret = "secret";
 #endif
 
 		//MobileCenter.SetLogUrl("https://in-integration.dev.avalanch.es");
@@ -47,31 +49,42 @@ public class MobileCenterBehavior : MonoBehaviour
 		//            .Set("datekey", new DateTime(2017, 1, 4));
 
 		//MobileCenter.SetCustomProperties(properties);
-		Push.PushNotificationReceived += (sender, e) => 
+        Push.PushNotificationReceived += (sender, e) =>
 		{
-		    var summary = "Push notification received:" +
-		                "\n\tNotification title: " + e.Title +
-		                "\n\tMessage: " + e.Message;
-
-		    if (e.CustomData != null)
-		    {
-		        summary += "\n\tCustom data:\n";
-		        foreach (var key in e.CustomData.Keys)
-		        {
-		            summary += "\t\t" + key + " : " + e.CustomData[key] + "\n";
-		        }
-		    }
-
-		    SimpleLog(summary);
+			lock (_pushEventArgs)
+			{
+				_pushEventArgs = e;
+			}
 		};
 	}
 
-    // Update is called once per frame
-    void Update()
-    {
-    }
+	// Update is called once per frame
+	void Update()
+	{
+		lock (_pushEventArgs)
+		{
+			if (_pushEventArgs != null)
+			{
+				var pushSummary = "Push notification received:" +
+					"\n\tNotification title: " + _pushEventArgs.Title +
+					"\n\tMessage: " + _pushEventArgs.Message;
 
-    void SimpleLog(object message)
+				if (_pushEventArgs.CustomData != null)
+				{
+					pushSummary += "\n\tCustom data:\n";
+					foreach (var key in _pushEventArgs.CustomData.Keys)
+					{
+						pushSummary += "\t\t" + key + " : " + _pushEventArgs.CustomData[key] + "\n";
+					}
+				}
+				SimpleLog(pushSummary);
+				_pushEventArgs = null;
+			}
+		}
+	}
+
+
+	void SimpleLog(object message)
     {
         const string printTag = "[MobileCenterBehavior]: ";
         print(printTag + message + '\n');
