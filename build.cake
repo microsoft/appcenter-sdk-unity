@@ -10,9 +10,9 @@ using System.Net;
 var TEMPORARY_PREFIX = "CAKE_SCRIPT_TEMP";
 
 // Native SDK versions
-var ANDROID_SDK_VERSION = "0.10.0";
-var IOS_SDK_VERSION = "0.11.1-7";
-var UWP_SDK_VERSION = "0.13.0";
+var ANDROID_SDK_VERSION = "0.11.1";
+var IOS_SDK_VERSION = "0.11.0";
+var UWP_SDK_VERSION = "0.14.0";
 
 // URLs for downloading binaries.
 /*

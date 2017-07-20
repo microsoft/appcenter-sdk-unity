@@ -53,6 +53,7 @@ namespace Microsoft.Azure.Mobile.Unity
             get
             {
                 var installIdString = MobileCenterInternal.mobile_center_unity_get_install_id();
+                MonoBehaviour.print("STRING IS " + installIdString);
                 return new Guid(installIdString);
             }
         }
