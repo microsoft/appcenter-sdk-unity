@@ -20,22 +20,22 @@ namespace Microsoft.Azure.Mobile.Unity.Analytics.Internal
             return default(RawType);
         }
 
-		public static void mobile_center_unity_analytics_track_event(string eventName)
+        public static void mobile_center_unity_analytics_track_event(string eventName)
         {
         }
 
-		public static void mobile_center_unity_analytics_track_event_with_properties(string eventName, string[] keys, string[] values, int count)
+        public static void mobile_center_unity_analytics_track_event_with_properties(string eventName, string[] keys, string[] values, int count)
         {
         }
 
-		public static void mobile_center_unity_analytics_set_enabled(bool isEnabled)
-		{
-		}
+        public static void mobile_center_unity_analytics_set_enabled(bool isEnabled)
+        {
+        }
 
-		public static bool mobile_center_unity_analytics_is_enabled()
-		{
+        public static bool mobile_center_unity_analytics_is_enabled()
+        {
             return false;
-		}
-	}
+        }
+    }
 }
 #endif

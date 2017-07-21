@@ -10,14 +10,14 @@ namespace Microsoft.Azure.Mobile.Unity.Distribute.Internal
 {
     class ReleaseDetailsHelper
     {
-		public static ReleaseDetails ReleaseDetailsConvert(AndroidJavaObject details)
+        public static ReleaseDetails ReleaseDetailsConvert(AndroidJavaObject details)
         {
             var id = details.Call<int>("getId");
             var version = details.Call<int>("getVersion").ToString();
             var shortVersion = details.Call<string>("getShortVersion");
-			var releaseNotes = details.Call<string>("getReleaseNotes");
+            var releaseNotes = details.Call<string>("getReleaseNotes");
             var mandatoryUpdate = details.Call<bool>("isMandatoryUpdate");
-			var javaUri = details.Call<AndroidJavaObject>("getReleaseNotesUrl");
+            var javaUri = details.Call<AndroidJavaObject>("getReleaseNotesUrl");
             var uriString = javaUri.Call<string>("toString");
             var uri = new Uri(uriString);
 
@@ -31,6 +31,6 @@ namespace Microsoft.Azure.Mobile.Unity.Distribute.Internal
                 ReleaseNotesUrl = uri
             }; 
         }
-	}
+    }
 }
 #endif

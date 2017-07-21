@@ -8,33 +8,33 @@ using UnityEngine;
 
 namespace Microsoft.Azure.Mobile.Unity.Crashes.Internal
 {
-	public class CrashesDelegate : AndroidJavaProxy
-	{
+    public class CrashesDelegate : AndroidJavaProxy
+    {
         private CrashesDelegate() : base("com.microsoft.azure.mobile.crashes.CrashesListener")
         {
         }
 
-		public static void mobile_center_unity_crashes_set_delegate()
+        public static void mobile_center_unity_crashes_set_delegate()
         {
-			var crashes = new AndroidJavaClass("com.microsoft.azure.mobile.crashes.Crashes");
-			crashes.CallStatic("setListener", new CrashesDelegate());
+            var crashes = new AndroidJavaClass("com.microsoft.azure.mobile.crashes.Crashes");
+            crashes.CallStatic("setListener", new CrashesDelegate());
         }
 
         //TODO bind error report; implement these
-	    void onBeforeSending(AndroidJavaObject report)
+        void onBeforeSending(AndroidJavaObject report)
         {
             
         }
  
-	    void onSendingFailed(AndroidJavaObject report, AndroidJavaObject exception)
+        void onSendingFailed(AndroidJavaObject report, AndroidJavaObject exception)
         {
             
         }
     
-	    void onSendingSucceeded(AndroidJavaObject report)
+        void onSendingSucceeded(AndroidJavaObject report)
         {
             
         }
-	}
+    }
 }
 #endif

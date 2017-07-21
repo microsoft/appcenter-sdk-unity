@@ -8,9 +8,9 @@ using System.Collections.Generic;
 
 namespace Microsoft.Azure.Mobile.Unity.Analytics.Internal
 {
-	using UWPAnalytics = Microsoft.Azure.Mobile.Analytics.Analytics;
+    using UWPAnalytics = Microsoft.Azure.Mobile.Analytics.Analytics;
 
-	class AnalyticsInternal
+    class AnalyticsInternal
     {
         public static Type mobile_center_unity_analytics_get_type()
         {
@@ -30,7 +30,7 @@ namespace Microsoft.Azure.Mobile.Unity.Analytics.Internal
                 properties[keys[i]] = values[i];
             }
             UWPAnalytics.TrackEvent(eventName, properties);
-		}
+        }
 
         public static void mobile_center_unity_analytics_set_enabled(bool isEnabled)
         {
@@ -41,6 +41,6 @@ namespace Microsoft.Azure.Mobile.Unity.Analytics.Internal
         {
             return UWPAnalytics.Enabled;
         }
-	}
+    }
 }
 #endif
