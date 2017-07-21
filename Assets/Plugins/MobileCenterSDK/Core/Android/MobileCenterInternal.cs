@@ -113,6 +113,10 @@ namespace Microsoft.Azure.Mobile.Unity.Internal
 			wrapperSdkObject.Call("setLiveUpdatePackageHash", liveUpdatePackageHash);
             _mobileCenter.CallStatic("setWrapperSdk", wrapperSdkObject);
 		}
+
+        public static void PostConfigure()
+        {
+        }
     }
 }
 #endif

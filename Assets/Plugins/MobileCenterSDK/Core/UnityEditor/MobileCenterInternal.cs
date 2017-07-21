@@ -76,7 +76,10 @@ namespace Microsoft.Azure.Mobile.Unity.Internal
 															    string liveUpdateDeploymentKey,
 															    string liveUpdatePackageHash)
         {
-            
+        }
+
+        public static void PostConfigure()
+        {
         }
 	}
 }

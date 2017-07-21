@@ -121,6 +121,10 @@ namespace Microsoft.Azure.Mobile.Unity.Internal
                     return (Microsoft.Azure.Mobile.LogLevel)logLevel;
             }
         }
+
+        public static void PostConfigure()
+        {
+        }
     }
 }
 #endif
