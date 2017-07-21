@@ -85,7 +85,8 @@ namespace Microsoft.Azure.Mobile.Unity
             var nativeServiceTypes = ServicesToNativeTypes(services);
             InitializeServices(services);
             MobileCenterInternal.mobile_center_unity_start_services(nativeServiceTypes, services.Length);
-        }
+			PostInitializeServices(services);
+		}
 
         /// <summary>
         ///     Initialize the SDK with the list of services to start.
@@ -99,6 +100,7 @@ namespace Microsoft.Azure.Mobile.Unity
             var nativeServiceTypes = ServicesToNativeTypes(services);
             InitializeServices(services);
             MobileCenterInternal.mobile_center_unity_start(appSecret, nativeServiceTypes, services.Length);
+            PostInitializeServices(services);
         }
 
 #if UNITY_IOS
@@ -166,6 +168,19 @@ namespace Microsoft.Azure.Mobile.Unity
                     method.Invoke(null, null);
                 }
             }
+        }
+
+        private static void PostInitializeServices(params Type[] services)
+        {
+			// TODO handle case where post initialization has already occurred
+			foreach (var serviceType in services)
+			{
+				var method = serviceType.GetMethod("PostInitialize");
+				if (method != null)
+				{
+					method.Invoke(null, null);
+				}
+			}
         }
 
         /// <summary>

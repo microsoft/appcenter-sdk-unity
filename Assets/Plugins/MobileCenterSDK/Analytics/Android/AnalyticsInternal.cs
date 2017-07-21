@@ -12,6 +12,14 @@ namespace Microsoft.Azure.Mobile.Unity.Analytics.Internal
     {
         private static AndroidJavaClass _analytics = new AndroidJavaClass("com.microsoft.azure.mobile.analytics.Analytics");
 
+        public static void PostInitialize()
+        {
+            var instance = _analytics.CallStatic<AndroidJavaObject>("getInstance");
+            AndroidJavaClass unityPlayer = new AndroidJavaClass("com.unity3d.player.UnityPlayer");
+            AndroidJavaObject activity = unityPlayer.GetStatic<AndroidJavaObject>("currentActivity");
+            instance.Call("onActivityResumed", activity);
+        }
+
         public static IntPtr mobile_center_unity_analytics_get_type()
         {
             return AndroidJNI.FindClass("com/microsoft/azure/mobile/analytics/Analytics");
