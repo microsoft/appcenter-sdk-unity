@@ -2,14 +2,8 @@
 //
 // Licensed under the MIT license.
 
-using System;
-using System.IO;
-using System.Text.RegularExpressions;
 using System.Collections.Generic;
-using UnityEngine;
 using UnityEditor;
-using UnityEditor.Callbacks;
-using UnityEditor.iOS.Xcode;
 
 [InitializeOnLoad]
 public class MobileCenterScriptOrderer
