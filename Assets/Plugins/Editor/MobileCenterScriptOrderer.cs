@@ -1,4 +1,4 @@
-﻿﻿﻿// Copyright (c) Microsoft Corporation. All rights reserved.
+﻿﻿// Copyright (c) Microsoft Corporation. All rights reserved.
 //
 // Licensed under the MIT license.
 
@@ -13,6 +13,7 @@ public class MobileCenterScriptOrderer
         "MobileCenterDistributeBehavior",
         "MobileCenterPushBehavior",
         "MobileCenterCrashesBehavior" };
+ 
     private static string MobileCenterCoreScript = "MobileCenterCoreBehavior";
 
     static MobileCenterScriptOrderer()
@@ -73,9 +74,9 @@ public class MobileCenterScriptOrderer
 
 public static class MobileCenterMonoScriptExtension
 {
-	public static bool ExecutesAfter(this MonoScript @this, MonoScript other)
-	{
-		return MonoImporter.GetExecutionOrder(@this) >
-					MonoImporter.GetExecutionOrder(other);
-	}
+    public static bool ExecutesAfter(this MonoScript @this, MonoScript other)
+    {
+        return MonoImporter.GetExecutionOrder(@this) >
+                    MonoImporter.GetExecutionOrder(other);
+    }
 }

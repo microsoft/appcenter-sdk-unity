@@ -32,9 +32,9 @@ public class MobileCenterPostBuild
             // For iOS, need to add "-lsqlite3" linker flag to PBXProject due to
             // SQLite dependency
 #if UNITY_IOS
-			AddLinkerFlagToXcodeProject("-lsqlite3", pathToBuiltProject);
+            AddLinkerFlagToXcodeProject("-lsqlite3", pathToBuiltProject);
 #endif
-		}
+        }
     }
 
 #region UWP Methods
@@ -102,17 +102,17 @@ public class MobileCenterPostBuild
         // an ID of "OTHER_LDFLAGS"
         var setting = "OTHER_LDFLAGS";
 
-		// Find the .pbxproj file and read into memory
-		var pbxPath = PBXProject.GetPBXProjectPath(pathToBuiltProject);
-		var pbxProject = new PBXProject();
-		pbxProject.ReadFromFile(pbxPath);
+        // Find the .pbxproj file and read into memory
+        var pbxPath = PBXProject.GetPBXProjectPath(pathToBuiltProject);
+        var pbxProject = new PBXProject();
+        pbxProject.ReadFromFile(pbxPath);
 
-		// The target we want to add to is created by Unity
-		var targetGuid = pbxProject.TargetGuidByName("Unity-iPhone");
+        // The target we want to add to is created by Unity
+        var targetGuid = pbxProject.TargetGuidByName("Unity-iPhone");
 
-		pbxProject.UpdateBuildProperty(targetGuid, setting, new List<string> { linkerFlag }, null);
+        pbxProject.UpdateBuildProperty(targetGuid, setting, new List<string> { linkerFlag }, null);
 
-		pbxProject.WriteToFile(pbxPath);
+        pbxProject.WriteToFile(pbxPath);
 }
 #endif
 #endregion
