@@ -13,6 +13,7 @@ using UnityEditor.Callbacks;
 #if UNITY_IOS
 using UnityEditor.iOS.Xcode;
 #endif
+
 public class MobileCenterPostBuild
 {
     [PostProcessBuild(0)]
@@ -113,7 +114,7 @@ public class MobileCenterPostBuild
         pbxProject.UpdateBuildProperty(targetGuid, setting, new List<string> { linkerFlag }, null);
 
         pbxProject.WriteToFile(pbxPath);
-}
+    }
 #endif
 #endregion
 }

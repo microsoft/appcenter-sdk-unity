@@ -11,18 +11,18 @@ namespace Microsoft.Azure.Mobile.Unity.Internal
 {
     using UWPMobileCenter = Microsoft.Azure.Mobile.MobileCenter;
 
-	class MobileCenterInternal 
+    class MobileCenterInternal 
     {
         private static bool _needsSetScreenProvider = true;
         private static object _lockObject = new object();
 
-		public static void mobile_center_unity_configure (string appSecret)
+        public static void mobile_center_unity_configure (string appSecret)
         {
             PrepareScreenSizeProvider();
             UWPMobileCenter.Configure(appSecret);
         }
 
-		public static void mobile_center_unity_start(string appSecret, Type[] services, int numServices)
+        public static void mobile_center_unity_start(string appSecret, Type[] services, int numServices)
         {
             PrepareScreenSizeProvider();
             UWPMobileCenter.Start(appSecret, services);

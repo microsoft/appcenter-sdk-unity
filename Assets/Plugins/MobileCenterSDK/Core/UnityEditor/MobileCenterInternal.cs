@@ -1,4 +1,4 @@
-﻿// Copyright (c) Microsoft Corporation. All rights reserved.
+﻿﻿// Copyright (c) Microsoft Corporation. All rights reserved.
 //
 // Licensed under the MIT license.
 
@@ -12,27 +12,27 @@ namespace Microsoft.Azure.Mobile.Unity.Internal
     using ServiceType = System.IntPtr;
 #elif UNITY_ANDROID
     using RawType = UnityEngine.AndroidJavaObject;
-	using ServiceType = System.IntPtr;
+    using ServiceType = System.IntPtr;
 #else
     using RawType = System.Object;
     using ServiceType = System.Type;
 #endif
 
-	class MobileCenterInternal
+    class MobileCenterInternal
     {
-	    public static void mobile_center_unity_configure(string appSecret)
-	    {
-	    }
+        public static void mobile_center_unity_configure(string appSecret)
+        {
+        }
 
         public static void mobile_center_unity_start(string appSecret, ServiceType[] services, int numServices)
         {
         }
 
-		public static void mobile_center_unity_start_services(ServiceType[] services, int numServices)
+        public static void mobile_center_unity_start_services(ServiceType[] services, int numServices)
         {
         }
 
-		public static void mobile_center_unity_set_log_level(int logLevel)
+        public static void mobile_center_unity_set_log_level(int logLevel)
         {
         }
 
@@ -41,16 +41,16 @@ namespace Microsoft.Azure.Mobile.Unity.Internal
             return 0;
         }
 
-		public static bool mobile_center_unity_is_configured()
+        public static bool mobile_center_unity_is_configured()
         {
             return false;
         }
 
-		public static void mobile_center_unity_set_log_url(string logUrl)
+        public static void mobile_center_unity_set_log_url(string logUrl)
         {
         }
 
-		public static void mobile_center_unity_set_enabled(bool isEnabled)
+        public static void mobile_center_unity_set_enabled(bool isEnabled)
         {
         }
 
@@ -59,24 +59,24 @@ namespace Microsoft.Azure.Mobile.Unity.Internal
             return false;
         }
 
-		public static string mobile_center_unity_get_install_id()
+        public static string mobile_center_unity_get_install_id()
         {
             return null;
         }
 
-		public static void mobile_center_unity_set_custom_properties(RawType properties)
+        public static void mobile_center_unity_set_custom_properties(RawType properties)
         {
             
         }
 
-		public static void mobile_center_unity_set_wrapper_sdk(string wrapperSdkVersion,
-															    string wrapperSdkName,
-															    string wrapperRuntimeVersion,
-															    string liveUpdateReleaseLabel,
-															    string liveUpdateDeploymentKey,
-															    string liveUpdatePackageHash)
+        public static void mobile_center_unity_set_wrapper_sdk(string wrapperSdkVersion,
+                                                                string wrapperSdkName,
+                                                                string wrapperRuntimeVersion,
+                                                                string liveUpdateReleaseLabel,
+                                                                string liveUpdateDeploymentKey,
+                                                                string liveUpdatePackageHash)
         {
         }
-	}
+    }
 }
 #endif
