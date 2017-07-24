@@ -9,7 +9,8 @@ using AOT;
 
 namespace Microsoft.Azure.Mobile.Unity.Push.Internal
 {
-    class PushDelegate  {
+    class PushDelegate
+    {
         [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
         delegate void ReceivedPushNotificationDelegate(IntPtr notification);
 

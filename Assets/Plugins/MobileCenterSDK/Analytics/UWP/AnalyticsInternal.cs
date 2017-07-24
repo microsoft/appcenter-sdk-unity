@@ -12,6 +12,10 @@ namespace Microsoft.Azure.Mobile.Unity.Analytics.Internal
 
     class AnalyticsInternal
     {
+        public static void PostInitialize()
+        {
+        }
+
         public static Type mobile_center_unity_analytics_get_type()
         {
             return typeof(Microsoft.Azure.Mobile.Analytics.Analytics);
@@ -34,12 +38,14 @@ namespace Microsoft.Azure.Mobile.Unity.Analytics.Internal
 
         public static void mobile_center_unity_analytics_set_enabled(bool isEnabled)
         {
-            UWPAnalytics.Enabled = isEnabled;
+            //TODO need better way to deal with async apis
+            UWPAnalytics.SetEnabledAsync(isEnabled).Wait();
         }
 
         public static bool mobile_center_unity_analytics_is_enabled()
         {
-            return UWPAnalytics.Enabled;
+            //TODO need better way to deal with async apis
+            return UWPAnalytics.IsEnabledAsync().Result;
         }
     }
 }
