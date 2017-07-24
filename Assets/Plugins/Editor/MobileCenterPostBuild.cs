@@ -9,8 +9,9 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEditor;
 using UnityEditor.Callbacks;
+#if UNITY_IOS
 using UnityEditor.iOS.Xcode;
-
+#endif
 public class MobileCenterPostBuild
 {
     [PostProcessBuild(0)]
@@ -27,13 +28,17 @@ public class MobileCenterPostBuild
         }
         else if (target == BuildTarget.iOS)
         {
+#if UNITY_IOS
+
 			// For iOS, need to add "-lsqlite3" linker flag to PBXProject due to
 			// SQLite dependency
 			AddLinkerFlagToXcodeProject("-lsqlite3", pathToBuiltProject);
+#endif
+
 		}
     }
 
-    #region UWP Methods
+#region UWP Methods
     private static void AddDependenciesToProjectJson(string projectJsonPath)
     {
         if (!File.Exists(projectJsonPath))
@@ -88,6 +93,7 @@ public class MobileCenterPostBuild
         }
     }
     #endregion
+#if UNITY_IOS
 
     #region iOS Methods
 
@@ -111,4 +117,6 @@ public class MobileCenterPostBuild
     }
 
     #endregion
+#endif
+
 }

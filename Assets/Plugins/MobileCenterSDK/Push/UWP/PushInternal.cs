@@ -29,7 +29,7 @@ namespace Microsoft.Azure.Mobile.Push.Unity.Internal
 
         public static void mobile_center_unity_push_check_launched_from_notification(LaunchActivatedEventArgs e)
         {
-            UWPPush.CheckLaunchedFromNotification(e)
+            UWPPush.CheckLaunchedFromNotification(e);
         }
 
         public static void mobile_center_unity_push_enable_firebase_analytics()
