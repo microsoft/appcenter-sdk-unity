@@ -6,6 +6,8 @@
 using System;
 using UnityEngine;
 using Microsoft.Azure.Mobile.Utils;
+using System.Threading.Tasks;
+using System.Threading;
 
 namespace Microsoft.Azure.Mobile.Unity.Internal.Utils
 {
@@ -27,7 +29,7 @@ namespace Microsoft.Azure.Mobile.Unity.Internal.Utils
 
         public override event EventHandler ScreenSizeChanged;
 
-        public override async Task WaitUntilReadyAsync()
+        public override Task WaitUntilReadyAsync()
         {
             return Task.Run(() =>
             {

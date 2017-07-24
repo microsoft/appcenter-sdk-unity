@@ -4,24 +4,34 @@
 
 #if UNITY_WSA_10_0 && !UNITY_EDITOR
 using System;
+using Microsoft.Azure.Mobile.Utils;
+using Microsoft.Azure.Mobile.Unity.Internal.Utils;
 
 namespace Microsoft.Azure.Mobile.Unity.Internal
 {
     using UWPMobileCenter = Microsoft.Azure.Mobile.MobileCenter;
 
-	class MobileCenterInternal  {
+	class MobileCenterInternal 
+    {
+        private static bool _needsSetScreenProvider = true;
+        private static object _lockObject = new object();
+
 		public static void mobile_center_unity_configure (string appSecret)
         {
+
+            PrepareScreenSizeProvider();
             UWPMobileCenter.Configure(appSecret);
         }
 
 		public static void mobile_center_unity_start(string appSecret, Type[] services, int numServices)
         {
+            PrepareScreenSizeProvider();
             UWPMobileCenter.Start(appSecret, services);
         }
 
         public static void mobile_center_unity_start_services(Type[] services, int numServices)
         {
+            PrepareScreenSizeProvider();
             UWPMobileCenter.Start(services);
         }
 
@@ -122,6 +132,19 @@ namespace Microsoft.Azure.Mobile.Unity.Internal
                     return Microsoft.Azure.Mobile.LogLevel.None;
                 default:
                     return (Microsoft.Azure.Mobile.LogLevel)logLevel;
+            }
+        }
+
+        private static void PrepareScreenSizeProvider()
+        {
+            lock (_lockObject)
+            {
+                if (_needsSetScreenProvider)
+                {
+                    UnityScreenSizeProvider.Initialize();
+                    DeviceInformationHelper.SetScreenSizeProviderFactory(new UnityScreenSizeProviderFactory());
+                    _needsSetScreenProvider = false;
+                }
             }
         }
     }
