@@ -1,4 +1,4 @@
-﻿// Copyright (c) Microsoft Corporation. All rights reserved.
+// Copyright (c) Microsoft Corporation. All rights reserved.
 //
 // Licensed under the MIT license.
 
@@ -18,7 +18,6 @@ namespace Microsoft.Azure.Mobile.Unity.Internal
 
 		public static void mobile_center_unity_configure (string appSecret)
         {
-
             PrepareScreenSizeProvider();
             UWPMobileCenter.Configure(appSecret);
         }
