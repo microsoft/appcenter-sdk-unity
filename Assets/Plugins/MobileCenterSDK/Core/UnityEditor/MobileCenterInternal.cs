@@ -76,7 +76,6 @@ namespace Microsoft.Azure.Mobile.Unity.Internal
 															    string liveUpdateDeploymentKey,
 															    string liveUpdatePackageHash)
         {
-            
         }
 	}
 }

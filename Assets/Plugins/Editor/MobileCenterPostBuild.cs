@@ -9,6 +9,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEditor;
 using UnityEditor.Callbacks;
+
 #if UNITY_IOS
 using UnityEditor.iOS.Xcode;
 #endif
@@ -28,13 +29,11 @@ public class MobileCenterPostBuild
         }
         else if (target == BuildTarget.iOS)
         {
+            // For iOS, need to add "-lsqlite3" linker flag to PBXProject due to
+            // SQLite dependency
 #if UNITY_IOS
-
-			// For iOS, need to add "-lsqlite3" linker flag to PBXProject due to
-			// SQLite dependency
 			AddLinkerFlagToXcodeProject("-lsqlite3", pathToBuiltProject);
 #endif
-
 		}
     }
 
@@ -92,16 +91,16 @@ public class MobileCenterPostBuild
             Debug.LogException(exception);
         }
     }
-    #endregion
-#if UNITY_IOS
+#endregion
 
-    #region iOS Methods
+#region iOS Methods
+#if UNITY_IOS
 
     private static void AddLinkerFlagToXcodeProject(string linkerFlag, string pathToBuiltProject)
     {
-		// Linker flags are added to the setting "Other linker flags" which has
-		// an ID of "OTHER_LDFLAGS"
-		var setting = "OTHER_LDFLAGS";
+        // Linker flags are added to the setting "Other linker flags" which has
+        // an ID of "OTHER_LDFLAGS"
+        var setting = "OTHER_LDFLAGS";
 
 		// Find the .pbxproj file and read into memory
 		var pbxPath = PBXProject.GetPBXProjectPath(pathToBuiltProject);
@@ -114,9 +113,7 @@ public class MobileCenterPostBuild
 		pbxProject.UpdateBuildProperty(targetGuid, setting, new List<string> { linkerFlag }, null);
 
 		pbxProject.WriteToFile(pbxPath);
-    }
-
-    #endregion
+}
 #endif
-
+#endregion
 }

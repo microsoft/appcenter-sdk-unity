@@ -15,6 +15,10 @@ namespace Microsoft.Azure.Mobile.Unity.Distribute.Internal
             DistributeDelegate.mobile_center_unity_distribute_set_delegate();
         }
 
+        public static void PostInitialize()
+        {
+        }
+
         [DllImport("__Internal")]
         public static extern IntPtr mobile_center_unity_distribute_get_type();
 

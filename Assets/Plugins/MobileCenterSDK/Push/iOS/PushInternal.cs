@@ -8,10 +8,15 @@ using System.Runtime.InteropServices;
 
 namespace Microsoft.Azure.Mobile.Unity.Push.Internal
 {
-    class PushInternal  {
+    class PushInternal
+    {
         public static void Initialize()
         {
             PushDelegate.mobile_center_unity_push_set_delegate();
+        }
+
+        public static void PostInitialize()
+        {
         }
 
         [DllImport("__Internal")]

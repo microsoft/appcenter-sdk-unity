@@ -16,6 +16,11 @@ namespace Microsoft.Azure.Mobile.Unity.Analytics
 
     public class Analytics
     {
+        public static void PostInitialize()
+        {
+            AnalyticsInternal.PostInitialize();
+        }
+
         public static RawType GetNativeType()
         {
             return AnalyticsInternal.mobile_center_unity_analytics_get_type();

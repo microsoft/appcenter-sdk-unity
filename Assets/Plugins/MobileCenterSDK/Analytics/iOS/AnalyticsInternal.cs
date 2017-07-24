@@ -10,6 +10,10 @@ namespace Microsoft.Azure.Mobile.Unity.Analytics.Internal
 {
     class AnalyticsInternal
     {
+        public static void PostInitialize()
+        {
+        }
+
         [DllImport("__Internal")]
         public static extern IntPtr mobile_center_unity_analytics_get_type();
 
