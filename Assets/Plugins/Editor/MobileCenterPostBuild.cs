@@ -9,7 +9,10 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEditor;
 using UnityEditor.Callbacks;
+
+#if UNITY_IOS
 using UnityEditor.iOS.Xcode;
+#endif
 
 public class MobileCenterPostBuild
 {
@@ -27,13 +30,15 @@ public class MobileCenterPostBuild
         }
         else if (target == BuildTarget.iOS)
         {
-			// For iOS, need to add "-lsqlite3" linker flag to PBXProject due to
-			// SQLite dependency
-			AddLinkerFlagToXcodeProject("-lsqlite3", pathToBuiltProject);
-		}
+            // For iOS, need to add "-lsqlite3" linker flag to PBXProject due to
+            // SQLite dependency
+#if UNITY_IOS
+            AddLinkerFlagToXcodeProject("-lsqlite3", pathToBuiltProject);
+#endif
+        }
     }
 
-    #region UWP Methods
+#region UWP Methods
     private static void AddDependenciesToProjectJson(string projectJsonPath)
     {
         if (!File.Exists(projectJsonPath))
@@ -87,28 +92,29 @@ public class MobileCenterPostBuild
             Debug.LogException(exception);
         }
     }
-    #endregion
+#endregion
 
-    #region iOS Methods
+#region iOS Methods
+#if UNITY_IOS
 
     private static void AddLinkerFlagToXcodeProject(string linkerFlag, string pathToBuiltProject)
     {
-		// Linker flags are added to the setting "Other linker flags" which has
-		// an ID of "OTHER_LDFLAGS"
-		var setting = "OTHER_LDFLAGS";
+        // Linker flags are added to the setting "Other linker flags" which has
+        // an ID of "OTHER_LDFLAGS"
+        var setting = "OTHER_LDFLAGS";
 
-		// Find the .pbxproj file and read into memory
-		var pbxPath = PBXProject.GetPBXProjectPath(pathToBuiltProject);
-		var pbxProject = new PBXProject();
-		pbxProject.ReadFromFile(pbxPath);
+        // Find the .pbxproj file and read into memory
+        var pbxPath = PBXProject.GetPBXProjectPath(pathToBuiltProject);
+        var pbxProject = new PBXProject();
+        pbxProject.ReadFromFile(pbxPath);
 
-		// The target we want to add to is created by Unity
-		var targetGuid = pbxProject.TargetGuidByName("Unity-iPhone");
+        // The target we want to add to is created by Unity
+        var targetGuid = pbxProject.TargetGuidByName("Unity-iPhone");
 
-		pbxProject.UpdateBuildProperty(targetGuid, setting, new List<string> { linkerFlag }, null);
+        pbxProject.UpdateBuildProperty(targetGuid, setting, new List<string> { linkerFlag }, null);
 
-		pbxProject.WriteToFile(pbxPath);
+        pbxProject.WriteToFile(pbxPath);
     }
-
-    #endregion
+#endif
+#endregion
 }
