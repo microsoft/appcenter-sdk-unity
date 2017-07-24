@@ -9,7 +9,7 @@ public class StringPropertyNameAttribute : PropertyAttribute
 {
     public string Name { get; set; }
 
-	public StringPropertyNameAttribute(string name)
+    public StringPropertyNameAttribute(string name)
     {
         Name = name;
     }
