@@ -515,7 +515,7 @@ PlayerSettings:
   metroCertificatePassword: 
   metroCertificateSubject: DefaultCompany
   metroCertificateIssuer: DefaultCompany
-  metroCertificateNotAfter: 002a442bad15d401
+  metroCertificateNotAfter: 8089253f7221d401
   metroApplicationDescription: TestPackage
   wsaImages: {}
   metroTileShortName: TestPackage

@@ -17,14 +17,10 @@ namespace Microsoft.Azure.Mobile.Unity
 
     public class MobileCenter
     {
-		private static bool _postConfigured;
-		private static object _configurationLock = new object();
-
         public static void Configure(string appSecret)
         {
             SetWrapperSdk();
             MobileCenterInternal.mobile_center_unity_configure(appSecret);
-            PostConfigure();
         }
 
         public static LogLevel LogLevel
@@ -89,7 +85,6 @@ namespace Microsoft.Azure.Mobile.Unity
             var nativeServiceTypes = ServicesToNativeTypes(services);
             InitializeServices(services);
             MobileCenterInternal.mobile_center_unity_start_services(nativeServiceTypes, services.Length);
-            PostConfigure();
             PostInitializeServices(services);
         }
 
@@ -105,7 +100,6 @@ namespace Microsoft.Azure.Mobile.Unity
             var nativeServiceTypes = ServicesToNativeTypes(services);
             InitializeServices(services);
             MobileCenterInternal.mobile_center_unity_start(appSecret, nativeServiceTypes, services.Length);
-            PostConfigure();
             PostInitializeServices(services);
         }
 
@@ -205,19 +199,6 @@ namespace Microsoft.Azure.Mobile.Unity
             MobileCenterInternal.mobile_center_unity_set_wrapper_sdk(WrapperSdk.WrapperSdkVersion, 
                                                                      WrapperSdk.Name, 
                                                                      WrapperSdk.WrapperRuntimeVersion, null, null, null);
-        }
-
-        private static void PostConfigure()
-        {
-            lock (_configurationLock)
-            {
-				if (_postConfigured)
-				{
-					return;
-				}
-				_postConfigured = true;
-				//MobileCenterInternal.PostConfigure();
-            }
         }
     }
 }
