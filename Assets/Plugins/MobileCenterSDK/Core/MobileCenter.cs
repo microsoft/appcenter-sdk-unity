@@ -20,8 +20,8 @@ namespace Microsoft.Azure.Mobile.Unity
         public static void Configure(string appSecret)
         {
             SetWrapperSdk();
-			appSecret = GetSecretForPlatform(appSecret);
-			MobileCenterInternal.mobile_center_unity_configure(appSecret);
+            appSecret = GetSecretForPlatform(appSecret);
+            MobileCenterInternal.mobile_center_unity_configure(appSecret);
         }
 
         public static LogLevel LogLevel
