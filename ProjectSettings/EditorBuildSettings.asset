@@ -6,5 +6,5 @@ EditorBuildSettings:
   serializedVersion: 2
   m_Scenes:
   - enabled: 1
-    path: Assets/MobileCenterScene.unity
-    guid: 1291238fb71564ee1baf5a3c913c368f
+    path: Assets/Puppet/PuppetScene.unity
+    guid: 393166f7bd89e8a4f99f49e6b32de3e2
