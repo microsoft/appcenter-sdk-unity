@@ -233,7 +233,7 @@ namespace Microsoft.Azure.Mobile.Unity
             if (secretIdx == -1)
             {
                 // If the platform indicator can't be found, return the original
-                // string and let the error be dealt with downstream
+                // string and let the error be dealt with downstream.
                 return secrets;
             }
             secretIdx += platformIndicator.Length;
