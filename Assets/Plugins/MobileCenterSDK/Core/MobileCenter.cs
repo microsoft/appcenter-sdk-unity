@@ -212,15 +212,13 @@ namespace Microsoft.Azure.Mobile.Unity
             var platformIdentifier = "ios";
 #elif UNITY_ANDROID
             var platformIdentifier = "android";
-#elif UNITY_WSA_10_0
-            var platformIdentifier = "uwp";
 #else
-            var platformIdentifier = "default";
+            var platformIdentifier = "uwp";
 #endif
-
-            if (string.IsNullOrEmpty(secrets))
+            if (secrets == null)
             {
-                // error
+                // If "secrets" is null, return that and let the error be dealt
+                // with downstream.
                 return secrets;
             }
 
@@ -234,7 +232,8 @@ namespace Microsoft.Azure.Mobile.Unity
             var secretIdx = secrets.IndexOf(platformIndicator, StringComparison.Ordinal);
             if (secretIdx == -1)
             {
-                // error
+                // If the platform indicator can't be found, return the original
+                // string and let the error be dealt with downstream
                 return secrets;
             }
             secretIdx += platformIndicator.Length;
