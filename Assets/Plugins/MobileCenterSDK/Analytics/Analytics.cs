@@ -15,11 +15,16 @@ namespace Microsoft.Azure.Mobile.Unity.Analytics
 #endif
 
     public class Analytics
-	{
-		public static RawType GetNativeType()
-		{
-			return AnalyticsInternal.mobile_center_unity_analytics_get_type();
-		}
+    {
+        public static void PostInitialize()
+        {
+            AnalyticsInternal.PostInitialize();
+        }
+
+        public static RawType GetNativeType()
+        {
+            return AnalyticsInternal.mobile_center_unity_analytics_get_type();
+        }
 
         public static void TrackEvent(string eventName, Dictionary<string, string> properties = null)
         {
@@ -44,5 +49,5 @@ namespace Microsoft.Azure.Mobile.Unity.Analytics
                 AnalyticsInternal.mobile_center_unity_analytics_set_enabled(value);
             }
         }
-	}
+    }
 }

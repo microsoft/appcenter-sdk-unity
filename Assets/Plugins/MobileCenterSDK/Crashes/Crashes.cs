@@ -16,16 +16,16 @@ namespace Microsoft.Azure.Mobile.Unity.Crashes
 #endif
 
     public class Crashes
-	{
+    {
         public static void Initialize()
         {
-			CrashesDelegate.mobile_center_unity_crashes_set_delegate();
-		}
+            CrashesDelegate.mobile_center_unity_crashes_set_delegate();
+        }
 
         public static RawType GetNativeType()
-		{
+        {
             return CrashesInternal.mobile_center_unity_crashes_get_type();
-		}
+        }
 
         public static bool Enabled
         {
@@ -38,5 +38,5 @@ namespace Microsoft.Azure.Mobile.Unity.Crashes
                 CrashesInternal.mobile_center_unity_crashes_set_enabled(value);
             }
         }
-	}
+    }
 }

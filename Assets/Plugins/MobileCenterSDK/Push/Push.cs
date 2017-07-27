@@ -10,11 +10,11 @@ namespace Microsoft.Azure.Mobile.Unity.Push
 #if UNITY_IOS || UNITY_ANDROID
     using RawType = System.IntPtr;
 #else
-	using RawType = System.Type;
+    using RawType = System.Type;
 #endif
 
-	public class Push
-	{        
+    public class Push
+    {        
         public static event EventHandler<PushNotificationReceivedEventArgs> PushNotificationReceived;
 
         public static void Initialize()
@@ -50,5 +50,5 @@ namespace Microsoft.Azure.Mobile.Unity.Push
                 PushNotificationReceived.Invoke(null, e);
             }
         }
-	}
+    }
 }

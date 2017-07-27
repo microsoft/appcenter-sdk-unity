@@ -12,15 +12,15 @@ namespace Microsoft.Azure.Mobile.Unity.Push.Internal
     class PushNotificationHelper
     {
         [DllImport("__Internal")]
-		private static extern string mobile_center_unity_push_notification_get_title(IntPtr push);
+        private static extern string mobile_center_unity_push_notification_get_title(IntPtr push);
 
-		[DllImport("__Internal")]
-		private static extern string mobile_center_unity_push_notification_get_message(IntPtr push);
+        [DllImport("__Internal")]
+        private static extern string mobile_center_unity_push_notification_get_message(IntPtr push);
 
-		[DllImport("__Internal")]
-		private static extern IntPtr mobile_center_unity_push_notification_get_custom_data(IntPtr push);
+        [DllImport("__Internal")]
+        private static extern IntPtr mobile_center_unity_push_notification_get_custom_data(IntPtr push);
 
-		public static PushNotificationReceivedEventArgs PushConvert(IntPtr nativePush)
+        public static PushNotificationReceivedEventArgs PushConvert(IntPtr nativePush)
         {
             var title = mobile_center_unity_push_notification_get_title(nativePush);
             var message = mobile_center_unity_push_notification_get_message(nativePush);
@@ -33,6 +33,6 @@ namespace Microsoft.Azure.Mobile.Unity.Push.Internal
                 Title = title
             }; 
         }
-	}
+    }
 }
 #endif

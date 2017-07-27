@@ -56,7 +56,7 @@ namespace Microsoft.Azure.Mobile.Unity
         public CustomProperties Set(string key, DateTime val)
         {
 #if UNITY_IOS || UNITY_ANDROID
-			var rawDate = RawDateHelper.DateTimeConvert(val);
+            var rawDate = RawDateHelper.DateTimeConvert(val);
 #else
             var rawDate = val;
 #endif
@@ -74,11 +74,11 @@ namespace Microsoft.Azure.Mobile.Unity
         public CustomProperties Set(string key, int val)
         {
 #if UNITY_IOS || UNITY_ANDROID
-			var rawNumber = RawNumberHelper.Convert(val);
+            var rawNumber = RawNumberHelper.Convert(val);
 #else
             var rawNumber = val;
 #endif
-			CustomPropertiesInternal.mobile_center_unity_custom_properties_set_number(_rawObject, key, rawNumber);
+            CustomPropertiesInternal.mobile_center_unity_custom_properties_set_number(_rawObject, key, rawNumber);
             return this;
         }
 
@@ -92,11 +92,11 @@ namespace Microsoft.Azure.Mobile.Unity
         public CustomProperties Set(string key, long val)
         {
 #if UNITY_IOS || UNITY_ANDROID
-			var rawNumber = RawNumberHelper.Convert(val);
+            var rawNumber = RawNumberHelper.Convert(val);
 #else
             var rawNumber = val;
 #endif
-			CustomPropertiesInternal.mobile_center_unity_custom_properties_set_number(_rawObject, key, rawNumber);
+            CustomPropertiesInternal.mobile_center_unity_custom_properties_set_number(_rawObject, key, rawNumber);
             return this;
         }
 
@@ -110,11 +110,11 @@ namespace Microsoft.Azure.Mobile.Unity
         public CustomProperties Set(string key, float val)
         {
 #if UNITY_IOS || UNITY_ANDROID
-			var rawNumber = RawNumberHelper.Convert(val);
+            var rawNumber = RawNumberHelper.Convert(val);
 #else
             var rawNumber = val;
 #endif
-			CustomPropertiesInternal.mobile_center_unity_custom_properties_set_number(_rawObject, key, rawNumber);
+            CustomPropertiesInternal.mobile_center_unity_custom_properties_set_number(_rawObject, key, rawNumber);
             return this;
         }
 
@@ -128,25 +128,25 @@ namespace Microsoft.Azure.Mobile.Unity
         public CustomProperties Set(string key, double val)
         {
 #if UNITY_IOS || UNITY_ANDROID
-			var rawNumber = RawNumberHelper.Convert(val);
+            var rawNumber = RawNumberHelper.Convert(val);
 #else
             var rawNumber = val;
 #endif
-			CustomPropertiesInternal.mobile_center_unity_custom_properties_set_number(_rawObject, key, rawNumber);
+            CustomPropertiesInternal.mobile_center_unity_custom_properties_set_number(_rawObject, key, rawNumber);
             return this;
         }
 
-		/// <summary>
-		/// Set the specified property value with the specified key.
-		/// If the properties previously contained a property for the key, the old value is replaced.
-		/// </summary>
-		/// <param name="key">Key with which the specified value is to be set.</param>
-		/// <param name="val">Value to be set with the specified key.</param>
-		/// <returns>This instance.</returns>
-		public CustomProperties Set(string key, bool val)
+        /// <summary>
+        /// Set the specified property value with the specified key.
+        /// If the properties previously contained a property for the key, the old value is replaced.
+        /// </summary>
+        /// <param name="key">Key with which the specified value is to be set.</param>
+        /// <param name="val">Value to be set with the specified key.</param>
+        /// <returns>This instance.</returns>
+        public CustomProperties Set(string key, bool val)
         {
-			CustomPropertiesInternal.mobile_center_unity_custom_properties_set_bool(_rawObject, key, val);
-			return this;
+            CustomPropertiesInternal.mobile_center_unity_custom_properties_set_bool(_rawObject, key, val);
+            return this;
         }
 
         /// <summary>

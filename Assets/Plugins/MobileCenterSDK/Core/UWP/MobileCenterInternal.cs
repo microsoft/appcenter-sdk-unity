@@ -1,27 +1,36 @@
-﻿// Copyright (c) Microsoft Corporation. All rights reserved.
+// Copyright (c) Microsoft Corporation. All rights reserved.
 //
 // Licensed under the MIT license.
 
 #if UNITY_WSA_10_0 && !UNITY_EDITOR
 using System;
+using Microsoft.Azure.Mobile.Utils;
+using Microsoft.Azure.Mobile.Unity.Internal.Utils;
 
 namespace Microsoft.Azure.Mobile.Unity.Internal
 {
     using UWPMobileCenter = Microsoft.Azure.Mobile.MobileCenter;
 
-	class MobileCenterInternal  {
-		public static void mobile_center_unity_configure (string appSecret)
+    class MobileCenterInternal 
+    {
+        private static bool _needsSetScreenProvider = true;
+        private static object _lockObject = new object();
+
+        public static void mobile_center_unity_configure (string appSecret)
         {
+            PrepareScreenSizeProvider();
             UWPMobileCenter.Configure(appSecret);
         }
 
-		public static void mobile_center_unity_start(string appSecret, Type[] services, int numServices)
+        public static void mobile_center_unity_start(string appSecret, Type[] services, int numServices)
         {
+            PrepareScreenSizeProvider();
             UWPMobileCenter.Start(appSecret, services);
         }
 
         public static void mobile_center_unity_start_services(Type[] services, int numServices)
         {
+            PrepareScreenSizeProvider();
             UWPMobileCenter.Start(services);
         }
 
@@ -47,17 +56,20 @@ namespace Microsoft.Azure.Mobile.Unity.Internal
 
         public static void mobile_center_unity_set_enabled(bool isEnabled)
         {
-            UWPMobileCenter.Enabled = isEnabled;
+            //TODO need better way to deal with async apis
+            UWPMobileCenter.SetEnabledAsync(isEnabled).Wait();
         }
 
         public static bool mobile_center_unity_is_enabled()
         {
-            return UWPMobileCenter.Enabled;
+            //TODO need better way to deal with async apis
+            return UWPMobileCenter.IsEnabledAsync().Result;
         }
 
         public static string mobile_center_unity_get_install_id()
         {
-            return UWPMobileCenter.InstallId?.ToString();
+            //TODO need better way to deal with async apis
+            return UWPMobileCenter.GetInstallIdAsync().Result?.ToString();
         }
 
         public static void mobile_center_unity_set_custom_properties(object properties)
@@ -119,6 +131,19 @@ namespace Microsoft.Azure.Mobile.Unity.Internal
                     return Microsoft.Azure.Mobile.LogLevel.None;
                 default:
                     return (Microsoft.Azure.Mobile.LogLevel)logLevel;
+            }
+        }
+
+        private static void PrepareScreenSizeProvider()
+        {
+            lock (_lockObject)
+            {
+                if (_needsSetScreenProvider)
+                {
+                    UnityScreenSizeProvider.Initialize();
+                    DeviceInformationHelper.SetScreenSizeProviderFactory(new UnityScreenSizeProviderFactory());
+                    _needsSetScreenProvider = false;
+                }
             }
         }
     }

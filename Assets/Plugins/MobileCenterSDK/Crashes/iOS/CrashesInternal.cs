@@ -8,7 +8,7 @@ using System.Runtime.InteropServices;
 
 namespace Microsoft.Azure.Mobile.Unity.Crashes.Internal
 {
-	class CrashesInternal
+    class CrashesInternal
     {
         [DllImport("__Internal")]
         public static extern IntPtr mobile_center_unity_crashes_get_type();
@@ -18,6 +18,6 @@ namespace Microsoft.Azure.Mobile.Unity.Crashes.Internal
 
         [DllImport("__Internal")]
         public static extern bool mobile_center_unity_crashes_is_enabled();
-	}
+    }
 }
 #endif

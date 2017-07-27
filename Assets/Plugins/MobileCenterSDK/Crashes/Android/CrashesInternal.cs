@@ -8,7 +8,7 @@ using UnityEngine;
 
 namespace Microsoft.Azure.Mobile.Unity.Crashes.Internal
 {
-	class CrashesInternal
+    class CrashesInternal
     {
         private const string CrashesClassName = "com.microsoft.azure.mobile.crashes.Crashes";
         private static AndroidJavaClass _crashes = new AndroidJavaClass(CrashesClassName);
@@ -27,6 +27,6 @@ namespace Microsoft.Azure.Mobile.Unity.Crashes.Internal
         {
             return _crashes.CallStatic<bool>("isEnabled");
         }
-	}
+    }
 }
 #endif

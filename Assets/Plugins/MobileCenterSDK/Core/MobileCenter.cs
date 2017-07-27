@@ -1,4 +1,4 @@
-﻿// Copyright (c) Microsoft Corporation. All rights reserved.
+// Copyright (c) Microsoft Corporation. All rights reserved.
 //
 // Licensed under the MIT license.
 
@@ -10,7 +10,7 @@ using UnityEngine;
 namespace Microsoft.Azure.Mobile.Unity
 {
 #if UNITY_IOS || UNITY_ANDROID
-	using ServiceType = System.IntPtr;
+    using ServiceType = System.IntPtr;
 #else
     using ServiceType = System.Type;
 #endif
@@ -25,8 +25,8 @@ namespace Microsoft.Azure.Mobile.Unity
 
         public static LogLevel LogLevel
         {
-            get { return (LogLevel) MobileCenterInternal.mobile_center_unity_get_log_level(); }
-            set { MobileCenterInternal.mobile_center_unity_set_log_level((int) value); }
+            get { return (LogLevel)MobileCenterInternal.mobile_center_unity_get_log_level(); }
+            set { MobileCenterInternal.mobile_center_unity_set_log_level((int)value); }
         }
 
         /// <summary>
@@ -43,10 +43,10 @@ namespace Microsoft.Azure.Mobile.Unity
         }
 
         /// <summary>
-        ///     Get the unique installation identifier for this application installation on this device.
+        /// Get the unique installation identifier for this application installation on this device.
         /// </summary>
         /// <remarks>
-        ///     The identifier is lost if clearing application data or uninstalling application.
+        /// The identifier is lost if clearing application data or uninstalling application.
         /// </remarks>
         public static Guid? InstallId
         {
@@ -58,7 +58,7 @@ namespace Microsoft.Azure.Mobile.Unity
         }
 
         /// <summary>
-        ///     Change the base URL (scheme + authority + port only) used to communicate with the backend.
+        /// Change the base URL (scheme + authority + port only) used to communicate with the backend.
         /// </summary>
         /// <param name="logUrl">Base URL to use for server communication.</param>
         public static void SetLogUrl(string logUrl)
@@ -75,8 +75,8 @@ namespace Microsoft.Azure.Mobile.Unity
         }
 
         /// <summary>
-        ///     Start services.
-        ///     This may be called only once per service per application process lifetime.
+        /// Start services.
+        /// This may be called only once per service per application process lifetime.
         /// </summary>
         /// <param name="services">List of services to use.</param>
         public static void Start(params Type[] services)
@@ -85,6 +85,7 @@ namespace Microsoft.Azure.Mobile.Unity
             var nativeServiceTypes = ServicesToNativeTypes(services);
             InitializeServices(services);
             MobileCenterInternal.mobile_center_unity_start_services(nativeServiceTypes, services.Length);
+            PostInitializeServices(services);
         }
 
         /// <summary>
@@ -95,36 +96,37 @@ namespace Microsoft.Azure.Mobile.Unity
         /// <param name="services">List of services to use.</param>
         public static void Start(string appSecret, params Type[] services)
         {
-			SetWrapperSdk();
-			var nativeServiceTypes = ServicesToNativeTypes(services);
-			InitializeServices(services);
-			MobileCenterInternal.mobile_center_unity_start(appSecret, nativeServiceTypes, services.Length);
+            SetWrapperSdk();
+            var nativeServiceTypes = ServicesToNativeTypes(services);
+            InitializeServices(services);
+            MobileCenterInternal.mobile_center_unity_start(appSecret, nativeServiceTypes, services.Length);
+            PostInitializeServices(services);
         }
 
 #if UNITY_IOS
         private static ServiceType[] ServicesToNativeTypes(Type[] services)
         {
-			IntPtr[] classPointers = new IntPtr[services.Length];
-			int currentIdx = 0;
-			foreach (var serviceType in services)
-			{                IntPtr nativeType = (IntPtr)serviceType.GetMethod("GetNativeType").Invoke(null, null);
-				classPointers[currentIdx++] = nativeType;
-			}
-			return classPointers;
+            IntPtr[] classPointers = new IntPtr[services.Length];
+            int currentIdx = 0;
+            foreach (var serviceType in services)
+            {                IntPtr nativeType = (IntPtr)serviceType.GetMethod("GetNativeType").Invoke(null, null);
+                classPointers[currentIdx++] = nativeType;
+            }
+            return classPointers;
         }
 #elif UNITY_ANDROID
-		private static ServiceType[] ServicesToNativeTypes(Type[] services)
-		{
-			var classClass = AndroidJNI.FindClass("java/lang/Class");
-			var array = AndroidJNI.NewObjectArray(services.Length, classClass, classClass);
+        private static ServiceType[] ServicesToNativeTypes(Type[] services)
+        {
+            var classClass = AndroidJNI.FindClass("java/lang/Class");
+            var array = AndroidJNI.NewObjectArray(services.Length, classClass, classClass);
             int currentIdx = 0;
-			foreach (var serviceType in services)
-			{
-				ServiceType nativeType = (ServiceType)serviceType.GetMethod("GetNativeType").Invoke(null, null);
+            foreach (var serviceType in services)
+            {
+                ServiceType nativeType = (ServiceType)serviceType.GetMethod("GetNativeType").Invoke(null, null);
                 AndroidJNI.SetObjectArrayElement(array, currentIdx++, nativeType);
-			}
+            }
             return new ServiceType[] { array };
-		}
+        }
 #elif UNITY_WSA_10_0
 #pragma warning disable IDE0001
         private static ServiceType[] ServicesToNativeTypes(Type[] services)
@@ -168,12 +170,25 @@ namespace Microsoft.Azure.Mobile.Unity
             }
         }
 
-		/// <summary>
-		/// Set the custom properties.
-		/// </summary>
-		/// <param name="customProperties">Custom properties object.</param>
-		public static void SetCustomProperties(Unity.CustomProperties customProperties)
-		{
+        private static void PostInitializeServices(params Type[] services)
+        {
+            // TODO handle case where post initialization has already occurred
+            foreach (var serviceType in services)
+			{
+				var method = serviceType.GetMethod("PostInitialize");
+				if (method != null)
+				{
+					method.Invoke(null, null);
+				}
+			}
+        }
+
+        /// <summary>
+        /// Set the custom properties.
+        /// </summary>
+        /// <param name="customProperties">Custom properties object.</param>
+        public static void SetCustomProperties(Unity.CustomProperties customProperties)
+        {
             var rawCustomProperties = customProperties.GetRawObject();
             MobileCenterInternal.mobile_center_unity_set_custom_properties(rawCustomProperties);
         }
@@ -181,9 +196,9 @@ namespace Microsoft.Azure.Mobile.Unity
         private static void SetWrapperSdk()
         {
             UnityEngine.Debug.Log("Wrapper runtime version = " + WrapperSdk.WrapperRuntimeVersion);
-			MobileCenterInternal.mobile_center_unity_set_wrapper_sdk(WrapperSdk.WrapperSdkVersion, 
+            MobileCenterInternal.mobile_center_unity_set_wrapper_sdk(WrapperSdk.WrapperSdkVersion, 
                                                                      WrapperSdk.Name, 
                                                                      WrapperSdk.WrapperRuntimeVersion, null, null, null);
-		}
+        }
     }
 }

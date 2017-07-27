@@ -13,11 +13,11 @@ namespace Microsoft.Azure.Mobile.Unity.Push.Internal
     using RawType = System.Type;
 #endif
 
-	class PushInternal
+    class PushInternal
     {
-		public static void Initialize()
-		{
-		}
+        public static void Initialize()
+        {
+        }
 
         public static RawType mobile_center_unity_push_get_type()
         {
@@ -36,6 +36,6 @@ namespace Microsoft.Azure.Mobile.Unity.Push.Internal
         public static void mobile_center_unity_push_enable_firebase_analytics()
         {
         }
-	}
+    }
 }
 #endif

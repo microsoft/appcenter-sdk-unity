@@ -39,13 +39,13 @@ namespace Microsoft.Azure.Mobile.Unity
         /// </summary>
         Assert = 7,
 
-		/// <summary>
-		/// No log is emitted by SDK.
-		/// </summary>
+        /// <summary>
+        /// No log is emitted by SDK.
+        /// </summary>
 #if UNITY_IOS
         None = 99
 #else
-		None = 8
+        None = 8
 #endif
     }
 }

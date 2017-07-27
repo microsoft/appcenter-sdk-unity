@@ -8,8 +8,12 @@ using System.Runtime.InteropServices;
 
 namespace Microsoft.Azure.Mobile.Unity.Analytics.Internal
 {
-	class AnalyticsInternal
+    class AnalyticsInternal
     {
+        public static void PostInitialize()
+        {
+        }
+
         [DllImport("__Internal")]
         public static extern IntPtr mobile_center_unity_analytics_get_type();
 
@@ -24,6 +28,6 @@ namespace Microsoft.Azure.Mobile.Unity.Analytics.Internal
 
         [DllImport("__Internal")]
         public static extern bool mobile_center_unity_analytics_is_enabled();
-	}
+    }
 }
 #endif
