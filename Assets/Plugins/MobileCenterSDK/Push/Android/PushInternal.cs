@@ -14,6 +14,10 @@ namespace Microsoft.Azure.Mobile.Unity.Push.Internal
         public static void Initialize()
         {
             PushDelegate.mobile_center_unity_push_set_delegate();
+            AndroidJavaClass unityPlayer = new AndroidJavaClass("com.unity3d.player.UnityPlayer");
+            AndroidJavaObject activity = unityPlayer.GetStatic<AndroidJavaObject>("currentActivity");
+            AndroidJavaObject intent = activity.Call<AndroidJavaObject>("getIntent");
+            _push.CallStatic("checkLaunchedFromNotification", activity, intent);           
         }
 
         public static IntPtr mobile_center_unity_push_get_type()

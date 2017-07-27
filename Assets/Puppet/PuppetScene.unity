@@ -6310,6 +6310,7 @@ GameObject:
   - component: {fileID: 1653541465}
   - component: {fileID: 1653541464}
   - component: {fileID: 1653541463}
+  - component: {fileID: 1653541469}
   m_Layer: 0
   m_Name: Mobile Center
   m_TagString: Untagged
@@ -6328,7 +6329,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 78605273f35a64a2f86a84e3986a37a5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  UseDistribute: 1
+  UseDistribute: 0
 --- !u!114 &1653541464
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -6340,7 +6341,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2c2b3e81406c7412f9024b4eef14f9d8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  UsePush: 0
+  UsePush: 1
 --- !u!114 &1653541465
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -6377,11 +6378,11 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   iOSAppSecret: dcf0de16-000e-477a-a55f-232380938aa8
-  AndroidAppSecret: 56638f03-9802-4b53-95d4-e08ba9c9ac24
+  AndroidAppSecret: a3dfccdf-d6e3-47aa-961b-106f719e8361
   UWPAppSecret: 630db31d-f6b3-480e-925f-cbc1c5b12cdc
   InitialLogLevel: 2
   CustomLogUrl:
-    UseCustomLogUrl: 1
+    UseCustomLogUrl: 0
     LogUrl: https://in-integration.dev.avalanch.es
 --- !u!4 &1653541468
 Transform:
@@ -6396,6 +6397,17 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 3
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1653541469
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 1653541462}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 20e1dc3af695e4f9b90a7e6fccbeec22, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &1660266124
 GameObject:
   m_ObjectHideFlags: 0

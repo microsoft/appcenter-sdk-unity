@@ -11,7 +11,7 @@ public class MobileCenterPushBehavior : MonoBehaviour
     [Header("Basic Setup")]
     public bool UsePush = true;
 
-    public void Awake()
+    public void Start()
     {
         if (UsePush)
         {
