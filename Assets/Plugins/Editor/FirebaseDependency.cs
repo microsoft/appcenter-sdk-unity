@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Xml;
 using UnityEditor;
 using UnityEngine;
 
@@ -12,14 +13,11 @@ using UnityEngine;
 [InitializeOnLoad]
 public class FirebaseDependency : AssetPostprocessor
 {
-    private static string EXECUTABLE_NAME_WINDOWS = "generate_xml_from_google_services_json.exe";
-    private static string EXECUTABLE_NAME_GENERIC = "generate_xml_from_google_services_json.py";
-    private static string EXECUTABLE_LOCATION = "Assets/Firebase/Editor";
-    private static string GOOGLE_SERVICES_FILE_BASENAME = "google-services";
-    private static string GOOGLE_SERVICES_INPUT_FILE = GOOGLE_SERVICES_FILE_BASENAME + ".json";
-    private static string GOOGLE_SERVICES_OUTPUT_FILE = GOOGLE_SERVICES_FILE_BASENAME + ".xml";
-    private static string GOOGLE_SERVICES_OUTPUT_DIRECTORY = "Assets/Plugins/Android/Firebase/res/values";
-    private static string GOOGLE_SERVICES_OUTPUT_PATH = Path.Combine(GOOGLE_SERVICES_OUTPUT_DIRECTORY, GOOGLE_SERVICES_OUTPUT_FILE);
+    private const string GOOGLE_SERVICES_FILE_BASENAME = "google-services";
+    private const string GOOGLE_SERVICES_INPUT_FILE = GOOGLE_SERVICES_FILE_BASENAME + ".json";
+    private const string GOOGLE_SERVICES_OUTPUT_FILE = GOOGLE_SERVICES_FILE_BASENAME + ".xml";
+    private const string GOOGLE_SERVICES_OUTPUT_DIRECTORY = "Assets/Plugins/Android/Firebase/res/values";
+    private const string GOOGLE_SERVICES_OUTPUT_PATH = GOOGLE_SERVICES_OUTPUT_DIRECTORY + "/" + GOOGLE_SERVICES_OUTPUT_FILE;
 
     /// <summary>
     /// This is the entry point for "InitializeOnLoad". It will register the
@@ -86,64 +84,22 @@ public class FirebaseDependency : AssetPostprocessor
                     null
                 }
             });
+
+        // Update editor project view.
+        AssetDatabase.Refresh();
 #endif
     }
 
-    static List<string> ReadBundleIds(string googleServicesFile)
+    static string[] FindGoogleServicesFiles()
     {
-        SortedDictionary<string, string> sortedDictionary = new SortedDictionary<string, string>();
-        string output = RunResourceGenerator("-i \"" + googleServicesFile + "\" -l");
-        if (output != null)
-        {
-            foreach (string index in output.Split('\r', '\n'))
-            {
-                if (!string.IsNullOrEmpty(index))
-                    sortedDictionary[index] = index;
-            }
-        }
-        return new List<string>(sortedDictionary.Keys);
-    }
-
-    static SortedDictionary<string, List<string>> ReadBundleIdsFromGoogleServicesFiles()
-    {
-        SortedDictionary<string, List<string>> sortedDictionary = new SortedDictionary<string, List<string>>();
-        foreach (string asset in AssetDatabase.FindAssets(GOOGLE_SERVICES_FILE_BASENAME))
+        var googleServicesFiles = new List<string>();
+        foreach (var asset in AssetDatabase.FindAssets(GOOGLE_SERVICES_FILE_BASENAME))
         {
             string assetPath = AssetDatabase.GUIDToAssetPath(asset);
             if (Path.GetFileName(assetPath) == GOOGLE_SERVICES_INPUT_FILE)
-                sortedDictionary[assetPath] = null;
+                googleServicesFiles.Add(assetPath);
         }
-        foreach (string googleServicesFile in new List<string>(sortedDictionary.Keys))
-            sortedDictionary[googleServicesFile] = ReadBundleIds(googleServicesFile);
-        return sortedDictionary;
-    }
-
-    static string FindGoogleServicesFile()
-    {
-        var bundleIdsByConfigFile = ReadBundleIdsFromGoogleServicesFiles();
-        var bundleId = GetApplicationId();
-        if (bundleIdsByConfigFile.Count == 0)
-        {
-            return null;
-        }
-        string str = null;
-        foreach (KeyValuePair<string, List<string>> keyValuePair in bundleIdsByConfigFile)
-        {
-            if (keyValuePair.Value.Contains(bundleId))
-                str = keyValuePair.Key;
-        }
-        if (str == null)
-        {
-            Debug.LogError(string.Format("Project Bundle ID {0} does not match any bundle IDs in your google-services.json files\n" +
-                          "This will result in an app that will fail to initialize.\n\nAvailable Bundle IDs:\n{1}",
-                bundleId, string.Join("\n", bundleIdsByConfigFile.SelectMany(i => i.Value).ToArray())));
-        }
-        return str;
-    }
-
-    static string GetProjectDir()
-    {
-        return Path.Combine(Application.dataPath, "..");
+        return googleServicesFiles.Count > 0 ? googleServicesFiles.ToArray() : null;
     }
 
     static string GetApplicationId()
@@ -155,67 +111,57 @@ public class FirebaseDependency : AssetPostprocessor
 #endif
     }
 
-    static string RunResourceGenerator(string arguments)
+    static void WriteXmlResource(string path, Dictionary<string, string> resourceValues)
     {
-        string command;
-        string executable;
-        string arguments1;
-        if (Application.platform == RuntimePlatform.WindowsEditor)
+        var xws = new XmlWriterSettings
         {
-            executable = Path.Combine(Path.Combine(GetProjectDir(), EXECUTABLE_LOCATION), EXECUTABLE_NAME_WINDOWS);
-            command = executable;
-            arguments1 = arguments;
-        }
-        else
+            Indent = true
+        };
+        using (var sw = File.Create(path))
+        using (var xw = XmlWriter.Create(sw, xws))
         {
-            executable = Path.Combine(Path.Combine(GetProjectDir(), EXECUTABLE_LOCATION), EXECUTABLE_NAME_GENERIC);
-            command = "python";
-            arguments1 = "\"" + executable + "\" " + arguments;
-        }
-        try
-        {
-            var buildProcess = new System.Diagnostics.Process
+            xw.WriteStartDocument();
+            xw.WriteStartElement("resources");
+
+            foreach (var kvp in resourceValues)
             {
-                StartInfo =
+                if (!string.IsNullOrEmpty(kvp.Value))
                 {
-                    FileName = command,
-                    Arguments = arguments1,
-                    RedirectStandardOutput = true,
-                    RedirectStandardError = true,
-                    UseShellExecute = false,
-                    CreateNoWindow = true
+                    xw.WriteStartElement("string");
+                    xw.WriteAttributeString("name", kvp.Key);
+                    xw.WriteAttributeString("translatable", "false");
+                    xw.WriteString(kvp.Value);
+                    xw.WriteEndElement();
                 }
-            };
-            buildProcess.Start();
-            buildProcess.WaitForExit();
-            if (buildProcess.ExitCode == 0)
-            {
-                return buildProcess.StandardOutput.ReadToEnd();
             }
-            else
-            {
-                string error = buildProcess.StandardError.ReadToEnd();
-                if (!string.IsNullOrEmpty(error))
-                    Debug.LogError(error);
-                return null;
-            }
-        }
-        catch (Exception exception)
-        {
-            Debug.LogException(exception);
-            return null;
+
+            xw.WriteEndElement();
+            xw.WriteEndDocument();
+            xw.Flush();
+            xw.Close();
         }
     }
 
-    static void GenerateXmlResources(string googleServicesFile)
+    static void UpdateJson()
     {
-        string projectDir = GetProjectDir();
-        string path1 = Path.Combine(projectDir, GOOGLE_SERVICES_OUTPUT_DIRECTORY);
-        if (!Directory.Exists(path1))
+#if UNITY_ANDROID
+        var bundleId = GetApplicationId();
+        var projectDir = Path.Combine(Application.dataPath, "..");
+        var googleServicesFiles = FindGoogleServicesFiles();
+        if (googleServicesFiles == null)
+            return;
+        if (googleServicesFiles.Length > 1)
+        {
+            Debug.LogWarning("More than one " + GOOGLE_SERVICES_INPUT_FILE + " file found, using first one.");
+        }
+        var inputPath = Path.Combine(projectDir, googleServicesFiles[0]);
+        var outputPath = Path.Combine(projectDir, GOOGLE_SERVICES_OUTPUT_PATH);
+        var outputDir = Path.Combine(projectDir, GOOGLE_SERVICES_OUTPUT_DIRECTORY);
+        if (!Directory.Exists(outputDir))
         {
             try
             {
-                Directory.CreateDirectory(path1);
+                Directory.CreateDirectory(outputDir);
             }
             catch (Exception ex)
             {
@@ -223,20 +169,33 @@ public class FirebaseDependency : AssetPostprocessor
                 return;
             }
         }
-        string str = Path.Combine(projectDir, googleServicesFile);
-        string path2 = Path.Combine(projectDir, GOOGLE_SERVICES_OUTPUT_PATH);
-        if (File.Exists(path2) && File.GetLastWriteTime(path2).CompareTo(File.GetLastWriteTime(str)) >= 0)
+        if (File.Exists(outputPath) && File.GetLastWriteTime(outputPath).CompareTo(File.GetLastWriteTime(inputPath)) >= 0)
             return;
-        RunResourceGenerator("-i \"" + str + "\" -o \"" + path2 + "\" -p \"" + GetApplicationId() + "\"");
-    }
 
-    static void UpdateJson()
-    {
-#if UNITY_ANDROID
-        string googleServicesFile = FindGoogleServicesFile();
-        if (googleServicesFile == null)
-            return;
-        GenerateXmlResources(googleServicesFile);
+        var json = File.ReadAllText(inputPath);
+        var googleServices = JsonUtility.FromJson<GoogleServices>(json);
+
+        var resolvedClientInfo = googleServices.GetClient(bundleId);
+        if (resolvedClientInfo == null)
+        {
+            Debug.LogWarning("Failed to find client_info in " + GOOGLE_SERVICES_INPUT_FILE + " matching package name: " + bundleId);
+        }
+
+        var valuesItems = new Dictionary<string, string> {
+            { "default_web_client_id", googleServices.GetDefaultWebClientId(bundleId) },
+            { "firebase_database_url", googleServices.GetFirebaseDatabaseUrl() },
+            { "ga_trackingId", googleServices.GetGATrackingId(bundleId) },
+            { "gcm_defaultSenderId", googleServices.GetDefaultGcmSenderId() },
+            { "google_api_key", googleServices.GetGoogleApiKey(bundleId) },
+            { "google_app_id", googleServices.GetGoogleAppId(bundleId) },
+            { "google_crash_reporting_api_key", googleServices.GetCrashReportingApiKey(bundleId) },
+            { "google_storage_bucket", googleServices.GetStorageBucket(bundleId) },
+            { "project_id", googleServices.GetProjectId() },
+        };
+        WriteXmlResource(outputPath, valuesItems);
+
+        // Update editor project view.
+        AssetDatabase.Refresh();
 #endif
     }
 
@@ -259,4 +218,222 @@ public class FirebaseDependency : AssetPostprocessor
             }
         }
     }
+
+
+#region Models
+    
+    [Serializable]
+    public class ProjectInfo
+    {
+        public string project_id;
+        public string project_number;
+        public string name;
+        public string firebase_url;
+        public string storage_bucket;
+    }
+    
+    [Serializable]
+    public class AndroidClientInfo
+    {
+        public string package_name;
+        public string[] certificate_hash;
+    }
+    
+    [Serializable]
+    public class ClientInfo
+    {
+        public string mobilesdk_app_id;
+        public string client_id;
+        public int client_type;
+        public AndroidClientInfo android_client_info;
+    }
+
+    [Serializable]
+    public class AndroidInfo
+    {
+        public string package_name;
+        public string certificate_hash;
+    }
+
+    [Serializable]
+    public class OauthClient
+    {
+        public string client_id;
+        public int client_type;
+        public AndroidInfo android_info;
+    }
+
+    [Serializable]
+    public class AnalyticsProperty
+    {
+        public string tracking_id;
+    }
+
+    [Serializable]
+    public class AnalyticsService
+    {
+        public int status;
+        public AnalyticsProperty analytics_property;
+    }
+
+    [Serializable]
+    public class Services
+    {
+        public AnalyticsService analytics_service;
+        //public CloudMessagingService cloud_messaging_service;
+        //public AppinviteService appinvite_service;
+        //public GoogleSigninService google_signin_service;
+        //public AdsService ads_service;
+    }
+
+    [Serializable]
+    public class Client
+    {
+        public ClientInfo client_info;
+        public OauthClient[] oauth_client;
+        public ApiKey[] api_key;
+        public Services services;
+    }
+    
+    [Serializable]
+    public class ApiKey
+    {
+        public string current_key;
+    }
+    
+    [Serializable]
+    public class GoogleServices
+    {
+        public ProjectInfo project_info;
+        public Client[] client;
+        public object[] client_info;
+        public string ARTIFACT_VERSION;
+        
+        public Client GetClient(string packageName)
+        {
+            if (client == null || !client.Any())
+                return null;
+
+            return client.FirstOrDefault(c => c.client_info.android_client_info.package_name == packageName);
+        }
+
+        public string GetGATrackingId(string packageName)
+        {
+            //{YOUR_CLIENT}/services/analytics-service/analytics_property/tracking_id
+            var client = GetClient(packageName);
+            if (client == null)
+                return null;
+
+            if (client.services != null &&
+                client.services.analytics_service != null &&
+                client.services.analytics_service.analytics_property != null)
+                return client.services.analytics_service.analytics_property.tracking_id;
+
+            return null;
+        }
+
+        public string GetProjectId()
+        {
+            // project_info/project_id
+            if (project_info != null)
+                return project_info.project_id;
+
+            return null;
+        }
+
+        public string GetDefaultGcmSenderId()
+        {
+            // project_info/project_number
+            if (project_info != null)
+                return project_info.project_number;
+
+            return null;
+        }
+
+        public string GetGoogleAppId(string packageName)
+        {
+            // {YOUR_CLIENT}/client_info/mobilesdk_app_id
+            var client = GetClient(packageName);
+            if (client == null)
+                return null;
+
+            if (client.client_info != null)
+                return client.client_info.mobilesdk_app_id;
+
+            return null;
+        }
+        
+        public string GetDefaultWebClientId(string packageName)
+        {
+            // default_web_client_id:
+            // {YOUR_CLIENT}/oauth_client/client_id(client_type == 3)
+
+            var client = GetClient(packageName);
+            if (client == null)
+                return null;
+
+            if (client.oauth_client != null && client.oauth_client.Any())
+            {
+                var oauthClient = client.oauth_client.FirstOrDefault(c => c.client_type == 3);
+                if (oauthClient != null)
+                    return oauthClient.client_id;
+            }
+
+            return null;
+        }
+
+        public string GetGoogleApiKey(string packageName)
+        {
+            // google_api_key:
+            // {YOUR_CLIENT}/api_key/current_key
+
+            var client = GetClient(packageName);
+            if (client == null)
+                return null;
+
+            if (client.api_key != null && client.api_key.Any())
+                return client.api_key.FirstOrDefault().current_key;
+
+            return null;
+        }
+
+        public string GetFirebaseDatabaseUrl()
+        {
+            // firebase_database_url:
+            // project_info/firebase_url
+
+            if (project_info != null)
+                return project_info.firebase_url;
+
+            return null;
+        }
+
+        public string GetCrashReportingApiKey(string packageName)
+        {
+            // google_crash_reporting_api_key:
+            // {YOUR_CLIENT}/api_key/current_key
+
+            var client = GetClient(packageName);
+            if (client == null)
+                return null;
+
+            if (client.api_key != null && client.api_key.Any())
+                return client.api_key.FirstOrDefault().current_key;
+
+            return null;
+        }
+
+        public string GetStorageBucket(string packageName)
+        {
+            // google_storage_bucket:
+            // project_info/storage_bucket
+            if (project_info != null)
+                return project_info.storage_bucket;
+
+            return null;
+        }
+    }
+
+#endregion
+
 }
