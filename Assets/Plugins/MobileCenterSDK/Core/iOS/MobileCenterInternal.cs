@@ -8,12 +8,13 @@ using System.Runtime.InteropServices;
 
 namespace Microsoft.Azure.Mobile.Unity.Internal
 {
-	class MobileCenterInternal  {
-		[DllImport("__Internal")]
-		public static extern void mobile_center_unity_configure (string appSecret);
+    class MobileCenterInternal
+    {
+        [DllImport("__Internal")]
+        public static extern void mobile_center_unity_configure (string appSecret);
 
-		[DllImport("__Internal")]
-		public static extern void mobile_center_unity_start(string appSecret, IntPtr[] services, int numServices);
+        [DllImport("__Internal")]
+        public static extern void mobile_center_unity_start(string appSecret, IntPtr[] services, int numServices);
 
         [DllImport("__Internal")]
         public static extern void mobile_center_unity_start_services(IntPtr[] services, int numServices);
@@ -49,6 +50,6 @@ namespace Microsoft.Azure.Mobile.Unity.Internal
                                                                       string liveUpdateReleaseLabel, 
                                                                       string liveUpdateDeploymentKey, 
                                                                       string liveUpdatePackageHash);
-	}
+    }
 }
 #endif

@@ -3,8 +3,8 @@
 // Licensed under the MIT license.
 
 using System;
-using Microsoft.Azure.Mobile.Unity.Internal;
 using System.Reflection;
+using Microsoft.Azure.Mobile.Unity.Internal;
 using UnityEngine;
 
 namespace Microsoft.Azure.Mobile.Unity
