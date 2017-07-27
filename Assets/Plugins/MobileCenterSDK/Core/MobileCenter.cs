@@ -6,6 +6,7 @@ using System;
 using System.Reflection;
 using Microsoft.Azure.Mobile.Unity.Internal;
 using UnityEngine;
+using System.Collections;
 
 namespace Microsoft.Azure.Mobile.Unity
 {
@@ -30,18 +31,15 @@ namespace Microsoft.Azure.Mobile.Unity
             set { MobileCenterInternal.mobile_center_unity_set_log_level((int)value); }
         }
 
-        /// <summary>
-        ///     Enable or disable the SDK as a whole. Updating the property propagates the value to all services that have been
-        ///     started.
-        /// </summary>
-        /// <remarks>
-        ///     The default state is <c>true</c> and updating the state is persisted into local application storage.
-        /// </remarks>
-        public static bool Enabled
+        public static MobileCenterTask SetEnabledAsync(bool enabled)
         {
-            get { return MobileCenterInternal.mobile_center_unity_is_enabled(); }
-            set { MobileCenterInternal.mobile_center_unity_set_enabled(value); }
+            return MobileCenterInternal.SetEnabledAsync(enabled);
         }
+
+		public static MobileCenterTask<bool> IsEnabledAsync()
+		{
+			return MobileCenterInternal.IsEnabledAsync();
+		}
 
         /// <summary>
         /// Get the unique installation identifier for this application installation on this device.

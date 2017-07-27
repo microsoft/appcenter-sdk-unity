@@ -54,15 +54,14 @@ namespace Microsoft.Azure.Mobile.Unity.Internal
             UWPMobileCenter.SetLogUrl(logUrl);
         }
 
-        public static void mobile_center_unity_set_enabled(bool isEnabled)
+        public static MobileCenterTask SetEnabledAsync()
         {
-            //TODO need better way to deal with async apis
             UWPMobileCenter.SetEnabledAsync(isEnabled).Wait();
+
         }
 
-        public static bool mobile_center_unity_is_enabled()
+        public static MobileCenterTask<bool> IsEnabledAsync()
         {
-            //TODO need better way to deal with async apis
             return UWPMobileCenter.IsEnabledAsync().Result;
         }
 

@@ -50,14 +50,15 @@ namespace Microsoft.Azure.Mobile.Unity.Internal
         {
         }
 
-        public static void mobile_center_unity_set_enabled(bool isEnabled)
-        {
-        }
+		public static MobileCenterTask SetEnabledAsync(bool enabled)
+		{
+            return null;
+		}
 
-        public static bool mobile_center_unity_is_enabled()
-        {
-            return false;
-        }
+		public static MobileCenterTask<bool> IsEnabledAsync()
+		{
+            return null;
+		}
 
         public static string mobile_center_unity_get_install_id()
         {
