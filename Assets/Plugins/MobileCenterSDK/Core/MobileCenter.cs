@@ -3,8 +3,8 @@
 // Licensed under the MIT license.
 
 using System;
-using Microsoft.Azure.Mobile.Unity.Internal;
 using System.Reflection;
+using Microsoft.Azure.Mobile.Unity.Internal;
 using UnityEngine;
 
 namespace Microsoft.Azure.Mobile.Unity
@@ -174,13 +174,13 @@ namespace Microsoft.Azure.Mobile.Unity
         {
             // TODO handle case where post initialization has already occurred
             foreach (var serviceType in services)
-			{
-				var method = serviceType.GetMethod("PostInitialize");
-				if (method != null)
-				{
-					method.Invoke(null, null);
-				}
-			}
+            {
+                var method = serviceType.GetMethod("PostInitialize");
+                if (method != null)
+                {
+                    method.Invoke(null, null);
+                }
+            }
         }
 
         /// <summary>

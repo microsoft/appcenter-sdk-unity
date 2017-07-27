@@ -14,8 +14,8 @@ namespace Microsoft.Azure.Mobile.Internal.Utility
         public static IntPtr DateTimeConvert(DateTime date)
         {
             var format = "yyyy-MM-dd'T'HH:mm:ss.fffK";
-			var nsdateformat = "yyyy-MM-dd'T'HH:mm:ss.SSS";
-			var dateString = date.ToString(format);
+            var nsdateformat = "yyyy-MM-dd'T'HH:mm:ss.SSS";
+            var dateString = date.ToString(format);
             return mobile_center_unity_ns_date_convert(nsdateformat, dateString);
         }
 
