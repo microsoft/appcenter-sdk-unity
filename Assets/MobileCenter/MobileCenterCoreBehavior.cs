@@ -20,27 +20,14 @@ public class MobileCenterCoreBehavior : MonoBehaviour
 
     public void Awake()
     {
-        var appSecret = string.Empty;
-        switch (Application.platform)
-        {
-            case RuntimePlatform.IPhonePlayer:
-                appSecret = iOSAppSecret;
-                break;
-            case RuntimePlatform.Android:
-                appSecret = AndroidAppSecret;
-                break;
-            case RuntimePlatform.WSAPlayerX64:
-            case RuntimePlatform.WSAPlayerX86:
-            case RuntimePlatform.WSAPlayerARM:
-                appSecret = UWPAppSecret;
-                break;
-        }
         MobileCenter.LogLevel = InitialLogLevel;
         if (CustomLogUrl.UseCustomLogUrl)
         {
             MobileCenter.SetLogUrl(CustomLogUrl.LogUrl);
         }
+        var appSecret = "ios=" + iOSAppSecret + 
+                        ";android=" + AndroidAppSecret + 
+                        "uwp=" + UWPAppSecret + ";";
         MobileCenter.Start(appSecret);
     }
-
 }

@@ -20,6 +20,7 @@ namespace Microsoft.Azure.Mobile.Unity
         public static void Configure(string appSecret)
         {
             SetWrapperSdk();
+            appSecret = GetSecretForPlatform(appSecret);
             MobileCenterInternal.mobile_center_unity_configure(appSecret);
         }
 
@@ -99,6 +100,7 @@ namespace Microsoft.Azure.Mobile.Unity
             SetWrapperSdk();
             var nativeServiceTypes = ServicesToNativeTypes(services);
             InitializeServices(services);
+            appSecret = GetSecretForPlatform(appSecret);
             MobileCenterInternal.mobile_center_unity_start(appSecret, nativeServiceTypes, services.Length);
             PostInitializeServices(services);
         }
@@ -109,7 +111,8 @@ namespace Microsoft.Azure.Mobile.Unity
             IntPtr[] classPointers = new IntPtr[services.Length];
             int currentIdx = 0;
             foreach (var serviceType in services)
-            {                IntPtr nativeType = (IntPtr)serviceType.GetMethod("GetNativeType").Invoke(null, null);
+            {
+                IntPtr nativeType = (IntPtr)serviceType.GetMethod("GetNativeType").Invoke(null, null);
                 classPointers[currentIdx++] = nativeType;
             }
             return classPointers;
@@ -174,13 +177,13 @@ namespace Microsoft.Azure.Mobile.Unity
         {
             // TODO handle case where post initialization has already occurred
             foreach (var serviceType in services)
-			{
-				var method = serviceType.GetMethod("PostInitialize");
-				if (method != null)
-				{
-					method.Invoke(null, null);
-				}
-			}
+            {
+                var method = serviceType.GetMethod("PostInitialize");
+                if (method != null)
+                {
+                    method.Invoke(null, null);
+                }
+            }
         }
 
         /// <summary>
@@ -195,10 +198,59 @@ namespace Microsoft.Azure.Mobile.Unity
 
         private static void SetWrapperSdk()
         {
-            UnityEngine.Debug.Log("Wrapper runtime version = " + WrapperSdk.WrapperRuntimeVersion);
-            MobileCenterInternal.mobile_center_unity_set_wrapper_sdk(WrapperSdk.WrapperSdkVersion, 
-                                                                     WrapperSdk.Name, 
+            MobileCenterInternal.mobile_center_unity_set_wrapper_sdk(WrapperSdk.WrapperSdkVersion,
+                                                                     WrapperSdk.Name,
                                                                      WrapperSdk.WrapperRuntimeVersion, null, null, null);
+        }
+
+
+        // Gets the first instance of an app secret corresponding to the given platform name, or returns the string 
+        // as-is if no identifier can be found.
+        internal static string GetSecretForPlatform(string secrets)
+        {
+#if UNITY_IOS
+            var platformIdentifier = "ios";
+#elif UNITY_ANDROID
+            var platformIdentifier = "android";
+#else
+            var platformIdentifier = "uwp";
+#endif
+            if (secrets == null)
+            {
+                // If "secrets" is null, return that and let the error be dealt
+                // with downstream.
+                return secrets;
+            }
+
+            // If there are no equals signs, then there are no named identifiers
+            if (!secrets.Contains("="))
+            {
+                return secrets;
+            }
+
+            var platformIndicator = platformIdentifier + "=";
+            var secretIdx = secrets.IndexOf(platformIndicator, StringComparison.Ordinal);
+            if (secretIdx == -1)
+            {
+                // If the platform indicator can't be found, return the original
+                // string and let the error be dealt with downstream.
+                return secrets;
+            }
+            secretIdx += platformIndicator.Length;
+            var platformSecret = string.Empty;
+
+            while (secretIdx < secrets.Length)
+            {
+                var nextChar = secrets[secretIdx++];
+                if (nextChar == ';')
+                {
+                    break;
+                }
+
+                platformSecret += nextChar;
+            }
+
+            return platformSecret;
         }
     }
 }
