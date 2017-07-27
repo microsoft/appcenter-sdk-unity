@@ -12,6 +12,7 @@ public class PushHandler : MonoBehaviour
 
     void Start()
     {
+        
         Push.PushNotificationReceived += (sender, e) =>
         {
             lock (_pushLock)
