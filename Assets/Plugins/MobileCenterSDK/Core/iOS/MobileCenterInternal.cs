@@ -10,12 +10,16 @@ namespace Microsoft.Azure.Mobile.Unity.Internal
 {
     class MobileCenterInternal
     {
-        public static MobileCenterTask SetEnabledAsync()
+        public static MobileCenterTask SetEnabledAsync(bool isEnabled)
         {
+            mobile_center_unity_set_enabled(isEnabled);
+            return new MobileCenterTask();
         }
 
         public static MobileCenterTask<bool> IsEnabledAsync()
         {
+            var isEnabled = mobile_center_unity_is_enabled();
+            return new MobileCenterTask<bool>(isEnabled);
         }
 
         [DllImport("__Internal")]

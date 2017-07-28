@@ -3,19 +3,21 @@
 // Licensed under the MIT license.
 
 using System;
-using System.Collections;
+using System.Collections.Generic;
 using System.Threading;
 using UnityEngine;
 
 namespace Microsoft.Azure.Mobile.Unity
 {
-    public partial class MobileCenterTask<TResult>
+    public partial class MobileCenterTask<TResult> : MobileCenterTask
     {        
-        private Action<MobileCenterTask<TResult>> _continuationAction;
-
         public void ContinueWith(Action<MobileCenterTask<TResult>> continuationAction)
         {
-            _continuationAction = continuationAction;
+            base.ContinueWith(task =>
+            {
+                continuationAction(this);
+            });
+
         }
     }
 }

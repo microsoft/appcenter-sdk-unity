@@ -10,15 +10,17 @@ namespace Microsoft.Azure.Mobile.Unity
 {
     public partial class MobileCenterTask
     {
+        protected MobileCenterTask()
+        {
+        }
+
         public MobileCenterTask(AndroidJavaObject javaFuture)
         {
-            var consumer = new UnityMobileCenterConsumer<AndroidJavaObject>
+            var consumer = new UnityMobileCenterConsumer<AndroidJavaObject>();
+            consumer.CompletionCallback =  (t => 
             {
-                CompletionCallback = (t => 
-                {
-                    InvokeContinuationAction();
-                })
-            };
+                CompletionAction();
+            });
             javaFuture.Call("thenAccept", consumer);
         }
     }

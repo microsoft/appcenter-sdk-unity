@@ -4,6 +4,7 @@
 
 using System;
 using System.Collections;
+using System.Collections.Generic;
 using System.Threading;
 using UnityEngine;
 
@@ -11,18 +12,47 @@ namespace Microsoft.Azure.Mobile.Unity
 {
     public partial class MobileCenterTask
     {
-        private Action<MobileCenterTask> _continuationAction;
+        private readonly List<Action<MobileCenterTask>> _continuationActions = new List<Action<MobileCenterTask>>();
+
+        public bool IsComplete { get; private set; }
+
+        private object _lockObject = new object();
 
         public void ContinueWith(Action<MobileCenterTask> continuationAction)
         {
-            _continuationAction = continuationAction;
+            lock (_lockObject)
+            {
+                _continuationActions.Add(continuationAction);
+                InvokeContinuationActions();
+            }
+        }
+        
+        protected void CompletionAction()
+        {
+            lock (_lockObject)
+            {
+                IsComplete = true;
+                InvokeContinuationActions();
+            }
         }
 
-        protected virtual void InvokeContinuationAction()
+        private void InvokeContinuationActions()
         {
-            if (_continuationAction != null)
+            lock (_lockObject)
             {
-                _continuationAction(this);
+                if (!IsComplete)
+                {
+                    return;
+                }
+
+                foreach (var action in _continuationActions)
+                {
+                    if (action != null)
+                    {
+                        action(this);
+                    }
+                }
+                _continuationActions.Clear();
             }
         }
     }
