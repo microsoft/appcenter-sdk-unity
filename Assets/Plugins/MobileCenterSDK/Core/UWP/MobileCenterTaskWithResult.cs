@@ -18,6 +18,16 @@ namespace Microsoft.Azure.Mobile.Unity
         // This will block if it is called before the task is complete
         public TResult Result => _task.Result;
 
+        internal void SetResult(TResult result)
+        {
+            _task = Task<TResult>.FromResult(result);
+            CompletionAction();
+        }
+
+        public MobileCenterTask()
+        {
+        }
+        
         public MobileCenterTask(Task<TResult> task) : base(task)
         {
             // Need to save the task to access result later

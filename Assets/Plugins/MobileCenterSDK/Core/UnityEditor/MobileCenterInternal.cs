@@ -61,7 +61,7 @@ namespace Microsoft.Azure.Mobile.Unity.Internal
             return null;
 		}
 
-        public static string mobile_center_unity_get_install_id()
+        public static MobileCenterTask<string> GetInstallIdAsync()
         {
             return null;
         }

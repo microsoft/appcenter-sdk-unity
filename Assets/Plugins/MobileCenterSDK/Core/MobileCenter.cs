@@ -47,13 +47,15 @@ namespace Microsoft.Azure.Mobile.Unity
         /// <remarks>
         /// The identifier is lost if clearing application data or uninstalling application.
         /// </remarks>
-        public static Guid? InstallId
+        public static MobileCenterTask<Guid?> GetInstallIdAsync()
         {
-            get
-            {
-                var installIdString = MobileCenterInternal.mobile_center_unity_get_install_id();
-                return new Guid(installIdString);
-            }
+            var stringTask = MobileCenterInternal.GetInstallIdAsync();
+            var guidTask = new MobileCenterTask<Guid?>();
+            stringTask.ContinueWith(t => {
+                var installId = new Guid(t.Result);
+                guidTask.SetResult(installId);
+            });
+            return guidTask;
         }
 
         /// <summary>

@@ -69,7 +69,6 @@ namespace Microsoft.Azure.Mobile.Unity.Internal
             _mobileCenter.CallStatic("setLogUrl", logUrl);
         }
 
-
         public static MobileCenterTask SetEnabledAsync(bool enabled)
         {
             var future = _mobileCenter.CallStatic<AndroidJavaObject>("setEnabled", enabled);
@@ -85,11 +84,13 @@ namespace Microsoft.Azure.Mobile.Unity.Internal
         public static MobileCenterTask<string> GetInstallIdAsync()
         {
             AndroidJavaObject future = _mobileCenter.CallStatic<AndroidJavaObject>("getInstallId");
-            var task = new MobileCenterTask<AndroidJavaObject>(future);
-            task.ContinueWith(t => {
-                t.Result;
+            var javaUUIDtask = new MobileCenterTask<AndroidJavaObject>(future);
+            var stringTask = new MobileCenterTask<string>();
+            javaUUIDtask.ContinueWith(t => {
+                var installId = t.Result.Call<string>("toString");
+                stringTask.SetResult(installId);
             });
-            return installId.Call<string>("toString");
+            return stringTask;
         }
 
         public static void mobile_center_unity_set_custom_properties(AndroidJavaObject properties)

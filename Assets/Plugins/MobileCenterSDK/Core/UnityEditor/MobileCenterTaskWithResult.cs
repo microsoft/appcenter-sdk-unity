@@ -13,6 +13,14 @@ namespace Microsoft.Azure.Mobile.Unity
 {
     public partial class MobileCenterTask<TResult>
     {
+        internal void SetResult(TResult result)
+        {
+        }
+
+        public MobileCenterTask()
+        {
+        }
+        
         public TResult Result
         { 
             get

@@ -29,7 +29,7 @@ namespace Microsoft.Azure.Mobile.Unity
 
         internal void SetResult(TResult result)
         {
-            _result = t;
+            _result = result;
             _completionEvent.Set();
             CompletionAction();
         }

@@ -7,15 +7,20 @@ public class PuppetMobileCenter : MonoBehaviour
 {
     public Toggle Enabled;
     public Dropdown LogLevel;
-    
+
     void OnEnable()
     {
         MobileCenter.IsEnabledAsync().ContinueWith(task =>
         {
-            Debug.Log("Is enabled == " + task.Result);
             Enabled.isOn = task.Result;
         });
-        
+        MobileCenter.GetInstallIdAsync().ContinueWith(task =>
+        {
+            if (task.Result.HasValue)
+            {
+                print("Install ID = " + task.Result.ToString());
+            }
+        });
         LogLevel.value = MobileCenter.LogLevel - Microsoft.Azure.Mobile.Unity.LogLevel.Verbose;
     }
 
@@ -23,7 +28,6 @@ public class PuppetMobileCenter : MonoBehaviour
     {
         MobileCenter.SetEnabledAsync(enabled).ContinueWith(task =>
         {
-            Debug.Log("Set enabled complete");
             Enabled.isOn = enabled;
         });
     }

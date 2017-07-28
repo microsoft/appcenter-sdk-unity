@@ -10,7 +10,7 @@ using UnityEngine;
 namespace Microsoft.Azure.Mobile.Unity
 {
     public partial class MobileCenterTask<TResult> : MobileCenterTask
-    {        
+    {
         public void ContinueWith(Action<MobileCenterTask<TResult>> continuationAction)
         {
             base.ContinueWith(task =>
