@@ -6,11 +6,9 @@ namespace Microsoft.Azure.Mobile.Unity
 {
     public class MobileCenterTask : CustomYieldInstruction
     {
-        public delegate bool CompletionEvaluator();
+        private readonly Func<bool> _evaluator;
 
-        private readonly CompletionEvaluator _evaluator;
-
-        public MobileCenterTask(CompletionEvaluator evaluator)
+        public MobileCenterTask(Func<bool> evaluator)
         {
             _evaluator = evaluator;
         }
@@ -32,17 +30,16 @@ namespace Microsoft.Azure.Mobile.Unity
         }
     }
 
-    public class MobileCenterTask<T> : MobileCenterTask
+    public class MobileCenterTask<TResult> : MobileCenterTask
     {
-        public delegate T ResultGetter();
-        private readonly ResultGetter _resultGetter;
+        private readonly Func<TResult> _resultGetter;
 
-        public MobileCenterTask(CompletionEvaluator evaluator, ResultGetter resultGetter) : base(evaluator)
+        public MobileCenterTask(Func<bool> evaluator, Func<TResult> resultGetter) : base(evaluator)
         {
             _resultGetter = resultGetter;
         }
 
-        public T Result
+        public TResult Result
         {
             get
             {
@@ -54,5 +51,4 @@ namespace Microsoft.Azure.Mobile.Unity
             }
         }
     }
-
 }
