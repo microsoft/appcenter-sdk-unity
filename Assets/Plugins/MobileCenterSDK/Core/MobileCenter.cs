@@ -201,7 +201,6 @@ namespace Microsoft.Azure.Mobile.Unity
                                                                      WrapperSdk.WrapperRuntimeVersion, null, null, null);
         }
 
-
         // Gets the first instance of an app secret corresponding to the given platform name, or returns the string 
         // as-is if no identifier can be found.
         internal static string GetSecretForPlatform(string secrets)

@@ -4,6 +4,7 @@
 
 #if UNITY_EDITOR
 using System;
+using Microsoft.Azure.Mobile.Unity;
 
 namespace Microsoft.Azure.Mobile.Unity.Internal
 {

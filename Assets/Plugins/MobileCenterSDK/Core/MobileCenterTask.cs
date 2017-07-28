@@ -1,53 +1,28 @@
+// Copyright (c) Microsoft Corporation. All rights reserved.
+//
+// Licensed under the MIT license.
+
 using System;
 using System.Collections;
+using System.Threading;
 using UnityEngine;
 
 namespace Microsoft.Azure.Mobile.Unity
 {
-    public class MobileCenterTask : CustomYieldInstruction
+    public partial class MobileCenterTask
     {
-        private readonly Func<bool> _evaluator;
+        private Action<MobileCenterTask> _continuationAction;
 
-        public MobileCenterTask(Func<bool> evaluator)
+        public void ContinueWith(Action<MobileCenterTask> continuationAction)
         {
-            _evaluator = evaluator;
+            _continuationAction = continuationAction;
         }
 
-        public override bool keepWaiting
+        protected virtual void InvokeContinuationAction()
         {
-            get
+            if (_continuationAction != null)
             {
-                return !IsDone;
-            }
-        }
-
-        public bool IsDone
-        {
-            get
-            {
-                return _evaluator();
-            }
-        }
-    }
-
-    public class MobileCenterTask<TResult> : MobileCenterTask
-    {
-        private readonly Func<TResult> _resultGetter;
-
-        public MobileCenterTask(Func<bool> evaluator, Func<TResult> resultGetter) : base(evaluator)
-        {
-            _resultGetter = resultGetter;
-        }
-
-        public TResult Result
-        {
-            get
-            {
-                if (!IsDone)
-                {
-                    throw new InvalidOperationException("Cannot get result until operation is complete");
-                }
-                return _resultGetter();
+                _continuationAction(this);
             }
         }
     }

@@ -73,25 +73,13 @@ namespace Microsoft.Azure.Mobile.Unity.Internal
         public static MobileCenterTask SetEnabledAsync(bool enabled)
         {
             var future = _mobileCenter.CallStatic<AndroidJavaObject>("setEnabled", enabled);
-
-            return new MobileCenterTask(new MobileCenterTask.CompletionEvaluator(() =>
-            {
-                return future.Call<bool>("isDone");
-            }));
+            return new MobileCenterTask(future);
         }
 
         public static MobileCenterTask<bool> IsEnabledAsync()
         {
-			var future = _mobileCenter.CallStatic<AndroidJavaObject>("isEnabled");
-            var completionEvaluator = new MobileCenterTask.CompletionEvaluator(() =>
-            {
-                return future.Call<bool>("isDone");
-            });
-            var resultGetter = new MobileCenterTask<bool>.ResultGetter(() =>
-            {
-                return future.Call<bool>("get");
-            });
-            return new MobileCenterTask<bool>(completionEvaluator, resultGetter);
+            var future = _mobileCenter.CallStatic<AndroidJavaObject>("isEnabled");
+            return new MobileCenterTask<bool>(future);
         }
 
         public static string mobile_center_unity_get_install_id()
