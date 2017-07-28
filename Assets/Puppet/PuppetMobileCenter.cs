@@ -10,9 +10,9 @@ public class PuppetMobileCenter : MonoBehaviour
     
     void OnEnable()
     {
-		var task = MobileCenter.IsEnabledAsync();
+        var task = MobileCenter.IsEnabledAsync();
         StartCoroutine(UpdateToggleOnIsEnabled(task));
-		LogLevel.value = MobileCenter.LogLevel - Microsoft.Azure.Mobile.Unity.LogLevel.Verbose;
+        LogLevel.value = MobileCenter.LogLevel - Microsoft.Azure.Mobile.Unity.LogLevel.Verbose;
     }
 
     public void SetEnabled(bool enabled)
@@ -23,15 +23,15 @@ public class PuppetMobileCenter : MonoBehaviour
 
     private IEnumerator UpdateToggleOnSetEnabled(MobileCenterTask task, bool wasEnabled)
     {
-        yield return task.Wait();
-		Enabled.isOn = wasEnabled;
-	}
+        yield return task;
+        Enabled.isOn = wasEnabled;
+    }
 
-	private IEnumerator UpdateToggleOnIsEnabled(MobileCenterTask<bool> task)
-	{
-		yield return task.Wait();
-		Enabled.isOn = task.Result;
-	}
+    private IEnumerator UpdateToggleOnIsEnabled(MobileCenterTask<bool> task)
+    {
+        yield return task;
+        Enabled.isOn = task.Result;
+    }
 
     public void SetLogLevel(int logLevel)
     {

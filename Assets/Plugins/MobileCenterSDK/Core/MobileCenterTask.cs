@@ -30,14 +30,6 @@ namespace Microsoft.Azure.Mobile.Unity
                 return _evaluator();
             }
         }
-
-        public IEnumerator Wait()
-        {
-            while (!IsDone)
-            {
-                yield return null;
-            }
-        }
     }
 
     public class MobileCenterTask<T> : MobileCenterTask
