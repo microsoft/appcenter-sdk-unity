@@ -15,12 +15,21 @@ namespace Microsoft.Azure.Mobile.Unity
     {
         public TResult Result { get; private set; }
 
+        internal void SetResult(TResult result)
+        {
+            Result = result;
+            CompletionAction();
+        }
+
+        public MobileCenterTask()
+        {
+        }
+
         // For iOS, just assume that the task completes immediately (until the 
         // SDK's API changes)
         public MobileCenterTask(TResult result)
         {
-            Result = result;
-            CompletionAction();
+            SetResult(result);
         }
     }
 }

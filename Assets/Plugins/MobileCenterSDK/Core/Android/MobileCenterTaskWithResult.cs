@@ -27,14 +27,23 @@ namespace Microsoft.Azure.Mobile.Unity
             }
         }
 
+        internal void SetResult(TResult result)
+        {
+            _result = t;
+            _completionEvent.Set();
+            CompletionAction();
+        }
+
+        public MobileCenterTask()
+        {
+        }
+
         public MobileCenterTask(AndroidJavaObject javaFuture)
         {
             var consumer = new UnityMobileCenterConsumer<TResult>();
             consumer.CompletionCallback = (t => 
             {
-                _result = t;
-                _completionEvent.Set();
-                CompletionAction();
+                SetResult(t);
             });
             javaFuture.Call("thenAccept", consumer);
         }

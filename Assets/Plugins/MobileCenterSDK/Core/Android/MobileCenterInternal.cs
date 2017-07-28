@@ -82,9 +82,13 @@ namespace Microsoft.Azure.Mobile.Unity.Internal
             return new MobileCenterTask<bool>(future);
         }
 
-        public static string mobile_center_unity_get_install_id()
+        public static MobileCenterTask<string> GetInstallIdAsync()
         {
-            AndroidJavaObject installId = _mobileCenter.CallStatic<AndroidJavaObject>("getInstallId");
+            AndroidJavaObject future = _mobileCenter.CallStatic<AndroidJavaObject>("getInstallId");
+            var task = new MobileCenterTask<AndroidJavaObject>(future);
+            task.ContinueWith(t => {
+                t.Result;
+            });
             return installId.Call<string>("toString");
         }
 
