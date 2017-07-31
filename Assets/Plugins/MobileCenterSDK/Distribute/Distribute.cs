@@ -25,19 +25,14 @@ namespace Microsoft.Azure.Mobile.Unity.Distribute
             return DistributeInternal.mobile_center_unity_distribute_get_type();
         }
 
-        /// <summary>
-        /// Enable or disable Distribute module.
-        /// </summary>
-        public static bool Enabled
+        public static MobileCenterTask<bool> IsEnabledAsync()
         {
-            get
-            {
-                return DistributeInternal.mobile_center_unity_distribute_is_enabled();
-            }
-            set
-            {
-                DistributeInternal.mobile_center_unity_distribute_set_enabled(value);
-            }
+            return DistributeInternal.IsEnabledAsync();
+        }
+
+        public static MobileCenterTask SetEnabledAsync(bool enabled)
+        {
+            return DistributeInternal.SetEnabledAsync(enabled);
         }
 
         /// <summary>

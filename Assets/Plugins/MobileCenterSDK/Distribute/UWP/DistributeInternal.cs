@@ -1,4 +1,4 @@
-﻿// Copyright (c) Microsoft Corporation. All rights reserved.
+// Copyright (c) Microsoft Corporation. All rights reserved.
 //
 // Licensed under the MIT license.
 
@@ -18,23 +18,24 @@ namespace Microsoft.Azure.Mobile.Unity.Distribute.Internal
             return typeof(Microsoft.Azure.Mobile.Distribute.Distribute);
         }
 
-        public static void mobile_center_unity_distribute_set_enabled(bool isEnabled)
+        public static MobileCenterTask SetEnabledAsync(bool isEnabled)
         {
+            return new MobileCenterTask(Task.FromResult(0));
         }
 
-        public static bool mobile_center_unity_distribute_is_enabled()
+        public static MobileCenterTask<bool> IsEnabledAsync()
         {
-            return false;
+            return new MobileCenterTask(Task.FromResult(false));
         }
-                      
+
         public static void mobile_center_unity_distribute_set_install_url(string installUrl)
         {
         }
-                      
+
         public static void mobile_center_unity_distribute_set_api_url(string apiUrl)
         {
         }
-                      
+
         public static void mobile_center_unity_distribute_notify_update_action(int updateAction)
         {
         }

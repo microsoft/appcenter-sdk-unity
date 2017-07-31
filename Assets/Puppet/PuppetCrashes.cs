@@ -1,4 +1,4 @@
-﻿using Microsoft.Azure.Mobile.Unity.Crashes;
+using Microsoft.Azure.Mobile.Unity.Crashes;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -8,14 +8,20 @@ public class PuppetCrashes : MonoBehaviour
 
     void OnEnable()
     {
-        Enabled.isOn = Crashes.Enabled;
+        Crashes.IsEnabledAsync().ContinueWith(task =>
+        {
+            Enabled.isOn = task.Result;
+        });
     }
 
     public void SetEnabled(bool enabled)
     {
-        Crashes.Enabled = enabled;
-        Enabled.isOn = Crashes.Enabled;
+        Crashes.SetEnabledAsync(enabled).ContinueWith(task => 
+        {
+            Enabled.isOn = enabled;
+        });
     }
+
     public void TestCrash()
     {
         //Crashes.GenerateTestCrash();

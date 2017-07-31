@@ -18,14 +18,16 @@ namespace Microsoft.Azure.Mobile.Unity.Crashes.Internal
             return AndroidJNI.FindClass("com/microsoft/azure/mobile/crashes/Crashes");
         }
 
-        public static void mobile_center_unity_crashes_set_enabled(bool isEnabled)
+        public static MobileCenterTask SetEnabledAsync(bool isEnabled)
         {
-            _crashes.CallStatic("setEnabled", isEnabled);
+            var future = _crashes.CallStatic<AndroidJavaObject>("setEnabled", isEnabled);
+            return new MobileCenterTask(future);
         }
 
-        public static bool mobile_center_unity_crashes_is_enabled()
+        public static MobileCenterTask<bool> IsEnabledAsync()
         {
-            return _crashes.CallStatic<bool>("isEnabled");
+            var future = _crashes.CallStatic<AndroidJavaObject>("isEnabled");
+            return new MobileCenterTask<bool>(future);
         }
     }
 }

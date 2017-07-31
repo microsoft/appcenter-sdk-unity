@@ -13,13 +13,18 @@ public class PuppetAnalytics : MonoBehaviour
 
     void OnEnable()
     {
-        Enabled.isOn = Analytics.Enabled;
+        Analytics.IsEnabledAsync().ContinueWith(task =>
+        {
+            Enabled.isOn = task.Result;
+        });
     }
 
     public void SetEnabled(bool enabled)
     {
-        Analytics.Enabled = enabled;
-        Enabled.isOn = Analytics.Enabled;
+        Analytics.SetEnabledAsync(enabled).ContinueWith(task => 
+        {
+            Enabled.isOn = enabled;
+        });
     }
 
     public void AddProperty()

@@ -22,6 +22,12 @@ namespace Microsoft.Azure.Mobile.Unity.Internal
             return new MobileCenterTask<bool>(isEnabled);
         }
 
+        public static MobileCenterTask<string> GetInstallIdAsync()
+        {
+            var installId = mobile_center_unity_get_install_id();
+            return new MobileCenterTask<string>(installId);
+        }
+
         [DllImport("__Internal")]
         public static extern void mobile_center_unity_configure (string appSecret);
 
@@ -50,7 +56,7 @@ namespace Microsoft.Azure.Mobile.Unity.Internal
         private static extern bool mobile_center_unity_is_enabled();
 
         [DllImport("__Internal")]
-        public static extern string mobile_center_unity_get_install_id();
+        private static extern string mobile_center_unity_get_install_id();
 
         [DllImport("__Internal")]
         public static extern void mobile_center_unity_set_custom_properties(IntPtr properties);

@@ -32,14 +32,16 @@ namespace Microsoft.Azure.Mobile.Unity.Analytics.Internal
         {
         }
 
-        public static void mobile_center_unity_analytics_set_enabled(bool isEnabled)
+        public static MobileCenterTask SetEnabledAsync(bool enabled)
         {
+            return null;
         }
 
-        public static bool mobile_center_unity_analytics_is_enabled()
+        public static MobileCenterTask<bool> IsEnabledAsync()
         {
-            return false;
+            return null;
         }
+
     }
 }
 #endif

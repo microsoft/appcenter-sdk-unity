@@ -46,7 +46,7 @@ namespace Microsoft.Azure.Mobile.Unity.Internal
             AndroidJNI.CallStaticVoidMethod(mobileCenterRawClass, start_Method, new jvalue[]
             {
                 new jvalue { l = services }
-            });        
+            });
         }
 
         public static void mobile_center_unity_set_log_level(int logLevel)
