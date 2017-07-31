@@ -36,10 +36,10 @@ namespace Microsoft.Azure.Mobile.Unity
             return MobileCenterInternal.SetEnabledAsync(enabled);
         }
 
-		public static MobileCenterTask<bool> IsEnabledAsync()
-		{
-			return MobileCenterInternal.IsEnabledAsync();
-		}
+        public static MobileCenterTask<bool> IsEnabledAsync()
+        {
+            return MobileCenterInternal.IsEnabledAsync();
+        }
 
         /// <summary>
         /// Get the unique installation identifier for this application installation on this device.
