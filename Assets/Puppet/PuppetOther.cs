@@ -1,4 +1,4 @@
-﻿using Microsoft.Azure.Mobile.Unity.Distribute;
+using Microsoft.Azure.Mobile.Unity.Distribute;
 using Microsoft.Azure.Mobile.Unity.Push;
 using UnityEngine;
 using UnityEngine.UI;
@@ -12,12 +12,10 @@ public class PuppetOther : MonoBehaviour
     {
         Push.IsEnabledAsync().ContinueWith(task =>
         {
-            Debug.Log("push isenabledasync completion handler");
             PushEnabled.isOn = task.Result;
         });
         Distribute.IsEnabledAsync().ContinueWith(task =>
         {
-            Debug.Log("distribute isenabledasync completion handler");
             DistributeEnabled.isOn = task.Result;
         });
     }
