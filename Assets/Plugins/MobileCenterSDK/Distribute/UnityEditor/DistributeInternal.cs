@@ -18,6 +18,10 @@ namespace Microsoft.Azure.Mobile.Unity.Distribute.Internal
         {
         }
 
+        public static void PostInitialize()
+        {
+        }
+        
         public static RawType mobile_center_unity_distribute_get_type()
         {
             return default(RawType);
