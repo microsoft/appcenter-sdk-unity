@@ -5,6 +5,7 @@
 #if UNITY_WSA_10_0 && !UNITY_EDITOR
 
 using UnityEngine;
+using System.Threading.Tasks;
 
 namespace Microsoft.Azure.Mobile.Unity
 {
@@ -19,7 +20,7 @@ namespace Microsoft.Azure.Mobile.Unity
         {
             // Use the *actual* TPL's ContinueWith implementation to 
             // perform the user's ContinueWith callbacks
-            task.ContinueWith(task => {
+            task.ContinueWith(t => {
                 CompletionAction();
             });
         }

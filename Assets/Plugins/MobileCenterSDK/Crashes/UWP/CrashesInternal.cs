@@ -18,7 +18,7 @@ namespace Microsoft.Azure.Mobile.Unity.Crashes.Internal
 
         public static MobileCenterTask<bool> IsEnabledAsync()
         {
-            return new MobileCenterTask(Task.FromResult(false));
+            return new MobileCenterTask<bool>(Task.FromResult(false));
         }
     }
 }

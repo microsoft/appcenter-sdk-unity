@@ -31,7 +31,7 @@ namespace Microsoft.Azure.Mobile.Unity.Push.Internal
             return typeof(UWPPush);
         }
 
-        public static MobileCenterTask SetEnabledAsync()
+        public static MobileCenterTask SetEnabledAsync(bool isEnabled)
         {
             return new MobileCenterTask(UWPPush.SetEnabledAsync(isEnabled));
         }

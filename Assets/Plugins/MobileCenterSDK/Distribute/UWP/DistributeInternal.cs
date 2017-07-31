@@ -3,7 +3,9 @@
 // Licensed under the MIT license.
 
 #if UNITY_WSA_10_0 && !UNITY_EDITOR
+
 using System;
+using System.Threading.Tasks;
 
 namespace Microsoft.Azure.Mobile.Unity.Distribute.Internal
 {
@@ -25,7 +27,7 @@ namespace Microsoft.Azure.Mobile.Unity.Distribute.Internal
 
         public static MobileCenterTask<bool> IsEnabledAsync()
         {
-            return new MobileCenterTask(Task.FromResult(false));
+            return new MobileCenterTask<bool>(Task.FromResult(false));
         }
 
         public static void mobile_center_unity_distribute_set_install_url(string installUrl)

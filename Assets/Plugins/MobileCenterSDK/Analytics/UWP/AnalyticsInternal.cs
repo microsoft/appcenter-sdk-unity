@@ -36,7 +36,7 @@ namespace Microsoft.Azure.Mobile.Unity.Analytics.Internal
             UWPAnalytics.TrackEvent(eventName, properties);
         }
 
-        public static MobileCenterTask SetEnabledAsync()
+        public static MobileCenterTask SetEnabledAsync(bool isEnabled)
         {
             return new MobileCenterTask(UWPAnalytics.SetEnabledAsync(isEnabled));
         }
