@@ -32,7 +32,7 @@ namespace Microsoft.Azure.Mobile.Unity
         public MobileCenterTask(Task<TResult> task) : base(task)
         {
             // Need to save the task to access result later
-            _task = task;;
+            _task = task;
         }
     }
 }
