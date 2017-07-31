@@ -27,7 +27,7 @@ public class MobileCenterCoreBehavior : MonoBehaviour
         }
         var appSecret = "ios=" + iOSAppSecret + 
                         ";android=" + AndroidAppSecret + 
-                        "uwp=" + UWPAppSecret + ";";
+                        ";uwp=" + UWPAppSecret + ";";
         MobileCenter.Start(appSecret);
     }
 }
