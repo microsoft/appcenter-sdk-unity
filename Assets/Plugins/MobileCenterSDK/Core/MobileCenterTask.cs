@@ -7,11 +7,12 @@ using System.Collections.Generic;
 
 namespace Microsoft.Azure.Mobile.Unity
 {
-    // MobileCenterTask provides a way of performing long-running
-    // tasks on any thread, and obtain a callback on the calling thread
-    // or UI thread (which one is undefined, so call from UI thread to be safe!)
-    // upon completion.
-    public partial class MobileCenterTask
+	/// <summary>
+	/// MobileCenterTask provides a way of performing long-running
+	/// tasks on any thread, and invoke a callback upon completion.
+	/// upon completion.
+	/// </summary>
+	public partial class MobileCenterTask
     {
         private readonly List<Action<MobileCenterTask>> _continuationActions = new List<Action<MobileCenterTask>>();
 
@@ -27,7 +28,7 @@ namespace Microsoft.Azure.Mobile.Unity
         /// Adds a callback that will be invoked once the task is complete. If 
         /// the task is already complete, it is invoked immediately after being set.
         /// </summary>
-        /// <param name="continuationAction">Continuation action.</param>
+        /// <param name="continuationAction">Callback to be invoked after task completion.</param>
         public void ContinueWith(Action<MobileCenterTask> continuationAction)
         {
             lock (_lockObject)

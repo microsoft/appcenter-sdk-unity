@@ -3,21 +3,25 @@
 // Licensed under the MIT license.
 
 using System;
-using System.Collections.Generic;
-using System.Threading;
-using UnityEngine;
 
 namespace Microsoft.Azure.Mobile.Unity
 {
+    /// <summary>
+    /// MobileCenterTask&lt;TResult&gt; extends the functionality of MobileCenterTask
+    /// to support return values.
+    /// </summary>
+    /// <typeparam name="TResult">The return type of the task</typeparam>
+    /// <seealso cref="MobileCenterTask"/>
     public partial class MobileCenterTask<TResult> : MobileCenterTask
     {
-        public void ContinueWith(Action<MobileCenterTask<TResult>> continuationAction)
+		/// <summary>
+		/// Adds a callback that will be invoked once the task is complete. If
+		/// the task is already complete, it is invoked immediately after being set.
+		/// </summary>
+		/// <param name="continuationAction">Callback to be invoked after task completion.</param>
+		public void ContinueWith(Action<MobileCenterTask<TResult>> continuationAction)
         {
-            base.ContinueWith(task =>
-            {
-                continuationAction(this);
-            });
-
+            base.ContinueWith(task => continuationAction(this));
         }
     }
 }
