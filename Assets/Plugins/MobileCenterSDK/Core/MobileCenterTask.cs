@@ -66,8 +66,8 @@ namespace Microsoft.Azure.Mobile.Unity
                 {
                     if (action != null)
                     {
-						continuationActionsSnapshot.Add(action);
-					}
+                        continuationActionsSnapshot.Add(action);
+                    }
                 }
                 _continuationActions.Clear();
             }
