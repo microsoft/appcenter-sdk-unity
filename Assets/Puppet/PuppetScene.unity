@@ -5996,7 +5996,6 @@ GameObject:
   serializedVersion: 5
   m_Component:
   - component: {fileID: 1619497995}
-  - component: {fileID: 1619497996}
   m_Layer: 5
   m_Name: Puppet
   m_TagString: Untagged
@@ -6025,17 +6024,6 @@ RectTransform:
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
---- !u!114 &1619497996
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 0}
-  m_GameObject: {fileID: 1619497994}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 76089bd8d54eb954992b97ec361cd6a7, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!1 &1624712651
 GameObject:
   m_ObjectHideFlags: 0
