@@ -19,6 +19,10 @@ namespace Microsoft.Azure.Mobile.Unity
         // This will block if it is called before the task is complete
         public TResult Result => _task.Result;
 
+        /// <summary>
+        /// Manually set the result of the task and mark it complete.
+        /// </summary>
+        /// <param name="result">Task result to be set.</param>
         internal void SetResult(TResult result)
         {
             _task = Task<TResult>.FromResult(result);

@@ -41,10 +41,7 @@ namespace Microsoft.Azure.Mobile.Unity
         public MobileCenterTask(AndroidJavaObject javaFuture)
         {
             var consumer = new UnityMobileCenterConsumer<TResult>();
-            consumer.CompletionCallback = (t => 
-            {
-                SetResult(t);
-            });
+            consumer.CompletionCallback = SetResult;
             javaFuture.Call("thenAccept", consumer);
         }
     }

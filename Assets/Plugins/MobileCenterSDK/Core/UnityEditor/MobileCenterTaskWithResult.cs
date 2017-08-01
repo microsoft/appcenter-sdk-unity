@@ -4,28 +4,28 @@
 
 #if UNITY_EDITOR
 
-using System;
-using System.Collections;
-using System.Threading;
-using UnityEngine;
-
 namespace Microsoft.Azure.Mobile.Unity
 {
     public partial class MobileCenterTask<TResult>
     {
+        private TResult _result;
+
         internal void SetResult(TResult result)
         {
+            _result = result;
+            CompletionAction();
         }
 
-        public MobileCenterTask()
+        public MobileCenterTask(TResult result)
         {
-        }
+            _result = result;
+		}
         
         public TResult Result
         { 
             get
             {
-                return default(TResult);
+                return _result;
             }
         }
     }
