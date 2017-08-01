@@ -9,9 +9,7 @@
 
 void* mobile_center_unity_crashes_get_type()
 {
-  Class* ptr = (Class*)malloc(sizeof(Class));
-  *ptr = [MSCrashes class];
-  return ptr;
+  return (void *)CFBridgingRetain([MSCrashes class]);
 }
 
 void mobile_center_unity_crashes_set_enabled(bool isEnabled)

@@ -18,10 +18,7 @@ void mobile_center_unity_start(char* appSecret, void** services, int numServices
 
   for (int i = 0; i < numServices; ++i)
   {
-    void* service = services[i];
-    Class clazz = *(Class*)service;
-    free(service);
-    [servicearray addObject:clazz];
+    [servicearray addObject:(Class)CFBridgingRelease(services[i])];
   }
 
   [MSMobileCenter start:[NSString stringWithUTF8String:appSecret] withServices:servicearray];
@@ -31,10 +28,7 @@ void mobile_center_unity_start_services(void** services, int numServices)
 {
   for (int i = 0; i < numServices; ++i)
   {
-    void* service = services[i];
-    Class clazz = *(Class*)service;
-    free(service);
-    [MSMobileCenter startService:clazz];
+    [MSMobileCenter startService:(Class)CFBridgingRelease(services[i])];
   }
 }
 
