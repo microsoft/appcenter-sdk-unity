@@ -3,21 +3,31 @@
 // Licensed under the MIT license.
 
 using System;
-using System.Collections;
 using System.Collections.Generic;
-using System.Threading;
-using UnityEngine;
 
 namespace Microsoft.Azure.Mobile.Unity
 {
+    // MobileCenterTask provides a way of performing long-running
+    // tasks on any thread, and obtain a callback on the calling thread
+    // or UI thread (which one is undefined, so call from UI thread to be safe!)
+    // upon completion.
     public partial class MobileCenterTask
     {
         private readonly List<Action<MobileCenterTask>> _continuationActions = new List<Action<MobileCenterTask>>();
 
+        private readonly object _lockObject = new object();
+
+        /// <summary>
+        /// Gets a value indicating whether this <see cref="T:Microsoft.Azure.Mobile.Unity.MobileCenterTask"/> is complete.
+        /// </summary>
+        /// <value><c>true</c> if it is complete; otherwise, <c>false</c>.</value>
         public bool IsComplete { get; private set; }
 
-        private object _lockObject = new object();
-
+        /// <summary>
+        /// Adds a callback that will be invoked once the task is complete. If 
+        /// the task is already complete, it is invoked immediately after being set.
+        /// </summary>
+        /// <param name="continuationAction">Continuation action.</param>
         public void ContinueWith(Action<MobileCenterTask> continuationAction)
         {
             lock (_lockObject)
@@ -26,7 +36,11 @@ namespace Microsoft.Azure.Mobile.Unity
                 InvokeContinuationActions();
             }
         }
-        
+
+        /// <summary>
+        /// Takes care of invoking callbacks and setting completion flag upon
+        /// the task completing.
+        /// </summary>
         protected void CompletionAction()
         {
             lock (_lockObject)
@@ -38,21 +52,28 @@ namespace Microsoft.Azure.Mobile.Unity
 
         private void InvokeContinuationActions()
         {
+            // Save the actions and then invoke them; could have a deadlock
+            // if one of the actions calls ContinueWith on another thread for
+            // the same task object
+            var continuationActionsSnapshot = new List<Action<MobileCenterTask>>();
             lock (_lockObject)
             {
                 if (!IsComplete)
                 {
                     return;
                 }
-
                 foreach (var action in _continuationActions)
                 {
                     if (action != null)
                     {
-                        action(this);
-                    }
+						continuationActionsSnapshot.Add(action);
+					}
                 }
                 _continuationActions.Clear();
+            }
+            foreach (var action in continuationActionsSnapshot)
+            {
+                action(this);
             }
         }
     }
