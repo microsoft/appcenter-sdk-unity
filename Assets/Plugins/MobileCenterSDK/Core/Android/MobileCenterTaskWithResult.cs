@@ -13,7 +13,7 @@ namespace Microsoft.Azure.Mobile.Unity
 {
     public partial class MobileCenterTask<TResult>
     {
-        private AutoResetEvent _completionEvent = new AutoResetEvent(false);
+        private ManualResetEvent _completionEvent = new ManualResetEvent(false);
         private TResult _result;
 
         // This will block if it is called before the task is complete
@@ -22,7 +22,6 @@ namespace Microsoft.Azure.Mobile.Unity
             get
             {
                 _completionEvent.WaitOne();
-                _completionEvent.Set();
                 return _result;
             }
         }
