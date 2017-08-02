@@ -16,6 +16,10 @@ namespace Microsoft.Azure.Mobile.Unity
             CompletionAction();
         }
 
+        public MobileCenterTask()
+        {
+        }
+
         public MobileCenterTask(TResult result)
         {
             _result = result;
