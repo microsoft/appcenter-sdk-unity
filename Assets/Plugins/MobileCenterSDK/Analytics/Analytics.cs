@@ -26,7 +26,7 @@ namespace Microsoft.Azure.Mobile.Unity.Analytics
             return AnalyticsInternal.mobile_center_unity_analytics_get_type();
         }
 
-        public static void TrackEvent(string eventName, Dictionary<string, string> properties = null)
+        public static void TrackEvent(string eventName, IDictionary<string, string> properties = null)
         {
             if (properties == null)
             {

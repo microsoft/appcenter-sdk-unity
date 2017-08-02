@@ -20,15 +20,15 @@ namespace Microsoft.Azure.Mobile.Unity.Internal
         public static void mobile_center_unity_start(string appSecret, IntPtr[] servicesArray, int numServices)
         {
             IntPtr services = servicesArray[0];
-			IntPtr stringClass = AndroidJNI.FindClass("java/lang/String");
-			IntPtr mobileCenterRawClass = AndroidJNI.FindClass("com/microsoft/azure/mobile/MobileCenter");
+            IntPtr stringClass = AndroidJNI.FindClass("java/lang/String");
+            IntPtr mobileCenterRawClass = AndroidJNI.FindClass("com/microsoft/azure/mobile/MobileCenter");
 
-			IntPtr methId = AndroidJNI.GetMethodID(stringClass, "<init>", "(Ljava/lang/String;)V");
-			IntPtr rawJavaString = AndroidJNI.NewStringUTF(appSecret);
-			//IntPtr rawJavaStringObject = AndroidJNI.NewObject(stringClass, methId, new jvalue[] { new jvalue() { l = strId } });
-			IntPtr start_Method = AndroidJNI.GetStaticMethodID(mobileCenterRawClass, "start",
-															   "(Landroid/app/Application;Ljava/lang/String;[Ljava/lang/Class;)V");
-			AndroidJNI.CallStaticVoidMethod(mobileCenterRawClass, start_Method, new jvalue[]
+            IntPtr methId = AndroidJNI.GetMethodID(stringClass, "<init>", "(Ljava/lang/String;)V");
+            IntPtr rawJavaString = AndroidJNI.NewStringUTF(appSecret);
+            //IntPtr rawJavaStringObject = AndroidJNI.NewObject(stringClass, methId, new jvalue[] { new jvalue() { l = strId } });
+            IntPtr start_Method = AndroidJNI.GetStaticMethodID(mobileCenterRawClass, "start",
+                                                               "(Landroid/app/Application;Ljava/lang/String;[Ljava/lang/Class;)V");
+            AndroidJNI.CallStaticVoidMethod(mobileCenterRawClass, start_Method, new jvalue[]
             { 
                 new jvalue { l = GetAndroidApplication().GetRawObject() }, 
                 new jvalue { l = rawJavaString }, 
@@ -38,15 +38,15 @@ namespace Microsoft.Azure.Mobile.Unity.Internal
 
         public static void mobile_center_unity_start_services(IntPtr[] servicesArray, int numServices)
         {
-			IntPtr services = servicesArray[0];
-			IntPtr stringClass = AndroidJNI.FindClass("java/lang/String");
-			IntPtr mobileCenterRawClass = AndroidJNI.FindClass("com/microsoft/azure/mobile/MobileCenter");
-			IntPtr methId = AndroidJNI.GetMethodID(stringClass, "<init>", "(Ljava/lang/String;)V");
-			IntPtr start_Method = AndroidJNI.GetStaticMethodID(mobileCenterRawClass, "start", "([Ljava/lang/Class;)V");
-			AndroidJNI.CallStaticVoidMethod(mobileCenterRawClass, start_Method, new jvalue[]
-			{
-				new jvalue { l = services }
-			});        
+            IntPtr services = servicesArray[0];
+            IntPtr stringClass = AndroidJNI.FindClass("java/lang/String");
+            IntPtr mobileCenterRawClass = AndroidJNI.FindClass("com/microsoft/azure/mobile/MobileCenter");
+            IntPtr methId = AndroidJNI.GetMethodID(stringClass, "<init>", "(Ljava/lang/String;)V");
+            IntPtr start_Method = AndroidJNI.GetStaticMethodID(mobileCenterRawClass, "start", "([Ljava/lang/Class;)V");
+            AndroidJNI.CallStaticVoidMethod(mobileCenterRawClass, start_Method, new jvalue[]
+            {
+                new jvalue { l = services }
+            });        
         }
 
         public static void mobile_center_unity_set_log_level(int logLevel)
@@ -106,13 +106,13 @@ namespace Microsoft.Azure.Mobile.Unity.Internal
         {
             var wrapperSdkObject = new AndroidJavaObject("com.microsoft.azure.mobile.ingestion.models.WrapperSdk");
             wrapperSdkObject.Call("setWrapperSdkVersion", wrapperSdkVersion);
-			wrapperSdkObject.Call("setWrapperSdkName", wrapperSdkName);
-			wrapperSdkObject.Call("setWrapperRuntimeVersion", wrapperRuntimeVersion);
-			wrapperSdkObject.Call("setLiveUpdateReleaseLabel", liveUpdateReleaseLabel);
-			wrapperSdkObject.Call("setLiveUpdateDeploymentKey", liveUpdateDeploymentKey);
-			wrapperSdkObject.Call("setLiveUpdatePackageHash", liveUpdatePackageHash);
+            wrapperSdkObject.Call("setWrapperSdkName", wrapperSdkName);
+            wrapperSdkObject.Call("setWrapperRuntimeVersion", wrapperRuntimeVersion);
+            wrapperSdkObject.Call("setLiveUpdateReleaseLabel", liveUpdateReleaseLabel);
+            wrapperSdkObject.Call("setLiveUpdateDeploymentKey", liveUpdateDeploymentKey);
+            wrapperSdkObject.Call("setLiveUpdatePackageHash", liveUpdatePackageHash);
             _mobileCenter.CallStatic("setWrapperSdk", wrapperSdkObject);
-		}
+        }
     }
 }
 #endif

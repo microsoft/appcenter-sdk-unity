@@ -4,10 +4,10 @@
 
 #if UNITY_WSA_10_0 && !UNITY_EDITOR
 using System;
+using System.Threading;
+using System.Threading.Tasks;
 using UnityEngine;
 using Microsoft.Azure.Mobile.Utils;
-using System.Threading.Tasks;
-using System.Threading;
 
 namespace Microsoft.Azure.Mobile.Unity.Internal.Utils
 {

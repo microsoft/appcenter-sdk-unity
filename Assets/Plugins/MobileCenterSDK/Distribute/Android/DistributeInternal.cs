@@ -17,6 +17,14 @@ namespace Microsoft.Azure.Mobile.Unity.Distribute.Internal
             DistributeDelegate.mobile_center_unity_distribute_set_delegate();
         }
 
+        public static void PostInitialize()
+        {
+            var instance = _distribute.CallStatic<AndroidJavaObject>("getInstance");
+            AndroidJavaClass unityPlayer = new AndroidJavaClass("com.unity3d.player.UnityPlayer");
+            AndroidJavaObject activity = unityPlayer.GetStatic<AndroidJavaObject>("currentActivity");
+            instance.Call("onActivityResumed", activity);
+        }
+
         public static IntPtr mobile_center_unity_distribute_get_type()
         {
             return AndroidJNI.FindClass("com/microsoft/azure/mobile/distribute/Distribute");

@@ -2,8 +2,8 @@
 //
 // Licensed under the MIT license.
 
-using Microsoft.Azure.Mobile.Unity.Crashes.Internal;
 using System;
+using Microsoft.Azure.Mobile.Unity.Crashes.Internal;
 using Microsoft.Azure.Mobile.Unity.Crashes.Models;
 using UnityEngine;
 

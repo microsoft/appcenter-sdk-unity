@@ -22,7 +22,7 @@ namespace Microsoft.Azure.Mobile.Unity.Internal
             uwpProperties.Set(key, val);
         }
 
-		public static void mobile_center_unity_custom_properties_set_number(object properties, string key, int val)
+        public static void mobile_center_unity_custom_properties_set_number(object properties, string key, int val)
         {
             var uwpProperties = properties as UWPCustomProperties;
             uwpProperties.Set(key, val);
@@ -52,7 +52,7 @@ namespace Microsoft.Azure.Mobile.Unity.Internal
             uwpProperties.Set(key, val);
         }
 
-		public static void mobile_center_unity_custom_properties_set_date(object properties, string key, DateTime val)
+        public static void mobile_center_unity_custom_properties_set_date(object properties, string key, DateTime val)
         {
             var uwpProperties = properties as UWPCustomProperties;
             uwpProperties.Set(key, val);
@@ -63,6 +63,6 @@ namespace Microsoft.Azure.Mobile.Unity.Internal
             var uwpProperties = properties as UWPCustomProperties;
             uwpProperties.Clear(key);
         }
-	}
+    }
 }
 #endif
