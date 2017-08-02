@@ -10,8 +10,7 @@ namespace Microsoft.Azure.Mobile.Unity
 {
     public partial class MobileCenterTask
     {
-        // For iOS, just assume that the task completes immediately
-        public MobileCenterTask()
+        internal void SetResult()
         {
             CompletionAction();
         }

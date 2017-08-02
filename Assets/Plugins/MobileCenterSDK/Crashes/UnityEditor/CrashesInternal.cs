@@ -3,7 +3,6 @@
 // Licensed under the MIT license.
 
 #if UNITY_EDITOR
-using System;
 
 namespace Microsoft.Azure.Mobile.Unity.Crashes.Internal
 {
@@ -22,12 +21,12 @@ namespace Microsoft.Azure.Mobile.Unity.Crashes.Internal
 
         public static MobileCenterTask SetEnabledAsync(bool enabled)
         {
-            return null;
+            return MobileCenterTask.FromCompleted();
         }
 
         public static MobileCenterTask<bool> IsEnabledAsync()
         {
-            return null;
+            return MobileCenterTask<bool>.FromCompleted(false);
         }
     }
 }

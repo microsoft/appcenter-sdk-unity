@@ -14,7 +14,7 @@ namespace Microsoft.Azure.Mobile.Unity
     public partial class MobileCenterTask
     {
         private readonly List<Action<MobileCenterTask>> _continuationActions = new List<Action<MobileCenterTask>>();
-        private readonly object _lockObject = new object();
+        protected readonly object _lockObject = new object();
 
         /// <summary>
         /// Gets a value indicating whether this <see cref="T:Microsoft.Azure.Mobile.Unity.MobileCenterTask"/> is complete.
@@ -39,13 +39,38 @@ namespace Microsoft.Azure.Mobile.Unity
         /// <summary>
         /// Invokes callbacks and sets completion flag.
         /// </summary>
-        protected void CompletionAction()
+        protected virtual void CompletionAction()
         {
             lock (_lockObject)
             {
                 IsComplete = true;
                 InvokeContinuationActions();
             }
+        }
+
+        /// <summary>
+        /// Throws an exception if the task has completed.
+        /// </summary>
+        protected void ThrowIfCompleted()
+        {
+            lock (_lockObject)
+            {
+                if (IsComplete)
+                {
+                    throw new InvalidOperationException("The task has already completed");
+                }
+            }
+        }
+
+        /// <summary>
+        /// Returns an already completed task.
+        /// </summary>
+        /// <returns>The completed task.</returns>
+        internal static MobileCenterTask FromCompleted()
+        {
+            var task = new MobileCenterTask();
+            task.CompletionAction();
+            return task;
         }
 
         private void InvokeContinuationActions()

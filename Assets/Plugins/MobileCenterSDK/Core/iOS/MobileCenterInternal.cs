@@ -13,19 +13,19 @@ namespace Microsoft.Azure.Mobile.Unity.Internal
         public static MobileCenterTask SetEnabledAsync(bool isEnabled)
         {
             mobile_center_unity_set_enabled(isEnabled);
-            return new MobileCenterTask();
+            return MobileCenterTask.FromCompleted();
         }
 
         public static MobileCenterTask<bool> IsEnabledAsync()
         {
             var isEnabled = mobile_center_unity_is_enabled();
-            return new MobileCenterTask<bool>(isEnabled);
+            return MobileCenterTask<bool>.FromCompleted(isEnabled);
         }
 
         public static MobileCenterTask<string> GetInstallIdAsync()
         {
             var installId = mobile_center_unity_get_install_id();
-            return new MobileCenterTask<string>(installId);
+            return MobileCenterTask<string>.FromCompleted(installId);
         }
 
         [DllImport("__Internal")]

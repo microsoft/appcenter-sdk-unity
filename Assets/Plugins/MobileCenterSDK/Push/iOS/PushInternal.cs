@@ -22,12 +22,13 @@ namespace Microsoft.Azure.Mobile.Unity.Push.Internal
         public static MobileCenterTask SetEnabledAsync(bool isEnabled)
         {
             mobile_center_unity_push_set_enabled(isEnabled);
-            return new MobileCenterTask();
+            return MobileCenterTask.FromCompleted();
         }
 
         public static MobileCenterTask<bool> IsEnabledAsync()
         {
-            return new MobileCenterTask<bool>(mobile_center_unity_push_is_enabled());
+            var isEnabled = mobile_center_unity_push_is_enabled();
+            return MobileCenterTask<bool>.FromCompleted(isEnabled);
         }
 
         [DllImport("__Internal")]

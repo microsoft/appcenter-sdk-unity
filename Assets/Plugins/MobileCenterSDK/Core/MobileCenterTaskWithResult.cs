@@ -23,5 +23,16 @@ namespace Microsoft.Azure.Mobile.Unity
         {
             base.ContinueWith(task => continuationAction(this));
         }
+
+        /// <summary>
+        /// Returns an already completed task with a given result.
+        /// </summary>
+        /// <returns>The completed task.</returns>
+        internal static MobileCenterTask<TResult> FromCompleted(TResult result)
+        {
+            var task = new MobileCenterTask<TResult>();
+            task.SetResult(result);
+            return task;
+        }
     }
 }

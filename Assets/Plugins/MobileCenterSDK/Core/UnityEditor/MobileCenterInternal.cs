@@ -53,17 +53,17 @@ namespace Microsoft.Azure.Mobile.Unity.Internal
 
         public static MobileCenterTask SetEnabledAsync(bool enabled)
         {
-            return new MobileCenterTask();
+            return MobileCenterTask.FromCompleted();
         }
 
         public static MobileCenterTask<bool> IsEnabledAsync()
         {
-            return new MobileCenterTask<bool>(false);
+            return MobileCenterTask<bool>.FromCompleted(false);
         }
 
         public static MobileCenterTask<string> GetInstallIdAsync()
         {
-            return new MobileCenterTask<string>("");
+            return MobileCenterTask<string>.FromCompleted("");
         }
 
         public static void mobile_center_unity_set_custom_properties(RawType properties)

@@ -13,23 +13,26 @@ namespace Microsoft.Azure.Mobile.Unity
 {
     public partial class MobileCenterTask<TResult>
     {
-        public TResult Result { get; private set; }
+        private TResult _result;
+        public TResult Result
+        {
+            get
+            {
+                lock (_lockObject)
+                {
+                    return _result;
+                }
+            }
+        }
 
         internal void SetResult(TResult result)
         {
-            Result = result;
-            CompletionAction();
-        }
-
-        public MobileCenterTask()
-        {
-        }
-
-        // For iOS, just assume that the task completes immediately (until the 
-        // SDK's API changes)
-        public MobileCenterTask(TResult result)
-        {
-            SetResult(result);
+            lock (_lockObject)
+            {
+                ThrowIfCompleted();
+                _result = result;
+                CompletionAction();
+            }
         }
     }
 }

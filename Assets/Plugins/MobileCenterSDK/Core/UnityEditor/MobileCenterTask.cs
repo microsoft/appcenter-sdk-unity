@@ -8,10 +8,6 @@ namespace Microsoft.Azure.Mobile.Unity
 {
     public partial class MobileCenterTask
     {
-        public MobileCenterTask()
-        {
-            IsComplete = true;
-        }
     }
 }
 #endif

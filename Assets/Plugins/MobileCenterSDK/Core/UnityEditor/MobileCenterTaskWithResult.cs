@@ -8,28 +8,15 @@ namespace Microsoft.Azure.Mobile.Unity
 {
     public partial class MobileCenterTask<TResult>
     {
-        private TResult _result;
+        public TResult Result { get; private set; }
 
         internal void SetResult(TResult result)
         {
-            _result = result;
-            CompletionAction();
-        }
-
-        public MobileCenterTask()
-        {
-        }
-
-        public MobileCenterTask(TResult result)
-        {
-            _result = result;
-        }
-
-        public TResult Result
-        {
-            get
+            lock (_lockObject)
             {
-                return _result;
+                ThrowIfCompleted();
+                Result = result;
+                CompletionAction();
             }
         }
     }
