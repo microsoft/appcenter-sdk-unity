@@ -10,7 +10,7 @@ namespace Microsoft.Azure.Mobile.Unity
     /// MobileCenterTask&lt;TResult&gt; extends the functionality of MobileCenterTask
     /// to support return values.
     /// </summary>
-    /// <typeparam name="TResult">The return type of the task</typeparam>
+    /// <typeparam name="TResult">The return type of the task.</typeparam>
     /// <seealso cref="MobileCenterTask"/>
     public partial class MobileCenterTask<TResult> : MobileCenterTask
     {

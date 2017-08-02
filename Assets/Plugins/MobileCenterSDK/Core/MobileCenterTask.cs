@@ -9,13 +9,11 @@ namespace Microsoft.Azure.Mobile.Unity
 {
     /// <summary>
     /// MobileCenterTask provides a way of performing long-running
-    /// tasks on any thread, and invoke a callback upon completion.
-    /// upon completion.
+    /// tasks on any thread and invoking callbacks upon completion.
     /// </summary>
     public partial class MobileCenterTask
     {
         private readonly List<Action<MobileCenterTask>> _continuationActions = new List<Action<MobileCenterTask>>();
-
         private readonly object _lockObject = new object();
 
         /// <summary>
@@ -39,8 +37,7 @@ namespace Microsoft.Azure.Mobile.Unity
         }
 
         /// <summary>
-        /// Takes care of invoking callbacks and setting completion flag upon
-        /// the task completing.
+        /// Invokes callbacks and sets completion flag.
         /// </summary>
         protected void CompletionAction()
         {
@@ -55,7 +52,7 @@ namespace Microsoft.Azure.Mobile.Unity
         {
             // Save the actions and then invoke them; could have a deadlock
             // if one of the actions calls ContinueWith on another thread for
-            // the same task object
+            // the same task object.
             var continuationActionsSnapshot = new List<Action<MobileCenterTask>>();
             lock (_lockObject)
             {

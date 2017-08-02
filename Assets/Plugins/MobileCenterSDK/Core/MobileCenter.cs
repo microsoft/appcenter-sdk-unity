@@ -3,10 +3,10 @@
 // Licensed under the MIT license.
 
 using System;
+using System.Collections;
 using System.Reflection;
 using Microsoft.Azure.Mobile.Unity.Internal;
 using UnityEngine;
-using System.Collections;
 
 namespace Microsoft.Azure.Mobile.Unity
 {
