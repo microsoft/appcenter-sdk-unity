@@ -1,7 +1,6 @@
 ﻿using Microsoft.Azure.Mobile.Unity;
 using UnityEngine;
 using UnityEngine.UI;
-using System.Collections;
 
 public class PuppetMobileCenter : MonoBehaviour
 {
