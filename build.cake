@@ -210,7 +210,10 @@ Task("Externals-Uwp")
 }).OnError(HandleError);
 
 // Create a common externals task depending on platform specific ones
-Task("Externals").IsDependentOn("Externals-Ios").IsDependentOn("Externals-Android").IsDependentOn("Externals-Uwp").Does(()=>
+// NOTE: It is important to execute Externals-Android *last* or the step in Externals-Android that runs
+// the Unity commands might cause the *.meta files to be deleted! (Unity deletes meta data files 
+// when it is opened if the corresponding files are not on disk.)
+Task("Externals").IsDependentOn("Externals-Uwp").IsDependentOn("Externals-Ios").IsDependentOn("Externals-Android").Does(()=>
 {
     DeleteDirectoryIfExists("externals");
 });
