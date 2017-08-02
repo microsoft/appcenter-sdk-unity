@@ -31,7 +31,7 @@ namespace Microsoft.Azure.Mobile.Unity.Push.Internal
                 CustomData = customData,
                 Message = message,
                 Title = title
-            }; 
+            };
         }
     }
 }

@@ -7,12 +7,12 @@ using System.Collections.Generic;
 
 namespace Microsoft.Azure.Mobile.Unity
 {
-	/// <summary>
-	/// MobileCenterTask provides a way of performing long-running
-	/// tasks on any thread, and invoke a callback upon completion.
-	/// upon completion.
-	/// </summary>
-	public partial class MobileCenterTask
+    /// <summary>
+    /// MobileCenterTask provides a way of performing long-running
+    /// tasks on any thread, and invoke a callback upon completion.
+    /// upon completion.
+    /// </summary>
+    public partial class MobileCenterTask
     {
         private readonly List<Action<MobileCenterTask>> _continuationActions = new List<Action<MobileCenterTask>>();
 

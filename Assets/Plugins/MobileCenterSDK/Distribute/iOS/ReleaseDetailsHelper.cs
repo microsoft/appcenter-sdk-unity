@@ -46,7 +46,7 @@ namespace Microsoft.Azure.Mobile.Unity.Distribute.Internal
                 ReleaseNotes = releaseNotes,
                 MandatoryUpdate = mandatoryUpdate,
                 ReleaseNotesUrl = uri
-            }; 
+            };
         }
     }
 }

@@ -14,12 +14,12 @@ namespace Microsoft.Azure.Mobile.Unity
     /// <seealso cref="MobileCenterTask"/>
     public partial class MobileCenterTask<TResult> : MobileCenterTask
     {
-		/// <summary>
-		/// Adds a callback that will be invoked once the task is complete. If
-		/// the task is already complete, it is invoked immediately after being set.
-		/// </summary>
-		/// <param name="continuationAction">Callback to be invoked after task completion.</param>
-		public void ContinueWith(Action<MobileCenterTask<TResult>> continuationAction)
+        /// <summary>
+        /// Adds a callback that will be invoked once the task is complete. If
+        /// the task is already complete, it is invoked immediately after being set.
+        /// </summary>
+        /// <param name="continuationAction">Callback to be invoked after task completion.</param>
+        public void ContinueWith(Action<MobileCenterTask<TResult>> continuationAction)
         {
             base.ContinueWith(task => continuationAction(this));
         }

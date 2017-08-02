@@ -19,10 +19,10 @@ namespace Microsoft.Azure.Mobile.Unity
         public MobileCenterTask(TResult result)
         {
             _result = result;
-		}
-        
+        }
+
         public TResult Result
-        { 
+        {
             get
             {
                 return _result;

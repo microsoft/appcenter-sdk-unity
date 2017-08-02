@@ -14,7 +14,7 @@ namespace Microsoft.Azure.Mobile.Unity.Push
 #endif
 
     public class Push
-    {        
+    {
         public static event EventHandler<PushNotificationReceivedEventArgs> PushNotificationReceived;
 
         public static void Initialize()
