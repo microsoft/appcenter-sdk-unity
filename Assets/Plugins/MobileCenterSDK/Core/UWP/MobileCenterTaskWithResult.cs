@@ -28,7 +28,7 @@ namespace Microsoft.Azure.Mobile.Unity
             }
         }
 
-        private MobileCenterTask()
+        internal MobileCenterTask()
         {
         }
 
