@@ -26,6 +26,8 @@ var UWP_SDK_VERSION = "0.14.0";
 var SDK_STORAGE_URL = "https://mobilecentersdkdev.blob.core.windows.net/sdk/";
 var ANDROID_URL = SDK_STORAGE_URL + "MobileCenter-SDK-Android-" + ANDROID_SDK_VERSION + ".zip";
 var IOS_URL = SDK_STORAGE_URL + "MobileCenter-SDK-iOS-" + IOS_SDK_VERSION + ".zip";
+var JAR_RESOLVER_PACKAGE_NAME =  "play-services-resolver-1.2.12.0.unitypackage";
+var JAR_RESOLVER_URL = SDK_STORAGE_URL + JAR_RESOLVER_PACKAGE_NAME;
 
 // Task TARGET for build
 var TARGET = Argument("target", Argument("t", "Default"));
@@ -85,15 +87,13 @@ class UnityPackage
 
     public void CreatePackage(string targetDirectory)
     {
-        var exec = Context.EnvironmentVariable("UNITY_PATH");
-        var projectDir = Context.MakeAbsolute(Context.Directory("."));
-        var args = "-batchmode -quit -projectPath " + projectDir + " -exportPackage ";
+        var args = "-exportPackage ";
         foreach (var path in _includePaths)
         {
             args += " " + path;
         }
         args += " " + targetDirectory + "/" + _packageName;
-        var result = Context.StartProcess(exec, args);
+        var result = ExecuteUnityCommand(args, Context);
         if (result != 0)
         {
             Context.Error("Something went wrong while creating cake package '" + _packageName + "'");
@@ -129,6 +129,11 @@ Task("Externals-Android")
         var files = GetFiles("./externals/android/*/" + module.AndroidModule);
         CopyFiles(files, "Assets/Plugins/Android/");
     }
+
+    // Add UnityJarResolver
+    var jarResolverDestination = "./externals/android/" + JAR_RESOLVER_PACKAGE_NAME;
+    DownloadFile(JAR_RESOLVER_URL, jarResolverDestination);
+    ExecuteUnityCommand("-importPackage " + jarResolverDestination, Context);
 }).OnError(HandleError);
 
 // Downloading iOS binaries.
@@ -313,6 +318,14 @@ string GetNuGetPackage(string packageId, string packageVersion)
         response.GetResponseStream().CopyTo(fstream);
     }
     return filename;
+}
+
+static int ExecuteUnityCommand(string extraArgs, ICakeContext context)
+{
+    var projectDir = context.MakeAbsolute(context.Directory("."));
+    var exec = context.EnvironmentVariable("UNITY_PATH");
+    var args = "-batchmode -quit -projectPath " + projectDir + " " + extraArgs;
+    return context.StartProcess(exec, args);
 }
 
 RunTarget(TARGET);

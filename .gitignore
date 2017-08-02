@@ -62,6 +62,6 @@ Assets/Plugins/Android/support-*
 Assets/Plugins/Android/play-services-*
 Assets/Plugins/Android/Firebase
 Assets/Plugins/Android/Firebase.meta
-!Assets/Firebase/**/*.exe
-!Assets/PlayServicesResolver/*.exe
-!Assets/PlayServicesResolver/**/*.dll
+Assets/Firebase/
+Assets/PlayServicesResolver/
+
