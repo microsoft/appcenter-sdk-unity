@@ -9,7 +9,8 @@ using AOT;
 
 namespace Microsoft.Azure.Mobile.Unity.Distribute.Internal
 {
-    class DistributeDelegate  {
+    class DistributeDelegate
+    {
         [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
         delegate bool ReleaseAvailableDelegate(IntPtr details);
 

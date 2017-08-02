@@ -9,9 +9,7 @@
 
 void* mobile_center_unity_analytics_get_type()
 {
-  Class* ptr = (Class*)malloc(sizeof(Class));
-  *ptr = [MSAnalytics class];
-  return ptr;
+  return (void *)CFBridgingRetain([MSAnalytics class]);
 }
 
 void mobile_center_unity_analytics_track_event(char* eventName)

@@ -8,9 +8,7 @@
 
 void* mobile_center_unity_distribute_get_type()
 {
-  Class* ptr = (Class*)malloc(sizeof(Class));
-  *ptr = [MSDistribute class];
-  return ptr;
+  return (void *)CFBridgingRetain([MSDistribute class]);
 }
 
 void mobile_center_unity_distribute_set_enabled(bool isEnabled)

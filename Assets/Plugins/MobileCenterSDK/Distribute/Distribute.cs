@@ -20,6 +20,11 @@ namespace Microsoft.Azure.Mobile.Unity.Distribute
             DistributeInternal.Initialize();
         }
 
+        public static void PostInitialize()
+        {
+            DistributeInternal.PostInitialize();
+        }
+        
         public static RawType GetNativeType()
         {
             return DistributeInternal.mobile_center_unity_distribute_get_type();

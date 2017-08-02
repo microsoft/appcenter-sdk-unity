@@ -7,8 +7,8 @@ using UnityEngine;
 
 namespace Microsoft.Azure.Mobile.Unity.Internal
 {
-	class CustomPropertiesInternal  {
-        
+    class CustomPropertiesInternal
+    {
         public static AndroidJavaObject mobile_center_unity_custom_properties_create()
         {
             return new AndroidJavaObject("com.microsoft.azure.mobile.CustomProperties");
@@ -19,25 +19,25 @@ namespace Microsoft.Azure.Mobile.Unity.Internal
             properties.Call<AndroidJavaObject>("set", key, val);
         }
 
-		public static void mobile_center_unity_custom_properties_set_number(AndroidJavaObject properties, string key, AndroidJavaObject val)
-		{
-			properties.Call<AndroidJavaObject>("set", key, val);
-		}
+        public static void mobile_center_unity_custom_properties_set_number(AndroidJavaObject properties, string key, AndroidJavaObject val)
+        {
+            properties.Call<AndroidJavaObject>("set", key, val);
+        }
 
-		public static void mobile_center_unity_custom_properties_set_bool(AndroidJavaObject properties, string key, bool val)
-		{
-			properties.Call<AndroidJavaObject>("set", key, val);
-		}
+        public static void mobile_center_unity_custom_properties_set_bool(AndroidJavaObject properties, string key, bool val)
+        {
+            properties.Call<AndroidJavaObject>("set", key, val);
+        }
 
-		public static void mobile_center_unity_custom_properties_set_date(AndroidJavaObject properties, string key, AndroidJavaObject val)
-		{
-			properties.Call<AndroidJavaObject>("set", key, val);
-		}
+        public static void mobile_center_unity_custom_properties_set_date(AndroidJavaObject properties, string key, AndroidJavaObject val)
+        {
+            properties.Call<AndroidJavaObject>("set", key, val);
+        }
 
-		public static void mobile_center_unity_custom_properties_clear(AndroidJavaObject properties, string key)
-		{
-			properties.Call<AndroidJavaObject>("clear", key);
-		}
-	}
+        public static void mobile_center_unity_custom_properties_clear(AndroidJavaObject properties, string key)
+        {
+            properties.Call<AndroidJavaObject>("clear", key);
+        }
+    }
 }
 #endif

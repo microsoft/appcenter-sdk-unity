@@ -12,7 +12,6 @@ static UnityCrashesDelegate *del;
 void mobile_center_unity_crashes_crashes_delegate_set_should_process_error_report_delegate(ShouldProcessErrorReportFunction* functionPtr)
 {
   shouldProcessErrorReport = functionPtr;
-
 }
 
 void mobile_center_unity_crashes_set_delegate()

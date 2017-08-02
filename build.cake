@@ -110,7 +110,7 @@ var MOBILECENTER_MODULES = new [] {
     new MobileCenterModule("mobile-center-analytics-release.aar", "MobileCenterAnalytics.framework", "Microsoft.Azure.Mobile.Analytics", "Analytics"),
     new MobileCenterModule("mobile-center-crashes-release.aar", "MobileCenterCrashes.framework", "Microsoft.Azure.Mobile.Crashes", "Crashes", true),
     new MobileCenterModule("mobile-center-distribute-release.aar", "MobileCenterDistribute.framework", "Microsoft.Azure.Mobile.Distribute", "Distribute"),
-    new MobileCenterModule("mobile-center-push-release.aar", "MobileCenterPush.framework", "Microsoft.Azure.Mobile.Push", "Push")	
+    new MobileCenterModule("mobile-center-push-release.aar", "MobileCenterPush.framework", "Microsoft.Azure.Mobile.Push", "Push")
 };
 
 // Downloading Android binaries.
@@ -153,7 +153,7 @@ Task("Externals-Ios")
 // Downloading UWP binaries.
 Task("Externals-Uwp")
     .Does(() =>
-{	
+{
     CleanDirectory("externals/uwp");
     // Download the nugets. We will use these to extract the dlls
     foreach (var module in MOBILECENTER_MODULES)
@@ -275,7 +275,7 @@ void DeleteDirectoryIfExists(string directoryName)
 {
     if (DirectoryExists(directoryName))
     {
-        DeleteDirectory(directoryName, true);	
+        DeleteDirectory(directoryName, true);
     }
 }
 
@@ -292,7 +292,7 @@ void HandleError(Exception exception)
 }
 
 string GetNuGetPackage(string packageId, string packageVersion)
-{	
+{
     var nugetUser = EnvironmentVariable("NUGET_USER");
     var nugetPassword = Argument("NuGetPassword", EnvironmentVariable("NUGET_PASSWORD"));
     var nugetFeedId = Argument("NuGetFeedId", EnvironmentVariable("NUGET_FEED_ID"));
