@@ -8,9 +8,7 @@
 
 void* mobile_center_unity_push_get_type()
 {
-  Class* ptr = (Class*)malloc(sizeof(Class));
-  *ptr = [MSPush class];
-  return ptr;
+  return (void *)CFBridgingRetain([MSPush class]);
 }
 
 void mobile_center_unity_push_set_enabled(bool isEnabled)
