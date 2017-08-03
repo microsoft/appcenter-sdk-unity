@@ -14,9 +14,10 @@ namespace Microsoft.Azure.Mobile.Unity.Internal
     using RawType = System.Object;
 #endif
 
-    class CustomPropertiesInternal  {
+    class CustomPropertiesInternal
+    {
 
-		public static RawType mobile_center_unity_custom_properties_create()
+        public static RawType mobile_center_unity_custom_properties_create()
         {
             return default(RawType);
         }
@@ -25,21 +26,21 @@ namespace Microsoft.Azure.Mobile.Unity.Internal
         {
         }
 
-		public static void mobile_center_unity_custom_properties_set_number(RawType properties, string key, object val)
+        public static void mobile_center_unity_custom_properties_set_number(RawType properties, string key, object val)
         {
         }
 
-		public static void mobile_center_unity_custom_properties_set_bool(RawType properties, string key, bool val)
+        public static void mobile_center_unity_custom_properties_set_bool(RawType properties, string key, bool val)
         {
         }
 
-		public static void mobile_center_unity_custom_properties_set_date(RawType properties, string key, object val)
+        public static void mobile_center_unity_custom_properties_set_date(RawType properties, string key, object val)
         {
         }
 
         public static void mobile_center_unity_custom_properties_clear(RawType properties, string key)
         {
         }
-	}
+    }
 }
 #endif

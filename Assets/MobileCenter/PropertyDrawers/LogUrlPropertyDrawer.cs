@@ -21,7 +21,7 @@ public class LogUrlPropertyDrawer : PropertyDrawer
         {
             property.Next(true);
             DrawTextField(position, property, label);  
-        }	
+        }
     }
     private void DrawToggle(Rect position, SerializedProperty property, GUIContent label)
     {
