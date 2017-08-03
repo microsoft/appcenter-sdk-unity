@@ -16,7 +16,7 @@ public class FirebaseDependency : AssetPostprocessor
     private const string GOOGLE_SERVICES_FILE_BASENAME = "google-services";
     private const string GOOGLE_SERVICES_INPUT_FILE = GOOGLE_SERVICES_FILE_BASENAME + ".json";
     private const string GOOGLE_SERVICES_OUTPUT_FILE = GOOGLE_SERVICES_FILE_BASENAME + ".xml";
-    private const string GOOGLE_SERVICES_OUTPUT_DIRECTORY = "Assets/Plugins/Android/Firebase/res/values";
+    private const string GOOGLE_SERVICES_OUTPUT_DIRECTORY = "Assets/Plugins/Android/res/values";
     private const string GOOGLE_SERVICES_OUTPUT_PATH = GOOGLE_SERVICES_OUTPUT_DIRECTORY + "/" + GOOGLE_SERVICES_OUTPUT_FILE;
 
     /// <summary>
