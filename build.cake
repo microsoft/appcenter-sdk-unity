@@ -26,7 +26,7 @@ var UWP_SDK_VERSION = "0.14.0";
 var SDK_STORAGE_URL = "https://mobilecentersdkdev.blob.core.windows.net/sdk/";
 var ANDROID_URL = SDK_STORAGE_URL + "MobileCenter-SDK-Android-" + ANDROID_SDK_VERSION + ".zip";
 var IOS_URL = SDK_STORAGE_URL + "MobileCenter-SDK-iOS-" + IOS_SDK_VERSION + ".zip";
-var JAR_RESOLVER_PACKAGE_NAME =  "play-services-resolver-1.2.12.0.unitypackage";
+var JAR_RESOLVER_PACKAGE_NAME =  "play-services-resolver-1.2.35.0.unitypackage";
 var JAR_RESOLVER_URL = SDK_STORAGE_URL + JAR_RESOLVER_PACKAGE_NAME;
 
 // Task TARGET for build
