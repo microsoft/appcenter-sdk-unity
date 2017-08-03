@@ -17,19 +17,21 @@ namespace Microsoft.Azure.Mobile.Unity.Push.Internal
             PushDelegate.mobile_center_unity_push_set_delegate();
         }
 
+        public static MobileCenterTask SetEnabledAsync(bool isEnabled)
+        {
+            var future = _push.CallStatic<AndroidJavaObject>("setEnabled", isEnabled);
+            return new MobileCenterTask(future);
+        }
+
+        public static MobileCenterTask<bool> IsEnabledAsync()
+        {
+            var future = _push.CallStatic<AndroidJavaObject>("isEnabled");
+            return new MobileCenterTask<bool>(future);
+        }
+        
         public static IntPtr mobile_center_unity_push_get_type()
         {
             return AndroidJNI.FindClass("com/microsoft/azure/mobile/push/Push");
-        }
-
-        public static void mobile_center_unity_push_set_enabled(bool isEnabled)
-        {
-            _push.CallStatic("setEnabled", isEnabled);
-        }
-
-        public static bool mobile_center_unity_push_is_enabled()
-        {
-            return _push.CallStatic<bool>("getEnabled");
         }
 
         public static void mobile_center_unity_push_enable_firebase_analytics()

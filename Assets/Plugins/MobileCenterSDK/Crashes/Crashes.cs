@@ -27,16 +27,14 @@ namespace Microsoft.Azure.Mobile.Unity.Crashes
             return CrashesInternal.mobile_center_unity_crashes_get_type();
         }
 
-        public static bool Enabled
+        public static MobileCenterTask<bool> IsEnabledAsync()
         {
-            get
-            {
-                return CrashesInternal.mobile_center_unity_crashes_is_enabled();
-            }
-            set
-            {
-                CrashesInternal.mobile_center_unity_crashes_set_enabled(value);
-            }
+            return CrashesInternal.IsEnabledAsync();
+        }
+
+        public static MobileCenterTask SetEnabledAsync(bool enabled)
+        {
+            return CrashesInternal.SetEnabledAsync(enabled);
         }
     }
 }

@@ -31,16 +31,14 @@ namespace Microsoft.Azure.Mobile.Unity.Push.Internal
             return typeof(UWPPush);
         }
 
-        public static void mobile_center_unity_push_set_enabled(bool isEnabled)
+        public static MobileCenterTask SetEnabledAsync(bool isEnabled)
         {
-            //TODO need better way to deal with async apis
-            UWPPush.SetEnabledAsync(isEnabled).Wait();
+            return new MobileCenterTask(UWPPush.SetEnabledAsync(isEnabled));
         }
 
-        public static bool mobile_center_unity_push_is_enabled()
+        public static MobileCenterTask<bool> IsEnabledAsync()
         {
-            //TODO need better way to deal with async apis
-            return UWPPush.IsEnabledAsync().Result;
+            return new MobileCenterTask<bool>(UWPPush.IsEnabledAsync());
         }
 
         public static void mobile_center_unity_push_check_launched_from_notification(LaunchActivatedEventArgs e)

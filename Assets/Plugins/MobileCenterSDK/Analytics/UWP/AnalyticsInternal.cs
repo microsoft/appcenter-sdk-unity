@@ -36,16 +36,14 @@ namespace Microsoft.Azure.Mobile.Unity.Analytics.Internal
             UWPAnalytics.TrackEvent(eventName, properties);
         }
 
-        public static void mobile_center_unity_analytics_set_enabled(bool isEnabled)
+        public static MobileCenterTask SetEnabledAsync(bool isEnabled)
         {
-            //TODO need better way to deal with async apis
-            UWPAnalytics.SetEnabledAsync(isEnabled).Wait();
+            return new MobileCenterTask(UWPAnalytics.SetEnabledAsync(isEnabled));
         }
 
-        public static bool mobile_center_unity_analytics_is_enabled()
+        public static MobileCenterTask<bool> IsEnabledAsync()
         {
-            //TODO need better way to deal with async apis
-            return UWPAnalytics.IsEnabledAsync().Result;
+            return new MobileCenterTask<bool>(UWPAnalytics.IsEnabledAsync());
         }
     }
 }

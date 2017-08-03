@@ -4,6 +4,7 @@
 
 #if UNITY_EDITOR
 using System;
+using Microsoft.Azure.Mobile.Unity;
 
 namespace Microsoft.Azure.Mobile.Unity.Internal
 {
@@ -50,23 +51,23 @@ namespace Microsoft.Azure.Mobile.Unity.Internal
         {
         }
 
-        public static void mobile_center_unity_set_enabled(bool isEnabled)
+        public static MobileCenterTask SetEnabledAsync(bool enabled)
         {
+            return MobileCenterTask.FromCompleted();
         }
 
-        public static bool mobile_center_unity_is_enabled()
+        public static MobileCenterTask<bool> IsEnabledAsync()
         {
-            return false;
+            return MobileCenterTask<bool>.FromCompleted(false);
         }
 
-        public static string mobile_center_unity_get_install_id()
+        public static MobileCenterTask<string> GetInstallIdAsync()
         {
-            return null;
+            return MobileCenterTask<string>.FromCompleted("");
         }
 
         public static void mobile_center_unity_set_custom_properties(RawType properties)
         {
-            
         }
 
         public static void mobile_center_unity_set_wrapper_sdk(string wrapperSdkVersion,

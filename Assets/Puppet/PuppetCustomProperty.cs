@@ -1,6 +1,6 @@
-﻿using Microsoft.Azure.Mobile.Unity;
-using System;
+﻿using System;
 using System.Globalization;
+using Microsoft.Azure.Mobile.Unity;
 using UnityEngine;
 using UnityEngine.UI;
 

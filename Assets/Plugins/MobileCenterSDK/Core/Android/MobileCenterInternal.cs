@@ -46,7 +46,7 @@ namespace Microsoft.Azure.Mobile.Unity.Internal
             AndroidJNI.CallStaticVoidMethod(mobileCenterRawClass, start_Method, new jvalue[]
             {
                 new jvalue { l = services }
-            });        
+            });
         }
 
         public static void mobile_center_unity_set_log_level(int logLevel)
@@ -69,20 +69,28 @@ namespace Microsoft.Azure.Mobile.Unity.Internal
             _mobileCenter.CallStatic("setLogUrl", logUrl);
         }
 
-        public static void mobile_center_unity_set_enabled(bool isEnabled)
+        public static MobileCenterTask SetEnabledAsync(bool enabled)
         {
-            _mobileCenter.CallStatic("setEnabled", isEnabled);
+            var future = _mobileCenter.CallStatic<AndroidJavaObject>("setEnabled", enabled);
+            return new MobileCenterTask(future);
         }
 
-        public static bool mobile_center_unity_is_enabled()
+        public static MobileCenterTask<bool> IsEnabledAsync()
         {
-            return _mobileCenter.CallStatic<bool>("isEnabled");
+            var future = _mobileCenter.CallStatic<AndroidJavaObject>("isEnabled");
+            return new MobileCenterTask<bool>(future);
         }
 
-        public static string mobile_center_unity_get_install_id()
+        public static MobileCenterTask<string> GetInstallIdAsync()
         {
-            AndroidJavaObject installId = _mobileCenter.CallStatic<AndroidJavaObject>("getInstallId");
-            return installId.Call<string>("toString");
+            AndroidJavaObject future = _mobileCenter.CallStatic<AndroidJavaObject>("getInstallId");
+            var javaUUIDtask = new MobileCenterTask<AndroidJavaObject>(future);
+            var stringTask = new MobileCenterTask<string>();
+            javaUUIDtask.ContinueWith(t => {
+                var installId = t.Result.Call<string>("toString");
+                stringTask.SetResult(installId);
+            });
+            return stringTask;
         }
 
         public static void mobile_center_unity_set_custom_properties(AndroidJavaObject properties)
