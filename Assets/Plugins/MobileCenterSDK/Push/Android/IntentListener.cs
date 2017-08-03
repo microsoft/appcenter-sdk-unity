@@ -2,7 +2,7 @@
 //
 // Licensed under the MIT license.
 
-#if UNITY_ANDROID && !UNITY_EDITOR
+#if PSYOUIKJ && UNITY_ANDROID && !UNITY_EDITOR
 using UnityEngine;
 
 public class IntentListener : AndroidJavaProxy
@@ -14,9 +14,9 @@ public class IntentListener : AndroidJavaProxy
     public static void SetListener()
     {
         MonoBehaviour.print("UNITY: setting intent listener");
-		AndroidJavaClass mobileCenterActivity = new AndroidJavaClass("com.microsoft.azure.mobile.mobilecenterunityplayeractivity.MobileCenterUnityPlayerActivity");
+        AndroidJavaClass mobileCenterActivity = new AndroidJavaClass("com.microsoft.azure.mobile.mobilecenterunityplayeractivity.MobileCenterUnityPlayerActivity");
         mobileCenterActivity.CallStatic("setListener", new IntentListener());
-	}
+    }
 
     public void onNewIntent(AndroidJavaObject activity, AndroidJavaObject intent)
     {

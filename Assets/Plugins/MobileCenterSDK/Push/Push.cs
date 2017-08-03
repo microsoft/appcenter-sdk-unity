@@ -22,6 +22,10 @@ namespace Microsoft.Azure.Mobile.Unity.Push
             PushInternal.Initialize();
         }
 
+        public static void PostInitialize()
+        {
+            PushInternal.PostInitialize();
+        }
         public static RawType GetNativeType()
         {
             return PushInternal.mobile_center_unity_push_get_type();
