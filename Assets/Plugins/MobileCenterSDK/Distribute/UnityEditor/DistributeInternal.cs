@@ -27,13 +27,14 @@ namespace Microsoft.Azure.Mobile.Unity.Distribute.Internal
             return default(RawType);
         }
 
-        public static void mobile_center_unity_distribute_set_enabled(bool isEnabled)
+        public static MobileCenterTask SetEnabledAsync(bool enabled)
         {
+            return MobileCenterTask.FromCompleted();
         }
 
-        public static bool mobile_center_unity_distribute_is_enabled()
+        public static MobileCenterTask<bool> IsEnabledAsync()
         {
-            return false;
+            return MobileCenterTask<bool>.FromCompleted(false);
         }
 
         public static void mobile_center_unity_distribute_set_install_url(string installUrl)

@@ -54,22 +54,25 @@ namespace Microsoft.Azure.Mobile.Unity.Internal
             UWPMobileCenter.SetLogUrl(logUrl);
         }
 
-        public static void mobile_center_unity_set_enabled(bool isEnabled)
+        public static MobileCenterTask SetEnabledAsync(bool isEnabled)
         {
-            //TODO need better way to deal with async apis
-            UWPMobileCenter.SetEnabledAsync(isEnabled).Wait();
+            return new MobileCenterTask(UWPMobileCenter.SetEnabledAsync(isEnabled));
         }
 
-        public static bool mobile_center_unity_is_enabled()
+        public static MobileCenterTask<bool> IsEnabledAsync()
         {
-            //TODO need better way to deal with async apis
-            return UWPMobileCenter.IsEnabledAsync().Result;
+            return new MobileCenterTask<bool>(UWPMobileCenter.IsEnabledAsync());
         }
 
-        public static string mobile_center_unity_get_install_id()
+        public static MobileCenterTask<string> GetInstallIdAsync()
         {
-            //TODO need better way to deal with async apis
-            return UWPMobileCenter.GetInstallIdAsync().Result?.ToString();
+            var installIdTask = UWPMobileCenter.GetInstallIdAsync();
+            var stringTask = new MobileCenterTask<string>();
+            installIdTask.ContinueWith(t => {
+                var installId = t.Result?.ToString();
+                stringTask.SetResult(installId);
+            });
+            return stringTask;
         }
 
         public static void mobile_center_unity_set_custom_properties(object properties)

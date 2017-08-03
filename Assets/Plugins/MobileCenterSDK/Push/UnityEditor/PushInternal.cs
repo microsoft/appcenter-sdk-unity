@@ -28,13 +28,14 @@ namespace Microsoft.Azure.Mobile.Unity.Push.Internal
             return default(RawType);
         }
 
-        public static void mobile_center_unity_push_set_enabled(bool isEnabled)
+        public static MobileCenterTask SetEnabledAsync(bool enabled)
         {
+            return null;
         }
 
-        public static bool mobile_center_unity_push_is_enabled()
+        public static MobileCenterTask<bool> IsEnabledAsync()
         {
-            return false;
+            return null;
         }
 
         public static void mobile_center_unity_push_enable_firebase_analytics()

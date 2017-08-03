@@ -40,14 +40,16 @@ namespace Microsoft.Azure.Mobile.Unity.Analytics.Internal
             _analytics.CallStatic("trackEvent", eventName, properties);
         }
 
-        public static void mobile_center_unity_analytics_set_enabled(bool isEnabled)
+        public static MobileCenterTask SetEnabledAsync(bool isEnabled)
         {
-            _analytics.CallStatic("setEnabled", isEnabled);
+            var future = _analytics.CallStatic<AndroidJavaObject>("setEnabled", isEnabled);
+            return new MobileCenterTask(future);
         }
 
-        public static bool mobile_center_unity_analytics_is_enabled()
+        public static MobileCenterTask<bool> IsEnabledAsync()
         {
-            return _analytics.CallStatic<bool>("isEnabled");
+            var future = _analytics.CallStatic<AndroidJavaObject>("isEnabled");
+            return new MobileCenterTask<bool>(future);
         }
     }
 }

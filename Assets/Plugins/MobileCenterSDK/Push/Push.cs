@@ -14,7 +14,7 @@ namespace Microsoft.Azure.Mobile.Unity.Push
 #endif
 
     public class Push
-    {        
+    {
         public static event EventHandler<PushNotificationReceivedEventArgs> PushNotificationReceived;
 
         public static void Initialize()
@@ -31,15 +31,14 @@ namespace Microsoft.Azure.Mobile.Unity.Push
             return PushInternal.mobile_center_unity_push_get_type();
         }
 
-        public static bool Enabled {
-            get
-            {
-                return PushInternal.mobile_center_unity_push_is_enabled();
-            }
-            set
-            {
-                PushInternal.mobile_center_unity_push_set_enabled(value);
-            }
+        public static MobileCenterTask<bool> IsEnabledAsync()
+        {
+            return PushInternal.IsEnabledAsync();
+        }
+
+        public static MobileCenterTask SetEnabledAsync(bool enabled)
+        {
+            return PushInternal.SetEnabledAsync(enabled);
         }
 
         public static void EnableFirebaseAnalytics()

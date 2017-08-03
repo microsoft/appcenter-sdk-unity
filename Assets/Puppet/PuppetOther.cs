@@ -1,4 +1,4 @@
-﻿using Microsoft.Azure.Mobile.Unity.Distribute;
+using Microsoft.Azure.Mobile.Unity.Distribute;
 using Microsoft.Azure.Mobile.Unity.Push;
 using UnityEngine;
 using UnityEngine.UI;
@@ -10,19 +10,29 @@ public class PuppetOther : MonoBehaviour
 
     void OnEnable()
     {
-        DistributeEnabled.isOn = Distribute.Enabled;
-        PushEnabled.isOn = Push.Enabled;
-    }
-
-    public void SetDistributeEnabled(bool enabled)
-    {
-        Distribute.Enabled = enabled;
-        DistributeEnabled.isOn = Distribute.Enabled;
+        Push.IsEnabledAsync().ContinueWith(task =>
+        {
+            PushEnabled.isOn = task.Result;
+        });
+        Distribute.IsEnabledAsync().ContinueWith(task =>
+        {
+            DistributeEnabled.isOn = task.Result;
+        });
     }
 
     public void SetPushEnabled(bool enabled)
     {
-        Push.Enabled = enabled;
-        PushEnabled.isOn = Push.Enabled;
+        Push.SetEnabledAsync(enabled).ContinueWith(task => 
+        {
+            PushEnabled.isOn = enabled;
+        });
+    }
+    
+    public void SetDistributeEnabled(bool enabled)
+    {
+        Distribute.SetEnabledAsync(enabled).ContinueWith(task => 
+        {
+            DistributeEnabled.isOn = enabled;
+        });
     }
 }

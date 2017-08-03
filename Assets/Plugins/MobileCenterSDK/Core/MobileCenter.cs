@@ -3,6 +3,7 @@
 // Licensed under the MIT license.
 
 using System;
+using System.Collections;
 using System.Reflection;
 using Microsoft.Azure.Mobile.Unity.Internal;
 using UnityEngine;
@@ -30,17 +31,14 @@ namespace Microsoft.Azure.Mobile.Unity
             set { MobileCenterInternal.mobile_center_unity_set_log_level((int)value); }
         }
 
-        /// <summary>
-        ///     Enable or disable the SDK as a whole. Updating the property propagates the value to all services that have been
-        ///     started.
-        /// </summary>
-        /// <remarks>
-        ///     The default state is <c>true</c> and updating the state is persisted into local application storage.
-        /// </remarks>
-        public static bool Enabled
+        public static MobileCenterTask SetEnabledAsync(bool enabled)
         {
-            get { return MobileCenterInternal.mobile_center_unity_is_enabled(); }
-            set { MobileCenterInternal.mobile_center_unity_set_enabled(value); }
+            return MobileCenterInternal.SetEnabledAsync(enabled);
+        }
+
+        public static MobileCenterTask<bool> IsEnabledAsync()
+        {
+            return MobileCenterInternal.IsEnabledAsync();
         }
 
         /// <summary>
@@ -49,13 +47,15 @@ namespace Microsoft.Azure.Mobile.Unity
         /// <remarks>
         /// The identifier is lost if clearing application data or uninstalling application.
         /// </remarks>
-        public static Guid? InstallId
+        public static MobileCenterTask<Guid?> GetInstallIdAsync()
         {
-            get
-            {
-                var installIdString = MobileCenterInternal.mobile_center_unity_get_install_id();
-                return new Guid(installIdString);
-            }
+            var stringTask = MobileCenterInternal.GetInstallIdAsync();
+            var guidTask = new MobileCenterTask<Guid?>();
+            stringTask.ContinueWith(t => {
+                var installId = new Guid(t.Result);
+                guidTask.SetResult(installId);
+            });
+            return guidTask;
         }
 
         /// <summary>
@@ -202,7 +202,6 @@ namespace Microsoft.Azure.Mobile.Unity
                                                                      WrapperSdk.Name,
                                                                      WrapperSdk.WrapperRuntimeVersion, null, null, null);
         }
-
 
         // Gets the first instance of an app secret corresponding to the given platform name, or returns the string 
         // as-is if no identifier can be found.

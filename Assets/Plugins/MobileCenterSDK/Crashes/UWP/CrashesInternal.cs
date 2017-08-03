@@ -1,5 +1,6 @@
-﻿#if UNITY_WSA_10_0 && !UNITY_EDITOR
+#if UNITY_WSA_10_0 && !UNITY_EDITOR
 using System;
+using System.Threading.Tasks;
 
 namespace Microsoft.Azure.Mobile.Unity.Crashes.Internal
 {
@@ -10,13 +11,14 @@ namespace Microsoft.Azure.Mobile.Unity.Crashes.Internal
             return typeof(Microsoft.Azure.Mobile.Crashes.Crashes);
         }
 
-        public static void mobile_center_unity_crashes_set_enabled(bool isEnabled)
+        public static MobileCenterTask SetEnabledAsync(bool isEnabled)
         {
+            return MobileCenterTask.FromCompleted();
         }
 
-        public static bool mobile_center_unity_crashes_is_enabled()
+        public static MobileCenterTask<bool> IsEnabledAsync()
         {
-            return false;
+            return MobileCenterTask<bool>.FromCompleted(false);
         }
     }
 }

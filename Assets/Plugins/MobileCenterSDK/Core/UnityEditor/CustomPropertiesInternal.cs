@@ -16,7 +16,6 @@ namespace Microsoft.Azure.Mobile.Unity.Internal
 
     class CustomPropertiesInternal
     {
-
         public static RawType mobile_center_unity_custom_properties_create()
         {
             return default(RawType);
