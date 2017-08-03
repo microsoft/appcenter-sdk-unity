@@ -41,7 +41,6 @@ namespace Microsoft.Azure.Mobile.Unity.Analytics.Internal
         {
             return null;
         }
-
     }
 }
 #endif
