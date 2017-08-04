@@ -13,11 +13,11 @@ using UnityEngine;
 [InitializeOnLoad]
 public class FirebaseDependency : AssetPostprocessor
 {
-    private const string GOOGLE_SERVICES_FILE_BASENAME = "google-services";
-    private const string GOOGLE_SERVICES_INPUT_FILE = GOOGLE_SERVICES_FILE_BASENAME + ".json";
-    private const string GOOGLE_SERVICES_OUTPUT_FILE = GOOGLE_SERVICES_FILE_BASENAME + ".xml";
-    private const string GOOGLE_SERVICES_OUTPUT_DIRECTORY = "Assets/Plugins/Android/res/values";
-    private const string GOOGLE_SERVICES_OUTPUT_PATH = GOOGLE_SERVICES_OUTPUT_DIRECTORY + "/" + GOOGLE_SERVICES_OUTPUT_FILE;
+    private const string GoogleServicesFileBasename = "google-services";
+    private const string GoogleServicesInputFile = GoogleServicesFileBasename + ".json";
+    private const string GoogleServicesOutputFile = GoogleServicesFileBasename + ".xml";
+    private const string GoogleServicesOutputDirectory = "Assets/Plugins/Android/res/values";
+    private const string GoogleServicesOutputPath = GoogleServicesOutputDirectory + "/" + GoogleServicesOutputFile;
 
     /// <summary>
     /// This is the entry point for "InitializeOnLoad". It will register the
@@ -36,7 +36,8 @@ public class FirebaseDependency : AssetPostprocessor
         // available at compile time.
         Type playServicesSupport = Google.VersionHandler.FindClass(
             "Google.JarResolver", "Google.JarResolver.PlayServicesSupport");
-        if (playServicesSupport == null) {
+        if (playServicesSupport == null)
+        {
             return;
         }
 
@@ -93,11 +94,13 @@ public class FirebaseDependency : AssetPostprocessor
     static string[] FindGoogleServicesFiles()
     {
         var googleServicesFiles = new List<string>();
-        foreach (var asset in AssetDatabase.FindAssets(GOOGLE_SERVICES_FILE_BASENAME))
+        foreach (var asset in AssetDatabase.FindAssets(GoogleServicesFileBasename))
         {
             string assetPath = AssetDatabase.GUIDToAssetPath(asset);
-            if (Path.GetFileName(assetPath) == GOOGLE_SERVICES_INPUT_FILE)
+            if (Path.GetFileName(assetPath) == GoogleServicesInputFile)
+            {
                 googleServicesFiles.Add(assetPath);
+            }
         }
         return googleServicesFiles.Count > 0 ? googleServicesFiles.ToArray() : null;
     }
@@ -149,14 +152,16 @@ public class FirebaseDependency : AssetPostprocessor
         var projectDir = Path.Combine(Application.dataPath, "..");
         var googleServicesFiles = FindGoogleServicesFiles();
         if (googleServicesFiles == null)
+        {
             return;
+        }
         if (googleServicesFiles.Length > 1)
         {
-            Debug.LogWarning("More than one " + GOOGLE_SERVICES_INPUT_FILE + " file found, using first one.");
+            Debug.LogWarning("More than one " + GoogleServicesInputFile + " file found, using first one.");
         }
         var inputPath = Path.Combine(projectDir, googleServicesFiles[0]);
-        var outputPath = Path.Combine(projectDir, GOOGLE_SERVICES_OUTPUT_PATH);
-        var outputDir = Path.Combine(projectDir, GOOGLE_SERVICES_OUTPUT_DIRECTORY);
+        var outputPath = Path.Combine(projectDir, GoogleServicesOutputPath);
+        var outputDir = Path.Combine(projectDir, GoogleServicesOutputDirectory);
         if (!Directory.Exists(outputDir))
         {
             try
@@ -169,8 +174,11 @@ public class FirebaseDependency : AssetPostprocessor
                 return;
             }
         }
-        if (File.Exists(outputPath) && File.GetLastWriteTime(outputPath).CompareTo(File.GetLastWriteTime(inputPath)) >= 0)
+        if (File.Exists(outputPath) &&
+            File.GetLastWriteTime(outputPath).CompareTo(File.GetLastWriteTime(inputPath)) >= 0)
+        {
             return;
+        }
 
         var json = File.ReadAllText(inputPath);
         var googleServices = JsonUtility.FromJson<GoogleServices>(json);
@@ -178,7 +186,7 @@ public class FirebaseDependency : AssetPostprocessor
         var resolvedClientInfo = googleServices.GetClient(bundleId);
         if (resolvedClientInfo == null)
         {
-            Debug.LogWarning("Failed to find client_info in " + GOOGLE_SERVICES_INPUT_FILE + " matching package name: " + bundleId);
+            Debug.LogWarning("Failed to find client_info in " + GoogleServicesInputFile + " matching package name: " + bundleId);
         }
 
         var valuesItems = new Dictionary<string, string> {
@@ -212,7 +220,7 @@ public class FirebaseDependency : AssetPostprocessor
             {
                 SetupDependencies();
             }
-            else if (Path.GetFileName(asset) == GOOGLE_SERVICES_INPUT_FILE)
+            else if (Path.GetFileName(asset) == GoogleServicesInputFile)
             {
                 UpdateJson();
             }
@@ -280,10 +288,6 @@ public class FirebaseDependency : AssetPostprocessor
     public class Services
     {
         public AnalyticsService analytics_service;
-        //public CloudMessagingService cloud_messaging_service;
-        //public AppinviteService appinvite_service;
-        //public GoogleSigninService google_signin_service;
-        //public AdsService ads_service;
     }
 
     [Serializable]
@@ -319,7 +323,7 @@ public class FirebaseDependency : AssetPostprocessor
 
         public string GetGATrackingId(string packageName)
         {
-            //{YOUR_CLIENT}/services/analytics-service/analytics_property/tracking_id
+            // {YOUR_CLIENT}/services/analytics-service/analytics_property/tracking_id
             var client = GetClient(packageName);
             if (client == null)
                 return null;
