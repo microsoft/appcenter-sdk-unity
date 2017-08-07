@@ -3,6 +3,7 @@
 // Licensed under the MIT license.
 
 #if UNITY_EDITOR
+using System;
 
 namespace Microsoft.Azure.Mobile.Unity.Internal
 {
@@ -16,7 +17,7 @@ namespace Microsoft.Azure.Mobile.Unity.Internal
 
     class CustomPropertiesInternal
     {
-        public static RawType Сreate()
+        public static RawType Create()
         {
             return default(RawType);
         }

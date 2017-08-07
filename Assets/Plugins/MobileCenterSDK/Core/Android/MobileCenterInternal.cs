@@ -3,8 +3,8 @@
 // Licensed under the MIT license.
 
 #if UNITY_ANDROID && !UNITY_EDITOR
-using UnityEngine;
 using System;
+using UnityEngine;
 
 namespace Microsoft.Azure.Mobile.Unity.Internal
 {

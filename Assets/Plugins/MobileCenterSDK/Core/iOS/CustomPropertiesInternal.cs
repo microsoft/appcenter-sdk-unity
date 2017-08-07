@@ -5,7 +5,6 @@
 #if UNITY_IOS && !UNITY_EDITOR
 using System;
 using System.Runtime.InteropServices;
-
 using Microsoft.Azure.Mobile.Internal.Utility.NSDateHelper;
 using Microsoft.Azure.Mobile.Internal.Utility.NSNumberHelper;
 
@@ -43,7 +42,7 @@ namespace Microsoft.Azure.Mobile.Unity.Internal
             mobile_center_unity_custom_properties_clear(properties, key);
         }
 
-##region External
+#region External
 
         [DllImport("__Internal")]
         private static extern IntPtr mobile_center_unity_custom_properties_create();

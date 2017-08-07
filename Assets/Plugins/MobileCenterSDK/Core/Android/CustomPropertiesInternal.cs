@@ -5,7 +5,6 @@
 #if UNITY_ANDROID && !UNITY_EDITOR
 using System;
 using UnityEngine;
-
 using Microsoft.Azure.Mobile.Internal.Utility.JavaDateHelper;
 using Microsoft.Azure.Mobile.Internal.Utility.JavaNumberHelper;
 

@@ -83,7 +83,7 @@ namespace Microsoft.Azure.Mobile.Unity.Internal
                                                 liveUpdatePackageHash);
         }
 
-##region External
+#region External
 
         [DllImport("__Internal")]
         private static extern void mobile_center_unity_configure(string appSecret);
