@@ -16,16 +16,15 @@ namespace Microsoft.Azure.Mobile.Unity.Crashes.Internal
         static NativeShouldProcessErrorReportDelegate del;
         static IntPtr ptr;
 
-        [DllImport("__Internal")]
-        public static extern void mobile_center_unity_crashes_set_delegate();
-
-        [DllImport("__Internal")]
-        private static extern void mobile_center_unity_crashes_crashes_delegate_set_should_process_error_report_delegate(NativeShouldProcessErrorReportDelegate functionPtr);
-
         static CrashesDelegate()
         {
             del = ShouldProcessErrorReportNativeFunc;
             mobile_center_unity_crashes_crashes_delegate_set_should_process_error_report_delegate(del);
+        }
+
+        public static void SetDelegate()
+        {
+            mobile_center_unity_crashes_set_delegate();
         }
 
         [MonoPInvokeCallback(typeof(NativeShouldProcessErrorReportDelegate))]
@@ -33,6 +32,16 @@ namespace Microsoft.Azure.Mobile.Unity.Crashes.Internal
         {
             return false;
         }
+
+#region External
+
+        [DllImport("__Internal")]
+        private static extern void mobile_center_unity_crashes_set_delegate();
+
+        [DllImport("__Internal")]
+        private static extern void mobile_center_unity_crashes_crashes_delegate_set_should_process_error_report_delegate(NativeShouldProcessErrorReportDelegate functionPtr);
+
+#endregion
     }
 }
 #endif

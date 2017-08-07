@@ -14,7 +14,7 @@ namespace Microsoft.Azure.Mobile.Unity.Crashes.Internal
         {
         }
 
-        public static void mobile_center_unity_crashes_set_delegate()
+        public static void SetDelegate()
         {
             var crashes = new AndroidJavaClass("com.microsoft.azure.mobile.crashes.Crashes");
             crashes.CallStatic("setListener", new CrashesDelegate());

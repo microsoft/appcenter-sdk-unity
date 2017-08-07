@@ -19,12 +19,12 @@ namespace Microsoft.Azure.Mobile.Unity.Crashes
     {
         public static void Initialize()
         {
-            CrashesDelegate.mobile_center_unity_crashes_set_delegate();
+            CrashesDelegate.SetDelegate();
         }
 
         public static RawType GetNativeType()
         {
-            return CrashesInternal.mobile_center_unity_crashes_get_type();
+            return CrashesInternal.GetType();
         }
 
         public static MobileCenterTask<bool> IsEnabledAsync()

@@ -10,6 +10,11 @@ namespace Microsoft.Azure.Mobile.Unity.Crashes.Internal
 {
     class CrashesInternal
     {
+        public static RawType GetType()
+        {
+            return mobile_center_unity_crashes_get_type();
+        }
+
         public static MobileCenterTask SetEnabledAsync(bool isEnabled)
         {
             mobile_center_unity_crashes_set_enabled(isEnabled);
@@ -22,14 +27,18 @@ namespace Microsoft.Azure.Mobile.Unity.Crashes.Internal
             return MobileCenterTask<bool>.FromCompleted(isEnabled);
         }
 
+#region External
+
         [DllImport("__Internal")]
-        public static extern IntPtr mobile_center_unity_crashes_get_type();
+        private static extern IntPtr mobile_center_unity_crashes_get_type();
 
         [DllImport("__Internal")]
         private static extern void mobile_center_unity_crashes_set_enabled(bool isEnabled);
 
         [DllImport("__Internal")]
         private static extern bool mobile_center_unity_crashes_is_enabled();
+
+#endregion
     }
 }
 #endif
