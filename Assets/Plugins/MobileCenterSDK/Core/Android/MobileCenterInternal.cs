@@ -12,12 +12,12 @@ namespace Microsoft.Azure.Mobile.Unity.Internal
     {
         private static AndroidJavaClass _mobileCenter = new AndroidJavaClass("com.microsoft.azure.mobile.MobileCenter");
         
-        public static void mobile_center_unity_configure(string appSecret)
+        public static void Configure(string appSecret)
         {
             _mobileCenter.CallStatic("configure", GetAndroidApplication(), appSecret);
         }
 
-        public static void mobile_center_unity_start(string appSecret, IntPtr[] servicesArray, int numServices)
+        public static void Start(string appSecret, IntPtr[] servicesArray, int numServices)
         {
             IntPtr services = servicesArray[0];
             IntPtr stringClass = AndroidJNI.FindClass("java/lang/String");
@@ -36,7 +36,7 @@ namespace Microsoft.Azure.Mobile.Unity.Internal
             });
         }
 
-        public static void mobile_center_unity_start_services(IntPtr[] servicesArray, int numServices)
+        public static void StartServices(IntPtr[] servicesArray, int numServices)
         {
             IntPtr services = servicesArray[0];
             IntPtr stringClass = AndroidJNI.FindClass("java/lang/String");
@@ -49,22 +49,22 @@ namespace Microsoft.Azure.Mobile.Unity.Internal
             });
         }
 
-        public static void mobile_center_unity_set_log_level(int logLevel)
+        public static void SetLogLevel(int logLevel)
         {
             _mobileCenter.CallStatic("setLogLevel", logLevel);
         }
 
-        public static int mobile_center_unity_get_log_level()
+        public static int GetLogLevel()
         {
             return _mobileCenter.CallStatic<int>("getLogLevel");
         }
 
-        public static bool mobile_center_unity_is_configured()
+        public static bool IsConfigured()
         {
             return _mobileCenter.CallStatic<bool>("isConfigured");
         }
 
-        public static void mobile_center_unity_set_log_url(string logUrl)
+        public static void SetLogUrl(string logUrl)
         {
             _mobileCenter.CallStatic("setLogUrl", logUrl);
         }
@@ -93,7 +93,7 @@ namespace Microsoft.Azure.Mobile.Unity.Internal
             return stringTask;
         }
 
-        public static void mobile_center_unity_set_custom_properties(AndroidJavaObject properties)
+        public static void SetCustomProperties(AndroidJavaObject properties)
         {
             _mobileCenter.CallStatic("setCustomProperties", properties);
         }
@@ -105,12 +105,12 @@ namespace Microsoft.Azure.Mobile.Unity.Internal
             return activity.Call<AndroidJavaObject>("getApplication");
         }
 
-        public static void mobile_center_unity_set_wrapper_sdk(string wrapperSdkVersion,
-                                                               string wrapperSdkName, 
-                                                               string wrapperRuntimeVersion, 
-                                                               string liveUpdateReleaseLabel, 
-                                                               string liveUpdateDeploymentKey, 
-                                                               string liveUpdatePackageHash)
+        public static void SetWrapperSdk(string wrapperSdkVersion,
+                                         string wrapperSdkName, 
+                                         string wrapperRuntimeVersion, 
+                                         string liveUpdateReleaseLabel, 
+                                         string liveUpdateDeploymentKey, 
+                                         string liveUpdatePackageHash)
         {
             var wrapperSdkObject = new AndroidJavaObject("com.microsoft.azure.mobile.ingestion.models.WrapperSdk");
             wrapperSdkObject.Call("setWrapperSdkVersion", wrapperSdkVersion);
