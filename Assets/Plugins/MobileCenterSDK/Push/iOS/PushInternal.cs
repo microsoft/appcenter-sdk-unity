@@ -19,7 +19,7 @@ namespace Microsoft.Azure.Mobile.Unity.Push.Internal
         {
         }
 
-        public static RawType GetNativeType()
+        public static IntPtr GetNativeType()
         {
             return mobile_center_unity_push_get_type();
         }

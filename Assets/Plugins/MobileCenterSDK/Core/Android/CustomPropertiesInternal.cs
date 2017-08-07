@@ -5,8 +5,7 @@
 #if UNITY_ANDROID && !UNITY_EDITOR
 using System;
 using UnityEngine;
-using Microsoft.Azure.Mobile.Internal.Utility.JavaDateHelper;
-using Microsoft.Azure.Mobile.Internal.Utility.JavaNumberHelper;
+using Microsoft.Azure.Mobile.Internal.Utility;
 
 namespace Microsoft.Azure.Mobile.Unity.Internal
 {
@@ -22,7 +21,22 @@ namespace Microsoft.Azure.Mobile.Unity.Internal
             properties.Call<AndroidJavaObject>("set", key, val);
         }
 
-        public static void SetNumber(AndroidJavaObject properties, string key, object val)
+        public static void SetNumber(AndroidJavaObject properties, string key, int val)
+        {
+            properties.Call<AndroidJavaObject>("set", key, JavaNumberHelper.Convert(val));
+        }
+
+        public static void SetNumber(AndroidJavaObject properties, string key, long val)
+        {
+            properties.Call<AndroidJavaObject>("set", key, JavaNumberHelper.Convert(val));
+        }
+
+        public static void SetNumber(AndroidJavaObject properties, string key, float val)
+        {
+            properties.Call<AndroidJavaObject>("set", key, JavaNumberHelper.Convert(val));
+        }
+
+        public static void SetNumber(AndroidJavaObject properties, string key, double val)
         {
             properties.Call<AndroidJavaObject>("set", key, JavaNumberHelper.Convert(val));
         }

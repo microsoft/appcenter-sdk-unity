@@ -32,12 +32,12 @@ namespace Microsoft.Azure.Mobile.Unity.Internal
 
         public static int GetLogLevel()
         {
-            mobile_center_unity_get_log_level();
+            return mobile_center_unity_get_log_level();
         }
 
         public static bool IsConfigured()
         {
-            mobile_center_unity_is_configured();
+            return mobile_center_unity_is_configured();
         }
 
         public static void SetLogUrl(string logUrl)
@@ -65,7 +65,7 @@ namespace Microsoft.Azure.Mobile.Unity.Internal
 
         public static void SetCustomProperties(IntPtr properties)
         {
-            mobile_center_unity_set_custom_properties
+            mobile_center_unity_set_custom_properties(properties);
         }
 
         public static void SetWrapperSdk(string wrapperSdkVersion,

@@ -5,8 +5,7 @@
 #if UNITY_IOS && !UNITY_EDITOR
 using System;
 using System.Runtime.InteropServices;
-using Microsoft.Azure.Mobile.Internal.Utility.NSDateHelper;
-using Microsoft.Azure.Mobile.Internal.Utility.NSNumberHelper;
+using Microsoft.Azure.Mobile.Internal.Utility;
 
 namespace Microsoft.Azure.Mobile.Unity.Internal
 {
@@ -22,7 +21,22 @@ namespace Microsoft.Azure.Mobile.Unity.Internal
             mobile_center_unity_custom_properties_set_string(properties, key, val);
         }
 
-        public static void SetNumber(IntPtr properties, string key, object val)
+        public static void SetNumber(IntPtr properties, string key, int val)
+        {
+            mobile_center_unity_custom_properties_set_number(properties, key, NSNumberHelper.Convert(val));
+        }
+
+        public static void SetNumber(IntPtr properties, string key, long val)
+        {
+            mobile_center_unity_custom_properties_set_number(properties, key, NSNumberHelper.Convert(val));
+        }
+
+        public static void SetNumber(IntPtr properties, string key, float val)
+        {
+            mobile_center_unity_custom_properties_set_number(properties, key, NSNumberHelper.Convert(val));
+        }
+
+        public static void SetNumber(IntPtr properties, string key, double val)
         {
             mobile_center_unity_custom_properties_set_number(properties, key, NSNumberHelper.Convert(val));
         }
