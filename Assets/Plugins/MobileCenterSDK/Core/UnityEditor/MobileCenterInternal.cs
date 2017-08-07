@@ -21,33 +21,33 @@ namespace Microsoft.Azure.Mobile.Unity.Internal
 
     class MobileCenterInternal
     {
-        public static void mobile_center_unity_configure(string appSecret)
+        public static void Configure(string appSecret)
         {
         }
 
-        public static void mobile_center_unity_start(string appSecret, ServiceType[] services, int numServices)
+        public static void Start(string appSecret, ServiceType[] services, int numServices)
         {
         }
 
-        public static void mobile_center_unity_start_services(ServiceType[] services, int numServices)
+        public static void StartServices(ServiceType[] services, int numServices)
         {
         }
 
-        public static void mobile_center_unity_set_log_level(int logLevel)
+        public static void SetLogLevel(int logLevel)
         {
         }
 
-        public static int mobile_center_unity_get_log_level()
+        public static int GetLogLevel()
         {
             return 0;
         }
 
-        public static bool mobile_center_unity_is_configured()
+        public static bool IsConfigured()
         {
             return false;
         }
 
-        public static void mobile_center_unity_set_log_url(string logUrl)
+        public static void SetLogUrl(string logUrl)
         {
         }
 
@@ -66,16 +66,16 @@ namespace Microsoft.Azure.Mobile.Unity.Internal
             return MobileCenterTask<string>.FromCompleted("");
         }
 
-        public static void mobile_center_unity_set_custom_properties(RawType properties)
+        public static void SetCustomProperties(RawType properties)
         {
         }
 
-        public static void mobile_center_unity_set_wrapper_sdk(string wrapperSdkVersion,
-                                                                string wrapperSdkName,
-                                                                string wrapperRuntimeVersion,
-                                                                string liveUpdateReleaseLabel,
-                                                                string liveUpdateDeploymentKey,
-                                                                string liveUpdatePackageHash)
+        public static void SetWrapperSdk(string wrapperSdkVersion,
+                                         string wrapperSdkName,
+                                         string wrapperRuntimeVersion,
+                                         string liveUpdateReleaseLabel,
+                                         string liveUpdateDeploymentKey,
+                                         string liveUpdatePackageHash)
         {
         }
     }

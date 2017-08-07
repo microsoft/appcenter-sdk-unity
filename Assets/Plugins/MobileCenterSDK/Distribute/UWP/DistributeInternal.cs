@@ -15,7 +15,7 @@ namespace Microsoft.Azure.Mobile.Unity.Distribute.Internal
         {
         }
 
-        public static Type mobile_center_unity_distribute_get_type()
+        public static Type GetNativeType()
         {
             return typeof(Microsoft.Azure.Mobile.Distribute.Distribute);
         }
@@ -30,15 +30,15 @@ namespace Microsoft.Azure.Mobile.Unity.Distribute.Internal
             return MobileCenterTask<bool>.FromCompleted(false);
         }
 
-        public static void mobile_center_unity_distribute_set_install_url(string installUrl)
+        public static void SetInstallUrl(string installUrl)
         {
         }
 
-        public static void mobile_center_unity_distribute_set_api_url(string apiUrl)
+        public static void SetApiUrl(string apiUrl)
         {
         }
 
-        public static void mobile_center_unity_distribute_notify_update_action(int updateAction)
+        public static void NotifyUpdateAction(int updateAction)
         {
         }
     }

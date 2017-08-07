@@ -15,7 +15,7 @@ namespace Microsoft.Azure.Mobile.Unity.Push.Internal
         {
         }
 
-        public static void mobile_center_unity_push_set_delegate()
+        public static void SetDelegate()
         {
             var push = new AndroidJavaClass("com.microsoft.azure.mobile.push.Push");
             push.CallStatic("setListener", new PushDelegate());

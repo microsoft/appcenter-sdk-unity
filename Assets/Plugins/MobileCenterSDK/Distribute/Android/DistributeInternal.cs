@@ -14,7 +14,7 @@ namespace Microsoft.Azure.Mobile.Unity.Distribute.Internal
 
         public static void Initialize()
         {
-            DistributeDelegate.mobile_center_unity_distribute_set_delegate();
+            DistributeDelegate.SetDelegate();
         }
 
         public static void PostInitialize()
@@ -37,22 +37,22 @@ namespace Microsoft.Azure.Mobile.Unity.Distribute.Internal
             return new MobileCenterTask<bool>(future);
         }
 
-        public static IntPtr mobile_center_unity_distribute_get_type()
+        public static IntPtr GetNativeType()
         {
             return AndroidJNI.FindClass("com/microsoft/azure/mobile/distribute/Distribute");
         }
 
-        public static void mobile_center_unity_distribute_set_install_url(string installUrl)
+        public static void SetInstallUrl(string installUrl)
         {
             _distribute.CallStatic("setInstallUrl", installUrl);
         }
 
-        public static void mobile_center_unity_distribute_set_api_url(string apiUrl)
+        public static void SetApiUrl(string apiUrl)
         {
             _distribute.CallStatic("setApiUrl", apiUrl);
         }
 
-        public static void mobile_center_unity_distribute_notify_update_action(int updateAction)
+        public static void NotifyUpdateAction(int updateAction)
         {
             _distribute.CallStatic("notifyUpdateAction", updateAction);
         }

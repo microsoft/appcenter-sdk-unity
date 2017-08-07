@@ -22,13 +22,13 @@ namespace Microsoft.Azure.Mobile.Unity
         {
             SetWrapperSdk();
             appSecret = GetSecretForPlatform(appSecret);
-            MobileCenterInternal.mobile_center_unity_configure(appSecret);
+            MobileCenterInternal.Configure(appSecret);
         }
 
         public static LogLevel LogLevel
         {
-            get { return (LogLevel)MobileCenterInternal.mobile_center_unity_get_log_level(); }
-            set { MobileCenterInternal.mobile_center_unity_set_log_level((int)value); }
+            get { return (LogLevel)MobileCenterInternal.GetLogLevel(); }
+            set { MobileCenterInternal.SetLogLevel((int)value); }
         }
 
         public static MobileCenterTask SetEnabledAsync(bool enabled)
@@ -64,7 +64,7 @@ namespace Microsoft.Azure.Mobile.Unity
         /// <param name="logUrl">Base URL to use for server communication.</param>
         public static void SetLogUrl(string logUrl)
         {
-            MobileCenterInternal.mobile_center_unity_set_log_url(logUrl);
+            MobileCenterInternal.SetLogUrl(logUrl);
         }
 
         /// <summary>
@@ -72,7 +72,7 @@ namespace Microsoft.Azure.Mobile.Unity
         /// </summary>
         public static bool Configured
         {
-            get { return MobileCenterInternal.mobile_center_unity_is_configured(); }
+            get { return MobileCenterInternal.IsConfigured(); }
         }
 
         /// <summary>
@@ -85,7 +85,7 @@ namespace Microsoft.Azure.Mobile.Unity
             SetWrapperSdk();
             var nativeServiceTypes = ServicesToNativeTypes(services);
             InitializeServices(services);
-            MobileCenterInternal.mobile_center_unity_start_services(nativeServiceTypes, services.Length);
+            MobileCenterInternal.StartServices(nativeServiceTypes, services.Length);
             PostInitializeServices(services);
         }
 
@@ -101,7 +101,7 @@ namespace Microsoft.Azure.Mobile.Unity
             var nativeServiceTypes = ServicesToNativeTypes(services);
             InitializeServices(services);
             appSecret = GetSecretForPlatform(appSecret);
-            MobileCenterInternal.mobile_center_unity_start(appSecret, nativeServiceTypes, services.Length);
+            MobileCenterInternal.Start(appSecret, nativeServiceTypes, services.Length);
             PostInitializeServices(services);
         }
 
@@ -193,14 +193,14 @@ namespace Microsoft.Azure.Mobile.Unity
         public static void SetCustomProperties(Unity.CustomProperties customProperties)
         {
             var rawCustomProperties = customProperties.GetRawObject();
-            MobileCenterInternal.mobile_center_unity_set_custom_properties(rawCustomProperties);
+            MobileCenterInternal.SetCustomProperties(rawCustomProperties);
         }
 
         private static void SetWrapperSdk()
         {
-            MobileCenterInternal.mobile_center_unity_set_wrapper_sdk(WrapperSdk.WrapperSdkVersion,
-                                                                     WrapperSdk.Name,
-                                                                     WrapperSdk.WrapperRuntimeVersion, null, null, null);
+            MobileCenterInternal.SetWrapperSdk(WrapperSdk.WrapperSdkVersion,
+                                               WrapperSdk.Name,
+                                               WrapperSdk.WrapperRuntimeVersion, null, null, null);
         }
 
         // Gets the first instance of an app secret corresponding to the given platform name, or returns the string 

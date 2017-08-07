@@ -13,7 +13,7 @@ namespace Microsoft.Azure.Mobile.Unity.Distribute.Internal
         {
         }
 
-        public static void mobile_center_unity_distribute_set_delegate()
+        public static void SetDelegate()
         {
             var distribute = new AndroidJavaClass("com.microsoft.azure.mobile.distribute.Distribute");
             distribute.CallStatic("setListener", new DistributeDelegate());
