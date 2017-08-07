@@ -23,7 +23,7 @@ namespace Microsoft.Azure.Mobile.Unity.Analytics
 
         public static RawType GetNativeType()
         {
-            return AnalyticsInternal.GetType();
+            return AnalyticsInternal.GetNativeType();
         }
 
         public static void TrackEvent(string eventName, IDictionary<string, string> properties = null)

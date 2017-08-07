@@ -14,7 +14,7 @@ namespace Microsoft.Azure.Mobile.Unity.Crashes.Internal
 
     class CrashesInternal
     {
-        public static RawType GetType()
+        public static RawType GetNativeType()
         {
             return default(RawType);
         }

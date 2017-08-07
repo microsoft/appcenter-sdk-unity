@@ -20,7 +20,7 @@ namespace Microsoft.Azure.Mobile.Unity.Analytics.Internal
             instance.Call("onActivityResumed", activity);
         }
 
-        public static IntPtr GetType()
+        public static IntPtr GetNativeType()
         {
             return AndroidJNI.FindClass("com/microsoft/azure/mobile/analytics/Analytics");
         }

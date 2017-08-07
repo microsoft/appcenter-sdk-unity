@@ -22,7 +22,7 @@ namespace Microsoft.Azure.Mobile.Unity.Distribute.Internal
         {
         }
         
-        public static RawType GetType()
+        public static RawType GetNativeType()
         {
             return default(RawType);
         }

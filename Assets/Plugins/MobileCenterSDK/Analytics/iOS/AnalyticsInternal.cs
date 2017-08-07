@@ -14,7 +14,7 @@ namespace Microsoft.Azure.Mobile.Unity.Analytics.Internal
         {
         }
 
-        public static IntPtr GetType()
+        public static IntPtr GetNativeType()
         {
             return mobile_center_unity_analytics_get_type();
         }

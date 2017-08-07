@@ -6,7 +6,7 @@ namespace Microsoft.Azure.Mobile.Unity.Crashes.Internal
 {
     class CrashesInternal
     {
-        public static Type GetType()
+        public static Type GetNativeType()
         {
             return typeof(Microsoft.Azure.Mobile.Crashes.Crashes);
         }

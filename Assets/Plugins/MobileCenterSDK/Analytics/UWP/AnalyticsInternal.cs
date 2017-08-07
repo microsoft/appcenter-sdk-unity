@@ -16,7 +16,7 @@ namespace Microsoft.Azure.Mobile.Unity.Analytics.Internal
         {
         }
 
-        public static Type GetType()
+        public static Type GetNativeType()
         {
             return typeof(Microsoft.Azure.Mobile.Analytics.Analytics);
         }

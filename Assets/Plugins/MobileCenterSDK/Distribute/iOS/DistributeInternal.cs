@@ -19,7 +19,7 @@ namespace Microsoft.Azure.Mobile.Unity.Distribute.Internal
         {
         }
         
-        public static IntPtr GetType()
+        public static IntPtr GetNativeType()
         {
             return mobile_center_unity_distribute_get_type();
         }

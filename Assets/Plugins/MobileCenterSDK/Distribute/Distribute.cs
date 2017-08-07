@@ -27,7 +27,7 @@ namespace Microsoft.Azure.Mobile.Unity.Distribute
         
         public static RawType GetNativeType()
         {
-            return DistributeInternal.GetType();
+            return DistributeInternal.GetNativeType();
         }
 
         public static MobileCenterTask<bool> IsEnabledAsync()

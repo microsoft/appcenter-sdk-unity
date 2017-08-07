@@ -37,7 +37,7 @@ namespace Microsoft.Azure.Mobile.Unity.Distribute.Internal
             return new MobileCenterTask<bool>(future);
         }
 
-        public static IntPtr GetType()
+        public static IntPtr GetNativeType()
         {
             return AndroidJNI.FindClass("com/microsoft/azure/mobile/distribute/Distribute");
         }

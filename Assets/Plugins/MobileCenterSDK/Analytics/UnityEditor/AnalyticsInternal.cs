@@ -19,7 +19,7 @@ namespace Microsoft.Azure.Mobile.Unity.Analytics.Internal
         {
         }
 
-        public static RawType GetType()
+        public static RawType GetNativeType()
         {
             return default(RawType);
         }

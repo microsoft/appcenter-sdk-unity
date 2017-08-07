@@ -24,7 +24,7 @@ namespace Microsoft.Azure.Mobile.Unity.Crashes
 
         public static RawType GetNativeType()
         {
-            return CrashesInternal.GetType();
+            return CrashesInternal.GetNativeType();
         }
 
         public static MobileCenterTask<bool> IsEnabledAsync()
