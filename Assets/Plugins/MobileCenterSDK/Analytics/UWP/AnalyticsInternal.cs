@@ -16,17 +16,17 @@ namespace Microsoft.Azure.Mobile.Unity.Analytics.Internal
         {
         }
 
-        public static Type mobile_center_unity_analytics_get_type()
+        public static Type GetType()
         {
             return typeof(Microsoft.Azure.Mobile.Analytics.Analytics);
         }
 
-        public static void mobile_center_unity_analytics_track_event(string eventName)
+        public static void TrackEvent(string eventName)
         {
             UWPAnalytics.TrackEvent(eventName);
         }
 
-        public static void mobile_center_unity_analytics_track_event_with_properties(string eventName, string[] keys, string[] values, int count)
+        public static void TrackEventWithProperties(string eventName, string[] keys, string[] values, int count)
         {
             var properties = new Dictionary<string, string>();
             for (var i = 0; i < count; ++i)

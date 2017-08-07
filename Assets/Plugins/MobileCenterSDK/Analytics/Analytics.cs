@@ -23,18 +23,18 @@ namespace Microsoft.Azure.Mobile.Unity.Analytics
 
         public static RawType GetNativeType()
         {
-            return AnalyticsInternal.mobile_center_unity_analytics_get_type();
+            return AnalyticsInternal.GetType();
         }
 
         public static void TrackEvent(string eventName, IDictionary<string, string> properties = null)
         {
             if (properties == null)
             {
-                AnalyticsInternal.mobile_center_unity_analytics_track_event(eventName);
+                AnalyticsInternal.TrackEvent(eventName);
             }
             else
             {
-                AnalyticsInternal.mobile_center_unity_analytics_track_event_with_properties(eventName, properties.Keys.ToArray(), properties.Values.ToArray(), properties.Count);
+                AnalyticsInternal.TrackEventWithProperties(eventName, properties.Keys.ToArray(), properties.Values.ToArray(), properties.Count);
             }
         }
 

@@ -19,16 +19,16 @@ namespace Microsoft.Azure.Mobile.Unity.Analytics.Internal
         {
         }
 
-        public static RawType mobile_center_unity_analytics_get_type()
+        public static RawType GetType()
         {
             return default(RawType);
         }
 
-        public static void mobile_center_unity_analytics_track_event(string eventName)
+        public static void TrackEvent(string eventName)
         {
         }
 
-        public static void mobile_center_unity_analytics_track_event_with_properties(string eventName, string[] keys, string[] values, int count)
+        public static void TrackEventWithProperties(string eventName, string[] keys, string[] values, int count)
         {
         }
 

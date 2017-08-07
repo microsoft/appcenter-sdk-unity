@@ -20,17 +20,17 @@ namespace Microsoft.Azure.Mobile.Unity.Analytics.Internal
             instance.Call("onActivityResumed", activity);
         }
 
-        public static IntPtr mobile_center_unity_analytics_get_type()
+        public static IntPtr GetType()
         {
             return AndroidJNI.FindClass("com/microsoft/azure/mobile/analytics/Analytics");
         }
 
-        public static void mobile_center_unity_analytics_track_event(string eventName)
+        public static void TrackEvent(string eventName)
         {
             _analytics.CallStatic("trackEvent", eventName);
         }
 
-        public static void mobile_center_unity_analytics_track_event_with_properties(string eventName, string[] keys, string[] values, int count)
+        public static void TrackEventWithProperties(string eventName, string[] keys, string[] values, int count)
         {
             var properties = new AndroidJavaObject("java.util.HashMap");
             for (int i = 0; i < count; ++i)
