@@ -12,11 +12,16 @@ namespace Microsoft.Azure.Mobile.Unity.Distribute.Internal
     {
         public static void Initialize()
         {
-            DistributeDelegate.mobile_center_unity_distribute_set_delegate();
+            DistributeDelegate.SetDelegate();
         }
 
         public static void PostInitialize()
         {
+        }
+        
+        public static IntPtr GetType()
+        {
+            return mobile_center_unity_distribute_get_type();
         }
 
         public static MobileCenterTask SetEnabledAsync(bool isEnabled)
@@ -31,8 +36,25 @@ namespace Microsoft.Azure.Mobile.Unity.Distribute.Internal
             return MobileCenterTask<bool>.FromCompleted(isEnabled);
         }
 
+        public static void SetInstallUrl(string installUrl)
+        {
+            mobile_center_unity_distribute_set_install_url(installUrl);
+        }
+
+        public static void SetApiUrl(string apiUrl)
+        {
+            mobile_center_unity_distribute_set_api_url(apiUrl);
+        }
+
+        public static void NotifyUpdateAction(int updateAction)
+        {
+            mobile_center_unity_distribute_notify_update_action(updateAction);
+        }
+
+#region External
+
         [DllImport("__Internal")]
-        public static extern IntPtr mobile_center_unity_distribute_get_type();
+        private static extern IntPtr mobile_center_unity_distribute_get_type();
 
         [DllImport("__Internal")]
         private static extern void mobile_center_unity_distribute_set_enabled(bool isEnabled);
@@ -41,13 +63,15 @@ namespace Microsoft.Azure.Mobile.Unity.Distribute.Internal
         private static extern bool mobile_center_unity_distribute_is_enabled();
 
         [DllImport("__Internal")]
-        public static extern void mobile_center_unity_distribute_set_install_url(string installUrl);
+        private static extern void mobile_center_unity_distribute_set_install_url(string installUrl);
 
         [DllImport("__Internal")]
-        public static extern void mobile_center_unity_distribute_set_api_url(string apiUrl);
+        private static extern void mobile_center_unity_distribute_set_api_url(string apiUrl);
 
         [DllImport("__Internal")]
-        public static extern void mobile_center_unity_distribute_notify_update_action(int updateAction);
+        private static extern void mobile_center_unity_distribute_notify_update_action(int updateAction);
+
+#endregion
     }
 }
 #endif
