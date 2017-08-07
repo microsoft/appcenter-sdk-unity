@@ -16,28 +16,28 @@ namespace Microsoft.Azure.Mobile.Unity.Internal
 
     class CustomPropertiesInternal
     {
-        public static RawType mobile_center_unity_custom_properties_create()
+        public static RawType Сreate()
         {
             return default(RawType);
         }
 
-        public static void mobile_center_unity_custom_properties_set_string(RawType properties, string key, string val)
+        public static void SetString(RawType properties, string key, string val)
         {
         }
 
-        public static void mobile_center_unity_custom_properties_set_number(RawType properties, string key, object val)
+        public static void SetNumber(RawType properties, string key, object val)
         {
         }
 
-        public static void mobile_center_unity_custom_properties_set_bool(RawType properties, string key, bool val)
+        public static void SetBool(RawType properties, string key, bool val)
         {
         }
 
-        public static void mobile_center_unity_custom_properties_set_date(RawType properties, string key, object val)
+        public static void SetDate(RawType properties, string key, DateTime val)
         {
         }
 
-        public static void mobile_center_unity_custom_properties_clear(RawType properties, string key)
+        public static void Clear(RawType properties, string key)
         {
         }
     }
