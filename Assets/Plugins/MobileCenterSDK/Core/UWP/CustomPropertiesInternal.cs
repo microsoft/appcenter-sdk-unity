@@ -11,54 +11,54 @@ namespace Microsoft.Azure.Mobile.Unity.Internal
 
     class CustomPropertiesInternal
     {
-       public static object mobile_center_unity_custom_properties_create()
+       public static object Create()
         {
             return new UWPCustomProperties();
         }
 
-        public static void mobile_center_unity_custom_properties_set_string(object properties, string key, string val)
+        public static void SetString(object properties, string key, string val)
         {
             var uwpProperties = properties as UWPCustomProperties;
             uwpProperties.Set(key, val);
         }
 
-        public static void mobile_center_unity_custom_properties_set_number(object properties, string key, int val)
+        public static void SetNumber(object properties, string key, int val)
         {
             var uwpProperties = properties as UWPCustomProperties;
             uwpProperties.Set(key, val);
         }
 
-        public static void mobile_center_unity_custom_properties_set_number(object properties, string key, long val)
+        public static void SetNumber(object properties, string key, long val)
         {
             var uwpProperties = properties as UWPCustomProperties;
             uwpProperties.Set(key, val);
         }
 
-        public static void mobile_center_unity_custom_properties_set_number(object properties, string key, float val)
+        public static void SetNumber(object properties, string key, float val)
         {
             var uwpProperties = properties as UWPCustomProperties;
             uwpProperties.Set(key, val);
         }
 
-        public static void mobile_center_unity_custom_properties_set_number(object properties, string key, double val)
+        public static void SetNumber(object properties, string key, double val)
         {
             var uwpProperties = properties as UWPCustomProperties;
             uwpProperties.Set(key, val);
         }
 
-        public static void mobile_center_unity_custom_properties_set_bool(object properties, string key, bool val)
+        public static void SetBool(object properties, string key, bool val)
         {
             var uwpProperties = properties as UWPCustomProperties;
             uwpProperties.Set(key, val);
         }
 
-        public static void mobile_center_unity_custom_properties_set_date(object properties, string key, DateTime val)
+        public static void SetDate(object properties, string key, DateTime val)
         {
             var uwpProperties = properties as UWPCustomProperties;
             uwpProperties.Set(key, val);
         }
 
-        public static void mobile_center_unity_custom_properties_clear(object properties, string key)
+        public static void Clear(object properties, string key)
         {
             var uwpProperties = properties as UWPCustomProperties;
             uwpProperties.Clear(key);

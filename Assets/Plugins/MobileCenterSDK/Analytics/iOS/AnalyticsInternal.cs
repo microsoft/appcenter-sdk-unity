@@ -14,6 +14,21 @@ namespace Microsoft.Azure.Mobile.Unity.Analytics.Internal
         {
         }
 
+        public static IntPtr GetNativeType()
+        {
+            return mobile_center_unity_analytics_get_type();
+        }
+
+        public static void TrackEvent(string eventName)
+        {
+            mobile_center_unity_analytics_track_event(eventName);
+        }
+
+        public static void TrackEventWithProperties(string eventName, string[] keys, string[] values, int count)
+        {
+            mobile_center_unity_analytics_track_event_with_properties(eventName, keys, values, count);
+        }
+
         public static MobileCenterTask SetEnabledAsync(bool isEnabled)
         {
             mobile_center_unity_analytics_set_enabled(isEnabled);
@@ -25,21 +40,25 @@ namespace Microsoft.Azure.Mobile.Unity.Analytics.Internal
             var isEnabled = mobile_center_unity_analytics_is_enabled();
             return MobileCenterTask<bool>.FromCompleted(isEnabled);
         }
-        
-        [DllImport("__Internal")]
-        public static extern IntPtr mobile_center_unity_analytics_get_type();
+
+#region External
 
         [DllImport("__Internal")]
-        public static extern void mobile_center_unity_analytics_track_event(string eventName);
+        private static extern IntPtr mobile_center_unity_analytics_get_type();
 
         [DllImport("__Internal")]
-        public static extern void mobile_center_unity_analytics_track_event_with_properties(string eventName, string[] keys, string[] values, int count);
+        private static extern void mobile_center_unity_analytics_track_event(string eventName);
+
+        [DllImport("__Internal")]
+        private static extern void mobile_center_unity_analytics_track_event_with_properties(string eventName, string[] keys, string[] values, int count);
 
         [DllImport("__Internal")]
         private static extern void mobile_center_unity_analytics_set_enabled(bool isEnabled);
 
         [DllImport("__Internal")]
         private static extern bool mobile_center_unity_analytics_is_enabled();
+
+#endregion
     }
 }
 #endif

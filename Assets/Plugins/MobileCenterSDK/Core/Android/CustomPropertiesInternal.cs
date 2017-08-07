@@ -3,38 +3,55 @@
 // Licensed under the MIT license.
 
 #if UNITY_ANDROID && !UNITY_EDITOR
+using System;
 using UnityEngine;
+using Microsoft.Azure.Mobile.Internal.Utility;
 
 namespace Microsoft.Azure.Mobile.Unity.Internal
 {
     class CustomPropertiesInternal
     {
-        public static AndroidJavaObject mobile_center_unity_custom_properties_create()
+        public static AndroidJavaObject Create()
         {
             return new AndroidJavaObject("com.microsoft.azure.mobile.CustomProperties");
         }
 
-        public static void mobile_center_unity_custom_properties_set_string(AndroidJavaObject properties, string key, string val)
+        public static void SetString(AndroidJavaObject properties, string key, string val)
         {
             properties.Call<AndroidJavaObject>("set", key, val);
         }
 
-        public static void mobile_center_unity_custom_properties_set_number(AndroidJavaObject properties, string key, AndroidJavaObject val)
+        public static void SetNumber(AndroidJavaObject properties, string key, int val)
+        {
+            properties.Call<AndroidJavaObject>("set", key, JavaNumberHelper.Convert(val));
+        }
+
+        public static void SetNumber(AndroidJavaObject properties, string key, long val)
+        {
+            properties.Call<AndroidJavaObject>("set", key, JavaNumberHelper.Convert(val));
+        }
+
+        public static void SetNumber(AndroidJavaObject properties, string key, float val)
+        {
+            properties.Call<AndroidJavaObject>("set", key, JavaNumberHelper.Convert(val));
+        }
+
+        public static void SetNumber(AndroidJavaObject properties, string key, double val)
+        {
+            properties.Call<AndroidJavaObject>("set", key, JavaNumberHelper.Convert(val));
+        }
+
+        public static void SetBool(AndroidJavaObject properties, string key, bool val)
         {
             properties.Call<AndroidJavaObject>("set", key, val);
         }
 
-        public static void mobile_center_unity_custom_properties_set_bool(AndroidJavaObject properties, string key, bool val)
+        public static void SetDate(AndroidJavaObject properties, string key, DateTime val)
         {
-            properties.Call<AndroidJavaObject>("set", key, val);
+            properties.Call<AndroidJavaObject>("set", key, JavaDateHelper.DateTimeConvert(val));
         }
 
-        public static void mobile_center_unity_custom_properties_set_date(AndroidJavaObject properties, string key, AndroidJavaObject val)
-        {
-            properties.Call<AndroidJavaObject>("set", key, val);
-        }
-
-        public static void mobile_center_unity_custom_properties_clear(AndroidJavaObject properties, string key)
+        public static void Clear(AndroidJavaObject properties, string key)
         {
             properties.Call<AndroidJavaObject>("clear", key);
         }

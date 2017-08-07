@@ -17,16 +17,15 @@ namespace Microsoft.Azure.Mobile.Unity.Distribute.Internal
         static ReleaseAvailableDelegate del;
         static IntPtr ptr;
 
-        [DllImport("__Internal")]
-        public static extern void mobile_center_unity_distribute_set_delegate();
-
-        [DllImport("__Internal")]
-        private static extern void mobile_center_unity_distribute_delegate_provide_release_available_impl(ReleaseAvailableDelegate functionPtr);
-
         static DistributeDelegate()
         {
             del = ReleaseAvailableFunc;
             mobile_center_unity_distribute_delegate_provide_release_available_impl(del);
+        }
+
+        public static void SetDelegate()
+        {
+            mobile_center_unity_distribute_set_delegate();
         }
 
         [MonoPInvokeCallback(typeof(ReleaseAvailableDelegate))]
@@ -39,6 +38,16 @@ namespace Microsoft.Azure.Mobile.Unity.Distribute.Internal
             var releaseDetails = ReleaseDetailsHelper.ReleaseDetailsConvert(details);
             return Distribute.ReleaseAvailable.Invoke(releaseDetails);
         }
+
+#region External
+
+        [DllImport("__Internal")]
+        private static extern void mobile_center_unity_distribute_set_delegate();
+
+        [DllImport("__Internal")]
+        private static extern void mobile_center_unity_distribute_delegate_provide_release_available_impl(ReleaseAvailableDelegate functionPtr);
+
+#endregion
     }
 }
 #endif

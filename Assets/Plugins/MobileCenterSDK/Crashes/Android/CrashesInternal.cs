@@ -13,7 +13,7 @@ namespace Microsoft.Azure.Mobile.Unity.Crashes.Internal
         private const string CrashesClassName = "com.microsoft.azure.mobile.crashes.Crashes";
         private static AndroidJavaClass _crashes = new AndroidJavaClass(CrashesClassName);
 
-        public static IntPtr mobile_center_unity_crashes_get_type()
+        public static IntPtr GetNativeType()
         {
             return AndroidJNI.FindClass("com/microsoft/azure/mobile/crashes/Crashes");
         }

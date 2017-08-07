@@ -19,7 +19,7 @@ namespace Microsoft.Azure.Mobile.Unity.Push.Internal
         {
         }
 
-        public static RawType mobile_center_unity_push_get_type()
+        public static RawType GetNativeType()
         {
             return default(RawType);
         }
@@ -34,7 +34,7 @@ namespace Microsoft.Azure.Mobile.Unity.Push.Internal
             return null;
         }
 
-        public static void mobile_center_unity_push_enable_firebase_analytics()
+        public static void EnableFirebaseAnalytics()
         {
         }
     }

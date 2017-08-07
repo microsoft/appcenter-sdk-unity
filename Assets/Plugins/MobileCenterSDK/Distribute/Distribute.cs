@@ -27,7 +27,7 @@ namespace Microsoft.Azure.Mobile.Unity.Distribute
         
         public static RawType GetNativeType()
         {
-            return DistributeInternal.mobile_center_unity_distribute_get_type();
+            return DistributeInternal.GetNativeType();
         }
 
         public static MobileCenterTask<bool> IsEnabledAsync()
@@ -46,7 +46,7 @@ namespace Microsoft.Azure.Mobile.Unity.Distribute
         /// <param name="installUrl">Install base URL.</param>
         public static void SetInstallUrl(string installUrl)
         {
-            DistributeInternal.mobile_center_unity_distribute_set_install_url(installUrl);
+            DistributeInternal.SetInstallUrl(installUrl);
         }
 
         /// <summary>
@@ -55,7 +55,7 @@ namespace Microsoft.Azure.Mobile.Unity.Distribute
         /// <param name="apiUrl">API base URL.</param>
         public static void SetApiUrl(string apiUrl)
         {
-            DistributeInternal.mobile_center_unity_distribute_set_api_url(apiUrl);
+            DistributeInternal.SetApiUrl(apiUrl);
         }
 
         /// <summary>
@@ -74,7 +74,7 @@ namespace Microsoft.Azure.Mobile.Unity.Distribute
         /// <param name="updateAction">Update action. On mandatory update, you can only pass <see cref="UpdateAction.Update"/></param>
         public static void NotifyUpdateAction(UpdateAction updateAction)
         {
-            DistributeInternal.mobile_center_unity_distribute_notify_update_action((int)updateAction);
+            DistributeInternal.NotifyUpdateAction((int)updateAction);
         }
     }
 }

@@ -24,7 +24,7 @@ namespace Microsoft.Azure.Mobile.Unity.Push
 
         public static RawType GetNativeType()
         {
-            return PushInternal.mobile_center_unity_push_get_type();
+            return PushInternal.GetNativeType();
         }
 
         public static MobileCenterTask<bool> IsEnabledAsync()
@@ -39,7 +39,7 @@ namespace Microsoft.Azure.Mobile.Unity.Push
 
         public static void EnableFirebaseAnalytics()
         {
-            PushInternal.mobile_center_unity_push_enable_firebase_analytics();
+            PushInternal.EnableFirebaseAnalytics();
         }
 
         internal static void NotifyPushNotificationReceived(PushNotificationReceivedEventArgs e)

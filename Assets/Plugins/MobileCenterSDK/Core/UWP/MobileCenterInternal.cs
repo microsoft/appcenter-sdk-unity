@@ -16,40 +16,40 @@ namespace Microsoft.Azure.Mobile.Unity.Internal
         private static bool _needsSetScreenProvider = true;
         private static object _lockObject = new object();
 
-        public static void mobile_center_unity_configure (string appSecret)
+        public static void Configure(string appSecret)
         {
             PrepareScreenSizeProvider();
             UWPMobileCenter.Configure(appSecret);
         }
 
-        public static void mobile_center_unity_start(string appSecret, Type[] services, int numServices)
+        public static void Start(string appSecret, Type[] services, int numServices)
         {
             PrepareScreenSizeProvider();
             UWPMobileCenter.Start(appSecret, services);
         }
 
-        public static void mobile_center_unity_start_services(Type[] services, int numServices)
+        public static void StartServices(Type[] services, int numServices)
         {
             PrepareScreenSizeProvider();
             UWPMobileCenter.Start(services);
         }
 
-        public static void mobile_center_unity_set_log_level(int logLevel)
+        public static void SetLogLevel(int logLevel)
         {
             UWPMobileCenter.LogLevel = (Microsoft.Azure.Mobile.LogLevel)LogLevelFromUnity(logLevel);
         }
 
-        public static int mobile_center_unity_get_log_level()
+        public static int GetLogLevel()
         {
             return (int)LogLevelFromUnity((int)UWPMobileCenter.LogLevel);
         }
 
-        public static bool mobile_center_unity_is_configured()
+        public static bool IsConfigured()
         {
             return UWPMobileCenter.Configured;
         }
 
-        public static void mobile_center_unity_set_log_url(string logUrl)
+        public static void SetLogUrl(string logUrl)
         {
             UWPMobileCenter.SetLogUrl(logUrl);
         }
@@ -75,13 +75,13 @@ namespace Microsoft.Azure.Mobile.Unity.Internal
             return stringTask;
         }
 
-        public static void mobile_center_unity_set_custom_properties(object properties)
+        public static void SetCustomProperties(object properties)
         {
             var uwpProperties = properties as Microsoft.Azure.Mobile.CustomProperties;
             UWPMobileCenter.SetCustomProperties(uwpProperties);
         }
 
-        public static void mobile_center_unity_set_wrapper_sdk(string wrapperSdkVersion,
+        public static void SetWrapperSdk(string wrapperSdkVersion,
                                                                string wrapperSdkName, 
                                                                string wrapperRuntimeVersion, 
                                                                string liveUpdateReleaseLabel, 

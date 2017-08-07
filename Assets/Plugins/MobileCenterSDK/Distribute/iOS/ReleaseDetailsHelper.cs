@@ -10,24 +10,6 @@ namespace Microsoft.Azure.Mobile.Unity.Distribute.Internal
 {
     class ReleaseDetailsHelper
     {
-        [DllImport("__Internal")]
-        private static extern int mobile_center_unity_release_details_get_id(IntPtr details);
-
-        [DllImport("__Internal")]
-        private static extern string mobile_center_unity_release_details_get_version(IntPtr details);
-
-        [DllImport("__Internal")]
-        private static extern string mobile_center_unity_release_details_get_short_version(IntPtr details);
-
-        [DllImport("__Internal")]
-        private static extern string mobile_center_unity_release_details_get_release_notes(IntPtr details);
-
-        [DllImport("__Internal")]
-        private static extern bool mobile_center_unity_release_details_get_mandatory_update(IntPtr details);
-
-        [DllImport("__Internal")]
-        private static extern string mobile_center_unity_release_details_get_url(IntPtr details);
-
         public static ReleaseDetails ReleaseDetailsConvert(IntPtr details)
         {
             var id = mobile_center_unity_release_details_get_id(details);
@@ -48,6 +30,28 @@ namespace Microsoft.Azure.Mobile.Unity.Distribute.Internal
                 ReleaseNotesUrl = uri
             };
         }
+
+#region External
+
+        [DllImport("__Internal")]
+        private static extern int mobile_center_unity_release_details_get_id(IntPtr details);
+
+        [DllImport("__Internal")]
+        private static extern string mobile_center_unity_release_details_get_version(IntPtr details);
+
+        [DllImport("__Internal")]
+        private static extern string mobile_center_unity_release_details_get_short_version(IntPtr details);
+
+        [DllImport("__Internal")]
+        private static extern string mobile_center_unity_release_details_get_release_notes(IntPtr details);
+
+        [DllImport("__Internal")]
+        private static extern bool mobile_center_unity_release_details_get_mandatory_update(IntPtr details);
+
+        [DllImport("__Internal")]
+        private static extern string mobile_center_unity_release_details_get_url(IntPtr details);
+
+#endregion
     }
 }
 #endif
