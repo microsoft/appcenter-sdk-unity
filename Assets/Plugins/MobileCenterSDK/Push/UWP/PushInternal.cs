@@ -26,7 +26,7 @@ namespace Microsoft.Azure.Mobile.Unity.Push.Internal
             };
         }
 
-        public static Type mobile_center_unity_push_get_type()
+        public static Type GetNativeType()
         {
             return typeof(UWPPush);
         }
@@ -41,12 +41,12 @@ namespace Microsoft.Azure.Mobile.Unity.Push.Internal
             return new MobileCenterTask<bool>(UWPPush.IsEnabledAsync());
         }
 
-        public static void mobile_center_unity_push_check_launched_from_notification(LaunchActivatedEventArgs e)
+        public static void CheckLaunchedFromNotification(LaunchActivatedEventArgs e)
         {
             UWPPush.CheckLaunchedFromNotification(e);
         }
 
-        public static void mobile_center_unity_push_enable_firebase_analytics()
+        public static void EnableFirebaseAnalytics()
         {
         }
     }
