@@ -5,7 +5,7 @@
 using UnityEngine;
 using Microsoft.Azure.Mobile.Unity;
 
-public class MobileCenterCoreBehavior : MonoBehaviour
+public class MobileCenterCoreBehavior
 {
     [Header("App Secrets")]
     [StringPropertyName("iOS App Secret")]
@@ -18,8 +18,9 @@ public class MobileCenterCoreBehavior : MonoBehaviour
     [Space]
     public LogUrlProperty CustomLogUrl = new LogUrlProperty();
 
-    public void Awake()
+    public void StartCore()
     {
+        Debug.Log("Start core");
         MobileCenter.LogLevel = InitialLogLevel;
         if (CustomLogUrl.UseCustomLogUrl)
         {

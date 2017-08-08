@@ -7,14 +7,14 @@ public class MobileCenterSettingsMaker
 
     public MobileCenterSettingsMaker(string pathToBuiltProject)
     {
-#if UNITY_IOS
+#if !UNITY_IOS
         _pathToLoaderFile = pathToBuiltProject + LoaderPathSuffix;
         _loaderFileText = File.ReadAllText(_pathToLoaderFile);
 #endif
     }
 
 
-#if UNITY_IOS
+#if !UNITY_IOS
     private static string LoaderPathSuffix = "/Libraries/Plugins/iOS/Core/MobileCenterStarter.mm";
     private static string AppSecretSearchText = "mobile-center-app-secret";
     private static string LogUrlSearchText = "custom-log-url";
@@ -58,9 +58,30 @@ public class MobileCenterSettingsMaker
         var tokenText = "#define " + token + "\n";
         _loaderFileText = tokenText + _loaderFileText;
     }
+#elif !UNITY_ANDROID
+    public void SetLogLevel(int logLevel)
+    {
+    }
+
+
+    public void SetLogUrl(string logUrl)
+    {
+    }
+
+    public void SetAppSecret(string appSecret)
+    {
+    }
+
+    public void StartPushClass()
+    {
+    }
+
+    public void CommitSettings()
+    {
+    }
 
 #else
-    public void SetLogLevel(int logLevel)
+	public void SetLogLevel(int logLevel)
     {
     }
 

@@ -35,13 +35,12 @@ public class MobileCenterPostBuild
             // SQLite dependency
 #if UNITY_IOS
             AddLinkerFlagToXcodeProject("-lsqlite3", pathToBuiltProject);
-            AddLoaderCodeToIos(pathToBuiltProject);
 #endif
         }
+        AddStartupCode(pathToBuiltProject);
     }
 
-
-    private static void AddLoaderCodeToIos(string pathToBuiltProject)
+    private static void AddStartupCode(string pathToBuiltProject)
     {
         var settingsMaker = new MobileCenterSettingsMaker(pathToBuiltProject);
         settingsMaker.SetAppSecret(GetAppSecret());
@@ -107,8 +106,6 @@ public class MobileCenterPostBuild
         var idx = projectJson.IndexOf(match.Value, StringComparison.Ordinal) + match.Value.Length;
         return projectJson.Insert(idx, "\n" + dependencyString + ",");
     }
-
-
 
     private static void ExecuteCommand(string command, string arguments, int timeout = 600)
     {
