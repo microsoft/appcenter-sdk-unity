@@ -6,7 +6,7 @@
 using System;
 using System.Runtime.InteropServices;
 using AOT;
-
+using UnityEngine;
 namespace Microsoft.Azure.Mobile.Unity.Push.Internal
 {
     class PushDelegate
@@ -32,7 +32,9 @@ namespace Microsoft.Azure.Mobile.Unity.Push.Internal
         [MonoPInvokeCallback(typeof(ReceivedPushNotificationDelegate))]
         static void ReceivedPushNotificationFunc(IntPtr notification)
         {
+            Debug.Log("Inside callback for push");
             var eventArgs = PushNotificationHelper.PushConvert(notification);
+            Debug.Log("have event args now");
             Push.NotifyPushNotificationReceived(eventArgs);
         }
 

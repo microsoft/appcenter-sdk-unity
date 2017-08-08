@@ -11,6 +11,7 @@ public class MobileCenterAnalyticsBehavior : MonoBehaviour
     [Header("Basic Setup")]
     public bool UseAnalytics = true;
 
+
     public void Awake()
     {
        MobileCenter.Start(typeof(Analytics));

@@ -6,10 +6,11 @@
 #import <MobileCenterPush/MobileCenterPush.h>
 #import <Foundation/Foundation.h>
 
-static ReceivedPushNotificationFunction *receivedPushNotification;
+static ReceivedPushNotificationFunction receivedPushNotification;
 static UnityPushDelegate *del;
+static MSPushNotification *mLastPushReceived;
 
-void mobile_center_unity_push_delegate_provide_received_push_impl(ReceivedPushNotificationFunction* functionPtr)
+void mobile_center_unity_push_delegate_provide_received_push_impl(ReceivedPushNotificationFunction functionPtr)
 {
   receivedPushNotification = functionPtr;
 }
@@ -24,7 +25,8 @@ void mobile_center_unity_push_set_delegate()
 
 -(void)push:(MSPush *)push didReceivePushNotification:(MSPushNotification *)pushNotification;
 {
-  (*receivedPushNotification)(pushNotification);
+  mLastPushReceived = pushNotification;
+  (receivedPushNotification)(mLastPushReceived);
 }
 
 @end

@@ -20,17 +20,18 @@ public class PuppetOther : MonoBehaviour
         });
     }
 
+
     public void SetPushEnabled(bool enabled)
     {
-        Push.SetEnabledAsync(enabled).ContinueWith(task => 
+        Push.SetEnabledAsync(enabled).ContinueWith(task =>
         {
             PushEnabled.isOn = enabled;
         });
     }
-    
+
     public void SetDistributeEnabled(bool enabled)
     {
-        Distribute.SetEnabledAsync(enabled).ContinueWith(task => 
+        Distribute.SetEnabledAsync(enabled).ContinueWith(task =>
         {
             DistributeEnabled.isOn = enabled;
         });

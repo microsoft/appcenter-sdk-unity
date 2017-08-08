@@ -65,7 +65,7 @@ public class MobileCenterScriptOrderer
                 featurePos = corePos;
                 corePos = tmp;
             }
-
+            
             MonoImporter.SetExecutionOrder(firstMobileCenterScript, featurePos);
             MonoImporter.SetExecutionOrder(mobileCenterCoreScript, corePos);
         }

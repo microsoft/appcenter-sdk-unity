@@ -7,7 +7,7 @@
 
 typedef void (__cdecl *ReceivedPushNotificationFunction)(MSPushNotification*);
 
-extern "C" void mobile_center_unity_push_delegate_provide_received_push_impl(ReceivedPushNotificationFunction* functionPtr);
+extern "C" void mobile_center_unity_push_delegate_provide_received_push_impl(ReceivedPushNotificationFunction functionPtr);
 
 extern "C" void mobile_center_unity_push_set_delegate();
 

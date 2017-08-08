@@ -42,7 +42,7 @@ RenderSettings:
 --- !u!157 &3
 LightmapSettings:
   m_ObjectHideFlags: 0
-  serializedVersion: 9
+  serializedVersion: 11
   m_GIWorkflowMode: 1
   m_GISettings:
     serializedVersion: 2
@@ -54,7 +54,7 @@ LightmapSettings:
     m_EnableBakedLightmaps: 0
     m_EnableRealtimeLightmaps: 0
   m_LightmapEditorSettings:
-    serializedVersion: 8
+    serializedVersion: 9
     m_Resolution: 2
     m_BakeResolution: 40
     m_TextureWidth: 1024
@@ -87,7 +87,7 @@ LightmapSettings:
     m_PVRFilteringAtrousNormalSigma: 1
     m_PVRFilteringAtrousPositionSigma: 1
   m_LightingDataAsset: {fileID: 0}
-  m_ShadowMaskMode: 2
+  m_UseShadowmask: 1
 --- !u!196 &4
 NavMeshSettings:
   serializedVersion: 2
@@ -1998,6 +1998,7 @@ MonoBehaviour:
   m_PreferredHeight: 40
   m_FlexibleWidth: -1
   m_FlexibleHeight: -1
+  m_LayoutPriority: 1
 --- !u!114 &535844919
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2953,6 +2954,7 @@ MonoBehaviour:
   m_PreferredHeight: 40
   m_FlexibleWidth: -1
   m_FlexibleHeight: -1
+  m_LayoutPriority: 1
 --- !u!1 &853445181
 GameObject:
   m_ObjectHideFlags: 0
@@ -3042,6 +3044,7 @@ MonoBehaviour:
   m_PreferredHeight: 40
   m_FlexibleWidth: -1
   m_FlexibleHeight: -1
+  m_LayoutPriority: 1
 --- !u!1 &875687659
 GameObject:
   m_ObjectHideFlags: 0
@@ -3165,6 +3168,7 @@ MonoBehaviour:
   m_PreferredHeight: 40
   m_FlexibleWidth: -1
   m_FlexibleHeight: -1
+  m_LayoutPriority: 1
 --- !u!1 &887471552
 GameObject:
   m_ObjectHideFlags: 0
@@ -3313,6 +3317,7 @@ MonoBehaviour:
   m_PreferredHeight: 40
   m_FlexibleWidth: -1
   m_FlexibleHeight: -1
+  m_LayoutPriority: 1
 --- !u!114 &931277398
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -3504,6 +3509,7 @@ MonoBehaviour:
   m_PreferredHeight: 40
   m_FlexibleWidth: -1
   m_FlexibleHeight: -1
+  m_LayoutPriority: 1
 --- !u!1 &969266815
 GameObject:
   m_ObjectHideFlags: 0
@@ -3968,6 +3974,7 @@ MonoBehaviour:
   m_PreferredHeight: -1
   m_FlexibleWidth: -1
   m_FlexibleHeight: -1
+  m_LayoutPriority: 1
 --- !u!1 &1169579069
 GameObject:
   m_ObjectHideFlags: 0
@@ -4506,6 +4513,7 @@ MonoBehaviour:
   m_PreferredHeight: 40
   m_FlexibleWidth: -1
   m_FlexibleHeight: -1
+  m_LayoutPriority: 1
 --- !u!1 &1280732044
 GameObject:
   m_ObjectHideFlags: 0
@@ -4858,6 +4866,7 @@ MonoBehaviour:
   m_PreferredHeight: 40
   m_FlexibleWidth: -1
   m_FlexibleHeight: -1
+  m_LayoutPriority: 1
 --- !u!114 &1338394513
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -5446,6 +5455,7 @@ MonoBehaviour:
   m_PreferredHeight: 40
   m_FlexibleWidth: -1
   m_FlexibleHeight: -1
+  m_LayoutPriority: 1
 --- !u!1 &1450683480
 GameObject:
   m_ObjectHideFlags: 0
@@ -6285,129 +6295,7 @@ MonoBehaviour:
   m_PreferredHeight: 40
   m_FlexibleWidth: -1
   m_FlexibleHeight: -1
---- !u!1 &1653541462
-GameObject:
-  m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 0}
-  serializedVersion: 5
-  m_Component:
-  - component: {fileID: 1653541468}
-  - component: {fileID: 1653541467}
-  - component: {fileID: 1653541466}
-  - component: {fileID: 1653541465}
-  - component: {fileID: 1653541464}
-  - component: {fileID: 1653541463}
-  - component: {fileID: 1653541469}
-  - component: {fileID: 1653541470}
-  m_Layer: 0
-  m_Name: Mobile Center
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!114 &1653541463
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 0}
-  m_GameObject: {fileID: 1653541462}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 78605273f35a64a2f86a84e3986a37a5, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  UseDistribute: 0
---- !u!114 &1653541464
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 0}
-  m_GameObject: {fileID: 1653541462}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 2c2b3e81406c7412f9024b4eef14f9d8, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  UsePush: 1
---- !u!114 &1653541465
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 0}
-  m_GameObject: {fileID: 1653541462}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 2facedb6dc8eb4fd8a6b1eb70440d4e3, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  UseCrashes: 1
---- !u!114 &1653541466
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 0}
-  m_GameObject: {fileID: 1653541462}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 5a38b9191d0cc4ce79b1af0309f3e251, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  UseAnalytics: 1
---- !u!114 &1653541467
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 0}
-  m_GameObject: {fileID: 1653541462}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 7c3b8a1d9099940d5832f6537c750778, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  iOSAppSecret: dcf0de16-000e-477a-a55f-232380938aa8
-  AndroidAppSecret: a3dfccdf-d6e3-47aa-961b-106f719e8361
-  UWPAppSecret: 630db31d-f6b3-480e-925f-cbc1c5b12cdc
-  InitialLogLevel: 2
-  CustomLogUrl:
-    UseCustomLogUrl: 0
-    LogUrl: https://in-integration.dev.avalanch.es
---- !u!4 &1653541468
-Transform:
-  m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 0}
-  m_GameObject: {fileID: 1653541462}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -9.562454, y: 75.375, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_Children: []
-  m_Father: {fileID: 0}
-  m_RootOrder: 3
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &1653541469
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 0}
-  m_GameObject: {fileID: 1653541462}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 20e1dc3af695e4f9b90a7e6fccbeec22, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
---- !u!114 &1653541470
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 0}
-  m_GameObject: {fileID: 1653541462}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 05b18bb4772db46779e75143591f558f, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
+  m_LayoutPriority: 1
 --- !u!1 &1660266124
 GameObject:
   m_ObjectHideFlags: 0
@@ -6667,6 +6555,7 @@ MonoBehaviour:
   m_PreferredHeight: -1
   m_FlexibleWidth: -1
   m_FlexibleHeight: -1
+  m_LayoutPriority: 1
 --- !u!1 &1707415135
 GameObject:
   m_ObjectHideFlags: 0
@@ -7108,6 +6997,7 @@ MonoBehaviour:
   m_PreferredHeight: 40
   m_FlexibleWidth: -1
   m_FlexibleHeight: -1
+  m_LayoutPriority: 1
 --- !u!114 &1782471938
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -7544,6 +7434,7 @@ MonoBehaviour:
   m_PreferredHeight: 40
   m_FlexibleWidth: -1
   m_FlexibleHeight: -1
+  m_LayoutPriority: 1
 --- !u!1 &1903241962
 GameObject:
   m_ObjectHideFlags: 0
@@ -7841,6 +7732,7 @@ MonoBehaviour:
   m_PreferredHeight: 40
   m_FlexibleWidth: -1
   m_FlexibleHeight: -1
+  m_LayoutPriority: 1
 --- !u!1 &2024489100
 GameObject:
   m_ObjectHideFlags: 0

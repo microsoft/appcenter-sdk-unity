@@ -1,10 +1,13 @@
 using UnityEngine;
+using System.Collections;
+
 using Microsoft.Azure.Mobile.Unity.Push;
 
 public class PuppetPushHandler : MonoBehaviour
 {
     private static PushNotificationReceivedEventArgs _pushEventArgs = null;
     private static object _pushLock = new object();
+    bool setHandler = false;
 
     void Awake()
     {
@@ -41,5 +44,4 @@ public class PuppetPushHandler : MonoBehaviour
             }
         }
     }
-
 }

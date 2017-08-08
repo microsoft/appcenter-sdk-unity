@@ -1,9 +1,10 @@
-﻿﻿﻿// Copyright (c) Microsoft Corporation. All rights reserved.
+﻿// Copyright (c) Microsoft Corporation. All rights reserved.
 //
 // Licensed under the MIT license.
 
 using System;
 using Microsoft.Azure.Mobile.Unity.Push.Internal;
+using UnityEngine;
 
 namespace Microsoft.Azure.Mobile.Unity.Push
 {
@@ -50,6 +51,7 @@ namespace Microsoft.Azure.Mobile.Unity.Push
         {
             if (PushNotificationReceived != null)
             {
+                Debug.Log("Pushnotification received callback not null");
                 PushNotificationReceived.Invoke(null, e);
             }
         }

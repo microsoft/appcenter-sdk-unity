@@ -1,4 +1,4 @@
-﻿﻿// Copyright (c) Microsoft Corporation. All rights reserved.
+﻿// Copyright (c) Microsoft Corporation. All rights reserved.
 //
 // Licensed under the MIT license.
 
@@ -9,6 +9,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEditor;
 using UnityEditor.Callbacks;
+using Microsoft.Azure.Mobile.Unity;
 
 #if UNITY_IOS
 using UnityEditor.iOS.Xcode;
@@ -34,11 +35,47 @@ public class MobileCenterPostBuild
             // SQLite dependency
 #if UNITY_IOS
             AddLinkerFlagToXcodeProject("-lsqlite3", pathToBuiltProject);
+            AddLoaderCodeToIos(pathToBuiltProject);
 #endif
         }
     }
 
-#region UWP Methods
+
+    private static void AddLoaderCodeToIos(string pathToBuiltProject)
+    {
+        var settingsMaker = new MobileCenterSettingsMaker(pathToBuiltProject);
+        settingsMaker.SetAppSecret(GetAppSecret());
+        settingsMaker.SetLogUrl(GetLogUrl());
+        if (UsesPush())
+        {
+            settingsMaker.StartPushClass();
+        }
+        settingsMaker.SetLogLevel((int)GetLogLevel());
+        settingsMaker.CommitSettings();
+    }
+
+    private static string GetAppSecret()
+    {
+        return "dcf0de16-000e-477a-a55f-232380938aa8";
+    }
+
+    private static string GetLogUrl()
+    {
+        return "https://in-integration.dev.avalanch.es";
+    }
+
+    private static LogLevel GetLogLevel()
+    {
+        return LogLevel.Verbose;
+    }
+
+    private static bool UsesPush()
+    {
+        return true;
+    }
+
+
+    #region UWP Methods
     private static void AddDependenciesToProjectJson(string projectJsonPath)
     {
         if (!File.Exists(projectJsonPath))
@@ -72,6 +109,7 @@ public class MobileCenterPostBuild
     }
 
 
+
     private static void ExecuteCommand(string command, string arguments, int timeout = 600)
     {
         try
@@ -92,9 +130,9 @@ public class MobileCenterPostBuild
             Debug.LogException(exception);
         }
     }
-#endregion
+    #endregion
 
-#region iOS Methods
+    #region iOS Methods
 #if UNITY_IOS
 
     private static void AddLinkerFlagToXcodeProject(string linkerFlag, string pathToBuiltProject)
@@ -113,8 +151,9 @@ public class MobileCenterPostBuild
 
         pbxProject.UpdateBuildProperty(targetGuid, setting, new List<string> { linkerFlag }, null);
 
+
         pbxProject.WriteToFile(pbxPath);
     }
 #endif
-#endregion
+    #endregion
 }
