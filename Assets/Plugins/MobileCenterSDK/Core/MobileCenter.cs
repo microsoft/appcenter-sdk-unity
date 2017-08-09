@@ -52,7 +52,7 @@ namespace Microsoft.Azure.Mobile.Unity
             var stringTask = MobileCenterInternal.GetInstallIdAsync();
             var guidTask = new MobileCenterTask<Guid?>();
             stringTask.ContinueWith(t => {
-                var installId = new Guid(t.Result);
+                var installId = !string.IsNullOrEmpty(t.Result) ? new Guid(t.Result) : (Guid?) null;
                 guidTask.SetResult(installId);
             });
             return guidTask;
