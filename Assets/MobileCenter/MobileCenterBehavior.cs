@@ -5,6 +5,7 @@
 using Microsoft.Azure.Mobile.Unity;
 using UnityEngine;
 
+[HelpURL("https://docs.microsoft.com/en-us/mobile-center/sdk/")]
 public class MobileCenterBehavior : MonoBehaviour
 {
     private static MobileCenterBehavior instance;
