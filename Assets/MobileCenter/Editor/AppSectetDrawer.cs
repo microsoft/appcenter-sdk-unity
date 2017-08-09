@@ -11,14 +11,13 @@ public class AppSectetDrawer : PropertyDrawer
 {
     private const string Pattern = "^[A-Za-z0-9-]*$";
     private const int HelpHeight = 38;
-    private const int TextHeight = 16;
     
     public override float GetPropertyHeight(SerializedProperty property, GUIContent label)
     {
         var height = base.GetPropertyHeight(property, label);
         if (!IsValid(property))
         {
-            height += HelpHeight + EditorGUIUtility.standardVerticalSpacing;
+            height += HelpHeight + EditorGUIUtility.standardVerticalSpacing * 2;
         }
         return height;
     }
@@ -26,7 +25,7 @@ public class AppSectetDrawer : PropertyDrawer
     public override void OnGUI(Rect position, SerializedProperty property, GUIContent label)
     {
         var textFieldPosition = position;
-        textFieldPosition.height = TextHeight;
+        textFieldPosition.height = EditorGUIUtility.singleLineHeight;
         var name = ((AppSectetAttribute) attribute).Name;
         if (!string.IsNullOrEmpty(name))
         {
@@ -41,7 +40,7 @@ public class AppSectetDrawer : PropertyDrawer
         if (!IsValid(property))
         {
             var helpPosition = EditorGUI.IndentedRect(position);
-            helpPosition.y += TextHeight;
+            helpPosition.y += EditorGUIUtility.singleLineHeight + EditorGUIUtility.standardVerticalSpacing;
             helpPosition.height = HelpHeight;
             EditorGUI.HelpBox(helpPosition, name + " is invalid!", MessageType.Warning);
         }
