@@ -2,8 +2,6 @@
 //
 // Licensed under the MIT license.
 
-#if UNITY_EDITOR
-
 using UnityEngine;
 using UnityEditor;
 
@@ -67,5 +65,3 @@ public class LogUrlPropertyDrawer : PropertyDrawer
         return property.boolValue ? 2.0f * defaultHeight : defaultHeight;
     }
 }
-
-#endif

@@ -2,8 +2,6 @@
 //
 // Licensed under the MIT license.
 
-#if UNITY_EDITOR
-
 using UnityEngine;
 using UnityEditor;
 
@@ -30,4 +28,3 @@ public class StringPropertyNameDrawer : PropertyDrawer
         EditorGUI.EndProperty();
     }
 }
-#endif
