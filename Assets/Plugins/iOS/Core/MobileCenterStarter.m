@@ -5,17 +5,27 @@
 #import "MobileCenterStarter.h"
 #import <Foundation/Foundation.h>
 #import <UIKit/UIKit.h>
-#import <MobileCenter/MSMobileCenter.h>
+#import <MobileCenter/MobileCenter.h>
 
 #ifdef MOBILE_CENTER_UNITY_USE_PUSH
-#import <MobileCenterPush/MSPush.h>
+#import <MobileCenterPush/MobileCenterPush.h>
+#endif
+
+#ifdef MOBILE_CENTER_UNITY_USE_ANALYTICS
+#import <MobileCenterAnalytics/MobileCenterAnalytics.h>
+#endif
+
+#ifdef MOBILE_CENTER_UNITY_USE_DISTRIBUTE
+#import <MobileCenterDistribute/MobileCenterDistribute.h>
+#endif
+
+#ifdef MOBILE_CENTER_UNITY_USE_CRASHES
+#import <MobileCenterCrashes/MobileCenterCrashes.h>
 #endif
 
 @implementation MobileCenterStarter
 
 static NSString *kMSAppSecret = @"mobile-center-app-secret";
-static NSMutableArray<Class>* classes = [[NSMutableArray alloc] init];
-
 static NSString *kMSCustomLogUrl = @"custom-log-url";
 static int kMSLogLevel = 0/*LOG_LEVEL*/;
 
@@ -27,8 +37,22 @@ static int kMSLogLevel = 0/*LOG_LEVEL*/;
 }
 
 + (void)startMobileCenter {
+  NSMutableArray<Class>* classes = [[NSMutableArray alloc] init];
+
 #ifdef MOBILE_CENTER_UNITY_USE_PUSH
   [classes addObject:MSPush.class];
+#endif
+
+#ifdef MOBILE_CENTER_UNITY_USE_ANALYTICS
+  [classes addObject:MSAnalytics.class];
+#endif
+
+#ifdef MOBILE_CENTER_UNITY_USE_DISTRIBUTE
+  [classes addObject:MSDistribute.class];
+#endif
+
+#ifdef MOBILE_CENTER_UNITY_USE_CRASHES
+  [classes addObject:MSCrashes.class];
 #endif
 
   [MSMobileCenter setLogLevel:(MSLogLevel)kMSLogLevel];

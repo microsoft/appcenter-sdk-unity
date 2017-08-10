@@ -1,4 +1,8 @@
-﻿using Microsoft.Azure.Mobile.Unity.Analytics;
+﻿// Copyright (c) Microsoft Corporation. All rights reserved.
+//
+// Licensed under the MIT license.
+
+using Microsoft.Azure.Mobile.Unity.Analytics;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;

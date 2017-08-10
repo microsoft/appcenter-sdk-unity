@@ -66,7 +66,6 @@ public class MobileCenterSettingsMakerAndroid
     [InitializeOnLoadMethod]
     static void SetApplicationId()
     {
-        UnityEngine.Debug.Log("Set app id");
         string appId = null;
 #if UNITY_5_6_OR_NEWER
         appId = PlayerSettings.applicationIdentifier;

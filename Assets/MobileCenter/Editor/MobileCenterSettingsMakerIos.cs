@@ -20,8 +20,11 @@ public class MobileCenterSettingsMakerIos
     private static string LogLevelSearchText = "/*LOG_LEVEL*/";
     private static string LogUrlToken = "MOBILE_CENTER_UNITY_USE_CUSTOM_LOG_URL";
     private static string UsePushToken = "MOBILE_CENTER_UNITY_USE_PUSH";
+	private static string UseAnalyticsToken = "MOBILE_CENTER_UNITY_USE_ANALYTICS";
+	private static string UseDistributeToken = "MOBILE_CENTER_UNITY_USE_DISTRIBUTE";
+	private static string UseCrashesToken = "MOBILE_CENTER_UNITY_USE_CRASHES";
 
-    private string _classListText = "";
+	private string _classListText = "";
 
     private string _loaderFileText;
     private string _pathToLoaderFile;
@@ -40,6 +43,21 @@ public class MobileCenterSettingsMakerIos
     public void SetAppSecret(string appSecret)
     {
         _loaderFileText = _loaderFileText.Replace(AppSecretSearchText, appSecret);
+    }
+
+    public void StartDistributeClass()
+    {
+        AddToken(UseDistributeToken);
+    }
+
+    public void StartAnalyticsClass()
+    {
+        AddToken(UseAnalyticsToken);
+    }
+
+    public void StartCrashesClass()
+    {
+        AddToken(UseCrashesToken);
     }
 
     public void StartPushClass()
