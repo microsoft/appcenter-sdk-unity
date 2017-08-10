@@ -30,7 +30,9 @@ public class MobileCenterBehavior : MonoBehaviour
             Debug.LogError("Mobile Center isn't configured!");
             return;
         }
+#if !UNITY_IOS
         InitializeMobileCenter();
+#endif
     }
 
     private void InitializeMobileCenter()

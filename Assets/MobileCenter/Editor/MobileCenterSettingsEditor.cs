@@ -8,7 +8,10 @@ using UnityEditor;
 [CustomEditor(typeof(MobileCenterSettings))]
 public class MobileCenterSettingsEditor : Editor
 {
-    public override void OnInspectorGUI()
+	private static string SettingsPath = "Assets/MobileCenter/MobileCenterSettings.asset";
+	private static readonly MobileCenterSettings Settings = AssetDatabase.LoadAssetAtPath<MobileCenterSettings>(SettingsPath);
+
+	public override void OnInspectorGUI()
     {
         serializedObject.Update();
 
@@ -41,11 +44,31 @@ public class MobileCenterSettingsEditor : Editor
         Header("Other Setup");
         EditorGUILayout.PropertyField(serializedObject.FindProperty("InitialLogLevel"));
         EditorGUILayout.PropertyField(serializedObject.FindProperty("CustomLogUrl"));
-        
-        serializedObject.ApplyModifiedProperties();
+
+        var applied = serializedObject.ApplyModifiedProperties();
+        if (applied)
+        {
+            AddStartupCodeToAndroid("");
+        }
     }
 
-    private static void Header(string label)
+	private static void AddStartupCodeToAndroid(string pathToBuiltProject)
+	{
+		var settingsMaker = new MobileCenterSettingsMaker(pathToBuiltProject);
+		settingsMaker.SetAppSecret(Settings.AndroidAppSecret);
+		if (Settings.CustomLogUrl.UseCustomLogUrl)
+		{
+			settingsMaker.SetLogUrl(Settings.CustomLogUrl.LogUrl);
+		}
+		if (Settings.UsePush)
+		{
+			settingsMaker.StartPushClass();
+		}
+		settingsMaker.SetLogLevel((int)Settings.InitialLogLevel);
+		settingsMaker.CommitSettings();
+	}
+
+	private static void Header(string label)
     {
         GUILayout.Label(label, EditorStyles.boldLabel);
         GUILayout.Space(-4);

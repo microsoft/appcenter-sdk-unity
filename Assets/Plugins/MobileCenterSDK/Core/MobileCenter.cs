@@ -160,7 +160,7 @@ namespace Microsoft.Azure.Mobile.Unity
         }
 #endif
 
-        private static void InitializeServices(params Type[] services)
+        internal static void InitializeServices(params Type[] services)
         {
             // TODO handle case where initialization has already occurred
             foreach (var serviceType in services)
@@ -173,7 +173,7 @@ namespace Microsoft.Azure.Mobile.Unity
             }
         }
 
-        private static void PostInitializeServices(params Type[] services)
+        internal static void PostInitializeServices(params Type[] services)
         {
             // TODO handle case where post initialization has already occurred
             foreach (var serviceType in services)

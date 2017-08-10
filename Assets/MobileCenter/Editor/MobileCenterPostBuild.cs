@@ -17,6 +17,9 @@ using UnityEditor.iOS.Xcode;
 
 public class MobileCenterPostBuild
 {
+    private static string SettingsPath = "Assets/MobileCenter/MobileCenterSettings.asset";
+    private static readonly MobileCenterSettings Settings = AssetDatabase.LoadAssetAtPath<MobileCenterSettings>(SettingsPath);
+
     [PostProcessBuild(0)]
     public static void OnPostprocessBuild(BuildTarget target, string pathToBuiltProject)
     {
@@ -44,35 +47,30 @@ public class MobileCenterPostBuild
     {
         var settingsMaker = new MobileCenterSettingsMaker(pathToBuiltProject);
         settingsMaker.SetAppSecret(GetAppSecret());
-        settingsMaker.SetLogUrl(GetLogUrl());
-        if (UsesPush())
+        if (Settings.CustomLogUrl.UseCustomLogUrl)
+        {
+            settingsMaker.SetLogUrl(Settings.CustomLogUrl.LogUrl);
+        }
+        if (Settings.UsePush)
         {
             settingsMaker.StartPushClass();
         }
-        settingsMaker.SetLogLevel((int)GetLogLevel());
+        settingsMaker.SetLogLevel((int)Settings.InitialLogLevel);
         settingsMaker.CommitSettings();
     }
 
     private static string GetAppSecret()
     {
-        return "dcf0de16-000e-477a-a55f-232380938aa8";
+#if UNITY_IOS
+        return Settings.iOSAppSecret;
+#elif UNITY_ANDROID
+        return Settings.AndroidAppSecret;
+#elif UNITY_WSA_10_0
+        return Settings.UWPAppSecret;
+#else
+        return Settings.AppSecret;
+#endif
     }
-
-    private static string GetLogUrl()
-    {
-        return "https://in-integration.dev.avalanch.es";
-    }
-
-    private static LogLevel GetLogLevel()
-    {
-        return LogLevel.Verbose;
-    }
-
-    private static bool UsesPush()
-    {
-        return true;
-    }
-
 
     #region UWP Methods
     private static void AddDependenciesToProjectJson(string projectJsonPath)
@@ -147,8 +145,6 @@ public class MobileCenterPostBuild
         var targetGuid = pbxProject.TargetGuidByName("Unity-iPhone");
 
         pbxProject.UpdateBuildProperty(targetGuid, setting, new List<string> { linkerFlag }, null);
-
-
         pbxProject.WriteToFile(pbxPath);
     }
 #endif

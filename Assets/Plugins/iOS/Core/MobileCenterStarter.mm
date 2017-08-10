@@ -37,7 +37,6 @@ static int kMSLogLevel = 0/*LOG_LEVEL*/;
   [MSMobileCenter setLogUrl:kMSCustomLogUrl];
 #endif
 
-
   [MSMobileCenter start:kMSAppSecret withServices:classes];
 }
 

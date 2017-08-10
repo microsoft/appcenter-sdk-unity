@@ -2,4 +2,11 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.microsoft.azure.mobile.unity">
   <uses-sdk android:minSdkVersion="15"/>
+    <application>
+        <provider
+            android:authorities="com.microsoft.azure.mobile.unity.puppet.microsoft.azure.mobile.unity.mobilecenterstarter"
+            android:exported="false"
+            android:enabled="true"
+            android:name=".IntentActivity" />
+    </application>
 </manifest>

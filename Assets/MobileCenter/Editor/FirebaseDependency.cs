@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using System.Xml;
 using UnityEditor;
 using UnityEngine;
 
@@ -114,37 +113,6 @@ public class FirebaseDependency : AssetPostprocessor
 #endif
     }
 
-    static void WriteXmlResource(string path, Dictionary<string, string> resourceValues)
-    {
-        var xws = new XmlWriterSettings
-        {
-            Indent = true
-        };
-        using (var sw = File.Create(path))
-        using (var xw = XmlWriter.Create(sw, xws))
-        {
-            xw.WriteStartDocument();
-            xw.WriteStartElement("resources");
-
-            foreach (var kvp in resourceValues)
-            {
-                if (!string.IsNullOrEmpty(kvp.Value))
-                {
-                    xw.WriteStartElement("string");
-                    xw.WriteAttributeString("name", kvp.Key);
-                    xw.WriteAttributeString("translatable", "false");
-                    xw.WriteString(kvp.Value);
-                    xw.WriteEndElement();
-                }
-            }
-
-            xw.WriteEndElement();
-            xw.WriteEndDocument();
-            xw.Flush();
-            xw.Close();
-        }
-    }
-
     static void UpdateJson()
     {
 #if UNITY_ANDROID
@@ -200,7 +168,7 @@ public class FirebaseDependency : AssetPostprocessor
             { "google_storage_bucket", googleServices.GetStorageBucket(bundleId) },
             { "project_id", googleServices.GetProjectId() },
         };
-        WriteXmlResource(outputPath, valuesItems);
+        XmlResourceHelper.WriteXmlResource(outputPath, valuesItems);
 
         // Update editor project view.
         AssetDatabase.Refresh();
