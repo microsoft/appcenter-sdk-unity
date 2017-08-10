@@ -8,10 +8,9 @@ using UnityEditor;
 [CustomEditor(typeof(MobileCenterSettings))]
 public class MobileCenterSettingsEditor : Editor
 {
-	private static string SettingsPath = "Assets/MobileCenter/MobileCenterSettings.asset";
-	private static readonly MobileCenterSettings Settings = AssetDatabase.LoadAssetAtPath<MobileCenterSettings>(SettingsPath);
+    public MobileCenterSettings Settings { get; set; }
 
-	public override void OnInspectorGUI()
+    public override void OnInspectorGUI()
     {
         serializedObject.Update();
 
@@ -48,27 +47,30 @@ public class MobileCenterSettingsEditor : Editor
         var applied = serializedObject.ApplyModifiedProperties();
         if (applied)
         {
-            AddStartupCodeToAndroid("");
+            AddStartupCodeToAndroid();
         }
     }
 
-	private static void AddStartupCodeToAndroid(string pathToBuiltProject)
-	{
-		var settingsMaker = new MobileCenterSettingsMaker(pathToBuiltProject);
-		settingsMaker.SetAppSecret(Settings.AndroidAppSecret);
-		if (Settings.CustomLogUrl.UseCustomLogUrl)
-		{
-			settingsMaker.SetLogUrl(Settings.CustomLogUrl.LogUrl);
-		}
-		if (Settings.UsePush)
-		{
-			settingsMaker.StartPushClass();
-		}
-		settingsMaker.SetLogLevel((int)Settings.InitialLogLevel);
-		settingsMaker.CommitSettings();
-	}
+    private void AddStartupCodeToAndroid()
+    {
+        if (_settings == null)
+        {
+        }
+        var settingsMaker = new MobileCenterSettingsMaker();
+        settingsMaker.SetAppSecret(_settings.AndroidAppSecret);
+        if (_settings.CustomLogUrl.UseCustomLogUrl)
+        {
+            settingsMaker.SetLogUrl(_settings.CustomLogUrl.LogUrl);
+        }
+        if (_settings.UsePush)
+        {
+            settingsMaker.StartPushClass();
+        }
+        settingsMaker.SetLogLevel((int)_settings.InitialLogLevel);
+        settingsMaker.CommitSettings();
+    }
 
-	private static void Header(string label)
+    private static void Header(string label)
     {
         GUILayout.Label(label, EditorStyles.boldLabel);
         GUILayout.Space(-4);

@@ -29,6 +29,10 @@ public class MobileCenterSettingsMaker
     {
     }
 
+    public MobileCenterSettingsMaker()
+    {
+    }
+
     public void SetLogLevel(int logLevel)
     {
         _resourceValues[InitialLogLevelKey] = logLevel.ToString();

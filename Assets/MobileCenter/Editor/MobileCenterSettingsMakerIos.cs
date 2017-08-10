@@ -16,6 +16,10 @@ public class MobileCenterSettingsMaker
         _loaderFileText = File.ReadAllText(_pathToLoaderFile);
     }
 
+    public MobileCenterSettingsMaker()
+    {
+    }
+
     private static string LoaderPathSuffix = "/Libraries/Plugins/iOS/Core/MobileCenterStarter.mm";
     private static string AppSecretSearchText = "mobile-center-app-secret";
     private static string LogUrlSearchText = "custom-log-url";

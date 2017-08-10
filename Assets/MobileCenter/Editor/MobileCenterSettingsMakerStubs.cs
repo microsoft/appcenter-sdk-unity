@@ -10,6 +10,10 @@ public class MobileCenterSettingsMaker
     {
     }
 
+    public MobileCenterSettingsMaker()
+    {
+    }
+
     public void SetAppSecret(string appSecret)
     {
     }
@@ -17,7 +21,7 @@ public class MobileCenterSettingsMaker
     public void StartPushClass()
     {
     }
-	public void SetLogLevel(int logLevel)
+    public void SetLogLevel(int logLevel)
     {
     }
 
