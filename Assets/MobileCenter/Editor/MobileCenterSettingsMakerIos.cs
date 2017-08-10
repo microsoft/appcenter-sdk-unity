@@ -2,22 +2,16 @@
 //
 // Licensed under the MIT license.
 
-#if UNITY_IOS
-
 using UnityEngine;
 using UnityEditor;
 using System.IO;
 
-public class MobileCenterSettingsMaker
+public class MobileCenterSettingsMakerIos
 {
-    public MobileCenterSettingsMaker(string pathToBuiltProject)
+    public MobileCenterSettingsMakerIos(string pathToBuiltProject)
     {
         _pathToLoaderFile = pathToBuiltProject + LoaderPathSuffix;
         _loaderFileText = File.ReadAllText(_pathToLoaderFile);
-    }
-
-    public MobileCenterSettingsMaker()
-    {
     }
 
     private static string LoaderPathSuffix = "/Libraries/Plugins/iOS/Core/MobileCenterStarter.mm";
@@ -64,5 +58,3 @@ public class MobileCenterSettingsMaker
         _loaderFileText = tokenText + _loaderFileText;
     }
 }
-
-#endif

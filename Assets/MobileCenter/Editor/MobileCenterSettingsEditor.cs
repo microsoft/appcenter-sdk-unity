@@ -9,6 +9,7 @@ using UnityEditor;
 public class MobileCenterSettingsEditor : Editor
 {
     public MobileCenterSettings Settings { get; set; }
+    private const string SettingsPath = "Assets/MobileCenter/MobileCenterSettings.asset";
 
     public override void OnInspectorGUI()
     {
@@ -53,20 +54,22 @@ public class MobileCenterSettingsEditor : Editor
 
     private void AddStartupCodeToAndroid()
     {
-        if (_settings == null)
+        if (Settings == null)
         {
+            Settings = AssetDatabase.LoadAssetAtPath<MobileCenterSettings>(SettingsPath);
         }
-        var settingsMaker = new MobileCenterSettingsMaker();
-        settingsMaker.SetAppSecret(_settings.AndroidAppSecret);
-        if (_settings.CustomLogUrl.UseCustomLogUrl)
+        var settingsMaker = new MobileCenterSettingsMakerAndroid();
+        settingsMaker.SetAppSecret(Settings.AndroidAppSecret);
+        if (Settings.CustomLogUrl.UseCustomLogUrl)
         {
-            settingsMaker.SetLogUrl(_settings.CustomLogUrl.LogUrl);
+            settingsMaker.SetLogUrl(Settings.CustomLogUrl.LogUrl);
         }
-        if (_settings.UsePush)
+        if (Settings.UsePush)
         {
             settingsMaker.StartPushClass();
         }
-        settingsMaker.SetLogLevel((int)_settings.InitialLogLevel);
+
+        settingsMaker.SetLogLevel((int)Settings.InitialLogLevel);
         settingsMaker.CommitSettings();
     }
 

@@ -38,14 +38,14 @@ public class MobileCenterPostBuild
             // SQLite dependency
 #if UNITY_IOS
             AddLinkerFlagToXcodeProject("-lsqlite3", pathToBuiltProject);
+            AddStartupCodeToIos(pathToBuiltProject);
 #endif
         }
-        AddStartupCode(pathToBuiltProject);
     }
 
-    private static void AddStartupCode(string pathToBuiltProject)
+    private static void AddStartupCodeToIos(string pathToBuiltProject)
     {
-        var settingsMaker = new MobileCenterSettingsMaker(pathToBuiltProject);
+        var settingsMaker = new MobileCenterSettingsMakerIos(pathToBuiltProject);
         settingsMaker.SetAppSecret(GetAppSecret());
         if (Settings.CustomLogUrl.UseCustomLogUrl)
         {

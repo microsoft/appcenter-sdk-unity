@@ -2,17 +2,16 @@
 //
 // Licensed under the MIT license.
 
-#if UNITY_ANDROID
-
 using System.Collections.Generic;
 using System.IO;
 using UnityEditor;
 using UnityEditor.Callbacks;
 
-public class MobileCenterSettingsMaker
+public class MobileCenterSettingsMakerAndroid
 {
     private static string MobileCenterResourcesPath = "Assets/Plugins/Android/mobile-center/res/values/mobile-center-settings.xml";
     private static string MobileCenterManifestPath = "Assets/Plugins/Android/mobile-center/AndroidManifest.xml";
+    private static readonly string ManifestAppIdPlaceholder = "${mobile-center-app-id-placeholder}";
     private static readonly string AppSecretKey = "mobile_center_app_secret";
     private static readonly string CustomLogUrlKey = "mobile_center_custom_log_url";
     private static readonly string UseCustomLogUrlKey = "mobile_center_use_custom_log_url";
@@ -21,17 +20,7 @@ public class MobileCenterSettingsMaker
     private static readonly string UseAnalyticsKey = "mobile_center_use_analytics";
     private static readonly string UseDistributeKey = "mobile_center_use_distribute";
     private static readonly string UseCrashesKey = "mobile_center_use_crashes";
-    private static readonly string ManifestAppIdPlaceholder = "${mobile-center-app-id-placeholder}";
-
     private IDictionary<string, string> _resourceValues = new Dictionary<string, string>();
-
-    public MobileCenterSettingsMaker(string pathToBuiltProject)
-    {
-    }
-
-    public MobileCenterSettingsMaker()
-    {
-    }
 
     public void SetLogLevel(int logLevel)
     {
@@ -92,5 +81,3 @@ public class MobileCenterSettingsMaker
         }
     }
 }
-
-#endif
