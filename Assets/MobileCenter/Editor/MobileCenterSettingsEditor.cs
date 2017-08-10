@@ -8,6 +8,8 @@ using UnityEditor;
 [CustomEditor(typeof(MobileCenterSettings))]
 public class MobileCenterSettingsEditor : Editor
 {
+    public const string SettingsPath = "Assets/MobileCenter/MobileCenterSettings.asset";
+
     public override void OnInspectorGUI()
     {
         serializedObject.Update();
