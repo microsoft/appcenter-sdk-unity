@@ -14,17 +14,15 @@ public class MobileCenterSettingsMakerIos
         _loaderFileText = File.ReadAllText(_pathToLoaderFile);
     }
 
-    private static string LoaderPathSuffix = "/Libraries/Plugins/iOS/Core/MobileCenterStarter.mm";
+    private static string LoaderPathSuffix = "/Libraries/Plugins/iOS/Core/MobileCenterStarter.m";
     private static string AppSecretSearchText = "mobile-center-app-secret";
     private static string LogUrlSearchText = "custom-log-url";
     private static string LogLevelSearchText = "/*LOG_LEVEL*/";
     private static string LogUrlToken = "MOBILE_CENTER_UNITY_USE_CUSTOM_LOG_URL";
     private static string UsePushToken = "MOBILE_CENTER_UNITY_USE_PUSH";
-	private static string UseAnalyticsToken = "MOBILE_CENTER_UNITY_USE_ANALYTICS";
-	private static string UseDistributeToken = "MOBILE_CENTER_UNITY_USE_DISTRIBUTE";
-	private static string UseCrashesToken = "MOBILE_CENTER_UNITY_USE_CRASHES";
-
-	private string _classListText = "";
+    private static string UseAnalyticsToken = "MOBILE_CENTER_UNITY_USE_ANALYTICS";
+    private static string UseDistributeToken = "MOBILE_CENTER_UNITY_USE_DISTRIBUTE";
+    private static string UseCrashesToken = "MOBILE_CENTER_UNITY_USE_CRASHES";
 
     private string _loaderFileText;
     private string _pathToLoaderFile;

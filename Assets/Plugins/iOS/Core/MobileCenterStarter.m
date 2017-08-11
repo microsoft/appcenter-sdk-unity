@@ -5,22 +5,23 @@
 #import "MobileCenterStarter.h"
 #import <Foundation/Foundation.h>
 #import <UIKit/UIKit.h>
-#import <MobileCenter/MobileCenter.h>
+
+@import MobileCenter;
 
 #ifdef MOBILE_CENTER_UNITY_USE_PUSH
-#import <MobileCenterPush/MobileCenterPush.h>
+@import MobileCenterPush;
 #endif
 
 #ifdef MOBILE_CENTER_UNITY_USE_ANALYTICS
-#import <MobileCenterAnalytics/MobileCenterAnalytics.h>
+@import MobileCenterAnalytics;
 #endif
 
 #ifdef MOBILE_CENTER_UNITY_USE_DISTRIBUTE
-#import <MobileCenterDistribute/MobileCenterDistribute.h>
+@import MobileCenterDistribute;
 #endif
 
 #ifdef MOBILE_CENTER_UNITY_USE_CRASHES
-#import <MobileCenterCrashes/MobileCenterCrashes.h>
+@import MobileCenterCrashes;
 #endif
 
 @implementation MobileCenterStarter

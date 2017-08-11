@@ -37,7 +37,7 @@ public class MobileCenterPostBuild
             // For iOS, need to add "-lsqlite3" linker flag to PBXProject due to
             // SQLite dependency
 #if UNITY_IOS
-            AddLinkerFlagToXcodeProject("-lsqlite3", pathToBuiltProject);
+            ModifyXcodeProject("-lsqlite3", pathToBuiltProject);
             AddStartupCodeToIos(pathToBuiltProject);
 #endif
         }
@@ -129,8 +129,7 @@ public class MobileCenterPostBuild
 
     #region iOS Methods
 #if UNITY_IOS
-
-    private static void AddLinkerFlagToXcodeProject(string linkerFlag, string pathToBuiltProject)
+    private static void ModifyXcodeProject(string linkerFlag, string pathToBuiltProject)
     {
         // Linker flags are added to the setting "Other linker flags" which has
         // an ID of "OTHER_LDFLAGS"
@@ -145,6 +144,9 @@ public class MobileCenterPostBuild
         var targetGuid = pbxProject.TargetGuidByName("Unity-iPhone");
 
         pbxProject.UpdateBuildProperty(targetGuid, setting, new List<string> { linkerFlag }, null);
+
+        var modulesSetting = "CLANG_ENABLE_MODULES";
+        pbxProject.UpdateBuildProperty(targetGuid, modulesSetting, new List<string> { "true" }, new List<string> { "false" });
         pbxProject.WriteToFile(pbxPath);
     }
 #endif
