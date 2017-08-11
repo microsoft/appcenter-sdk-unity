@@ -18,13 +18,13 @@ public class MobileCenterPostBuild
     [PostProcessBuild]
     public static void OnPostprocessBuild(BuildTarget target, string pathToBuiltProject)
     {
-        // Load Mobile Center settings
+        // Load Mobile Center settings.
         var settingsPath = MobileCenterSettingsEditor.SettingsPath;
         var settings = AssetDatabase.LoadAssetAtPath<MobileCenterSettings>(settingsPath);
 
         if (target == BuildTarget.WSAPlayer)
         {
-            // If UWP, need to add NuGet packages
+            // If UWP, need to add NuGet packages.
             var projectJson = pathToBuiltProject + "/" + PlayerSettings.productName + "/project.json";
             AddDependenciesToProjectJson(projectJson);
 
@@ -34,19 +34,27 @@ public class MobileCenterPostBuild
 #if UNITY_IOS
         else if (target == BuildTarget.iOS)
         {
-            // Update project
+            // Update project.
             var projectPath = PBXProject.GetPBXProjectPath(pathToBuiltProject);
+            var targetName = PBXProject.GetUnityTargetName();
             var project = new PBXProject();
             project.ReadFromFile(projectPath);
             OnPostprocessProject(project, settings);
             project.WriteToFile(projectPath);
 
-            // Update Info.plist
+            // Update Info.plist.
             var infoPath = pathToBuiltProject + "/Info.plist";
             var info = new PlistDocument();
             info.ReadFromFile(infoPath);
             OnPostprocessInfo(info, settings);
             info.WriteToFile(infoPath);
+
+            // Update capabilities.
+            var capabilityManager = new ProjectCapabilityManager(
+                projectPath, targetName + ".entitlements",
+                PBXProject.GetUnityTargetName());
+            OnPostprocessCapabilities(capabilityManager, settings);
+            capabilityManager.WriteToFile();
         }
 #endif
     }
@@ -119,29 +127,35 @@ public class MobileCenterPostBuild
 #if UNITY_IOS
     private static void OnPostprocessProject(PBXProject project, MobileCenterSettings settings)
     {
-        // The target we want to add to is created by Unity
-        var targetGuid = project.TargetGuidByName("Unity-iPhone");
+        // The target we want to add to is created by Unity.
+        var targetName = PBXProject.GetUnityTargetName();
+        var targetGuid = project.TargetGuidByName(targetName);
 
         // Need to add "-lsqlite3" linker flag to "Other linker flags" due to
-        // SQLite dependency
-        project.UpdateBuildProperty(targetGuid, "OTHER_LDFLAGS", new [] { "-lsqlite3" }, null);
+        // SQLite dependency.
+        project.AddBuildProperty(targetGuid, "OTHER_LDFLAGS", "-lsqlite3");
     }
 
     private static void OnPostprocessInfo(PlistDocument info, MobileCenterSettings settings)
     {
-        if (settings.UsePush && MobileCenterSettings.Push != null)
-        {
-            var backgroundModes = info.root.CreateArray("UIBackgroundModes");
-            backgroundModes.AddString("remote-notification");
-        }
         if (settings.UseDistribute && MobileCenterSettings.Distribute != null)
         {
+            // Add Mobile Center URL sceme.
             var urlTypes = info.root.CreateArray("CFBundleURLTypes");
             var urlType = urlTypes.AddDict();
             urlType.SetString("CFBundleTypeRole", "None");
             urlType.SetString("CFBundleURLName", GetApplicationId());
             var urlSchemes = urlType.CreateArray("CFBundleURLSchemes");
             urlSchemes.AddString("mobilecenter-" + settings.iOSAppSecret);
+        }
+    }
+
+    private static void OnPostprocessCapabilities(ProjectCapabilityManager capabilityManager, MobileCenterSettings settings)
+    {
+        if (settings.UsePush && MobileCenterSettings.Push != null)
+        {
+            capabilityManager.AddPushNotifications(true);
+            capabilityManager.AddBackgroundModes(BackgroundModesOptions.RemoteNotifications);
         }
     }
 #endif
