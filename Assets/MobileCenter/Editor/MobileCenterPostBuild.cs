@@ -136,6 +136,7 @@ public class MobileCenterPostBuild
         // Need to add "-lsqlite3" linker flag to "Other linker flags" due to
         // SQLite dependency.
         project.AddBuildProperty(targetGuid, "OTHER_LDFLAGS", "-lsqlite3");
+        project.AddBuildProperty(targetGuid, "CLANG_ENABLE_MODULES", "YES");
     }
 
     private static void OnPostprocessInfo(PlistDocument info, MobileCenterSettings settings)
