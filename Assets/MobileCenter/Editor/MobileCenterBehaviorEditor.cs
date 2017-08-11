@@ -7,22 +7,21 @@ using UnityEditor;
 [CustomEditor(typeof(MobileCenterBehavior))]
 public class MobileCenterBehaviorEditor : Editor
 {
-    private const string SettingsPath = "Assets/MobileCenter/MobileCenterSettings.asset";
-
     private Editor settingsEditor;
 
     public override void OnInspectorGUI()
     {
         // Load or create settings.
+        var settingsPath = MobileCenterSettingsEditor.SettingsPath;
         var behaviour = (MobileCenterBehavior) target;
         if (behaviour.settings == null)
         {
-            behaviour.settings = AssetDatabase.LoadAssetAtPath<MobileCenterSettings>(SettingsPath);
+            behaviour.settings = AssetDatabase.LoadAssetAtPath<MobileCenterSettings>(settingsPath);
         }
         if (behaviour.settings == null)
         {
             behaviour.settings = CreateInstance<MobileCenterSettings>();
-            AssetDatabase.CreateAsset(behaviour.settings, SettingsPath);
+            AssetDatabase.CreateAsset(behaviour.settings, settingsPath);
             AssetDatabase.SaveAssets();
         }
 
