@@ -1,15 +1,13 @@
-﻿// Copyright (c) Microsoft Corporation. All rights reserved.
+// Copyright (c) Microsoft Corporation. All rights reserved.
 //
 // Licensed under the MIT license.
 
 using System;
 using System.IO;
 using System.Text.RegularExpressions;
-using System.Collections.Generic;
 using UnityEngine;
 using UnityEditor;
 using UnityEditor.Callbacks;
-using Microsoft.Azure.Mobile.Unity;
 
 #if UNITY_IOS
 using UnityEditor.iOS.Xcode;
@@ -17,62 +15,62 @@ using UnityEditor.iOS.Xcode;
 
 public class MobileCenterPostBuild
 {
-    private static string SettingsPath = "Assets/MobileCenter/MobileCenterSettings.asset";
-    private static readonly MobileCenterSettings Settings = AssetDatabase.LoadAssetAtPath<MobileCenterSettings>(SettingsPath);
-
-    [PostProcessBuild(0)]
+    [PostProcessBuild]
     public static void OnPostprocessBuild(BuildTarget target, string pathToBuiltProject)
     {
+        // Load Mobile Center settings.
+        var settingsPath = MobileCenterSettingsEditor.SettingsPath;
+        var settings = AssetDatabase.LoadAssetAtPath<MobileCenterSettings>(settingsPath);
+
         if (target == BuildTarget.WSAPlayer)
         {
-            // If UWP, need to add NuGet packages
+            // If UWP, need to add NuGet packages.
             var projectJson = pathToBuiltProject + "/" + PlayerSettings.productName + "/project.json";
             AddDependenciesToProjectJson(projectJson);
 
             var nuget = EditorApplication.applicationContentsPath + "/PlaybackEngines/MetroSupport/Tools/nuget.exe";
             ExecuteCommand(nuget, "restore \"" + projectJson + "\" -NonInteractive");
         }
+#if UNITY_IOS
         else if (target == BuildTarget.iOS)
         {
-            // For iOS, need to add "-lsqlite3" linker flag to PBXProject due to
-            // SQLite dependency
-#if UNITY_IOS
-            ModifyXcodeProject("-lsqlite3", pathToBuiltProject);
-            AddStartupCodeToIos(pathToBuiltProject);
+            // Update project.
+            var projectPath = PBXProject.GetPBXProjectPath(pathToBuiltProject);
+            var targetName = PBXProject.GetUnityTargetName();
+            var project = new PBXProject();
+            project.ReadFromFile(projectPath);
+            OnPostprocessProject(project, settings);
+            project.WriteToFile(projectPath);
+
+            // Update Info.plist.
+            var infoPath = pathToBuiltProject + "/Info.plist";
+            var info = new PlistDocument();
+            info.ReadFromFile(infoPath);
+            OnPostprocessInfo(info, settings);
+            info.WriteToFile(infoPath);
+
+#if UNITY_2017_1_OR_NEWER
+            // Update capabilities.
+            var capabilityManager = new ProjectCapabilityManager(
+                projectPath, targetName + ".entitlements",
+                PBXProject.GetUnityTargetName());
+            OnPostprocessCapabilities(capabilityManager, settings);
+            capabilityManager.WriteToFile();
 #endif
         }
+#endif
     }
 
-    private static void AddStartupCodeToIos(string pathToBuiltProject)
+    private static string GetApplicationId()
     {
-        var settingsMaker = new MobileCenterSettingsMakerIos(pathToBuiltProject);
-        settingsMaker.SetAppSecret(GetAppSecret());
-        if (Settings.CustomLogUrl.UseCustomLogUrl)
-        {
-            settingsMaker.SetLogUrl(Settings.CustomLogUrl.LogUrl);
-        }
-        if (Settings.UsePush)
-        {
-            settingsMaker.StartPushClass();
-        }
-        settingsMaker.SetLogLevel((int)Settings.InitialLogLevel);
-        settingsMaker.CommitSettings();
-    }
-
-    private static string GetAppSecret()
-    {
-#if UNITY_IOS
-        return Settings.iOSAppSecret;
-#elif UNITY_ANDROID
-        return Settings.AndroidAppSecret;
-#elif UNITY_WSA_10_0
-        return Settings.UWPAppSecret;
+#if UNITY_5_6_OR_NEWER
+        return PlayerSettings.applicationIdentifier;
 #else
-        return Settings.AppSecret;
+        return PlayerSettings.bundleIdentifier;
 #endif
     }
 
-    #region UWP Methods
+#region UWP Methods
     private static void AddDependenciesToProjectJson(string projectJsonPath)
     {
         if (!File.Exists(projectJsonPath))
@@ -125,30 +123,45 @@ public class MobileCenterPostBuild
             Debug.LogException(exception);
         }
     }
-    #endregion
+#endregion
 
-    #region iOS Methods
+#region iOS Methods
 #if UNITY_IOS
-    private static void ModifyXcodeProject(string linkerFlag, string pathToBuiltProject)
+    private static void OnPostprocessProject(PBXProject project, MobileCenterSettings settings)
     {
-        // Linker flags are added to the setting "Other linker flags" which has
-        // an ID of "OTHER_LDFLAGS"
-        var setting = "OTHER_LDFLAGS";
+        // The target we want to add to is created by Unity.
+        var targetName = PBXProject.GetUnityTargetName();
+        var targetGuid = project.TargetGuidByName(targetName);
 
-        // Find the .pbxproj file and read into memory
-        var pbxPath = PBXProject.GetPBXProjectPath(pathToBuiltProject);
-        var pbxProject = new PBXProject();
-        pbxProject.ReadFromFile(pbxPath);
+        // Need to add "-lsqlite3" linker flag to "Other linker flags" due to
+        // SQLite dependency.
+        project.AddBuildProperty(targetGuid, "OTHER_LDFLAGS", "-lsqlite3");
+    }
 
-        // The target we want to add to is created by Unity
-        var targetGuid = pbxProject.TargetGuidByName("Unity-iPhone");
+    private static void OnPostprocessInfo(PlistDocument info, MobileCenterSettings settings)
+    {
+        if (settings.UseDistribute && MobileCenterSettings.Distribute != null)
+        {
+            // Add Mobile Center URL sceme.
+            var urlTypes = info.root.CreateArray("CFBundleURLTypes");
+            var urlType = urlTypes.AddDict();
+            urlType.SetString("CFBundleTypeRole", "None");
+            urlType.SetString("CFBundleURLName", GetApplicationId());
+            var urlSchemes = urlType.CreateArray("CFBundleURLSchemes");
+            urlSchemes.AddString("mobilecenter-" + settings.iOSAppSecret);
+        }
+    }
 
-        pbxProject.UpdateBuildProperty(targetGuid, setting, new List<string> { linkerFlag }, null);
-
-        var modulesSetting = "CLANG_ENABLE_MODULES";
-        pbxProject.UpdateBuildProperty(targetGuid, modulesSetting, new List<string> { "true" }, new List<string> { "false" });
-        pbxProject.WriteToFile(pbxPath);
+#if UNITY_2017_1_OR_NEWER
+    private static void OnPostprocessCapabilities(ProjectCapabilityManager capabilityManager, MobileCenterSettings settings)
+    {
+        if (settings.UsePush && MobileCenterSettings.Push != null)
+        {
+            capabilityManager.AddPushNotifications(true);
+            capabilityManager.AddBackgroundModes(BackgroundModesOptions.RemoteNotifications);
+        }
     }
 #endif
-    #endregion
+#endif
+#endregion
 }

@@ -1,4 +1,4 @@
-﻿// Copyright (c) Microsoft Corporation. All rights reserved.
+// Copyright (c) Microsoft Corporation. All rights reserved.
 //
 // Licensed under the MIT license.
 
@@ -9,7 +9,7 @@ using UnityEditor;
 public class MobileCenterSettingsEditor : Editor
 {
     public MobileCenterSettings Settings { get; set; }
-    private const string SettingsPath = "Assets/MobileCenter/MobileCenterSettings.asset";
+    public const string SettingsPath = "Assets/MobileCenter/MobileCenterSettings.asset";
 
     public override void OnInspectorGUI()
     {
@@ -37,7 +37,14 @@ public class MobileCenterSettingsEditor : Editor
         }
         if (MobileCenterSettings.Push != null)
         {
-            EditorGUILayout.PropertyField(serializedObject.FindProperty("UsePush"));
+            var serializedProperty = serializedObject.FindProperty("UsePush");
+            EditorGUILayout.PropertyField(serializedProperty);
+#if !UNITY_2017_1_OR_NEWER
+            if (serializedProperty.boolValue)
+            {
+                EditorGUILayout.HelpBox ("In Unity versions prior to 2017.1 you need to add required capabilities in XCode manually.", MessageType.Info);
+            }
+#endif
         }
 
         // Draw other.
