@@ -35,5 +35,19 @@ public class MobileCenterBehavior : MonoBehaviour
 
     private void InitializeMobileCenter()
     {
+        foreach (var serviceType in settings.Services)
+        {
+            var method = serviceType.GetMethod("Initialize");
+            if (method != null)
+            {
+                method.Invoke(null, null);
+            }
+            method = serviceType.GetMethod("PostInitialize");
+            if (method != null)
+            {
+                method.Invoke(null, null);
+            }
+        }
     }
 }
+

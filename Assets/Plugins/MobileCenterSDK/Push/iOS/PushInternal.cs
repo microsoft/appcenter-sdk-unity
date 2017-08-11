@@ -34,7 +34,6 @@ namespace Microsoft.Azure.Mobile.Unity.Push.Internal
 
         public static void Initialize()
         {
-            PushDelegate.SetDelegate();
         }
 
         public static void PostInitialize()

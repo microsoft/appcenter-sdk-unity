@@ -162,7 +162,6 @@ namespace Microsoft.Azure.Mobile.Unity
 
         internal static void InitializeServices(params Type[] services)
         {
-            // TODO handle case where initialization has already occurred
             foreach (var serviceType in services)
             {
                 var method = serviceType.GetMethod("Initialize");
@@ -175,7 +174,6 @@ namespace Microsoft.Azure.Mobile.Unity
 
         internal static void PostInitializeServices(params Type[] services)
         {
-            // TODO handle case where post initialization has already occurred
             foreach (var serviceType in services)
             {
                 var method = serviceType.GetMethod("PostInitialize");
