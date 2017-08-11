@@ -18,12 +18,6 @@ void mobile_center_unity_push_replay_unprocessed_notifications()
   [pushDelegate replayUnprocessedNotifications];
 }
 
-void mobile_center_unity_push_set_delegate()
-{
-  pushDelegate = [UnityPushDelegate new];
-  [MSPush setDelegate:pushDelegate];
-}
-
 void* mobile_center_unity_push_get_type()
 {
   return (void *)CFBridgingRetain([MSPush class]);

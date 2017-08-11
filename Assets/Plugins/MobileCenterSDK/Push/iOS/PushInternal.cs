@@ -15,14 +15,7 @@ namespace Microsoft.Azure.Mobile.Unity.Push.Internal
         [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
         delegate void ReceivedPushNotificationDelegate(IntPtr notification);
 
-        static ReceivedPushNotificationDelegate del;
-        static IntPtr ptr;
-
-        static PushDelegate()
-        {
-            del = ReceivedPushNotificationFunc;
-            mobile_center_unity_push_set_received_push_impl(del);
-        }
+        private static ReceivedPushNotificationDelegate _receivedPushDel;
 
         [MonoPInvokeCallback(typeof(ReceivedPushNotificationDelegate))]
         static void ReceivedPushNotificationFunc(IntPtr notification)
@@ -34,6 +27,8 @@ namespace Microsoft.Azure.Mobile.Unity.Push.Internal
 
         public static void Initialize()
         {
+            _receivedPushDel = ReceivedPushNotificationFunc;
+            mobile_center_unity_push_set_received_push_impl(_receivedPushDel);
         }
 
         public static void PostInitialize()

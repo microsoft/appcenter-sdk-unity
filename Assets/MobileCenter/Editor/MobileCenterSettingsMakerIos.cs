@@ -65,6 +65,7 @@ public class MobileCenterSettingsMakerIos
 
     public void CommitSettings()
     {
+        Debug.Log("Committing settings");
         File.WriteAllText(_pathToLoaderFile, _loaderFileText);
     }
 

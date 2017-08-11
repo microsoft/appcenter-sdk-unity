@@ -18,10 +18,6 @@ public class MobileCenterPostBuild
     [PostProcessBuild]
     public static void OnPostprocessBuild(BuildTarget target, string pathToBuiltProject)
     {
-        // Load Mobile Center settings.
-        var settingsPath = MobileCenterSettingsEditor.SettingsPath;
-        var settings = AssetDatabase.LoadAssetAtPath<MobileCenterSettings>(settingsPath);
-
         if (target == BuildTarget.WSAPlayer)
         {
             // If UWP, need to add NuGet packages.
@@ -34,6 +30,11 @@ public class MobileCenterPostBuild
 #if UNITY_IOS
         else if (target == BuildTarget.iOS)
         {
+            // Load/Apply Mobile Center settings.
+            var settingsPath = MobileCenterSettingsEditor.SettingsPath;
+            var settings = AssetDatabase.LoadAssetAtPath<MobileCenterSettings>(settingsPath);
+            ApplyIosSettings(settings, pathToBuiltProject);
+
             // Update project.
             var projectPath = PBXProject.GetPBXProjectPath(pathToBuiltProject);
             var targetName = PBXProject.GetUnityTargetName();
@@ -70,7 +71,7 @@ public class MobileCenterPostBuild
 #endif
     }
 
-#region UWP Methods
+    #region UWP Methods
     private static void AddDependenciesToProjectJson(string projectJsonPath)
     {
         if (!File.Exists(projectJsonPath))
@@ -123,9 +124,9 @@ public class MobileCenterPostBuild
             Debug.LogException(exception);
         }
     }
-#endregion
+    #endregion
 
-#region iOS Methods
+    #region iOS Methods
 #if UNITY_IOS
     private static void OnPostprocessProject(PBXProject project, MobileCenterSettings settings)
     {
@@ -153,6 +154,31 @@ public class MobileCenterPostBuild
         }
     }
 
+    private static void ApplyIosSettings(MobileCenterSettings settings, string pathToBuiltProject)
+    {
+        var settingsMaker = new MobileCenterSettingsMakerIos(pathToBuiltProject);
+        settingsMaker.SetLogUrl(settings.CustomLogUrl.LogUrl);
+        settingsMaker.SetLogLevel((int)settings.InitialLogLevel);
+        settingsMaker.SetAppSecret(settings.iOSAppSecret);
+        if (settings.UsePush)
+        {
+            settingsMaker.StartPushClass();
+        }
+        if (settings.UseCrashes)
+        {
+            settingsMaker.StartCrashesClass();
+        }
+        if (settings.UseAnalytics)
+        {
+            settingsMaker.StartAnalyticsClass();
+        }
+        if (settings.UseDistribute)
+        {
+            settingsMaker.StartDistributeClass();
+        }
+        settingsMaker.CommitSettings();
+    }
+
 #if UNITY_2017_1_OR_NEWER
     private static void OnPostprocessCapabilities(ProjectCapabilityManager capabilityManager, MobileCenterSettings settings)
     {
@@ -164,5 +190,5 @@ public class MobileCenterPostBuild
     }
 #endif
 #endif
-#endregion
+    #endregion
 }

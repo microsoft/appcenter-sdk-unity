@@ -10,7 +10,6 @@
 
 @property NSMutableArray<MSPushNotification*> *unprocessedNotifications;
 @property ReceivedPushNotificationFunction receivedPushNotification;
-@property BOOL shouldCollectUnprocessedNotifications;
 @property NSObject *lockObject;
 
 @end
@@ -21,38 +20,39 @@
   if ((self = [super init])) {
     _lockObject = [NSObject new];
     _unprocessedNotifications = [NSMutableArray new];
-    _shouldCollectUnprocessedNotifications = YES;
   }
   return self;
 }
 
-- (void)push:(MSPush *)push didReceivePushNotification:(MSPushNotification *)pushNotification;
-{
+- (void)push:(MSPush *)push didReceivePushNotification:(MSPushNotification *)pushNotification {
+  ReceivedPushNotificationFunction handlerCopy = nil;
   @synchronized (_lockObject) {
-    if (_shouldCollectUnprocessedNotifications && pushNotification && _unprocessedNotifications) {
+    if (_unprocessedNotifications && pushNotification) {
       [_unprocessedNotifications addObject:pushNotification];
     }
+    handlerCopy = _receivedPushNotification;
   }
-  (_receivedPushNotification)(pushNotification);
+  if (handlerCopy) {
+    (handlerCopy)(pushNotification);
+  }
 }
 
 -(void) setPushHandlerImplementation:(ReceivedPushNotificationFunction)implementation {
-  @synchronized (_lockObject) {
-    _shouldCollectUnprocessedNotifications = false;
-  }
   _receivedPushNotification = implementation;
 }
 
 - (void) replayUnprocessedNotifications {
+  ReceivedPushNotificationFunction handlerCopy = nil;
   NSMutableArray<MSPushNotification*> *unprocessedCopy = nil;
   @synchronized (_lockObject) {
     if (_unprocessedNotifications) {
       unprocessedCopy = [[NSMutableArray alloc] initWithArray:_unprocessedNotifications];
       _unprocessedNotifications = nil;
     }
+    handlerCopy = _receivedPushNotification;
   }
-  if (unprocessedCopy) {
-    for (MSPushNotification *notification : unprocessedCopy) {
+  if (unprocessedCopy && handlerCopy) {
+    for (MSPushNotification *notification in unprocessedCopy) {
       (_receivedPushNotification)(notification);
     }
   }
