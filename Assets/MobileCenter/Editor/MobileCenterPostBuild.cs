@@ -49,12 +49,14 @@ public class MobileCenterPostBuild
             OnPostprocessInfo(info, settings);
             info.WriteToFile(infoPath);
 
+#if UNITY_2017_1_OR_NEWER
             // Update capabilities.
             var capabilityManager = new ProjectCapabilityManager(
                 projectPath, targetName + ".entitlements",
                 PBXProject.GetUnityTargetName());
             OnPostprocessCapabilities(capabilityManager, settings);
             capabilityManager.WriteToFile();
+#endif
         }
 #endif
     }
@@ -150,6 +152,7 @@ public class MobileCenterPostBuild
         }
     }
 
+#if UNITY_2017_1_OR_NEWER
     private static void OnPostprocessCapabilities(ProjectCapabilityManager capabilityManager, MobileCenterSettings settings)
     {
         if (settings.UsePush && MobileCenterSettings.Push != null)
@@ -158,6 +161,7 @@ public class MobileCenterPostBuild
             capabilityManager.AddBackgroundModes(BackgroundModesOptions.RemoteNotifications);
         }
     }
+#endif
 #endif
 #endregion
 }
