@@ -17,8 +17,9 @@ namespace Microsoft.Azure.Mobile.Unity.Push
 
     public class Push
     {
-        private static IList<PushNotificationReceivedEventArgs> _unprocessedPushNotifications = new List<PushNotificationReceivedEventArgs>();
         private static readonly object _lockObject = new object();
+        private static bool _needsReplay = false;
+
         private static event EventHandler<PushNotificationReceivedEventArgs> _pushNotificationReceived;
 
         // Any notifications that were received before setting this handler for the first time 
@@ -27,24 +28,23 @@ namespace Microsoft.Azure.Mobile.Unity.Push
         {
             add
             {
-                var replay = false;
-                IList<PushNotificationReceivedEventArgs> unprocessedNotificationsCopy = null;
-                lock (_lockObject)
-                {
-                    unprocessedNotificationsCopy = new List<PushNotificationReceivedEventArgs>(_unprocessedPushNotifications);
-                    if (unprocessedNotificationsCopy != null)
-                    {
-                        replay = true;
-                        _unprocessedPushNotifications = null;
-                    }
-                }
                 _pushNotificationReceived += value;
-                var eventCopy = _pushNotificationReceived;
-                if (eventCopy != null && replay && unprocessedNotificationsCopy != null)
+
+                // This won't cause a race condition because even if it's true,
+                // we will double check inside the lock, and if it's false, its
+                // value will never change. Just check outside to avoid waiting
+                // for the lock unnecessarily.
+                if (_needsReplay)
                 {
-                    foreach (var push in unprocessedNotificationsCopy)
+                    var replay = false;
+                    lock (_lockObject)
                     {
-                        eventCopy.Invoke(null, push);
+                        replay = _needsReplay;
+                        _needsReplay = false;
+                    }
+                    if (replay)
+                    {
+                        PushInternal.ReplayUnprocessedPushNotifications();
                     }
                 }
             }
@@ -91,16 +91,6 @@ namespace Microsoft.Azure.Mobile.Unity.Push
             if (eventCopy != null)
             {
                 eventCopy.Invoke(null, e);
-            }
-            else
-            {
-                lock (_lockObject)
-                {
-                    if (_unprocessedPushNotifications != null)
-                    {
-                        _unprocessedPushNotifications.Add(e);
-                    }
-                }
             }
         }
     }

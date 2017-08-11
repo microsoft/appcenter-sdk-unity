@@ -10,6 +10,7 @@
 
 #ifdef MOBILE_CENTER_UNITY_USE_PUSH
 @import MobileCenterPush;
+#import "../Push/PushUnity.h"
 #endif
 
 #ifdef MOBILE_CENTER_UNITY_USE_ANALYTICS
@@ -30,6 +31,10 @@ static NSString *kMSAppSecret = @"mobile-center-app-secret";
 static NSString *kMSCustomLogUrl = @"custom-log-url";
 static int kMSLogLevel = 0/*LOG_LEVEL*/;
 
+#ifdef MOBILE_CENTER_UNITY_USE_PUSH
+static UnityPushDelegate *pushDel;
+#endif
+
 + (void)load {
   [[NSNotificationCenter defaultCenter] addObserver:self
                                            selector:@selector(startMobileCenter)
@@ -41,6 +46,7 @@ static int kMSLogLevel = 0/*LOG_LEVEL*/;
   NSMutableArray<Class>* classes = [[NSMutableArray alloc] init];
 
 #ifdef MOBILE_CENTER_UNITY_USE_PUSH
+  mobile_center_unity_push_set_delegate();
   [classes addObject:MSPush.class];
 #endif
 

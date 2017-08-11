@@ -30,18 +30,10 @@ public class MobileCenterBehavior : MonoBehaviour
             Debug.LogError("Mobile Center isn't configured!");
             return;
         }
-#if !UNITY_IOS && !UNITY_ANDROID
         InitializeMobileCenter();
-#endif
     }
 
     private void InitializeMobileCenter()
     {
-        MobileCenter.LogLevel = settings.InitialLogLevel;
-        if (settings.CustomLogUrl.UseCustomLogUrl)
-        {
-            MobileCenter.SetLogUrl(settings.CustomLogUrl.LogUrl);
-        }
-        MobileCenter.Start(settings.AppSecret, settings.Services);
     }
 }

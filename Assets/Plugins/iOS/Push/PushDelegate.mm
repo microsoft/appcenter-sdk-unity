@@ -6,27 +6,56 @@
 #import <MobileCenterPush/MobileCenterPush.h>
 #import <Foundation/Foundation.h>
 
-static ReceivedPushNotificationFunction receivedPushNotification;
-static UnityPushDelegate *del;
-static MSPushNotification *mLastPushReceived;
+@interface UnityPushDelegate ()
 
-void mobile_center_unity_push_delegate_provide_received_push_impl(ReceivedPushNotificationFunction functionPtr)
-{
-  receivedPushNotification = functionPtr;
-}
+@property NSMutableArray<MSPushNotification*> *unprocessedNotifications;
+@property ReceivedPushNotificationFunction receivedPushNotification;
+@property BOOL shouldCollectUnprocessedNotifications;
+@property NSObject *lockObject;
 
-void mobile_center_unity_push_set_delegate()
-{
-  del = [[UnityPushDelegate alloc] init];
-  [MSPush setDelegate:del];
-}
+@end
 
 @implementation UnityPushDelegate
 
--(void)push:(MSPush *)push didReceivePushNotification:(MSPushNotification *)pushNotification;
+- (instancetype)init {
+  if ((self = [super init])) {
+    _lockObject = [NSObject new];
+    _unprocessedNotifications = [NSMutableArray new];
+    _shouldCollectUnprocessedNotifications = YES;
+  }
+  return self;
+}
+
+- (void)push:(MSPush *)push didReceivePushNotification:(MSPushNotification *)pushNotification;
 {
-  mLastPushReceived = pushNotification;
-  (receivedPushNotification)(mLastPushReceived);
+  @synchronized (_lockObject) {
+    if (_shouldCollectUnprocessedNotifications && pushNotification && _unprocessedNotifications) {
+      [_unprocessedNotifications addObject:pushNotification];
+    }
+  }
+  (_receivedPushNotification)(pushNotification);
+}
+
+-(void) setPushHandlerImplementation:(ReceivedPushNotificationFunction)implementation {
+  @synchronized (_lockObject) {
+    _shouldCollectUnprocessedNotifications = false;
+  }
+  _receivedPushNotification = implementation;
+}
+
+- (void) replayUnprocessedNotifications {
+  NSMutableArray<MSPushNotification*> *unprocessedCopy = nil;
+  @synchronized (_lockObject) {
+    if (_unprocessedNotifications) {
+      unprocessedCopy = [[NSMutableArray alloc] initWithArray:_unprocessedNotifications];
+      _unprocessedNotifications = nil;
+    }
+  }
+  if (unprocessedCopy) {
+    for (MSPushNotification *notification : unprocessedCopy) {
+      (_receivedPushNotification)(notification);
+    }
+  }
 }
 
 @end

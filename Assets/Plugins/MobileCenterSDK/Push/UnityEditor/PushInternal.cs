@@ -3,8 +3,8 @@
 // Licensed under the MIT license.
 
 #if UNITY_EDITOR
-using System;
-
+using System.Collections.Generic;
+using System.Threading;
 namespace Microsoft.Azure.Mobile.Unity.Push.Internal
 {
 #if UNITY_IOS || UNITY_ANDROID
@@ -40,6 +40,11 @@ namespace Microsoft.Azure.Mobile.Unity.Push.Internal
 
         public static void EnableFirebaseAnalytics()
         {
+        }
+
+        internal static void ReplayUnprocessedPushNotifications()
+        {
+            return null;
         }
     }
 }

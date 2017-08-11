@@ -7,10 +7,10 @@
 
 typedef void (__cdecl *ReceivedPushNotificationFunction)(MSPushNotification*);
 
-extern "C" void mobile_center_unity_push_delegate_provide_received_push_impl(ReceivedPushNotificationFunction functionPtr);
-
-extern "C" void mobile_center_unity_push_set_delegate();
-
 @interface UnityPushDelegate : NSObject<MSPushDelegate>
+
 -(void)push:(MSPush *)push didReceivePushNotification:(MSPush *)pushNotification;
+-(void)setPushHandlerImplementation:(ReceivedPushNotificationFunction)implementation;
+-(void)replayUnprocessedNotifications;
+
 @end

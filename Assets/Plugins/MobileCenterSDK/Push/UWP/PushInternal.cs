@@ -49,6 +49,11 @@ namespace Microsoft.Azure.Mobile.Unity.Push.Internal
         public static void EnableFirebaseAnalytics()
         {
         }
+
+        internal static void ReplayUnprocessedPushNotifications()
+        {
+            //TODO implement me
+        }
     }
 }
 #endif
