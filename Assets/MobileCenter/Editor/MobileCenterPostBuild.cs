@@ -83,7 +83,6 @@ public class MobileCenterPostBuild
         var jsonString = File.ReadAllText(projectJsonPath);
         jsonString = AddDependencyToProjectJson(jsonString, "Microsoft.NETCore.UniversalWindowsPlatform", "5.3.3");
         jsonString = AddDependencyToProjectJson(jsonString, "sqlite-net-pcl", "1.3.3");
-        jsonString = AddDependencyToProjectJson(jsonString, "Newtonsoft.Json", "10.0.2");
         File.WriteAllText(projectJsonPath, jsonString);
     }
 
