@@ -22,10 +22,11 @@ xcuserdata
 [Bb]in/
 [Oo]bj/
 [Ll]og/
-Temp/
-iOSBuild/
-UWPBuild/
-AndroidBuild/
+/Temp/
+/UWP/
+/iOSBuild/
+/UWPBuild/
+/AndroidBuild/
 externals/
 output/
 
@@ -52,7 +53,7 @@ google-services.json*
 *.pfx*
 
 # Unity
-Library/
+/Library/
 *.csproj
 *.sln
 
