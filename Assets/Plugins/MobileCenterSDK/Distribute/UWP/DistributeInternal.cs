@@ -15,6 +15,10 @@ namespace Microsoft.Azure.Mobile.Unity.Distribute.Internal
         {
         }
 
+        public static void PostInitialize()
+        {
+        }
+
         public static Type GetNativeType()
         {
             return typeof(Microsoft.Azure.Mobile.Distribute.Distribute);
