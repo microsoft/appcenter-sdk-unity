@@ -3,8 +3,12 @@
 #addin nuget:?package=Cake.FileHelpers
 #addin "Cake.AzureStorage"
 #addin nuget:?package=Cake.Git
+#addin nuget:?package=NuGet.Core
 
 using System.Net;
+using System.Collections.Generic;
+using System.Runtime.Versioning;
+using NuGet;
 
 // Prefix for temporary intermediates that are created by this script
 var TEMPORARY_PREFIX = "CAKE_SCRIPT_TEMP";
@@ -209,6 +213,19 @@ Task("Externals-Uwp")
 
 }).OnError(HandleError);
 
+// Downloading UWP Sqlite binaries.
+Task("Externals-Uwp-Sqlite")
+    .Does(() =>
+{
+    var targetPath = "Assets/Plugins/WSA";
+    var frameworkName = new FrameworkName("UAP, Version=v10.0");
+    var packageName = "sqlite-net-pcl";
+    var packageVersion = "1.3.1";
+    var packageSource = "https://www.nuget.org/api/v2/";
+    var dependencies = GetNuGetDependencies(packageName, packageVersion, packageSource, frameworkName);
+    ExtractNuGetPackages(dependencies, targetPath, frameworkName);
+}).OnError(HandleError);
+
 // Create a common externals task depending on platform specific ones
 // NOTE: It is important to execute Externals-Android *last* or the step in Externals-Android that runs
 // the Unity commands might cause the *.meta files to be deleted! (Unity deletes meta data files 
@@ -321,6 +338,74 @@ string GetNuGetPackage(string packageId, string packageVersion)
         response.GetResponseStream().CopyTo(fstream);
     }
     return filename;
+}
+
+void ExtractNuGetPackages(IEnumerable<IPackage> packages, string dest, FrameworkName frameworkName)
+{
+    EnsureDirectoryExists(dest);
+    var fileSystem = new PhysicalFileSystem(Environment.CurrentDirectory);
+    foreach (var package in packages)
+    {
+        Console.WriteLine(package);
+        
+        // Extract.
+        var path = "externals/uwp/" + package.Id;
+        package.ExtractContents(fileSystem, path);
+
+        // Get assemblies list.
+        IEnumerable<IPackageAssemblyReference> assemblies;
+        VersionUtility.TryGetCompatibleItems(frameworkName, package.AssemblyReferences, out assemblies);
+
+        // Move assemblies.
+        foreach (var i in assemblies)
+        {
+            if (!FileExists(dest + "/" + i.Name))
+            {
+                MoveFile(path + "/" + i.Path, dest + "/" + i.Name);
+            }
+        }
+
+        // Move native binaries.
+        var runtimesPath = path + "/runtimes";
+        if (DirectoryExists(runtimesPath))
+        {
+            foreach (var runtime in GetDirectories(runtimesPath + "/win10-*"))
+            {
+                var arch = runtime.GetDirectoryName().ToString().Replace("win10-", "").ToUpper();
+                var nativeFiles = GetFiles(runtime + "/native/*");
+                var targetArchPath = dest + "/" + arch;
+                CreateDirectory(targetArchPath);
+                MoveFiles(nativeFiles, targetArchPath);
+            }
+        }
+    }
+}
+
+static readonly ISet<string> IgnoreNuGetDependencies = new HashSet<string>
+{
+    "Microsoft.NETCore.UniversalWindowsPlatform",
+    "NETStandard.Library"
+};
+
+IList<IPackage> GetNuGetDependencies(string packageName, string packageVersion, string packageSource, FrameworkName frameworkName)
+{
+    var repository = PackageRepositoryFactory.Default.CreateRepository(packageSource);
+    var package = repository.FindPackage(packageName, SemanticVersion.Parse(packageVersion));
+    var dependencies = new List<IPackage>();
+    GetNuGetDependencies(dependencies, repository, frameworkName, package);
+    return dependencies;
+}
+
+void GetNuGetDependencies(IList<IPackage> dependencies, IPackageRepository repository, FrameworkName frameworkName, IPackage package)
+{
+    dependencies.Add(package);
+    foreach (var dependency in package.GetCompatiblePackageDependencies(frameworkName))
+    {
+        if (IgnoreNuGetDependencies.Contains(dependency.Id))
+            continue;
+        var subPackage = repository.ResolveDependency(dependency, false, true);
+        GetNuGetDependencies(dependencies, repository, frameworkName, subPackage);
+    }
 }
 
 static int ExecuteUnityCommand(string extraArgs, ICakeContext context)
