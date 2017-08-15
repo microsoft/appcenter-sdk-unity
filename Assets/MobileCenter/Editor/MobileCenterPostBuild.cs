@@ -22,6 +22,7 @@ public class MobileCenterPostBuild
         var settingsPath = MobileCenterSettingsEditor.SettingsPath;
         var settings = AssetDatabase.LoadAssetAtPath<MobileCenterSettings>(settingsPath);
 
+#if UNITY_WSA_10_0 && !ENABLE_IL2CPP
         if (target == BuildTarget.WSAPlayer)
         {
             // If UWP, need to add NuGet packages.
@@ -31,8 +32,9 @@ public class MobileCenterPostBuild
             var nuget = EditorApplication.applicationContentsPath + "/PlaybackEngines/MetroSupport/Tools/nuget.exe";
             ExecuteCommand(nuget, "restore \"" + projectJson + "\" -NonInteractive");
         }
+#endif
 #if UNITY_IOS
-        else if (target == BuildTarget.iOS)
+        if (target == BuildTarget.iOS)
         {
             // Update project.
             var projectPath = PBXProject.GetPBXProjectPath(pathToBuiltProject);
