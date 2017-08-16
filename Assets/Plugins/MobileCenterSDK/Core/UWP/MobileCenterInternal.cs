@@ -13,59 +13,66 @@ namespace Microsoft.Azure.Mobile.Unity.Internal
 
     class MobileCenterInternal 
     {
-        private static bool _needsSetScreenProvider = true;
+        private static bool _prepared = false;
         private static object _lockObject = new object();
 
         public static void Configure(string appSecret)
         {
-            PrepareScreenSizeProvider();
+            Prepare();
             UWPMobileCenter.Configure(appSecret);
         }
 
         public static void Start(string appSecret, Type[] services, int numServices)
         {
-            PrepareScreenSizeProvider();
+            Prepare();
             UWPMobileCenter.Start(appSecret, services);
         }
 
         public static void StartServices(Type[] services, int numServices)
         {
-            PrepareScreenSizeProvider();
+            Prepare();
             UWPMobileCenter.Start(services);
         }
 
         public static void SetLogLevel(int logLevel)
         {
+            Prepare();
             UWPMobileCenter.LogLevel = (Microsoft.Azure.Mobile.LogLevel)LogLevelFromUnity(logLevel);
         }
 
         public static int GetLogLevel()
         {
+            Prepare();
             return (int)LogLevelFromUnity((int)UWPMobileCenter.LogLevel);
         }
 
         public static bool IsConfigured()
         {
+            Prepare();
             return UWPMobileCenter.Configured;
         }
 
         public static void SetLogUrl(string logUrl)
         {
+            Prepare();
             UWPMobileCenter.SetLogUrl(logUrl);
         }
 
         public static MobileCenterTask SetEnabledAsync(bool isEnabled)
         {
+            Prepare();
             return new MobileCenterTask(UWPMobileCenter.SetEnabledAsync(isEnabled));
         }
 
         public static MobileCenterTask<bool> IsEnabledAsync()
         {
+            Prepare();
             return new MobileCenterTask<bool>(UWPMobileCenter.IsEnabledAsync());
         }
 
         public static MobileCenterTask<string> GetInstallIdAsync()
         {
+            Prepare();
             var installIdTask = UWPMobileCenter.GetInstallIdAsync();
             var stringTask = new MobileCenterTask<string>();
             installIdTask.ContinueWith(t => {
@@ -77,16 +84,17 @@ namespace Microsoft.Azure.Mobile.Unity.Internal
 
         public static void SetCustomProperties(object properties)
         {
+            Prepare();
             var uwpProperties = properties as Microsoft.Azure.Mobile.CustomProperties;
             UWPMobileCenter.SetCustomProperties(uwpProperties);
         }
 
         public static void SetWrapperSdk(string wrapperSdkVersion,
-                                                               string wrapperSdkName, 
-                                                               string wrapperRuntimeVersion, 
-                                                               string liveUpdateReleaseLabel, 
-                                                               string liveUpdateDeploymentKey, 
-                                                               string liveUpdatePackageHash)
+                                         string wrapperSdkName, 
+                                         string wrapperRuntimeVersion, 
+                                         string liveUpdateReleaseLabel, 
+                                         string liveUpdateDeploymentKey, 
+                                         string liveUpdatePackageHash)
         {
             //TODO once wrapper sdk exists for uwp, set it here
         }
@@ -141,11 +149,13 @@ namespace Microsoft.Azure.Mobile.Unity.Internal
         {
             lock (_lockObject)
             {
-                if (_needsSetScreenProvider)
+                if (!_prepared)
                 {
+                    UnityApplicationSettings.Initialize();
                     UnityScreenSizeProvider.Initialize();
+                    UWPMobileCenter.SetApplicationSettingsFactory(new UnityApplicationSettingsFactory());
                     DeviceInformationHelper.SetScreenSizeProviderFactory(new UnityScreenSizeProviderFactory());
-                    _needsSetScreenProvider = false;
+                    _prepared = true;
                 }
             }
         }
