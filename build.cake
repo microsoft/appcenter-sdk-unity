@@ -184,6 +184,7 @@ Task("Externals-Ios")
 
 // Downloading UWP binaries.
 Task("Externals-Uwp")
+    .IsDependentOn("Externals-Uwp-Dependencies")
     .Does(() =>
 {
     CleanDirectory("externals/uwp");
@@ -238,16 +239,14 @@ Task("Externals-Uwp")
 
 }).OnError(HandleError);
 
-// Downloading UWP Sqlite binaries.
-Task("Externals-Uwp-Sqlite")
+// Downloading UWP dependencies.
+Task("Externals-Uwp-Dependencies")
     .Does(() =>
 {
     var targetPath = "Assets/Plugins/WSA";
     var frameworkName = new FrameworkName("UAP, Version=v10.0");
-    var packageName = "sqlite-net-pcl";
-    var packageVersion = "1.3.1";
     var packageSource = "https://www.nuget.org/api/v2/";
-    var dependencies = GetNuGetDependencies(packageName, packageVersion, packageSource, frameworkName);
+    var dependencies = GetNuGetDependencies("sqlite-net-pcl", "1.3.1", packageSource, frameworkName);
     ExtractNuGetPackages(dependencies, targetPath, frameworkName);
 }).OnError(HandleError);
 
