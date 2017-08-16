@@ -210,7 +210,7 @@ Task("Externals-Uwp")
         var contentPathSuffix = "lib/uap10.0/";
 
         // Prepare destination
-        var destination = "Assets/Plugins/UWP/" + module.Moniker + "/";
+        var destination = "Assets/Plugins/WSA/" + module.Moniker + "/";
         DeleteFiles(destination + "*.dll");
         DeleteFiles(destination + "*.winmd");
         
@@ -219,7 +219,7 @@ Task("Externals-Uwp")
         {
             foreach (var arch in module.NativeArchitectures)
             {
-                var dest = "Assets/Plugins/UWP/" + module.Moniker + "/" + arch + "/";
+                var dest = "Assets/Plugins/WSA/" + module.Moniker + "/" + arch.ToString().ToUpper() + "/";
                 var nativeFiles = GetFiles(tempContentPath + "runtimes/" + "win10-" + arch + "/native/*");
                 DeleteFiles(dest + "*.dll");
                 MoveFiles(nativeFiles, dest);
