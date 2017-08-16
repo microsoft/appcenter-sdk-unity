@@ -11,12 +11,12 @@ using System.Runtime.Versioning;
 using NuGet;
 
 // Prefix for temporary intermediates that are created by this script
-var TEMPORARY_PREFIX = "CAKE_SCRIPT_TEMP";
+var TemporaryPrefix = "CAKE_SCRIPT_TEMP";
 
 // Native SDK versions
-var ANDROID_SDK_VERSION = "0.11.1";
-var IOS_SDK_VERSION = "0.11.0";
-var UWP_SDK_VERSION = "0.14.0";
+var AndroidSdkVersion = "0.11.1";
+var IosSdkVersion = "0.11.0";
+var UwpSdkVersion = "0.14.0";
 
 // URLs for downloading binaries.
 /*
@@ -27,14 +27,34 @@ var UWP_SDK_VERSION = "0.14.0";
  *     By running mozroots and install part of Mozilla's root certificates can make it work. 
  */
 
-var SDK_STORAGE_URL = "https://mobilecentersdkdev.blob.core.windows.net/sdk/";
-var ANDROID_URL = SDK_STORAGE_URL + "MobileCenter-SDK-Android-" + ANDROID_SDK_VERSION + ".zip";
-var IOS_URL = SDK_STORAGE_URL + "MobileCenter-SDK-iOS-" + IOS_SDK_VERSION + ".zip";
-var JAR_RESOLVER_PACKAGE_NAME =  "play-services-resolver-1.2.35.0.unitypackage";
-var JAR_RESOLVER_URL = SDK_STORAGE_URL + JAR_RESOLVER_PACKAGE_NAME;
+var SdkStorageUrl = "https://mobilecentersdkdev.blob.core.windows.net/sdk/";
+var AndroidUrl = SdkStorageUrl + "MobileCenter-SDK-Android-" + AndroidSdkVersion + ".zip";
+var IosUrl = SdkStorageUrl + "MobileCenter-SDK-iOS-" + IosSdkVersion + ".zip";
+
+var MobileCenterModules = new [] {
+    new MobileCenterModule("mobile-center-release.aar", "MobileCenter.framework", "Microsoft.Azure.Mobile", "Core"),
+    new MobileCenterModule("mobile-center-analytics-release.aar", "MobileCenterAnalytics.framework", "Microsoft.Azure.Mobile.Analytics", "Analytics"),
+    new MobileCenterModule("mobile-center-crashes-release.aar", "MobileCenterCrashes.framework", "Microsoft.Azure.Mobile.Crashes", "Crashes", true),
+    new MobileCenterModule("mobile-center-distribute-release.aar", "MobileCenterDistribute.framework", "Microsoft.Azure.Mobile.Distribute", "Distribute"),
+    new MobileCenterModule("mobile-center-push-release.aar", "MobileCenterPush.framework", "Microsoft.Azure.Mobile.Push", "Push")
+};
+
+// External Unity Packages
+var JarResolverPackageName =  "play-services-resolver-" + ExternalUnityPackage.VersionPlaceholder + ".unitypackage";
+var JarResolverVersion = "1.2.35.0";
+var JarResolverUrl = SdkStorageUrl + ExternalUnityPackage.NamePlaceholder;
+
+var NewtonsoftJsonPackageName = "JsonNet." + ExternalUnityPackage.VersionPlaceholder + ".unitypackage";
+var NewtonsoftJsonVersion = "9.0.1";
+var NewtonsoftJsonUrl = "https://github.com/SaladLab/Json.Net.Unity3D/releases/download/v" + ExternalUnityPackage.VersionPlaceholder + "/" + ExternalUnityPackage.NamePlaceholder;
+
+var ExternalUnityPackages = new [] {
+    new ExternalUnityPackage(JarResolverPackageName, JarResolverVersion, JarResolverUrl),
+    new ExternalUnityPackage(NewtonsoftJsonPackageName, NewtonsoftJsonVersion, NewtonsoftJsonUrl)
+};
 
 // Task TARGET for build
-var TARGET = Argument("target", Argument("t", "Default"));
+var Target = Argument("target", Argument("t", "Default"));
 
 // Available MobileCenter modules.
 // MobileCenter module class definition.
@@ -56,6 +76,23 @@ class MobileCenterModule {
         {
             NativeArchitectures = new string[] {"x86", "x64", "arm"};
         }
+    }
+}
+
+class ExternalUnityPackage
+{
+    public static string VersionPlaceholder = "<version>";
+    public static string NamePlaceholder = "<name>";
+
+    public string Name { get; private set; }
+    public string Version { get; private set; }
+    public string Url { get; private set; }
+
+    public ExternalUnityPackage(string name, string version, string url)
+    {
+        Version = version;
+        Name = name.Replace(VersionPlaceholder, Version);
+        Url = url.Replace(NamePlaceholder, Name).Replace(VersionPlaceholder, Version);
     }
 }
 
@@ -108,15 +145,6 @@ class UnityPackage
     private List<string> _includePaths = new List<string>();
 }
 
-
-var MOBILECENTER_MODULES = new [] {
-    new MobileCenterModule("mobile-center-release.aar", "MobileCenter.framework", "Microsoft.Azure.Mobile", "Core"),
-    new MobileCenterModule("mobile-center-analytics-release.aar", "MobileCenterAnalytics.framework", "Microsoft.Azure.Mobile.Analytics", "Analytics"),
-    new MobileCenterModule("mobile-center-crashes-release.aar", "MobileCenterCrashes.framework", "Microsoft.Azure.Mobile.Crashes", "Crashes", true),
-    new MobileCenterModule("mobile-center-distribute-release.aar", "MobileCenterDistribute.framework", "Microsoft.Azure.Mobile.Distribute", "Distribute"),
-    new MobileCenterModule("mobile-center-push-release.aar", "MobileCenterPush.framework", "Microsoft.Azure.Mobile.Push", "Push")
-};
-
 // Downloading Android binaries.
 Task("Externals-Android")
     .Does(() => 
@@ -124,20 +152,15 @@ Task("Externals-Android")
     CleanDirectory("./externals/android");
 
     // Download zip file.
-    DownloadFile(ANDROID_URL, "./externals/android/android.zip");
+    DownloadFile(AndroidUrl, "./externals/android/android.zip");
     Unzip("./externals/android/android.zip", "./externals/android/");
 
     // Copy files
-    foreach (var module in MOBILECENTER_MODULES)
+    foreach (var module in MobileCenterModules)
     {
         var files = GetFiles("./externals/android/*/" + module.AndroidModule);
         CopyFiles(files, "Assets/Plugins/Android/");
     }
-
-    // Add UnityJarResolver
-    var jarResolverDestination = "./externals/android/" + JAR_RESOLVER_PACKAGE_NAME;
-    DownloadFile(JAR_RESOLVER_URL, jarResolverDestination);
-    ExecuteUnityCommand("-importPackage " + jarResolverDestination, Context);
 }).OnError(HandleError);
 
 // Downloading iOS binaries.
@@ -147,11 +170,11 @@ Task("Externals-Ios")
     CleanDirectory("./externals/ios");
 
     // Download zip file containing MobileCenter frameworks
-    DownloadFile(IOS_URL, "./externals/ios/ios.zip");
+    DownloadFile(IosUrl, "./externals/ios/ios.zip");
     Unzip("./externals/ios/ios.zip", "./externals/ios/");
 
     // Copy files
-    foreach (var module in MOBILECENTER_MODULES)
+    foreach (var module in MobileCenterModules)
     {
         var destinationFolder = "Assets/Plugins/iOS/" + module.Moniker + "/" + module.IosModule;
         DeleteDirectoryIfExists(destinationFolder);
@@ -164,8 +187,9 @@ Task("Externals-Uwp")
     .Does(() =>
 {
     CleanDirectory("externals/uwp");
+
     // Download the nugets. We will use these to extract the dlls
-    foreach (var module in MOBILECENTER_MODULES)
+    foreach (var module in MobileCenterModules)
     {
         if (module.Moniker == "Distribute")
         {
@@ -174,7 +198,7 @@ Task("Externals-Uwp")
         }
         Information("Downloading " + module.DotNetModule + "...");
         // Download nuget package
-        var nupkgPath = GetNuGetPackage(module.DotNetModule, UWP_SDK_VERSION);
+        var nupkgPath = GetNuGetPackage(module.DotNetModule, UwpSdkVersion);
 
         var tempContentPath = "externals/uwp/" + module.Moniker + "/";
         DeleteDirectoryIfExists(tempContentPath);
@@ -200,6 +224,7 @@ Task("Externals-Uwp")
                 DeleteFiles(dest + "*.dll");
                 MoveFiles(nativeFiles, dest);
             }
+
             // Use managed runtimes from one of the architecture for all architectures.
             // Even though they are architecture dependent, Unity converts
             // them to AnyCPU automatically
@@ -226,11 +251,31 @@ Task("Externals-Uwp-Sqlite")
     ExtractNuGetPackages(dependencies, targetPath, frameworkName);
 }).OnError(HandleError);
 
+// Download and install all external Unity packages required
+Task("Externals-Unity-Packages").Does(()=>
+{
+    var directoryName = "externals/unity-packages";
+    CleanDirectory(directoryName);
+    foreach (var package in ExternalUnityPackages)
+    {
+        var destination = directoryName + "/" + package.Name;
+        DownloadFile(package.Url, destination);
+        var command = "-importPackage " + destination;
+        Information("Importing package " + package.Name + ". This could take a minute.");
+        ExecuteUnityCommand(command, Context);
+    }
+}).OnError(HandleError);
+
 // Create a common externals task depending on platform specific ones
-// NOTE: It is important to execute Externals-Android *last* or the step in Externals-Android that runs
+// NOTE: It is important to execute Externals-Unity-Packages *last* or the step in Externals-Unity-Packages that runs
 // the Unity commands might cause the *.meta files to be deleted! (Unity deletes meta data files 
 // when it is opened if the corresponding files are not on disk.)
-Task("Externals").IsDependentOn("Externals-Uwp").IsDependentOn("Externals-Ios").IsDependentOn("Externals-Android").Does(()=>
+Task("Externals")
+    .IsDependentOn("Externals-Uwp")
+    .IsDependentOn("Externals-Ios")
+    .IsDependentOn("Externals-Android")
+    .IsDependentOn("Externals-Unity-Packages")
+    .Does(()=>
 {
     DeleteDirectoryIfExists("externals");
 });
@@ -263,8 +308,8 @@ Task("Default").IsDependentOn("Externals");
 // Remove all temporary files and folders
 Task("RemoveTemporaries").Does(()=>
 {
-    DeleteFiles(TEMPORARY_PREFIX + "*");
-    var dirs = GetDirectories(TEMPORARY_PREFIX + "*");
+    DeleteFiles(TemporaryPrefix + "*");
+    var dirs = GetDirectories(TemporaryPrefix + "*");
     foreach (var directory in dirs)
     {
         DeleteDirectory(directory, true);
@@ -416,4 +461,4 @@ static int ExecuteUnityCommand(string extraArgs, ICakeContext context)
     return context.StartProcess(exec, args);
 }
 
-RunTarget(TARGET);
+RunTarget(Target);

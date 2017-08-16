@@ -1,0 +1,6 @@
+<linker>
+	<assembly fullname="System">
+		<!-- Need to use Newtonsoft Json.NET library with IL2CPP build. -->
+		<namespace fullname="System.ComponentModel" preserve="all"/>
+	</assembly>
+</linker>
