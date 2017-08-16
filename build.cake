@@ -53,6 +53,14 @@ var ExternalUnityPackages = new [] {
     new ExternalUnityPackage(NewtonsoftJsonPackageName, NewtonsoftJsonVersion, NewtonsoftJsonUrl)
 };
 
+// UWP dependencies
+var SqlitePackageName = "sqlite-net-pcl";
+var SqliteVersion = "1.3.1";
+
+var UwpDependencies = new Dictionary<string, string> {
+    { SqlitePackageName, SqliteVersion }
+};
+
 // Task TARGET for build
 var Target = Argument("target", Argument("t", "Default"));
 
@@ -246,7 +254,11 @@ Task("Externals-Uwp-Dependencies")
     var targetPath = "Assets/Plugins/WSA";
     var frameworkName = new FrameworkName("UAP, Version=v10.0");
     var packageSource = "https://www.nuget.org/api/v2/";
-    var dependencies = GetNuGetDependencies("sqlite-net-pcl", "1.3.1", packageSource, frameworkName);
+    var dependencies = new List<IPackage>();
+    foreach (var i in UwpDependencies)
+    {
+        dependencies.AddRange(GetNuGetDependencies(i.Key, i.Value, packageSource, frameworkName));
+    }
     ExtractNuGetPackages(dependencies, targetPath, frameworkName);
 }).OnError(HandleError);
 
