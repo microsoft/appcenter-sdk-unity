@@ -430,8 +430,14 @@ void ExtractNuGetPackages(IEnumerable<IPackage> packages, string dest, Framework
                 var arch = runtime.GetDirectoryName().ToString().Replace("win10-", "").ToUpper();
                 var nativeFiles = GetFiles(runtime + "/native/*");
                 var targetArchPath = dest + "/" + arch;
-                CreateDirectory(targetArchPath);
-                MoveFiles(nativeFiles, targetArchPath);
+                EnsureDirectoryExists(targetArchPath);
+                foreach (var nativeFile in nativeFiles)
+                {
+                    if (!FileExists(targetArchPath + "/" + nativeFile.GetFilename()))
+                    {
+                        MoveFileToDirectory(nativeFile, targetArchPath);
+                    }
+                }
             }
         }
     }
