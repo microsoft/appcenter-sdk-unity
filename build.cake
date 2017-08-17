@@ -209,6 +209,41 @@ Task("Externals-Uwp")
 
 }).OnError(HandleError);
 
+// Builds the ContentProvider for the Android package and puts it in the
+// proper folder.
+Task("BuildAndroidContentProvider").Does(()=>
+{
+    // Folder and script locations
+    var appName = "MobileCenterLoaderApp";
+    var libraryName = "mobilecenterloader";
+    var libraryFolder = System.IO.Path.Combine(appName, libraryName);
+    var gradleScript = System.IO.Path.Combine(libraryFolder, "build.gradle");
+
+    // Compile the library
+    var gradleWrapper = System.IO.Path.Combine(appName, "gradlew");
+    if (!IsRunningOnUnix())
+    {
+        gradleWrapper += ".bat";
+    }
+    var fullArgs = "-b " + gradleScript + " assembleRelease";
+    StartProcess(gradleWrapper, fullArgs);
+
+    // Source and destination of generated aar
+    var aarName = libraryName + "-release.aar";
+    var aarSource = System.IO.Path.Combine(libraryFolder, "build/outputs/aar/" + aarName);
+    var aarDestination = "Assets/Plugins/Android";
+
+    // Delete the aar in case it already exists in the Assets folder
+    var existingAar = System.IO.Path.Combine(aarDestination, aarName);
+    if (FileExists(existingAar))
+    {
+        DeleteFile(existingAar);
+    }
+
+    // Move the .aar to Assets/Plugins/Android
+    MoveFileToDirectory(aarSource, aarDestination);
+}).OnError(HandleError);
+
 // Create a common externals task depending on platform specific ones
 // NOTE: It is important to execute Externals-Android *last* or the step in Externals-Android that runs
 // the Unity commands might cause the *.meta files to be deleted! (Unity deletes meta data files 
@@ -236,12 +271,14 @@ Task("Package").Does(()=>
     }
 });
 
+Task("PrepareAssets").IsDependentOn("Externals").IsDependentOn("BuildAndroidContentProvider");
+
 // Creates Unity packages corresponding to all ".unitypackagespec" files
 // in "UnityPackageSpecs" folder (and downloads binaries)
-Task("CreatePackages").IsDependentOn("Externals").IsDependentOn("Package");
+Task("CreatePackages").IsDependentOn("PrepareAssets").IsDependentOn("Package");
 
 // Default Task.
-Task("Default").IsDependentOn("Externals");
+Task("Default").IsDependentOn("PrepareAssets");
 
 // Remove all temporary files and folders
 Task("RemoveTemporaries").Does(()=>
