@@ -4,6 +4,7 @@
 #addin "Cake.AzureStorage"
 #addin nuget:?package=Cake.Git
 #addin nuget:?package=NuGet.Core
+#reference "tools/Cake.Unity.dll"
 
 using System.Net;
 using System.Collections.Generic;
@@ -136,21 +137,11 @@ class UnityPackage
 
     public void CreatePackage(string targetDirectory)
     {
-        var args = "-exportPackage ";
-        foreach (var path in _includePaths)
-        {
-            args += " " + path;
-        }
-        args += " " + targetDirectory + "/" + _packageName;
-        var result = ExecuteUnityCommand(args, Context);
-        if (result != 0)
-        {
-            Context.Error("Something went wrong while creating cake package '" + _packageName + "'");
-        }
+        Context.UnityExportPackage(Context.Environment.WorkingDirectory, targetDirectory + "/" + _packageName, _includePaths.ToArray());
     }
 
     private string _packageName;
-    private List<string> _includePaths = new List<string>();
+    private List<DirectoryPath> _includePaths = new List<DirectoryPath>();
 }
 
 // Downloading Android binaries.
@@ -271,9 +262,8 @@ Task("Externals-Unity-Packages").Does(()=>
     {
         var destination = directoryName + "/" + package.Name;
         DownloadFile(package.Url, destination);
-        var command = "-importPackage " + destination;
         Information("Importing package " + package.Name + ". This could take a minute.");
-        ExecuteUnityCommand(command, Context);
+        UnityImportPackage(Context.Environment.WorkingDirectory, destination);
     }
 }).OnError(HandleError);
 
@@ -468,14 +458,6 @@ void GetNuGetDependencies(IList<IPackage> dependencies, IPackageRepository repos
         var subPackage = repository.ResolveDependency(dependency, false, true);
         GetNuGetDependencies(dependencies, repository, frameworkName, subPackage);
     }
-}
-
-static int ExecuteUnityCommand(string extraArgs, ICakeContext context)
-{
-    var projectDir = context.MakeAbsolute(context.Directory("."));
-    var exec = context.EnvironmentVariable("UNITY_PATH");
-    var args = "-batchmode -quit -projectPath " + projectDir + " " + extraArgs;
-    return context.StartProcess(exec, args);
 }
 
 RunTarget(Target);
