@@ -100,7 +100,6 @@ public class MobileCenterPostBuild
         foreach (var guid in allBinaries)
         {
             var assetPath = AssetDatabase.GUIDToAssetPath(guid);
-            Debug.Log("found asset at path " + assetPath);
             var importer = AssetImporter.GetAtPath(assetPath) as PluginImporter;
             if (importer != null)
             {
@@ -113,6 +112,7 @@ public class MobileCenterPostBuild
 
     private static void AddDependenciesToProjectJson(string projectJsonPath)
     {
+        Debug.Log("Add dependencies");
         if (!File.Exists(projectJsonPath))
         {
             Debug.LogWarning(projectJsonPath + " not found!");
@@ -120,7 +120,7 @@ public class MobileCenterPostBuild
         }
         var jsonString = File.ReadAllText(projectJsonPath);
         jsonString = AddDependencyToProjectJson(jsonString, "Microsoft.NETCore.UniversalWindowsPlatform", "5.2.2");
-        jsonString = AddDependencyToProjectJson(jsonString, "Newtonsoft.Json", "6.0.1");
+        jsonString = AddDependencyToProjectJson(jsonString, "Newtonsoft.Json", "10.0.3");
         jsonString = AddDependencyToProjectJson(jsonString, "sqlite-net-pcl", "1.3.1");
         File.WriteAllText(projectJsonPath, jsonString);
     }

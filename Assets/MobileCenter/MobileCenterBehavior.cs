@@ -14,7 +14,6 @@ public class MobileCenterBehavior : MonoBehaviour
 
     private void Awake()
     {
-        Debug.Log("hi");
         // Make sure that Mobile Center have only one instance.
         if (instance != null)
         {

@@ -507,12 +507,13 @@ PlayerSettings:
   scriptingDefineSymbols: {}
   platformArchitecture: {}
   scriptingBackend:
+    Metro: 1
     iOS: 1
   incrementalIl2cppBuild: {}
   additionalIl2CppArgs: 
   scriptingRuntimeVersion: 0
   apiCompatibilityLevelPerPlatform:
-    Metro: 1
+    Metro: 3
     iOS: 1
   m_RenderingPath: 1
   m_MobileRenderingPath: 1
@@ -522,7 +523,7 @@ PlayerSettings:
   metroCertificatePassword: 
   metroCertificateSubject: DefaultCompany
   metroCertificateIssuer: DefaultCompany
-  metroCertificateNotAfter: 80f1c93b6237d401
+  metroCertificateNotAfter: 0091b24d7037d401
   metroApplicationDescription: TestPackage
   wsaImages: {}
   metroTileShortName: TestPackage
