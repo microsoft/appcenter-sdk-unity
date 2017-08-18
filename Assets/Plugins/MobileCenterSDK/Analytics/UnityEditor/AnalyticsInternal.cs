@@ -34,12 +34,12 @@ namespace Microsoft.Azure.Mobile.Unity.Analytics.Internal
 
         public static MobileCenterTask SetEnabledAsync(bool enabled)
         {
-            return null;
+            return MobileCenterTask.FromCompleted();
         }
 
         public static MobileCenterTask<bool> IsEnabledAsync()
         {
-            return null;
+            return MobileCenterTask<bool>.FromCompleted(false);
         }
     }
 }
