@@ -145,16 +145,27 @@ namespace Microsoft.Azure.Mobile.Unity.Internal
             }
         }
 
-        private static void PrepareScreenSizeProvider()
+        private static void Prepare()
         {
             lock (_lockObject)
             {
                 if (!_prepared)
                 {
-                    UnityApplicationSettings.Initialize();
                     UnityScreenSizeProvider.Initialize();
-                    UWPMobileCenter.SetApplicationSettingsFactory(new UnityApplicationSettingsFactory());
                     DeviceInformationHelper.SetScreenSizeProviderFactory(new UnityScreenSizeProviderFactory());
+
+#if ENABLE_IL2CPP
+                    /**
+                     * Workaround for known IL2CPP issue.
+                     * See https://issuetracker.unity3d.com/issues/il2cpp-use-of-windows-dot-foundation-dot-collections-dot-propertyset-throws-a-notsupportedexception-on-uwp
+                     * 
+                     * NotSupportedException: Cannot call method
+                     * 'System.Boolean System.Runtime.InteropServices.WindowsRuntime.IMapToIDictionaryAdapter`2::System.Collections.Generic.IDictionary`2.TryGetValue(TKey,TValue&)'.
+                     * IL2CPP does not yet support calling this projected method.
+                     */
+                    UnityApplicationSettings.Initialize();
+                    UWPMobileCenter.SetApplicationSettingsFactory(new UnityApplicationSettingsFactory());
+#endif
                     _prepared = true;
                 }
             }

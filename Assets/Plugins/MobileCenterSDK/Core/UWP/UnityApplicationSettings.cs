@@ -2,7 +2,7 @@
 //
 // Licensed under the MIT license.
 
-#if UNITY_WSA_10_0 && !UNITY_EDITOR
+#if UNITY_WSA_10_0 && ENABLE_IL2CPP && !UNITY_EDITOR
 using System.Collections;
 using System.Collections.Generic;
 using Microsoft.Azure.Mobile.Utils;
@@ -15,14 +15,9 @@ namespace Microsoft.Azure.Mobile.Unity.Internal.Utils
     {
         private const string MobileCenterSettingsKey = "MobileCenterSettings";
 
-        private readonly object _lockObject = new object();
-        private readonly IDictionary<string, object> _current;
-        private bool _dirty = false;
-
-        public UnityApplicationSettings()
-        {
-            _current = ReadAll();
-        }
+        private static readonly object _lockObject = new object();
+        private static IDictionary<string, object> _current;
+        private static bool _dirty = false;
 
         public T GetValue<T>(string key, T defaultValue)
         {
@@ -73,6 +68,10 @@ namespace Microsoft.Azure.Mobile.Unity.Internal.Utils
 
         public static void Initialize()
         {
+            // Read current values.
+            _current = ReadAll();
+
+            // Create helper for coroutine.
             var gameObject = new GameObject("Mobile Center Settings Helper")
             {
                 hideFlags = HideFlags.HideAndDontSave
@@ -81,7 +80,7 @@ namespace Microsoft.Azure.Mobile.Unity.Internal.Utils
             gameObject.AddComponent<UnityApplicationSettingsHelper>().StartCoroutine(MainThreadCoroutine());
         }
 
-        private IEnumerator MainThreadCoroutine()
+        private static IEnumerator MainThreadCoroutine()
         {
             while (true)
             {
