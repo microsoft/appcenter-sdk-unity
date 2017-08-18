@@ -52,7 +52,7 @@ var ExternalUnityPackages = new [] {
 var UwpIL2CPPDependencies = new [] {
 
     // Force use assembly for .NET 2.0 to avoid IL2CPP convert problems.
-    new NugetDependency("Newtonsoft.Json", "6.0.1", ".NETFramework, Version=v2.0"),
+    new NugetDependency("Newtonsoft.Json", "10.0.3", ".NETFramework, Version=v2.0"),
     new NugetDependency("sqlite-net-pcl", "1.3.1", "UAP, Version=v10.0"),
 
     // Force use this version to avoid types conflicts.
@@ -213,7 +213,7 @@ Task("Externals-Uwp")
     .Does(() =>
 {
     CleanDirectory("externals/uwp");
-
+    EnsureDirectoryExists("Assets/Plugins/WSA/");
     // Download the nugets. We will use these to extract the dlls
     foreach (var module in MobileCenterModules)
     {
@@ -237,6 +237,7 @@ Task("Externals-Uwp")
 
         // Prepare destination
         var destination = "Assets/Plugins/WSA/" + module.Moniker + "/";
+        EnsureDirectoryExists(destination);
         DeleteFiles(destination + "*.dll");
         DeleteFiles(destination + "*.winmd");
         
@@ -246,6 +247,7 @@ Task("Externals-Uwp")
             foreach (var arch in module.NativeArchitectures)
             {
                 var dest = "Assets/Plugins/WSA/" + module.Moniker + "/" + arch.ToString().ToUpper() + "/";
+                EnsureDirectoryExists(dest);
                 var nativeFiles = GetFiles(tempContentPath + "runtimes/" + "win10-" + arch + "/native/*");
                 DeleteFiles(dest + "*.dll");
                 MoveFiles(nativeFiles, dest);
@@ -269,6 +271,10 @@ Task("Externals-Uwp-IL2CPP-Dependencies")
     .Does(() =>
 {
     var targetPath = "Assets/Plugins/WSA/IL2CPP";
+    EnsureDirectoryExists(targetPath);
+    EnsureDirectoryExists(targetPath + "/ARM");
+    EnsureDirectoryExists(targetPath + "/X86");
+    EnsureDirectoryExists(targetPath + "/X64");
 
     // NuGet.Core support only v2
     var packageSource = "https://www.nuget.org/api/v2/";

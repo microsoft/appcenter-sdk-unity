@@ -8,11 +8,11 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 07ef30b23b2586041aedf18c9486176d, type: 3}
+  m_Script: {fileID: 11500000, guid: abc763d1227866c4ab3f27931a5b49b4, type: 3}
   m_Name: MobileCenterSettings
   m_EditorClassIdentifier: 
-  iOSAppSecret: dcf0de16-000e-477a-a55f-232380938aa8
-  AndroidAppSecret: 56638f03-9802-4b53-95d4-e08ba9c9ac24
+  iOSAppSecret: ios-app-secret
+  AndroidAppSecret: android-app-secret
   UWPAppSecret: 630db31d-f6b3-480e-925f-cbc1c5b12cdc
   UseAnalytics: 1
   UseCrashes: 1

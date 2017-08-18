@@ -7,4 +7,7 @@ EditorBuildSettings:
   m_Scenes:
   - enabled: 1
     path: Assets/Puppet/PuppetScene.unity
+    guid: a8b1f360e21863443a8f774c99ce3fbb
+  - enabled: 0
+    path: 
     guid: 393166f7bd89e8a4f99f49e6b32de3e2
