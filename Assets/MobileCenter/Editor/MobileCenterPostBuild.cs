@@ -18,10 +18,6 @@ public class MobileCenterPostBuild
     [PostProcessBuild]
     public static void OnPostprocessBuild(BuildTarget target, string pathToBuiltProject)
     {
-        // Load Mobile Center settings.
-        var settingsPath = MobileCenterSettingsEditor.SettingsPath;
-        var settings = AssetDatabase.LoadAssetAtPath<MobileCenterSettings>(settingsPath);
-
 #if UNITY_WSA_10_0 && !ENABLE_IL2CPP
         if (target == BuildTarget.WSAPlayer)
         {
@@ -36,6 +32,10 @@ public class MobileCenterPostBuild
 #if UNITY_IOS
         if (target == BuildTarget.iOS)
         {
+            // Load Mobile Center settings.
+            var settingsPath = MobileCenterSettingsEditor.SettingsPath;
+            var settings = AssetDatabase.LoadAssetAtPath<MobileCenterSettings>(settingsPath);
+
             // Update project.
             var projectPath = PBXProject.GetPBXProjectPath(pathToBuiltProject);
             var targetName = PBXProject.GetUnityTargetName();
@@ -73,6 +73,22 @@ public class MobileCenterPostBuild
     }
 
 #region UWP Methods
+    public static void ProcessUwpIl2CppPDependencies()
+    {
+        var binaries = AssetDatabase.FindAssets("*", new [] { "Assets/Plugins/WSA/IL2CPP" });
+        foreach (var guid in binaries)
+        {
+            var assetPath = AssetDatabase.GUIDToAssetPath(guid);
+            var importer = AssetImporter.GetAtPath(assetPath) as PluginImporter;
+            if (importer != null)
+            {
+                importer.SetPlatformData(BuildTarget.WSAPlayer, "SDK", "UWP");
+                importer.SetPlatformData(BuildTarget.WSAPlayer, "ScriptingBackend", "Il2Cpp");
+                importer.SaveAndReimport();
+            }
+        }
+    }
+
     private static void AddDependenciesToProjectJson(string projectJsonPath)
     {
         if (!File.Exists(projectJsonPath))
@@ -82,6 +98,8 @@ public class MobileCenterPostBuild
         }
         var jsonString = File.ReadAllText(projectJsonPath);
         jsonString = AddDependencyToProjectJson(jsonString, "Microsoft.NETCore.UniversalWindowsPlatform", "5.2.2");
+        jsonString = AddDependencyToProjectJson(jsonString, "Newtonsoft.Json", "6.0.1");
+        jsonString = AddDependencyToProjectJson(jsonString, "sqlite-net-pcl", "1.3.1");
         File.WriteAllText(projectJsonPath, jsonString);
     }
 
