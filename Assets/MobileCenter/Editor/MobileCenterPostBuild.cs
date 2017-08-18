@@ -18,6 +18,11 @@ public class MobileCenterPostBuild
     [PostProcessBuild]
     public static void OnPostprocessBuild(BuildTarget target, string pathToBuiltProject)
     {
+        // Load Mobile Center settings.
+        var settingsPath = MobileCenterSettingsEditor.SettingsPath;
+        var settings = AssetDatabase.LoadAssetAtPath<MobileCenterSettings>(settingsPath);
+
+#if UNITY_WSA_10_0 && !ENABLE_IL2CPP
         if (target == BuildTarget.WSAPlayer)
         {
             // If UWP, need to add NuGet packages.
@@ -27,8 +32,9 @@ public class MobileCenterPostBuild
             var nuget = EditorApplication.applicationContentsPath + "/PlaybackEngines/MetroSupport/Tools/nuget.exe";
             ExecuteCommand(nuget, "restore \"" + projectJson + "\" -NonInteractive");
         }
+#endif
 #if UNITY_IOS
-        else if (target == BuildTarget.iOS)
+        if (target == BuildTarget.iOS)
         {
             // Load/Apply Mobile Center settings.
             var settingsPath = MobileCenterSettingsEditor.SettingsPath;
@@ -80,9 +86,7 @@ public class MobileCenterPostBuild
             return;
         }
         var jsonString = File.ReadAllText(projectJsonPath);
-        jsonString = AddDependencyToProjectJson(jsonString, "Microsoft.NETCore.UniversalWindowsPlatform", "5.3.3");
-        jsonString = AddDependencyToProjectJson(jsonString, "sqlite-net-pcl", "1.3.3");
-        jsonString = AddDependencyToProjectJson(jsonString, "Newtonsoft.Json", "10.0.2");
+        jsonString = AddDependencyToProjectJson(jsonString, "Microsoft.NETCore.UniversalWindowsPlatform", "5.2.2");
         File.WriteAllText(projectJsonPath, jsonString);
     }
 

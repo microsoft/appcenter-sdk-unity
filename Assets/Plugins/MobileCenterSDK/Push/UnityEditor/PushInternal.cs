@@ -30,12 +30,12 @@ namespace Microsoft.Azure.Mobile.Unity.Push.Internal
 
         public static MobileCenterTask SetEnabledAsync(bool enabled)
         {
-            return null;
+            return MobileCenterTask.FromCompleted();
         }
 
         public static MobileCenterTask<bool> IsEnabledAsync()
         {
-            return null;
+            return MobileCenterTask<bool>.FromCompleted(false);
         }
 
         public static void EnableFirebaseAnalytics()
