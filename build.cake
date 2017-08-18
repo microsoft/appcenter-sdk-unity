@@ -464,9 +464,14 @@ void GetNuGetDependencies(IList<IPackage> dependencies, IPackageRepository repos
     foreach (var dependency in package.GetCompatiblePackageDependencies(frameworkName))
     {
         if (IgnoreNuGetDependencies.Contains(dependency.Id))
+        {
             continue;
+        }
         var subPackage = repository.ResolveDependency(dependency, false, true);
-        GetNuGetDependencies(dependencies, repository, frameworkName, subPackage);
+        if (!dependencies.Contains(subPackage))
+        {
+            GetNuGetDependencies(dependencies, repository, frameworkName, subPackage);
+        }
     }
 }
 
