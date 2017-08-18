@@ -2,7 +2,7 @@
 //
 // Licensed under the MIT license.
 
-#if NET_4_6
+#if NET_4_6 && !UNITY_EDITOR
 
 using System.Runtime.CompilerServices;
 using System.Threading.Tasks;

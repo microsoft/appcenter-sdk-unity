@@ -56,6 +56,7 @@ google-services.json*
 /Library/
 *.csproj
 *.sln
+*.meta
 
 # Firebase
 Assets/Plugins/Android/firebase-*
@@ -66,7 +67,3 @@ Assets/Plugins/Android/mobile-center/res.meta
 Assets/Firebase/
 Assets/PlayServicesResolver/
 Assets/PlayServicesResolver.meta
-
-# Newtonsoft.Json package
-Assets/UnityPackages/
-Assets/UnityPackages.meta
