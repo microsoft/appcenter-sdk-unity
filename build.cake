@@ -4,7 +4,6 @@
 #addin "Cake.AzureStorage"
 #addin nuget:?package=Cake.Git
 #addin nuget:?package=NuGet.Core
-#reference "tools/Cake.Unity.dll"
 
 using System.Net;
 using System.Collections.Generic;
@@ -124,6 +123,10 @@ class ExternalUnityPackage
 class UnityPackage
 {
     public static ICakeContext Context;
+    
+    private string _packageName;
+    private List<string> _includePaths = new List<string>();
+
     public UnityPackage(string specFilePath)
     {
         _packageName = Context.XmlPeek(specFilePath, "package/@name");
@@ -153,11 +156,18 @@ class UnityPackage
 
     public void CreatePackage(string targetDirectory)
     {
-        Context.UnityExportPackage(Context.Environment.WorkingDirectory, targetDirectory + "/" + _packageName, _includePaths.ToArray());
+        var args = "-exportPackage "; 
+        foreach (var path in _includePaths)  
+        { 
+            args += " " + path; 
+        } 
+        args += " " + targetDirectory + "/" + _packageName; 
+        var result = ExecuteUnityCommand(args, Context); 
+        if (result != 0) 
+        { 
+            Context.Error("Something went wrong while creating Unity package '" + _packageName + "'"); 
+        }     
     }
-
-    private string _packageName;
-    private List<DirectoryPath> _includePaths = new List<DirectoryPath>();
 }
 
 // Downloading Android binaries.
@@ -251,7 +261,7 @@ Task("Externals-Uwp")
         var files = GetFiles(tempContentPath + contentPathSuffix + "*");
         MoveFiles(files, destination);
     }
-
+    ExecuteUnityCommand("-executeMethod MobileCenterPostBuild.DontProcessUwpMobileCenterBinaries", Context);
 }).OnError(HandleError);
 
 // Downloading UWP IL2CPP dependencies.
@@ -281,8 +291,7 @@ Task("Externals-Uwp-IL2CPP-Dependencies")
 
     // Process UWP IL2CPP dependencies.
     Information("Processing UWP IL2CPP dependencies. This could take a minute.");
-    UnityExecuteMethod(Context.Environment.WorkingDirectory, "MobileCenterPostBuild.ProcessUwpIl2CppPDependencies");
-    
+    ExecuteUnityCommand("-executeMethod MobileCenterPostBuild.ProcessUwpIl2CppDependencies", Context);
 }).OnError(HandleError);
 
 // Download and install all external Unity packages required
@@ -294,8 +303,9 @@ Task("Externals-Unity-Packages").Does(()=>
     {
         var destination = directoryName + "/" + package.Name;
         DownloadFile(package.Url, destination);
+        var command = "-importPackage " + destination;
         Information("Importing package " + package.Name + ". This could take a minute.");
-        UnityImportPackage(Context.Environment.WorkingDirectory, destination);
+        ExecuteUnityCommand(command, Context);
     }
 }).OnError(HandleError);
 
@@ -424,7 +434,7 @@ void ExtractNuGetPackages(IEnumerable<IPackage> packages, string dest, Framework
     var fileSystem = new PhysicalFileSystem(Environment.CurrentDirectory);
     foreach (var package in packages)
     {
-        Console.WriteLine("Extract NuGet package: " + package);
+        Information("Extract NuGet package: " + package);
         
         // Extract.
         var path = "externals/uwp/" + package.Id;
@@ -488,6 +498,14 @@ void GetNuGetDependencies(IList<IPackage> dependencies, IPackageRepository repos
         var subPackage = repository.ResolveDependency(dependency, false, true);
         GetNuGetDependencies(dependencies, repository, frameworkName, subPackage);
     }
+}
+
+static int ExecuteUnityCommand(string extraArgs, ICakeContext context)
+{
+    var projectDir = context.MakeAbsolute(context.Directory("."));
+    var exec = context.EnvironmentVariable("UNITY_PATH");
+    var args = "-batchmode -quit -projectPath " + projectDir + " " + extraArgs;
+    return context.StartProcess(exec, args);
 }
 
 RunTarget(Target);

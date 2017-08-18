@@ -73,7 +73,7 @@ public class MobileCenterPostBuild
     }
 
 #region UWP Methods
-    public static void ProcessUwpIl2CppPDependencies()
+    public static void ProcessUwpIl2CppDependencies()
     {
         var binaries = AssetDatabase.FindAssets("*", new [] { "Assets/Plugins/WSA/IL2CPP" });
         foreach (var guid in binaries)
@@ -84,6 +84,28 @@ public class MobileCenterPostBuild
             {
                 importer.SetPlatformData(BuildTarget.WSAPlayer, "SDK", "UWP");
                 importer.SetPlatformData(BuildTarget.WSAPlayer, "ScriptingBackend", "Il2Cpp");
+                importer.SaveAndReimport();
+            }
+        }
+    }
+
+    public static void DontProcessUwpMobileCenterBinaries()
+    {
+        var directories = Directory.GetDirectories("Assets/Plugins/WSA", "*", SearchOption.AllDirectories);
+        var assemblies = AssetDatabase.FindAssets("Microsoft.Azure.Mobile", directories);
+        var watsonBinaries =  AssetDatabase.FindAssets("WatsonRegistrationUtility", directories);
+        var allBinaries = new string[assemblies.Length + watsonBinaries.Length];
+        assemblies.CopyTo(allBinaries, 0);
+        watsonBinaries.CopyTo(allBinaries, assemblies.Length);
+        foreach (var guid in allBinaries)
+        {
+            var assetPath = AssetDatabase.GUIDToAssetPath(guid);
+            Debug.Log("found asset at path " + assetPath);
+            var importer = AssetImporter.GetAtPath(assetPath) as PluginImporter;
+            if (importer != null)
+            {
+                importer.SetPlatformData(BuildTarget.WSAPlayer, "SDK", "UWP");
+                importer.SetPlatformData(BuildTarget.WSAPlayer, "DontProcess", "true");
                 importer.SaveAndReimport();
             }
         }
