@@ -480,12 +480,6 @@ void ExtractNuGetPackages(IEnumerable<IPackage> packages, string dest, Framework
     }
 }
 
-static readonly ISet<string> IgnoreNuGetDependencies = new HashSet<string>
-{
-    "Microsoft.NETCore.UniversalWindowsPlatform",
-    "NETStandard.Library"
-};
-
 IList<IPackage> GetNuGetDependencies(string packageName, string packageVersion, string packageSource, FrameworkName frameworkName)
 {
     var repository = PackageRepositoryFactory.Default.CreateRepository(packageSource);
@@ -497,6 +491,12 @@ IList<IPackage> GetNuGetDependencies(string packageName, string packageVersion, 
 
 void GetNuGetDependencies(IList<IPackage> dependencies, IPackageRepository repository, FrameworkName frameworkName, IPackage package)
 {
+    var IgnoreNuGetDependencies = new HashSet<string>
+    {
+        "Microsoft.NETCore.UniversalWindowsPlatform",
+        "NETStandard.Library"
+    };
+
     dependencies.Add(package);
     foreach (var dependency in package.GetCompatiblePackageDependencies(frameworkName))
     {
