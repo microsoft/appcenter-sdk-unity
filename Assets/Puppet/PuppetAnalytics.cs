@@ -1,6 +1,7 @@
-﻿using Microsoft.Azure.Mobile.Unity.Analytics;
+﻿using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using Microsoft.Azure.Mobile.Unity.Analytics;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -21,10 +22,15 @@ public class PuppetAnalytics : MonoBehaviour
 
     public void SetEnabled(bool enabled)
     {
-        Analytics.SetEnabledAsync(enabled).ContinueWith(task => 
-        {
-            Enabled.isOn = enabled;
-        });
+        StartCoroutine(SetEnabledCoroutine(enabled));
+    }
+
+    private IEnumerator SetEnabledCoroutine(bool enabled)
+    {
+        yield return Analytics.SetEnabledAsync(enabled);
+        var isEnabled = Analytics.IsEnabledAsync();
+        yield return isEnabled;
+        Enabled.isOn = isEnabled.Result;
     }
 
     public void AddProperty()
