@@ -68,15 +68,6 @@ public class MobileCenterPostBuild
 #endif
     }
 
-    private static string GetApplicationId()
-    {
-#if UNITY_5_6_OR_NEWER
-        return PlayerSettings.applicationIdentifier;
-#else
-        return PlayerSettings.bundleIdentifier;
-#endif
-    }
-
     #region UWP Methods
     private static void AddDependenciesToProjectJson(string projectJsonPath)
     {
@@ -152,7 +143,7 @@ public class MobileCenterPostBuild
             var urlTypes = info.root.CreateArray("CFBundleURLTypes");
             var urlType = urlTypes.AddDict();
             urlType.SetString("CFBundleTypeRole", "None");
-            urlType.SetString("CFBundleURLName", GetApplicationId());
+            urlType.SetString("CFBundleURLName", ApplicationIdHelper.GetApplicationId());
             var urlSchemes = urlType.CreateArray("CFBundleURLSchemes");
             urlSchemes.AddString("mobilecenter-" + settings.iOSAppSecret);
         }

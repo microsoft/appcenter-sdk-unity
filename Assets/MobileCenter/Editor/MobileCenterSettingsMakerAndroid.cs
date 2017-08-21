@@ -66,12 +66,7 @@ public class MobileCenterSettingsMakerAndroid
     [InitializeOnLoadMethod]
     static void SetApplicationId()
     {
-        string appId = null;
-#if UNITY_5_6_OR_NEWER
-        appId = PlayerSettings.applicationIdentifier;
-#else
-        appId = PlayerSettings.bundleIdentifier;
-#endif
+        string appId = ApplicationIdHelper.GetApplicationId();
         var manifestText = File.ReadAllText(MobileCenterManifestPath);
         if (manifestText.Contains(ManifestAppIdPlaceholder))
         {

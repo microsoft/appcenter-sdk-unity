@@ -108,19 +108,10 @@ public class FirebaseDependency : AssetPostprocessor
         return googleServicesFiles.Count > 0 ? googleServicesFiles.ToArray() : null;
     }
 
-    static string GetApplicationId()
-    {
-#if UNITY_5_6_OR_NEWER
-        return PlayerSettings.applicationIdentifier;
-#else
-        return PlayerSettings.bundleIdentifier;
-#endif
-    }
-
     static void UpdateJson()
     {
 #if UNITY_ANDROID
-        var bundleId = GetApplicationId();
+        var bundleId = ApplicationIdHelper.GetApplicationId();
         var projectDir = Path.Combine(Application.dataPath, "..");
         var googleServicesFiles = FindGoogleServicesFiles();
         if (googleServicesFiles == null)
