@@ -5,6 +5,7 @@
 #if UNITY_EDITOR
 using System.Collections.Generic;
 using System.Threading;
+
 namespace Microsoft.Azure.Mobile.Unity.Push.Internal
 {
 #if UNITY_IOS || UNITY_ANDROID

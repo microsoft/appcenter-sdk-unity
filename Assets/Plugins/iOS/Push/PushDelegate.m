@@ -33,7 +33,7 @@
     handlerCopy = _receivedPushNotification;
   }
   if (handlerCopy) {
-    (handlerCopy)(pushNotification);
+    handlerCopy(pushNotification);
   }
 }
 
@@ -53,7 +53,7 @@
   }
   if (unprocessedCopy && handlerCopy) {
     for (MSPushNotification *notification in unprocessedCopy) {
-      (_receivedPushNotification)(notification);
+      handlerCopy(notification);
     }
   }
 }
