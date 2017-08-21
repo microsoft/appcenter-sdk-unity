@@ -265,7 +265,6 @@ Task("Externals-Uwp")
     ExecuteUnityCommand("-executeMethod MobileCenterPostBuild.DontProcessUwpMobileCenterBinaries", Context);
 }).OnError(HandleError);
 
-<<<<<<< HEAD
 // Builds the ContentProvider for the Android package and puts it in the
 // proper folder.
 Task("BuildAndroidContentProvider").Does(()=>
@@ -301,12 +300,8 @@ Task("BuildAndroidContentProvider").Does(()=>
     MoveFileToDirectory(aarSource, aarDestination);
 }).OnError(HandleError);
 
-// Downloading UWP dependencies.
-Task("Externals-Uwp-Dependencies")
-=======
 // Downloading UWP IL2CPP dependencies.
 Task("Externals-Uwp-IL2CPP-Dependencies")
->>>>>>> develop
     .Does(() =>
 {
     var targetPath = "Assets/Plugins/WSA/IL2CPP";
@@ -523,17 +518,7 @@ void ExtractNuGetPackages(IEnumerable<IPackage> packages, string dest, Framework
     }
 }
 
-<<<<<<< HEAD
-IList<IPackage> GetNuGetDependencies(string packageName, string packageVersion, string packageSource, FrameworkName frameworkName)
-=======
-static readonly ISet<string> IgnoreNuGetDependencies = new HashSet<string>
-{
-    "Microsoft.NETCore.UniversalWindowsPlatform",
-    "NETStandard.Library"
-};
-
 IList<IPackage> GetNuGetDependencies(IPackageRepository repository, FrameworkName frameworkName, IPackage package)
->>>>>>> develop
 {
     var dependencies = new List<IPackage>();
     GetNuGetDependencies(dependencies, repository, frameworkName, package);
