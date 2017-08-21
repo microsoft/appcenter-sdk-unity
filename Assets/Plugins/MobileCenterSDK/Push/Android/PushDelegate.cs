@@ -1,4 +1,4 @@
-﻿// Copyright (c) Microsoft Corporation. All rights reserved.
+// Copyright (c) Microsoft Corporation. All rights reserved.
 //
 // Licensed under the MIT license.
 
@@ -11,14 +11,8 @@ namespace Microsoft.Azure.Mobile.Unity.Push.Internal
 {
     class PushDelegate : AndroidJavaProxy
     {
-        private PushDelegate() : base("com.microsoft.azure.mobile.push.PushListener")
+        public PushDelegate() : base("com.microsoft.azure.mobile.push.PushListener")
         {
-        }
-
-        public static void SetDelegate()
-        {
-            var push = new AndroidJavaClass("com.microsoft.azure.mobile.push.Push");
-            push.CallStatic("setListener", new PushDelegate());
         }
 
         void onPushNotificationReceived(AndroidJavaObject activity, AndroidJavaObject pushNotification)

@@ -11,9 +11,11 @@ namespace Microsoft.Azure.Mobile.Unity.Push.Internal
     class PushInternal
     {
         private static AndroidJavaClass _push = new AndroidJavaClass("com.microsoft.azure.mobile.push.Push");
+        private static AndroidJavaClass _unityListener = new AndroidJavaClass("com.microsoft.azure.mobile.mobilecenterloader.UnityMobileCenterPushDelegate");
+
         public static void Initialize()
         {
-            PushDelegate.SetDelegate();
+            _unityListener.CallStatic("setListener", new PushDelegate());
         }
 
         public static void PostInitialize()
@@ -48,7 +50,7 @@ namespace Microsoft.Azure.Mobile.Unity.Push.Internal
 
         internal static void ReplayUnprocessedPushNotifications()
         {
-            //TODO implement me
+            _unityListener.CallStatic("replayPushNotifications");
         }
     }
 }

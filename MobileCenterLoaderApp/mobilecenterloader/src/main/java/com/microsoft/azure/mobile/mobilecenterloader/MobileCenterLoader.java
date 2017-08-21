@@ -15,6 +15,7 @@ import android.support.annotation.Nullable;
 
 import com.microsoft.azure.mobile.MobileCenter;
 import com.microsoft.azure.mobile.MobileCenterService;
+import com.microsoft.azure.mobile.push.Push;
 import com.microsoft.azure.mobile.utils.MobileCenterLog;
 
 import java.util.Vector;
@@ -48,6 +49,7 @@ public class MobileCenterLoader extends ContentProvider {
             classes.add(com.microsoft.azure.mobile.distribute.Distribute.class);
         }
         if (isTrueValue(getStringResource(USE_PUSH_KEY))) {
+            Push.setListener(new UnityMobileCenterPushDelegate());
             classes.add(com.microsoft.azure.mobile.push.Push.class);
         }
         int logLevel = Integer.parseInt(getStringResource(INITIAL_LOG_LEVEL_KEY));
