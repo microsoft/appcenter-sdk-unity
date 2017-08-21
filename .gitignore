@@ -66,3 +66,6 @@ Assets/Plugins/Android/mobile-center/res.meta
 Assets/Firebase/
 Assets/PlayServicesResolver/
 Assets/PlayServicesResolver.meta
+
+# Android Studio
+*.idea/
