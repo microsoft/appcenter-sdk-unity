@@ -24,7 +24,7 @@ var UwpSdkVersion = "0.14.2";
  * On Windows,
  *     you have to do additional steps for SSL connection to download files.
  *     http://stackoverflow.com/questions/4926676/mono-webrequest-fails-with-https
- *     By running mozroots and install part of Mozilla's root certificates can make it work. 
+ *     By running mozroots and install part of Mozilla's root certificates can make it work.
  */
 
 var SdkStorageUrl = "https://mobilecentersdkdev.blob.core.windows.net/sdk/";
@@ -44,21 +44,19 @@ var JarResolverPackageName =  "play-services-resolver-" + ExternalUnityPackage.V
 var JarResolverVersion = "1.2.35.0";
 var JarResolverUrl = SdkStorageUrl + ExternalUnityPackage.NamePlaceholder;
 
-var NewtonsoftJsonPackageName = "JsonNet." + ExternalUnityPackage.VersionPlaceholder + ".unitypackage";
-var NewtonsoftJsonVersion = "9.0.1";
-var NewtonsoftJsonUrl = "https://github.com/SaladLab/Json.Net.Unity3D/releases/download/v" + ExternalUnityPackage.VersionPlaceholder + "/" + ExternalUnityPackage.NamePlaceholder;
-
 var ExternalUnityPackages = new [] {
-    new ExternalUnityPackage(JarResolverPackageName, JarResolverVersion, JarResolverUrl),
-    new ExternalUnityPackage(NewtonsoftJsonPackageName, NewtonsoftJsonVersion, NewtonsoftJsonUrl)
+    new ExternalUnityPackage(JarResolverPackageName, JarResolverVersion, JarResolverUrl)
 };
 
-// UWP dependencies
-var SqlitePackageName = "sqlite-net-pcl";
-var SqliteVersion = "1.3.1";
+// UWP IL2CPP dependencies.
+var UwpIL2CPPDependencies = new [] {
 
-var UwpDependencies = new Dictionary<string, string> {
-    { SqlitePackageName, SqliteVersion }
+    // Force use assembly for .NET 2.0 to avoid IL2CPP convert problems.
+    new NugetDependency("Newtonsoft.Json", "10.0.3", ".NETFramework, Version=v2.0"),
+    new NugetDependency("sqlite-net-pcl", "1.3.1", "UAP, Version=v10.0"),
+
+    // Force use this version to avoid types conflicts.
+    new NugetDependency("System.Threading.Tasks", "4.0.10", ".NETCore, Version=v5.0", false)
 };
 
 // Task TARGET for build
@@ -66,7 +64,8 @@ var Target = Argument("target", Argument("t", "Default"));
 
 // Available MobileCenter modules.
 // MobileCenter module class definition.
-class MobileCenterModule {
+class MobileCenterModule
+{
     public string AndroidModule { get; set; }
     public string IosModule { get; set; }
     public string DotNetModule { get; set; }
@@ -74,7 +73,8 @@ class MobileCenterModule {
     public bool UWPHasNativeCode { get; set; }
     public string[] NativeArchitectures { get; set; }
 
-    public MobileCenterModule(string android, string ios, string dotnet, string moniker, bool hasNative = false) {
+    public MobileCenterModule(string android, string ios, string dotnet, string moniker, bool hasNative = false)
+    {
         AndroidModule = android;
         IosModule = ios;
         DotNetModule = dotnet;
@@ -84,6 +84,22 @@ class MobileCenterModule {
         {
             NativeArchitectures = new string[] {"x86", "x64", "arm"};
         }
+    }
+}
+
+class NugetDependency
+{
+    public string Name { get; set; }
+    public string Version { get; set; }
+    public string Framework { get; set; }
+    public bool IncludeDependencies { get; set; }
+
+    public NugetDependency(string name, string version, string framework, bool includeDependencies = true)
+    {
+        Name = name;
+        Version = version;
+        Framework = framework;
+        IncludeDependencies = includeDependencies;
     }
 }
 
@@ -107,6 +123,10 @@ class ExternalUnityPackage
 class UnityPackage
 {
     public static ICakeContext Context;
+
+    private string _packageName;
+    private List<string> _includePaths = new List<string>();
+
     public UnityPackage(string specFilePath)
     {
         _packageName = Context.XmlPeek(specFilePath, "package/@name");
@@ -129,7 +149,7 @@ class UnityPackage
         }
         while (currentPath != lastPath)
         {
-            currentPath =  Context.XmlPeek(specFilePath, xpathPrefix + currentIdx++ + xpathSuffix); 
+            currentPath =  Context.XmlPeek(specFilePath, xpathPrefix + currentIdx++ + xpathSuffix);
             _includePaths.Add(currentPath);
         }
     }
@@ -145,17 +165,14 @@ class UnityPackage
         var result = ExecuteUnityCommand(args, Context);
         if (result != 0)
         {
-            Context.Error("Something went wrong while creating cake package '" + _packageName + "'");
+            Context.Error("Something went wrong while creating Unity package '" + _packageName + "'");
         }
     }
-
-    private string _packageName;
-    private List<string> _includePaths = new List<string>();
 }
 
 // Downloading Android binaries.
 Task("Externals-Android")
-    .Does(() => 
+    .Does(() =>
 {
     CleanDirectory("./externals/android");
 
@@ -192,11 +209,11 @@ Task("Externals-Ios")
 
 // Downloading UWP binaries.
 Task("Externals-Uwp")
-    .IsDependentOn("Externals-Uwp-Dependencies")
+    .IsDependentOn("Externals-Uwp-IL2CPP-Dependencies")
     .Does(() =>
 {
     CleanDirectory("externals/uwp");
-
+    EnsureDirectoryExists("Assets/Plugins/WSA/");
     // Download the nugets. We will use these to extract the dlls
     foreach (var module in MobileCenterModules)
     {
@@ -220,15 +237,17 @@ Task("Externals-Uwp")
 
         // Prepare destination
         var destination = "Assets/Plugins/WSA/" + module.Moniker + "/";
+        EnsureDirectoryExists(destination);
         DeleteFiles(destination + "*.dll");
         DeleteFiles(destination + "*.winmd");
-        
+
         // Deal with any native components
         if (module.UWPHasNativeCode)
         {
             foreach (var arch in module.NativeArchitectures)
             {
                 var dest = "Assets/Plugins/WSA/" + module.Moniker + "/" + arch.ToString().ToUpper() + "/";
+                EnsureDirectoryExists(dest);
                 var nativeFiles = GetFiles(tempContentPath + "runtimes/" + "win10-" + arch + "/native/*");
                 DeleteFiles(dest + "*.dll");
                 MoveFiles(nativeFiles, dest);
@@ -244,22 +263,41 @@ Task("Externals-Uwp")
         var files = GetFiles(tempContentPath + contentPathSuffix + "*");
         MoveFiles(files, destination);
     }
-
+    ExecuteUnityCommand("-executeMethod MobileCenterPostBuild.DontProcessUwpMobileCenterBinaries", Context);
 }).OnError(HandleError);
 
-// Downloading UWP dependencies.
-Task("Externals-Uwp-Dependencies")
+// Downloading UWP IL2CPP dependencies.
+Task("Externals-Uwp-IL2CPP-Dependencies")
     .Does(() =>
 {
-    var targetPath = "Assets/Plugins/WSA";
-    var frameworkName = new FrameworkName("UAP, Version=v10.0");
+    var targetPath = "Assets/Plugins/WSA/IL2CPP";
+    EnsureDirectoryExists(targetPath);
+    EnsureDirectoryExists(targetPath + "/ARM");
+    EnsureDirectoryExists(targetPath + "/X86");
+    EnsureDirectoryExists(targetPath + "/X64");
+
+    // NuGet.Core support only v2
     var packageSource = "https://www.nuget.org/api/v2/";
-    var dependencies = new List<IPackage>();
-    foreach (var i in UwpDependencies)
+    var repository = PackageRepositoryFactory.Default.CreateRepository(packageSource);
+    foreach (var i in UwpIL2CPPDependencies)
     {
-        dependencies.AddRange(GetNuGetDependencies(i.Key, i.Value, packageSource, frameworkName));
+        var frameworkName = new FrameworkName(i.Framework);
+        var package = repository.FindPackage(i.Name, SemanticVersion.Parse(i.Version));
+        IEnumerable<IPackage> dependencies;
+        if (i.IncludeDependencies)
+        {
+            dependencies = GetNuGetDependencies(repository, frameworkName, package);
+        }
+        else
+        {
+            dependencies = new [] { package };
+        }
+        ExtractNuGetPackages(dependencies, targetPath, frameworkName);
     }
-    ExtractNuGetPackages(dependencies, targetPath, frameworkName);
+
+    // Process UWP IL2CPP dependencies.
+    Information("Processing UWP IL2CPP dependencies. This could take a minute.");
+    ExecuteUnityCommand("-executeMethod MobileCenterPostBuild.ProcessUwpIl2CppDependencies", Context);
 }).OnError(HandleError);
 
 // Download and install all external Unity packages required
@@ -279,7 +317,7 @@ Task("Externals-Unity-Packages").Does(()=>
 
 // Create a common externals task depending on platform specific ones
 // NOTE: It is important to execute Externals-Unity-Packages *last* or the step in Externals-Unity-Packages that runs
-// the Unity commands might cause the *.meta files to be deleted! (Unity deletes meta data files 
+// the Unity commands might cause the *.meta files to be deleted! (Unity deletes meta data files
 // when it is opened if the corresponding files are not on disk.)
 Task("Externals")
     .IsDependentOn("Externals-Uwp")
@@ -378,10 +416,10 @@ string GetNuGetPackage(string packageId, string packageVersion)
     var nugetPassword = Argument("NuGetPassword", EnvironmentVariable("NUGET_PASSWORD"));
     var nugetFeedId = Argument("NuGetFeedId", EnvironmentVariable("NUGET_FEED_ID"));
     packageId = packageId.ToLower();
-    
+
     var url = "https://msmobilecenter.pkgs.visualstudio.com/_packaging/";
     url += nugetFeedId + "/nuget/v3/flat2/" + packageId + "/" + packageVersion + "/" + packageId + "." + packageVersion + ".nupkg";
-    
+
     // Get the NuGet package
     HttpWebRequest request = (HttpWebRequest)WebRequest.Create (url);
     request.Headers["X-NuGet-ApiKey"] = nugetPassword;
@@ -402,8 +440,8 @@ void ExtractNuGetPackages(IEnumerable<IPackage> packages, string dest, Framework
     var fileSystem = new PhysicalFileSystem(Environment.CurrentDirectory);
     foreach (var package in packages)
     {
-        Console.WriteLine(package);
-        
+        Information("Extract NuGet package: " + package);
+
         // Extract.
         var path = "externals/uwp/" + package.Id;
         package.ExtractContents(fileSystem, path);
@@ -449,10 +487,8 @@ static readonly ISet<string> IgnoreNuGetDependencies = new HashSet<string>
     "NETStandard.Library"
 };
 
-IList<IPackage> GetNuGetDependencies(string packageName, string packageVersion, string packageSource, FrameworkName frameworkName)
+IList<IPackage> GetNuGetDependencies(IPackageRepository repository, FrameworkName frameworkName, IPackage package)
 {
-    var repository = PackageRepositoryFactory.Default.CreateRepository(packageSource);
-    var package = repository.FindPackage(packageName, SemanticVersion.Parse(packageVersion));
     var dependencies = new List<IPackage>();
     GetNuGetDependencies(dependencies, repository, frameworkName, package);
     return dependencies;
