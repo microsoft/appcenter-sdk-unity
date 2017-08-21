@@ -30,7 +30,6 @@ public class MobileCenterLoader extends ContentProvider {
     private static final String USE_DISTRIBUTE_KEY = "mobile_center_use_distribute";
     private static final String USE_CRASHES_KEY = "mobile_center_use_crashes";
     private static final String APP_SECRET_KEY = "mobile_center_app_secret";
-
     private static final String TRUE_VALUE = "True";
 
     private Context mContext;
@@ -42,6 +41,7 @@ public class MobileCenterLoader extends ContentProvider {
         if (isTrueValue(getStringResource(USE_ANALYTICS_KEY))) {
             classes.add(com.microsoft.azure.mobile.analytics.Analytics.class);
         }
+
         if (isTrueValue(getStringResource(USE_CRASHES_KEY))) {
             classes.add(com.microsoft.azure.mobile.crashes.Crashes.class);
         }
@@ -61,6 +61,7 @@ public class MobileCenterLoader extends ContentProvider {
             }
         }
         String appSecret = getStringResource(APP_SECRET_KEY);
+
         if (classes.size() > 0) {
             Class<? extends MobileCenterService>[] classesArray = new Class[classes.size()];
             int i = 0;
@@ -72,6 +73,7 @@ public class MobileCenterLoader extends ContentProvider {
         else {
             MobileCenter.configure((Application)mContext, appSecret);
         }
+
         return true;
     }
 

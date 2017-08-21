@@ -6,7 +6,6 @@
         <provider
             android:authorities="com.microsoft.azure.mobile.unity.puppet.microsoft.azure.mobile.mobilecenterloader"
             android:exported="false"
-            android:enabled="true"
             android:name=".MobileCenterLoader" />
     </application>
 </manifest>

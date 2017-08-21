@@ -4,14 +4,15 @@
 
 using UnityEngine;
 using UnityEditor;
+using UnityEditor.Callbacks;
 
 [CustomEditor(typeof(MobileCenterSettings))]
 public class MobileCenterSettingsEditor : Editor
 {
     public const string SettingsPath = "Assets/MobileCenter/MobileCenterSettings.asset";
-    
-    public MobileCenterSettings Settings
-    { 
+
+    public static MobileCenterSettings Settings
+    {
         get
         {
             return AssetDatabase.LoadAssetAtPath<MobileCenterSettings>(SettingsPath);
@@ -66,7 +67,9 @@ public class MobileCenterSettingsEditor : Editor
         }
     }
 
-    private void AddStartupCodeToAndroid()
+    [PostProcessBuild]
+    [InitializeOnLoadMethod]
+    static void AddStartupCodeToAndroid()
     {
         var settings = Settings;
         if (settings == null)
@@ -83,7 +86,18 @@ public class MobileCenterSettingsEditor : Editor
         {
             settingsMaker.StartPushClass();
         }
-
+        if (settings.UseAnalytics)
+        {
+            settingsMaker.StartAnalyticsClass();
+        }
+        if (settings.UseDistribute)
+        {
+            settingsMaker.StartDistributeClass();
+        }
+        if (settings.UseCrashes)
+        {
+            settingsMaker.StartCrashesClass();
+        }
         settingsMaker.SetLogLevel((int)settings.InitialLogLevel);
         settingsMaker.CommitSettings();
     }

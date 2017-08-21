@@ -18,7 +18,7 @@ namespace Microsoft.Azure.Mobile.Unity.Push
     public class Push
     {
         private static readonly object _lockObject = new object();
-        private static bool _needsReplay = false;
+        private static bool _needsReplay = true;
 
         private static event EventHandler<PushNotificationReceivedEventArgs> _pushNotificationReceived;
 
@@ -63,7 +63,7 @@ namespace Microsoft.Azure.Mobile.Unity.Push
         {
             PushInternal.PostInitialize();
         }
-        
+
         public static RawType GetNativeType()
         {
             return PushInternal.GetNativeType();

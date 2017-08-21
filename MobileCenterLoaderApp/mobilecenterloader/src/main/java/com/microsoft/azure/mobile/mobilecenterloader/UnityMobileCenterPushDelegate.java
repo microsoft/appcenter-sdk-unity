@@ -14,7 +14,7 @@ public class UnityMobileCenterPushDelegate implements PushListener
     static PushListener mPushListener;
 
     synchronized
-    public static void SetListener(PushListener listener)
+    public static void setListener(PushListener listener)
     {
         mPushListener = listener;
     }

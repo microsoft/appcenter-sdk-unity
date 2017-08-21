@@ -1,6 +1,6 @@
 fileFormatVersion: 2
 guid: 5ac1d2e9d936c4c0aac7c61c15d21674
-timeCreated: 1503100900
+timeCreated: 1503351336
 licenseType: Pro
 PluginImporter:
   serializedVersion: 2
@@ -29,6 +29,8 @@ PluginImporter:
         enabled: 1
         settings:
           CPU: x64
+          DontProcess: true
+          SDK: UWP
   userData: 
   assetBundleName: 
   assetBundleVariant: 

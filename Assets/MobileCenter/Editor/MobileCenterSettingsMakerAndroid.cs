@@ -5,11 +5,11 @@
 using System.Collections.Generic;
 using System.IO;
 using UnityEditor;
-using UnityEditor.Callbacks;
 
 public class MobileCenterSettingsMakerAndroid
 {
-    private static string MobileCenterResourcesPath = "Assets/Plugins/Android/mobile-center/res/values/mobile-center-settings.xml";
+    private static string MobileCenterResourcesFolderPath = "Assets/Plugins/Android/mobile-center/res/values/";
+    private static string MobileCenterResourcesPath = MobileCenterResourcesFolderPath + "mobile-center-settings.xml";
     private static string MobileCenterManifestPath = "Assets/Plugins/Android/mobile-center/AndroidManifest.xml";
     private static readonly string ManifestAppIdPlaceholder = "${mobile-center-app-id-placeholder}";
     private static readonly string AppSecretKey = "mobile_center_app_secret";
@@ -21,6 +21,14 @@ public class MobileCenterSettingsMakerAndroid
     private static readonly string UseDistributeKey = "mobile_center_use_distribute";
     private static readonly string UseCrashesKey = "mobile_center_use_crashes";
     private IDictionary<string, string> _resourceValues = new Dictionary<string, string>();
+
+    static MobileCenterSettingsMakerAndroid()
+    {
+        if (!Directory.Exists(MobileCenterResourcesFolderPath))
+        {
+            Directory.CreateDirectory(MobileCenterResourcesFolderPath);
+        }
+    }
 
     public void SetLogLevel(int logLevel)
     {
@@ -60,6 +68,10 @@ public class MobileCenterSettingsMakerAndroid
 
     public void CommitSettings()
     {
+        if (File.Exists(MobileCenterResourcesPath))
+        {
+            File.Delete(MobileCenterResourcesPath);
+        }
         XmlResourceHelper.WriteXmlResource(MobileCenterResourcesPath, _resourceValues);
     }
 
