@@ -1,3 +1,4 @@
+using System.Collections;
 using Microsoft.Azure.Mobile.Unity.Crashes;
 using UnityEngine;
 using UnityEngine.UI;
@@ -16,10 +17,15 @@ public class PuppetCrashes : MonoBehaviour
 
     public void SetEnabled(bool enabled)
     {
-        Crashes.SetEnabledAsync(enabled).ContinueWith(task => 
-        {
-            Enabled.isOn = enabled;
-        });
+        StartCoroutine(SetEnabledCoroutine(enabled));
+    }
+
+    private IEnumerator SetEnabledCoroutine(bool enabled)
+    {
+        yield return Crashes.SetEnabledAsync(enabled);
+        var isEnabled = Crashes.IsEnabledAsync();
+        yield return isEnabled;
+        Enabled.isOn = isEnabled.Result;
     }
 
     public void TestCrash()
