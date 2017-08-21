@@ -60,15 +60,10 @@ public class MobileCenterSettingsEditor : Editor
         EditorGUILayout.PropertyField(serializedObject.FindProperty("InitialLogLevel"));
         EditorGUILayout.PropertyField(serializedObject.FindProperty("CustomLogUrl"));
 
-        var applied = serializedObject.ApplyModifiedProperties();
-        if (applied)
-        {
-            AddStartupCodeToAndroid();
-        }
+        serializedObject.ApplyModifiedProperties();
     }
 
-    [PostProcessBuild]
-    [InitializeOnLoadMethod]
+    [PostProcessScene]
     static void AddStartupCodeToAndroid()
     {
         var settings = Settings;
