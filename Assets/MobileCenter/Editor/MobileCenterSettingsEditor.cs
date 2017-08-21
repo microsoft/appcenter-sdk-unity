@@ -8,8 +8,15 @@ using UnityEditor;
 [CustomEditor(typeof(MobileCenterSettings))]
 public class MobileCenterSettingsEditor : Editor
 {
-    public MobileCenterSettings Settings { get; set; }
     public const string SettingsPath = "Assets/MobileCenter/MobileCenterSettings.asset";
+    
+    public MobileCenterSettings Settings
+    { 
+        get
+        {
+            return AssetDatabase.LoadAssetAtPath<MobileCenterSettings>(SettingsPath);
+        }
+    }
 
     public override void OnInspectorGUI()
     {
@@ -61,22 +68,23 @@ public class MobileCenterSettingsEditor : Editor
 
     private void AddStartupCodeToAndroid()
     {
-        if (Settings == null)
+        var settings = Settings;
+        if (settings == null)
         {
-            Settings = AssetDatabase.LoadAssetAtPath<MobileCenterSettings>(SettingsPath);
+            return;
         }
         var settingsMaker = new MobileCenterSettingsMakerAndroid();
-        settingsMaker.SetAppSecret(Settings.AndroidAppSecret);
-        if (Settings.CustomLogUrl.UseCustomLogUrl)
+        settingsMaker.SetAppSecret(settings.AndroidAppSecret);
+        if (settings.CustomLogUrl.UseCustomLogUrl)
         {
-            settingsMaker.SetLogUrl(Settings.CustomLogUrl.LogUrl);
+            settingsMaker.SetLogUrl(settings.CustomLogUrl.LogUrl);
         }
-        if (Settings.UsePush)
+        if (settings.UsePush)
         {
             settingsMaker.StartPushClass();
         }
 
-        settingsMaker.SetLogLevel((int)Settings.InitialLogLevel);
+        settingsMaker.SetLogLevel((int)settings.InitialLogLevel);
         settingsMaker.CommitSettings();
     }
 
