@@ -18,10 +18,6 @@ public class MobileCenterPostBuild
     [PostProcessBuild]
     public static void OnPostprocessBuild(BuildTarget target, string pathToBuiltProject)
     {
-        // Load Mobile Center settings.
-        var settingsPath = MobileCenterSettingsEditor.SettingsPath;
-        var settings = AssetDatabase.LoadAssetAtPath<MobileCenterSettings>(settingsPath);
-
 #if UNITY_WSA_10_0 && !ENABLE_IL2CPP
         if (target == BuildTarget.WSAPlayer)
         {
@@ -36,10 +32,16 @@ public class MobileCenterPostBuild
 #if UNITY_IOS
         if (target == BuildTarget.iOS)
         {
+<<<<<<< HEAD
             // Load/Apply Mobile Center settings.
             var settingsPath = MobileCenterSettingsEditor.SettingsPath;
             var settings = AssetDatabase.LoadAssetAtPath<MobileCenterSettings>(settingsPath);
             ApplyIosSettings(settings, pathToBuiltProject);
+=======
+            // Load Mobile Center settings.
+            var settingsPath = MobileCenterSettingsEditor.SettingsPath;
+            var settings = AssetDatabase.LoadAssetAtPath<MobileCenterSettings>(settingsPath);
+>>>>>>> develop
 
             // Update project.
             var projectPath = PBXProject.GetPBXProjectPath(pathToBuiltProject);
@@ -68,9 +70,47 @@ public class MobileCenterPostBuild
 #endif
     }
 
-    #region UWP Methods
+#region UWP Methods
+    public static void ProcessUwpIl2CppDependencies()
+    {
+        var binaries = AssetDatabase.FindAssets("*", new [] { "Assets/Plugins/WSA/IL2CPP" });
+        foreach (var guid in binaries)
+        {
+            var assetPath = AssetDatabase.GUIDToAssetPath(guid);
+            var importer = AssetImporter.GetAtPath(assetPath) as PluginImporter;
+            if (importer != null)
+            {
+                importer.SetPlatformData(BuildTarget.WSAPlayer, "SDK", "UWP");
+                importer.SetPlatformData(BuildTarget.WSAPlayer, "ScriptingBackend", "Il2Cpp");
+                importer.SaveAndReimport();
+            }
+        }
+    }
+
+    public static void DontProcessUwpMobileCenterBinaries()
+    {
+        var directories = Directory.GetDirectories("Assets/Plugins/WSA", "*", SearchOption.AllDirectories);
+        var assemblies = AssetDatabase.FindAssets("Microsoft.Azure.Mobile", directories);
+        var watsonBinaries =  AssetDatabase.FindAssets("WatsonRegistrationUtility", directories);
+        var allBinaries = new string[assemblies.Length + watsonBinaries.Length];
+        assemblies.CopyTo(allBinaries, 0);
+        watsonBinaries.CopyTo(allBinaries, assemblies.Length);
+        foreach (var guid in allBinaries)
+        {
+            var assetPath = AssetDatabase.GUIDToAssetPath(guid);
+            var importer = AssetImporter.GetAtPath(assetPath) as PluginImporter;
+            if (importer != null)
+            {
+                importer.SetPlatformData(BuildTarget.WSAPlayer, "SDK", "UWP");
+                importer.SetPlatformData(BuildTarget.WSAPlayer, "DontProcess", "true");
+                importer.SaveAndReimport();
+            }
+        }
+    }
+
     private static void AddDependenciesToProjectJson(string projectJsonPath)
     {
+        Debug.Log("Add dependencies");
         if (!File.Exists(projectJsonPath))
         {
             Debug.LogWarning(projectJsonPath + " not found!");
@@ -78,6 +118,8 @@ public class MobileCenterPostBuild
         }
         var jsonString = File.ReadAllText(projectJsonPath);
         jsonString = AddDependencyToProjectJson(jsonString, "Microsoft.NETCore.UniversalWindowsPlatform", "5.2.2");
+        jsonString = AddDependencyToProjectJson(jsonString, "Newtonsoft.Json", "10.0.3");
+        jsonString = AddDependencyToProjectJson(jsonString, "sqlite-net-pcl", "1.3.1");
         File.WriteAllText(projectJsonPath, jsonString);
     }
 

@@ -2,7 +2,8 @@
 //
 // Licensed under the MIT license.
 
-#if UNITY_EDITOR
+#if (!UNITY_IOS && !UNITY_ANDROID && !UNITY_WSA_10_0) || UNITY_EDITOR
+
 using System.Collections.Generic;
 using System.Threading;
 

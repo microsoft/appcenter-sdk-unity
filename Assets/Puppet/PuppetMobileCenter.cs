@@ -1,7 +1,8 @@
-﻿// Copyright (c) Microsoft Corporation. All rights reserved.
+// Copyright (c) Microsoft Corporation. All rights reserved.
 //
 // Licensed under the MIT license.
 
+using System.Collections;
 using Microsoft.Azure.Mobile.Unity;
 using UnityEngine;
 using UnityEngine.UI;
@@ -29,10 +30,15 @@ public class PuppetMobileCenter : MonoBehaviour
 
     public void SetEnabled(bool enabled)
     {
-        MobileCenter.SetEnabledAsync(enabled).ContinueWith(task =>
-        {
-            Enabled.isOn = enabled;
-        });
+        StartCoroutine(SetEnabledCoroutine(enabled));
+    }
+
+    private IEnumerator SetEnabledCoroutine(bool enabled)
+    {
+        yield return MobileCenter.SetEnabledAsync(enabled);
+        var isEnabled = MobileCenter.IsEnabledAsync();
+        yield return isEnabled;
+        Enabled.isOn = isEnabled.Result;
     }
 
     public void SetLogLevel(int logLevel)
