@@ -504,7 +504,7 @@ PlayerSettings:
   scriptingDefineSymbols: {}
   platformArchitecture: {}
   scriptingBackend:
-    Android: 1
+    Android: 0
     iOS: 1
   incrementalIl2cppBuild: {}
   additionalIl2CppArgs: 

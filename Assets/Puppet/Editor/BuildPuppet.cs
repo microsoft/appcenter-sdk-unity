@@ -1,6 +1,10 @@
-﻿
+﻿// Copyright (c) Microsoft Corporation. All rights reserved.
+//
+// Licensed under the MIT license.
+
 using System.IO;
 using UnityEditor;
+using UnityEngine;
 
 public class BuildPuppet
 {
@@ -57,12 +61,17 @@ public class BuildPuppet
 
     private static void CreateGoogleServicesJsonIfNotPresent()
     {
-        if (File.Exists("Assets/google-services.json"))
+        var actualFile =  "Assets/google-services.json";
+        if (File.Exists(actualFile))
         {
             return;
         }
-        File.Move("Assets/google-services-placeholder.json", "Assets/google-services.json");
-        var importer = AssetImporter.GetAtPath("Assets/google-services.json");
-        importer.SaveAndReimport();
+        var placeholderFile =  "Assets/google-services-placeholder.json";
+        if (!File.Exists(placeholderFile))
+        {
+            Debug.LogError("Could not find google services placeholder.");
+        }
+        File.Copy(placeholderFile, actualFile);
+        AssetDatabase.ImportAsset(actualFile, ImportAssetOptions.Default);
     }
 }
