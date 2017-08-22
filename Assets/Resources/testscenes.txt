@@ -1,0 +1,2 @@
+D:\A\mobile-center-sdk-unity\Assets\UnityTestTools\Examples\IntegrationTestsFrameworkExamples\ExampleIntegrationTests.unity
+D:\A\mobile-center-sdk-unity\Assets\UnityTestTools\Examples\IntegrationTestsFrameworkExamples\AngryBotsTests\ExampleABTests.unity

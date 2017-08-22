@@ -22,7 +22,7 @@ namespace Microsoft.Azure.Mobile.Unity.Distribute
 
         public static void PostInitialize()
         {
-            DistributeInternal.PostInitialize();
+            //DistributeInternal.PostInitialize();
         }
         
         public static RawType GetNativeType()
