@@ -20,9 +20,11 @@ namespace Microsoft.Azure.Mobile.Unity
     {
         public static void Configure(string appSecret)
         {
+#if (!UNITY_ANDROID && !UNITY_IOS) || UNITY_EDITOR
             SetWrapperSdk();
             appSecret = GetSecretForPlatform(appSecret);
             MobileCenterInternal.Configure(appSecret);
+#endif
         }
 
         public static LogLevel LogLevel
@@ -82,10 +84,12 @@ namespace Microsoft.Azure.Mobile.Unity
         /// <param name="services">List of services to use.</param>
         public static void Start(params Type[] services)
         {
+            InitializeServices(services);
+#if (!UNITY_ANDROID && !UNITY_IOS) || UNITY_EDITOR
             SetWrapperSdk();
             var nativeServiceTypes = ServicesToNativeTypes(services);
-            InitializeServices(services);
             MobileCenterInternal.StartServices(nativeServiceTypes, services.Length);
+#endif
             PostInitializeServices(services);
         }
 
@@ -97,11 +101,13 @@ namespace Microsoft.Azure.Mobile.Unity
         /// <param name="services">List of services to use.</param>
         public static void Start(string appSecret, params Type[] services)
         {
-            SetWrapperSdk();
-            var nativeServiceTypes = ServicesToNativeTypes(services);
             InitializeServices(services);
+#if (!UNITY_ANDROID && !UNITY_IOS) || UNITY_EDITOR
+            SetWrapperSdk();
             appSecret = GetSecretForPlatform(appSecret);
+            var nativeServiceTypes = ServicesToNativeTypes(services);
             MobileCenterInternal.Start(appSecret, nativeServiceTypes, services.Length);
+#endif
             PostInitializeServices(services);
         }
 

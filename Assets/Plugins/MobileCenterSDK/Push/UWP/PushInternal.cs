@@ -26,6 +26,10 @@ namespace Microsoft.Azure.Mobile.Unity.Push.Internal
             };
         }
 
+        public static void PostInitialize()
+        {
+        }
+
         public static Type GetNativeType()
         {
             return typeof(UWPPush);

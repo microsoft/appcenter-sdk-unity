@@ -35,19 +35,12 @@ public class MobileCenterBehavior : MonoBehaviour
 
     private void InitializeMobileCenter()
     {
-        foreach (var serviceType in settings.Services)
+        MobileCenter.LogLevel = settings.InitialLogLevel;
+        if (settings.CustomLogUrl.UseCustomLogUrl)
         {
-            var method = serviceType.GetMethod("Initialize");
-            if (method != null)
-            {
-                method.Invoke(null, null);
-            }
-            method = serviceType.GetMethod("PostInitialize");
-            if (method != null)
-            {
-                method.Invoke(null, null);
-            }
+            MobileCenter.SetLogUrl(settings.CustomLogUrl.LogUrl);
         }
+        MobileCenter.Start(settings.AppSecret, settings.Services);
     }
 }
 
