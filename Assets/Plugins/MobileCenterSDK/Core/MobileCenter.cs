@@ -6,6 +6,7 @@ using System;
 using System.Collections;
 using System.Reflection;
 using Microsoft.Azure.Mobile.Unity.Internal;
+using Microsoft.Azure.Mobile.Unity.Utility;
 using UnityEngine;
 
 namespace Microsoft.Azure.Mobile.Unity
@@ -82,11 +83,11 @@ namespace Microsoft.Azure.Mobile.Unity
         /// <param name="services">List of services to use.</param>
         public static void Start(params Type[] services)
         {
-            InitializeServices(services);
+            MobileCenterServiceHelper.InitializeServices(services);
             SetWrapperSdk();
             var nativeServiceTypes = ServicesToNativeTypes(services);
             MobileCenterInternal.StartServices(nativeServiceTypes, services.Length);
-            PostInitializeServices(services);
+            MobileCenterServiceHelper.PostInitializeServices(services);
         }
 
         /// <summary>
@@ -97,12 +98,12 @@ namespace Microsoft.Azure.Mobile.Unity
         /// <param name="services">List of services to use.</param>
         public static void Start(string appSecret, params Type[] services)
         {
-            InitializeServices(services);
+            MobileCenterServiceHelper.InitializeServices(services);
             SetWrapperSdk();
             appSecret = GetSecretForPlatform(appSecret);
             var nativeServiceTypes = ServicesToNativeTypes(services);
             MobileCenterInternal.Start(appSecret, nativeServiceTypes, services.Length);
-            PostInitializeServices(services);
+            MobileCenterServiceHelper.PostInitializeServices(services);
         }
 
 #if UNITY_IOS
@@ -159,30 +160,6 @@ namespace Microsoft.Azure.Mobile.Unity
             return null;
         }
 #endif
-
-        internal static void InitializeServices(params Type[] services)
-        {
-            foreach (var serviceType in services)
-            {
-                var method = serviceType.GetMethod("Initialize");
-                if (method != null)
-                {
-                    method.Invoke(null, null);
-                }
-            }
-        }
-
-        internal static void PostInitializeServices(params Type[] services)
-        {
-            foreach (var serviceType in services)
-            {
-                var method = serviceType.GetMethod("PostInitialize");
-                if (method != null)
-                {
-                    method.Invoke(null, null);
-                }
-            }
-        }
 
         /// <summary>
         /// Set the custom properties.

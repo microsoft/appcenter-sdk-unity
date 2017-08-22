@@ -4,6 +4,7 @@
 
 using System.Reflection;
 using Microsoft.Azure.Mobile.Unity;
+using Microsoft.Azure.Mobile.Unity.Utility;
 using UnityEngine;
 
 [HelpURL("https://docs.microsoft.com/en-us/mobile-center/sdk/")]
@@ -31,44 +32,20 @@ public class MobileCenterBehavior : MonoBehaviour
             Debug.LogError("Mobile Center isn't configured!");
             return;
         }
-        MobileCenter.InitializeServices(settings.Services);
+        MobileCenterServiceHelper.InitializeServices(settings.Services);
 #if UNITY_WSA_10_0
         InitializeMobileCenter();
 #endif
-        PostInitializeServices();
+        MobileCenterServiceHelper.InitializeServices(settings.Services);
     }
 
     private void InitializeMobileCenter()
     {
         MobileCenter.LogLevel = settings.InitialLogLevel;
-        MobileCenter.SetLogUrl(settings.CustomLogUrl.LogUrl);
+        if (settings.CustomLogUrl.UseCustomLogUrl)
+        {
+            MobileCenter.SetLogUrl(settings.CustomLogUrl.LogUrl);
+        }
         MobileCenter.Start(settings.AppSecret, settings.Services);
-    }
-
-    private void InitializeServices()
-    {
-        foreach (var serviceType in settings.Services)
-        {
-            if (settings.CustomLogUrl.UseCustomLogUrl)
-            {
-                var method = serviceType.GetMethod("Initialize");
-                if (method != null)
-                {
-                    method.Invoke(null, null);
-                }
-            }
-        }
-    }
-
-    private void PostInitializeServices()
-    {
-        foreach (var serviceType in settings.Services)
-        {
-            var method = serviceType.GetMethod("PostInitialize");
-            if (method != null)
-            {
-                method.Invoke(null, null);
-            }
-        }
     }
 }
