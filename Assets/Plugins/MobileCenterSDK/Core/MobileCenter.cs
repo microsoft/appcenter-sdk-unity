@@ -82,9 +82,9 @@ namespace Microsoft.Azure.Mobile.Unity
         /// <param name="services">List of services to use.</param>
         public static void Start(params Type[] services)
         {
+            InitializeServices(services);
             SetWrapperSdk();
             var nativeServiceTypes = ServicesToNativeTypes(services);
-            InitializeServices(services);
             MobileCenterInternal.StartServices(nativeServiceTypes, services.Length);
             PostInitializeServices(services);
         }
@@ -97,10 +97,10 @@ namespace Microsoft.Azure.Mobile.Unity
         /// <param name="services">List of services to use.</param>
         public static void Start(string appSecret, params Type[] services)
         {
-            SetWrapperSdk();
-            var nativeServiceTypes = ServicesToNativeTypes(services);
             InitializeServices(services);
+            SetWrapperSdk();
             appSecret = GetSecretForPlatform(appSecret);
+            var nativeServiceTypes = ServicesToNativeTypes(services);
             MobileCenterInternal.Start(appSecret, nativeServiceTypes, services.Length);
             PostInitializeServices(services);
         }

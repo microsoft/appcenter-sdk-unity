@@ -4,15 +4,20 @@
 
 #if UNITY_WSA_10_0 && !UNITY_EDITOR
 using System;
+using System.Collections.Generic;
 using Windows.ApplicationModel.Activation;
 
 namespace Microsoft.Azure.Mobile.Unity.Push.Internal
 {
     using UWPPush = Microsoft.Azure.Mobile.Push.Push;
+    using WSAApplication = UnityEngine.WSA.Application;
 
     class PushInternal
     {
-        public static void Initialize() 
+        public static List<PushNotificationReceivedEventArgs> _unprocessedPushNotifications = new List<PushNotificationReceivedEventArgs>();
+        public static readonly object _lockObject = new object();
+
+        public static void Initialize()
         {
             UWPPush.PushNotificationReceived += (sender, e) =>
             {
@@ -22,8 +27,13 @@ namespace Microsoft.Azure.Mobile.Unity.Push.Internal
                     Title = e.Title,
                     CustomData = e.CustomData
                 };
-                Push.NotifyPushNotificationReceived(eventArgs);
+                HandlePushNotification(eventArgs);
             };
+        }
+
+        public static void PostInitialize()
+        {
+            UWPPush.CheckLaunchedFromNotification(WSAApplication.arguments);
         }
 
         public static Type GetNativeType()
@@ -46,13 +56,50 @@ namespace Microsoft.Azure.Mobile.Unity.Push.Internal
             UWPPush.CheckLaunchedFromNotification(e);
         }
 
+        public static void HandlePushNotification(PushNotificationReceivedEventArgs eventArgs)
+        {
+            lock (_lockObject)
+            {
+                if (_unprocessedPushNotifications != null)
+                {
+                    _unprocessedPushNotifications.Add(eventArgs);
+
+                    // Don't want to invoke push callback inside lock.
+                    eventArgs = null;
+                }
+            }
+
+            // If eventArgs isn't null, it must not have been added to queue.
+            if (eventArgs != null)
+            {
+                Push.NotifyPushNotificationReceived(eventArgs);
+            }
+        }
+
         public static void EnableFirebaseAnalytics()
         {
         }
 
         internal static void ReplayUnprocessedPushNotifications()
         {
-            //TODO implement me
+            List<PushNotificationReceivedEventArgs> unprocessedPushNotificationsCopy = null;
+            lock (_lockObject)
+            {
+                if (_unprocessedPushNotifications != null)
+                {
+                    // Don't want to invoke push callback inside lock, so make
+                    // a copy.
+                    unprocessedPushNotificationsCopy = new List<PushNotificationReceivedEventArgs>(_unprocessedPushNotifications);
+                    _unprocessedPushNotifications = null;
+                }
+            }
+            if (unprocessedPushNotificationsCopy != null)
+            {
+                foreach (var notification in unprocessedPushNotificationsCopy)
+                {
+                    Push.NotifyPushNotificationReceived(notification);
+                }
+            }
         }
     }
 }
