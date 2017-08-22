@@ -9,6 +9,7 @@ using Windows.ApplicationModel.Activation;
 namespace Microsoft.Azure.Mobile.Unity.Push.Internal
 {
     using UWPPush = Microsoft.Azure.Mobile.Push.Push;
+    using WSAApplcation = UnityEngine.WSA.Application;
 
     class PushInternal
     {
@@ -28,6 +29,7 @@ namespace Microsoft.Azure.Mobile.Unity.Push.Internal
 
         public static void PostInitialize()
         {
+            UWPPush.CheckLaunchedFromNotification(WSAApplcation.arguments);
         }
 
         public static Type GetNativeType()
