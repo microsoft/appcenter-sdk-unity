@@ -27,9 +27,9 @@
 
 @implementation MobileCenterStarter
 
-static NSString *kMSAppSecret = @"mobile-center-app-secret";
-static NSString *kMSCustomLogUrl = @"custom-log-url";
-static int kMSLogLevel = 0/*LOG_LEVEL*/;
+static NSString *const kMSAppSecret = @"mobile-center-app-secret";
+static NSString *const kMSCustomLogUrl = @"custom-log-url";
+static const int kMSLogLevel = 0/*LOG_LEVEL*/;
 
 + (void)load {
   [[NSNotificationCenter defaultCenter] addObserver:self

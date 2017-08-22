@@ -17,7 +17,7 @@ public class MobileCenterSettingsMakerIos
     private static string LoaderPathSuffix = "/Libraries/Plugins/iOS/Core/MobileCenterStarter.m";
     private static string AppSecretSearchText = "mobile-center-app-secret";
     private static string LogUrlSearchText = "custom-log-url";
-    private static string LogLevelSearchText = "/*LOG_LEVEL*/";
+    private static string LogLevelSearchText = "0/*LOG_LEVEL*/";
     private static string LogUrlToken = "MOBILE_CENTER_UNITY_USE_CUSTOM_LOG_URL";
     private static string UsePushToken = "MOBILE_CENTER_UNITY_USE_PUSH";
     private static string UseAnalyticsToken = "MOBILE_CENTER_UNITY_USE_ANALYTICS";
