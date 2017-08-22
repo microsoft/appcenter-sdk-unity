@@ -5,6 +5,7 @@
 #addin nuget:?package=Cake.Git
 #addin nuget:?package=NuGet.Core
 
+using System;
 using System.Net;
 using System.Collections.Generic;
 using System.Runtime.Versioning;
@@ -351,6 +352,25 @@ Task("Package").Does(()=>
 // in "UnityPackageSpecs" folder (and downloads binaries)
 Task("CreatePackages").IsDependentOn("Externals").IsDependentOn("Package");
 
+// Builds the puppet applications and throws an exception on failure.
+Task("TestBuildPuppetApps")
+    .IsDependentOn("Externals")
+    .Does(()=>
+{
+    if (IsRunningOnUnix())
+    {
+        TestBuildPuppets("BuildPuppet.BuildPuppetSceneAndroidMono",
+                        "BuildPuppet.BuildPuppetSceneAndroidIl2CPP",
+                        "BuildPuppet.BuildPuppetSceneIosMono",
+                        "BuildPuppet.BuildPuppetSceneIosIl2CPP");
+    }
+    else
+    {
+        TestBuildPuppets("BuildPuppet.BuildPuppetSceneWsaNet",
+                        "BuildPuppet.BuildPuppetSceneWsaIl2CPP");
+    }
+}).OnError(HandleError);
+
 // Default Task.
 Task("Default").IsDependentOn("Externals");
 
@@ -363,8 +383,10 @@ Task("RemoveTemporaries").Does(()=>
     {
         DeleteDirectory(directory, true);
     }
+    DeleteFiles("./PuppetBuilds/*");
     DeleteFiles("./nuget/*.temp.nuspec");
 });
+
 
 // Clean up files/directories.
 Task("clean")
@@ -481,12 +503,6 @@ void ExtractNuGetPackages(IEnumerable<IPackage> packages, string dest, Framework
     }
 }
 
-static readonly ISet<string> IgnoreNuGetDependencies = new HashSet<string>
-{
-    "Microsoft.NETCore.UniversalWindowsPlatform",
-    "NETStandard.Library"
-};
-
 IList<IPackage> GetNuGetDependencies(IPackageRepository repository, FrameworkName frameworkName, IPackage package)
 {
     var dependencies = new List<IPackage>();
@@ -496,6 +512,12 @@ IList<IPackage> GetNuGetDependencies(IPackageRepository repository, FrameworkNam
 
 void GetNuGetDependencies(IList<IPackage> dependencies, IPackageRepository repository, FrameworkName frameworkName, IPackage package)
 {
+    // Declaring this outside the method causes a parse error on Cake for Mac.
+    string[] IgnoreNuGetDependencies = {
+        "Microsoft.NETCore.UniversalWindowsPlatform",
+        "NETStandard.Library"
+    };
+
     dependencies.Add(package);
     foreach (var dependency in package.GetCompatiblePackageDependencies(frameworkName))
     {
@@ -517,6 +539,23 @@ static int ExecuteUnityCommand(string extraArgs, ICakeContext context)
     var exec = context.EnvironmentVariable("UNITY_PATH");
     var args = "-batchmode -quit -projectPath " + projectDir + " " + extraArgs;
     return context.StartProcess(exec, args);
+}
+
+void TestBuildPuppets(params string[] buildMethodNames)
+{
+    foreach (var name in buildMethodNames)
+    {
+        Information("Executing method " + name + ", this could take a while...");
+        var command = "-executeMethod " + name;
+        var result = ExecuteUnityCommand(command, Context);
+        if (result != 0)
+        {
+            throw new Exception("Failed to execute command " + name + ".");
+        }
+        Information("Build successful.");
+    }
+    Information("Puppet application successfully built for iOS and Android.");
+    DeleteFiles("./PuppetBuilds/*");
 }
 
 RunTarget(Target);
