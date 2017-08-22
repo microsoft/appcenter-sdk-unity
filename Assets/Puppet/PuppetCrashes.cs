@@ -10,7 +10,7 @@ using UnityEngine.UI;
 public class PuppetCrashes : MonoBehaviour
 {
     public Toggle Enabled;
-    
+
     void OnEnable()
     {
         Crashes.IsEnabledAsync().ContinueWith(task =>

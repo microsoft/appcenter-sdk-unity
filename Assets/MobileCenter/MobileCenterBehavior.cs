@@ -1,7 +1,8 @@
-﻿// Copyright (c) Microsoft Corporation. All rights reserved.
+// Copyright (c) Microsoft Corporation. All rights reserved.
 //
 // Licensed under the MIT license.
 
+using System.Reflection;
 using Microsoft.Azure.Mobile.Unity;
 using UnityEngine;
 
@@ -30,10 +31,11 @@ public class MobileCenterBehavior : MonoBehaviour
             Debug.LogError("Mobile Center isn't configured!");
             return;
         }
-        InitializeMobileCenter();
+        InitializeServices();
+        PostInitializeServices();
     }
 
-    private void InitializeMobileCenter()
+    private void InitializeServices()
     {
         foreach (var serviceType in settings.Services)
         {
@@ -42,7 +44,14 @@ public class MobileCenterBehavior : MonoBehaviour
             {
                 method.Invoke(null, null);
             }
-            method = serviceType.GetMethod("PostInitialize");
+        }
+    }
+
+    private void PostInitializeServices()
+    {
+        foreach (var serviceType in settings.Services)
+        {
+            var method = serviceType.GetMethod("PostInitialize");
             if (method != null)
             {
                 method.Invoke(null, null);
@@ -50,4 +59,3 @@ public class MobileCenterBehavior : MonoBehaviour
         }
     }
 }
-
