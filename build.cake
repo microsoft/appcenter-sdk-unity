@@ -277,7 +277,7 @@ Task("BuildAndroidContentProvider").Does(()=>
 
     // Compile the library
     var gradleWrapper = System.IO.Path.Combine(appName, "gradlew");
-    if (!IsRunningOnUnix())
+    if (IsRunningOnWindows())
     {
         gradleWrapper += ".bat";
     }
