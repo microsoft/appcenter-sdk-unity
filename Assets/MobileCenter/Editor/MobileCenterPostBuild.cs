@@ -32,16 +32,10 @@ public class MobileCenterPostBuild
 #if UNITY_IOS
         if (target == BuildTarget.iOS)
         {
-<<<<<<< HEAD
             // Load/Apply Mobile Center settings.
             var settingsPath = MobileCenterSettingsEditor.SettingsPath;
             var settings = AssetDatabase.LoadAssetAtPath<MobileCenterSettings>(settingsPath);
             ApplyIosSettings(settings, pathToBuiltProject);
-=======
-            // Load Mobile Center settings.
-            var settingsPath = MobileCenterSettingsEditor.SettingsPath;
-            var settings = AssetDatabase.LoadAssetAtPath<MobileCenterSettings>(settingsPath);
->>>>>>> develop
 
             // Update project.
             var projectPath = PBXProject.GetPBXProjectPath(pathToBuiltProject);
