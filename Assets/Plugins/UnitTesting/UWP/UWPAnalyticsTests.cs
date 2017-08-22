@@ -15,18 +15,10 @@ namespace Microsoft.Azure.Mobile.Unity.Analytics
 
         [Test]
         [UnityPlatform(include = new[] {RuntimePlatform.WSAPlayerARM, RuntimePlatform.WSAPlayerX64, RuntimePlatform.WSAPlayerX86})]
-        public void AnalyticsEnabledTests() {
-            Debug.Log(Application.platform);
+        public void UWPAnalyticsEnabledTests() {
             Analytics.IsEnabledAsync().ContinueWith(task => {
                 Assert.False(task.Result);
             });
         }
-
-        [Test]
-        [UnityPlatform(include = new[] { RuntimePlatform.WSAPlayerARM, RuntimePlatform.WSAPlayerX64, RuntimePlatform.WSAPlayerX86 })]
-        public void FailingTest() {
-            Assert.False(true);
-        }
-
     }
 }
