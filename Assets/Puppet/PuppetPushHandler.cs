@@ -11,8 +11,7 @@ public class PuppetPushHandler : MonoBehaviour
 {
     private static PushNotificationReceivedEventArgs _pushEventArgs = null;
     private static object _pushLock = new object();
-    bool setHandler = false;
-
+    
     void Awake()
     {
         Push.PushNotificationReceived += (sender, e) =>
