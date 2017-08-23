@@ -1,6 +1,6 @@
 fileFormatVersion: 2
-guid: 47e9c161317f5ed43b52d8153eacfc98
-timeCreated: 1503437672
+guid: 0401f440dd52d7840b47e6b28200f229
+timeCreated: 1503520489
 licenseType: Pro
 PluginImporter:
   serializedVersion: 2
@@ -26,15 +26,6 @@ PluginImporter:
           Exclude Win: 1
           Exclude Win64: 1
           Exclude WindowsStoreApps: 0
-          Exclude iOS: 1
-    data:
-      first:
-        '': Editor
-      second:
-        enabled: 0
-        settings:
-          CPU: AnyCPU
-          OS: AnyOS
     data:
       first:
         Android: Android
@@ -54,7 +45,9 @@ PluginImporter:
       second:
         enabled: 0
         settings:
+          CPU: AnyCPU
           DefaultValueInitialized: true
+          OS: AnyOS
     data:
       first:
         Facebook: Win
@@ -85,13 +78,6 @@ PluginImporter:
           CPU: x86_64
     data:
       first:
-        Standalone: LinuxUniversal
-      second:
-        enabled: 0
-        settings:
-          CPU: None
-    data:
-      first:
         Standalone: OSXIntel
       second:
         enabled: 0
@@ -104,13 +90,6 @@ PluginImporter:
         enabled: 0
         settings:
           CPU: AnyCPU
-    data:
-      first:
-        Standalone: OSXUniversal
-      second:
-        enabled: 0
-        settings:
-          CPU: None
     data:
       first:
         Standalone: Win
@@ -136,14 +115,6 @@ PluginImporter:
           PlaceholderPath: 
           SDK: UWP
           ScriptingBackend: AnyScriptingBackend
-    data:
-      first:
-        iPhone: iOS
-      second:
-        enabled: 0
-        settings:
-          CompileFlags: 
-          FrameworkDependencies: 
   userData: 
   assetBundleName: 
   assetBundleVariant: 

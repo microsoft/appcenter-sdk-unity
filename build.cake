@@ -35,7 +35,6 @@ var IosUrl = SdkStorageUrl + "MobileCenter-SDK-iOS-" + IosSdkVersion + ".zip";
 var MobileCenterModules = new [] {
     new MobileCenterModule("mobile-center-release.aar", "MobileCenter.framework", "Microsoft.Azure.Mobile", "Core"),
     new MobileCenterModule("mobile-center-analytics-release.aar", "MobileCenterAnalytics.framework", "Microsoft.Azure.Mobile.Analytics", "Analytics"),
-    new MobileCenterModule("mobile-center-crashes-release.aar", "MobileCenterCrashes.framework", "Microsoft.Azure.Mobile.Crashes", "Crashes", true),
     new MobileCenterModule("mobile-center-distribute-release.aar", "MobileCenterDistribute.framework", "Microsoft.Azure.Mobile.Distribute", "Distribute"),
     new MobileCenterModule("mobile-center-push-release.aar", "MobileCenterPush.framework", "Microsoft.Azure.Mobile.Push", "Push")
 };
@@ -263,7 +262,7 @@ Task("Externals-Uwp")
         var files = GetFiles(tempContentPath + contentPathSuffix + "*");
         MoveFiles(files, destination);
     }
-    ExecuteUnityCommand("-executeMethod MobileCenterPostBuild.DontProcessUwpMobileCenterBinaries", Context);
+    ExecuteUnityCommand("-executeMethod MobileCenterPostBuild.ProcessUwpMobileCenterBinaries", Context);
 }).OnError(HandleError);
 
 // Downloading UWP IL2CPP dependencies.
@@ -366,11 +365,22 @@ Task("TestBuildPuppetApps")
     }
     else
     {
-        TestBuildPuppets("BuildPuppet.BuildPuppetSceneWsaNetXaml",
-                        "BuildPuppet.BuildPuppetSceneWsaIl2CPPXaml",
-                        "BuildPuppet.BuildPuppetSceneWsaNetD3D",
-                        "BuildPuppet.BuildPuppetSceneWsaIl2CPPD3D");
+        TestBuildPuppets(//"BuildPuppet.BuildPuppetSceneWsaNetXaml",
+                        //"BuildPuppet.BuildPuppetSceneWsaIl2CPPXaml",
+                        "BuildPuppet.BuildPuppetSceneWsaNetD3D");
+                        //"BuildPuppet.BuildPuppetSceneWsaIl2CPPD3D");
+
+        // Verify that the generated solutions build properly
+        var solutionFilePaths = GetFiles("PuppetBuilds/**/*.sln");
+        foreach (var solutionFilePath in solutionFilePaths)
+        {
+            Information("Attempting to build '" + solutionFilePath.ToString() + "'...");
+            MSBuild(solutionFilePath.ToString(), c => c.Configuration = "Release");
+            Information("Successfully built '" + solutionFilePath.ToString() + "'");
+        }
     }
+
+    DeleteFiles("./PuppetBuilds/*");
 }).OnError(HandleError);
 
 // Default Task.
@@ -552,11 +562,10 @@ void TestBuildPuppets(params string[] buildMethodNames)
         var result = ExecuteUnityCommand(command, Context);
         if (result != 0)
         {
-            throw new Exception("Failed to execute command " + name + ".");
+            throw new Exception("Failed to execute method " + name + ".");
         }
         Information("Build successful.");
     }
-    DeleteFiles("./PuppetBuilds/*");
 }
 
 RunTarget(Target);

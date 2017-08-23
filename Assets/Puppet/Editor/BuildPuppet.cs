@@ -41,6 +41,7 @@ public class BuildPuppet
     public static void BuildPuppetSceneWsaNetXaml()
     {
         EditorUserBuildSettings.wsaUWPBuildType = WSAUWPBuildType.XAML;
+        PlayerSettings.SetApiCompatibilityLevel(BuildTargetGroup.WSA, ApiCompatibilityLevel.NET_4_6);
         PlayerSettings.SetScriptingBackend(BuildTargetGroup.WSA, ScriptingImplementation.WinRTDotNET);
         BuildPuppetScene(BuildTarget.WSAPlayer, "WSANetBuildXaml");
     }
@@ -48,6 +49,7 @@ public class BuildPuppet
     public static void BuildPuppetSceneWsaIl2CPPXaml()
     {
         EditorUserBuildSettings.wsaUWPBuildType = WSAUWPBuildType.XAML;
+        PlayerSettings.SetApiCompatibilityLevel(BuildTargetGroup.WSA, ApiCompatibilityLevel.NET_4_6);
         PlayerSettings.SetScriptingBackend(BuildTargetGroup.WSA, ScriptingImplementation.IL2CPP);
         BuildPuppetScene(BuildTarget.WSAPlayer, "WSAIL2CPPBuildXaml");
     }
@@ -55,6 +57,7 @@ public class BuildPuppet
     public static void BuildPuppetSceneWsaNetD3D()
     {
         EditorUserBuildSettings.wsaUWPBuildType = WSAUWPBuildType.D3D;
+        PlayerSettings.SetApiCompatibilityLevel(BuildTargetGroup.WSA, ApiCompatibilityLevel.NET_4_6);
         PlayerSettings.SetScriptingBackend(BuildTargetGroup.WSA, ScriptingImplementation.WinRTDotNET);
         BuildPuppetScene(BuildTarget.WSAPlayer, "WSANetBuildD3D");
     }
@@ -62,6 +65,7 @@ public class BuildPuppet
     public static void BuildPuppetSceneWsaIl2CPPD3D()
     {
         EditorUserBuildSettings.wsaUWPBuildType = WSAUWPBuildType.D3D;
+        PlayerSettings.SetApiCompatibilityLevel(BuildTargetGroup.WSA, ApiCompatibilityLevel.NET_4_6);
         PlayerSettings.SetScriptingBackend(BuildTargetGroup.WSA, ScriptingImplementation.IL2CPP);
         BuildPuppetScene(BuildTarget.WSAPlayer, "WSAIL2CPPBuildD3D");
     }

@@ -514,7 +514,7 @@ PlayerSettings:
   additionalIl2CppArgs: 
   scriptingRuntimeVersion: 0
   apiCompatibilityLevelPerPlatform:
-    Metro: 1
+    Metro: 3
     iOS: 1
   m_RenderingPath: 1
   m_MobileRenderingPath: 1
@@ -524,7 +524,7 @@ PlayerSettings:
   metroCertificatePassword: 
   metroCertificateSubject: DefaultCompany
   metroCertificateIssuer: DefaultCompany
-  metroCertificateNotAfter: 00a7b6c1983ad401
+  metroCertificateNotAfter: 808bb75c423bd401
   metroApplicationDescription: TestPackage
   wsaImages: {}
   metroTileShortName: TestPackage
