@@ -75,6 +75,13 @@ public class MobileCenterPostBuild
 #region UWP Methods
     public static void ProcessUwpIl2CppDependencies()
     {
+        // Move Newtonsoft.Json to WSA/IL2CPP folder.
+        AssetDatabase.MoveAsset(
+            "Assets/UnityPackages/JsonNet/Newtonsoft.Json.dll",
+            "Assets/Plugins/WSA/IL2CPP/Newtonsoft.Json.dll");
+        AssetDatabase.DeleteAsset("Assets/UnityPackages");
+
+        // Mark all binaries as only for IL2CPP.
         var binaries = AssetDatabase.FindAssets("*", new [] { "Assets/Plugins/WSA/IL2CPP" });
         foreach (var guid in binaries)
         {

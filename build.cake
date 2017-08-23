@@ -44,15 +44,17 @@ var JarResolverPackageName =  "play-services-resolver-" + ExternalUnityPackage.V
 var JarResolverVersion = "1.2.35.0";
 var JarResolverUrl = SdkStorageUrl + ExternalUnityPackage.NamePlaceholder;
 
+var NewtonsoftJsonPackageName = "JsonNet." + ExternalUnityPackage.VersionPlaceholder + ".unitypackage";
+var NewtonsoftJsonVersion = "9.0.1";
+var NewtonsoftJsonUrl = "https://github.com/SaladLab/Json.Net.Unity3D/releases/download/v" + ExternalUnityPackage.VersionPlaceholder + "/" + ExternalUnityPackage.NamePlaceholder;
+
 var ExternalUnityPackages = new [] {
-    new ExternalUnityPackage(JarResolverPackageName, JarResolverVersion, JarResolverUrl)
+    new ExternalUnityPackage(JarResolverPackageName, JarResolverVersion, JarResolverUrl),
+    new ExternalUnityPackage(NewtonsoftJsonPackageName, NewtonsoftJsonVersion, NewtonsoftJsonUrl)
 };
 
 // UWP IL2CPP dependencies.
 var UwpIL2CPPDependencies = new [] {
-
-    // Force use assembly for .NET 2.0 to avoid IL2CPP convert problems.
-    new NugetDependency("Newtonsoft.Json", "10.0.3", ".NETFramework, Version=v2.0"),
     new NugetDependency("sqlite-net-pcl", "1.3.1", "UAP, Version=v10.0"),
 
     // Force use this version to avoid types conflicts.
