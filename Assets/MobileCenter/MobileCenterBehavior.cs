@@ -2,7 +2,6 @@
 //
 // Licensed under the MIT license.
 
-using System.Reflection;
 using Microsoft.Azure.Mobile.Unity;
 using Microsoft.Azure.Mobile.Unity.Utility;
 using UnityEngine;
@@ -36,7 +35,7 @@ public class MobileCenterBehavior : MonoBehaviour
 #if UNITY_WSA_10_0
         InitializeMobileCenter();
 #endif
-        MobileCenterServiceHelper.InitializeServices(settings.Services);
+        MobileCenterServiceHelper.PostInitializeServices(settings.Services);
     }
 
     private void InitializeMobileCenter()

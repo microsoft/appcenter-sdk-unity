@@ -2,16 +2,14 @@
 //
 // Licensed under the MIT license.
 
-using UnityEngine;
-using System.Collections;
-
 using Microsoft.Azure.Mobile.Unity.Push;
+using UnityEngine;
 
 public class PuppetPushHandler : MonoBehaviour
 {
     private static PushNotificationReceivedEventArgs _pushEventArgs = null;
     private static object _pushLock = new object();
-    
+
     void Awake()
     {
         Push.PushNotificationReceived += (sender, e) =>
