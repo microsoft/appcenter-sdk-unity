@@ -89,22 +89,18 @@ public class MobileCenterPostBuild
         }
     }
 
-    public static void DontProcessUwpMobileCenterBinaries()
+    public static void ProcessUwpMobileCenterBinaries()
     {
         var directories = Directory.GetDirectories("Assets/Plugins/WSA", "*", SearchOption.AllDirectories);
         var assemblies = AssetDatabase.FindAssets("Microsoft.Azure.Mobile", directories);
-        var watsonBinaries =  AssetDatabase.FindAssets("WatsonRegistrationUtility", directories);
-        var allBinaries = new string[assemblies.Length + watsonBinaries.Length];
-        assemblies.CopyTo(allBinaries, 0);
-        watsonBinaries.CopyTo(allBinaries, assemblies.Length);
-        foreach (var guid in allBinaries)
+        foreach (var guid in assemblies)
         {
             var assetPath = AssetDatabase.GUIDToAssetPath(guid);
             var importer = AssetImporter.GetAtPath(assetPath) as PluginImporter;
             if (importer != null)
             {
-                importer.SetPlatformData(BuildTarget.WSAPlayer, "SDK", "UWP");
                 importer.SetPlatformData(BuildTarget.WSAPlayer, "DontProcess", "true");
+                importer.SetPlatformData(BuildTarget.WSAPlayer, "SDK", "UWP");
                 importer.SaveAndReimport();
             }
         }

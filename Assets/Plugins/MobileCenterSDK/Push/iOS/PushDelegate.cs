@@ -11,7 +11,7 @@ namespace Microsoft.Azure.Mobile.Unity.Push.Internal
 {
     class PushDelegate
     {
-        [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
+        //[UnmanagedFunctionPointer(CallingConvention.Cdecl)]
         delegate void ReceivedPushNotificationDelegate(IntPtr notification);
 
         static ReceivedPushNotificationDelegate del;

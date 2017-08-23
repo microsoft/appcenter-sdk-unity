@@ -11,7 +11,7 @@ namespace Microsoft.Azure.Mobile.Unity.Distribute.Internal
 {
     class DistributeDelegate
     {
-        [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
+        //[UnmanagedFunctionPointer(CallingConvention.Cdecl)]
         delegate bool ReleaseAvailableDelegate(IntPtr details);
 
         static ReleaseAvailableDelegate del;
