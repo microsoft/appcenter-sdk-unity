@@ -4,15 +4,13 @@
 #addin "Cake.AzureStorage"
 #addin nuget:?package=Cake.Git
 #addin nuget:?package=NuGet.Core
+#addin "Cake.Xcode"
 
 using System;
 using System.Net;
 using System.Collections.Generic;
 using System.Runtime.Versioning;
 using NuGet;
-
-// Prefix for temporary intermediates that are created by this script
-var TemporaryPrefix = "CAKE_SCRIPT_TEMP";
 
 // Native SDK versions
 var AndroidSdkVersion = "0.11.2";
@@ -39,6 +37,12 @@ var MobileCenterModules = new [] {
     new MobileCenterModule("mobile-center-distribute-release.aar", "MobileCenterDistribute.framework", "Microsoft.Azure.Mobile.Distribute", "Distribute"),
     new MobileCenterModule("mobile-center-push-release.aar", "MobileCenterPush.framework", "Microsoft.Azure.Mobile.Push", "Push")
 };
+
+// Prefix for temporary intermediates that are created by this script
+var TemporaryPrefix = "CAKE_SCRIPT_TEMP";
+
+// Location of puppet application builds
+ var PuppetBuildsFolder = "PuppetBuilds";
 
 // External Unity Packages
 var JarResolverPackageName =  "play-services-resolver-" + ExternalUnityPackage.VersionPlaceholder + ".unitypackage";
@@ -361,14 +365,25 @@ Task("TestBuildPuppetApps")
     {
         TestBuildPuppets("BuildPuppet.BuildPuppetSceneAndroidMono",
                         "BuildPuppet.BuildPuppetSceneAndroidIl2CPP",
-                        "BuildPuppet.BuildPuppetSceneIosMono",
+                        "BuildPuppet.BuildPuppetSceneIosMono");
                         "BuildPuppet.BuildPuppetSceneIosIl2CPP");
+
+        // Verify that the generated XCode projects build properly
+        var xcodeProjectPaths = GetFiles("./" + PuppetBuildsFolder + "/*/*");
+        foreach (var xcodeProjectPath in xcodeProjectPaths)
+        {
+            Information("Attempting to build '" + xcodeProjectPath.ToString() + "'...");
+            BuildXcodeProject(xcodeProjectPath.ToString());
+            Information("Successfully built '" + xcodeProjectPath.ToString() + "'");
+        }
     }
     else
     {
         TestBuildPuppets("BuildPuppet.BuildPuppetSceneWsaNet",
                         "BuildPuppet.BuildPuppetSceneWsaIl2CPP");
     }
+
+    //DeleteFiles(PuppetBuildsFolder + "/*");
 }).OnError(HandleError);
 
 // Default Task.
@@ -383,7 +398,7 @@ Task("RemoveTemporaries").Does(()=>
     {
         DeleteDirectory(directory, true);
     }
-    DeleteFiles("./PuppetBuilds/*");
+    DeleteFiles(PuppetBuildsFolder + "/*");
     DeleteFiles("./nuget/*.temp.nuspec");
 });
 
@@ -533,11 +548,23 @@ void GetNuGetDependencies(IList<IPackage> dependencies, IPackageRepository repos
     }
 }
 
+void BuildXcodeProject(string projectPath)
+{
+    var projectFolder = System.IO.Path.GetDirectoryName(projectPath);
+    var buildOutputFolder =  System.IO.Path.Combine(projectFolder, "build");
+    XCodeBuild(new XCodeBuildSettings {
+        Project = projectPath,
+        Scheme = "Unity-iPhone",
+        Configuration = "Release",
+        DerivedDataPath = buildOutputFolder 
+    });
+}
+
 static int ExecuteUnityCommand(string extraArgs, ICakeContext context)
 {
     var projectDir = context.MakeAbsolute(context.Directory("."));
     var exec = context.EnvironmentVariable("UNITY_PATH");
-    var args = "-batchmode -quit -projectPath " + projectDir + " " + extraArgs;
+    var args = "-batchmode -quit -logFile -projectPath " + projectDir + " " + extraArgs;
     return context.StartProcess(exec, args);
 }
 
@@ -555,7 +582,6 @@ void TestBuildPuppets(params string[] buildMethodNames)
         Information("Build successful.");
     }
     Information("Puppet application successfully built for iOS and Android.");
-    DeleteFiles("./PuppetBuilds/*");
 }
 
 RunTarget(Target);

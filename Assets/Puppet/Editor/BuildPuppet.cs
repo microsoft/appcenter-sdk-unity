@@ -2,6 +2,7 @@
 //
 // Licensed under the MIT license.
 
+using System;
 using System.IO;
 using UnityEditor;
 using UnityEngine;
@@ -25,12 +26,14 @@ public class BuildPuppet
     public static void BuildPuppetSceneIosMono()
     {
         PlayerSettings.SetScriptingBackend(BuildTargetGroup.iOS, ScriptingImplementation.Mono2x);
+        PlayerSettings.iOS.sdkVersion = iOSSdkVersion.DeviceSDK;
         BuildPuppetScene(BuildTarget.iOS, "PuppetBuilds/iOSMonoBuild");
     }
 
     public static void BuildPuppetSceneIosIl2CPP()
     {
         PlayerSettings.SetScriptingBackend(BuildTargetGroup.iOS, ScriptingImplementation.IL2CPP);
+        PlayerSettings.iOS.sdkVersion = iOSSdkVersion.DeviceSDK;
         BuildPuppetScene(BuildTarget.iOS, "PuppetBuilds/iOSIL2CPPBuild");
     }
 
@@ -52,7 +55,7 @@ public class BuildPuppet
         var options = new BuildPlayerOptions
         {
             scenes = puppetScene,
-            options = BuildOptions.StrictMode,
+            options = BuildOptions.None,
             locationPathName = outputDir,
             target = target
         };
@@ -61,15 +64,15 @@ public class BuildPuppet
 
     private static void CreateGoogleServicesJsonIfNotPresent()
     {
-        var actualFile =  "Assets/google-services.json";
+        var actualFile = "Assets/google-services.json";
         if (File.Exists(actualFile))
         {
             return;
         }
-        var placeholderFile =  "Assets/google-services-placeholder.json";
+        var placeholderFile = "Assets/google-services-placeholder.json";
         if (!File.Exists(placeholderFile))
         {
-            Debug.LogError("Could not find google services placeholder.");
+            System.Console.WriteLine("Could not find google services placeholder.");
         }
         File.Copy(placeholderFile, actualFile);
         AssetDatabase.ImportAsset(actualFile, ImportAssetOptions.Default);

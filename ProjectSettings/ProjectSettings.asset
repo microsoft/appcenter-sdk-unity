@@ -161,7 +161,7 @@ PlayerSettings:
   VertexChannelCompressionMask:
     serializedVersion: 2
     m_Bits: 238
-  iPhoneSdkVersion: 989
+  iPhoneSdkVersion: 988
   iOSTargetOSVersionString: 8.0
   tvOSSdkVersion: 0
   tvOSRequireExtendedGameController: 0
@@ -502,10 +502,11 @@ PlayerSettings:
   webGLUseWasm: 0
   webGLCompressionFormat: 1
   scriptingDefineSymbols: {}
-  platformArchitecture: {}
+  platformArchitecture:
+    iOS: 0
   scriptingBackend:
-    Android: 0
-    iOS: 1
+    Android: 1
+    iOS: 0
   incrementalIl2cppBuild: {}
   additionalIl2CppArgs: 
   scriptingRuntimeVersion: 0
