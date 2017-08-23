@@ -38,16 +38,32 @@ public class BuildPuppet
         BuildPuppetScene(BuildTarget.iOS, "iOSIL2CPPBuild");
     }
 
-    public static void BuildPuppetSceneWsaNet()
+    public static void BuildPuppetSceneWsaNetXaml()
     {
+        EditorUserBuildSettings.wsaUWPBuildType = WSAUWPBuildType.XAML;
         PlayerSettings.SetScriptingBackend(BuildTargetGroup.WSA, ScriptingImplementation.WinRTDotNET);
-        BuildPuppetScene(BuildTarget.WSAPlayer, "WSANetBuild");
+        BuildPuppetScene(BuildTarget.WSAPlayer, "WSANetBuildXaml");
     }
 
-    public static void BuildPuppetSceneWsaIl2CPP()
+    public static void BuildPuppetSceneWsaIl2CPPXaml()
     {
+        EditorUserBuildSettings.wsaUWPBuildType = WSAUWPBuildType.XAML;
         PlayerSettings.SetScriptingBackend(BuildTargetGroup.WSA, ScriptingImplementation.IL2CPP);
-        BuildPuppetScene(BuildTarget.WSAPlayer, "WSAIL2CPPBuild");
+        BuildPuppetScene(BuildTarget.WSAPlayer, "WSAIL2CPPBuildXaml");
+    }
+    
+    public static void BuildPuppetSceneWsaNetD3D()
+    {
+        EditorUserBuildSettings.wsaUWPBuildType = WSAUWPBuildType.D3D;
+        PlayerSettings.SetScriptingBackend(BuildTargetGroup.WSA, ScriptingImplementation.WinRTDotNET);
+        BuildPuppetScene(BuildTarget.WSAPlayer, "WSANetBuildD3D");
+    }
+
+    public static void BuildPuppetSceneWsaIl2CPPD3D()
+    {
+        EditorUserBuildSettings.wsaUWPBuildType = WSAUWPBuildType.D3D;
+        PlayerSettings.SetScriptingBackend(BuildTargetGroup.WSA, ScriptingImplementation.IL2CPP);
+        BuildPuppetScene(BuildTarget.WSAPlayer, "WSAIL2CPPBuildD3D");
     }
 
     private static void BuildPuppetScene(BuildTarget target, string outputPath)

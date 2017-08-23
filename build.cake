@@ -366,8 +366,10 @@ Task("TestBuildPuppetApps")
     }
     else
     {
-        TestBuildPuppets("BuildPuppet.BuildPuppetSceneWsaNet"
-                        "BuildPuppet.BuildPuppetSceneWsaIl2CPP");
+        TestBuildPuppets("BuildPuppet.BuildPuppetSceneWsaNetXaml",
+                        "BuildPuppet.BuildPuppetSceneWsaIl2CPPXaml",
+                        "BuildPuppet.BuildPuppetSceneWsaNetD3D",
+                        "BuildPuppet.BuildPuppetSceneWsaIl2CPPD3D");
     }
 }).OnError(HandleError);
 
