@@ -366,7 +366,7 @@ Task("TestBuildPuppetApps")
     }
     else
     {
-        TestBuildPuppets("BuildPuppet.BuildPuppetSceneWsaNet",
+        TestBuildPuppets("BuildPuppet.BuildPuppetSceneWsaNet"
                         "BuildPuppet.BuildPuppetSceneWsaIl2CPP");
     }
 }).OnError(HandleError);
@@ -554,7 +554,6 @@ void TestBuildPuppets(params string[] buildMethodNames)
         }
         Information("Build successful.");
     }
-    Information("Puppet application successfully built for iOS and Android.");
     DeleteFiles("./PuppetBuilds/*");
 }
 
