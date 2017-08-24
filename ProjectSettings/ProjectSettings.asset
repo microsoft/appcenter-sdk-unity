@@ -505,7 +505,7 @@ PlayerSettings:
   platformArchitecture:
     iOS: 0
   scriptingBackend:
-    Android: 1
+    Android: 0
     Metro: 2
     iOS: 0
   incrementalIl2cppBuild: {}
