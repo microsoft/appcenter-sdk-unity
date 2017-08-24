@@ -7,6 +7,7 @@
 #addin "Cake.Xcode"
 
 using System;
+using System.Linq;
 using System.Net;
 using System.Collections.Generic;
 using System.Runtime.Versioning;
@@ -279,7 +280,7 @@ Task("Externals-Uwp-IL2CPP-Dependencies")
     EnsureDirectoryExists(targetPath + "/X86");
     EnsureDirectoryExists(targetPath + "/X64");
 
-    // NuGet.Core support only v2
+    // NuGet.Core support only v2.
     var packageSource = "https://www.nuget.org/api/v2/";
     var repository = PackageRepositoryFactory.Default.CreateRepository(packageSource);
     foreach (var i in UwpIL2CPPDependencies)
@@ -303,7 +304,7 @@ Task("Externals-Uwp-IL2CPP-Dependencies")
     ExecuteUnityCommand("-executeMethod MobileCenterPostBuild.ProcessUwpIl2CppDependencies", Context);
 }).OnError(HandleError);
 
-// Download and install all external Unity packages required
+// Download and install all external Unity packages required.
 Task("Externals-Unity-Packages").Does(()=>
 {
     var directoryName = "externals/unity-packages";
@@ -334,13 +335,13 @@ Task("Externals")
 });
 
 // Creates Unity packages corresponding to all ".unitypackagespec" files
-// in "UnityPackageSpecs" folder
+// in "UnityPackageSpecs" folder.
 Task("Package").Does(()=>
 {
-    // Need to provide cake context so class methods can use cake apis
+    // Need to provide cake context so class methods can use cake apis.
     UnityPackage.Context = Context;
 
-    // Store packages in a clean folder
+    // Store packages in a clean folder.
     const string outputDirectory = "output";
     CleanDirectory(outputDirectory);
     var specFiles = GetFiles("UnityPackageSpecs/*.unitypackagespec");
@@ -352,7 +353,7 @@ Task("Package").Does(()=>
 });
 
 // Creates Unity packages corresponding to all ".unitypackagespec" files
-// in "UnityPackageSpecs" folder (and downloads binaries)
+// in "UnityPackageSpecs" folder (and downloads binaries).
 Task("CreatePackages").IsDependentOn("Externals").IsDependentOn("Package");
 
 // Builds the puppet applications and throws an exception on failure.
@@ -362,15 +363,37 @@ Task("TestBuildPuppetApps")
 {
     if (IsRunningOnUnix())
     {
-        TestBuildPuppets(//"BuildPuppet.BuildPuppetSceneAndroidMono",
-                        "BuildPuppet.BuildPuppetSceneAndroidIl2CPP",
-                        "BuildPuppet.BuildPuppetSceneIosMono",
-                        "BuildPuppet.BuildPuppetSceneIosIl2CPP");
-
-        // Verify that the generated XCode projects build properly
-        var xcodeProjectPaths = GetDirectories("./" + PuppetBuildsFolder + "/*/*.xcodeproj");
-        foreach (var xcodeProjectPath in xcodeProjectPaths)
+        // Android
+        string[] androidBuildMethods = {
+            "BuildPuppet.BuildPuppetSceneAndroidMono",
+            "BuildPuppet.BuildPuppetSceneAndroidIl2CPP"
+        };
+        foreach (var androidMethod in androidBuildMethods)
         {
+            // Remove all current builds and create new build.
+            DeleteFiles(PuppetBuildsFolder + "/*");
+            TestBuildPuppet(androidMethod);
+
+            // Verify that an APK was generated. (".Single()" should throw an exception if the 
+            // collection is empty).
+            GetFiles(PuppetBuildsFolder + "/*.apk").Single();
+        }
+        
+        // iOS
+        string[] iOSBuildMethods = {
+            "BuildPuppet.BuildPuppetSceneIosMono",
+            "BuildPuppet.BuildPuppetSceneIosIl2CPP"
+        };
+        foreach (var iOSBuildMethod in iOSBuildMethods)
+        {
+            // Remove all current builds and create new build.
+            DeleteFiles(PuppetBuildsFolder + "/*");
+            TestBuildPuppet(iOSBuildMethod);
+            
+            // Verify that an Xcode project was created and that it builds properly.
+            var xcodeProjectPath = GetDirectories(PuppetBuildsFolder + "/*/*.xcodeproj").Single();
+            
+            // Only one Xcode project should exist, so assume the first in the array is the correct one.
             Information("Attempting to build '" + xcodeProjectPath.FullPath + "'...");
             BuildXcodeProject(xcodeProjectPath.FullPath);
             Information("Successfully built '" + xcodeProjectPath.FullPath + "'");
@@ -378,20 +401,30 @@ Task("TestBuildPuppetApps")
     }
     else
     {
-        TestBuildPuppets("BuildPuppet.BuildPuppetSceneWsaNetXaml",
-                        "BuildPuppet.BuildPuppetSceneWsaIl2CPPXaml",
-                        "BuildPuppet.BuildPuppetSceneWsaNetD3D",
-                        "BuildPuppet.BuildPuppetSceneWsaIl2CPPD3D");
-
-        // Verify that the generated solutions build properly
-        var solutionFilePaths = GetFiles("PuppetBuilds/**/*.sln");
-        foreach (var solutionFilePath in solutionFilePaths)
+        // UWP
+        string[] uwpBuildMethods = {
+            "BuildPuppet.BuildPuppetSceneWsaNetXaml",
+            "BuildPuppet.BuildPuppetSceneWsaIl2CPPXaml",
+            "BuildPuppet.BuildPuppetSceneWsaNetD3D",
+            "BuildPuppet.BuildPuppetSceneWsaIl2CPPD3D"
+        };
+        foreach (var uwpBuildMethod in uwpBuildMethods)
         {
+            // Remove all existing builds and create new build.
+            DeleteFiles(PuppetBuildsFolder + "/*");
+            TestBuildPuppet(uwpBuildMethod);
+            
+            // Verify that a solution file was created and that it builds properly.
+            var solutionFilePath = GetFiles("PuppetBuilds/*/*.sln").Single();            
+            // For now, only build for x86.
+            // TODO also build for ARM and x64 (.NET-D3D build is currently broken for ARM, though).
             Information("Attempting to build '" + solutionFilePath.ToString() + "'...");
-            MSBuild(solutionFilePath.ToString(), c => c.Configuration = "Release");
+            MSBuild(solutionFilePath.ToString(), c => c.SetConfiguration("Release").WithProperty("Platform", "x86"));
             Information("Successfully built '" + solutionFilePath.ToString() + "'");
         }
     }
+    
+    // Remove all remaining builds.
     DeleteFiles(PuppetBuildsFolder + "/*");
 }).OnError(HandleError);
 
@@ -577,18 +610,14 @@ static int ExecuteUnityCommand(string extraArgs, ICakeContext context)
     return context.StartProcess(exec, args);
 }
 
-void TestBuildPuppets(params string[] buildMethodNames)
+void TestBuildPuppet(string buildMethodName)
 {
-    foreach (var name in buildMethodNames)
+    Information("Executing method " + buildMethodName + ", this could take a while...");
+    var command = "-executeMethod " + buildMethodName;
+    var result = ExecuteUnityCommand(command, Context);
+    if (result != 0)
     {
-        Information("Executing method " + name + ", this could take a while...");
-        var command = "-executeMethod " + name;
-        var result = ExecuteUnityCommand(command, Context);
-        if (result != 0)
-        {
-            throw new Exception("Failed to execute method " + name + ".");
-        }
-        Information("Build successful.");
+        throw new Exception("Failed to execute method " + buildMethodName + ".");
     }
 }
 
