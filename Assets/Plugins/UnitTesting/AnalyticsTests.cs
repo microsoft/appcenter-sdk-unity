@@ -11,11 +11,11 @@ namespace Microsoft.Azure.Mobile.Unity.Analytics
 {
 
     [TestFixture]
-    public class iOSAnalyticsTests {
+    public class AnalyticsTests {
 
         [Test]
-        [UnityPlatform(RuntimePlatform.OSXPlayer)]
-        public void iOSAnalyticsEnabledTests() {
+        [UnityPlatform(include = new[] {RuntimePlatform.WSAPlayerARM, RuntimePlatform.WSAPlayerX64, RuntimePlatform.WSAPlayerX86, RuntimePlatform.OSXPlayer, RuntimePlatform.Android})]
+        public void AnalyticsEnabledTests() {
             Analytics.IsEnabledAsync().ContinueWith(task => {
                 Assert.False(task.Result);
             });
