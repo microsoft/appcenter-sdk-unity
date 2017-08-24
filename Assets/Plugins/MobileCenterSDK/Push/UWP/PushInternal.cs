@@ -33,7 +33,7 @@ namespace Microsoft.Azure.Mobile.Unity.Push.Internal
 
         public static void PostInitialize()
         {
-            UWPPush.CheckLaunchedFromNotification(WSAApplication.arguments);
+            UWPPush.Instance.InstanceCheckLaunchedFromNotification(WSAApplication.arguments);
         }
 
         public static Type GetNativeType()
@@ -49,11 +49,6 @@ namespace Microsoft.Azure.Mobile.Unity.Push.Internal
         public static MobileCenterTask<bool> IsEnabledAsync()
         {
             return new MobileCenterTask<bool>(UWPPush.IsEnabledAsync());
-        }
-
-        public static void CheckLaunchedFromNotification(LaunchActivatedEventArgs e)
-        {
-            UWPPush.CheckLaunchedFromNotification(e);
         }
 
         public static void HandlePushNotification(PushNotificationReceivedEventArgs eventArgs)
