@@ -3,4 +3,12 @@
 		<!-- Need to use Newtonsoft Json.NET library with IL2CPP build. -->
 		<namespace fullname="System.ComponentModel" preserve="all"/>
 	</assembly>
+
+	<!-- Keep all our assemblies. -->
+	<assembly fullname="Microsoft.Azure.Mobile" preserve="all"/>
+	<assembly fullname="Microsoft.Azure.Mobile.Analytics" preserve="all"/>
+	<assembly fullname="Microsoft.Azure.Mobile.Crashes" preserve="all"/>
+	<assembly fullname="Microsoft.Azure.Mobile.Push" preserve="all"/>
+
+	<assembly fullname="SQLite-net" preserve="all"/>
 </linker>
