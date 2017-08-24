@@ -362,26 +362,26 @@ Task("TestBuildPuppetApps")
 {
     if (IsRunningOnUnix())
     {
-        TestBuildPuppets("BuildPuppet.BuildPuppetSceneAndroidMono",
+        TestBuildPuppets(//"BuildPuppet.BuildPuppetSceneAndroidMono",
                         "BuildPuppet.BuildPuppetSceneAndroidIl2CPP",
-                        "BuildPuppet.BuildPuppetSceneIosMono");
+                        "BuildPuppet.BuildPuppetSceneIosMono",
                         "BuildPuppet.BuildPuppetSceneIosIl2CPP");
 
         // Verify that the generated XCode projects build properly
-        var xcodeProjectPaths = GetFiles("./" + PuppetBuildsFolder + "/*/*");
+        var xcodeProjectPaths = GetDirectories("./" + PuppetBuildsFolder + "/*/*.xcodeproj");
         foreach (var xcodeProjectPath in xcodeProjectPaths)
         {
-            Information("Attempting to build '" + xcodeProjectPath.ToString() + "'...");
-            BuildXcodeProject(xcodeProjectPath.ToString());
-            Information("Successfully built '" + xcodeProjectPath.ToString() + "'");
+            Information("Attempting to build '" + xcodeProjectPath.FullPath + "'...");
+            BuildXcodeProject(xcodeProjectPath.FullPath);
+            Information("Successfully built '" + xcodeProjectPath.FullPath + "'");
         }
     }
     else
     {
-        TestBuildPuppets(//"BuildPuppet.BuildPuppetSceneWsaNetXaml",
-                        //"BuildPuppet.BuildPuppetSceneWsaIl2CPPXaml",
-                        "BuildPuppet.BuildPuppetSceneWsaNetD3D");
-                        //"BuildPuppet.BuildPuppetSceneWsaIl2CPPD3D");
+        TestBuildPuppets("BuildPuppet.BuildPuppetSceneWsaNetXaml",
+                        "BuildPuppet.BuildPuppetSceneWsaIl2CPPXaml",
+                        "BuildPuppet.BuildPuppetSceneWsaNetD3D",
+                        "BuildPuppet.BuildPuppetSceneWsaIl2CPPD3D");
 
         // Verify that the generated solutions build properly
         var solutionFilePaths = GetFiles("PuppetBuilds/**/*.sln");
@@ -392,8 +392,7 @@ Task("TestBuildPuppetApps")
             Information("Successfully built '" + solutionFilePath.ToString() + "'");
         }
     }
-
-    //DeleteFiles(PuppetBuildsFolder + "/*");
+    DeleteFiles(PuppetBuildsFolder + "/*");
 }).OnError(HandleError);
 
 // Default Task.
