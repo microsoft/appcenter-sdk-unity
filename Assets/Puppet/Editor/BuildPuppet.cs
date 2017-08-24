@@ -43,6 +43,7 @@ public class BuildPuppet
 
     public static void BuildPuppetSceneWsaNetXaml()
     {
+        EditorUserBuildSettings.wsaSDK = WSASDK.UWP;
         EditorUserBuildSettings.wsaUWPBuildType = WSAUWPBuildType.XAML;
         PlayerSettings.SetApiCompatibilityLevel(BuildTargetGroup.WSA, ApiCompatibilityLevel.NET_4_6);
         PlayerSettings.SetScriptingBackend(BuildTargetGroup.WSA, ScriptingImplementation.WinRTDotNET);
@@ -51,6 +52,7 @@ public class BuildPuppet
 
     public static void BuildPuppetSceneWsaIl2CPPXaml()
     {
+        EditorUserBuildSettings.wsaSDK = WSASDK.UWP;
         EditorUserBuildSettings.wsaUWPBuildType = WSAUWPBuildType.XAML;
         PlayerSettings.SetApiCompatibilityLevel(BuildTargetGroup.WSA, ApiCompatibilityLevel.NET_4_6);
         PlayerSettings.SetScriptingBackend(BuildTargetGroup.WSA, ScriptingImplementation.IL2CPP);
@@ -59,6 +61,7 @@ public class BuildPuppet
     
     public static void BuildPuppetSceneWsaNetD3D()
     {
+        EditorUserBuildSettings.wsaSDK = WSASDK.UWP;
         EditorUserBuildSettings.wsaUWPBuildType = WSAUWPBuildType.D3D;
         PlayerSettings.SetApiCompatibilityLevel(BuildTargetGroup.WSA, ApiCompatibilityLevel.NET_4_6);
         PlayerSettings.SetScriptingBackend(BuildTargetGroup.WSA, ScriptingImplementation.WinRTDotNET);
@@ -68,6 +71,7 @@ public class BuildPuppet
     public static void BuildPuppetSceneWsaIl2CPPD3D()
     {
         EditorUserBuildSettings.wsaUWPBuildType = WSAUWPBuildType.D3D;
+        EditorUserBuildSettings.wsaSDK = WSASDK.UWP;
         PlayerSettings.SetApiCompatibilityLevel(BuildTargetGroup.WSA, ApiCompatibilityLevel.NET_4_6);
         PlayerSettings.SetScriptingBackend(BuildTargetGroup.WSA, ScriptingImplementation.IL2CPP);
         BuildPuppetScene(BuildTarget.WSAPlayer, "WSAIL2CPPBuildD3D");
@@ -76,14 +80,16 @@ public class BuildPuppet
     private static void BuildPuppetScene(BuildTarget target, string outputPath)
     {
         string[] puppetScene = { "Assets/Puppet/PuppetScene.unity" };
+        var outputPlayer = Path.Combine(BuildFolder, outputPath);
         var options = new BuildPlayerOptions
         {
             scenes = puppetScene,
             options = BuildOptions.None,
-            locationPathName = Path.Combine(BuildFolder, outputPath),
+            locationPathName = outputPlayer,
             target = target
         };
         BuildPipeline.BuildPlayer(options);
+        MobileCenterPostBuild.OnPostprocessBuild(target, outputPlayer);
     }
 
     // Detects whether there exists a "google-services.json" file, and if not,
