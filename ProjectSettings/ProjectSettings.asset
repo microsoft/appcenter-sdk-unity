@@ -10,8 +10,8 @@ PlayerSettings:
   targetDevice: 2
   useOnDemandResources: 0
   accelerometerFrequency: 60
-  companyName: DefaultCompany
-  productName: TestPackage
+  companyName: Microsoft
+  productName: Puppet Unity
   defaultCursor: {fileID: 0}
   cursorHotspot: {x: 0, y: 0}
   m_SplashScreenBackgroundColor: {r: 0.13333334, g: 0.17254902, b: 0.21176471, a: 1}
@@ -518,7 +518,7 @@ PlayerSettings:
   metroCertificateNotAfter: 8089253f7221d401
   metroApplicationDescription: TestPackage
   wsaImages: {}
-  metroTileShortName: TestPackage
+  metroTileShortName: Puppet Unity
   metroCommandLineArgsFile: 
   metroTileShowName: 0
   metroMediumTileShowName: 0
