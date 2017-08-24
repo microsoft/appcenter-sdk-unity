@@ -358,7 +358,7 @@ Task("CreatePackages").IsDependentOn("Externals").IsDependentOn("Package");
 
 // Builds the puppet applications and throws an exception on failure.
 Task("BuildPuppetApps")
-    .IsDependentOn("Externals")
+    //.IsDependentOn("Externals")
     .Does(()=>
 {
     if (IsRunningOnUnix())
@@ -405,8 +405,8 @@ Task("BuildPuppetApps")
     {
         // UWP
         string[] uwpBuildMethods = {
-            "BuildPuppet.BuildPuppetSceneWsaNetXaml",
-            "BuildPuppet.BuildPuppetSceneWsaIl2CPPXaml",
+            //"BuildPuppet.BuildPuppetSceneWsaNetXaml",
+            //"BuildPuppet.BuildPuppetSceneWsaIl2CPPXaml",
             "BuildPuppet.BuildPuppetSceneWsaNetD3D",
             "BuildPuppet.BuildPuppetSceneWsaIl2CPPD3D"
         };
