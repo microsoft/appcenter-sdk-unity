@@ -4,7 +4,6 @@
 
 #if UNITY_WSA_10_0 && !UNITY_EDITOR
 using System;
-using System.Threading;
 using System.Threading.Tasks;
 using UnityEngine;
 using Microsoft.Azure.Mobile.Utils;
@@ -15,7 +14,7 @@ namespace Microsoft.Azure.Mobile.Unity.Internal.Utils
     {
         private static int _height;
         private static int _width;
-        private static SemaphoreSlim _screenSizeSemaphore = new SemaphoreSlim(0);
+        private static TaskCompletionSource<bool> _initializationTaskSource = new TaskCompletionSource<bool>();
         public override int Height => _height;
         public override int Width => _width;
 
@@ -24,17 +23,14 @@ namespace Microsoft.Azure.Mobile.Unity.Internal.Utils
             // This must occur on the main thread
             _height = Screen.currentResolution.height;
             _width = Screen.currentResolution.width;
-            _screenSizeSemaphore.Release();
+            _initializationTaskSource.SetResult(true);
         }
 
         public override event EventHandler ScreenSizeChanged;
 
         public override Task WaitUntilReadyAsync()
         {
-            return Task.Run(() =>
-            {
-                _screenSizeSemaphore.Wait();
-            });
+            return _initializationTaskSource.Task;
         }
     }
 }
