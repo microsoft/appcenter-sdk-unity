@@ -15,6 +15,8 @@ public class BuildPuppet
 
     public static void BuildPuppetSceneAndroidMono()
     {
+        EditorUserBuildSettings.SwitchActiveBuildTarget(BuildTargetGroup.Android, BuildTarget.Android);
+        PlayerSettings.SetScriptingDefineSymbolsForGroup(BuildTargetGroup.Unknown, "MOBILECENTERFORCERECOMPILE");
         CreateGoogleServicesJsonIfNotPresent();
         PlayerSettings.SetScriptingBackend(BuildTargetGroup.Android, ScriptingImplementation.Mono2x);
         BuildPuppetScene(BuildTarget.Android, "AndroidMonoBuild.apk");
@@ -22,6 +24,8 @@ public class BuildPuppet
 
     public static void BuildPuppetSceneAndroidIl2CPP()
     {
+        EditorUserBuildSettings.SwitchActiveBuildTarget(BuildTargetGroup.Android, BuildTarget.Android);
+        PlayerSettings.SetScriptingDefineSymbolsForGroup(BuildTargetGroup.iOS, "MOBILECENTERFORCERECOMPILE");
         CreateGoogleServicesJsonIfNotPresent();
         PlayerSettings.SetScriptingBackend(BuildTargetGroup.Android, ScriptingImplementation.IL2CPP);
         BuildPuppetScene(BuildTarget.Android, "AndroidIL2CPPBuild.apk");
@@ -29,13 +33,18 @@ public class BuildPuppet
 
     public static void BuildPuppetSceneIosMono()
     {
+        EditorUserBuildSettings.SwitchActiveBuildTarget(BuildTargetGroup.iOS, BuildTarget.iOS);
+        PlayerSettings.SetScriptingDefineSymbolsForGroup(BuildTargetGroup.iOS, "HELLO_FROM_VSMC");
         PlayerSettings.SetScriptingBackend(BuildTargetGroup.iOS, ScriptingImplementation.Mono2x);
         PlayerSettings.iOS.sdkVersion = iOSSdkVersion.DeviceSDK;
         BuildPuppetScene(BuildTarget.iOS, "iOSMonoBuild");
+        
     }
 
     public static void BuildPuppetSceneIosIl2CPP()
     {
+        EditorUserBuildSettings.SwitchActiveBuildTarget(BuildTargetGroup.iOS, BuildTarget.iOS);
+        PlayerSettings.SetScriptingDefineSymbolsForGroup(BuildTargetGroup.iOS, "HELLO_FROM_VSMC");
         PlayerSettings.SetScriptingBackend(BuildTargetGroup.iOS, ScriptingImplementation.IL2CPP);
         PlayerSettings.iOS.sdkVersion = iOSSdkVersion.DeviceSDK;
         BuildPuppetScene(BuildTarget.iOS, "iOSIL2CPPBuild");
@@ -70,6 +79,8 @@ public class BuildPuppet
 
     public static void BuildPuppetSceneWsaIl2CPPD3D()
     {
+        EditorUserBuildSettings.SwitchActiveBuildTarget(BuildTargetGroup.WSA, BuildTarget.WSAPlayer);
+        PlayerSettings.SetScriptingDefineSymbolsForGroup(BuildTargetGroup.Unknown, "MOBILECENTERFORCERECOMPILE");
         EditorUserBuildSettings.wsaUWPBuildType = WSAUWPBuildType.D3D;
         EditorUserBuildSettings.wsaSDK = WSASDK.UWP;
         PlayerSettings.SetApiCompatibilityLevel(BuildTargetGroup.WSA, ApiCompatibilityLevel.NET_4_6);
@@ -89,7 +100,6 @@ public class BuildPuppet
             target = target
         };
         BuildPipeline.BuildPlayer(options);
-        MobileCenterPostBuild.OnPostprocessBuild(target, outputPlayer);
     }
 
     // Detects whether there exists a "google-services.json" file, and if not,
@@ -109,6 +119,8 @@ public class BuildPuppet
             System.Console.WriteLine("Could not find google services placeholder.");
         }
         File.Copy(placeholderFile, actualFile);
+                Debug.Log("will post process");
+
         AssetDatabase.ImportAsset(actualFile, ImportAssetOptions.Default);
     }
 }

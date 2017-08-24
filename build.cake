@@ -419,7 +419,6 @@ Task("BuildPuppetApps")
             // Verify that a solution file was created and that it builds properly.
             var solutionFilePath = GetFiles("PuppetBuilds/*/*.sln").Single();            
             // For now, only build for x86.
-            // TODO also build for ARM and x64 (.NET-D3D build is currently broken for ARM, though).
             Information("Attempting to build '" + solutionFilePath.ToString() + "'...");
             MSBuild(solutionFilePath.ToString(), c => c.SetConfiguration("Master").WithProperty("Platform", "x86"));
             Information("Successfully built '" + solutionFilePath.ToString() + "'");
