@@ -357,7 +357,7 @@ Task("Package").Does(()=>
 Task("CreatePackages").IsDependentOn("Externals").IsDependentOn("Package");
 
 // Builds the puppet applications and throws an exception on failure.
-Task("TestBuildPuppetApps")
+Task("BuildPuppetApps")
     .IsDependentOn("Externals")
     .Does(()=>
 {
@@ -371,12 +371,14 @@ Task("TestBuildPuppetApps")
         foreach (var androidMethod in androidBuildMethods)
         {
             // Remove all current builds and create new build.
-            DeleteFiles(PuppetBuildsFolder + "/*");
-            TestBuildPuppet(androidMethod);
+            CleanDirectory(PuppetBuildsFolder);
+            BuildPuppetApp(androidMethod);
 
             // Verify that an APK was generated. (".Single()" should throw an exception if the 
             // collection is empty).
+            Information("Verifying that apk was generated for method '" + androidMethod + "'");
             GetFiles(PuppetBuildsFolder + "/*.apk").Single();
+            Information("Found apk.");
         }
         
         // iOS
@@ -387,8 +389,8 @@ Task("TestBuildPuppetApps")
         foreach (var iOSBuildMethod in iOSBuildMethods)
         {
             // Remove all current builds and create new build.
-            DeleteFiles(PuppetBuildsFolder + "/*");
-            TestBuildPuppet(iOSBuildMethod);
+            CleanDirectory(PuppetBuildsFolder);
+            BuildPuppetApp(iOSBuildMethod);
             
             // Verify that an Xcode project was created and that it builds properly.
             var xcodeProjectPath = GetDirectories(PuppetBuildsFolder + "/*/*.xcodeproj").Single();
@@ -411,8 +413,8 @@ Task("TestBuildPuppetApps")
         foreach (var uwpBuildMethod in uwpBuildMethods)
         {
             // Remove all existing builds and create new build.
-            DeleteFiles(PuppetBuildsFolder + "/*");
-            TestBuildPuppet(uwpBuildMethod);
+            CleanDirectory(PuppetBuildsFolder);
+            BuildPuppetApp(uwpBuildMethod);
             
             // Verify that a solution file was created and that it builds properly.
             var solutionFilePath = GetFiles("PuppetBuilds/*/*.sln").Single();            
@@ -425,7 +427,7 @@ Task("TestBuildPuppetApps")
     }
     
     // Remove all remaining builds.
-    DeleteFiles(PuppetBuildsFolder + "/*");
+    CleanDirectory(PuppetBuildsFolder);
 }).OnError(HandleError);
 
 // Default Task.
@@ -440,7 +442,7 @@ Task("RemoveTemporaries").Does(()=>
     {
         DeleteDirectory(directory, true);
     }
-    DeleteFiles(PuppetBuildsFolder + "/*");
+    CleanDirectory(PuppetBuildsFolder);
     DeleteFiles("./nuget/*.temp.nuspec");
 });
 
@@ -610,7 +612,7 @@ static int ExecuteUnityCommand(string extraArgs, ICakeContext context)
     return context.StartProcess(exec, args);
 }
 
-void TestBuildPuppet(string buildMethodName)
+void BuildPuppetApp(string buildMethodName)
 {
     Information("Executing method " + buildMethodName + ", this could take a while...");
     var command = "-executeMethod " + buildMethodName;

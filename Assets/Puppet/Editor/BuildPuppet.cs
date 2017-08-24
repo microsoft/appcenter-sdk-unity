@@ -17,14 +17,14 @@ public class BuildPuppet
     {
         CreateGoogleServicesJsonIfNotPresent();
         PlayerSettings.SetScriptingBackend(BuildTargetGroup.Android, ScriptingImplementation.Mono2x);
-        BuildPuppetScene(BuildTarget.Android, "AndroidMonoBuild");
+        BuildPuppetScene(BuildTarget.Android, "AndroidMonoBuild.apk");
     }
 
     public static void BuildPuppetSceneAndroidIl2CPP()
     {
         CreateGoogleServicesJsonIfNotPresent();
         PlayerSettings.SetScriptingBackend(BuildTargetGroup.Android, ScriptingImplementation.IL2CPP);
-        BuildPuppetScene(BuildTarget.Android, "AndroidIL2CPPBuild");
+        BuildPuppetScene(BuildTarget.Android, "AndroidIL2CPPBuild.apk");
     }
 
     public static void BuildPuppetSceneIosMono()
