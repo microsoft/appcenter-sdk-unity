@@ -5,8 +5,6 @@
 #include "PushDelegateSetter.h"
 #include "PushDelegate.h"
 
-@import MobileCenterPush;
-
 static UnityPushDelegate* pushDelegate;
 
 void mobile_center_unity_push_set_delegate()
@@ -14,3 +12,9 @@ void mobile_center_unity_push_set_delegate()
   pushDelegate = [UnityPushDelegate new];
   [MSPush setDelegate:pushDelegate];
 }
+
+UnityPushDelegate* mobile_center_unity_push_get_delegate()
+{
+  return pushDelegate;
+}
+

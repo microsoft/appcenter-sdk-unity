@@ -2,6 +2,9 @@
 //
 // Licensed under the MIT license.
 
+#ifndef PUSH_UNITY_H
+#define PUSH_UNITY_H
+
 #import "PushDelegate.h"
 
 extern "C" void* mobile_center_unity_push_get_type();
@@ -18,3 +21,5 @@ extern "C" void mobile_center_unity_push_replay_unprocessed_notifications();
 // +(void)didRegisterForRemoteNotificationsWithDeviceToken:(NSData*)deviceToken;
 // +(void)didFailToRegisterForRemoteNotificationsWithError:(NSError*)error;
 //+ (BOOL)didReceiveRemoteNotification:(NSDictionary *)userInfo;
+
+#endif

@@ -219,6 +219,7 @@
 		35E9FBD31EFADE5A00556A1F /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				CLANG_ENABLE_MODULES = YES;
 				"FRAMEWORK_SEARCH_PATHS[arch=*]" = (
 					"\"$(SRCROOT)/../Assets/Plugins/iOS/Crashes\"",
 					"\"$(SRCROOT)/../Assets/Plugins/iOS/Core\"",
@@ -232,6 +233,7 @@
 		35E9FBD41EFADE5A00556A1F /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				CLANG_ENABLE_MODULES = YES;
 				"FRAMEWORK_SEARCH_PATHS[arch=*]" = (
 					"\"$(SRCROOT)/../Assets/Plugins/iOS/Crashes\"",
 					"\"$(SRCROOT)/../Assets/Plugins/iOS/Core\"",

@@ -2,7 +2,11 @@
 //
 // Licensed under the MIT license.
 
+#ifndef PUSH_DELEGATE_H
+#define PUSH_DELEGATE_H
+
 #import <MobileCenterPush/MobileCenterPush.h>
+
 #import <Foundation/Foundation.h>
 
 typedef void (__cdecl *ReceivedPushNotificationFunction)(MSPushNotification*);
@@ -14,3 +18,5 @@ typedef void (__cdecl *ReceivedPushNotificationFunction)(MSPushNotification*);
 -(void)replayUnprocessedNotifications;
 
 @end
+
+#endif
