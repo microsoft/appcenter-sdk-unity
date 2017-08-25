@@ -611,6 +611,17 @@ static int ExecuteUnityCommand(string extraArgs, ICakeContext context)
 {
     var projectDir = context.MakeAbsolute(context.Directory("."));
     var exec = context.EnvironmentVariable("UNITY_PATH");
+    if (exec == null)
+    {
+        if (IsRunningOnUnix())
+        {
+            exec = "/Applications/Unity/Unity.app/Contents/MacOS/Unity";
+        }
+        else
+        {
+            exec = "C:\Program Files\Unity\Editor\Unity.exe";
+        }
+    }
     var args = "-batchmode -quit -logFile -projectPath " + projectDir + " " + extraArgs;
     return context.StartProcess(exec, args);
 }
