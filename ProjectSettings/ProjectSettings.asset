@@ -376,6 +376,9 @@ PlayerSettings:
   switchUdpSendBufferSize: 9
   switchUdpReceiveBufferSize: 42
   switchSocketBufferEfficiency: 4
+  switchSocketInitializeEnabled: 1
+  switchNetworkInterfaceManagerInitializeEnabled: 1
+  switchPlayerConnectionEnabled: 1
   ps4NPAgeRating: 12
   ps4NPTitleSecret: 
   ps4NPTrophyPackPath: 
@@ -510,7 +513,7 @@ PlayerSettings:
     iOS: 0
   scriptingBackend:
     Android: 0
-    Metro: 2
+    Metro: 1
     iOS: 1
   incrementalIl2cppBuild: {}
   additionalIl2CppArgs: 
@@ -526,7 +529,7 @@ PlayerSettings:
   metroCertificatePassword: 
   metroCertificateSubject: DefaultCompany
   metroCertificateIssuer: DefaultCompany
-  metroCertificateNotAfter: 80883103383cd401
+  metroCertificateNotAfter: 8089fbd4c73cd401
   metroApplicationDescription: TestPackage
   wsaImages: {}
   metroTileShortName: TestPackage

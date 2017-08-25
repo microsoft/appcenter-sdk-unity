@@ -39,7 +39,10 @@ var MobileCenterModules = new [] {
 };
 
 // Prefix for temporary intermediates that are created by this script
-var TemporaryPrefix = "CAKE_SCRIPT_TEMP";
+static string TemporaryPrefix = "CAKE_SCRIPT_TEMP";
+
+// Unity log file
+static string UnityLogFile = TemporaryPrefix + "unity_build_log.log";
 
 // Location of puppet application builds
  var PuppetBuildsFolder = "PuppetBuilds";
@@ -358,7 +361,7 @@ Task("CreatePackages").IsDependentOn("Externals").IsDependentOn("Package");
 
 // Builds the puppet applications and throws an exception on failure.
 Task("BuildPuppetApps")
-    .IsDependentOn("Externals")
+    //.IsDependentOn("Externals")
     .Does(()=>
 {
     if (IsRunningOnUnix())
@@ -611,8 +614,26 @@ static int ExecuteUnityCommand(string extraArgs, ICakeContext context)
 {
     var projectDir = context.MakeAbsolute(context.Directory("."));
     var exec = context.EnvironmentVariable("UNITY_PATH");
-    var args = "-batchmode -quit -logFile -projectPath " + projectDir + " " + extraArgs;
-    return context.StartProcess(exec, args);
+    var args = "-batchmode -quit -logFile " + UnityLogFile + " -projectPath " + projectDir + " " + extraArgs;
+    System.IO.File.Create(UnityLogFile).Dispose();
+
+    var logExec = "powershell.exe";
+    var logArgs = "Get-Content -Path " + UnityLogFile + " -Wait";
+    if (context.IsRunningOnUnix())
+    {
+        logExec = "tail";
+        logArgs = "-f " + UnityLogFile;
+    }
+    
+    int result = 0;
+    using (var unityProcess = context.StartAndReturnProcess(exec, new ProcessSettings{ Arguments = args }))
+    using (var logProcess = context.StartAndReturnProcess(logExec, new ProcessSettings{ Arguments = logArgs }))
+    {
+        unityProcess.WaitForExit();
+        result = unityProcess.GetExitCode();
+        logProcess.Kill();
+    }
+    return result;
 }
 
 void BuildPuppetApp(string buildMethodName, string buildTarget)
