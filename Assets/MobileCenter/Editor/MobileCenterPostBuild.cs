@@ -200,7 +200,7 @@ public class MobileCenterPostBuild
             capabilityManager.AddBackgroundModes(BackgroundModesOptions.RemoteNotifications);
         }
     }
-#endi   
+#endif   
 #endif
     #endregion
 }
