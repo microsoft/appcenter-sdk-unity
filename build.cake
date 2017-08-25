@@ -39,10 +39,7 @@ var MobileCenterModules = new [] {
 };
 
 // Prefix for temporary intermediates that are created by this script
-static string TemporaryPrefix = "CAKE_SCRIPT_TEMP";
-
-// Unity log file
-static string UnityLogFile = TemporaryPrefix + "unity_build_log.log";
+var TemporaryPrefix = "CAKE_SCRIPT_TEMP";
 
 // Location of puppet application builds
  var PuppetBuildsFolder = "PuppetBuilds";
@@ -330,8 +327,8 @@ Task("Externals")
     .IsDependentOn("Externals-Uwp")
     .IsDependentOn("Externals-Ios")
     .IsDependentOn("Externals-Android")
-    .IsDependentOn("Externals-Unity-Packages")
-    .IsDependentOn("Externals-Uwp-IL2CPP-Dependencies")
+    // .IsDependentOn("Externals-Unity-Packages")
+    // .IsDependentOn("Externals-Uwp-IL2CPP-Dependencies")
     .Does(()=>
 {
     DeleteDirectoryIfExists("externals");
@@ -420,7 +417,8 @@ Task("BuildPuppetApps")
             BuildPuppetApp(uwpBuildMethod, "wsaplayer");
             
             // Verify that a solution file was created and that it builds properly.
-            var solutionFilePath = GetFiles("PuppetBuilds/*/*.sln").Single();            
+            var solutionFilePath = GetFiles("PuppetBuilds/*/*.sln").Single();
+
             // For now, only build for x86.
             Information("Attempting to build '" + solutionFilePath.ToString() + "'...");
             MSBuild(solutionFilePath.ToString(), c => c
@@ -614,25 +612,30 @@ static int ExecuteUnityCommand(string extraArgs, ICakeContext context)
 {
     var projectDir = context.MakeAbsolute(context.Directory("."));
     var exec = context.EnvironmentVariable("UNITY_PATH");
-    if (context.IsRunningOnUnix())
+    if (exec == null)
     {
-        exec = "/Applications/Unity/Unity.app/Contents/MacOS/Unity";
+        if (context.IsRunningOnUnix())
+        {
+            exec = "/Applications/Unity/Unity.app/Contents/MacOS/Unity";
+        }
+        else
+        {
+            exec = "C:\\Program Files\\Unity\\Editor\\Unity.exe";
+        }
     }
-    else
-    {
-        exec = "C:\\Program Files\\Unity\\Editor\\Unity.exe";
-    }
-    var args = "-batchmode -quit -logFile " + UnityLogFile + " -projectPath " + projectDir + " " + extraArgs;
-    System.IO.File.Create(UnityLogFile).Dispose();
 
+    // Unity log file
+    var unityLogFile = "CAKE_SCRIPT_TEMPunity_build_log.log";
+
+    var args = "-batchmode -quit -logFile " + unityLogFile + " -projectPath " + projectDir + " " + extraArgs;
+    System.IO.File.Create(unityLogFile).Dispose();
     var logExec = "powershell.exe";
-    var logArgs = "Get-Content -Path " + UnityLogFile + " -Wait";
+    var logArgs = "Get-Content -Path " + unityLogFile + " -Wait";
     if (context.IsRunningOnUnix())
     {
         logExec = "tail";
-        logArgs = "-f " + UnityLogFile;
+        logArgs = "-f " + unityLogFile;
     }
-    
     int result = 0;
     using (var unityProcess = context.StartAndReturnProcess(exec, new ProcessSettings{ Arguments = args }))
     using (var logProcess = context.StartAndReturnProcess(logExec, new ProcessSettings{ Arguments = logArgs }))
