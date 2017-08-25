@@ -637,10 +637,10 @@ static int ExecuteUnityCommand(string extraArgs, ICakeContext context)
         logArgs = "-f " + unityLogFile;
     }
     int result = 0;
-    Information("exec = " + exec);
+    context.Information("exec = " + exec);
     if (System.IO.File.Exists(exec))
     {
-        Information("exec = " + exec + " and it exists");
+        context.Information("exec = " + exec + " and it exists");
     }
     using (var unityProcess = context.StartAndReturnProcess(exec, new ProcessSettings{ Arguments = args }))
     using (var logProcess = context.StartAndReturnProcess(logExec, new ProcessSettings{ Arguments = logArgs }))
