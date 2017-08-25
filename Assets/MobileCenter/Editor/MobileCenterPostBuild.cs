@@ -9,7 +9,9 @@ using System.Text.RegularExpressions;
 using UnityEngine;
 using UnityEditor;
 using UnityEditor.Callbacks;
-
+#if UNITY_IOS
+using UnityEditor.iOS.Xcode;
+#endif
 public class MobileCenterPostBuild
 {
     [PostProcessBuild]
@@ -27,6 +29,7 @@ public class MobileCenterPostBuild
         }
         if (target == BuildTarget.iOS)
         {
+#if UNITY_IOS
             // Note: Need to use reflection for all of this because Windows editor might not have
             // the namespace required. Can't use #if UNITY_IOS due to a bug where building from 
             // command line in batch mode doesn't properly register the target.
@@ -36,34 +39,30 @@ public class MobileCenterPostBuild
             var settings = AssetDatabase.LoadAssetAtPath<MobileCenterSettings>(settingsPath);
 
             // Update project.
-            var xcExtensionsAssembly = Assembly.Load("UnityEditor.iOS.Extensions.Xcode");
-            var pbxProjType = xcExtensionsAssembly.GetType("UnityEditor.iOS.Xcode.PBXProject");
-            var projectPath = pbxProjType.GetMethod("GetPBXProjectPath", BindingFlags.Public | BindingFlags.Static).Invoke(pbxProjType, new object[] { pathToBuiltProject });
-            var targetName = pbxProjType.GetMethod("GetUnityTargetName", BindingFlags.Public | BindingFlags.Static).Invoke(pbxProjType, null);
-            var project = pbxProjType.GetConstructor(Type.EmptyTypes).Invoke(null);
-            project.GetType().GetMethod("ReadFromFile").Invoke(project, new[] { projectPath });
+            var projectPath = PBXProject.GetPBXProjectPath(pathToBuiltProject);
+            var targetName = PBXProject.GetUnityTargetName();
+            var project = new PBXProject();
+            project.ReadFromFile(projectPath);
             OnPostprocessProject(project, settings);
-            project.GetType().GetMethod("WriteToFile").Invoke(project, new[] { projectPath });
+            project.WriteToFile(projectPath);
 
             // Update Info.plist.
-            var plistType = xcExtensionsAssembly.GetType("UnityEditor.iOS.Xcode.PlistDocument");
             var infoPath = pathToBuiltProject + "/Info.plist";
-            var info = plistType.GetConstructor(Type.EmptyTypes).Invoke(null);
-            plistType.GetMethod("ReadFromFile").Invoke(info, new[] { infoPath });
+            var info = new PlistDocument();
+            info.ReadFromFile(infoPath);
             OnPostprocessInfo(info, settings);
-            plistType.GetMethod("WriteToFile").Invoke(info, new[] { infoPath });
+            info.WriteToFile(infoPath);
 
 #if UNITY_2017_1_OR_NEWER
-            // Update capabilities.
-            var capabilityManager = xcExtensionsAssembly
-                .GetType("UnityEditor.iOS.Xcode.ProjectCapabilityManager")
-                .GetConstructor(new [] { typeof(string), typeof(string), typeof(string) })
-                .Invoke(new object[] { projectPath, targetName + ".entitlements", targetName });
+             // Update capabilities.
+            var capabilityManager = new ProjectCapabilityManager(
+                projectPath, targetName + ".entitlements",
+                PBXProject.GetUnityTargetName());
             OnPostprocessCapabilities(capabilityManager, settings);
-            capabilityManager.GetType().GetMethod("WriteToFile").Invoke(capabilityManager, null);
-
+            capabilityManager.WriteToFile();
 #endif
-		}
+#endif
+        }
     }
 
     private static string GetApplicationId()
@@ -166,42 +165,42 @@ public class MobileCenterPostBuild
     #endregion
 
     #region iOS Methods
-    private static void OnPostprocessProject(object project, MobileCenterSettings settings)
+#if UNITY_IOS
+        private static void OnPostprocessProject(PBXProject project, MobileCenterSettings settings)
     {
         // The target we want to add to is created by Unity.
-        var targetName = project.GetType().GetMethod("GetUnityTargetName", BindingFlags.Public | BindingFlags.Static).Invoke(project.GetType(), null);
-        var targetGuid = project.GetType().GetMethod("TargetGuidByName").Invoke(project, new object[] { targetName });
-		// Need to add "-lsqlite3" linker flag to "Other linker flags" due to SQLite dependency.
-        project.GetType().GetMethod("AddBuildProperty", new[] { typeof(string), typeof(string), typeof(string) })
-               .Invoke(project, new [] { targetGuid, "OTHER_LDFLAGS", "-lsqlite3" });
-	}
+        var targetName = PBXProject.GetUnityTargetName();
+        var targetGuid = project.TargetGuidByName(targetName);
 
-    private static void OnPostprocessInfo(object info, MobileCenterSettings settings)
+        // Need to add "-lsqlite3" linker flag to "Other linker flags" due to
+        // SQLite dependency.
+        project.AddBuildProperty(targetGuid, "OTHER_LDFLAGS", "-lsqlite3");
+    }
+
+    private static void OnPostprocessInfo(PlistDocument info, MobileCenterSettings settings)
     {
         if (settings.UseDistribute && MobileCenterSettings.Distribute != null)
         {
             // Add Mobile Center URL sceme.
-            var root = info.GetType().GetField("root").GetValue(info);
-			var urlTypes = root.GetType().GetMethod("CreateArray").Invoke(root, new object[] { "CFBundleURLTypes" });
-            var urlType = urlTypes.GetType().GetMethod("AddDict").Invoke(urlTypes, null);
-            var setStringMethod = urlType.GetType().GetMethod("SetString");
-            setStringMethod.Invoke(urlType, new object[] { "CFBundleTypeRole", "None" });
-            setStringMethod.Invoke(urlType, new object[] { "CFBundleURLName", GetApplicationId() });
-            var urlSchemes = urlType.GetType().GetMethod("CreateArray").Invoke(urlType, new [] { "CFBundleURLSchemes" });
-            urlSchemes.GetType().GetMethod("AddString").Invoke(urlSchemes, new [] { "mobilecenter-" + settings.iOSAppSecret });
+            var urlTypes = info.root.CreateArray("CFBundleURLTypes");
+            var urlType = urlTypes.AddDict();
+            urlType.SetString("CFBundleTypeRole", "None");
+            urlType.SetString("CFBundleURLName", GetApplicationId());
+            var urlSchemes = urlType.CreateArray("CFBundleURLSchemes");
+            urlSchemes.AddString("mobilecenter-" + settings.iOSAppSecret);
         }
     }
+
 #if UNITY_2017_1_OR_NEWER
-    private static void OnPostprocessCapabilities(object capabilityManager, MobileCenterSettings settings)
+    private static void OnPostprocessCapabilities(ProjectCapabilityManager capabilityManager, MobileCenterSettings settings)
     {
         if (settings.UsePush && MobileCenterSettings.Push != null)
         {
-            capabilityManager.GetType().GetMethod("AddPushNotifications").Invoke(capabilityManager, new object[] { true });
-            var backgroundModesEnumType = capabilityManager.GetType().Assembly.GetType("UnityEditor.iOS.Xcode.BackgroundModesOptions");
-            var remoteNotifEnum = Enum.Parse(backgroundModesEnumType, "RemoteNotifications");
-            capabilityManager.GetType().GetMethod("AddBackgroundModes").Invoke(capabilityManager, new object[] { remoteNotifEnum });
+            capabilityManager.AddPushNotifications(true);
+            capabilityManager.AddBackgroundModes(BackgroundModesOptions.RemoteNotifications);
         }
     }
+#endi   
 #endif
-	#endregion
+    #endregion
 }

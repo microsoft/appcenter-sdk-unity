@@ -372,7 +372,7 @@ Task("BuildPuppetApps")
         {
             // Remove all current builds and create new build.
             CleanDirectory(PuppetBuildsFolder);
-            BuildPuppetApp(androidMethod);
+            BuildPuppetApp(androidMethod, "android");
 
             // Verify that an APK was generated. (".Single()" should throw an exception if the 
             // collection is empty).
@@ -390,7 +390,7 @@ Task("BuildPuppetApps")
         {
             // Remove all current builds and create new build.
             CleanDirectory(PuppetBuildsFolder);
-            BuildPuppetApp(iOSBuildMethod);
+            BuildPuppetApp(iOSBuildMethod, "ios");
             
             // Verify that an Xcode project was created and that it builds properly.
             var xcodeProjectPath = GetDirectories(PuppetBuildsFolder + "/*/*.xcodeproj").Single();
@@ -414,7 +414,7 @@ Task("BuildPuppetApps")
         {
             // Remove all existing builds and create new build.
             CleanDirectory(PuppetBuildsFolder);
-            BuildPuppetApp(uwpBuildMethod);
+            BuildPuppetApp(uwpBuildMethod, "wsaplayer");
             
             // Verify that a solution file was created and that it builds properly.
             var solutionFilePath = GetFiles("PuppetBuilds/*/*.sln").Single();            
@@ -615,10 +615,10 @@ static int ExecuteUnityCommand(string extraArgs, ICakeContext context)
     return context.StartProcess(exec, args);
 }
 
-void BuildPuppetApp(string buildMethodName)
+void BuildPuppetApp(string buildMethodName, string buildTarget)
 {
     Information("Executing method " + buildMethodName + ", this could take a while...");
-    var command = "-executeMethod " + buildMethodName;
+    var command = "-executeMethod " + buildMethodName + " -buildTarget " + buildTarget;
     var result = ExecuteUnityCommand(command, Context);
     if (result != 0)
     {
