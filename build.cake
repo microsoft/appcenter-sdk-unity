@@ -614,6 +614,14 @@ static int ExecuteUnityCommand(string extraArgs, ICakeContext context)
 {
     var projectDir = context.MakeAbsolute(context.Directory("."));
     var exec = context.EnvironmentVariable("UNITY_PATH");
+    if (context.IsRunningOnUnix())
+    {
+        exec = "/Applications/Unity/Unity.app/Contents/MacOS/Unity";
+    }
+    else
+    {
+        exec = "C:\\Program Files\\Unity\\Editor\\Unity.exe";
+    }
     var args = "-batchmode -quit -logFile " + UnityLogFile + " -projectPath " + projectDir + " " + extraArgs;
     System.IO.File.Create(UnityLogFile).Dispose();
 
