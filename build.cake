@@ -626,17 +626,22 @@ static int ExecuteUnityCommand(string extraArgs, ICakeContext context)
 
     // Unity log file
     var unityLogFile = "CAKE_SCRIPT_TEMPunity_build_log.log";
-
     var args = "-batchmode -quit -logFile " + unityLogFile + " -projectPath " + projectDir + " " + extraArgs;
     System.IO.File.Create(unityLogFile).Dispose();
     var logExec = "powershell.exe";
     var logArgs = "Get-Content -Path " + unityLogFile + " -Wait";
+
     if (context.IsRunningOnUnix())
     {
         logExec = "tail";
         logArgs = "-f " + unityLogFile;
     }
     int result = 0;
+    Information("exec = " + exec);
+    if (System.IO.File.Exists(exec))
+    {
+        Information("exec = " + exec + " and it exists");
+    }
     using (var unityProcess = context.StartAndReturnProcess(exec, new ProcessSettings{ Arguments = args }))
     using (var logProcess = context.StartAndReturnProcess(logExec, new ProcessSettings{ Arguments = logArgs }))
     {
