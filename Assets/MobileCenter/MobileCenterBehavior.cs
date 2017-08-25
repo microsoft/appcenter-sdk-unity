@@ -31,11 +31,11 @@ public class MobileCenterBehavior : MonoBehaviour
             Debug.LogError("Mobile Center isn't configured!");
             return;
         }
-        MobileCenterServiceHelper.InitializeServices(settings.Services);
-#if UNITY_WSA_10_0
+#if UNITY_IOS || UNITY_ANDROID
+        InitializeServices();
+#else
         InitializeMobileCenter();
 #endif
-        MobileCenterServiceHelper.PostInitializeServices(settings.Services);
     }
 
     private void InitializeMobileCenter()
@@ -46,5 +46,11 @@ public class MobileCenterBehavior : MonoBehaviour
             MobileCenter.SetLogUrl(settings.CustomLogUrl.LogUrl);
         }
         MobileCenter.Start(settings.AppSecret, settings.Services);
+    }
+
+    private void InitializeServices()
+    {
+        MobileCenterServiceHelper.InitializeServices(settings.Services);
+        MobileCenterServiceHelper.PostInitializeServices(settings.Services);
     }
 }
