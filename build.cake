@@ -420,7 +420,11 @@ Task("BuildPuppetApps")
             var solutionFilePath = GetFiles("PuppetBuilds/*/*.sln").Single();            
             // For now, only build for x86.
             Information("Attempting to build '" + solutionFilePath.ToString() + "'...");
-            MSBuild(solutionFilePath.ToString(), c => c.SetConfiguration("Master").WithProperty("Platform", "x86"));
+            MSBuild(solutionFilePath.ToString(), c => c
+                .SetConfiguration("Master")
+                .WithProperty("Platform", "x86")
+                .SetVerbosity(Verbosity.Minimal)
+                .SetMSBuildPlatform(MSBuildPlatform.x86));
             Information("Successfully built '" + solutionFilePath.ToString() + "'");
         }
     }
