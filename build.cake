@@ -382,7 +382,7 @@ Task("Package").Does(()=>
     }
 });
 
-Task("PrepareAssets").IsDependentOn("Externals").IsDependentOn("BuildAndroidContentProvider");
+Task("PrepareAssets").IsDependentOn("BuildAndroidContentProvider").IsDependentOn("Externals");
 
 // Creates Unity packages corresponding to all ".unitypackagespec" files
 // in "UnityPackageSpecs" folder (and downloads binaries)
