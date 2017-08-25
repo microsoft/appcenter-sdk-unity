@@ -16,7 +16,7 @@ public class MobileCenterPostBuild
     public static void OnPostprocessBuild(BuildTarget target, string pathToBuiltProject)
     {
         if (target == BuildTarget.WSAPlayer &&
-            PlayerSettings.GetScriptingBackend(BuildTargetGroup.WSA) == ScriptingImplementation.IL2CPP)
+            PlayerSettings.GetScriptingBackend(BuildTargetGroup.WSA) != ScriptingImplementation.IL2CPP)
         {
             // If UWP, need to add NuGet packages.
             var projectJson = pathToBuiltProject + "/" + PlayerSettings.productName + "/project.json";
