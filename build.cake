@@ -611,38 +611,34 @@ void BuildXcodeProject(string projectPath)
 static int ExecuteUnityCommand(string extraArgs, ICakeContext context)
 {
     var projectDir = context.MakeAbsolute(context.Directory("."));
-    var exec = context.EnvironmentVariable("UNITY_PATH");
-    if (exec == null)
+    var unityPath = context.EnvironmentVariable("UNITY_PATH");
+
+    // If environment variable is not set, use default locations
+    if (unityPath == null)
     {
         if (context.IsRunningOnUnix())
         {
-            exec = "/Applications/Unity/Unity.app/Contents/MacOS/Unity";
+            unityPath = "/Applications/Unity/Unity.app/Contents/MacOS/Unity";
         }
         else
         {
-            exec = "C:\\Program Files\\Unity\\Editor\\Unity.exe";
+            unityPath = "C:\\Program Files\\Unity\\Editor\\Unity.exe";
         }
     }
 
     // Unity log file
     var unityLogFile = "CAKE_SCRIPT_TEMPunity_build_log.log";
-    var args = "-batchmode -quit -logFile " + unityLogFile + " -projectPath " + projectDir + " " + extraArgs;
+    var unityArgs = "-batchmode -quit -logFile " + unityLogFile + " -projectPath " + projectDir + " " + extraArgs;
     System.IO.File.Create(unityLogFile).Dispose();
     var logExec = "powershell.exe";
     var logArgs = "Get-Content -Path " + unityLogFile + " -Wait";
-
     if (context.IsRunningOnUnix())
     {
         logExec = "tail";
         logArgs = "-f " + unityLogFile;
     }
     int result = 0;
-    context.Information("exec = " + exec);
-    if (System.IO.File.Exists(exec))
-    {
-        context.Information("exec = " + exec + " and it exists");
-    }
-    using (var unityProcess = context.StartAndReturnProcess(exec, new ProcessSettings{ Arguments = args }))
+    using (var unityProcess = context.StartAndReturnProcess(unityPath, new ProcessSettings{ Arguments = unityArgs }))
     using (var logProcess = context.StartAndReturnProcess(logExec, new ProcessSettings{ Arguments = logArgs }))
     {
         unityProcess.WaitForExit();
