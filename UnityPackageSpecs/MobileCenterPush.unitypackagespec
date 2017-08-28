@@ -10,6 +10,7 @@
         <!-- Android files -->
         <file path="Assets/Plugins/Android/mobile-center-push-release.aar" />
         <file path="Assets/Plugins/MobileCenterSDK/Push/Android" />
+        <file path="Assets/PlayServicesResolver" />
 
         <!-- iOS files -->
         <file path="Assets/Plugins/iOS/Push" />

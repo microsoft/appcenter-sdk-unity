@@ -685,6 +685,7 @@ static int ExecuteUnityCommand(string extraArgs, ICakeContext context)
         result = unityProcess.GetExitCode();
         logProcess.Kill();
     }
+    context.DeleteFile(unityLogFile);
     return result;
 }
 
