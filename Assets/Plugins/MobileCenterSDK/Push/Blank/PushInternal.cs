@@ -1,4 +1,4 @@
-﻿// Copyright (c) Microsoft Corporation. All rights reserved.
+﻿﻿// Copyright (c) Microsoft Corporation. All rights reserved.
 //
 // Licensed under the MIT license.
 
@@ -18,6 +18,10 @@ namespace Microsoft.Azure.Mobile.Unity.Push.Internal
         {
         }
 
+        public static void PostInitialize()
+        {
+        }
+
         public static RawType GetNativeType()
         {
             return default(RawType);
@@ -34,6 +38,10 @@ namespace Microsoft.Azure.Mobile.Unity.Push.Internal
         }
 
         public static void EnableFirebaseAnalytics()
+        {
+        }
+
+        internal static void ReplayUnprocessedPushNotifications()
         {
         }
     }

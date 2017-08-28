@@ -6,10 +6,10 @@
 #import <MobileCenterCrashes/MobileCenterCrashes.h>
 #import <Foundation/Foundation.h>
 
-static ShouldProcessErrorReportFunction *shouldProcessErrorReport;
+static ShouldProcessErrorReportFunction shouldProcessErrorReport;
 static UnityCrashesDelegate *del;
 
-void mobile_center_unity_crashes_crashes_delegate_set_should_process_error_report_delegate(ShouldProcessErrorReportFunction* functionPtr)
+void mobile_center_unity_crashes_crashes_delegate_set_should_process_error_report_delegate(ShouldProcessErrorReportFunction functionPtr)
 {
   shouldProcessErrorReport = functionPtr;
 }
@@ -24,7 +24,7 @@ void mobile_center_unity_crashes_set_delegate()
 
 -(BOOL)crashes:(MSCrashes *)crashes shouldProcessErrorReport:(MSErrorReport *)errorReport
 {
-  return (*shouldProcessErrorReport)(errorReport);
+  return (shouldProcessErrorReport)(errorReport);
 }
 
 @end

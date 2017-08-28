@@ -1,16 +1,16 @@
-﻿﻿﻿﻿﻿// Copyright (c) Microsoft Corporation. All rights reserved.
+// Copyright (c) Microsoft Corporation. All rights reserved.
 //
 // Licensed under the MIT license.
 
-using UnityEngine;
 using Microsoft.Azure.Mobile.Unity.Push;
+using UnityEngine;
 
-public class PushHandler : MonoBehaviour
+public class PuppetPushHandler : MonoBehaviour
 {
     private static PushNotificationReceivedEventArgs _pushEventArgs = null;
     private static object _pushLock = new object();
 
-    void Start()
+    void Awake()
     {
         Push.PushNotificationReceived += (sender, e) =>
         {
@@ -40,16 +40,9 @@ public class PushHandler : MonoBehaviour
                         pushSummary += "\t\t" + key + " : " + _pushEventArgs.CustomData[key] + "\n";
                     }
                 }
-                SimpleLog(pushSummary);
+                print(pushSummary);
                 _pushEventArgs = null;
             }
         }
-    }
-
-
-    void SimpleLog(object message)
-    {
-        const string printTag = "[PushHandler]: ";
-        print(printTag + message + '\n');
     }
 }

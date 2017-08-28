@@ -1,8 +1,11 @@
-﻿using System;
+﻿﻿// Copyright (c) Microsoft Corporation. All rights reserved.
+//
+// Licensed under the MIT license.
+
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using System.Xml;
 using UnityEditor;
 using UnityEngine;
 
@@ -105,50 +108,10 @@ public class FirebaseDependency : AssetPostprocessor
         return googleServicesFiles.Count > 0 ? googleServicesFiles.ToArray() : null;
     }
 
-    static string GetApplicationId()
-    {
-#if UNITY_5_6_OR_NEWER
-        return PlayerSettings.applicationIdentifier;
-#else
-        return PlayerSettings.bundleIdentifier;
-#endif
-    }
-
-    static void WriteXmlResource(string path, Dictionary<string, string> resourceValues)
-    {
-        var xws = new XmlWriterSettings
-        {
-            Indent = true
-        };
-        using (var sw = File.Create(path))
-        using (var xw = XmlWriter.Create(sw, xws))
-        {
-            xw.WriteStartDocument();
-            xw.WriteStartElement("resources");
-
-            foreach (var kvp in resourceValues)
-            {
-                if (!string.IsNullOrEmpty(kvp.Value))
-                {
-                    xw.WriteStartElement("string");
-                    xw.WriteAttributeString("name", kvp.Key);
-                    xw.WriteAttributeString("translatable", "false");
-                    xw.WriteString(kvp.Value);
-                    xw.WriteEndElement();
-                }
-            }
-
-            xw.WriteEndElement();
-            xw.WriteEndDocument();
-            xw.Flush();
-            xw.Close();
-        }
-    }
-
     static void UpdateJson()
     {
 #if UNITY_ANDROID
-        var bundleId = GetApplicationId();
+        var bundleId = ApplicationIdHelper.GetApplicationId();
         var projectDir = Path.Combine(Application.dataPath, "..");
         var googleServicesFiles = FindGoogleServicesFiles();
         if (googleServicesFiles == null)
@@ -200,7 +163,7 @@ public class FirebaseDependency : AssetPostprocessor
             { "google_storage_bucket", googleServices.GetStorageBucket(bundleId) },
             { "project_id", googleServices.GetProjectId() },
         };
-        WriteXmlResource(outputPath, valuesItems);
+        XmlResourceHelper.WriteXmlResource(outputPath, valuesItems);
 
         // Update editor project view.
         AssetDatabase.Refresh();
