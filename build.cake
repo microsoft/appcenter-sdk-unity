@@ -142,7 +142,6 @@ class UnityPackage
             Context.Error("Invalid format for UnityPackageSpec file '" + specFilePath + "': missing package name or version");
             return;
         }
-        
 
         var xpathPrefix = "/package/include/file[";
         var xpathSuffix= "]/@path";
