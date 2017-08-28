@@ -1,4 +1,4 @@
-﻿// Copyright (c) Microsoft Corporation. All rights reserved.
+// Copyright (c) Microsoft Corporation. All rights reserved.
 //
 // Licensed under the MIT license.
 
@@ -29,14 +29,10 @@ public class MobileCenterPostBuild
         }
         if (target == BuildTarget.iOS)
         {
-#if UNITY_IOS
-            // Note: Need to use reflection for all of this because Windows editor might not have
-            // the namespace required. Can't use #if UNITY_IOS due to a bug where building from 
-            // command line in batch mode doesn't properly register the target.
-
-            // Load Mobile Center settings.
+            // Load/Apply Mobile Center settings.
             var settingsPath = MobileCenterSettingsEditor.SettingsPath;
             var settings = AssetDatabase.LoadAssetAtPath<MobileCenterSettings>(settingsPath);
+            ApplyIosSettings(settings, pathToBuiltProject);
 
             // Update project.
             var projectPath = PBXProject.GetPBXProjectPath(pathToBuiltProject);
@@ -65,16 +61,7 @@ public class MobileCenterPostBuild
         }
     }
 
-    private static string GetApplicationId()
-    {
-#if UNITY_5_6_OR_NEWER
-        return PlayerSettings.applicationIdentifier;
-#else
-        return PlayerSettings.bundleIdentifier;
-#endif
-    }
-
-    #region UWP Methods
+#region UWP Methods
     public static void ProcessUwpIl2CppDependencies()
     {
         var binaries = AssetDatabase.FindAssets("*", new[] { "Assets/Plugins/WSA/IL2CPP" });
@@ -174,6 +161,7 @@ public class MobileCenterPostBuild
         // Need to add "-lsqlite3" linker flag to "Other linker flags" due to
         // SQLite dependency.
         project.AddBuildProperty(targetGuid, "OTHER_LDFLAGS", "-lsqlite3");
+        project.AddBuildProperty(targetGuid, "CLANG_ENABLE_MODULES", "YES");
     }
 
     private static void OnPostprocessInfo(PlistDocument info, MobileCenterSettings settings)
@@ -184,10 +172,35 @@ public class MobileCenterPostBuild
             var urlTypes = info.root.CreateArray("CFBundleURLTypes");
             var urlType = urlTypes.AddDict();
             urlType.SetString("CFBundleTypeRole", "None");
-            urlType.SetString("CFBundleURLName", GetApplicationId());
+            urlType.SetString("CFBundleURLName", ApplicationIdHelper.GetApplicationId());
             var urlSchemes = urlType.CreateArray("CFBundleURLSchemes");
             urlSchemes.AddString("mobilecenter-" + settings.iOSAppSecret);
         }
+    }
+
+    private static void ApplyIosSettings(MobileCenterSettings settings, string pathToBuiltProject)
+    {
+        var settingsMaker = new MobileCenterSettingsMakerIos(pathToBuiltProject);
+        settingsMaker.SetLogUrl(settings.CustomLogUrl.LogUrl);
+        settingsMaker.SetLogLevel((int)settings.InitialLogLevel);
+        settingsMaker.SetAppSecret(settings.iOSAppSecret);
+        if (settings.UsePush)
+        {
+            settingsMaker.StartPushClass();
+        }
+        if (settings.UseCrashes)
+        {
+            settingsMaker.StartCrashesClass();
+        }
+        if (settings.UseAnalytics)
+        {
+            settingsMaker.StartAnalyticsClass();
+        }
+        if (settings.UseDistribute)
+        {
+            settingsMaker.StartDistributeClass();
+        }
+        settingsMaker.CommitSettings();
     }
 
 #if UNITY_2017_1_OR_NEWER
@@ -201,5 +214,9 @@ public class MobileCenterPostBuild
     }
 #endif   
 #endif
+<<<<<<< HEAD
+=======
+#endif
+>>>>>>> origin/develop
     #endregion
 }

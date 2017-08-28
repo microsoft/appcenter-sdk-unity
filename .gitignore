@@ -70,3 +70,6 @@ Assets/PlayServicesResolver.meta
 
 # Cake
 CAKE_SCRIPT_TEMP*
+
+# Android Studio
+*/.idea/

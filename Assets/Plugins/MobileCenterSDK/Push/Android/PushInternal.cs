@@ -1,4 +1,4 @@
-﻿// Copyright (c) Microsoft Corporation. All rights reserved.
+﻿﻿// Copyright (c) Microsoft Corporation. All rights reserved.
 //
 // Licensed under the MIT license.
 
@@ -11,10 +11,19 @@ namespace Microsoft.Azure.Mobile.Unity.Push.Internal
     class PushInternal
     {
         private static AndroidJavaClass _push = new AndroidJavaClass("com.microsoft.azure.mobile.push.Push");
-    
+        private static AndroidJavaClass _unityListener = new AndroidJavaClass("com.microsoft.azure.mobile.mobilecenterloader.UnityMobileCenterPushDelegate");
+
         public static void Initialize()
         {
-            PushDelegate.SetDelegate();
+            _unityListener.CallStatic("setListener", new PushDelegate());
+        }
+
+        public static void PostInitialize()
+        {
+            var instance = _push.CallStatic<AndroidJavaObject>("getInstance");
+            AndroidJavaClass unityPlayer = new AndroidJavaClass("com.unity3d.player.UnityPlayer");
+            AndroidJavaObject activity = unityPlayer.GetStatic<AndroidJavaObject>("currentActivity");
+            instance.Call("onActivityResumed", activity);
         }
 
         public static MobileCenterTask SetEnabledAsync(bool isEnabled)
@@ -37,6 +46,11 @@ namespace Microsoft.Azure.Mobile.Unity.Push.Internal
         public static void EnableFirebaseAnalytics()
         {
            _push.CallStatic("enableFirebaseAnalytics");
+        }
+
+        internal static void ReplayUnprocessedPushNotifications()
+        {
+            _unityListener.CallStatic("replayPushNotifications");
         }
     }
 }

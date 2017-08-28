@@ -7,6 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		3510DC4C1F3E6523002A7B56 /* PushDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 3510DC4B1F3E6523002A7B56 /* PushDelegate.m */; };
+		3510DC4E1F3E6528002A7B56 /* PushDelegateSetter.m in Sources */ = {isa = PBXBuildFile; fileRef = 3510DC4D1F3E6528002A7B56 /* PushDelegateSetter.m */; };
 		354C7FE91EFAE42700EE7EDD /* MobileCenterPush.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 35E9FC301EFAE00700556A1F /* MobileCenterPush.framework */; };
 		354C7FEA1EFAE42700EE7EDD /* MobileCenterDistribute.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 35E9FC2E1EFAE00400556A1F /* MobileCenterDistribute.framework */; };
 		354C7FEB1EFAE42700EE7EDD /* MobileCenterCrashes.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 35E9FC2C1EFAE00000556A1F /* MobileCenterCrashes.framework */; };
@@ -15,6 +17,7 @@
 		3574C2BA1F01BE380028338F /* CustomProperties.mm in Sources */ = {isa = PBXBuildFile; fileRef = 3574C2B91F01BE380028338F /* CustomProperties.mm */; };
 		3574C2BC1F02C9020028338F /* NSNumberHelper.mm in Sources */ = {isa = PBXBuildFile; fileRef = 3574C2BB1F02C9020028338F /* NSNumberHelper.mm */; };
 		3574C2BE1F02CC4D0028338F /* NSDateHelper.mm in Sources */ = {isa = PBXBuildFile; fileRef = 3574C2BD1F02CC4D0028338F /* NSDateHelper.mm */; };
+		358041C21F3D0D37009E8C36 /* MobileCenterStarter.m in Sources */ = {isa = PBXBuildFile; fileRef = 358041C11F3D0D37009E8C36 /* MobileCenterStarter.m */; };
 		359195351F10365B00F9CB86 /* DistributeUnity.mm in Sources */ = {isa = PBXBuildFile; fileRef = 359195341F10365B00F9CB86 /* DistributeUnity.mm */; };
 		359195371F10388200F9CB86 /* ReleaseDetails.mm in Sources */ = {isa = PBXBuildFile; fileRef = 359195361F10388200F9CB86 /* ReleaseDetails.mm */; };
 		359195391F103CF200F9CB86 /* DistributeDelegate.mm in Sources */ = {isa = PBXBuildFile; fileRef = 359195381F103CF200F9CB86 /* DistributeDelegate.mm */; };
@@ -25,7 +28,6 @@
 		35E9FC4A1EFAE16000556A1F /* CrashesDelegate.mm in Sources */ = {isa = PBXBuildFile; fileRef = 35E9FC471EFAE16000556A1F /* CrashesDelegate.mm */; };
 		35E9FC4B1EFAE16000556A1F /* CrashesUnity.mm in Sources */ = {isa = PBXBuildFile; fileRef = 35E9FC481EFAE16000556A1F /* CrashesUnity.mm */; };
 		35E9FC4C1EFAE16000556A1F /* ErrorReport.mm in Sources */ = {isa = PBXBuildFile; fileRef = 35E9FC491EFAE16000556A1F /* ErrorReport.mm */; };
-		35E9FC501EFAE17F00556A1F /* PushDelegate.mm in Sources */ = {isa = PBXBuildFile; fileRef = 35E9FC4D1EFAE17F00556A1F /* PushDelegate.mm */; };
 		35E9FC511EFAE17F00556A1F /* PushNotification.mm in Sources */ = {isa = PBXBuildFile; fileRef = 35E9FC4E1EFAE17F00556A1F /* PushNotification.mm */; };
 		35E9FC521EFAE17F00556A1F /* PushUnity.mm in Sources */ = {isa = PBXBuildFile; fileRef = 35E9FC4F1EFAE17F00556A1F /* PushUnity.mm */; };
 /* End PBXBuildFile section */
@@ -44,9 +46,12 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
+		3510DC4B1F3E6523002A7B56 /* PushDelegate.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; name = PushDelegate.m; path = ../Assets/Plugins/iOS/Push/PushDelegate.m; sourceTree = "<group>"; };
+		3510DC4D1F3E6528002A7B56 /* PushDelegateSetter.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; name = PushDelegateSetter.m; path = ../Assets/Plugins/iOS/Push/PushDelegateSetter.m; sourceTree = "<group>"; };
 		3574C2B91F01BE380028338F /* CustomProperties.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; name = CustomProperties.mm; path = ../Assets/Plugins/iOS/Core/CustomProperties.mm; sourceTree = "<group>"; };
 		3574C2BB1F02C9020028338F /* NSNumberHelper.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; name = NSNumberHelper.mm; path = ../Assets/Plugins/iOS/Core/Utility/NSNumberHelper.mm; sourceTree = "<group>"; };
 		3574C2BD1F02CC4D0028338F /* NSDateHelper.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; name = NSDateHelper.mm; path = ../Assets/Plugins/iOS/Core/Utility/NSDateHelper.mm; sourceTree = "<group>"; };
+		358041C11F3D0D37009E8C36 /* MobileCenterStarter.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; name = MobileCenterStarter.m; path = ../Assets/Plugins/iOS/Core/MobileCenterStarter.m; sourceTree = "<group>"; };
 		359195341F10365B00F9CB86 /* DistributeUnity.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; name = DistributeUnity.mm; path = ../Assets/Plugins/iOS/Distribute/DistributeUnity.mm; sourceTree = "<group>"; };
 		359195361F10388200F9CB86 /* ReleaseDetails.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; name = ReleaseDetails.mm; path = ../Assets/Plugins/iOS/Distribute/ReleaseDetails.mm; sourceTree = "<group>"; };
 		359195381F103CF200F9CB86 /* DistributeDelegate.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; name = DistributeDelegate.mm; path = ../Assets/Plugins/iOS/Distribute/DistributeDelegate.mm; sourceTree = "<group>"; };
@@ -64,7 +69,6 @@
 		35E9FC471EFAE16000556A1F /* CrashesDelegate.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; name = CrashesDelegate.mm; path = ../Assets/Plugins/iOS/Crashes/CrashesDelegate.mm; sourceTree = "<group>"; };
 		35E9FC481EFAE16000556A1F /* CrashesUnity.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; name = CrashesUnity.mm; path = ../Assets/Plugins/iOS/Crashes/CrashesUnity.mm; sourceTree = "<group>"; };
 		35E9FC491EFAE16000556A1F /* ErrorReport.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; name = ErrorReport.mm; path = ../Assets/Plugins/iOS/Crashes/ErrorReport.mm; sourceTree = "<group>"; };
-		35E9FC4D1EFAE17F00556A1F /* PushDelegate.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; name = PushDelegate.mm; path = ../Assets/Plugins/iOS/Push/PushDelegate.mm; sourceTree = "<group>"; };
 		35E9FC4E1EFAE17F00556A1F /* PushNotification.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; name = PushNotification.mm; path = ../Assets/Plugins/iOS/Push/PushNotification.mm; sourceTree = "<group>"; };
 		35E9FC4F1EFAE17F00556A1F /* PushUnity.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; name = PushUnity.mm; path = ../Assets/Plugins/iOS/Push/PushUnity.mm; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -88,13 +92,15 @@
 		35E9FBCE1EFADE5A00556A1F = {
 			isa = PBXGroup;
 			children = (
+				3510DC4D1F3E6528002A7B56 /* PushDelegateSetter.m */,
+				3510DC4B1F3E6523002A7B56 /* PushDelegate.m */,
+				358041C11F3D0D37009E8C36 /* MobileCenterStarter.m */,
 				359195381F103CF200F9CB86 /* DistributeDelegate.mm */,
 				359195361F10388200F9CB86 /* ReleaseDetails.mm */,
 				359195341F10365B00F9CB86 /* DistributeUnity.mm */,
 				3574C2BD1F02CC4D0028338F /* NSDateHelper.mm */,
 				3574C2BB1F02C9020028338F /* NSNumberHelper.mm */,
 				3574C2B91F01BE380028338F /* CustomProperties.mm */,
-				35E9FC4D1EFAE17F00556A1F /* PushDelegate.mm */,
 				35E9FC4E1EFAE17F00556A1F /* PushNotification.mm */,
 				35E9FC4F1EFAE17F00556A1F /* PushUnity.mm */,
 				35E9FC471EFAE16000556A1F /* CrashesDelegate.mm */,
@@ -186,18 +192,20 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				35E9FC501EFAE17F00556A1F /* PushDelegate.mm in Sources */,
 				35E9FC511EFAE17F00556A1F /* PushNotification.mm in Sources */,
 				35E9FC521EFAE17F00556A1F /* PushUnity.mm in Sources */,
+				358041C21F3D0D37009E8C36 /* MobileCenterStarter.m in Sources */,
 				35E9FC4A1EFAE16000556A1F /* CrashesDelegate.mm in Sources */,
 				35E9FC4B1EFAE16000556A1F /* CrashesUnity.mm in Sources */,
 				35E9FC4C1EFAE16000556A1F /* ErrorReport.mm in Sources */,
 				3574C2BE1F02CC4D0028338F /* NSDateHelper.mm in Sources */,
 				3574C2BC1F02C9020028338F /* NSNumberHelper.mm in Sources */,
 				359195371F10388200F9CB86 /* ReleaseDetails.mm in Sources */,
+				3510DC4C1F3E6523002A7B56 /* PushDelegate.m in Sources */,
 				359195391F103CF200F9CB86 /* DistributeDelegate.mm in Sources */,
 				3574C2BA1F01BE380028338F /* CustomProperties.mm in Sources */,
 				359195351F10365B00F9CB86 /* DistributeUnity.mm in Sources */,
+				3510DC4E1F3E6528002A7B56 /* PushDelegateSetter.m in Sources */,
 				35E9FC461EFAE14E00556A1F /* AnalyticsUnity.mm in Sources */,
 				35E9FC431EFAE11100556A1F /* NSStringDictionaryHelper.mm in Sources */,
 				35E9FC441EFAE11100556A1F /* NSStringHelper.mm in Sources */,
@@ -211,6 +219,7 @@
 		35E9FBD31EFADE5A00556A1F /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				CLANG_ENABLE_MODULES = YES;
 				"FRAMEWORK_SEARCH_PATHS[arch=*]" = (
 					"\"$(SRCROOT)/../Assets/Plugins/iOS/Crashes\"",
 					"\"$(SRCROOT)/../Assets/Plugins/iOS/Core\"",
@@ -224,6 +233,7 @@
 		35E9FBD41EFADE5A00556A1F /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				CLANG_ENABLE_MODULES = YES;
 				"FRAMEWORK_SEARCH_PATHS[arch=*]" = (
 					"\"$(SRCROOT)/../Assets/Plugins/iOS/Crashes\"",
 					"\"$(SRCROOT)/../Assets/Plugins/iOS/Core\"",

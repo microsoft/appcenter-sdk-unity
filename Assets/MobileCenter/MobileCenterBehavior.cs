@@ -3,6 +3,7 @@
 // Licensed under the MIT license.
 
 using Microsoft.Azure.Mobile.Unity;
+using Microsoft.Azure.Mobile.Unity.Utility;
 using UnityEngine;
 
 [HelpURL("https://docs.microsoft.com/en-us/mobile-center/sdk/")]
@@ -30,7 +31,11 @@ public class MobileCenterBehavior : MonoBehaviour
             Debug.LogError("Mobile Center isn't configured!");
             return;
         }
+#if UNITY_IOS || UNITY_ANDROID
+        InitializeServices();
+#else
         InitializeMobileCenter();
+#endif
     }
 
     private void InitializeMobileCenter()
@@ -41,5 +46,11 @@ public class MobileCenterBehavior : MonoBehaviour
             MobileCenter.SetLogUrl(settings.CustomLogUrl.LogUrl);
         }
         MobileCenter.Start(settings.AppSecret, settings.Services);
+    }
+
+    private void InitializeServices()
+    {
+        MobileCenterServiceHelper.InitializeServices(settings.Services);
+        MobileCenterServiceHelper.PostInitializeServices(settings.Services);
     }
 }
