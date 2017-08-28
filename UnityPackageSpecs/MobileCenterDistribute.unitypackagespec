@@ -16,7 +16,6 @@
         <file path="Assets/Plugins/MobileCenterSDK/Distribute/iOS"/>
 
         <!-- UWP files -->
-        <file path="Assets/Plugins/WSA/Distribute"/>
         <file path="Assets/Plugins/MobileCenterSDK/Distribute/UWP"/>
     </include>
 </package>
