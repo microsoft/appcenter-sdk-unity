@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <package name="MobileCenterAnalytics.unitypackage">
     <include>
-        <!-- Common files -->
-        <file path="Assets/Plugins/MobileCenterSDK/Analytics/Analytics.cs"/>
+        <!-- Shared files -->
+        <file path="Assets/Plugins/MobileCenterSDK/Analytics/Shared"/>
 
-        <!-- Editor stub files -->
-        <file path="Assets/Plugins/MobileCenterSDK/Analytics/UnityEditor"/>
+        <!-- "Blank" files -->
+        <file path="Assets/Plugins/MobileCenterSDK/Analytics/Blank"/>
 
         <!-- Android files -->
         <file path="Assets/Plugins/Android/mobile-center-analytics-release.aar"/>
@@ -16,7 +16,7 @@
         <file path="Assets/Plugins/MobileCenterSDK/Analytics/iOS"/>
 
         <!-- UWP files -->
-        <file path="Assets/Plugins/UWP/Analytics"/>
-        <!-- TODO: after refactoring, will need to add one more path for UWP -->
+        <file path="Assets/Plugins/WSA/Analytics"/>
+        <file path="Assets/Plugins/MobileCenterSDK/Analytics/UWP"/>
     </include>
 </package>

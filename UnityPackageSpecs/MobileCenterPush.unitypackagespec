@@ -1,12 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <package name="MobileCenterPush.unitypackage">
     <include>
-        <!-- Common files -->
-        <file path="Assets/Plugins/MobileCenterSDK/Push/Push.cs"/>
-        <file path="Assets/Plugins/MobileCenterSDK/Push/PushNotificationReceivedEventArgs.cs"/>
+        <!-- Shared files -->
+        <file path="Assets/Plugins/MobileCenterSDK/Push/Shared"/>
 
-        <!-- Editor stub files -->
-        <file path="Assets/Plugins/MobileCenterSDK/Push/UnityEditor"/>
+        <!-- "Blank" files -->
+        <file path="Assets/Plugins/MobileCenterSDK/Push/Blank"/>
 
         <!-- Android files -->
         <file path="Assets/Plugins/Android/mobile-center-push-release.aar"/>
@@ -17,7 +16,7 @@
         <file path="Assets/Plugins/MobileCenterSDK/Push/iOS"/>
 
         <!-- UWP files -->
-        <file path="Assets/Plugins/UWP/Push"/>
-        <!-- TODO: after refactoring, will need to add one more path for UWP -->
+        <file path="Assets/Plugins/WSA/Push"/>
+        <file path="Assets/Plugins/MobileCenterSDK/Push/UWP"/>
     </include>
 </package>

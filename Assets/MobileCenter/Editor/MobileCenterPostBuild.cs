@@ -120,7 +120,6 @@ public class MobileCenterPostBuild
         jsonString = AddDependencyToProjectJson(jsonString, "Newtonsoft.Json", "10.0.3");
         jsonString = AddDependencyToProjectJson(jsonString, "sqlite-net-pcl", "1.3.1");
         jsonString = AddDependencyToProjectJson(jsonString, "System.Collections.NonGeneric", "4.0.1");
-
         File.WriteAllText(projectJsonPath, jsonString);
     }
 
