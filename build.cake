@@ -130,16 +130,19 @@ class UnityPackage
     public static ICakeContext Context;
 
     private string _packageName;
+    private string _packageVersion;
     private List<string> _includePaths = new List<string>();
 
     public UnityPackage(string specFilePath)
     {
         _packageName = Context.XmlPeek(specFilePath, "package/@name");
-        if (_packageName == null)
+        _packageVersion = Context.XmlPeek(specFilePath, "package/@version");
+        if (_packageName == null || _packageVersion == null)
         {
-            Context.Error("Invalid format for UnityPackageSpec file '" + specFilePath + "': missing package name");
+            Context.Error("Invalid format for UnityPackageSpec file '" + specFilePath + "': missing package name or version");
             return;
         }
+        
 
         var xpathPrefix = "/package/include/file[";
         var xpathSuffix= "]/@path";
@@ -166,11 +169,12 @@ class UnityPackage
         {
             args += " " + path;
         }
-        args += " " + targetDirectory + "/" + _packageName;
+        var fullPackageName =  _packageName + "-v" + _packageVersion + ".unitypackage";
+        args += " " + targetDirectory + "/" + fullPackageName;
         var result = ExecuteUnityCommand(args, Context);
         if (result != 0)
         {
-            Context.Error("Something went wrong while creating Unity package '" + _packageName + "'");
+            Context.Error("Something went wrong while creating Unity package '" + fullPackageName + "'");
         }
     }
 }

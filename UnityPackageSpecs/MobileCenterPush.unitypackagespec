@@ -1,22 +1,22 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<package name="MobileCenterPush.unitypackage">
+﻿<?xml version="1.0" encoding="utf-8"?>
+<package name="MobileCenterPush" version="0.0.1">
     <include>
         <!-- Shared files -->
-        <file path="Assets/Plugins/MobileCenterSDK/Push/Shared"/>
+        <file path="Assets/Plugins/MobileCenterSDK/Push/Shared" />
 
         <!-- "Blank" files -->
-        <file path="Assets/Plugins/MobileCenterSDK/Push/Blank"/>
+        <file path="Assets/Plugins/MobileCenterSDK/Push/Blank" />
 
         <!-- Android files -->
-        <file path="Assets/Plugins/Android/mobile-center-push-release.aar"/>
-        <file path="Assets/Plugins/MobileCenterSDK/Push/Android"/>
+        <file path="Assets/Plugins/Android/mobile-center-push-release.aar" />
+        <file path="Assets/Plugins/MobileCenterSDK/Push/Android" />
 
         <!-- iOS files -->
-        <file path="Assets/Plugins/iOS/Push"/>
-        <file path="Assets/Plugins/MobileCenterSDK/Push/iOS"/>
+        <file path="Assets/Plugins/iOS/Push" />
+        <file path="Assets/Plugins/MobileCenterSDK/Push/iOS" />
 
         <!-- UWP files -->
-        <file path="Assets/Plugins/WSA/Push"/>
-        <file path="Assets/Plugins/MobileCenterSDK/Push/UWP"/>
+        <file path="Assets/Plugins/WSA/Push" />
+        <file path="Assets/Plugins/MobileCenterSDK/Push/UWP" />
     </include>
 </package>

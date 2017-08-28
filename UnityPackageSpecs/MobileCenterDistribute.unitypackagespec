@@ -1,21 +1,21 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<package name="MobileCenterDistribute.unitypackage">
+﻿<?xml version="1.0" encoding="utf-8"?>
+<package name="MobileCenterDistribute" version="0.0.1">
     <include>
         <!-- Shared files -->
-        <file path="Assets/Plugins/MobileCenterSDK/Distribute/Shared"/>
+        <file path="Assets/Plugins/MobileCenterSDK/Distribute/Shared" />
 
         <!-- "Blank" files -->
-        <file path="Assets/Plugins/MobileCenterSDK/Distribute/Blank"/>
+        <file path="Assets/Plugins/MobileCenterSDK/Distribute/Blank" />
 
         <!-- Android files -->
-        <file path="Assets/Plugins/Android/mobile-center-distribute-release.aar"/>
-        <file path="Assets/Plugins/MobileCenterSDK/Distribute/Android"/>
+        <file path="Assets/Plugins/Android/mobile-center-distribute-release.aar" />
+        <file path="Assets/Plugins/MobileCenterSDK/Distribute/Android" />
 
         <!-- iOS files -->
-        <file path="Assets/Plugins/iOS/Distribute"/>
-        <file path="Assets/Plugins/MobileCenterSDK/Distribute/iOS"/>
+        <file path="Assets/Plugins/iOS/Distribute" />
+        <file path="Assets/Plugins/MobileCenterSDK/Distribute/iOS" />
 
         <!-- UWP files -->
-        <file path="Assets/Plugins/MobileCenterSDK/Distribute/UWP"/>
+        <file path="Assets/Plugins/MobileCenterSDK/Distribute/UWP" />
     </include>
 </package>
