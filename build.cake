@@ -388,6 +388,12 @@ Task("Package").Does(()=>
         var package = new UnityPackage(spec.FullPath);
         package.CreatePackage(outputDirectory);
     }
+
+    // Add app id placeholder to AndroidManifest.xml
+    var path = "Assets/Plugins/Android/mobile-center/AndroidManifest.xml";
+    var pattern = "android:authorities=\"[^\"]*microsoft.azure.mobile.mobilecenterloader";
+    var replacement = "android:authorities=${mobile-center-app-id-placeholder}.microsoft.azure.mobile.mobilecenterloader";
+    ReplaceRegexInFiles(path, pattern, replacement);
 });
 
 Task("PrepareAssets").IsDependentOn("BuildAndroidContentProvider").IsDependentOn("Externals");
