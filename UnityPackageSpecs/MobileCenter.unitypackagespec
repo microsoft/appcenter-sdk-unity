@@ -10,7 +10,7 @@
         <file path="Assets/Plugins/MobileCenterSDK/Core/Android"/>
 
         <!-- Common files -->
-        <file path="Assets/Plugins/MobileCenterSDK/Shared"/>
+        <file path="Assets/Plugins/MobileCenterSDK/Core/Shared"/>
 
         <!-- "Blank" files -->
         <file path="Assets/Plugins/MobileCenterSDK/Core/Blank"/>
