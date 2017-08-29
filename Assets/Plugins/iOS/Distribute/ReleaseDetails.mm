@@ -3,6 +3,7 @@
 // Licensed under the MIT license.
 
 #import "ReleaseDetails.h"
+#import "../Core/Utility/NSStringHelper.h"
 #import <MobileCenterDistribute/MobileCenterDistribute.h>
 #import <Foundation/Foundation.h>
 
@@ -13,17 +14,17 @@ int mobile_center_unity_release_details_get_id(MSReleaseDetails* details)
 
 char* mobile_center_unity_release_details_get_version(MSReleaseDetails* details)
 {
-  return (char*)[[details version] UTF8String];
+  return mobile_center_unity_ns_string_to_cstr([details version]);
 }
 
 char* mobile_center_unity_release_details_get_short_version(MSReleaseDetails* details)
 {
-  return (char*)[[details shortVersion] UTF8String];
+  return mobile_center_unity_ns_string_to_cstr([details shortVersion]);
 }
 
 char* mobile_center_unity_release_details_get_release_notes(MSReleaseDetails* details)
 {
-  return (char*)[[details releaseNotes] UTF8String];
+  return mobile_center_unity_ns_string_to_cstr([details releaseNotes]);
 }
 
 bool mobile_center_unity_release_details_get_mandatory_update(MSReleaseDetails* details)
@@ -33,6 +34,6 @@ bool mobile_center_unity_release_details_get_mandatory_update(MSReleaseDetails* 
 
 char* mobile_center_unity_release_details_get_url(MSReleaseDetails* details)
 {
-  return (char*)[[[details releaseNotesUrl] absoluteString] UTF8String];
+  return mobile_center_unity_ns_string_to_cstr([[details releaseNotesUrl] absoluteString]);
 }
 

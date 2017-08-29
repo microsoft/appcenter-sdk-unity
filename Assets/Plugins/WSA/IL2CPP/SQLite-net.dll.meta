@@ -1,6 +1,6 @@
 fileFormatVersion: 2
-guid: 95560fccc91aa42e985be152a6b29ceb
-timeCreated: 1499465049
+guid: e17623ae2dfac487ea14290d8ab4e3cd
+timeCreated: 1503958097
 licenseType: Pro
 PluginImporter:
   serializedVersion: 2
@@ -24,10 +24,13 @@ PluginImporter:
           DefaultValueInitialized: true
     data:
       first:
-        iPhone: iOS
+        Windows Store Apps: WindowsStoreApps
       second:
         enabled: 1
-        settings: {}
+        settings:
+          CPU: AnyCPU
+          SDK: UWP
+          ScriptingBackend: Il2Cpp
   userData: 
   assetBundleName: 
   assetBundleVariant: 

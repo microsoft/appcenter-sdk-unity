@@ -30,21 +30,24 @@ public class MobileCenterSettingsEditor : Editor
         EditorGUILayout.PropertyField(serializedObject.FindProperty("UWPAppSecret"));
 
         // Draw modules.
-        Header("Modules");
         if (MobileCenterSettings.Analytics != null)
         {
-            EditorGUILayout.PropertyField(serializedObject.FindProperty("UseAnalytics"));
-        }
-        if (MobileCenterSettings.Crashes != null)
-        {
-            EditorGUILayout.PropertyField(serializedObject.FindProperty("UseCrashes"));
+            Header("Analytics");
+            var property = serializedObject.FindProperty("UseAnalytics");
+            EditorGUILayout.PropertyField(property);
         }
         if (MobileCenterSettings.Distribute != null)
         {
+            Header("Distribute");
             EditorGUILayout.PropertyField(serializedObject.FindProperty("UseDistribute"));
+            if (Settings.UseDistribute)
+            {
+                EditorGUILayout.PropertyField(serializedObject.FindProperty("DefaultReleaseAvailableDialog"));
+            }
         }
         if (MobileCenterSettings.Push != null)
         {
+            Header("Push");
             var serializedProperty = serializedObject.FindProperty("UsePush");
             EditorGUILayout.PropertyField(serializedProperty);
 #if !UNITY_2017_1_OR_NEWER

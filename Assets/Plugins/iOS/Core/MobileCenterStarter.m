@@ -19,6 +19,7 @@
 
 #ifdef MOBILE_CENTER_UNITY_USE_DISTRIBUTE
 @import MobileCenterDistribute;
+#import "../Distribute/DistributeDelegateSetter.h"
 #endif
 
 #ifdef MOBILE_CENTER_UNITY_USE_CRASHES
@@ -51,6 +52,11 @@ static const int kMSLogLevel = 0/*LOG_LEVEL*/;
 #endif
 
 #ifdef MOBILE_CENTER_UNITY_USE_DISTRIBUTE
+  BOOL useCustomDialog = NO;
+#ifdef MOBILE_CENTER_UNITY_USE_CUSTOM_DIALOG
+  useCustomDialog = YES;
+#endif
+  mobile_center_unity_distribute_set_delegate(useCustomDialog);
   [classes addObject:MSDistribute.class];
 #endif
 

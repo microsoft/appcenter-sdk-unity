@@ -38,7 +38,9 @@
 }
 
 -(void) setPushHandlerImplementation:(ReceivedPushNotificationFunction)implementation {
-  _receivedPushNotification = implementation;
+  @synchronized (_lockObject) {
+    _receivedPushNotification = implementation;
+  }
 }
 
 - (void) replayUnprocessedNotifications {

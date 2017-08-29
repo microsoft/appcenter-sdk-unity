@@ -2,14 +2,20 @@
 //
 // Licensed under the MIT license.
 
+#ifndef DISTRIBUTE_DELEGATE_H
+#define DISTRIBUTE_DELEGATE_H
+
 #import <MobileCenterDistribute/MobileCenterDistribute.h>
 
-typedef bool (__cdecl *ReleaseAvailableWithDetailsFunction)(MSReleaseDetails*);
-
-extern "C" void mobile_center_unity_distribute_set_delegate();
-extern "C" void mobile_center_unity_distribute_delegate_provide_release_available_impl(ReleaseAvailableWithDetailsFunction* functionPtr);
-
+typedef void (__cdecl *ReleaseAvailableFunction)(MSReleaseDetails*);
 
 @interface UnityDistributeDelegate : NSObject<MSDistributeDelegate>
+
 - (BOOL)distribute:(MSDistribute *)distribute releaseAvailableWithDetails:(MSReleaseDetails *)details;
+- (void)useCustomDialog;
+- (void)setReleaseAvailableImplementation:(ReleaseAvailableFunction)implementation;
+- (void)replayReleaseAvailable;
+
 @end
+
+#endif

@@ -1,6 +1,6 @@
 fileFormatVersion: 2
-guid: f69c0eddaefb14b1e91518964809445b
-timeCreated: 1503351343
+guid: dac0c932b8d244259bce9a5458652700
+timeCreated: 1503958098
 licenseType: Pro
 PluginImporter:
   serializedVersion: 2
@@ -9,12 +9,6 @@ PluginImporter:
   isPreloaded: 0
   isOverridable: 0
   platformData:
-    data:
-      first:
-        Android: Android
-      second:
-        enabled: 1
-        settings: {}
     data:
       first:
         Any: 
@@ -28,6 +22,15 @@ PluginImporter:
         enabled: 0
         settings:
           DefaultValueInitialized: true
+    data:
+      first:
+        Windows Store Apps: WindowsStoreApps
+      second:
+        enabled: 1
+        settings:
+          CPU: x86
+          SDK: UWP
+          ScriptingBackend: Il2Cpp
   userData: 
   assetBundleName: 
   assetBundleVariant: 

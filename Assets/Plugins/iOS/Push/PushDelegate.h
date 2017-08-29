@@ -6,7 +6,6 @@
 #define PUSH_DELEGATE_H
 
 #import <MobileCenterPush/MobileCenterPush.h>
-
 #import <Foundation/Foundation.h>
 
 typedef void (__cdecl *ReceivedPushNotificationFunction)(MSPushNotification*);

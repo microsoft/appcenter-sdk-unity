@@ -11,11 +11,11 @@ using UnityEngine;
 [Serializable]
 public class MobileCenterSettings : ScriptableObject
 {
-    [AppSectet("iOS App Secret")]
+    [AppSecret("iOS App Secret")]
     public string iOSAppSecret = "ios-app-secret";
-    [AppSectet]
+    [AppSecret]
     public string AndroidAppSecret = "android-app-secret";
-    [AppSectet]
+    [AppSecret]
     public string UWPAppSecret = "uwp-app-secret";
     
     [Tooltip("Mobile Center Analytics helps you understand user behavior and customer engagement to improve your app.")]
@@ -24,11 +24,13 @@ public class MobileCenterSettings : ScriptableObject
     public bool UseCrashes = true;
     [Tooltip("Mobile Center Distribute will let your users install a new version of the app when you distribute it via the Mobile Center.")]
     public bool UseDistribute = true;
+	//TODO add tooltip
+	public bool DefaultReleaseAvailableDialog = true;
+
     [Tooltip("Mobile Center Push enables you to send push notifications to users of your app from the Mobile Center portal.")]
     public bool UsePush = true;
     
     public LogLevel InitialLogLevel = LogLevel.Info;
-    [Space]
     public LogUrlProperty CustomLogUrl = new LogUrlProperty();
 
     public string AppSecret

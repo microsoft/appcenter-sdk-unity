@@ -6,15 +6,15 @@ using System;
 using UnityEngine;
 
 [AttributeUsage(AttributeTargets.Field)]
-public class AppSectetAttribute : PropertyAttribute
+public class AppSecretAttribute : PropertyAttribute
 {
     public string Name { get; set; }
     
-    public AppSectetAttribute()
+    public AppSecretAttribute()
     {
     }
 
-    public AppSectetAttribute(string name)
+    public AppSecretAttribute(string name)
     {
         Name = name;
     }

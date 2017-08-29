@@ -3,7 +3,7 @@
 // Licensed under the MIT license.
 
 #import "DistributeUnity.h"
-#import <MobileCenterDistribute/MobileCenterDistribute.h>
+#import "DistributeDelegateSetter.h"
 #import <Foundation/Foundation.h>
 
 void* mobile_center_unity_distribute_get_type()
@@ -34,4 +34,14 @@ void mobile_center_unity_distribute_set_api_url(char* apiUrl)
 void mobile_center_unity_distribute_notify_update_action(int updateAction)
 {
   [MSDistribute notifyUpdateAction:(MSUpdateAction)updateAction];
+}
+
+void mobile_center_unity_distribute_set_release_available_impl(ReleaseAvailableFunction function)
+{
+  [mobile_center_unity_distribute_get_delegate() setReleaseAvailableImplementation:function];
+}
+
+void mobile_center_unity_push_replay_unprocessed_notifications()
+{
+  [mobile_center_unity_distribute_get_delegate() replayReleaseAvailable];
 }

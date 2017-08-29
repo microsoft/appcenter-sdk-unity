@@ -5,12 +5,12 @@
 using UnityEditor;
 using UnityEngine;
 
-[CustomPropertyDrawer(typeof(AppSectetAttribute))]
-public class AppSectetDrawer : PropertyDrawer
+[CustomPropertyDrawer(typeof(AppSecretAttribute))]
+public class AppSecretDrawer : PropertyDrawer
 {
     public override void OnGUI(Rect position, SerializedProperty property, GUIContent label)
     {
-        var name = ((AppSectetAttribute) attribute).Name;
+        var name = ((AppSecretAttribute) attribute).Name;
         if (!string.IsNullOrEmpty(name))
         {
             label.text = name;

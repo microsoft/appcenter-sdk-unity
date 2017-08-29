@@ -20,7 +20,8 @@
 		358041C21F3D0D37009E8C36 /* MobileCenterStarter.m in Sources */ = {isa = PBXBuildFile; fileRef = 358041C11F3D0D37009E8C36 /* MobileCenterStarter.m */; };
 		359195351F10365B00F9CB86 /* DistributeUnity.mm in Sources */ = {isa = PBXBuildFile; fileRef = 359195341F10365B00F9CB86 /* DistributeUnity.mm */; };
 		359195371F10388200F9CB86 /* ReleaseDetails.mm in Sources */ = {isa = PBXBuildFile; fileRef = 359195361F10388200F9CB86 /* ReleaseDetails.mm */; };
-		359195391F103CF200F9CB86 /* DistributeDelegate.mm in Sources */ = {isa = PBXBuildFile; fileRef = 359195381F103CF200F9CB86 /* DistributeDelegate.mm */; };
+		35CB4ECE1F562CAE004018AE /* DistributeDelegateSetter.m in Sources */ = {isa = PBXBuildFile; fileRef = 35CB4ECD1F562CAE004018AE /* DistributeDelegateSetter.m */; };
+		35CB4ED01F562F58004018AE /* DistributeDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 35CB4ECF1F562F58004018AE /* DistributeDelegate.m */; };
 		35E9FC401EFAE0E200556A1F /* MobileCenterUnity.mm in Sources */ = {isa = PBXBuildFile; fileRef = 35E9FC3F1EFAE0E200556A1F /* MobileCenterUnity.mm */; };
 		35E9FC431EFAE11100556A1F /* NSStringDictionaryHelper.mm in Sources */ = {isa = PBXBuildFile; fileRef = 35E9FC411EFAE11100556A1F /* NSStringDictionaryHelper.mm */; };
 		35E9FC441EFAE11100556A1F /* NSStringHelper.mm in Sources */ = {isa = PBXBuildFile; fileRef = 35E9FC421EFAE11100556A1F /* NSStringHelper.mm */; };
@@ -54,7 +55,8 @@
 		358041C11F3D0D37009E8C36 /* MobileCenterStarter.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; name = MobileCenterStarter.m; path = ../Assets/Plugins/iOS/Core/MobileCenterStarter.m; sourceTree = "<group>"; };
 		359195341F10365B00F9CB86 /* DistributeUnity.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; name = DistributeUnity.mm; path = ../Assets/Plugins/iOS/Distribute/DistributeUnity.mm; sourceTree = "<group>"; };
 		359195361F10388200F9CB86 /* ReleaseDetails.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; name = ReleaseDetails.mm; path = ../Assets/Plugins/iOS/Distribute/ReleaseDetails.mm; sourceTree = "<group>"; };
-		359195381F103CF200F9CB86 /* DistributeDelegate.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; name = DistributeDelegate.mm; path = ../Assets/Plugins/iOS/Distribute/DistributeDelegate.mm; sourceTree = "<group>"; };
+		35CB4ECD1F562CAE004018AE /* DistributeDelegateSetter.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; name = DistributeDelegateSetter.m; path = ../Assets/Plugins/iOS/Distribute/DistributeDelegateSetter.m; sourceTree = "<group>"; };
+		35CB4ECF1F562F58004018AE /* DistributeDelegate.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; name = DistributeDelegate.m; path = ../Assets/Plugins/iOS/Distribute/DistributeDelegate.m; sourceTree = "<group>"; };
 		35E9FC181EFADEED00556A1F /* iOS */ = {isa = PBXFileReference; lastKnownFileType = folder; name = iOS; path = ../Assets/Plugins/iOS; sourceTree = "<group>"; };
 		35E9FC1D1EFADFDB00556A1F /* libMobileCenterUnityBindings.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libMobileCenterUnityBindings.a; sourceTree = BUILT_PRODUCTS_DIR; };
 		35E9FC281EFADFF500556A1F /* MobileCenterAnalytics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MobileCenterAnalytics.framework; path = ../Assets/Plugins/iOS/Analytics/MobileCenterAnalytics.framework; sourceTree = "<group>"; };
@@ -92,10 +94,11 @@
 		35E9FBCE1EFADE5A00556A1F = {
 			isa = PBXGroup;
 			children = (
+				35CB4ECF1F562F58004018AE /* DistributeDelegate.m */,
+				35CB4ECD1F562CAE004018AE /* DistributeDelegateSetter.m */,
 				3510DC4D1F3E6528002A7B56 /* PushDelegateSetter.m */,
 				3510DC4B1F3E6523002A7B56 /* PushDelegate.m */,
 				358041C11F3D0D37009E8C36 /* MobileCenterStarter.m */,
-				359195381F103CF200F9CB86 /* DistributeDelegate.mm */,
 				359195361F10388200F9CB86 /* ReleaseDetails.mm */,
 				359195341F10365B00F9CB86 /* DistributeUnity.mm */,
 				3574C2BD1F02CC4D0028338F /* NSDateHelper.mm */,
@@ -198,11 +201,12 @@
 				35E9FC4A1EFAE16000556A1F /* CrashesDelegate.mm in Sources */,
 				35E9FC4B1EFAE16000556A1F /* CrashesUnity.mm in Sources */,
 				35E9FC4C1EFAE16000556A1F /* ErrorReport.mm in Sources */,
+				35CB4ECE1F562CAE004018AE /* DistributeDelegateSetter.m in Sources */,
 				3574C2BE1F02CC4D0028338F /* NSDateHelper.mm in Sources */,
 				3574C2BC1F02C9020028338F /* NSNumberHelper.mm in Sources */,
 				359195371F10388200F9CB86 /* ReleaseDetails.mm in Sources */,
 				3510DC4C1F3E6523002A7B56 /* PushDelegate.m in Sources */,
-				359195391F103CF200F9CB86 /* DistributeDelegate.mm in Sources */,
+				35CB4ED01F562F58004018AE /* DistributeDelegate.m in Sources */,
 				3574C2BA1F01BE380028338F /* CustomProperties.mm in Sources */,
 				359195351F10365B00F9CB86 /* DistributeUnity.mm in Sources */,
 				3510DC4E1F3E6528002A7B56 /* PushDelegateSetter.m in Sources */,

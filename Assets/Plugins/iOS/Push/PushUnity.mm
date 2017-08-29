@@ -7,7 +7,6 @@
 #import <MobileCenterPush/MobileCenterPush.h>
 #import <Foundation/Foundation.h>
 
-
 void mobile_center_unity_push_set_received_push_impl(ReceivedPushNotificationFunction functionPtr)
 {
   [mobile_center_unity_push_get_delegate() setPushHandlerImplementation:functionPtr];
