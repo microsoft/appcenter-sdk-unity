@@ -41,7 +41,7 @@ void mobile_center_unity_distribute_set_release_available_impl(ReleaseAvailableF
   [mobile_center_unity_distribute_get_delegate() setReleaseAvailableImplementation:function];
 }
 
-void mobile_center_unity_push_replay_unprocessed_notifications()
+void mobile_center_unity_distribute_replay_release_available()
 {
   [mobile_center_unity_distribute_get_delegate() replayReleaseAvailable];
 }

@@ -11,7 +11,7 @@ namespace Microsoft.Azure.Mobile.Unity.Distribute.Internal
 {
     class DistributeInternal
     {
-#region Distribute delegate
+        #region Distribute delegate
 
         [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
         delegate bool ReleaseAvailableDelegate(IntPtr details);
@@ -29,11 +29,17 @@ namespace Microsoft.Azure.Mobile.Unity.Distribute.Internal
             var releaseDetails = ReleaseDetailsHelper.ReleaseDetailsConvert(details);
             return Distribute.ReleaseAvailable.Invoke(releaseDetails);
         }
-#endregion
+        #endregion
 
         public static void PrepareEventHandlers()
         {
             MobileCenterBehavior.InitializingServices += Initialize;
+            MobileCenterBehavior.Started += StartBehavior;
+        }
+
+        private static void StartBehavior()
+        {
+            mobile_center_unity_distribute_replay_release_available();
         }
 
         private static void Initialize()
@@ -74,7 +80,7 @@ namespace Microsoft.Azure.Mobile.Unity.Distribute.Internal
             mobile_center_unity_distribute_notify_update_action(updateAction);
         }
 
-#region External
+        #region External
 
         [DllImport("__Internal")]
         private static extern IntPtr mobile_center_unity_distribute_get_type();
@@ -97,7 +103,10 @@ namespace Microsoft.Azure.Mobile.Unity.Distribute.Internal
         [DllImport("__Internal")]
         private static extern void mobile_center_unity_distribute_set_release_available_impl(ReleaseAvailableDelegate functionPtr);
 
-#endregion
+        [DllImport("__Internal")]
+        private static extern void mobile_center_unity_distribute_replay_release_available();
+
+        #endregion
     }
 }
 #endif
