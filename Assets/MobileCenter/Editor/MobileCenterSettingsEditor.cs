@@ -40,10 +40,6 @@ public class MobileCenterSettingsEditor : Editor
             Header("Distribute");
             var serializedProperty = serializedObject.FindProperty("UseDistribute");
             EditorGUILayout.PropertyField(serializedProperty);
-            if (serializedProperty.boolValue)
-            {
-                EditorGUILayout.PropertyField(serializedObject.FindProperty("CustomReleaseAvailableDialog"));
-            }
         }
         if (MobileCenterSettings.Push != null)
         {

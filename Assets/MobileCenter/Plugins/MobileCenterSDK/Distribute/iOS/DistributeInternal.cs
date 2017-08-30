@@ -5,6 +5,7 @@
 #if UNITY_IOS && !UNITY_EDITOR
 using System;
 using System.Runtime.InteropServices;
+using AOT;
 
 namespace Microsoft.Azure.Mobile.Unity.Distribute.Internal
 {

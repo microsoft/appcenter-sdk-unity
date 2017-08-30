@@ -5,6 +5,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Reflection;
 using Microsoft.Azure.Mobile.Unity;
 using UnityEngine;
 
@@ -17,7 +18,7 @@ public class MobileCenterSettings : ScriptableObject
     public string AndroidAppSecret = "android-app-secret";
     [AppSecret]
     public string UWPAppSecret = "uwp-app-secret";
-    
+
     [Tooltip("Mobile Center Analytics helps you understand user behavior and customer engagement to improve your app.")]
     public bool UseAnalytics = true;
     [Tooltip("Mobile Center Crashes will automatically generate a crash log every time your app crashes.")]
@@ -26,7 +27,7 @@ public class MobileCenterSettings : ScriptableObject
     public bool UseDistribute = true;
     [Tooltip("Mobile Center Push enables you to send push notifications to users of your app from the Mobile Center portal.")]
     public bool UsePush = true;
-    
+
     public LogLevel InitialLogLevel = LogLevel.Info;
     public LogUrlProperty CustomLogUrl = new LogUrlProperty();
 
@@ -74,21 +75,33 @@ public class MobileCenterSettings : ScriptableObject
 
     public static Type Analytics
     {
-        get{ return Type.GetType("Microsoft.Azure.Mobile.Unity.Analytics.Analytics, Assembly-CSharp-firstpass"); }
+        get
+        {
+            return Assembly.GetExecutingAssembly().GetType("Microsoft.Azure.Mobile.Unity.Analytics.Analytics");
+        }
     }
-
+         
     public static Type Crashes
     {
-        get { return Type.GetType("Microsoft.Azure.Mobile.Unity.Crashes.Crashes, Assembly-CSharp-firstpass"); }
+        get
+        {
+            return Assembly.GetExecutingAssembly().GetType("Microsoft.Azure.Mobile.Unity.Crashes.Crashes");
+        }
     }
 
     public static Type Distribute
     {
-        get { return Type.GetType("Microsoft.Azure.Mobile.Unity.Distribute.Distribute, Assembly-CSharp-firstpass"); }
+        get
+        {
+            return Assembly.GetExecutingAssembly().GetType("Microsoft.Azure.Mobile.Unity.Distribute.Distribute");
+        }
     }
 
     public static Type Push
     {
-        get { return Type.GetType("Microsoft.Azure.Mobile.Unity.Push.Push, Assembly-CSharp-firstpass"); }
+        get
+        {
+            return Assembly.GetExecutingAssembly().GetType("Microsoft.Azure.Mobile.Unity.Crashes.Crashes");
+        }
     }
 }
