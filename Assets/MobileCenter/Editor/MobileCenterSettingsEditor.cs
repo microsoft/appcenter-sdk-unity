@@ -33,16 +33,16 @@ public class MobileCenterSettingsEditor : Editor
         if (MobileCenterSettings.Analytics != null)
         {
             Header("Analytics");
-            var property = serializedObject.FindProperty("UseAnalytics");
-            EditorGUILayout.PropertyField(property);
+            EditorGUILayout.PropertyField(serializedObject.FindProperty("UseAnalytics"));
         }
         if (MobileCenterSettings.Distribute != null)
         {
             Header("Distribute");
-            EditorGUILayout.PropertyField(serializedObject.FindProperty("UseDistribute"));
-            if (Settings.UseDistribute)
+            var serializedProperty = serializedObject.FindProperty("UseDistribute");
+            EditorGUILayout.PropertyField(serializedProperty);
+            if (serializedProperty.boolValue)
             {
-                EditorGUILayout.PropertyField(serializedObject.FindProperty("DefaultReleaseAvailableDialog"));
+                EditorGUILayout.PropertyField(serializedObject.FindProperty("CustomReleaseAvailableDialog"));
             }
         }
         if (MobileCenterSettings.Push != null)
@@ -62,7 +62,6 @@ public class MobileCenterSettingsEditor : Editor
         Header("Other Setup");
         EditorGUILayout.PropertyField(serializedObject.FindProperty("InitialLogLevel"));
         EditorGUILayout.PropertyField(serializedObject.FindProperty("CustomLogUrl"));
-
         serializedObject.ApplyModifiedProperties();
     }
 

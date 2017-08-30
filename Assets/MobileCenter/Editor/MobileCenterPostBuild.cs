@@ -67,7 +67,7 @@ public class MobileCenterPostBuild
 #region UWP Methods
     public static void ProcessUwpIl2CppDependencies()
     {
-        var binaries = AssetDatabase.FindAssets("*", new [] { "Assets/Plugins/WSA/IL2CPP" });
+        var binaries = AssetDatabase.FindAssets("*", new [] { "Assets/MobileCenter/Plugins/WSA/IL2CPP" });
         foreach (var guid in binaries)
         {
             var assetPath = AssetDatabase.GUIDToAssetPath(guid);
@@ -83,7 +83,7 @@ public class MobileCenterPostBuild
 
     public static void DontProcessUwpMobileCenterBinaries()
     {
-        var directories = Directory.GetDirectories("Assets/Plugins/WSA", "*", SearchOption.AllDirectories);
+        var directories = Directory.GetDirectories("Assets/MobileCenter/Plugins/WSA", "*", SearchOption.AllDirectories);
         var assemblies = AssetDatabase.FindAssets("Microsoft.Azure.Mobile", directories);
         var watsonBinaries =  AssetDatabase.FindAssets("WatsonRegistrationUtility", directories);
         var allBinaries = new string[assemblies.Length + watsonBinaries.Length];

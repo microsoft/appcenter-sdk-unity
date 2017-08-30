@@ -24,9 +24,6 @@ public class MobileCenterSettings : ScriptableObject
     public bool UseCrashes = true;
     [Tooltip("Mobile Center Distribute will let your users install a new version of the app when you distribute it via the Mobile Center.")]
     public bool UseDistribute = true;
-	//TODO add tooltip
-	public bool DefaultReleaseAvailableDialog = true;
-
     [Tooltip("Mobile Center Push enables you to send push notifications to users of your app from the Mobile Center portal.")]
     public bool UsePush = true;
     

@@ -8,11 +8,11 @@
         <!-- TODO: add files when they are created -->
 
         <!-- Android files -->
-        <file path="Assets/Plugins/Android/mobile-center-distribute-release.aar"/>
+        <file path="Assets/MobileCenter/Plugins/Android/mobile-center-distribute-release.aar"/>
         <!-- TODO: add files when they are created -->
 
         <!-- iOS files -->
-        <file path="Assets/Plugins/iOS/Push"/>
+        <file path="Assets/MobileCenter/Plugins/iOS/Push"/>
         <!-- TODO: add files when they are created -->
 
         <!-- UWP files -->
