@@ -6,9 +6,9 @@
 
 	<!-- Keep all our assemblies. -->
 	<assembly fullname="Microsoft.Azure.Mobile" preserve="all"/>
-	<assembly fullname="Microsoft.Azure.Mobile.Analytics" preserve="all"/>
-	<assembly fullname="Microsoft.Azure.Mobile.Crashes" preserve="all"/>
-	<assembly fullname="Microsoft.Azure.Mobile.Push" preserve="all"/>
+	<assembly fullname="Microsoft.Azure.Mobile.Analytics" preserve="all" ignoreIfMissing="1"/>
+	<assembly fullname="Microsoft.Azure.Mobile.Crashes" preserve="all" ignoreIfMissing="1"/>
+	<assembly fullname="Microsoft.Azure.Mobile.Push" preserve="all" ignoreIfMissing="1"/>
 
 	<assembly fullname="SQLite-net" preserve="all"/>
 </linker>
