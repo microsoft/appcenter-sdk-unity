@@ -72,12 +72,7 @@ namespace Microsoft.Azure.Mobile.Unity.Internal.Utils
             _current = ReadAll();
 
             // Create helper for coroutine.
-            var gameObject = new GameObject("Mobile Center Settings Helper")
-            {
-                hideFlags = HideFlags.HideAndDontSave
-            };
-            Object.DontDestroyOnLoad(gameObject);
-            gameObject.AddComponent<UnityApplicationSettingsHelper>().StartCoroutine(MainThreadCoroutine());
+            UnityCoroutineHelper.StartCoroutine(MainThreadCoroutine);
         }
 
         private static IEnumerator MainThreadCoroutine()

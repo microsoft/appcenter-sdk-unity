@@ -265,6 +265,41 @@ Task("Externals-Uwp")
     ExecuteUnityCommand("-executeMethod MobileCenterPostBuild.DontProcessUwpMobileCenterBinaries", Context);
 }).OnError(HandleError);
 
+// Builds the ContentProvider for the Android package and puts it in the
+// proper folder.
+Task("BuildAndroidContentProvider").Does(()=>
+{
+    // Folder and script locations
+    var appName = "MobileCenterLoaderApp";
+    var libraryName = "mobilecenterloader";
+    var libraryFolder = System.IO.Path.Combine(appName, libraryName);
+    var gradleScript = System.IO.Path.Combine(libraryFolder, "build.gradle");
+
+    // Compile the library
+    var gradleWrapper = System.IO.Path.Combine(appName, "gradlew");
+    if (IsRunningOnWindows())
+    {
+        gradleWrapper += ".bat";
+    }
+    var fullArgs = "-b " + gradleScript + " assembleRelease";
+    StartProcess(gradleWrapper, fullArgs);
+
+    // Source and destination of generated aar
+    var aarName = libraryName + "-release.aar";
+    var aarSource = System.IO.Path.Combine(libraryFolder, "build/outputs/aar/" + aarName);
+    var aarDestination = "Assets/Plugins/Android";
+
+    // Delete the aar in case it already exists in the Assets folder
+    var existingAar = System.IO.Path.Combine(aarDestination, aarName);
+    if (FileExists(existingAar))
+    {
+        DeleteFile(existingAar);
+    }
+
+    // Move the .aar to Assets/Plugins/Android
+    MoveFileToDirectory(aarSource, aarDestination);
+}).OnError(HandleError);
+
 // Downloading UWP IL2CPP dependencies.
 Task("Externals-Uwp-IL2CPP-Dependencies")
     .Does(() =>
@@ -347,12 +382,14 @@ Task("Package").Does(()=>
     }
 });
 
+Task("PrepareAssets").IsDependentOn("BuildAndroidContentProvider").IsDependentOn("Externals");
+
 // Creates Unity packages corresponding to all ".unitypackagespec" files
 // in "UnityPackageSpecs" folder (and downloads binaries)
-Task("CreatePackages").IsDependentOn("Externals").IsDependentOn("Package");
+Task("CreatePackages").IsDependentOn("PrepareAssets").IsDependentOn("Package");
 
 // Default Task.
-Task("Default").IsDependentOn("Externals");
+Task("Default").IsDependentOn("PrepareAssets");
 
 // Remove all temporary files and folders
 Task("RemoveTemporaries").Does(()=>
@@ -481,12 +518,6 @@ void ExtractNuGetPackages(IEnumerable<IPackage> packages, string dest, Framework
     }
 }
 
-static readonly ISet<string> IgnoreNuGetDependencies = new HashSet<string>
-{
-    "Microsoft.NETCore.UniversalWindowsPlatform",
-    "NETStandard.Library"
-};
-
 IList<IPackage> GetNuGetDependencies(IPackageRepository repository, FrameworkName frameworkName, IPackage package)
 {
     var dependencies = new List<IPackage>();
@@ -496,6 +527,12 @@ IList<IPackage> GetNuGetDependencies(IPackageRepository repository, FrameworkNam
 
 void GetNuGetDependencies(IList<IPackage> dependencies, IPackageRepository repository, FrameworkName frameworkName, IPackage package)
 {
+    var IgnoreNuGetDependencies = new HashSet<string>
+    {
+        "Microsoft.NETCore.UniversalWindowsPlatform",
+        "NETStandard.Library"
+    };
+
     dependencies.Add(package);
     foreach (var dependency in package.GetCompatiblePackageDependencies(frameworkName))
     {

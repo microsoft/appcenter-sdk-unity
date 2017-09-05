@@ -5,14 +5,30 @@
 #if UNITY_IOS && !UNITY_EDITOR
 using System;
 using System.Runtime.InteropServices;
+using AOT;
 
 namespace Microsoft.Azure.Mobile.Unity.Push.Internal
 {
     class PushInternal
     {
+#region Push delegate
+        [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
+        delegate void ReceivedPushNotificationDelegate(IntPtr notification);
+
+        private static ReceivedPushNotificationDelegate _receivedPushDel;
+
+        [MonoPInvokeCallback(typeof(ReceivedPushNotificationDelegate))]
+        static void ReceivedPushNotificationFunc(IntPtr notification)
+        {
+            var eventArgs = PushNotificationHelper.PushConvert(notification);
+            Push.NotifyPushNotificationReceived(eventArgs);
+        }
+#endregion
+
         public static void Initialize()
         {
-            PushDelegate.SetDelegate();
+            _receivedPushDel = ReceivedPushNotificationFunc;
+            mobile_center_unity_push_set_received_push_impl(_receivedPushDel);
         }
 
         public static void PostInitialize()
@@ -40,6 +56,11 @@ namespace Microsoft.Azure.Mobile.Unity.Push.Internal
         {
         }
 
+        internal static void ReplayUnprocessedPushNotifications()
+        {
+            mobile_center_unity_push_replay_unprocessed_notifications();
+        }
+
 #region External
 
         [DllImport("__Internal")]
@@ -51,6 +72,11 @@ namespace Microsoft.Azure.Mobile.Unity.Push.Internal
         [DllImport("__Internal")]
         private static extern bool mobile_center_unity_push_is_enabled();
 
+        [DllImport("__Internal")]
+        private static extern void mobile_center_unity_push_set_received_push_impl(ReceivedPushNotificationDelegate functionPtr);
+        
+        [DllImport("__Internal")]
+        private static extern void mobile_center_unity_push_replay_unprocessed_notifications();
 #endregion
     }
 }
