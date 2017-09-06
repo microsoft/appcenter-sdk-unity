@@ -188,7 +188,7 @@ public class MobileCenterPostBuild
     private static void ApplyIosSettings(MobileCenterSettings settings, string pathToBuiltProject)
     {
         var settingsMaker = new MobileCenterSettingsMakerIos(pathToBuiltProject);
-        settingsMaker.SetLogUrl(settings.CustomLogUrl.LogUrl);
+        settingsMaker.SetLogUrl(settings.CustomLogUrl.Url);
         settingsMaker.SetLogLevel((int)settings.InitialLogLevel);
         settingsMaker.SetAppSecret(settings.iOSAppSecret);
         if (settings.UsePush)

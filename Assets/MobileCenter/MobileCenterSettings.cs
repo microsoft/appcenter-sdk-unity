@@ -25,11 +25,14 @@ public class MobileCenterSettings : ScriptableObject
     public bool UseCrashes = true;
     [Tooltip("Mobile Center Distribute will let your users install a new version of the app when you distribute it via the Mobile Center.")]
     public bool UseDistribute = true;
+    public CustomUrlProperty CustomApiUrl = new CustomUrlProperty("API");
+    public CustomUrlProperty CustomInstallUrl = new CustomUrlProperty("Install");
+
     [Tooltip("Mobile Center Push enables you to send push notifications to users of your app from the Mobile Center portal.")]
     public bool UsePush = true;
 
     public LogLevel InitialLogLevel = LogLevel.Info;
-    public LogUrlProperty CustomLogUrl = new LogUrlProperty();
+    public CustomUrlProperty CustomLogUrl = new CustomUrlProperty("Log");
 
     public string AppSecret
     {

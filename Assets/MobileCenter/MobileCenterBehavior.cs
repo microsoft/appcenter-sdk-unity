@@ -63,9 +63,9 @@ public class MobileCenterBehavior : MonoBehaviour
     private void InitializeMobileCenter()
     {
         MobileCenter.LogLevel = settings.InitialLogLevel;
-        if (settings.CustomLogUrl.UseCustomLogUrl)
+        if (settings.CustomLogUrl.UseCustomUrl)
         {
-            MobileCenter.SetLogUrl(settings.CustomLogUrl.LogUrl);
+            MobileCenter.SetLogUrl(settings.CustomLogUrl.Url);
         }
         MobileCenter.Start(settings.AppSecret, settings.Services);
     }

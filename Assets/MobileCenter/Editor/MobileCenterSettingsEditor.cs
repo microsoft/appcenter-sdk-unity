@@ -40,6 +40,8 @@ public class MobileCenterSettingsEditor : Editor
             Header("Distribute");
             var serializedProperty = serializedObject.FindProperty("UseDistribute");
             EditorGUILayout.PropertyField(serializedProperty);
+            EditorGUILayout.PropertyField(serializedObject.FindProperty("CustomApiUrl"));
+            EditorGUILayout.PropertyField(serializedObject.FindProperty("CustomInstallUrl"));
         }
         if (MobileCenterSettings.Push != null)
         {
@@ -71,9 +73,9 @@ public class MobileCenterSettingsEditor : Editor
         }
         var settingsMaker = new MobileCenterSettingsMakerAndroid();
         settingsMaker.SetAppSecret(settings.AndroidAppSecret);
-        if (settings.CustomLogUrl.UseCustomLogUrl)
+        if (settings.CustomLogUrl.UseCustomUrl)
         {
-            settingsMaker.SetLogUrl(settings.CustomLogUrl.LogUrl);
+            settingsMaker.SetLogUrl(settings.CustomLogUrl.Url);
         }
         if (settings.UsePush)
         {

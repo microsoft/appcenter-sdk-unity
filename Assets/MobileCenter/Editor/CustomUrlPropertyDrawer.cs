@@ -5,25 +5,26 @@
 using UnityEngine;
 using UnityEditor;
 
-[CustomPropertyDrawer(typeof(LogUrlProperty))]
-public class LogUrlPropertyDrawer : PropertyDrawer
+[CustomPropertyDrawer(typeof(CustomUrlProperty))]
+public class CustomUrlPropertyDrawer : PropertyDrawer
 {
-    private readonly GUIContent useLabel = new GUIContent("Use Custom Log URL");
-    private readonly GUIContent urlLabel = new GUIContent("Custom Log URL");
-
-
     public override void OnGUI(Rect position, SerializedProperty property, GUIContent label)
     {
+        property.Next(true);
+        var urlName = property.stringValue;
+        var useLabel = new GUIContent("Use Custom " + urlName + " URL");
+        var urlLabel = new GUIContent("Custom " + urlName + " URL");
+
         // Though the property may have double height, each child should have
         // half that height
         position.height = EditorGUIUtility.singleLineHeight;
-        property.Next(true);
+        property.Next(false);
         EditorGUI.PropertyField(position, property, useLabel);
         if (property.boolValue)
         {
-            property.Next(true);
+            property.Next(false);
             position.y += EditorGUIUtility.singleLineHeight + EditorGUIUtility.standardVerticalSpacing;
-            EditorGUI.PropertyField(position, property, urlLabel);  
+            EditorGUI.PropertyField(position, property, urlLabel);
         }
     }
 
@@ -31,6 +32,8 @@ public class LogUrlPropertyDrawer : PropertyDrawer
     {
         // If "set custom log url" is true, need to make room for the text field.
         property.Next(true);
+        property.Next(false);
+
         var height = base.GetPropertyHeight(property, label);
         if (property.boolValue)
         {
