@@ -155,6 +155,7 @@ namespace Microsoft.Azure.Mobile.Unity.Internal
                     DeviceInformationHelper.SetScreenSizeProviderFactory(new UnityScreenSizeProviderFactory());
 
 #if ENABLE_IL2CPP
+#pragma warning disable 612
                     /**
                      * Workaround for known IL2CPP issue.
                      * See https://issuetracker.unity3d.com/issues/il2cpp-use-of-windows-dot-foundation-dot-collections-dot-propertyset-throws-a-notsupportedexception-on-uwp
@@ -165,6 +166,13 @@ namespace Microsoft.Azure.Mobile.Unity.Internal
                      */
                     UnityApplicationSettings.Initialize();
                     UWPMobileCenter.SetApplicationSettingsFactory(new UnityApplicationSettingsFactory());
+
+                    /**
+                     * Workaround for another IL2CPP issue.
+                     * System.Net.Http.HttpClient doesn't work properly so, replace to unity specific implementation.
+                     */
+                    UWPMobileCenter.SetChannelGroupFactory(new UnityChannelGroupFactory());
+#pragma warning restore 612
 #endif
                     _prepared = true;
                 }
