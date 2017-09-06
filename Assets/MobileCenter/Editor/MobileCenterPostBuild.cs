@@ -1,4 +1,4 @@
-﻿// Copyright (c) Microsoft Corporation. All rights reserved.
+// Copyright (c) Microsoft Corporation. All rights reserved.
 //
 // Licensed under the MIT license.
 
@@ -74,23 +74,6 @@ public class MobileCenterPostBuild
             {
                 importer.SetPlatformData(BuildTarget.WSAPlayer, "SDK", "UWP");
                 importer.SetPlatformData(BuildTarget.WSAPlayer, "ScriptingBackend", "Il2Cpp");
-                importer.SaveAndReimport();
-            }
-        }
-    }
-
-    public static void ProcessUwpMobileCenterBinaries()
-    {
-        var directories = Directory.GetDirectories("Assets/Plugins/WSA", "*", SearchOption.AllDirectories);
-        var assemblies = AssetDatabase.FindAssets("Microsoft.Azure.Mobile", directories);
-        foreach (var guid in assemblies)
-        {
-            var assetPath = AssetDatabase.GUIDToAssetPath(guid);
-            var importer = AssetImporter.GetAtPath(assetPath) as PluginImporter;
-            if (importer != null)
-            {
-                importer.SetPlatformData(BuildTarget.WSAPlayer, "DontProcess", "true");
-                importer.SetPlatformData(BuildTarget.WSAPlayer, "SDK", "UWP");
                 importer.SaveAndReimport();
             }
         }

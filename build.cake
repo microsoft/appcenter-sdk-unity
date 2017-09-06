@@ -270,7 +270,6 @@ Task("Externals-Uwp")
         var files = GetFiles(tempContentPath + contentPathSuffix + "*");
         MoveFiles(files, destination);
     }
-    ExecuteUnityCommand("-executeMethod MobileCenterPostBuild.ProcessUwpMobileCenterBinaries", Context);
 }).OnError(HandleError);
 
 // Builds the ContentProvider for the Android package and puts it in the
