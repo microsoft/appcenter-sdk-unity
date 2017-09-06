@@ -16,7 +16,7 @@ MonoBehaviour:
   UWPAppSecret: 630db31d-f6b3-480e-925f-cbc1c5b12cdc
   UseAnalytics: 1
   UseCrashes: 1
-  UseDistribute: 0
+  UseDistribute: 1
   CustomApiUrl:
     UrlName: API
     UseCustomUrl: 0

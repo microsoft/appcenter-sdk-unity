@@ -26,6 +26,9 @@
 
 static NSString *const kMSAppSecret = @"mobile-center-app-secret";
 static NSString *const kMSCustomLogUrl = @"custom-log-url";
+static NSString *const kMSCustomApiUrl = @"custom-api-url";
+static NSString *const kMSCustomInstallUrl = @"custom-install-url";
+
 static const int kMSLogLevel = 0/*LOG_LEVEL*/;
 
 + (void)load {
@@ -48,9 +51,18 @@ static const int kMSLogLevel = 0/*LOG_LEVEL*/;
 #endif
 
 #ifdef MOBILE_CENTER_UNITY_USE_DISTRIBUTE
+
+#ifdef MOBILE_CENTER_UNITY_USE_CUSTOM_API_URL
+  [MSDistribute setApiUrl:kMSCustomApiUrl];
+#endif // MOBILE_CENTER_UNITY_USE_CUSTOM_API_URL
+
+#ifdef MOBILE_CENTER_UNITY_USE_CUSTOM_INSTALL_URL
+  [MSDistribute setInstallUrl:kMSCustomInstallUrl];
+#endif // MOBILE_CENTER_UNITY_USE_CUSTOM_INSTALL_URL
   [MSDistribute setDelegate:[UnityDistributeDelegate sharedInstance]];
   [classes addObject:MSDistribute.class];
-#endif
+
+#endif // MOBILE_CENTER_UNITY_USE_DISTRIBUTE
 
   [MSMobileCenter setLogLevel:(MSLogLevel)kMSLogLevel];
 

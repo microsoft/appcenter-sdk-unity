@@ -17,12 +17,15 @@ public class MobileCenterSettingsMakerIos
     private static string LoaderPathSuffix = "/Libraries/MobileCenter/Plugins/iOS/Core/MobileCenterStarter.m";
     private static string AppSecretSearchText = "mobile-center-app-secret";
     private static string LogUrlSearchText = "custom-log-url";
-    private static string LogLevelSearchText = "0/*LOG_LEVEL*/";
     private static string LogUrlToken = "MOBILE_CENTER_UNITY_USE_CUSTOM_LOG_URL";
+    private static string LogLevelSearchText = "0/*LOG_LEVEL*/";
     private static string UsePushToken = "MOBILE_CENTER_UNITY_USE_PUSH";
     private static string UseAnalyticsToken = "MOBILE_CENTER_UNITY_USE_ANALYTICS";
     private static string UseDistributeToken = "MOBILE_CENTER_UNITY_USE_DISTRIBUTE";
-    private static string UseCrashesToken = "MOBILE_CENTER_UNITY_USE_CRASHES";
+    private static string ApiUrlSearchText = "custom-api-url";
+    private static string ApiUrlToken = "MOBILE_CENTER_UNITY_USE_CUSTOM_API_URL";
+    private static string InstallUrlSearchText = "custom-install-url";
+    private static string InstallUrlToken = "MOBILE_CENTER_UNITY_USE_CUSTOM_INSTALL_URL";
 
     private string _loaderFileText;
     private string _pathToLoaderFile;
@@ -53,9 +56,16 @@ public class MobileCenterSettingsMakerIos
         AddToken(UseAnalyticsToken);
     }
 
-    public void StartCrashesClass()
+    public void SetApiUrl(string apiUrl)
     {
-        AddToken(UseCrashesToken);
+        AddToken(ApiUrlToken);
+        _loaderFileText = _loaderFileText.Replace(ApiUrlSearchText, apiUrl);
+    }
+
+    public void SetInstallUrl(string installUrl)
+    {
+        AddToken(InstallUrlToken);
+        _loaderFileText = _loaderFileText.Replace(InstallUrlSearchText, installUrl);
     }
 
     public void StartPushClass()
@@ -65,7 +75,6 @@ public class MobileCenterSettingsMakerIos
 
     public void CommitSettings()
     {
-        Debug.Log("Committing settings");
         File.WriteAllText(_pathToLoaderFile, _loaderFileText);
     }
 
