@@ -87,11 +87,15 @@ public class MobileCenterSettingsEditor : Editor
         }
         if (settings.UseDistribute)
         {
+            if (settings.CustomApiUrl.UseCustomUrl)
+            {
+                settingsMaker.SetApiUrl(settings.CustomApiUrl.Url);
+            }
+            if (settings.CustomInstallUrl.UseCustomUrl)
+            {
+                settingsMaker.SetInstallUrl(settings.CustomInstallUrl.Url);
+            }
             settingsMaker.StartDistributeClass();
-        }
-        if (settings.UseCrashes)
-        {
-            settingsMaker.StartCrashesClass();
         }
         settingsMaker.SetLogLevel((int)settings.InitialLogLevel);
         settingsMaker.CommitSettings();
