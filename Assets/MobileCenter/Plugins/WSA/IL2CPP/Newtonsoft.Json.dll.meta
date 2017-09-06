@@ -25,6 +25,7 @@ PluginImporter:
           Exclude OSXUniversal: 1
           Exclude Win: 1
           Exclude Win64: 1
+          Exclude WindowsStoreApps: 0
           Exclude iOS: 1
           Exclude tvOS: 1
     data:
@@ -123,9 +124,11 @@ PluginImporter:
       first:
         Windows Store Apps: WindowsStoreApps
       second:
-        enabled: 0
+        enabled: 1
         settings:
           CPU: AnyCPU
+          DontProcess: False
+          PlaceholderPath: 
           SDK: UWP
           ScriptingBackend: Il2Cpp
     data:
