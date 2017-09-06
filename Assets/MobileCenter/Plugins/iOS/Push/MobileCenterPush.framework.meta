@@ -1,6 +1,7 @@
 fileFormatVersion: 2
-guid: 253b65628ef724c85ad364097ef2a0e8
-timeCreated: 1504718839
+guid: 79fc01be06dec4490baaa35a9f25745c
+folderAsset: yes
+timeCreated: 1504718816
 licenseType: Pro
 PluginImporter:
   serializedVersion: 2
@@ -25,7 +26,7 @@ PluginImporter:
           Exclude OSXUniversal: 1
           Exclude Win: 1
           Exclude Win64: 1
-          Exclude iOS: 1
+          Exclude iOS: 0
           Exclude tvOS: 1
     data:
       first:
@@ -112,13 +113,10 @@ PluginImporter:
           CPU: None
     data:
       first:
-        Windows Store Apps: WindowsStoreApps
+        iPhone: iOS
       second:
-        enabled: 0
-        settings:
-          CPU: AnyCPU
-          SDK: UWP
-          ScriptingBackend: Il2Cpp
+        enabled: 1
+        settings: {}
   userData: 
   assetBundleName: 
   assetBundleVariant: 

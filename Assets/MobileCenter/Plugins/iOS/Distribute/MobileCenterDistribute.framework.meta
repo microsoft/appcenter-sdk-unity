@@ -1,6 +1,7 @@
 fileFormatVersion: 2
-guid: 253b65628ef724c85ad364097ef2a0e8
-timeCreated: 1504718839
+guid: 38f30140422e145a9a6171449a106b95
+folderAsset: yes
+timeCreated: 1504718816
 licenseType: Pro
 PluginImporter:
   serializedVersion: 2
@@ -25,8 +26,15 @@ PluginImporter:
           Exclude OSXUniversal: 1
           Exclude Win: 1
           Exclude Win64: 1
-          Exclude iOS: 1
+          Exclude iOS: 0
           Exclude tvOS: 1
+    data:
+      first:
+        Android: Android
+      second:
+        enabled: 0
+        settings:
+          CPU: ARMv7
     data:
       first:
         Any: 
@@ -39,35 +47,37 @@ PluginImporter:
       second:
         enabled: 0
         settings:
+          CPU: AnyCPU
           DefaultValueInitialized: true
+          OS: AnyOS
     data:
       first:
         Facebook: Win
       second:
         enabled: 0
         settings:
-          CPU: None
+          CPU: AnyCPU
     data:
       first:
         Facebook: Win64
       second:
         enabled: 0
         settings:
-          CPU: None
+          CPU: AnyCPU
     data:
       first:
         Standalone: Linux
       second:
         enabled: 0
         settings:
-          CPU: None
+          CPU: x86
     data:
       first:
         Standalone: Linux64
       second:
         enabled: 0
         settings:
-          CPU: None
+          CPU: x86_64
     data:
       first:
         Standalone: LinuxUniversal
@@ -81,14 +91,14 @@ PluginImporter:
       second:
         enabled: 0
         settings:
-          CPU: None
+          CPU: AnyCPU
     data:
       first:
         Standalone: OSXIntel64
       second:
         enabled: 0
         settings:
-          CPU: None
+          CPU: AnyCPU
     data:
       first:
         Standalone: OSXUniversal
@@ -102,23 +112,30 @@ PluginImporter:
       second:
         enabled: 0
         settings:
-          CPU: None
+          CPU: AnyCPU
     data:
       first:
         Standalone: Win64
       second:
         enabled: 0
         settings:
-          CPU: None
+          CPU: AnyCPU
     data:
       first:
-        Windows Store Apps: WindowsStoreApps
+        iPhone: iOS
+      second:
+        enabled: 1
+        settings:
+          CompileFlags: 
+          FrameworkDependencies: 
+    data:
+      first:
+        tvOS: tvOS
       second:
         enabled: 0
         settings:
-          CPU: AnyCPU
-          SDK: UWP
-          ScriptingBackend: Il2Cpp
+          CompileFlags: 
+          FrameworkDependencies: 
   userData: 
   assetBundleName: 
   assetBundleVariant: 
