@@ -12,7 +12,9 @@ namespace Microsoft.Azure.Mobile.Unity.Push.Internal
     class PushInternal
     {
 #region Push delegate
+#if ENABLE_IL2CPP
         [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
+#endif
         delegate void ReceivedPushNotificationDelegate(IntPtr notification);
 
         private static ReceivedPushNotificationDelegate _receivedPushDel;
