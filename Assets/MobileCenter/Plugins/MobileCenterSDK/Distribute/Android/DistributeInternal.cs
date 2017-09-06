@@ -14,8 +14,8 @@ namespace Microsoft.Azure.Mobile.Unity.Distribute.Internal
 
         public static void PrepareEventHandlers()
         {
-            MobileCenterBehavior.InitializedMobileCenterAndServices += PostInitialize;
             MobileCenterBehavior.InitializingServices += Initialize;
+            MobileCenterBehavior.Started += StartBehavior;
         }
 
         private static void Initialize()
@@ -23,7 +23,7 @@ namespace Microsoft.Azure.Mobile.Unity.Distribute.Internal
             DistributeDelegate.SetDelegate();
         }
 
-        private static void PostInitialize()
+        private static void StartBehavior()
         {
             var instance = _distribute.CallStatic<AndroidJavaObject>("getInstance");
             AndroidJavaClass unityPlayer = new AndroidJavaClass("com.unity3d.player.UnityPlayer");
