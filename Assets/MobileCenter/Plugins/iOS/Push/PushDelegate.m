@@ -16,6 +16,17 @@
 
 @implementation UnityPushDelegate
 
++ (instancetype)sharedInstance {
+  static UnityPushDelegate *sharedInstance = nil;
+  static dispatch_once_t onceToken;
+  dispatch_once(&onceToken, ^{
+    if (sharedInstance == nil) {
+      sharedInstance = [[self alloc] init];
+    }
+  });
+  return sharedInstance;
+}
+
 - (instancetype)init {
   if ((self = [super init])) {
     _lockObject = [NSObject new];

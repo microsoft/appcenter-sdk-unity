@@ -10,7 +10,7 @@
 
 #ifdef MOBILE_CENTER_UNITY_USE_PUSH
 @import MobileCenterPush;
-#import "../Push/PushDelegateSetter.h"
+#import "../Push/PushDelegate.h"
 #endif
 
 #ifdef MOBILE_CENTER_UNITY_USE_ANALYTICS
@@ -19,11 +19,7 @@
 
 #ifdef MOBILE_CENTER_UNITY_USE_DISTRIBUTE
 @import MobileCenterDistribute;
-#import "../Distribute/DistributeDelegateSetter.h"
-#endif
-
-#ifdef MOBILE_CENTER_UNITY_USE_CRASHES
-@import MobileCenterCrashes;
+#import "../Distribute/DistributeDelegate.h"
 #endif
 
 @implementation MobileCenterStarter
@@ -43,7 +39,7 @@ static const int kMSLogLevel = 0/*LOG_LEVEL*/;
   NSMutableArray<Class>* classes = [[NSMutableArray alloc] init];
 
 #ifdef MOBILE_CENTER_UNITY_USE_PUSH
-  mobile_center_unity_push_set_delegate();
+  [MSPush setDelegate:[UnityPushDelegate sharedInstance]];
   [classes addObject:MSPush.class];
 #endif
 
@@ -52,16 +48,8 @@ static const int kMSLogLevel = 0/*LOG_LEVEL*/;
 #endif
 
 #ifdef MOBILE_CENTER_UNITY_USE_DISTRIBUTE
-  BOOL useCustomDialog = NO;
-#ifdef MOBILE_CENTER_UNITY_USE_CUSTOM_RELEASE_DIALOG
-  useCustomDialog = YES;
-#endif
-  mobile_center_unity_distribute_set_delegate(useCustomDialog);
+  [MSDistribute setDelegate:[UnityDistributeDelegate sharedInstance]];
   [classes addObject:MSDistribute.class];
-#endif
-
-#ifdef MOBILE_CENTER_UNITY_USE_CRASHES
-  [classes addObject:MSCrashes.class];
 #endif
 
   [MSMobileCenter setLogLevel:(MSLogLevel)kMSLogLevel];

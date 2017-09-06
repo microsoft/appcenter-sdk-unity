@@ -15,6 +15,7 @@ typedef void (__cdecl *ReceivedPushNotificationFunction)(MSPushNotification*);
 -(void)push:(MSPush *)push didReceivePushNotification:(MSPush *)pushNotification;
 -(void)setPushHandlerImplementation:(ReceivedPushNotificationFunction)implementation;
 -(void)replayUnprocessedNotifications;
++ (instancetype)sharedInstance;
 
 @end
 

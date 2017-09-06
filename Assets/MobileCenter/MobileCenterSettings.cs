@@ -57,10 +57,6 @@ public class MobileCenterSettings : ScriptableObject
             {
                 services.Add(Analytics);
             }
-            if (UseCrashes)
-            {
-                services.Add(Crashes);
-            }
             if (UseDistribute)
             {
                 services.Add(Distribute);
@@ -80,14 +76,6 @@ public class MobileCenterSettings : ScriptableObject
             return Assembly.GetExecutingAssembly().GetType("Microsoft.Azure.Mobile.Unity.Analytics.Analytics");
         }
     }
-         
-    public static Type Crashes
-    {
-        get
-        {
-            return Assembly.GetExecutingAssembly().GetType("Microsoft.Azure.Mobile.Unity.Crashes.Crashes");
-        }
-    }
 
     public static Type Distribute
     {
@@ -101,7 +89,7 @@ public class MobileCenterSettings : ScriptableObject
     {
         get
         {
-            return Assembly.GetExecutingAssembly().GetType("Microsoft.Azure.Mobile.Unity.Crashes.Crashes");
+            return Assembly.GetExecutingAssembly().GetType("Microsoft.Azure.Mobile.Unity.Push.Push");
         }
     }
 }

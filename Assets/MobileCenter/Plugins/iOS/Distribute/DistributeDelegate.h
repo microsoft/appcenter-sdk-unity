@@ -12,9 +12,9 @@ typedef bool (__cdecl *ReleaseAvailableFunction)(MSReleaseDetails*);
 @interface UnityDistributeDelegate : NSObject<MSDistributeDelegate>
 
 - (BOOL)distribute:(MSDistribute *)distribute releaseAvailableWithDetails:(MSReleaseDetails *)details;
-- (void)useCustomDialog;
 - (void)setReleaseAvailableImplementation:(ReleaseAvailableFunction)implementation;
 - (void)replayReleaseAvailable;
++ (instancetype) sharedInstance;
 
 @end
 

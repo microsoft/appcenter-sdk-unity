@@ -9,26 +9,29 @@
 
 @property MSReleaseDetails *unprocessedDetails;
 @property NSObject *lockObject;
-@property BOOL shouldUseCustomDialog;
 @property ReleaseAvailableFunction releaseAvailableHandler;
 
 @end
 
 @implementation UnityDistributeDelegate
 
++ (instancetype)sharedInstance {
+  static UnityDistributeDelegate *sharedInstance = nil;
+  static dispatch_once_t onceToken;
+  dispatch_once(&onceToken, ^{
+    if (sharedInstance == nil) {
+      sharedInstance = [[self alloc] init];
+    }
+  });
+  return sharedInstance;
+}
+
 - (instancetype)init {
   if ((self = [super init])) {
     _lockObject = [NSObject new];
     _unprocessedDetails = nil;
-    _shouldUseCustomDialog = NO;
   }
   return self;
-}
-
-- (void)useCustomDialog {
-  @synchronized (_lockObject) {
-    _shouldUseCustomDialog = YES;
-  }
 }
 
 - (void)setReleaseAvailableImplementation:(ReleaseAvailableFunction)implementation {
@@ -44,10 +47,7 @@
     if (handlerCopy) {
       return handlerCopy(details);
     }
-    if (_shouldUseCustomDialog) {
-      _unprocessedDetails = details;
-    }
-    return _shouldUseCustomDialog;
+    return YES;
   }
 }
 

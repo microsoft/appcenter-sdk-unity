@@ -505,7 +505,7 @@ PlayerSettings:
   platformArchitecture:
     iOS: 0
   scriptingBackend:
-    iOS: 0
+    iOS: 1
   incrementalIl2cppBuild: {}
   additionalIl2CppArgs: 
   scriptingRuntimeVersion: 0

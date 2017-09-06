@@ -3,7 +3,7 @@
 // Licensed under the MIT license.
 
 #import "DistributeUnity.h"
-#import "DistributeDelegateSetter.h"
+#import "DistributeDelegate.h"
 #import <Foundation/Foundation.h>
 
 void* mobile_center_unity_distribute_get_type()
@@ -38,10 +38,10 @@ void mobile_center_unity_distribute_notify_update_action(int updateAction)
 
 void mobile_center_unity_distribute_set_release_available_impl(ReleaseAvailableFunction function)
 {
-  [mobile_center_unity_distribute_get_delegate() setReleaseAvailableImplementation:function];
+  [[UnityDistributeDelegate sharedInstance] setReleaseAvailableImplementation:function];
 }
 
 void mobile_center_unity_distribute_replay_release_available()
 {
-  [mobile_center_unity_distribute_get_delegate() replayReleaseAvailable];
+  [[UnityDistributeDelegate sharedInstance] replayReleaseAvailable];
 }

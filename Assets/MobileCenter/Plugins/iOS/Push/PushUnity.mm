@@ -3,18 +3,18 @@
 // Licensed under the MIT license.
 
 #import "PushUnity.h"
-#import "PushDelegateSetter.h"
+#import "PushDelegate.h"
 #import <MobileCenterPush/MobileCenterPush.h>
 #import <Foundation/Foundation.h>
 
 void mobile_center_unity_push_set_received_push_impl(ReceivedPushNotificationFunction functionPtr)
 {
-  [mobile_center_unity_push_get_delegate() setPushHandlerImplementation:functionPtr];
+  [[UnityPushDelegate sharedInstance] setPushHandlerImplementation:functionPtr];
 }
 
 void mobile_center_unity_push_replay_unprocessed_notifications()
 {
-  [mobile_center_unity_push_get_delegate() replayUnprocessedNotifications];
+  [[UnityPushDelegate sharedInstance] replayUnprocessedNotifications];
 }
 
 void* mobile_center_unity_push_get_type()
