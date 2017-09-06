@@ -355,8 +355,6 @@ Task("Externals-Unity-Packages").Does(()=>
 // (Unity deletes meta data files when it is opened if the corresponding files are not on disk.)
 Task("Externals")
     .IsDependentOn("Externals-Uwp")
-    .IsDependentOn("Externals-Ios")
-    .IsDependentOn("Externals-Android")
     .IsDependentOn("Externals-Unity-Packages")
     .IsDependentOn("Externals-Uwp-IL2CPP-Dependencies")
     .Does(()=>
