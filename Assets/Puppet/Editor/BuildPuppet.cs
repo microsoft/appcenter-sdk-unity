@@ -13,6 +13,15 @@ public class BuildPuppet
 {
     private static readonly string BuildFolder = "PuppetBuilds";
 
+    static BuildPuppet()
+    {
+#if UNITY_5_6_OR_NEWER
+        PlayerSettings.applicationIdentifier = "com.microsoft.azure.mobile.unity.puppet";
+#else
+        PlayerSettings.bundleIdentifier = "com.microsoft.azure.mobile.unity.puppet";
+#endif
+    }
+
     public static void BuildPuppetSceneAndroidMono()
     {
         CreateGoogleServicesJsonIfNotPresent();
