@@ -1,14 +1,14 @@
 <linker>
 	<assembly fullname="System">
 		<!-- Need to use Newtonsoft Json.NET library with IL2CPP build. -->
-		<namespace fullname="System.ComponentModel" preserve="all"/>
+		<namespace fullname="System.ComponentModel" preserve="all" ignoreIfMissing="1"/>
 	</assembly>
 
 	<!-- Keep all our assemblies. -->
-	<assembly fullname="Microsoft.Azure.Mobile" preserve="all"/>
-	<assembly fullname="Microsoft.Azure.Mobile.Analytics" preserve="all"/>
-	<assembly fullname="Microsoft.Azure.Mobile.Crashes" preserve="all"/>
-	<assembly fullname="Microsoft.Azure.Mobile.Push" preserve="all"/>
+	<assembly fullname="Microsoft.Azure.Mobile" preserve="all" ignoreIfMissing="1"/>
+	<assembly fullname="Microsoft.Azure.Mobile.Analytics" preserve="all" ignoreIfMissing="1"/>
+	<assembly fullname="Microsoft.Azure.Mobile.Crashes" preserve="all" ignoreIfMissing="1"/>
+	<assembly fullname="Microsoft.Azure.Mobile.Push" preserve="all" ignoreIfMissing="1"/>
 
-	<assembly fullname="SQLite-net" preserve="all"/>
+	<assembly fullname="SQLite-net" preserve="all" ignoreIfMissing="1"/>
 </linker>
