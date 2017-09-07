@@ -29,7 +29,7 @@ var UwpSdkVersion = "0.15.0";
 
 var SdkStorageUrl = "https://mobilecentersdkdev.blob.core.windows.net/sdk/";
 var AndroidUrl = SdkStorageUrl + "MobileCenter-SDK-Android-" + AndroidSdkVersion + ".zip";
-var IosUrl = SdkStorageUrl + "MobileCenter-SDK-iOS-" + IosSdkVersion + ".zip";
+var IosUrl = SdkStorageUrl + "MobileCenter-SDK-Apple-" + IosSdkVersion + ".zip";
 
 var MobileCenterModules = new [] {
     new MobileCenterModule("mobile-center-release.aar", "MobileCenter.framework", "Microsoft.Azure.Mobile", "Core"),
@@ -203,7 +203,7 @@ Task("Externals-Ios")
     {
         var destinationFolder = "Assets/Plugins/iOS/" + module.Moniker + "/" + module.IosModule;
         DeleteDirectoryIfExists(destinationFolder);
-        MoveDirectory("./externals/ios/MobileCenter-SDK-iOS/" + module.IosModule, "Assets/Plugins/iOS/" + module.Moniker + "/" + module.IosModule);
+        MoveDirectory("./externals/ios/MobileCenter-SDK-Apple/iOS/" + module.IosModule, "Assets/Plugins/iOS/" + module.Moniker + "/" + module.IosModule);
     }
 }).OnError(HandleError);
 
