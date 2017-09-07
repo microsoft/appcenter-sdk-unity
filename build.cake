@@ -14,9 +14,9 @@ using NuGet;
 var TemporaryPrefix = "CAKE_SCRIPT_TEMP";
 
 // Native SDK versions
-var AndroidSdkVersion = "0.11.2";
-var IosSdkVersion = "0.11.2";
-var UwpSdkVersion = "0.14.2";
+var AndroidSdkVersion = "0.12.0";
+var IosSdkVersion = "0.12.1";
+var UwpSdkVersion = "0.15.0";
 
 // URLs for downloading binaries.
 /*
