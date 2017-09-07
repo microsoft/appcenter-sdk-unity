@@ -11,17 +11,13 @@ namespace Microsoft.Azure.Mobile.Unity.Distribute.Internal
 {
     class DistributeInternal
     {
-        public static void Initialize()
-        {
-        }
-
-        public static void PostInitialize()
+        public static void PrepareEventHandlers()
         {
         }
 
         public static Type GetNativeType()
         {
-            return typeof(Microsoft.Azure.Mobile.Distribute.Distribute);
+            return null;
         }
 
         public static MobileCenterTask SetEnabledAsync(bool isEnabled)
