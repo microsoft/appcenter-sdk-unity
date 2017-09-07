@@ -364,8 +364,8 @@ Task("Externals")
     .IsDependentOn("Externals-Uwp")
     .IsDependentOn("Externals-Ios")
     .IsDependentOn("Externals-Android")
-    .IsDependentOn("Externals-Unity-Packages")
     .IsDependentOn("Externals-Uwp-IL2CPP-Dependencies")
+    .IsDependentOn("Externals-Unity-Packages")
     .Does(()=>
 {
     DeleteDirectoryIfExists("externals");
