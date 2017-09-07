@@ -40,14 +40,14 @@ public class BuildPuppet
     public static void BuildPuppetSceneIosMono()
     {
         PlayerSettings.SetScriptingBackend(BuildTargetGroup.iOS, ScriptingImplementation.Mono2x);
-        PlayerSettings.iOS.sdkVersion = iOSSdkVersion.DeviceSDK;
+        PlayerSettings.iOS.sdkVersion = iOSSdkVersion.SimulatorSDK;
         BuildPuppetScene(BuildTarget.iOS, "iOSMonoBuild");
     }
 
     public static void BuildPuppetSceneIosIl2CPP()
     {
         PlayerSettings.SetScriptingBackend(BuildTargetGroup.iOS, ScriptingImplementation.IL2CPP);
-        PlayerSettings.iOS.sdkVersion = iOSSdkVersion.DeviceSDK;
+        PlayerSettings.iOS.sdkVersion = iOSSdkVersion.SimulatorSDK;
         BuildPuppetScene(BuildTarget.iOS, "iOSIL2CPPBuild");
     }
 
