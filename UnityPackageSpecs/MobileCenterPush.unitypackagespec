@@ -1,4 +1,4 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="utf-8"?>
 <package name="MobileCenterPush" version="0.0.1">
     <include>
         <!-- Shared files -->

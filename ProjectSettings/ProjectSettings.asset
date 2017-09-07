@@ -504,8 +504,7 @@ PlayerSettings:
   webGLUseEmbeddedResources: 0
   webGLUseWasm: 0
   webGLCompressionFormat: 1
-  scriptingDefineSymbols:
-    4: HELLO_FROM_VSMC
+  scriptingDefineSymbols: {}
   platformArchitecture:
     iOS: 0
   scriptingBackend:

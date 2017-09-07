@@ -5,31 +5,34 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Reflection;
 using Microsoft.Azure.Mobile.Unity;
 using UnityEngine;
 
 [Serializable]
 public class MobileCenterSettings : ScriptableObject
 {
-    [AppSectet("iOS App Secret")]
+    [AppSecret("iOS App Secret")]
     public string iOSAppSecret = "ios-app-secret";
-    [AppSectet]
+    [AppSecret]
     public string AndroidAppSecret = "android-app-secret";
-    [AppSectet]
+    [AppSecret]
     public string UWPAppSecret = "uwp-app-secret";
-    
+
     [Tooltip("Mobile Center Analytics helps you understand user behavior and customer engagement to improve your app.")]
     public bool UseAnalytics = true;
     [Tooltip("Mobile Center Crashes will automatically generate a crash log every time your app crashes.")]
     public bool UseCrashes = true;
     [Tooltip("Mobile Center Distribute will let your users install a new version of the app when you distribute it via the Mobile Center.")]
     public bool UseDistribute = true;
+    public CustomUrlProperty CustomApiUrl = new CustomUrlProperty("API");
+    public CustomUrlProperty CustomInstallUrl = new CustomUrlProperty("Install");
+
     [Tooltip("Mobile Center Push enables you to send push notifications to users of your app from the Mobile Center portal.")]
     public bool UsePush = true;
-    
+
     public LogLevel InitialLogLevel = LogLevel.Info;
-    [Space]
-    public LogUrlProperty CustomLogUrl = new LogUrlProperty();
+    public CustomUrlProperty CustomLogUrl = new CustomUrlProperty("Log");
 
     public string AppSecret
     {
@@ -57,10 +60,6 @@ public class MobileCenterSettings : ScriptableObject
             {
                 services.Add(Analytics);
             }
-            if (UseCrashes)
-            {
-                services.Add(Crashes);
-            }
             if (UseDistribute)
             {
                 services.Add(Distribute);
@@ -75,21 +74,25 @@ public class MobileCenterSettings : ScriptableObject
 
     public static Type Analytics
     {
-        get{ return Type.GetType("Microsoft.Azure.Mobile.Unity.Analytics.Analytics, Assembly-CSharp-firstpass"); }
-    }
-
-    public static Type Crashes
-    {
-        get { return Type.GetType("Microsoft.Azure.Mobile.Unity.Crashes.Crashes, Assembly-CSharp-firstpass"); }
+        get
+        {
+            return Assembly.GetExecutingAssembly().GetType("Microsoft.Azure.Mobile.Unity.Analytics.Analytics");
+        }
     }
 
     public static Type Distribute
     {
-        get { return Type.GetType("Microsoft.Azure.Mobile.Unity.Distribute.Distribute, Assembly-CSharp-firstpass"); }
+        get
+        {
+            return Assembly.GetExecutingAssembly().GetType("Microsoft.Azure.Mobile.Unity.Distribute.Distribute");
+        }
     }
 
     public static Type Push
     {
-        get { return Type.GetType("Microsoft.Azure.Mobile.Unity.Push.Push, Assembly-CSharp-firstpass"); }
+        get
+        {
+            return Assembly.GetExecutingAssembly().GetType("Microsoft.Azure.Mobile.Unity.Push.Push");
+        }
     }
 }

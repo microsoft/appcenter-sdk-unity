@@ -30,21 +30,22 @@ public class MobileCenterSettingsEditor : Editor
         EditorGUILayout.PropertyField(serializedObject.FindProperty("UWPAppSecret"));
 
         // Draw modules.
-        Header("Modules");
         if (MobileCenterSettings.Analytics != null)
         {
+            Header("Analytics");
             EditorGUILayout.PropertyField(serializedObject.FindProperty("UseAnalytics"));
-        }
-        if (MobileCenterSettings.Crashes != null)
-        {
-            EditorGUILayout.PropertyField(serializedObject.FindProperty("UseCrashes"));
         }
         if (MobileCenterSettings.Distribute != null)
         {
-            EditorGUILayout.PropertyField(serializedObject.FindProperty("UseDistribute"));
+            Header("Distribute");
+            var serializedProperty = serializedObject.FindProperty("UseDistribute");
+            EditorGUILayout.PropertyField(serializedProperty);
+            EditorGUILayout.PropertyField(serializedObject.FindProperty("CustomApiUrl"));
+            EditorGUILayout.PropertyField(serializedObject.FindProperty("CustomInstallUrl"));
         }
         if (MobileCenterSettings.Push != null)
         {
+            Header("Push");
             var serializedProperty = serializedObject.FindProperty("UsePush");
             EditorGUILayout.PropertyField(serializedProperty);
 #if !UNITY_2017_1_OR_NEWER
@@ -59,7 +60,6 @@ public class MobileCenterSettingsEditor : Editor
         Header("Other Setup");
         EditorGUILayout.PropertyField(serializedObject.FindProperty("InitialLogLevel"));
         EditorGUILayout.PropertyField(serializedObject.FindProperty("CustomLogUrl"));
-
         serializedObject.ApplyModifiedProperties();
     }
 
@@ -73,9 +73,9 @@ public class MobileCenterSettingsEditor : Editor
         }
         var settingsMaker = new MobileCenterSettingsMakerAndroid();
         settingsMaker.SetAppSecret(settings.AndroidAppSecret);
-        if (settings.CustomLogUrl.UseCustomLogUrl)
+        if (settings.CustomLogUrl.UseCustomUrl)
         {
-            settingsMaker.SetLogUrl(settings.CustomLogUrl.LogUrl);
+            settingsMaker.SetLogUrl(settings.CustomLogUrl.Url);
         }
         if (settings.UsePush)
         {
@@ -87,11 +87,15 @@ public class MobileCenterSettingsEditor : Editor
         }
         if (settings.UseDistribute)
         {
+            if (settings.CustomApiUrl.UseCustomUrl)
+            {
+                settingsMaker.SetApiUrl(settings.CustomApiUrl.Url);
+            }
+            if (settings.CustomInstallUrl.UseCustomUrl)
+            {
+                settingsMaker.SetInstallUrl(settings.CustomInstallUrl.Url);
+            }
             settingsMaker.StartDistributeClass();
-        }
-        if (settings.UseCrashes)
-        {
-            settingsMaker.StartCrashesClass();
         }
         settingsMaker.SetLogLevel((int)settings.InitialLogLevel);
         settingsMaker.CommitSettings();
