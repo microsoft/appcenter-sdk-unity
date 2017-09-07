@@ -14,9 +14,9 @@ using System.Runtime.Versioning;
 using NuGet;
 
 // Native SDK versions
-var AndroidSdkVersion = "0.11.2";
-var IosSdkVersion = "0.11.2";
-var UwpSdkVersion = "0.14.2";
+var AndroidSdkVersion = "0.12.0";
+var IosSdkVersion = "0.12.1";
+var UwpSdkVersion = "0.15.0";
 
 // URLs for downloading binaries.
 /*
@@ -29,7 +29,7 @@ var UwpSdkVersion = "0.14.2";
 
 var SdkStorageUrl = "https://mobilecentersdkdev.blob.core.windows.net/sdk/";
 var AndroidUrl = SdkStorageUrl + "MobileCenter-SDK-Android-" + AndroidSdkVersion + ".zip";
-var IosUrl = SdkStorageUrl + "MobileCenter-SDK-iOS-" + IosSdkVersion + ".zip";
+var IosUrl = SdkStorageUrl + "MobileCenter-SDK-Apple-" + IosSdkVersion + ".zip";
 
 var MobileCenterModules = new [] {
     new MobileCenterModule("mobile-center-release.aar", "MobileCenter.framework", "Microsoft.Azure.Mobile", "Core"),
@@ -211,7 +211,7 @@ Task("Externals-Ios")
     {
         var destinationFolder = "Assets/MobileCenter/Plugins/iOS/" + module.Moniker + "/" + module.IosModule;
         DeleteDirectoryIfExists(destinationFolder);
-        MoveDirectory("./externals/ios/MobileCenter-SDK-iOS/" + module.IosModule, "Assets/MobileCenter/Plugins/iOS/" + module.Moniker + "/" + module.IosModule);
+        MoveDirectory("./externals/ios/MobileCenter-SDK-Apple/iOS/" + module.IosModule, destinationFolder);
     }
 }).OnError(HandleError);
 
