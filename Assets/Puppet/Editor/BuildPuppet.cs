@@ -12,13 +12,14 @@ using UnityEngine;
 public class BuildPuppet
 {
     private static readonly string BuildFolder = "PuppetBuilds";
+    private static readonly string AppIdentifier = "com.microsoft.azure.mobile.unity.puppet";
 
     static BuildPuppet()
     {
 #if UNITY_5_6_OR_NEWER
-        PlayerSettings.applicationIdentifier = "com.microsoft.azure.mobile.unity.puppet";
+        PlayerSettings.applicationIdentifier = AppIdentifier;
 #else
-        PlayerSettings.bundleIdentifier = "com.microsoft.azure.mobile.unity.puppet";
+        PlayerSettings.bundleIdentifier = AppIdentifier;
 #endif
     }
 
@@ -67,7 +68,7 @@ public class BuildPuppet
         PlayerSettings.SetScriptingBackend(BuildTargetGroup.WSA, ScriptingImplementation.IL2CPP);
         BuildPuppetScene(BuildTarget.WSAPlayer, "WSAIL2CPPBuildXaml");
     }
-    
+
     public static void BuildPuppetSceneWsaNetD3D()
     {
         EditorUserBuildSettings.wsaUWPBuildType = WSAUWPBuildType.D3D;
@@ -114,11 +115,9 @@ public class BuildPuppet
         var placeholderFile = "Assets/google-services-placeholder.json";
         if (!File.Exists(placeholderFile))
         {
-            System.Console.WriteLine("Could not find google services placeholder.");
+            Debug.Log("Could not find google services placeholder.");
         }
         File.Copy(placeholderFile, actualFile);
-                Debug.Log("will post process");
-
         AssetDatabase.ImportAsset(actualFile, ImportAssetOptions.Default);
     }
 }
