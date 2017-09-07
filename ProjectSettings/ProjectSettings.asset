@@ -502,7 +502,8 @@ PlayerSettings:
   webGLUseWasm: 0
   webGLCompressionFormat: 1
   scriptingDefineSymbols: {}
-  platformArchitecture: {}
+  platformArchitecture:
+    iOS: 0
   scriptingBackend:
     iOS: 1
   incrementalIl2cppBuild: {}

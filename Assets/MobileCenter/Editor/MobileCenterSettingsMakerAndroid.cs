@@ -8,9 +8,9 @@ using UnityEditor;
 
 public class MobileCenterSettingsMakerAndroid
 {
-    private static string MobileCenterResourcesFolderPath = "Assets/Plugins/Android/mobile-center/res/values/";
+    private static string MobileCenterResourcesFolderPath = "Assets/MobileCenter/Plugins/Android/mobile-center/res/values/";
     private static string MobileCenterResourcesPath = MobileCenterResourcesFolderPath + "mobile-center-settings.xml";
-    private static string MobileCenterManifestPath = "Assets/Plugins/Android/mobile-center/AndroidManifest.xml";
+    private static string MobileCenterManifestPath = "Assets/MobileCenter/Plugins/Android/mobile-center/AndroidManifest.xml";
     private static readonly string ManifestAppIdPlaceholder = "${mobile-center-app-id-placeholder}";
     private static readonly string AppSecretKey = "mobile_center_app_secret";
     private static readonly string CustomLogUrlKey = "mobile_center_custom_log_url";
@@ -19,7 +19,11 @@ public class MobileCenterSettingsMakerAndroid
     private static readonly string UsePushKey = "mobile_center_use_push";
     private static readonly string UseAnalyticsKey = "mobile_center_use_analytics";
     private static readonly string UseDistributeKey = "mobile_center_use_distribute";
-    private static readonly string UseCrashesKey = "mobile_center_use_crashes";
+    private static readonly string CustomApiUrlKey = "mobile_center_custom_api_url";
+    private static readonly string UseCustomApiUrlKey = "mobile_center_use_custom_api_url";
+    private static readonly string CustomInstallUrlKey = "mobile_center_custom_install_url";
+    private static readonly string UseCustomInstallUrlKey = "mobile_center_use_custom_install_url";
+
     private IDictionary<string, string> _resourceValues = new Dictionary<string, string>();
 
     static MobileCenterSettingsMakerAndroid()
@@ -61,9 +65,16 @@ public class MobileCenterSettingsMakerAndroid
         _resourceValues[UseDistributeKey] = true.ToString();
     }
 
-    public void StartCrashesClass()
+    public void SetApiUrl(string apiUrl)
     {
-        _resourceValues[UseCrashesKey] = true.ToString();
+        _resourceValues[CustomApiUrlKey] = apiUrl;
+        _resourceValues[UseCustomApiUrlKey] = true.ToString();
+    }
+
+    public void SetInstallUrl(string installUrl)
+    {
+        _resourceValues[CustomInstallUrlKey] = installUrl;
+        _resourceValues[UseCustomInstallUrlKey] = true.ToString();
     }
 
     public void CommitSettings()

@@ -64,10 +64,10 @@ public class MobileCenterPostBuild
 #endif
     }
 
-#region UWP Methods
+    #region UWP Methods
     public static void ProcessUwpIl2CppDependencies()
     {
-        var binaries = AssetDatabase.FindAssets("*", new [] { "Assets/Plugins/WSA/IL2CPP" });
+        var binaries = AssetDatabase.FindAssets("*", new[] { "Assets/MobileCenter/Plugins/WSA/IL2CPP" });
         foreach (var guid in binaries)
         {
             var assetPath = AssetDatabase.GUIDToAssetPath(guid);
@@ -83,9 +83,9 @@ public class MobileCenterPostBuild
 
     public static void DontProcessUwpMobileCenterBinaries()
     {
-        var directories = Directory.GetDirectories("Assets/Plugins/WSA", "*", SearchOption.AllDirectories);
+        var directories = Directory.GetDirectories("Assets/MobileCenter/Plugins/WSA", "*", SearchOption.AllDirectories);
         var assemblies = AssetDatabase.FindAssets("Microsoft.Azure.Mobile", directories);
-        var watsonBinaries =  AssetDatabase.FindAssets("WatsonRegistrationUtility", directories);
+        var watsonBinaries = AssetDatabase.FindAssets("WatsonRegistrationUtility", directories);
         var allBinaries = new string[assemblies.Length + watsonBinaries.Length];
         assemblies.CopyTo(allBinaries, 0);
         watsonBinaries.CopyTo(allBinaries, assemblies.Length);
@@ -188,16 +188,15 @@ public class MobileCenterPostBuild
     private static void ApplyIosSettings(MobileCenterSettings settings, string pathToBuiltProject)
     {
         var settingsMaker = new MobileCenterSettingsMakerIos(pathToBuiltProject);
-        settingsMaker.SetLogUrl(settings.CustomLogUrl.LogUrl);
+        if (settings.CustomLogUrl.UseCustomUrl)
+        {
+            settingsMaker.SetLogUrl(settings.CustomLogUrl.Url);
+        }
         settingsMaker.SetLogLevel((int)settings.InitialLogLevel);
         settingsMaker.SetAppSecret(settings.iOSAppSecret);
         if (settings.UsePush)
         {
             settingsMaker.StartPushClass();
-        }
-        if (settings.UseCrashes)
-        {
-            settingsMaker.StartCrashesClass();
         }
         if (settings.UseAnalytics)
         {
@@ -205,6 +204,14 @@ public class MobileCenterPostBuild
         }
         if (settings.UseDistribute)
         {
+            if (settings.CustomApiUrl.UseCustomUrl)
+            {
+                settingsMaker.SetApiUrl(settings.CustomApiUrl.Url);
+            }
+            if (settings.CustomInstallUrl.UseCustomUrl)
+            {
+                settingsMaker.SetInstallUrl(settings.CustomInstallUrl.Url);
+            }
             settingsMaker.StartDistributeClass();
         }
         settingsMaker.CommitSettings();

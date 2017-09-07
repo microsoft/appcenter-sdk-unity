@@ -2,28 +2,28 @@
 <package name="MobileCenter.unitypackage">
     <include>
         <!-- Editor post build files -->
-        <file path="Assets/Plugins/Editor/MobileCenterPostBuild.cs"/>
+        <file path="Assets/MobileCenter/Plugins/Editor/MobileCenterPostBuild.cs"/>
 
         <!-- Common files -->
-        <file path="Assets/Plugins/MobileCenterSDK/Core/MobileCenter.cs"/>
-        <file path="Assets/Plugins/MobileCenterSDK/Core/LogLevel.cs"/>
-        <file path="Assets/Plugins/MobileCenterSDK/Core/WrapperSdk.cs"/>
-        <file path="Assets/Plugins/MobileCenterSDK/Core/CustomProperties.cs"/>
+        <file path="Assets/MobileCenter/Plugins/MobileCenterSDK/Core/MobileCenter.cs"/>
+        <file path="Assets/MobileCenter/Plugins/MobileCenterSDK/Core/LogLevel.cs"/>
+        <file path="Assets/MobileCenter/Plugins/MobileCenterSDK/Core/WrapperSdk.cs"/>
+        <file path="Assets/MobileCenter/Plugins/MobileCenterSDK/Core/CustomProperties.cs"/>
 
         <!-- Editor stub files -->
-        <file path="Assets/Plugins/MobileCenterSDK/Core/UnityEditor"/>
+        <file path="Assets/MobileCenter/Plugins/MobileCenterSDK/Core/UnityEditor"/>
 
         <!-- Android files -->
-        <file path="Assets/Plugins/Android/Utility"/>
-        <file path="Assets/Plugins/Android/mobile-center-release.aar"/>
-        <file path="Assets/Plugins/MobileCenterSDK/Core/Android"/>
+        <file path="Assets/MobileCenter/Plugins/Android/Utility"/>
+        <file path="Assets/MobileCenter/Plugins/Android/mobile-center-release.aar"/>
+        <file path="Assets/MobileCenter/Plugins/MobileCenterSDK/Core/Android"/>
 
         <!-- iOS files -->
-        <file path="Assets/Plugins/iOS/Core"/>
-        <file path="Assets/Plugins/MobileCenterSDK/Core/iOS"/>
+        <file path="Assets/MobileCenter/Plugins/iOS/Core"/>
+        <file path="Assets/MobileCenter/Plugins/MobileCenterSDK/Core/iOS"/>
 
         <!-- UWP files -->
-        <file path="Assets/Plugins/UWP/Core"/>
-        <file path="Assets/Plugins/MobileCenterSDK/Core/UWP"/>
+        <file path="Assets/MobileCenter/Plugins/UWP/Core"/>
+        <file path="Assets/MobileCenter/Plugins/MobileCenterSDK/Core/UWP"/>
     </include>
 </package>

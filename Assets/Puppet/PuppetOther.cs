@@ -23,6 +23,11 @@ public class PuppetOther : MonoBehaviour
         {
             DistributeEnabled.isOn = task.Result;
         });
+
+        Distribute.ReleaseAvailable = (releaseDetails) => 
+        {
+            return true;
+        };
     }
 
     public void SetPushEnabled(bool enabled)
