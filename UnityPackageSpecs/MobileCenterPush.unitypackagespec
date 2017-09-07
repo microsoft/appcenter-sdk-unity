@@ -2,22 +2,22 @@
 <package name="MobileCenterPush.unitypackage">
     <include>
         <!-- Common files -->
-        <file path="Assets/Plugins/MobileCenterSDK/Push/Push.cs"/>
-        <file path="Assets/Plugins/MobileCenterSDK/Push/PushNotificationReceivedEventArgs.cs"/>
+        <file path="Assets/MobileCenter/Plugins/MobileCenterSDK/Push/Push.cs"/>
+        <file path="Assets/MobileCenter/Plugins/MobileCenterSDK/Push/PushNotificationReceivedEventArgs.cs"/>
 
         <!-- Editor stub files -->
-        <file path="Assets/Plugins/MobileCenterSDK/Push/UnityEditor"/>
+        <file path="Assets/MobileCenter/Plugins/MobileCenterSDK/Push/UnityEditor"/>
 
         <!-- Android files -->
-        <file path="Assets/Plugins/Android/mobile-center-push-release.aar"/>
-        <file path="Assets/Plugins/MobileCenterSDK/Push/Android"/>
+        <file path="Assets/MobileCenter/Plugins/Android/mobile-center-push-release.aar"/>
+        <file path="Assets/MobileCenter/Plugins/MobileCenterSDK/Push/Android"/>
 
         <!-- iOS files -->
-        <file path="Assets/Plugins/iOS/Push"/>
-        <file path="Assets/Plugins/MobileCenterSDK/Push/iOS"/>
+        <file path="Assets/MobileCenter/Plugins/iOS/Push"/>
+        <file path="Assets/MobileCenter/Plugins/MobileCenterSDK/Push/iOS"/>
 
         <!-- UWP files -->
-        <file path="Assets/Plugins/UWP/Push"/>
+        <file path="Assets/MobileCenter/Plugins/UWP/Push"/>
         <!-- TODO: after refactoring, will need to add one more path for UWP -->
     </include>
 </package>
