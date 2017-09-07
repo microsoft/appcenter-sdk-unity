@@ -1,21 +1,21 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<package name="MobileCenterDistribute.unitypackage">
+<?xml version="1.0" encoding="utf-8"?>
+<package name="MobileCenterDistribute" version="0.0.1">
     <include>
-        <!-- Common files -->
-        <!-- TODO: add files when they are created -->
+        <!-- Shared files -->
+        <file path="Assets/Plugins/MobileCenterSDK/Distribute/Shared" />
 
-        <!-- Editor stub files -->
-        <!-- TODO: add files when they are created -->
+        <!-- "Blank" files -->
+        <file path="Assets/Plugins/MobileCenterSDK/Distribute/Blank" />
 
         <!-- Android files -->
-        <file path="Assets/MobileCenter/Plugins/Android/mobile-center-distribute-release.aar"/>
-        <!-- TODO: add files when they are created -->
+        <file path="Assets/Plugins/Android/mobile-center-distribute-release.aar" />
+        <file path="Assets/Plugins/MobileCenterSDK/Distribute/Android" />
 
         <!-- iOS files -->
-        <file path="Assets/MobileCenter/Plugins/iOS/Push"/>
-        <!-- TODO: add files when they are created -->
+        <file path="Assets/Plugins/iOS/Distribute" />
+        <file path="Assets/Plugins/MobileCenterSDK/Distribute/iOS" />
 
         <!-- UWP files -->
-        <!-- TODO: add files when they are created -->
+        <file path="Assets/Plugins/MobileCenterSDK/Distribute/UWP" />
     </include>
 </package>
