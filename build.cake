@@ -373,6 +373,12 @@ Task("Package").Does(()=>
     // Need to provide cake context so class methods can use cake apis.
     UnityPackage.Context = Context;
 
+    // Add app id placeholder to AndroidManifest.xml
+    var path = "Assets/Plugins/Android/mobile-center/AndroidManifest.xml";
+    var pattern = "android:authorities=\"[^\"]*microsoft.azure.mobile.mobilecenterloader";
+    var replacement = "android:authorities=${mobile-center-app-id-placeholder}.microsoft.azure.mobile.mobilecenterloader";
+    ReplaceRegexInFiles(path, pattern, replacement);
+
     // Store packages in a clean folder.
     const string outputDirectory = "output";
     CleanDirectory(outputDirectory);
@@ -382,12 +388,6 @@ Task("Package").Does(()=>
         var package = new UnityPackage(spec.FullPath);
         package.CreatePackage(outputDirectory);
     }
-
-    // Add app id placeholder to AndroidManifest.xml
-    var path = "Assets/Plugins/Android/mobile-center/AndroidManifest.xml";
-    var pattern = "android:authorities=\"[^\"]*microsoft.azure.mobile.mobilecenterloader";
-    var replacement = "android:authorities=${mobile-center-app-id-placeholder}.microsoft.azure.mobile.mobilecenterloader";
-    ReplaceRegexInFiles(path, pattern, replacement);
 });
 
 Task("PrepareAssets").IsDependentOn("BuildAndroidContentProvider").IsDependentOn("Externals");
@@ -474,6 +474,27 @@ Task("BuildPuppetApps")
     CleanDirectory(PuppetBuildsFolder);
 }).OnError(HandleError);
 
+Task("PublishPackagesToStorage").Does(()=>
+{
+    // The environment variables below must be set for this task to succeed
+    var apiKey = Argument("AzureStorageAccessKey", EnvironmentVariable("AZURE_STORAGE_ACCESS_KEY"));
+    var accountName = EnvironmentVariable("AZURE_STORAGE_ACCOUNT");
+    var corePackageVersion = XmlPeek(File("UnityPackageSpecs/MobileCenter.unitypackagespec"), "package/@version");
+    var zippedPackages = "MobileCenter-SDK-Unity-" + corePackageVersion + ".zip";
+    Information("Publishing packages to blob " + zippedPackages);
+    var files = GetFiles("output/*.unitypackage");
+    Zip("./", zippedPackages, files);
+    AzureStorage.UploadFileToBlob(new AzureStorageSettings
+    {
+        AccountName = accountName,
+        ContainerName = "sdk",
+        BlobName = zippedPackages,
+        Key = apiKey,
+        UseHttps = true
+    }, zippedPackages);
+    DeleteFiles(zippedPackages);
+}).OnError(HandleError);
+
 // Default Task.
 Task("Default").IsDependentOn("PrepareAssets");
 
@@ -487,7 +508,6 @@ Task("clean")
     CleanDirectories("./**/bin");
     CleanDirectories("./**/obj");
 });
-
 
 string GetNuGetPackage(string packageId, string packageVersion)
 {

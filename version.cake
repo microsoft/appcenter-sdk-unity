@@ -2,8 +2,10 @@
 #addin nuget:?package=Cake.Git
 #load "utility.cake"
 
+using System.Text.RegularExpressions;
+
 // Task TARGET for build
-var TARGET = Argument("target", Argument("t", ""));
+var Target = Argument("target", Argument("t", ""));
 
 Task("StartNewVersion").Does(()=>
 {
@@ -26,24 +28,10 @@ Task("StartNewVersion").Does(()=>
 // Changes the Version field in WrapperSdk.cs to the given version
 void UpdateWrapperSdkVersion(string newVersion)
 {
-    var path = "Assets/Plugins/MobileCenterSDK/Core/Shared/WrapperSdk.cs";
+    var path = "Assets/MobileCenter/Plugins/MobileCenterSDK/Core/Shared/WrapperSdk.cs";
     var patternString = "WrapperSdkVersion = \"[^\"]+\";";
     var newString = "WrapperSdkVersion = \"" + newVersion + "\";";
     ReplaceRegexInFiles(path, patternString, newString);
 }
 
-void DeleteDirectoryIfExists(string directoryName)
-{
-    if (DirectoryExists(directoryName))
-    {
-        DeleteDirectory(directoryName, true);	
-    }
-}
-
-void CleanDirectory(string directoryName)
-{
-    DeleteDirectoryIfExists(directoryName);
-    CreateDirectory(directoryName);
-}
-
-RunTarget(TARGET);
+RunTarget(Target);
