@@ -11,11 +11,7 @@ namespace Microsoft.Azure.Mobile.Unity.Distribute.Internal
 {
     class DistributeInternal
     {
-        public static void Initialize()
-        {
-        }
-
-        public static void PostInitialize()
+        public static void PrepareEventHandlers()
         {
         }
 

@@ -1,0 +1,42 @@
+{
+  "project_info": {
+    "project_number": "1",
+    "firebase_url": "https://mobile-center-sdk-android.firebaseio.com",
+    "project_id": "mobile-center-sdk-android",
+    "storage_bucket": "mobile-center-sdk-android.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "placeholder-value",
+        "android_client_info": {
+          "package_name": "com.microsoft.azure.mobile.unity.puppet"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "placeholder-value",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "placeholder-value"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 1,
+          "other_platform_oauth_client": []
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

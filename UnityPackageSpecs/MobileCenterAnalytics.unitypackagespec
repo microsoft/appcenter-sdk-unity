@@ -1,22 +1,22 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<package name="MobileCenterAnalytics.unitypackage">
+<?xml version="1.0" encoding="utf-8"?>
+<package name="MobileCenterAnalytics" version="0.0.1">
     <include>
-        <!-- Common files -->
-        <file path="Assets/MobileCenter/Plugins/MobileCenterSDK/Analytics/Analytics.cs"/>
+        <!-- Shared files -->
+        <file path="Assets/MobileCenter/Plugins/MobileCenterSDK/Analytics/Shared" />
 
-        <!-- Editor stub files -->
-        <file path="Assets/MobileCenter/Plugins/MobileCenterSDK/Analytics/UnityEditor"/>
+        <!-- "Blank" files -->
+        <file path="Assets/MobileCenter/Plugins/MobileCenterSDK/Analytics/Blank" />
 
         <!-- Android files -->
-        <file path="Assets/MobileCenter/Plugins/Android/mobile-center-analytics-release.aar"/>
-        <file path="Assets/MobileCenter/Plugins/MobileCenterSDK/Analytics/Android"/>
+        <file path="Assets/MobileCenter/Plugins/Android/mobile-center-analytics-release.aar" />
+        <file path="Assets/MobileCenter/Plugins/MobileCenterSDK/Analytics/Android" />
 
         <!-- iOS files -->
-        <file path="Assets/MobileCenter/Plugins/iOS/Analytics"/>
-        <file path="Assets/MobileCenter/Plugins/MobileCenterSDK/Analytics/iOS"/>
+        <file path="Assets/MobileCenter/Plugins/iOS/Analytics" />
+        <file path="Assets/MobileCenter/Plugins/MobileCenterSDK/Analytics/iOS" />
 
         <!-- UWP files -->
-        <file path="Assets/MobileCenter/Plugins/UWP/Analytics"/>
-        <!-- TODO: after refactoring, will need to add one more path for UWP -->
+        <file path="Assets/MobileCenter/Plugins/WSA/Analytics" />
+        <file path="Assets/MobileCenter/Plugins/MobileCenterSDK/Analytics/UWP" />
     </include>
 </package>

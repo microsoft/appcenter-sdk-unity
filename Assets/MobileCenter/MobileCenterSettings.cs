@@ -76,7 +76,11 @@ public class MobileCenterSettings : ScriptableObject
     {
         get
         {
+#if !UNITY_EDITOR && UNITY_WSA_10_0
+            return typeof(MobileCenterSettings).GetTypeInfo().Assembly.GetType("Microsoft.Azure.Mobile.Unity.Analytics.Analytics");
+#else
             return Assembly.GetExecutingAssembly().GetType("Microsoft.Azure.Mobile.Unity.Analytics.Analytics");
+#endif
         }
     }
 
@@ -84,7 +88,11 @@ public class MobileCenterSettings : ScriptableObject
     {
         get
         {
+#if !UNITY_EDITOR && UNITY_WSA_10_0
+            return typeof(MobileCenterSettings).GetTypeInfo().Assembly.GetType("Microsoft.Azure.Mobile.Unity.Distribute.Distribute");
+#else
             return Assembly.GetExecutingAssembly().GetType("Microsoft.Azure.Mobile.Unity.Distribute.Distribute");
+#endif
         }
     }
 
@@ -92,7 +100,11 @@ public class MobileCenterSettings : ScriptableObject
     {
         get
         {
+#if !UNITY_EDITOR && UNITY_WSA_10_0
+            return typeof(MobileCenterSettings).GetTypeInfo().Assembly.GetType("Microsoft.Azure.Mobile.Unity.Push.Push");
+#else
             return Assembly.GetExecutingAssembly().GetType("Microsoft.Azure.Mobile.Unity.Push.Push");
+#endif
         }
     }
 }

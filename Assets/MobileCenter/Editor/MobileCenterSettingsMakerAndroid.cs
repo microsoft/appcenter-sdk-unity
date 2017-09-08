@@ -79,22 +79,17 @@ public class MobileCenterSettingsMakerAndroid
 
     public void CommitSettings()
     {
-        if (File.Exists(MobileCenterResourcesPath))
-        {
-            File.Delete(MobileCenterResourcesPath);
-        }
-        XmlResourceHelper.WriteXmlResource(MobileCenterResourcesPath, _resourceValues);
-    }
-
-    [InitializeOnLoadMethod]
-    static void SetApplicationId()
-    {
-        string appId = ApplicationIdHelper.GetApplicationId();
+        var appId = ApplicationIdHelper.GetApplicationId();
         var manifestText = File.ReadAllText(MobileCenterManifestPath);
         if (manifestText.Contains(ManifestAppIdPlaceholder))
         {
             manifestText = manifestText.Replace(ManifestAppIdPlaceholder, appId);
             File.WriteAllText(MobileCenterManifestPath, manifestText);
         }
+        if (File.Exists(MobileCenterResourcesPath))
+        {
+            File.Delete(MobileCenterResourcesPath);
+        }
+        XmlResourceHelper.WriteXmlResource(MobileCenterResourcesPath, _resourceValues);
     }
 }
