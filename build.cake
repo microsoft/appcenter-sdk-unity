@@ -378,6 +378,12 @@ Task("Package").Does(()=>
     // Need to provide cake context so class methods can use cake apis.
     UnityPackage.Context = Context;
 
+    // Add app id placeholder to AndroidManifest.xml
+    var path = "Assets/Plugins/Android/mobile-center/AndroidManifest.xml";
+    var pattern = "android:authorities=\"[^\"]*microsoft.azure.mobile.mobilecenterloader";
+    var replacement = "android:authorities=${mobile-center-app-id-placeholder}.microsoft.azure.mobile.mobilecenterloader";
+    ReplaceRegexInFiles(path, pattern, replacement);
+
     // Store packages in a clean folder.
     const string outputDirectory = "output";
     CleanDirectory(outputDirectory);
@@ -387,12 +393,6 @@ Task("Package").Does(()=>
         var package = new UnityPackage(spec.FullPath);
         package.CreatePackage(outputDirectory);
     }
-
-    // Add app id placeholder to AndroidManifest.xml
-    var path = "Assets/Plugins/Android/mobile-center/AndroidManifest.xml";
-    var pattern = "android:authorities=\"[^\"]*microsoft.azure.mobile.mobilecenterloader";
-    var replacement = "android:authorities=${mobile-center-app-id-placeholder}.microsoft.azure.mobile.mobilecenterloader";
-    ReplaceRegexInFiles(path, pattern, replacement);
 });
 
 Task("PrepareAssets").IsDependentOn("BuildAndroidContentProvider").IsDependentOn("Externals");
