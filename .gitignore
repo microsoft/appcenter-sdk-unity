@@ -57,16 +57,20 @@ google-services.json*
 /Library/
 *.csproj
 *.sln
+PuppetBuilds/
 
 # Firebase
 Assets/Plugins/Android/firebase-*
 Assets/Plugins/Android/support-*
 Assets/Plugins/Android/play-services-*
-Assets/Plugins/Android/mobile-center/res
-Assets/Plugins/Android/mobile-center/res.meta
+Assets/MobileCenter/Plugins/Android/mobile-center/res
+Assets/MobileCenter/Plugins/Android/mobile-center/res.meta
 Assets/Firebase/
 Assets/PlayServicesResolver/
 Assets/PlayServicesResolver.meta
+
+# Cake
+CAKE_SCRIPT_TEMP*
 
 # Android Studio
 */.idea/

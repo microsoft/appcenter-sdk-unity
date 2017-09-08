@@ -17,8 +17,17 @@ MonoBehaviour:
   UseAnalytics: 1
   UseCrashes: 1
   UseDistribute: 1
+  CustomApiUrl:
+    UrlName: API
+    UseCustomUrl: 0
+    Url: https://asgard-int.trafficmanager.net/api/v0.1
+  CustomInstallUrl:
+    UrlName: Install
+    UseCustomUrl: 0
+    Url: http://install.asgard-int.trafficmanager.net
   UsePush: 1
   InitialLogLevel: 2
   CustomLogUrl:
-    UseCustomLogUrl: 1
-    LogUrl: https://in-integration.dev.avalanch.es
+    UrlName: Log
+    UseCustomUrl: 1
+    Url: https://in-integration.dev.avalanch.es

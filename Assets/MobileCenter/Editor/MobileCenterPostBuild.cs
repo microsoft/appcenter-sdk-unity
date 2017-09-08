@@ -4,22 +4,21 @@
 
 using System;
 using System.IO;
+using System.Reflection;
 using System.Text.RegularExpressions;
 using UnityEngine;
 using UnityEditor;
 using UnityEditor.Callbacks;
-
 #if UNITY_IOS
 using UnityEditor.iOS.Xcode;
 #endif
-
 public class MobileCenterPostBuild
 {
     [PostProcessBuild]
     public static void OnPostprocessBuild(BuildTarget target, string pathToBuiltProject)
     {
-#if UNITY_WSA_10_0 && !ENABLE_IL2CPP
-        if (target == BuildTarget.WSAPlayer)
+        if (target == BuildTarget.WSAPlayer &&
+            PlayerSettings.GetScriptingBackend(BuildTargetGroup.WSA) != ScriptingImplementation.IL2CPP)
         {
             // If UWP, need to add NuGet packages.
             var projectJson = pathToBuiltProject + "/" + PlayerSettings.productName + "/project.json";
@@ -28,10 +27,9 @@ public class MobileCenterPostBuild
             var nuget = EditorApplication.applicationContentsPath + "/PlaybackEngines/MetroSupport/Tools/nuget.exe";
             ExecuteCommand(nuget, "restore \"" + projectJson + "\" -NonInteractive");
         }
-#endif
-#if UNITY_IOS
         if (target == BuildTarget.iOS)
         {
+#if UNITY_IOS
             // Load/Apply Mobile Center settings.
             var settingsPath = MobileCenterSettingsEditor.SettingsPath;
             var settings = AssetDatabase.LoadAssetAtPath<MobileCenterSettings>(settingsPath);
@@ -60,14 +58,14 @@ public class MobileCenterPostBuild
             OnPostprocessCapabilities(capabilityManager, settings);
             capabilityManager.WriteToFile();
 #endif
-        }
 #endif
+        }
     }
 
-#region UWP Methods
+    #region UWP Methods
     public static void ProcessUwpIl2CppDependencies()
     {
-        var binaries = AssetDatabase.FindAssets("*", new [] { "Assets/Plugins/WSA/IL2CPP" });
+        var binaries = AssetDatabase.FindAssets("*", new[] { "Assets/MobileCenter/Plugins/WSA/IL2CPP" });
         foreach (var guid in binaries)
         {
             var assetPath = AssetDatabase.GUIDToAssetPath(guid);
@@ -81,30 +79,8 @@ public class MobileCenterPostBuild
         }
     }
 
-    public static void DontProcessUwpMobileCenterBinaries()
-    {
-        var directories = Directory.GetDirectories("Assets/Plugins/WSA", "*", SearchOption.AllDirectories);
-        var assemblies = AssetDatabase.FindAssets("Microsoft.Azure.Mobile", directories);
-        var watsonBinaries =  AssetDatabase.FindAssets("WatsonRegistrationUtility", directories);
-        var allBinaries = new string[assemblies.Length + watsonBinaries.Length];
-        assemblies.CopyTo(allBinaries, 0);
-        watsonBinaries.CopyTo(allBinaries, assemblies.Length);
-        foreach (var guid in allBinaries)
-        {
-            var assetPath = AssetDatabase.GUIDToAssetPath(guid);
-            var importer = AssetImporter.GetAtPath(assetPath) as PluginImporter;
-            if (importer != null)
-            {
-                importer.SetPlatformData(BuildTarget.WSAPlayer, "SDK", "UWP");
-                importer.SetPlatformData(BuildTarget.WSAPlayer, "DontProcess", "true");
-                importer.SaveAndReimport();
-            }
-        }
-    }
-
     private static void AddDependenciesToProjectJson(string projectJsonPath)
     {
-        Debug.Log("Add dependencies");
         if (!File.Exists(projectJsonPath))
         {
             Debug.LogWarning(projectJsonPath + " not found!");
@@ -114,6 +90,7 @@ public class MobileCenterPostBuild
         jsonString = AddDependencyToProjectJson(jsonString, "Microsoft.NETCore.UniversalWindowsPlatform", "5.2.2");
         jsonString = AddDependencyToProjectJson(jsonString, "Newtonsoft.Json", "10.0.3");
         jsonString = AddDependencyToProjectJson(jsonString, "sqlite-net-pcl", "1.3.1");
+        jsonString = AddDependencyToProjectJson(jsonString, "System.Collections.NonGeneric", "4.0.1");
         File.WriteAllText(projectJsonPath, jsonString);
     }
 
@@ -188,16 +165,15 @@ public class MobileCenterPostBuild
     private static void ApplyIosSettings(MobileCenterSettings settings, string pathToBuiltProject)
     {
         var settingsMaker = new MobileCenterSettingsMakerIos(pathToBuiltProject);
-        settingsMaker.SetLogUrl(settings.CustomLogUrl.LogUrl);
+        if (settings.CustomLogUrl.UseCustomUrl)
+        {
+            settingsMaker.SetLogUrl(settings.CustomLogUrl.Url);
+        }
         settingsMaker.SetLogLevel((int)settings.InitialLogLevel);
         settingsMaker.SetAppSecret(settings.iOSAppSecret);
         if (settings.UsePush)
         {
             settingsMaker.StartPushClass();
-        }
-        if (settings.UseCrashes)
-        {
-            settingsMaker.StartCrashesClass();
         }
         if (settings.UseAnalytics)
         {
@@ -205,6 +181,14 @@ public class MobileCenterPostBuild
         }
         if (settings.UseDistribute)
         {
+            if (settings.CustomApiUrl.UseCustomUrl)
+            {
+                settingsMaker.SetApiUrl(settings.CustomApiUrl.Url);
+            }
+            if (settings.CustomInstallUrl.UseCustomUrl)
+            {
+                settingsMaker.SetInstallUrl(settings.CustomInstallUrl.Url);
+            }
             settingsMaker.StartDistributeClass();
         }
         settingsMaker.CommitSettings();
