@@ -17,7 +17,7 @@ namespace Microsoft.Azure.Mobile.Unity.Distribute.Internal
 
         public static Type GetNativeType()
         {
-            return null;
+            return typeof(Microsoft.Azure.Mobile.Distribute.Distribute);
         }
 
         public static MobileCenterTask SetEnabledAsync(bool isEnabled)
