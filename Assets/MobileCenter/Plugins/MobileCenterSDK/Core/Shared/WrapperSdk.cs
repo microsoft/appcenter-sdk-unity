@@ -15,7 +15,7 @@ namespace Microsoft.Azure.Mobile.Unity
         private static bool _hasAttemptedToGetRuntimeVersion;
 
         public const string Name = "mobilecenter.unity";
-        internal const string WrapperSdkVersion = "0.0.1";
+        public const string WrapperSdkVersion = "0.0.1";
 
         internal static string WrapperRuntimeVersion
         {
