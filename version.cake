@@ -1,8 +1,10 @@
 #addin nuget:?package=Cake.FileHelpers
 #addin nuget:?package=Cake.Git
 
+using System.Text.RegularExpressions;
+
 // Task TARGET for build
-var TARGET = Argument("target", Argument("t", ""));
+var Target = Argument("target", Argument("t", ""));
 
 Task("StartNewVersion").Does(()=>
 {
@@ -17,8 +19,6 @@ Task("StartNewVersion").Does(()=>
     {
         XmlPoke(spec.ToString(), "package/@version", newVersion);
     }
-
-    //TODO update demo app and android content provider
 });
 
 // Changes the Version field in WrapperSdk.cs to the given version
@@ -30,18 +30,4 @@ void UpdateWrapperSdkVersion(string newVersion)
     ReplaceRegexInFiles(path, patternString, newString);
 }
 
-void DeleteDirectoryIfExists(string directoryName)
-{
-    if (DirectoryExists(directoryName))
-    {
-        DeleteDirectory(directoryName, true);	
-    }
-}
-
-void CleanDirectory(string directoryName)
-{
-    DeleteDirectoryIfExists(directoryName);
-    CreateDirectory(directoryName);
-}
-
-RunTarget(TARGET);
+RunTarget(Target);

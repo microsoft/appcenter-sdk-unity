@@ -500,7 +500,6 @@ Task("PublishPackagesToStorage").Does(()=>
     DeleteFiles(zippedPackages);
 }).OnError(HandleError);
 
-
 // Default Task.
 Task("Default").IsDependentOn("PrepareAssets");
 
@@ -516,7 +515,6 @@ Task("RemoveTemporaries").Does(()=>
     CleanDirectory(PuppetBuildsFolder);
     DeleteFiles("./nuget/*.temp.nuspec");
 });
-
 
 // Clean up files/directories.
 Task("clean")
