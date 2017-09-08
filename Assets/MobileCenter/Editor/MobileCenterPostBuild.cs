@@ -51,7 +51,7 @@ public class MobileCenterPostBuild
             info.WriteToFile(infoPath);
 
 #if UNITY_2017_1_OR_NEWER
-             // Update capabilities.
+            // Update capabilities.
             var capabilityManager = new ProjectCapabilityManager(
                 projectPath, targetName + ".entitlements",
                 PBXProject.GetUnityTargetName());
