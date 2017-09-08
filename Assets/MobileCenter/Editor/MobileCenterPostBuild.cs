@@ -136,7 +136,7 @@ public class MobileCenterPostBuild
 
     #region iOS Methods
 #if UNITY_IOS
-        private static void OnPostprocessProject(PBXProject project, MobileCenterSettings settings)
+    private static void OnPostprocessProject(PBXProject project, MobileCenterSettings settings)
     {
         // The target we want to add to is created by Unity.
         var targetName = PBXProject.GetUnityTargetName();
@@ -203,7 +203,7 @@ public class MobileCenterPostBuild
             capabilityManager.AddBackgroundModes(BackgroundModesOptions.RemoteNotifications);
         }
     }
-#endif   
+#endif
 #endif
     #endregion
 }
