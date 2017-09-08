@@ -26,29 +26,25 @@ public class BuildPuppet
     public static void BuildPuppetSceneAndroidMono()
     {
         CreateGoogleServicesJsonIfNotPresent();
-        PlayerSettings.SetScriptingBackend(BuildTargetGroup.Android, ScriptingImplementation.Mono2x);
-        BuildPuppetScene(BuildTarget.Android, "AndroidMonoBuild.apk");
+        BuildPuppetScene(BuildTarget.Android, BuildTargetGroup.Android, ScriptingImplementation.Mono2x, "AndroidMonoBuild.apk");
     }
 
     public static void BuildPuppetSceneAndroidIl2CPP()
     {
         CreateGoogleServicesJsonIfNotPresent();
-        PlayerSettings.SetScriptingBackend(BuildTargetGroup.Android, ScriptingImplementation.IL2CPP);
-        BuildPuppetScene(BuildTarget.Android, "AndroidIL2CPPBuild.apk");
+        BuildPuppetScene(BuildTarget.Android, BuildTargetGroup.Android, ScriptingImplementation.IL2CPP, "AndroidIL2CPPBuild.apk");
     }
 
     public static void BuildPuppetSceneIosMono()
     {
-        PlayerSettings.SetScriptingBackend(BuildTargetGroup.iOS, ScriptingImplementation.Mono2x);
         PlayerSettings.iOS.sdkVersion = iOSSdkVersion.SimulatorSDK;
-        BuildPuppetScene(BuildTarget.iOS, "iOSMonoBuild");
+        BuildPuppetScene(BuildTarget.iOS, BuildTargetGroup.iOS, ScriptingImplementation.Mono2x, "iOSMonoBuild");
     }
 
     public static void BuildPuppetSceneIosIl2CPP()
     {
-        PlayerSettings.SetScriptingBackend(BuildTargetGroup.iOS, ScriptingImplementation.IL2CPP);
         PlayerSettings.iOS.sdkVersion = iOSSdkVersion.SimulatorSDK;
-        BuildPuppetScene(BuildTarget.iOS, "iOSIL2CPPBuild");
+        BuildPuppetScene(BuildTarget.iOS, BuildTargetGroup.iOS, ScriptingImplementation.IL2CPP, "iOSIL2CPPBuild");
     }
 
     public static void BuildPuppetSceneWsaNetXaml()
@@ -56,8 +52,7 @@ public class BuildPuppet
         EditorUserBuildSettings.wsaUWPBuildType = WSAUWPBuildType.XAML;
         PlayerSettings.scriptingRuntimeVersion = ScriptingRuntimeVersion.Legacy;
         PlayerSettings.SetApiCompatibilityLevel(BuildTargetGroup.WSA, ApiCompatibilityLevel.NET_4_6);
-        PlayerSettings.SetScriptingBackend(BuildTargetGroup.WSA, ScriptingImplementation.WinRTDotNET);
-        BuildPuppetScene(BuildTarget.WSAPlayer, "WSANetBuildXaml");
+        BuildPuppetScene(BuildTarget.WSAPlayer, BuildTargetGroup.WSA, ScriptingImplementation.WinRTDotNET, "WSANetBuildXaml");
     }
 
     public static void BuildPuppetSceneWsaIl2CPPXaml()
@@ -65,8 +60,7 @@ public class BuildPuppet
         EditorUserBuildSettings.wsaUWPBuildType = WSAUWPBuildType.XAML;
         PlayerSettings.scriptingRuntimeVersion = ScriptingRuntimeVersion.Legacy;
         PlayerSettings.SetApiCompatibilityLevel(BuildTargetGroup.WSA, ApiCompatibilityLevel.NET_4_6);
-        PlayerSettings.SetScriptingBackend(BuildTargetGroup.WSA, ScriptingImplementation.IL2CPP);
-        BuildPuppetScene(BuildTarget.WSAPlayer, "WSAIL2CPPBuildXaml");
+        BuildPuppetScene(BuildTarget.WSAPlayer, BuildTargetGroup.WSA, ScriptingImplementation.IL2CPP, "WSAIL2CPPBuildXaml");
     }
 
     public static void BuildPuppetSceneWsaNetD3D()
@@ -75,8 +69,7 @@ public class BuildPuppet
         PlayerSettings.WSA.compilationOverrides = PlayerSettings.WSACompilationOverrides.UseNetCore;
         PlayerSettings.scriptingRuntimeVersion = ScriptingRuntimeVersion.Legacy;
         PlayerSettings.SetApiCompatibilityLevel(BuildTargetGroup.WSA, ApiCompatibilityLevel.NET_4_6);
-        PlayerSettings.SetScriptingBackend(BuildTargetGroup.WSA, ScriptingImplementation.WinRTDotNET);
-        BuildPuppetScene(BuildTarget.WSAPlayer, "WSANetBuildD3D");
+        BuildPuppetScene(BuildTarget.WSAPlayer, BuildTargetGroup.WSA, ScriptingImplementation.WinRTDotNET, "WSANetBuildD3D");
     }
 
     public static void BuildPuppetSceneWsaIl2CPPD3D()
@@ -84,12 +77,12 @@ public class BuildPuppet
         EditorUserBuildSettings.wsaUWPBuildType = WSAUWPBuildType.D3D;
         PlayerSettings.scriptingRuntimeVersion = ScriptingRuntimeVersion.Legacy;
         PlayerSettings.SetApiCompatibilityLevel(BuildTargetGroup.WSA, ApiCompatibilityLevel.NET_4_6);
-        PlayerSettings.SetScriptingBackend(BuildTargetGroup.WSA, ScriptingImplementation.IL2CPP);
-        BuildPuppetScene(BuildTarget.WSAPlayer, "WSAIL2CPPBuildD3D");
+        BuildPuppetScene(BuildTarget.WSAPlayer, BuildTargetGroup.WSA, ScriptingImplementation.IL2CPP, "WSAIL2CPPBuildD3D");
     }
 
-    private static void BuildPuppetScene(BuildTarget target, string outputPath)
+    private static void BuildPuppetScene(BuildTarget target, BuildTargetGroup targetGroup, ScriptingImplementation scriptingImplementation, string outputPath)
     {
+        PlayerSettings.SetScriptingBackend(targetGroup, scriptingImplementation);
         string[] puppetScene = { "Assets/Puppet/PuppetScene.unity" };
         var options = new BuildPlayerOptions
         {
