@@ -1,5 +1,6 @@
 #addin nuget:?package=Cake.FileHelpers
 #addin nuget:?package=Cake.Git
+#load "utility.cake"
 
 using System.Text.RegularExpressions;
 
@@ -19,6 +20,9 @@ Task("StartNewVersion").Does(()=>
     {
         XmlPoke(spec.ToString(), "package/@version", newVersion);
     }
+
+    // Increment puppet app version (it will use wrappersdkversion)
+    ExecuteUnityMethod("BuildPuppet.SetVersionNumber", "ios");
 });
 
 // Changes the Version field in WrapperSdk.cs to the given version

@@ -142,6 +142,7 @@ PlayerSettings:
   resolutionScalingMode: 0
   applicationIdentifier:
     Android: com.microsoft.azure.mobile.unity.puppet
+    Standalone: com.microsoft.azure.mobile.unity.puppet
     iOS: com.microsoft.azure.mobile.unity.puppet
   buildNumber: {}
   AndroidBundleVersionCode: 1
