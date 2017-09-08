@@ -479,6 +479,28 @@ Task("BuildPuppetApps")
     CleanDirectory(PuppetBuildsFolder);
 }).OnError(HandleError);
 
+Task("PublishPackagesToStorage").Does(()=>
+{
+    // The environment variables below must be set for this task to succeed
+    var apiKey = Argument("AzureStorageAccessKey", EnvironmentVariable("AZURE_STORAGE_ACCESS_KEY"));
+    var accountName = EnvironmentVariable("AZURE_STORAGE_ACCOUNT");
+    var corePackageVersion = XmlPeek(File("UnityPackageSpecs/MobileCenter.unitypackagespec"), "package/@version");
+    var zippedPackages = "MobileCenter-SDK-Unity-" + corePackageVersion + ".zip";
+    Information("Publishing packages to blob " + zippedPackages);
+    var files = GetFiles("output/*.unitypackage");
+    Zip("./", zippedPackages, files);
+    AzureStorage.UploadFileToBlob(new AzureStorageSettings
+    {
+        AccountName = accountName,
+        ContainerName = "sdk",
+        BlobName = zippedPackages,
+        Key = apiKey,
+        UseHttps = true
+    }, zippedPackages);
+    DeleteFiles(zippedPackages);
+}).OnError(HandleError);
+
+
 // Default Task.
 Task("Default").IsDependentOn("PrepareAssets");
 
