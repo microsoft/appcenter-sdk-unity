@@ -49,16 +49,14 @@ public class BuildPuppet
 
     public static void BuildPuppetSceneIosMonoDeviceSdk()
     {
-        PlayerSettings.SetScriptingBackend(BuildTargetGroup.iOS, ScriptingImplementation.Mono2x);
         PlayerSettings.iOS.sdkVersion = iOSSdkVersion.DeviceSDK;
-        BuildPuppetScene(BuildTarget.iOS, "iOSMonoBuild");
+        BuildPuppetScene(BuildTarget.iOS, BuildTargetGroup.iOS, ScriptingImplementation.Mono2x, "iOSMonoBuild");
     }
 
     public static void BuildPuppetSceneIosIl2CPPDeviceSdk()
     {
-        PlayerSettings.SetScriptingBackend(BuildTargetGroup.iOS, ScriptingImplementation.IL2CPP);
         PlayerSettings.iOS.sdkVersion = iOSSdkVersion.DeviceSDK;
-        BuildPuppetScene(BuildTarget.iOS, "iOSIL2CPPBuild");
+        BuildPuppetScene(BuildTarget.iOS, BuildTargetGroup.iOS, ScriptingImplementation.IL2CPP, "iOSIL2CPPBuild");
     }
 
     public static void BuildPuppetSceneWsaNetXaml()
