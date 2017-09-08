@@ -51,6 +51,20 @@ public class BuildPuppet
         BuildPuppetScene(BuildTarget.iOS, "iOSIL2CPPBuild");
     }
 
+    public static void BuildPuppetSceneIosMonoDeviceSdk()
+    {
+        PlayerSettings.SetScriptingBackend(BuildTargetGroup.iOS, ScriptingImplementation.Mono2x);
+        PlayerSettings.iOS.sdkVersion = iOSSdkVersion.DeviceSDK;
+        BuildPuppetScene(BuildTarget.iOS, "iOSMonoBuild");
+    }
+
+    public static void BuildPuppetSceneIosIl2CPPDeviceSdk()
+    {
+        PlayerSettings.SetScriptingBackend(BuildTargetGroup.iOS, ScriptingImplementation.IL2CPP);
+        PlayerSettings.iOS.sdkVersion = iOSSdkVersion.DeviceSDK;
+        BuildPuppetScene(BuildTarget.iOS, "iOSIL2CPPBuild");
+    }
+
     public static void BuildPuppetSceneWsaNetXaml()
     {
         EditorUserBuildSettings.wsaUWPBuildType = WSAUWPBuildType.XAML;

@@ -5,6 +5,7 @@
 #addin nuget:?package=Cake.Git
 #addin nuget:?package=NuGet.Core
 #addin "Cake.Xcode"
+#load "utility.cake"
 
 using System;
 using System.Linq;
@@ -37,12 +38,6 @@ var MobileCenterModules = new [] {
     new MobileCenterModule("mobile-center-distribute-release.aar", "MobileCenterDistribute.framework", "Microsoft.Azure.Mobile.Distribute", "Distribute"),
     new MobileCenterModule("mobile-center-push-release.aar", "MobileCenterPush.framework", "Microsoft.Azure.Mobile.Push", "Push")
 };
-
-// Prefix for temporary intermediates that are created by this script
-var TemporaryPrefix = "CAKE_SCRIPT_TEMP";
-
-// Location of puppet application builds
- var PuppetBuildsFolder = "PuppetBuilds";
 
 // External Unity Packages
 var JarResolverPackageName =  "play-services-resolver-" + ExternalUnityPackage.VersionPlaceholder + ".unitypackage";
@@ -482,20 +477,6 @@ Task("BuildPuppetApps")
 // Default Task.
 Task("Default").IsDependentOn("PrepareAssets");
 
-// Remove all temporary files and folders
-Task("RemoveTemporaries").Does(()=>
-{
-    DeleteFiles(TemporaryPrefix + "*");
-    var dirs = GetDirectories(TemporaryPrefix + "*");
-    foreach (var directory in dirs)
-    {
-        DeleteDirectory(directory, true);
-    }
-    CleanDirectory(PuppetBuildsFolder);
-    DeleteFiles("./nuget/*.temp.nuspec");
-});
-
-
 // Clean up files/directories.
 Task("clean")
     .IsDependentOn("RemoveTemporaries")
@@ -507,38 +488,6 @@ Task("clean")
     CleanDirectories("./**/obj");
 });
 
-// Copy files to a clean directory using string names instead of FilePath[] and DirectoryPath
-void CopyFiles(IEnumerable<string> files, string targetDirectory, bool clean = true)
-{
-    if (clean)
-    {
-        CleanDirectory(targetDirectory);
-    }
-    foreach (var file in files)
-    {
-        CopyFile(file, targetDirectory + "/" + System.IO.Path.GetFileName(file));
-    }
-}
-
-void DeleteDirectoryIfExists(string directoryName)
-{
-    if (DirectoryExists(directoryName))
-    {
-        DeleteDirectory(directoryName, true);
-    }
-}
-
-void CleanDirectory(string directoryName)
-{
-    DeleteDirectoryIfExists(directoryName);
-    CreateDirectory(directoryName);
-}
-
-void HandleError(Exception exception)
-{
-    RunTarget("clean");
-    throw exception;
-}
 
 string GetNuGetPackage(string packageId, string packageVersion)
 {
@@ -651,58 +600,6 @@ void BuildXcodeProject(string projectPath)
         Configuration = "Release",
         DerivedDataPath = buildOutputFolder 
     });
-}
-
-static int ExecuteUnityCommand(string extraArgs, ICakeContext context)
-{
-    var projectDir = context.MakeAbsolute(context.Directory("."));
-    var unityPath = context.EnvironmentVariable("UNITY_PATH");
-
-    // If environment variable is not set, use default locations
-    if (unityPath == null)
-    {
-        if (context.IsRunningOnUnix())
-        {
-            unityPath = "/Applications/Unity/Unity.app/Contents/MacOS/Unity";
-        }
-        else
-        {
-            unityPath = "C:\\Program Files\\Unity\\Editor\\Unity.exe";
-        }
-    }
-
-    // Unity log file
-    var unityLogFile = "CAKE_SCRIPT_TEMPunity_build_log.log";
-    var unityArgs = "-batchmode -quit -logFile " + unityLogFile + " -projectPath " + projectDir + " " + extraArgs;
-    System.IO.File.Create(unityLogFile).Dispose();
-    var logExec = "powershell.exe";
-    var logArgs = "Get-Content -Path " + unityLogFile + " -Wait";
-    if (context.IsRunningOnUnix())
-    {
-        logExec = "tail";
-        logArgs = "-f " + unityLogFile;
-    }
-    int result = 0;
-    using (var unityProcess = context.StartAndReturnProcess(unityPath, new ProcessSettings{ Arguments = unityArgs }))
-    using (var logProcess = context.StartAndReturnProcess(logExec, new ProcessSettings{ Arguments = logArgs }))
-    {
-        unityProcess.WaitForExit();
-        result = unityProcess.GetExitCode();
-        logProcess.Kill();
-    }
-    context.DeleteFile(unityLogFile);
-    return result;
-}
-
-void BuildPuppetApp(string buildMethodName, string buildTarget)
-{
-    Information("Executing method " + buildMethodName + ", this could take a while...");
-    var command = "-executeMethod " + buildMethodName + " -buildTarget " + buildTarget;
-    var result = ExecuteUnityCommand(command, Context);
-    if (result != 0)
-    {
-        throw new Exception("Failed to execute method " + buildMethodName + ".");
-    }
 }
 
 RunTarget(Target);
