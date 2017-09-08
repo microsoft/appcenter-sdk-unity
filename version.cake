@@ -1,5 +1,6 @@
 #addin nuget:?package=Cake.FileHelpers
 #addin nuget:?package=Cake.Git
+#load "utility.cake"
 
 // Task TARGET for build
 var TARGET = Argument("target", Argument("t", ""));
@@ -18,7 +19,8 @@ Task("StartNewVersion").Does(()=>
         XmlPoke(spec.ToString(), "package/@version", newVersion);
     }
 
-    //TODO update demo app and android content provider
+    // Increment puppet app version (it will use wrappersdkversion)
+    ExecuteUnityMethod("BuildPuppet.SetVersionNumber", "ios");
 });
 
 // Changes the Version field in WrapperSdk.cs to the given version

@@ -47,7 +47,7 @@ static int ExecuteUnityCommand(string extraArgs, ICakeContext context)
     return result;
 }
 
-void BuildPuppetApp(string buildMethodName, string buildTarget)
+void ExecuteUnityMethod(string buildMethodName, string buildTarget)
 {
     Information("Executing method " + buildMethodName + ", this could take a while...");
     var command = "-executeMethod " + buildMethodName + " -buildTarget " + buildTarget;

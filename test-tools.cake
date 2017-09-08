@@ -50,6 +50,7 @@ public class ApplicationInfo
     public string AppOwner { get; }
     public string AppId { get; }
     public string BuildMethod { get; }
+    public string IncrementVersionMethod { get; }
 
     public string AppPath
     {
@@ -60,7 +61,7 @@ public class ApplicationInfo
     }
 
     private string _appExtension = null;
-    public ApplicationInfo(Environment environment, Platform platform, ScriptingBackend backend, string appOwner, string appId, string buildMethod = "", string appExtension = "")
+    public ApplicationInfo(Environment environment, Platform platform, ScriptingBackend backend, string appOwner, string appId, string buildMethod = "", string incrementVersionMethod = "", string appExtension = "")
     {
         AppOwner = appOwner;
         AppId = appId;
@@ -68,6 +69,7 @@ public class ApplicationInfo
         AppEnvironment = environment;
         AppPlatform = platform;
         BuildMethod = buildMethod;
+        IncrementVersionMethod = incrementVersionMethod;
         _appExtension = appExtension;
     }
 }
@@ -76,10 +78,10 @@ ApplicationInfo.Context = Context;
 ApplicationInfo.OutputDirectory = ArchiveDirectory;
 IList<ApplicationInfo> Applications = new List<ApplicationInfo>
 {
-    new ApplicationInfo(Environment.Int, Platform.iOS, ScriptingBackend.Mono, "alchocro", "iOS-Unity-Puppet", "BuildPuppet.BuildPuppetSceneIosMonoDeviceSdk", "ipa"),
-    new ApplicationInfo(Environment.Int, Platform.iOS, ScriptingBackend.Il2Cpp, "alchocro", "iOS-Unity-Puppet", "BuildPuppet.BuildPuppetSceneIosIl2CPPDeviceSdk", "ipa"),
-    new ApplicationInfo(Environment.Int, Platform.Android, ScriptingBackend.Mono, "alchocro", "Unity-Android-Puppet", "BuildPuppet.BuildPuppetSceneAndroidMono", "apk"),
-    new ApplicationInfo(Environment.Int, Platform.Android, ScriptingBackend.Il2Cpp, "alchocro", "Unity-Android-Puppet", "BuildPuppet.BuildPuppetSceneAndroidIl2CPP", "apk"),
+    new ApplicationInfo(Environment.Int, Platform.iOS, ScriptingBackend.Mono, "alchocro", "iOS-Unity-Puppet", "BuildPuppet.BuildPuppetSceneIosMonoDeviceSdk", "BuildPuppet.IncrementVersionNumber", "ipa"),
+    new ApplicationInfo(Environment.Int, Platform.iOS, ScriptingBackend.Il2Cpp, "alchocro", "iOS-Unity-Puppet", "BuildPuppet.BuildPuppetSceneIosIl2CPPDeviceSdk", "BuildPuppet.IncrementVersionNumber", "ipa"),
+    new ApplicationInfo(Environment.Int, Platform.Android, ScriptingBackend.Mono, "alchocro", "Unity-Android-Puppet", "BuildPuppet.BuildPuppetSceneAndroidMono", "BuildPuppet.IncrementVersionNumber", "apk"),
+    new ApplicationInfo(Environment.Int, Platform.Android, ScriptingBackend.Il2Cpp, "alchocro", "Unity-Android-Puppet", "BuildPuppet.BuildPuppetSceneAndroidIl2CPP", "BuildPuppet.IncrementVersionNumber", "apk"),
     new ApplicationInfo(Environment.Int, Platform.UWP, ScriptingBackend.DotNet, "alchocro", "UWP-Unity-Puppet"),
     new ApplicationInfo(Environment.Int, Platform.UWP, ScriptingBackend.Il2Cpp, "alchocro", "UWP-Unity-Puppet")
 };
@@ -148,7 +150,7 @@ Setup(context =>
 
 Task("CreateIosArchive").IsDependentOn("IncreaseIosVersion").Does(()=>
 {
-    BuildPuppetApp(CurrentApp.BuildMethod, "ios");
+    ExecuteUnityMethod(CurrentApp.BuildMethod, "ios");
     var xcodeProjectPath = GetDirectories(PuppetBuildsFolder + "/*/*.xcodeproj").Single().FullPath;
     Information("Creating archive...");
     var archiveName = TemporaryPrefix + "iosArchive.xcarchive";
@@ -175,19 +177,19 @@ Task("CreateIosArchive").IsDependentOn("IncreaseIosVersion").Does(()=>
 
 Task("CreateAndroidArchive").IsDependentOn("IncreaseAndroidVersion").Does(()=>
 {
-    BuildPuppetApp(CurrentApp.BuildMethod, "android");
+    ExecuteUnityMethod(CurrentApp.BuildMethod, "android");
     var apkFile = GetFiles(PuppetBuildsFolder + "/*.apk").Single();
     MoveFile(apkFile, CurrentApp.AppPath);
 }).Finally(() => RunTarget("RemoveTemporaries"));
 
 Task("IncreaseIosVersion").Does(()=>
 {
-    //TODO implement this
+    ExecuteUnityMethod(CurrentApp.IncrementVersionMethod, "ios");
 });
 
 Task("IncreaseAndroidVersion").Does(()=>
 {
-    //TODO implement this
+    ExecuteUnityMethod(CurrentApp.IncrementVersionMethod, "android");
 });
 
 Task("ReleaseApplication")

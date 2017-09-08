@@ -412,7 +412,7 @@ Task("BuildPuppetApps")
         {
             // Remove all current builds and create new build.
             CleanDirectory(PuppetBuildsFolder);
-            BuildPuppetApp(androidMethod, "android");
+            ExecuteUnityMethod(androidMethod, "android");
 
             // Verify that an APK was generated. (".Single()" should throw an exception if the 
             // collection is empty).
@@ -430,7 +430,7 @@ Task("BuildPuppetApps")
         {
             // Remove all current builds and create new build.
             CleanDirectory(PuppetBuildsFolder);
-            BuildPuppetApp(iOSBuildMethod, "ios");
+            ExecuteUnityMethod(iOSBuildMethod, "ios");
             
             // Verify that an Xcode project was created and that it builds properly.
             var xcodeProjectPath = GetDirectories(PuppetBuildsFolder + "/*/*.xcodeproj").Single();
@@ -454,7 +454,7 @@ Task("BuildPuppetApps")
         {
             // Remove all existing builds and create new build.
             CleanDirectory(PuppetBuildsFolder);
-            BuildPuppetApp(uwpBuildMethod, "wsaplayer");
+            ExecuteUnityMethod(uwpBuildMethod, "wsaplayer");
             
             // Verify that a solution file was created and that it builds properly.
             var solutionFilePath = GetFiles("PuppetBuilds/*/*.sln").Single();
