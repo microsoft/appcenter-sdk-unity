@@ -5,9 +5,11 @@
 #addin nuget:?package=Cake.Git
 #addin nuget:?package=NuGet.Core
 
+using System;
 using System.Net;
 using System.Collections.Generic;
 using System.Runtime.Versioning;
+using System.Xml;
 using NuGet;
 
 // Prefix for temporary intermediates that are created by this script
@@ -162,7 +164,7 @@ class UnityPackage
             args += " " + path;
         }
         args += " " + targetDirectory + "/" + _packageName;
-        var result = ExecuteUnityCommand(args, Context);
+        var result = ExecuteUnityCommand(args, Context, true);
         if (result != 0)
         {
             Context.Error("Something went wrong while creating Unity package '" + _packageName + "'");
@@ -262,12 +264,13 @@ Task("Externals-Uwp")
         var files = GetFiles(tempContentPath + contentPathSuffix + "*");
         MoveFiles(files, destination);
     }
-    ExecuteUnityCommand("-executeMethod MobileCenterPostBuild.DontProcessUwpMobileCenterBinaries", Context);
+    ExecuteUnityCommand("-executeMethod MobileCenterPostBuild.DontProcessUwpMobileCenterBinaries", Context, true);
 }).OnError(HandleError);
 
 // Builds the ContentProvider for the Android package and puts it in the
 // proper folder.
-Task("BuildAndroidContentProvider").Does(()=>
+Task("BuildAndroidContentProvider")
+    .Does(()=>
 {
     // Folder and script locations
     var appName = "MobileCenterLoaderApp";
@@ -331,11 +334,12 @@ Task("Externals-Uwp-IL2CPP-Dependencies")
 
     // Process UWP IL2CPP dependencies.
     Information("Processing UWP IL2CPP dependencies. This could take a minute.");
-    ExecuteUnityCommand("-executeMethod MobileCenterPostBuild.ProcessUwpIl2CppDependencies", Context);
+    ExecuteUnityCommand("-executeMethod MobileCenterPostBuild.ProcessUwpIl2CppDependencies", Context, true);
 }).OnError(HandleError);
 
 // Download and install all external Unity packages required
-Task("Externals-Unity-Packages").Does(()=>
+Task("Externals-Unity-Packages")
+    .Does(()=>
 {
     var directoryName = "externals/unity-packages";
     CleanDirectory(directoryName);
@@ -345,7 +349,7 @@ Task("Externals-Unity-Packages").Does(()=>
         DownloadFile(package.Url, destination);
         var command = "-importPackage " + destination;
         Information("Importing package " + package.Name + ". This could take a minute.");
-        ExecuteUnityCommand(command, Context);
+        ExecuteUnityCommand(command, Context, true);
     }
 }).OnError(HandleError);
 
@@ -366,7 +370,8 @@ Task("Externals")
 
 // Creates Unity packages corresponding to all ".unitypackagespec" files
 // in "UnityPackageSpecs" folder
-Task("Package").Does(()=>
+Task("Package")
+    .Does(()=>
 {
     // Need to provide cake context so class methods can use cake apis
     UnityPackage.Context = Context;
@@ -392,7 +397,8 @@ Task("CreatePackages").IsDependentOn("PrepareAssets").IsDependentOn("Package");
 Task("Default").IsDependentOn("PrepareAssets");
 
 // Remove all temporary files and folders
-Task("RemoveTemporaries").Does(()=>
+Task("RemoveTemporaries")
+    .Does(()=>
 {
     DeleteFiles(TemporaryPrefix + "*");
     var dirs = GetDirectories(TemporaryPrefix + "*");
@@ -413,6 +419,48 @@ Task("clean")
     CleanDirectories("./**/bin");
     CleanDirectories("./**/obj");
 });
+
+//Run unit tests
+Task("UnitTests")
+    .IsDependentOn("Externals")
+    .Does(() =>
+{
+    Information("Running unit tests");
+    if (!DirectoryExists("TestResults")) {
+        Context.StartProcess("mkdir", "TestResults");
+    }
+    
+    //var testPlatforms = { "StandaloneOSXIntel64", "WSAPlayer", "TODOAndroid" };
+    string[] testPlatforms = new string[] { "WSAPlayer" };
+    var date = FormatDateForFile(DateTime.Now);
+    var resultsDir = Context.MakeAbsolute(Context.Directory(".")) + "/TestResults";
+
+    foreach (string platform in testPlatforms) {
+        var resultsFile = "results-" + platform + "-" + date + ".xml";
+        Context.StartProcess("touch", "TestResults/" + resultsFile);
+
+        Information("Running tests for " + platform + "...");
+        ExecuteUnityCommand("-runTests -testPlatform " + platform + " -testResults " + resultsDir, Context, false);
+
+        using (XmlReader reader = XmlReader.Create(resultsDir + "/" + resultsFile))
+        {
+            while (reader.Read())
+            {
+                reader.ReadToFollowing("test-case");
+                reader.MoveToAttribute("name");
+                var testName = reader.Value;
+                reader.MoveToAttribute("result");
+                if (reader.Value != "Passed") {
+                    Context.Error("Failure: " + testName + " was " + reader.Value);
+                }
+                else {
+                    Information("Pass: " + testName);
+                }
+            }
+        }
+    }
+
+}).OnError(HandleError);
 
 // Copy files to a clean directory using string names instead of FilePath[] and DirectoryPath
 void CopyFiles(IEnumerable<string> files, string targetDirectory, bool clean = true)
@@ -445,6 +493,13 @@ void HandleError(Exception exception)
 {
     RunTarget("clean");
     throw exception;
+}
+
+//Format date for file name
+string FormatDateForFile(DateTime date) {
+    string result = date.Year + "-" + date.Month.ToString().PadLeft(2, '0') + "-" + date.Day.ToString().PadLeft(2, '0') + "-" +
+        date.Hour.ToString().PadLeft(2, '0') + date.Minute.ToString().PadLeft(2, '0') + date.Second.ToString().PadLeft(2, '0');
+    return result;
 }
 
 string GetNuGetPackage(string packageId, string packageVersion)
@@ -518,6 +573,12 @@ void ExtractNuGetPackages(IEnumerable<IPackage> packages, string dest, Framework
     }
 }
 
+static readonly ISet<string> IgnoreNuGetDependencies = new HashSet<string>
+{
+    "Microsoft.NETCore.UniversalWindowsPlatform",
+    "NETStandard.Library"
+};
+
 IList<IPackage> GetNuGetDependencies(IPackageRepository repository, FrameworkName frameworkName, IPackage package)
 {
     var dependencies = new List<IPackage>();
@@ -527,12 +588,6 @@ IList<IPackage> GetNuGetDependencies(IPackageRepository repository, FrameworkNam
 
 void GetNuGetDependencies(IList<IPackage> dependencies, IPackageRepository repository, FrameworkName frameworkName, IPackage package)
 {
-    var IgnoreNuGetDependencies = new HashSet<string>
-    {
-        "Microsoft.NETCore.UniversalWindowsPlatform",
-        "NETStandard.Library"
-    };
-
     dependencies.Add(package);
     foreach (var dependency in package.GetCompatiblePackageDependencies(frameworkName))
     {
@@ -548,12 +603,56 @@ void GetNuGetDependencies(IList<IPackage> dependencies, IPackageRepository repos
     }
 }
 
-static int ExecuteUnityCommand(string extraArgs, ICakeContext context)
+static int ExecuteUnityCommand(string extraArgs, ICakeContext context, bool quit = true)
 {
     var projectDir = context.MakeAbsolute(context.Directory("."));
-    var exec = context.EnvironmentVariable("UNITY_PATH");
-    var args = "-batchmode -quit -projectPath " + projectDir + " " + extraArgs;
-    return context.StartProcess(exec, args);
+    var unityPath = context.EnvironmentVariable("UNITY_PATH");
+
+    // If environment variable is not set, use default locations
+    if (unityPath == null)
+    {
+        if (context.IsRunningOnUnix())
+        {
+            unityPath = "/Applications/Unity/Unity.app/Contents/MacOS/Unity";
+        }
+        else
+        {
+            unityPath = "C:\\Program Files\\Unity\\Editor\\Unity.exe";
+        }
+    }
+
+    // Unity log file
+    var unityLogFile = "CAKE_SCRIPT_TEMPunity_build_log.log";
+    var unityArgs = "-batchmode" + (quit ? " -quit " : " ") + "-logFile " + unityLogFile + " -projectPath " + projectDir + " " + extraArgs;
+    System.IO.File.Create(unityLogFile).Dispose();
+    var logExec = "powershell.exe";
+    var logArgs = "Get-Content -Path " + unityLogFile + " -Wait";
+    if (context.IsRunningOnUnix())
+    {
+        logExec = "tail";
+        logArgs = "-f " + unityLogFile;
+    }
+    int result = 0;
+    using (var unityProcess = context.StartAndReturnProcess(unityPath, new ProcessSettings{ Arguments = unityArgs }))
+    using (var logProcess = context.StartAndReturnProcess(logExec, new ProcessSettings{ Arguments = logArgs }))
+    {
+        unityProcess.WaitForExit();
+        result = unityProcess.GetExitCode();
+        logProcess.Kill();
+    }
+    context.DeleteFile(unityLogFile);
+    return result;
+}
+
+void ExecuteUnityMethod(string buildMethodName, string buildTarget)
+{
+    Information("Executing method " + buildMethodName + ", this could take a while...");
+    var command = "-executeMethod " + buildMethodName + " -buildTarget " + buildTarget;
+    var result = ExecuteUnityCommand(command, Context);
+    if (result != 0)
+    {
+        throw new Exception("Failed to execute method " + buildMethodName + ".");
+    }
 }
 
 RunTarget(Target);

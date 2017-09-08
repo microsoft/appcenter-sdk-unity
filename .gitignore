@@ -29,6 +29,7 @@ xcuserdata
 /AndroidBuild/
 externals/
 output/
+TestResults/
 
 # .NET Core
 project.lock.json
