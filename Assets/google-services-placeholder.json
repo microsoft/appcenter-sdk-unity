@@ -8,20 +8,20 @@
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "a",
+        "mobilesdk_app_id": "placeholder-value",
         "android_client_info": {
           "package_name": "com.microsoft.azure.mobile.unity.puppet"
         }
       },
       "oauth_client": [
         {
-          "client_id": "b",
+          "client_id": "placeholder-value",
           "client_type": 3
         }
       ],
       "api_key": [
         {
-          "current_key": "c"
+          "current_key": "placeholder-value"
         }
       ],
       "services": {
