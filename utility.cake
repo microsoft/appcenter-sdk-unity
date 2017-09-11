@@ -36,13 +36,28 @@ static int ExecuteUnityCommand(string extraArgs, ICakeContext context)
         logArgs = "-f " + unityLogFile;
     }
     int result = 0;
+
+    bool needsLog = true;
+
     using (var unityProcess = context.StartAndReturnProcess(unityPath, new ProcessSettings{ Arguments = unityArgs }))
-    using (var logProcess = context.StartAndReturnProcess(logExec, new ProcessSettings{ Arguments = logArgs }))
     {
-        unityProcess.WaitForExit();
-        result = unityProcess.GetExitCode();
-        logProcess.Kill();
+        // Windows has a bug sometimes that causes a file not found error when logging
+        if (System.IO.File.Exists(unityLogFile))
+        {
+            using (var logProcess = context.StartAndReturnProcess(logExec, new ProcessSettings{ Arguments = logArgs }))
+            {
+                unityProcess.WaitForExit();
+                result = unityProcess.GetExitCode();
+                logProcess.Kill();
+                needsLog = false;
+            }
+        }
+        else
+        {
+            context.Warning("There was an error creating the log file. Output for this Unity command will be skipped.");
+        }
     }
+
     context.DeleteFile(unityLogFile);
     return result;
 }
