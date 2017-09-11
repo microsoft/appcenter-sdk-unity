@@ -6,6 +6,7 @@ using Microsoft.Azure.Mobile.Unity;
 using UnityEngine;
 using System;
 using System.Reflection;
+using Microsoft.Azure.Mobile.Unity.Internal;
 
 [HelpURL("https://docs.microsoft.com/en-us/mobile-center/sdk/")]
 public class MobileCenterBehavior : MonoBehaviour
@@ -20,15 +21,6 @@ public class MobileCenterBehavior : MonoBehaviour
 
     private void Awake()
     {
-        foreach (var service in settings.Services)
-        {
-            var method = service.GetMethod("PrepareEventHandlers");
-            if (method != null)
-            {
-                method.Invoke(null, null);
-            }
-        }
-
         // Make sure that Mobile Center have only one instance.
         if (instance != null)
         {
@@ -45,12 +37,7 @@ public class MobileCenterBehavior : MonoBehaviour
             Debug.LogError("Mobile Center isn't configured!");
             return;
         }
-#if UNITY_IOS || UNITY_ANDROID
-        InvokeInitializingServices();
-        InvokeInitializedServices();
-#else
-        InitializeMobileCenter();
-#endif
+        StartMobileCenter();
     }
 
     private void Start()
@@ -61,17 +48,40 @@ public class MobileCenterBehavior : MonoBehaviour
         }
     }
 
-    private void InitializeMobileCenter()
+    private void StartMobileCenter()
     {
+        var services = settings.Services;
+        PrepareEventHandlers(services);
+        InvokeInitializingServices();
+        MobileCenter.SetWrapperSdk();
+
+        // On iOS and Android Mobile Center starting automatically.
+#if UNITY_EDITOR || (!UNITY_IOS && !UNITY_ANDROID)
         MobileCenter.LogLevel = settings.InitialLogLevel;
         if (settings.CustomLogUrl.UseCustomUrl)
         {
             MobileCenter.SetLogUrl(settings.CustomLogUrl.Url);
         }
-        MobileCenter.Start(settings.AppSecret, settings.Services);
+        var appSecret = MobileCenter.GetSecretForPlatform(settings.AppSecret);
+        var nativeServiceTypes = MobileCenter.ServicesToNativeTypes(services);
+        MobileCenterInternal.Start(appSecret, nativeServiceTypes, services.Length);
+#endif
+        InvokeInitializedServices();
     }
 
-    public static void InvokeInitializingServices()
+    private static void PrepareEventHandlers(Type[] services)
+    {
+        foreach (var service in services)
+        {
+            var method = service.GetMethod("PrepareEventHandlers");
+            if (method != null)
+            {
+                method.Invoke(null, null);
+            }
+        }
+    }
+
+    private static void InvokeInitializingServices()
     {
         if (InitializingServices != null)
         {
@@ -79,7 +89,7 @@ public class MobileCenterBehavior : MonoBehaviour
         }
     }
 
-    public static void InvokeInitializedServices()
+    private static void InvokeInitializedServices()
     {
         if (InitializedMobileCenterAndServices != null)
         {

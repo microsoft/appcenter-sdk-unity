@@ -7,29 +7,9 @@
 #import <MobileCenter/MobileCenter.h>
 #import <Foundation/Foundation.h>
 
-void mobile_center_unity_configure(char* appSecret)
+static NSString* cstr_to_ns_string(const char* str)
 {
-  [MSMobileCenter configureWithAppSecret:[NSString stringWithUTF8String:appSecret]];
-}
-
-void mobile_center_unity_start(char* appSecret, void** services, int numServices)
-{
-  NSMutableArray<Class> *servicearray = [[NSMutableArray<Class> alloc] init];
-
-  for (int i = 0; i < numServices; ++i)
-  {
-    [servicearray addObject:(Class)CFBridgingRelease(services[i])];
-  }
-
-  [MSMobileCenter start:[NSString stringWithUTF8String:appSecret] withServices:servicearray];
-}
-
-void mobile_center_unity_start_services(void** services, int numServices)
-{
-  for (int i = 0; i < numServices; ++i)
-  {
-    [MSMobileCenter startService:(Class)CFBridgingRelease(services[i])];
-  }
+  return str ? [NSString stringWithUTF8String:str] : nil;
 }
 
 void mobile_center_unity_set_log_level(int logLevel)
@@ -47,9 +27,9 @@ bool mobile_center_unity_is_configured()
   return [MSMobileCenter isConfigured];
 }
 
-void mobile_center_unity_set_log_url(char* logUrl)
+void mobile_center_unity_set_log_url(const char* logUrl)
 {
-  [MSMobileCenter setLogUrl:[NSString stringWithUTF8String:logUrl]];
+  [MSMobileCenter setLogUrl:cstr_to_ns_string(logUrl)];
 }
 
 void mobile_center_unity_set_enabled(bool isEnabled)
@@ -62,7 +42,7 @@ bool mobile_center_unity_is_enabled()
   return [MSMobileCenter isEnabled];
 }
 
-char* mobile_center_unity_get_install_id()
+const char* mobile_center_unity_get_install_id()
 {
   NSString *uuidString =  [[MSMobileCenter installId] UUIDString];
   return mobile_center_unity_ns_string_to_cstr(uuidString);
@@ -73,22 +53,20 @@ void mobile_center_unity_set_custom_properties(MSCustomProperties* properties)
   [MSMobileCenter setCustomProperties:properties];
 }
 
-static NSString* NSStringOrNil(char* str)
+void mobile_center_unity_set_wrapper_sdk(const char* wrapperSdkVersion,
+                                         const char* wrapperSdkName,
+                                         const char* wrapperRuntimeVersion,
+                                         const char* liveUpdateReleaseLabel,
+                                         const char* liveUpdateDeploymentKey,
+                                         const char* liveUpdatePackageHash)
 {
-  return str ? [NSString stringWithUTF8String:str] : nil;
-}
-
-void mobile_center_unity_set_wrapper_sdk(char* wrapperSdkVersion, char* wrapperSdkName, char* wrapperRuntimeVersion, char* liveUpdateReleaseLabel, char* liveUpdateDeploymentKey, char* liveUpdatePackageHash)
-{
-
-
   MSWrapperSdk *wrapperSdk = [[MSWrapperSdk alloc]
-                              initWithWrapperSdkVersion:NSStringOrNil(wrapperSdkVersion)
-                              wrapperSdkName:NSStringOrNil(wrapperSdkName)
-                              wrapperRuntimeVersion:NSStringOrNil(wrapperRuntimeVersion)
-                              liveUpdateReleaseLabel:NSStringOrNil(liveUpdateReleaseLabel)
-                              liveUpdateDeploymentKey:NSStringOrNil(liveUpdateDeploymentKey)
-                              liveUpdatePackageHash:NSStringOrNil(liveUpdatePackageHash)];
+                              initWithWrapperSdkVersion:cstr_to_ns_string(wrapperSdkVersion)
+                                         wrapperSdkName:cstr_to_ns_string(wrapperSdkName)
+                                  wrapperRuntimeVersion:cstr_to_ns_string(wrapperRuntimeVersion)
+                                 liveUpdateReleaseLabel:cstr_to_ns_string(liveUpdateReleaseLabel)
+                                liveUpdateDeploymentKey:cstr_to_ns_string(liveUpdateDeploymentKey)
+                                  liveUpdatePackageHash:cstr_to_ns_string(liveUpdatePackageHash)];
   [MSMobileCenter setWrapperSdk:wrapperSdk];
 }
 

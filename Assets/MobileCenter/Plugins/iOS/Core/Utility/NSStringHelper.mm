@@ -5,7 +5,7 @@
 #import "NSStringHelper.h"
 #import <Foundation/Foundation.h>
 
-char* mobile_center_unity_ns_string_to_cstr(NSString* nsstring)
+const char* mobile_center_unity_ns_string_to_cstr(NSString* nsstring)
 {
   // It seems that with (at least) IL2CPP, when returning a char* that is to be
   // converted to a System.String in C#, the char array is freed - which causes
