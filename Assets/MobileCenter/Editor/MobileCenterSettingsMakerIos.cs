@@ -6,7 +6,7 @@ using System.IO;
 
 public class MobileCenterSettingsMakerIos
 {
-    private const string LoaderPathSuffix = "/Libraries/MobileCenter/Plugins/iOS/Core/MobileCenterStarter.m";
+    private const string LoaderPathSuffix = "Assets/MobileCenter/Plugins/iOS/Core/MobileCenterStarter.m";
     private const string AppSecretSearchText = "mobile-center-app-secret";
     private const string LogUrlSearchText = "custom-log-url";
     private const string LogUrlToken = "MOBILE_CENTER_UNITY_USE_CUSTOM_LOG_URL";
@@ -24,7 +24,7 @@ public class MobileCenterSettingsMakerIos
 
     public MobileCenterSettingsMakerIos(string pathToBuiltProject)
     {
-        _pathToLoaderFile = pathToBuiltProject + LoaderPathSuffix;
+        _pathToLoaderFile = LoaderPathSuffix;
         _loaderFileText = File.ReadAllText(_pathToLoaderFile);
     }
 

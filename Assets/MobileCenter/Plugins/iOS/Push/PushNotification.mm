@@ -7,12 +7,12 @@
 #import <MobileCenterPush/MobileCenterPush.h>
 #import <Foundation/Foundation.h>
 
-char* mobile_center_unity_push_notification_get_title(MSPushNotification* push)
+const char* mobile_center_unity_push_notification_get_title(MSPushNotification* push)
 {
   return mobile_center_unity_ns_string_to_cstr([push title]);
 }
 
-char* mobile_center_unity_push_notification_get_message(MSPushNotification* push)
+const char* mobile_center_unity_push_notification_get_message(MSPushNotification* push)
 {
   return mobile_center_unity_ns_string_to_cstr([push message]);
 }
