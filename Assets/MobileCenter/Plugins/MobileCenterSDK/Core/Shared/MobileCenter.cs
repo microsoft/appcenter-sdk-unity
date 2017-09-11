@@ -91,8 +91,8 @@ namespace Microsoft.Azure.Mobile.Unity
         }
 
         /// <summary>
-        ///     Initialize the SDK with the list of services to start.
-        ///     This may be called only once per application process lifetime.
+        /// Initialize the SDK with the list of services to start.
+        /// This may be called only once per application process lifetime.
         /// </summary>
         /// <param name="appSecret">A unique and secret key used to identify the application.</param>
         /// <param name="services">List of services to use.</param>
@@ -182,13 +182,12 @@ namespace Microsoft.Azure.Mobile.Unity
         // as-is if no identifier can be found.
         internal static string GetSecretForPlatform(string secrets)
         {
-#if UNITY_IOS
-            var platformIdentifier = "ios";
-#elif UNITY_ANDROID
-            var platformIdentifier = "android";
-#else
-            var platformIdentifier = "uwp";
-#endif
+            var platformIdentifier = GetPlatformIdentifier();
+            if (platformIdentifier == null)
+            {
+                // Return as is for unsupported platform.
+                return secrets;
+            }
             if (secrets == null)
             {
                 // If "secrets" is null, return that and let the error be dealt
@@ -225,6 +224,19 @@ namespace Microsoft.Azure.Mobile.Unity
             }
 
             return platformSecret;
+        }
+
+        private static string GetPlatformIdentifier()
+        {
+#if UNITY_IOS
+            return "ios";
+#elif UNITY_ANDROID
+            return "android";
+#elif UNITY_WSA_10_0
+            return "uwp";
+#else
+            return null;
+#endif
         }
     }
 }

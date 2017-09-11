@@ -2,33 +2,31 @@
 //
 // Licensed under the MIT license.
 
-using UnityEngine;
-using UnityEditor;
 using System.IO;
 
 public class MobileCenterSettingsMakerIos
 {
+    private const string LoaderPathSuffix = "/Libraries/MobileCenter/Plugins/iOS/Core/MobileCenterStarter.m";
+    private const string AppSecretSearchText = "mobile-center-app-secret";
+    private const string LogUrlSearchText = "custom-log-url";
+    private const string LogUrlToken = "MOBILE_CENTER_UNITY_USE_CUSTOM_LOG_URL";
+    private const string LogLevelSearchText = "0/*LOG_LEVEL*/";
+    private const string UsePushToken = "MOBILE_CENTER_UNITY_USE_PUSH";
+    private const string UseAnalyticsToken = "MOBILE_CENTER_UNITY_USE_ANALYTICS";
+    private const string UseDistributeToken = "MOBILE_CENTER_UNITY_USE_DISTRIBUTE";
+    private const string ApiUrlSearchText = "custom-api-url";
+    private const string ApiUrlToken = "MOBILE_CENTER_UNITY_USE_CUSTOM_API_URL";
+    private const string InstallUrlSearchText = "custom-install-url";
+    private const string InstallUrlToken = "MOBILE_CENTER_UNITY_USE_CUSTOM_INSTALL_URL";
+
+    private string _loaderFileText;
+    private string _pathToLoaderFile;
+
     public MobileCenterSettingsMakerIos(string pathToBuiltProject)
     {
         _pathToLoaderFile = pathToBuiltProject + LoaderPathSuffix;
         _loaderFileText = File.ReadAllText(_pathToLoaderFile);
     }
-
-    private static string LoaderPathSuffix = "/Libraries/MobileCenter/Plugins/iOS/Core/MobileCenterStarter.m";
-    private static string AppSecretSearchText = "mobile-center-app-secret";
-    private static string LogUrlSearchText = "custom-log-url";
-    private static string LogUrlToken = "MOBILE_CENTER_UNITY_USE_CUSTOM_LOG_URL";
-    private static string LogLevelSearchText = "0/*LOG_LEVEL*/";
-    private static string UsePushToken = "MOBILE_CENTER_UNITY_USE_PUSH";
-    private static string UseAnalyticsToken = "MOBILE_CENTER_UNITY_USE_ANALYTICS";
-    private static string UseDistributeToken = "MOBILE_CENTER_UNITY_USE_DISTRIBUTE";
-    private static string ApiUrlSearchText = "custom-api-url";
-    private static string ApiUrlToken = "MOBILE_CENTER_UNITY_USE_CUSTOM_API_URL";
-    private static string InstallUrlSearchText = "custom-install-url";
-    private static string InstallUrlToken = "MOBILE_CENTER_UNITY_USE_CUSTOM_INSTALL_URL";
-
-    private string _loaderFileText;
-    private string _pathToLoaderFile;
 
     public void SetLogLevel(int logLevel)
     {
