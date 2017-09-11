@@ -15,6 +15,7 @@ import android.support.annotation.Nullable;
 
 import com.microsoft.azure.mobile.MobileCenter;
 import com.microsoft.azure.mobile.MobileCenterService;
+import com.microsoft.azure.mobile.distribute.Distribute;
 import com.microsoft.azure.mobile.push.Push;
 import com.microsoft.azure.mobile.utils.MobileCenterLog;
 
@@ -28,6 +29,10 @@ public class MobileCenterLoader extends ContentProvider {
     private static final String USE_PUSH_KEY = "mobile_center_use_push";
     private static final String USE_ANALYTICS_KEY = "mobile_center_use_analytics";
     private static final String USE_DISTRIBUTE_KEY = "mobile_center_use_distribute";
+    private static final String USE_CUSTOM_API_URL_KEY = "mobile_center_use_custom_api_url";
+    private static final String USE_CUSTOM_INSTALL_URL_KEY = "mobile_center_use_custom_install_url";
+    private static final String CUSTOM_API_URL_KEY = "mobile_center_custom_api_url";
+    private static final String CUSTOM_INSTALL_URL_KEY = "mobile_center_custom_install_url";
     private static final String USE_CRASHES_KEY = "mobile_center_use_crashes";
     private static final String APP_SECRET_KEY = "mobile_center_app_secret";
     private static final String TRUE_VALUE = "True";
@@ -46,6 +51,18 @@ public class MobileCenterLoader extends ContentProvider {
             classes.add(com.microsoft.azure.mobile.crashes.Crashes.class);
         }
         if (isTrueValue(getStringResource(USE_DISTRIBUTE_KEY))) {
+            if (isTrueValue(getStringResource(USE_CUSTOM_API_URL_KEY))) {
+                String customApiUrl = getStringResource(CUSTOM_API_URL_KEY);
+                if (customApiUrl != null) {
+                    Distribute.setApiUrl(customApiUrl);
+                }
+            }
+            if (isTrueValue(getStringResource(USE_CUSTOM_INSTALL_URL_KEY))) {
+                String customInstallUrl = getStringResource(CUSTOM_INSTALL_URL_KEY);
+                if (customInstallUrl != null) {
+                    Distribute.setInstallUrl(customInstallUrl);
+                }
+            }
             classes.add(com.microsoft.azure.mobile.distribute.Distribute.class);
         }
         if (isTrueValue(getStringResource(USE_PUSH_KEY))) {
