@@ -398,7 +398,7 @@ Task("CreatePackages").IsDependentOn("PrepareAssets").IsDependentOn("Package");
 
 // Builds the puppet applications and throws an exception on failure.
 Task("BuildPuppetApps")
-    .IsDependentOn("Externals")
+    .IsDependentOn("PrepareAssets")
     .Does(()=>
 {
     if (IsRunningOnUnix())
