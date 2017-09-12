@@ -37,13 +37,33 @@ static int ExecuteUnityCommand(string extraArgs, ICakeContext context)
     }
     int result = 0;
     using (var unityProcess = context.StartAndReturnProcess(unityPath, new ProcessSettings{ Arguments = unityArgs }))
-    using (var logProcess = context.StartAndReturnProcess(logExec, new ProcessSettings{ Arguments = logArgs }))
     {
-        unityProcess.WaitForExit();
-        result = unityProcess.GetExitCode();
-        logProcess.Kill();
+        using (var logProcess = context.StartAndReturnProcess(logExec, new ProcessSettings{ Arguments = logArgs, RedirectStandardError = true}))
+        {
+            unityProcess.WaitForExit();
+            result = unityProcess.GetExitCode();
+            if (logProcess.WaitForExit(0) &&
+                logProcess.GetExitCode() != 0)
+            {
+                context.Warning("There was an error logging, but command still executed.");
+            }
+            else
+            {
+                try
+                {
+                    logProcess.Kill();
+                }
+                catch
+                {
+                    // Log process was stopped right after checking
+                }
+            }
+        }
     }
-    context.DeleteFile(unityLogFile);
+    if (System.IO.File.Exists(unityLogFile))
+    {
+        context.DeleteFile(unityLogFile);
+    }
     return result;
 }
 

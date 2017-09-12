@@ -19,7 +19,7 @@ public class FirebaseDependency : AssetPostprocessor
     private const string GoogleServicesFileBasename = "google-services";
     private const string GoogleServicesInputFile = GoogleServicesFileBasename + ".json";
     private const string GoogleServicesOutputFile = GoogleServicesFileBasename + ".xml";
-    private const string GoogleServicesOutputDirectory = "Assets/MobileCenter/Plugins/Android/mobile-center/res/values";
+    private const string GoogleServicesOutputDirectory = "Assets/Plugins/Android/mobile-center/res/values";
     private const string GoogleServicesOutputPath = GoogleServicesOutputDirectory + "/" + GoogleServicesOutputFile;
 
     /// <summary>
@@ -34,7 +34,7 @@ public class FirebaseDependency : AssetPostprocessor
     static void SetupDependencies()
     {
 #if UNITY_ANDROID
-        
+
         // Setup the resolver using reflection as the module may not be
         // available at compile time.
         Type playServicesSupport = Google.VersionHandler.FindClass(
@@ -192,7 +192,7 @@ public class FirebaseDependency : AssetPostprocessor
 
 
 #region Models
-    
+
     [Serializable]
     public class ProjectInfo
     {
@@ -202,14 +202,14 @@ public class FirebaseDependency : AssetPostprocessor
         public string firebase_url;
         public string storage_bucket;
     }
-    
+
     [Serializable]
     public class AndroidClientInfo
     {
         public string package_name;
         public string[] certificate_hash;
     }
-    
+
     [Serializable]
     public class ClientInfo
     {
@@ -261,13 +261,13 @@ public class FirebaseDependency : AssetPostprocessor
         public ApiKey[] api_key;
         public Services services;
     }
-    
+
     [Serializable]
     public class ApiKey
     {
         public string current_key;
     }
-    
+
     [Serializable]
     public class GoogleServices
     {
@@ -275,7 +275,7 @@ public class FirebaseDependency : AssetPostprocessor
         public Client[] client;
         public object[] client_info;
         public string ARTIFACT_VERSION;
-        
+
         public Client GetClient(string packageName)
         {
             if (client == null || !client.Any())
@@ -329,7 +329,7 @@ public class FirebaseDependency : AssetPostprocessor
 
             return null;
         }
-        
+
         public string GetDefaultWebClientId(string packageName)
         {
             // default_web_client_id:
