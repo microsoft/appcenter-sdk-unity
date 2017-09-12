@@ -6234,6 +6234,9 @@ GameObject:
   serializedVersion: 5
   m_Component:
   - component: {fileID: 1653541468}
+  - component: {fileID: 1653541463}
+  - component: {fileID: 1653541465}
+  - component: {fileID: 1653541464}
   m_Layer: 0
   m_Name: Mobile Center
   m_TagString: Untagged
@@ -6241,6 +6244,40 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
+--- !u!114 &1653541463
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 1653541462}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b9a3a6a28c6a80a46adde9b4e01eeb93, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  settings: {fileID: 11400000, guid: 45ad6d318878449c18d75c7dc7ddce84, type: 2}
+--- !u!114 &1653541464
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 1653541462}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2321d743b725a43c5a653bbef90c5887, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &1653541465
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 1653541462}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: dd35f4c3c4b53414a84460f4da63cd17, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!4 &1653541468
 Transform:
   m_ObjectHideFlags: 0

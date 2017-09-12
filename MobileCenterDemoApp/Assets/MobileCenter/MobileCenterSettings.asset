@@ -11,9 +11,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 07ef30b23b2586041aedf18c9486176d, type: 3}
   m_Name: MobileCenterSettings
   m_EditorClassIdentifier: 
-  iOSAppSecret: ios-app-secret
-  AndroidAppSecret: android-app-secret
-  UWPAppSecret: uwp-app-secret
+  iOSAppSecret: 03786f44-32da-4eed-9e2a-7bb9aeb8b3f4
+  AndroidAppSecret: ee0e4596-fff8-492c-bb53-b476e6335ec3
+  UWPAppSecret: cef17af1-b1ea-4d41-b13b-111b12bd9e92
   UseAnalytics: 1
   UseCrashes: 1
   UseDistribute: 1
@@ -26,7 +26,7 @@ MonoBehaviour:
     UseCustomUrl: 0
     Url: 
   UsePush: 1
-  InitialLogLevel: 4
+  InitialLogLevel: 2
   CustomLogUrl:
     UrlName: Log
     UseCustomUrl: 0
