@@ -19,6 +19,7 @@ string DistributionGroup = "Private Release Script Group";
 string Token = EnvironmentVariable("MOBILE_CENTER_API_TOKEN");
 string BaseUrl = "https://api.mobile.azure.com";
 ApplicationInfo CurrentApp = null;
+string ProjectPath = "MobileCenterDemoApp";
 
 public enum Environment
 {
@@ -83,13 +84,17 @@ IList<ApplicationInfo> Applications = new List<ApplicationInfo>
     new ApplicationInfo(Environment.Int, Platform.Android, ScriptingBackend.Mono, "alchocro", "Unity-Android-Puppet", "BuildPuppet.BuildPuppetSceneAndroidMono", "BuildPuppet.IncrementVersionNumber", "apk"),
     new ApplicationInfo(Environment.Int, Platform.Android, ScriptingBackend.Il2Cpp, "alchocro", "Unity-Android-Puppet", "BuildPuppet.BuildPuppetSceneAndroidIl2CPP", "BuildPuppet.IncrementVersionNumber", "apk"),
     new ApplicationInfo(Environment.Int, Platform.UWP, ScriptingBackend.DotNet, "alchocro", "UWP-Unity-Puppet"),
-    new ApplicationInfo(Environment.Int, Platform.UWP, ScriptingBackend.Il2Cpp, "alchocro", "UWP-Unity-Puppet")
+    new ApplicationInfo(Environment.Int, Platform.UWP, ScriptingBackend.Il2Cpp, "alchocro", "UWP-Unity-Puppet"),
+    new ApplicationInfo(Environment.Prod, Platform.iOS, ScriptingBackend.Mono, "mobile-center-sdk", "iOS-Unity-Demo-App", "BuildDemo.BuildDemoSceneIosMonoDeviceSdk", "BuildDemo.IncrementVersionNumber", "ipa"),
+    new ApplicationInfo(Environment.Prod, Platform.iOS, ScriptingBackend.Il2Cpp, "mobile-center-sdk", "iOS-Unity-Demo-App", "BuildDemo.BuildDemoSceneIosIl2CPPDeviceSdk", "BuildDemo.IncrementVersionNumber", "ipa"),
+    new ApplicationInfo(Environment.Prod, Platform.Android, ScriptingBackend.Mono, "mobile-center-sdk", "Android-Unity-Demo-App", "BuildDemo.BuildDemoSceneAndroidMono", "BuildDemo.IncrementVersionNumber", "apk"),
+    new ApplicationInfo(Environment.Prod, Platform.Android, ScriptingBackend.Il2Cpp, "mobile-center-sdk", "Android-Unity-Demo-App", "BuildDemo.BuildDemoSceneAndroidIl2CPP", "BuildDemo.IncrementVersionNumber", "apk"),
+    new ApplicationInfo(Environment.Prod, Platform.UWP, ScriptingBackend.DotNet, "mobile-center-sdk", "UWP-Unity-Demo-App"),
+    new ApplicationInfo(Environment.Prod, Platform.UWP, ScriptingBackend.Il2Cpp, "mobile-center-sdk", "UWP-Unity-Demo-App")
 };
 
 Setup(context =>
 {
-    //TODO parse arguments correctly!!!!
-
     // Arguments:
     //  -Environment:       App "environment" ("prod" or "int") -- Default is "int"
     //  -Group:             Distribution group name -- Default is "Private Release Script Group"
@@ -104,7 +109,9 @@ Setup(context =>
         environment = Environment.Int;
         Token = EnvironmentVariable("MOBILE_CENTER_INT_API_TOKEN");
         BaseUrl = "https://asgard-int.trafficmanager.net/api";
+        ProjectPath = "";
     }
+    
     var platformString = Argument<string>("Platform", "ios");
     var platform = Platform.iOS;
     
@@ -150,7 +157,8 @@ Setup(context =>
 
 Task("CreateIosArchive").IsDependentOn("IncreaseIosVersion").Does(()=>
 {
-    ExecuteUnityMethod(CurrentApp.BuildMethod, "ios");
+
+    ExecuteUnityMethod(CurrentApp.BuildMethod, "ios", ProjectPath);
     var xcodeProjectPath = GetDirectories(PuppetBuildsFolder + "/*/*.xcodeproj").Single().FullPath;
     Information("Creating archive...");
     var archiveName = TemporaryPrefix + "iosArchive.xcarchive";
@@ -177,19 +185,19 @@ Task("CreateIosArchive").IsDependentOn("IncreaseIosVersion").Does(()=>
 
 Task("CreateAndroidArchive").IsDependentOn("IncreaseAndroidVersion").Does(()=>
 {
-    ExecuteUnityMethod(CurrentApp.BuildMethod, "android");
+    ExecuteUnityMethod(CurrentApp.BuildMethod, "android", ProjectPath);
     var apkFile = GetFiles(PuppetBuildsFolder + "/*.apk").Single();
     MoveFile(apkFile, CurrentApp.AppPath);
 }).Finally(() => RunTarget("RemoveTemporaries"));
 
 Task("IncreaseIosVersion").Does(()=>
 {
-    ExecuteUnityMethod(CurrentApp.IncrementVersionMethod, "ios");
+    ExecuteUnityMethod(CurrentApp.IncrementVersionMethod, "ios", ProjectPath);
 });
 
 Task("IncreaseAndroidVersion").Does(()=>
 {
-    ExecuteUnityMethod(CurrentApp.IncrementVersionMethod, "android");
+    ExecuteUnityMethod(CurrentApp.IncrementVersionMethod, "android", ProjectPath);
 });
 
 Task("ReleaseApplication")

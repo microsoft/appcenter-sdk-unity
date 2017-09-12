@@ -3,8 +3,9 @@
 // Prefix for temporary intermediates that are created by this script
 var TemporaryPrefix = "CAKE_SCRIPT_TEMP";
 
-// Location of puppet application builds
- var PuppetBuildsFolder = "PuppetBuilds";
+// Location of application builds
+var PuppetBuildsFolder = "PuppetBuilds";
+var DemoBuildsFolder = "DemoBuilds";
 
 static int ExecuteUnityCommand(string extraArgs, ICakeContext context, string projectPath = "")
 {
@@ -68,11 +69,11 @@ static int ExecuteUnityCommand(string extraArgs, ICakeContext context, string pr
     return result;
 }
 
-void ExecuteUnityMethod(string buildMethodName, string buildTarget)
+void ExecuteUnityMethod(string buildMethodName, string buildTarget, string projectPath = "")
 {
     Information("Executing method " + buildMethodName + ", this could take a while...");
     var command = "-executeMethod " + buildMethodName + " -buildTarget " + buildTarget;
-    var result = ExecuteUnityCommand(command, Context);
+    var result = ExecuteUnityCommand(command, Context, projectPath);
     if (result != 0)
     {
         throw new Exception("Failed to execute method " + buildMethodName + ".");

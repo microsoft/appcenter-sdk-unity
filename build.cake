@@ -364,7 +364,7 @@ Task("Externals-Unity-Packages").Does(()=>
     }
 }).OnError(HandleError);
 
-// Download and install all external Unity packages required.
+// Add Mobile Center packages to demo app.
 Task("AddPackagesToDemoApp")
     .IsDependentOn("CreatePackages")
     .Does(()=>
@@ -413,7 +413,7 @@ Task("Package").Does(()=>
     {
         DeleteFile(path);
     }
-    
+
     // Store packages in a clean folder.
     const string outputDirectory = "output";
     CleanDirectory(outputDirectory);
@@ -438,76 +438,109 @@ Task("BuildPuppetApps")
 {
     if (IsRunningOnUnix())
     {
-        // Android
-        string[] androidBuildMethods = {
-            "BuildPuppet.BuildPuppetSceneAndroidMono",
-            "BuildPuppet.BuildPuppetSceneAndroidIl2CPP"
-        };
-        foreach (var androidMethod in androidBuildMethods)
-        {
-            // Remove all current builds and create new build.
-            CleanDirectory(PuppetBuildsFolder);
-            ExecuteUnityMethod(androidMethod, "android");
-
-            // Verify that an APK was generated. (".Single()" should throw an exception if the 
-            // collection is empty).
-            Information("Verifying that apk was generated for method '" + androidMethod + "'");
-            GetFiles(PuppetBuildsFolder + "/*.apk").Single();
-            Information("Found apk.");
-        }
-        
-        // iOS
-        string[] iOSBuildMethods = {
-            "BuildPuppet.BuildPuppetSceneIosMono",
-            "BuildPuppet.BuildPuppetSceneIosIl2CPP"
-        };
-        foreach (var iOSBuildMethod in iOSBuildMethods)
-        {
-            // Remove all current builds and create new build.
-            CleanDirectory(PuppetBuildsFolder);
-            ExecuteUnityMethod(iOSBuildMethod, "ios");
-            
-            // Verify that an Xcode project was created and that it builds properly.
-            var xcodeProjectPath = GetDirectories(PuppetBuildsFolder + "/*/*.xcodeproj").Single();
-            
-            // Only one Xcode project should exist, so assume the first in the array is the correct one.
-            Information("Attempting to build '" + xcodeProjectPath.FullPath + "'...");
-            BuildXcodeProject(xcodeProjectPath.FullPath);
-            Information("Successfully built '" + xcodeProjectPath.FullPath + "'");
-        }
+        BuildAppsMac(Context, "Puppet", PuppetBuildsFolder);
     }
     else
     {
-        // UWP
-        string[] uwpBuildMethods = {
-            "BuildPuppet.BuildPuppetSceneWsaNetXaml",
-            "BuildPuppet.BuildPuppetSceneWsaIl2CPPXaml",
-            "BuildPuppet.BuildPuppetSceneWsaNetD3D",
-            "BuildPuppet.BuildPuppetSceneWsaIl2CPPD3D"
-        };
-        foreach (var uwpBuildMethod in uwpBuildMethods)
-        {
-            // Remove all existing builds and create new build.
-            CleanDirectory(PuppetBuildsFolder);
-            ExecuteUnityMethod(uwpBuildMethod, "wsaplayer");
-            
-            // Verify that a solution file was created and that it builds properly.
-            var solutionFilePath = GetFiles("PuppetBuilds/*/*.sln").Single();
-
-            // For now, only build for x86.
-            Information("Attempting to build '" + solutionFilePath.ToString() + "'...");
-            MSBuild(solutionFilePath.ToString(), c => c
-                .SetConfiguration("Master")
-                .WithProperty("Platform", "x86")
-                .SetVerbosity(Verbosity.Minimal)
-                .SetMSBuildPlatform(MSBuildPlatform.x86));
-            Information("Successfully built '" + solutionFilePath.ToString() + "'");
-        }
+        BuildAppsWindows(Context, "Puppet", PuppetBuildsFolder);
     }
 
     // Remove all remaining builds.
     CleanDirectory(PuppetBuildsFolder);
 }).OnError(HandleError);
+
+// Builds the puppet applications and throws an exception on failure.
+Task("BuildDemoApps")
+    .IsDependentOn("AddPackagesToDemoApp")
+    .Does(()=>
+{
+    if (IsRunningOnUnix())
+    {
+        BuildAppsMac(Context, "Demo", DemoBuildsFolder, "MobileCenterDemoApp");
+    }
+    else
+    {
+        BuildAppsWindows(Context, "Demo", DemoBuildsFolder, "MobileCenterDemoApp");
+    }
+    
+    // Remove all remaining builds.
+    CleanDirectory(PuppetBuildsFolder);
+}).OnError(HandleError);
+
+void BuildAppsMac(ICakeContext context, string type, string outputDirectory, string projectPath = "")
+{
+    var methodPrefix = "Build" + type + ".Build" + type + "Scene";
+
+    // Android
+    string[] androidBuildTypes = {
+        "AndroidMono",
+        "AndroidIl2CPP"
+    };
+    foreach (var buildType in androidBuildTypes)
+    {
+        // Remove all current builds and create new build.
+        context.CleanDirectory(outputDirectory);
+        ExecuteUnityMethod(methodPrefix + buildType, "android", projectPath);
+
+        // Verify that an APK was generated. (".Single()" should throw an exception if the
+        // collection is empty).
+        context.Information("Verifying that apk was generated for method '" + androidMethod + "'");
+        context.GetFiles(outputDirectory + "/*.apk").Single();
+        context.Information("Found apk.");
+    }
+
+    // iOS
+    string[] iosBuildTypes = {
+        "IosMono",
+        "IosIl2CPP"
+    };
+    foreach (var buildType in iosBuildTypes)
+    {
+        // Remove all current builds and create new build.
+        context.CleanDirectory(outputDirectory);
+        ExecuteUnityMethod(methodPrefix + buildType, "ios", projectPath);
+
+        // Verify that an Xcode project was created and that it builds properly.
+        var xcodeProjectPath = GetDirectories(outputDirectory + "/*/*.xcodeproj").Single();
+
+        // Only one Xcode project should exist, so assume the first in the array is the correct one.
+        context.Information("Attempting to build '" + xcodeProjectPath.FullPath + "'...");
+        context.BuildXcodeProject(xcodeProjectPath.FullPath);
+        context.Information("Successfully built '" + xcodeProjectPath.FullPath + "'");
+    }
+}
+
+void BuildAppsWindows(ICakeContext context, string type, string outputDirectory, string projectPath = "")
+{
+    var methodPrefix = "Build" + type + ".Build" + type + "Scene";
+    string[] uwpBuildTypes = {
+        "WsaNetXaml",
+        "WsaIl2CPPXaml",
+        "WsaNetD3D",
+        "WsaIl2CPPD3D"
+    };
+    foreach (var buildType in uwpBuildTypes)
+    {
+        // Remove all existing builds and create new build.
+        context.CleanDirectory(PuppetBuildsFolder);
+        ExecuteUnityMethod(uwpBuildMethod, "wsaplayer");
+
+        // Verify that a solution file was created and that it builds properly.
+        var solutionFilePath = GetFiles(outputDirectory + "/*/*.sln").Single();
+
+        // For now, only build for x86.
+        context.Information("Attempting to build '" + solutionFilePath.ToString() + "'...");
+        context.MSBuild(solutionFilePath.ToString(), c => c
+            .SetConfiguration("Master")
+            .WithProperty("Platform", "x86")
+            .SetVerbosity(Verbosity.Minimal)
+            .SetMSBuildPlatform(MSBuildPlatform.x86));
+        context.Information("Successfully built '" + solutionFilePath.ToString() + "'");
+    }
+
+    // Remove all remaining builds.
+    context.CleanDirectory(outputDirectory);
+}
 
 Task("PublishPackagesToStorage").Does(()=>
 {
@@ -653,7 +686,7 @@ void BuildXcodeProject(string projectPath)
         Project = projectPath,
         Scheme = "Unity-iPhone",
         Configuration = "Release",
-        DerivedDataPath = buildOutputFolder 
+        DerivedDataPath = buildOutputFolder
     });
 }
 
