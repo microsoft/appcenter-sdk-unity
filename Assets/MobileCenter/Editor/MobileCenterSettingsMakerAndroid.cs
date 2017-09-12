@@ -8,9 +8,9 @@ using UnityEditor;
 
 public class MobileCenterSettingsMakerAndroid
 {
-    private static string MobileCenterResourcesFolderPath = "Assets/MobileCenter/Plugins/Android/mobile-center/res/values/";
+    private static string MobileCenterResourcesFolderPath = "Assets/Plugins/Android/mobile-center/res/values/";
     private static string MobileCenterResourcesPath = MobileCenterResourcesFolderPath + "mobile-center-settings.xml";
-    private static string MobileCenterManifestPath = "Assets/MobileCenter/Plugins/Android/mobile-center/AndroidManifest.xml";
+    private static string MobileCenterManifestPath = "Assets/Plugins/Android/mobile-center/AndroidManifest.xml";
     private static readonly string ManifestAppIdPlaceholder = "${mobile-center-app-id-placeholder}";
     private static readonly string AppSecretKey = "mobile_center_app_secret";
     private static readonly string CustomLogUrlKey = "mobile_center_custom_log_url";
