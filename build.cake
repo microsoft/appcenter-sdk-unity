@@ -50,14 +50,12 @@ var ExternalUnityPackages = new [] {
 
 // UWP IL2CPP dependencies.
 var UwpIL2CPPDependencies = new [] {
-
-    // Force use assembly for .NET 2.0 to avoid IL2CPP convert problems.
-    new NugetDependency("Newtonsoft.Json", "10.0.3", ".NETFramework, Version=v2.0"),
     new NugetDependency("sqlite-net-pcl", "1.3.1", "UAP, Version=v10.0"),
 
     // Force use this version to avoid types conflicts.
     new NugetDependency("System.Threading.Tasks", "4.0.10", ".NETCore, Version=v5.0", false)
 };
+var UwpIL2CPPJsonUrl = SdkStorageUrl + "Newtonsoft.Json.dll";
 
 // Task TARGET for build
 var Target = Argument("target", Argument("t", "Default"));
@@ -330,6 +328,10 @@ Task("Externals-Uwp-IL2CPP-Dependencies")
         }
         ExtractNuGetPackages(dependencies, targetPath, frameworkName);
     }
+
+    // Download patched Newtonsoft.Json library to avoid Unity issue.
+    // Details: https://forum.unity3d.com/threads/332335/
+    DownloadFile(UwpIL2CPPJsonUrl, targetPath + "/Newtonsoft.Json.dll");
 
     // Process UWP IL2CPP dependencies.
     Information("Processing UWP IL2CPP dependencies. This could take a minute.");
