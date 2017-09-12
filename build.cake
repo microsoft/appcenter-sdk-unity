@@ -118,16 +118,27 @@ class ExternalUnityPackage
     }
 }
 
+// Spec files can have up to one dependency.
 class UnityPackage
 {
     public static ICakeContext Context;
-
     private string _packageName;
     private string _packageVersion;
     private List<string> _includePaths = new List<string>();
 
     public UnityPackage(string specFilePath)
     {
+        AddFilesFromSpec(specFilePath);
+    }
+
+    private void AddFilesFromSpec(string specFilePath)
+    {
+        var needsCore = Context.XmlPeek(specFilePath, "package/@needsCore") == "true";
+        if (needsCore)
+        {
+            var specFileDirectory = System.IO.Path.GetDirectoryName(specFilePath);;
+            AddFilesFromSpec(specFileDirectory + "/MobileCenter.unitypackagespec");
+        }
         _packageName = Context.XmlPeek(specFilePath, "package/@name");
         _packageVersion = Context.XmlPeek(specFilePath, "package/@version");
         if (_packageName == null || _packageVersion == null)
@@ -353,24 +364,7 @@ Task("Externals-Unity-Packages").Does(()=>
     }
 }).OnError(HandleError);
 
-// Download and install all external Unity packages required.
-Task("AddPackagesToDemoApp")
-    .IsDependentOn("CreatePackages")
-    .IsDependentOn("RemovePackagesFromDemoApp")
-    .Does(()=>
-{
-    var demoAppPath = "MobileCenterDemoApp";
-    var packages = GetFiles("output/*.unitypackage");
-
-    foreach (var package in packages)
-    {
-        var command = "-importPackage " + package.FullPath;
-        Information("Importing package " + package.FullPath + ". This could take a minute.");
-        ExecuteUnityCommand(command, Context, demoAppPath);
-    }
-}).OnError(HandleError);
-
-// Download and install all external Unity packages required.
+// Remove package files from demo app.
 Task("RemovePackagesFromDemoApp")
     .Does(()=>
 {
@@ -400,12 +394,13 @@ Task("Package").Does(()=>
     // Need to provide cake context so class methods can use cake apis.
     UnityPackage.Context = Context;
 
-    // Add app id placeholder to AndroidManifest.xml
+    // Remove AndroidManifest.xml
     var path = "Assets/Plugins/Android/mobile-center/AndroidManifest.xml";
-    var pattern = "android:authorities=\"[^\"]*microsoft.azure.mobile.mobilecenterloader";
-    var replacement = "android:authorities=${mobile-center-app-id-placeholder}.microsoft.azure.mobile.mobilecenterloader";
-    ReplaceRegexInFiles(path, pattern, replacement);
-
+    if (System.IO.File.Exists(path))
+    {
+        DeleteFile(path);
+    }
+    
     // Store packages in a clean folder.
     const string outputDirectory = "output";
     CleanDirectory(outputDirectory);
@@ -496,7 +491,7 @@ Task("BuildPuppetApps")
             Information("Successfully built '" + solutionFilePath.ToString() + "'");
         }
     }
-    
+
     // Remove all remaining builds.
     CleanDirectory(PuppetBuildsFolder);
 }).OnError(HandleError);

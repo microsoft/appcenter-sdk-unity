@@ -73,3 +73,8 @@ CAKE_SCRIPT_TEMP*
 
 # Android Studio
 */.idea/
+
+# Demo app
+MobileCenterDemoApp/Assets/MobileCenter/
+MobileCenterDemoApp/Assets/Plugins/
+MobileCenterDemoApp/Assets/MobileCenter.meta
