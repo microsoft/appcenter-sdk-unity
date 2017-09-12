@@ -21,8 +21,9 @@ Task("StartNewVersion").Does(()=>
         XmlPoke(spec.ToString(), "package/@version", newVersion);
     }
 
-    // Increment puppet app version (it will use wrappersdkversion)
+    // Increment app versions (they will use wrappersdkversion). The platform doesn't matter.
     ExecuteUnityMethod("BuildPuppet.SetVersionNumber", "ios");
+    ExecuteUnityMethod("BuildDemo.SetVersionNumber", "ios");
 });
 
 // Changes the Version field in WrapperSdk.cs to the given version
