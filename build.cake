@@ -364,9 +364,22 @@ Task("Externals-Unity-Packages").Does(()=>
     }
 }).OnError(HandleError);
 
-// Remove package files from demo app.
-Task("RemovePackagesFromDemoApp")
+// Download and install all external Unity packages required.
+Task("AddPackagesToDemoApp")
+    .IsDependentOn("CreatePackages")
     .Does(()=>
+{
+    var packages = GetFiles("output/*.unitypackage");
+    foreach (var package in packages)
+    {
+        var command = "-importPackage " + packages.FullPath;
+        Information("Importing package " + packages.FullPath + ". This could take a minute.");
+        ExecuteUnityCommand(command, Context, "MobileCenterDemoApp");
+    }
+}).OnError(HandleError);
+
+// Remove package files from demo app.
+Task("RemovePackagesFromDemoApp").Does(()=>
 {
     DeleteDirectoryIfExists("MobileCenterDemoApp/Assets/MobileCenter");
     DeleteDirectoryIfExists("MobileCenterDemoApp/Assets/Plugins");
