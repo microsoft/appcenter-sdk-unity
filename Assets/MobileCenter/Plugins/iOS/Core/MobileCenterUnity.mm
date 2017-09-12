@@ -7,11 +7,6 @@
 #import <MobileCenter/MobileCenter.h>
 #import <Foundation/Foundation.h>
 
-static NSString* cstr_to_ns_string(const char* str)
-{
-  return str ? [NSString stringWithUTF8String:str] : nil;
-}
-
 void mobile_center_unity_set_log_level(int logLevel)
 {
   [MSMobileCenter setLogLevel:(MSLogLevel)logLevel];
@@ -29,7 +24,7 @@ bool mobile_center_unity_is_configured()
 
 void mobile_center_unity_set_log_url(const char* logUrl)
 {
-  [MSMobileCenter setLogUrl:cstr_to_ns_string(logUrl)];
+  [MSMobileCenter setLogUrl:mobile_center_unity_cstr_to_ns_string(logUrl)];
 }
 
 void mobile_center_unity_set_enabled(bool isEnabled)
@@ -61,12 +56,12 @@ void mobile_center_unity_set_wrapper_sdk(const char* wrapperSdkVersion,
                                          const char* liveUpdatePackageHash)
 {
   MSWrapperSdk *wrapperSdk = [[MSWrapperSdk alloc]
-                              initWithWrapperSdkVersion:cstr_to_ns_string(wrapperSdkVersion)
-                                         wrapperSdkName:cstr_to_ns_string(wrapperSdkName)
-                                  wrapperRuntimeVersion:cstr_to_ns_string(wrapperRuntimeVersion)
-                                 liveUpdateReleaseLabel:cstr_to_ns_string(liveUpdateReleaseLabel)
-                                liveUpdateDeploymentKey:cstr_to_ns_string(liveUpdateDeploymentKey)
-                                  liveUpdatePackageHash:cstr_to_ns_string(liveUpdatePackageHash)];
+                              initWithWrapperSdkVersion:mobile_center_unity_cstr_to_ns_string(wrapperSdkVersion)
+                                         wrapperSdkName:mobile_center_unity_cstr_to_ns_string(wrapperSdkName)
+                                  wrapperRuntimeVersion:mobile_center_unity_cstr_to_ns_string(wrapperRuntimeVersion)
+                                 liveUpdateReleaseLabel:mobile_center_unity_cstr_to_ns_string(liveUpdateReleaseLabel)
+                                liveUpdateDeploymentKey:mobile_center_unity_cstr_to_ns_string(liveUpdateDeploymentKey)
+                                  liveUpdatePackageHash:mobile_center_unity_cstr_to_ns_string(liveUpdatePackageHash)];
   [MSMobileCenter setWrapperSdk:wrapperSdk];
 }
 

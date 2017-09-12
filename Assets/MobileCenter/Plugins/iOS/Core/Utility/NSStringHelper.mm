@@ -17,3 +17,8 @@ const char* mobile_center_unity_ns_string_to_cstr(NSString* nsstring)
   strncpy(cstring_copy, cstring, cstringLength);
   return cstring_copy;
 }
+
+NSString* mobile_center_unity_cstr_to_ns_string(const char* str)
+{
+  return str ? [NSString stringWithUTF8String:str] : nil;
+}
