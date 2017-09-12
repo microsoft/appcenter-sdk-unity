@@ -1,0 +1,33 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 07ef30b23b2586041aedf18c9486176d, type: 3}
+  m_Name: MobileCenterSettings
+  m_EditorClassIdentifier: 
+  iOSAppSecret: ios-app-secret
+  AndroidAppSecret: android-app-secret
+  UWPAppSecret: uwp-app-secret
+  UseAnalytics: 1
+  UseCrashes: 1
+  UseDistribute: 1
+  CustomApiUrl:
+    UrlName: API
+    UseCustomUrl: 0
+    Url: 
+  CustomInstallUrl:
+    UrlName: Install
+    UseCustomUrl: 0
+    Url: 
+  UsePush: 1
+  InitialLogLevel: 4
+  CustomLogUrl:
+    UrlName: Log
+    UseCustomUrl: 0
+    Url: 

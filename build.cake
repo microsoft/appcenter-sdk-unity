@@ -372,8 +372,8 @@ Task("AddPackagesToDemoApp")
     var packages = GetFiles("output/*.unitypackage");
     foreach (var package in packages)
     {
-        var command = "-importPackage " + packages.FullPath;
-        Information("Importing package " + packages.FullPath + ". This could take a minute.");
+        var command = "-importPackage " + package.FullPath;
+        Information("Importing package " + package.FullPath + ". This could take a minute.");
         ExecuteUnityCommand(command, Context, "MobileCenterDemoApp");
     }
 }).OnError(HandleError);

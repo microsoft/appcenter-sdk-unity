@@ -7,7 +7,7 @@ using UnityEngine;
 
 public class DemoPushHandler : MonoBehaviour
 {
-    private static DemoNotificationReceivedEventArgs _pushEventArgs = null;
+    private static PushNotificationReceivedEventArgs _pushEventArgs = null;
     private static object _pushLock = new object();
 
     void Awake()
