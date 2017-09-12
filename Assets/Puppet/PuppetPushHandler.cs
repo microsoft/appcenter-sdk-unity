@@ -24,25 +24,29 @@ public class PuppetPushHandler : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        if (_pushEventArgs == null)
+        {
+            return;
+        }
         lock (_pushLock)
         {
-            if (_pushEventArgs != null)
+            if (_pushEventArgs == null)
             {
-                var pushSummary = "Push notification received:" +
-                    "\n\tNotification title: " + _pushEventArgs.Title +
-                    "\n\tMessage: " + _pushEventArgs.Message;
-
-                if (_pushEventArgs.CustomData != null)
-                {
-                    pushSummary += "\n\tCustom data:\n";
-                    foreach (var key in _pushEventArgs.CustomData.Keys)
-                    {
-                        pushSummary += "\t\t" + key + " : " + _pushEventArgs.CustomData[key] + "\n";
-                    }
-                }
-                print(pushSummary);
-                _pushEventArgs = null;
+                return;
             }
+            var pushSummary = "Push notification received:" +
+                "\n\tNotification title: " + _pushEventArgs.Title +
+                "\n\tMessage: " + _pushEventArgs.Message;
+            if (_pushEventArgs.CustomData != null)
+            {
+                pushSummary += "\n\tCustom data:\n";
+                foreach (var key in _pushEventArgs.CustomData.Keys)
+                {
+                    pushSummary += "\t\t" + key + " : " + _pushEventArgs.CustomData[key] + "\n";
+                }
+            }
+            print(pushSummary);
+            _pushEventArgs = null;
         }
     }
 }

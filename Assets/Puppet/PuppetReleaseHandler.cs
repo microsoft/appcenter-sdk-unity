@@ -26,6 +26,10 @@ public class PuppetReleaseHandler : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        if (_releaseDetails == null)
+        {
+            return;
+        }
         lock (_releaseLock)
         {
             if (_releaseDetails != null)
