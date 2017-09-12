@@ -353,6 +353,31 @@ Task("Externals-Unity-Packages").Does(()=>
     }
 }).OnError(HandleError);
 
+// Download and install all external Unity packages required.
+Task("AddPackagesToDemoApp")
+    .IsDependentOn("CreatePackages")
+    .IsDependentOn("RemovePackagesFromDemoApp")
+    .Does(()=>
+{
+    var demoAppPath = "MobileCenterDemoApp";
+    var packages = GetFiles("output/*.unitypackage");
+
+    foreach (var package in packages)
+    {
+        var command = "-importPackage " + package.FullPath;
+        Information("Importing package " + package.FullPath + ". This could take a minute.");
+        ExecuteUnityCommand(command, Context, demoAppPath);
+    }
+}).OnError(HandleError);
+
+// Download and install all external Unity packages required.
+Task("RemovePackagesFromDemoApp")
+    .Does(()=>
+{
+    DeleteDirectoryIfExists("MobileCenterDemoApp/Assets/MobileCenter");
+    DeleteDirectoryIfExists("MobileCenterDemoApp/Assets/Plugins");
+}).OnError(HandleError);
+
 // Create a common externals task depending on platform specific ones
 // NOTE: It is important to execute Externals-Unity-Packages and Externals-Uwp-IL2CPP-Dependencies *last*
 // or the steps that runs the Unity commands might cause the *.meta files to be deleted!

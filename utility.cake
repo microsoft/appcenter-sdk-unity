@@ -6,9 +6,12 @@ var TemporaryPrefix = "CAKE_SCRIPT_TEMP";
 // Location of puppet application builds
  var PuppetBuildsFolder = "PuppetBuilds";
 
-static int ExecuteUnityCommand(string extraArgs, ICakeContext context)
+static int ExecuteUnityCommand(string extraArgs, ICakeContext context, string projectDir = "")
 {
-    var projectDir = context.MakeAbsolute(context.Directory("."));
+    if (projectDir == "")
+    {
+        projectDir = context.MakeAbsolute(context.Directory("."));
+    }
     var unityPath = context.EnvironmentVariable("UNITY_PATH");
 
     // If environment variable is not set, use default locations
