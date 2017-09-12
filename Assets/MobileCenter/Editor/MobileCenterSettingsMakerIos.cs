@@ -6,7 +6,8 @@ using System.IO;
 
 public class MobileCenterSettingsMakerIos
 {
-    private const string LoaderPathSuffix = "Assets/MobileCenter/Plugins/iOS/Core/MobileCenterStarter.m";
+    private const string TemplateFilePath = "Assets/MobileCenter/Plugins/iOS/Core/MobileCenterStarter.original";
+    private const string TargetFilePath = "Assets/MobileCenter/Plugins/iOS/Core/MobileCenterStarter.m";
     private const string AppSecretSearchText = "mobile-center-app-secret";
     private const string LogUrlSearchText = "custom-log-url";
     private const string LogUrlToken = "MOBILE_CENTER_UNITY_USE_CUSTOM_LOG_URL";
@@ -20,12 +21,10 @@ public class MobileCenterSettingsMakerIos
     private const string InstallUrlToken = "MOBILE_CENTER_UNITY_USE_CUSTOM_INSTALL_URL";
 
     private string _loaderFileText;
-    private string _pathToLoaderFile;
 
-    public MobileCenterSettingsMakerIos(string pathToBuiltProject)
+    public MobileCenterSettingsMakerIos()
     {
-        _pathToLoaderFile = LoaderPathSuffix;
-        _loaderFileText = File.ReadAllText(_pathToLoaderFile);
+        _loaderFileText = File.ReadAllText(TemplateFilePath);
     }
 
     public void SetLogLevel(int logLevel)
@@ -73,7 +72,7 @@ public class MobileCenterSettingsMakerIos
 
     public void CommitSettings()
     {
-        File.WriteAllText(_pathToLoaderFile, _loaderFileText);
+        File.WriteAllText(TargetFilePath, _loaderFileText);
     }
 
     private void AddToken(string token)
