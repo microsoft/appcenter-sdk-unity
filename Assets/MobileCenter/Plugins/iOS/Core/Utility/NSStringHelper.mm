@@ -5,7 +5,7 @@
 #import "NSStringHelper.h"
 #import <Foundation/Foundation.h>
 
-char* mobile_center_unity_ns_string_to_cstr(NSString* nsstring)
+const char* mobile_center_unity_ns_string_to_cstr(NSString* nsstring)
 {
   // It seems that with (at least) IL2CPP, when returning a char* that is to be
   // converted to a System.String in C#, the char array is freed - which causes
@@ -16,4 +16,9 @@ char* mobile_center_unity_ns_string_to_cstr(NSString* nsstring)
   char *cstring_copy = (char*)malloc(cstringLength);
   strncpy(cstring_copy, cstring, cstringLength);
   return cstring_copy;
+}
+
+NSString* mobile_center_unity_cstr_to_ns_string(const char* str)
+{
+  return str ? [NSString stringWithUTF8String:str] : nil;
 }

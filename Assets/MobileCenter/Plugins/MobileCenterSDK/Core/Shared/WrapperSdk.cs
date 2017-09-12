@@ -7,8 +7,6 @@ using System.Reflection;
 
 namespace Microsoft.Azure.Mobile.Unity
 {
-    //TODO now that MC is started outside of Unity code in some cases, wrapper
-    //SDK information must be set there, too
     public static class WrapperSdk
     {
         private static string _wrapperRuntimeVersion;
