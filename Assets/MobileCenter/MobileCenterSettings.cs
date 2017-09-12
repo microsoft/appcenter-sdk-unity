@@ -74,36 +74,27 @@ public class MobileCenterSettings : ScriptableObject
 
     public static Type Analytics
     {
-        get
-        {
-#if !UNITY_EDITOR && UNITY_WSA_10_0
-            return typeof(MobileCenterSettings).GetTypeInfo().Assembly.GetType("Microsoft.Azure.Mobile.Unity.Analytics.Analytics");
-#else
-            return Assembly.GetExecutingAssembly().GetType("Microsoft.Azure.Mobile.Unity.Analytics.Analytics");
-#endif
-        }
+        get { return MobileCenterAssembly.GetType("Microsoft.Azure.Mobile.Unity.Analytics.Analytics"); }
     }
 
     public static Type Distribute
     {
-        get
-        {
-#if !UNITY_EDITOR && UNITY_WSA_10_0
-            return typeof(MobileCenterSettings).GetTypeInfo().Assembly.GetType("Microsoft.Azure.Mobile.Unity.Distribute.Distribute");
-#else
-            return Assembly.GetExecutingAssembly().GetType("Microsoft.Azure.Mobile.Unity.Distribute.Distribute");
-#endif
-        }
+        get { return MobileCenterAssembly.GetType("Microsoft.Azure.Mobile.Unity.Distribute.Distribute"); }
     }
 
     public static Type Push
     {
+        get { return MobileCenterAssembly.GetType("Microsoft.Azure.Mobile.Unity.Push.Push"); }
+    }
+
+    private static Assembly MobileCenterAssembly
+    {
         get
         {
 #if !UNITY_EDITOR && UNITY_WSA_10_0
-            return typeof(MobileCenterSettings).GetTypeInfo().Assembly.GetType("Microsoft.Azure.Mobile.Unity.Push.Push");
+            return typeof(MobileCenterSettings).GetTypeInfo().Assembly;
 #else
-            return Assembly.GetExecutingAssembly().GetType("Microsoft.Azure.Mobile.Unity.Push.Push");
+            return Assembly.GetExecutingAssembly();
 #endif
         }
     }

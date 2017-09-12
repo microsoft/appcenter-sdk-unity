@@ -7,9 +7,9 @@
 
 #import <Foundation/Foundation.h>
 
-extern "C" char* mobile_center_unity_ns_string_dictionary_get_key_at_idx(NSDictionary *dictionary, int idx);
+extern "C" const char* mobile_center_unity_ns_string_dictionary_get_key_at_idx(NSDictionary *dictionary, int idx);
 
-extern "C" char* mobile_center_unity_ns_string_dictionary_get_value_for_key(NSDictionary *dictionary, char* key);
+extern "C" const char* mobile_center_unity_ns_string_dictionary_get_value_for_key(NSDictionary *dictionary, char* key);
 
 extern "C" size_t mobile_center_unity_ns_dictionary_get_length(NSDictionary *dictionary);
 

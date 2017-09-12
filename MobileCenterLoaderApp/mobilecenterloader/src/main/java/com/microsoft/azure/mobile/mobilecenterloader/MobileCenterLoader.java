@@ -19,7 +19,8 @@ import com.microsoft.azure.mobile.distribute.Distribute;
 import com.microsoft.azure.mobile.push.Push;
 import com.microsoft.azure.mobile.utils.MobileCenterLog;
 
-import java.util.Vector;
+import java.util.ArrayList;
+import java.util.List;
 
 public class MobileCenterLoader extends ContentProvider {
 
@@ -42,11 +43,10 @@ public class MobileCenterLoader extends ContentProvider {
     @Override
     public boolean onCreate() {
         mContext = getApplicationContext();
-        Vector<Class<? extends MobileCenterService>> classes = new Vector<>();
+        List<Class<? extends MobileCenterService>> classes = new ArrayList<>();
         if (isTrueValue(getStringResource(USE_ANALYTICS_KEY))) {
             classes.add(com.microsoft.azure.mobile.analytics.Analytics.class);
         }
-
         if (isTrueValue(getStringResource(USE_CRASHES_KEY))) {
             classes.add(com.microsoft.azure.mobile.crashes.Crashes.class);
         }
@@ -78,19 +78,13 @@ public class MobileCenterLoader extends ContentProvider {
             }
         }
         String appSecret = getStringResource(APP_SECRET_KEY);
-
         if (classes.size() > 0) {
-            Class<? extends MobileCenterService>[] classesArray = new Class[classes.size()];
-            int i = 0;
-            for (Class<? extends MobileCenterService> clazz : classes) {
-                classesArray[i++] = clazz;
-            }
-            MobileCenter.start((Application)mContext, appSecret, classesArray);
+            @SuppressWarnings("unchecked")
+            Class<? extends MobileCenterService>[] classesArray = classes.toArray(new Class[classes.size()]);
+            MobileCenter.start((Application) mContext, appSecret, classesArray);
+        } else {
+            MobileCenter.configure((Application) mContext, appSecret);
         }
-        else {
-            MobileCenter.configure((Application)mContext, appSecret);
-        }
-
         return true;
     }
 
@@ -123,6 +117,7 @@ public class MobileCenterLoader extends ContentProvider {
     }
 
     private Context getApplicationContext() {
+
         //TODO: if Unity supports instant apps, need to modify this method to account for them
         return getContext();
     }
@@ -130,6 +125,7 @@ public class MobileCenterLoader extends ContentProvider {
     private boolean isTrueValue(String value) {
         return value != null && value.equals(TRUE_VALUE);
     }
+
     private String getStringResource(String key) {
         int identifier = mContext.getResources().getIdentifier(key, "string", mContext.getPackageName());
         if (identifier == 0) {

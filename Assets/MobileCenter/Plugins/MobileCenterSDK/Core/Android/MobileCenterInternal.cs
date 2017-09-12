@@ -11,43 +11,6 @@ namespace Microsoft.Azure.Mobile.Unity.Internal
     class MobileCenterInternal
     {
         private static AndroidJavaClass _mobileCenter = new AndroidJavaClass("com.microsoft.azure.mobile.MobileCenter");
-        
-        public static void Configure(string appSecret)
-        {
-            _mobileCenter.CallStatic("configure", GetAndroidApplication(), appSecret);
-        }
-
-        public static void Start(string appSecret, IntPtr[] servicesArray, int numServices)
-        {
-            IntPtr services = servicesArray[0];
-            IntPtr stringClass = AndroidJNI.FindClass("java/lang/String");
-            IntPtr mobileCenterRawClass = AndroidJNI.FindClass("com/microsoft/azure/mobile/MobileCenter");
-
-            IntPtr methId = AndroidJNI.GetMethodID(stringClass, "<init>", "(Ljava/lang/String;)V");
-            IntPtr rawJavaString = AndroidJNI.NewStringUTF(appSecret);
-            //IntPtr rawJavaStringObject = AndroidJNI.NewObject(stringClass, methId, new jvalue[] { new jvalue() { l = strId } });
-            IntPtr start_Method = AndroidJNI.GetStaticMethodID(mobileCenterRawClass, "start",
-                                                               "(Landroid/app/Application;Ljava/lang/String;[Ljava/lang/Class;)V");
-            AndroidJNI.CallStaticVoidMethod(mobileCenterRawClass, start_Method, new jvalue[]
-            { 
-                new jvalue { l = GetAndroidApplication().GetRawObject() }, 
-                new jvalue { l = rawJavaString }, 
-                new jvalue { l = services } 
-            });
-        }
-
-        public static void StartServices(IntPtr[] servicesArray, int numServices)
-        {
-            IntPtr services = servicesArray[0];
-            IntPtr stringClass = AndroidJNI.FindClass("java/lang/String");
-            IntPtr mobileCenterRawClass = AndroidJNI.FindClass("com/microsoft/azure/mobile/MobileCenter");
-            IntPtr methId = AndroidJNI.GetMethodID(stringClass, "<init>", "(Ljava/lang/String;)V");
-            IntPtr start_Method = AndroidJNI.GetStaticMethodID(mobileCenterRawClass, "start", "([Ljava/lang/Class;)V");
-            AndroidJNI.CallStaticVoidMethod(mobileCenterRawClass, start_Method, new jvalue[]
-            {
-                new jvalue { l = services }
-            });
-        }
 
         public static void SetLogLevel(int logLevel)
         {
