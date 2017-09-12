@@ -47,13 +47,16 @@ static int ExecuteUnityCommand(string extraArgs, ICakeContext context)
             {
                 context.Warning("There was an error logging, but command still executed.");
             }
-            else try
+            else
             {
-                logProcess.Kill();
-            }
-            catch
-            {
-                // Log process was stopped right after checking
+                try
+                {
+                    logProcess.Kill();
+                }
+                catch
+                {
+                    // Log process was stopped right after checking
+                }
             }
         }
     }
