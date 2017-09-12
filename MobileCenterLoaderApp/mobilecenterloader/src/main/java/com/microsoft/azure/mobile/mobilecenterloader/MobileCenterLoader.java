@@ -80,7 +80,7 @@ public class MobileCenterLoader extends ContentProvider {
         String appSecret = getStringResource(APP_SECRET_KEY);
 
         if (classes.size() > 0) {
-            Class<? extends MobileCenterService>[] classesArray = new Class[classes.size()];
+            @SuppressWarnings("unchecked") Class<? extends MobileCenterService>[] classesArray = new Class[classes.size()];
             int i = 0;
             for (Class<? extends MobileCenterService> clazz : classes) {
                 classesArray[i++] = clazz;
