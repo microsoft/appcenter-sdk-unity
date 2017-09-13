@@ -1,8 +1,5 @@
-#tool nuget:?package=XamarinComponent
-#addin nuget:?package=Cake.Xamarin
 #addin nuget:?package=Cake.FileHelpers
 #addin "Cake.AzureStorage"
-#addin nuget:?package=Cake.Git
 #addin nuget:?package=NuGet.Core
 #addin "Cake.Xcode"
 #load "utility.cake"
