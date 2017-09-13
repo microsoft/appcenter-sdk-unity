@@ -484,7 +484,7 @@ void BuildAppsMac(ICakeContext context, string type, string outputDirectory, str
 
         // Verify that an APK was generated. (".Single()" should throw an exception if the
         // collection is empty).
-        context.Information("Verifying that apk was generated for method '" + androidMethod + "'");
+        context.Information("Verifying that apk was generated for method '" + buildType + "'");
         context.GetFiles(outputDirectory + "/*.apk").Single();
         context.Information("Found apk.");
     }
