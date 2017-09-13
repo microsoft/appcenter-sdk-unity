@@ -12,6 +12,7 @@ using UnityEditor.Callbacks;
 #if UNITY_IOS
 using UnityEditor.iOS.Xcode;
 #endif
+
 public class MobileCenterPostBuild
 {
     [PostProcessBuild]
@@ -33,7 +34,7 @@ public class MobileCenterPostBuild
             // Load/Apply Mobile Center settings.
             var settingsPath = MobileCenterSettingsEditor.SettingsPath;
             var settings = AssetDatabase.LoadAssetAtPath<MobileCenterSettings>(settingsPath);
-            ApplyIosSettings(settings, pathToBuiltProject);
+            ApplyIosSettings(settings);
 
             // Update project.
             var projectPath = PBXProject.GetPBXProjectPath(pathToBuiltProject);
@@ -162,9 +163,9 @@ public class MobileCenterPostBuild
         }
     }
 
-    private static void ApplyIosSettings(MobileCenterSettings settings, string pathToBuiltProject)
+    private static void ApplyIosSettings(MobileCenterSettings settings)
     {
-        var settingsMaker = new MobileCenterSettingsMakerIos(pathToBuiltProject);
+        var settingsMaker = new MobileCenterSettingsMakerIos();
         if (settings.CustomLogUrl.UseCustomUrl)
         {
             settingsMaker.SetLogUrl(settings.CustomLogUrl.Url);

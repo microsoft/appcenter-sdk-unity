@@ -11,6 +11,7 @@
         <file path="Assets/MobileCenter/Plugins/Android/mobile-center-push-release.aar" />
         <file path="Assets/MobileCenter/Plugins/MobileCenterSDK/Push/Android" />
         <file path="Assets/PlayServicesResolver" />
+        <file path="Assets/MobileCenter/Plugins/Android/AndroidManifestPlaceholder.xml" />
 
         <!-- iOS files -->
         <file path="Assets/MobileCenter/Plugins/iOS/Push" />

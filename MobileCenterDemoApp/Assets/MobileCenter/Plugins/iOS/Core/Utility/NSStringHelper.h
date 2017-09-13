@@ -7,6 +7,7 @@
 
 #import <Foundation/Foundation.h>
 
-extern "C" char* mobile_center_unity_ns_string_to_cstr(NSString* nsstring);
+extern "C" const char* mobile_center_unity_ns_string_to_cstr(NSString* nsstring);
+extern "C" NSString* mobile_center_unity_cstr_to_ns_string(const char* str);
 
 #endif

@@ -52,6 +52,7 @@ public class MobileCenterSettingsMakerAndroid
     public void StartPushClass()
     {
         _resourceValues[UsePushKey] = true.ToString();
+        _manifestNeedsWrite = true;
     }
 
     public void StartAnalyticsClass()
@@ -79,12 +80,17 @@ public class MobileCenterSettingsMakerAndroid
     public void CommitSettings()
     {
         var appId = ApplicationIdHelper.GetApplicationId();
-        var manifestText = File.ReadAllText(MobileCenterManifestPlaceholderPath);
-        if (manifestText.Contains(ManifestAppIdPlaceholder))
+        if (File.Exists(MobileCenterManifestPlaceholderPath))
         {
-            manifestText = manifestText.Replace(ManifestAppIdPlaceholder, appId);
-            File.WriteAllText(MobileCenterManifestPath, manifestText);
+            var manifestText = File.ReadAllText(MobileCenterManifestPlaceholderPath);
+            File.Create(MobileCenterManifestPath).Dispose();
+            if (manifestText.Contains(ManifestAppIdPlaceholder))
+            {
+                manifestText = manifestText.Replace(ManifestAppIdPlaceholder, appId);
+                File.WriteAllText(MobileCenterManifestPath, manifestText);
+            }
         }
+        
         if (File.Exists(MobileCenterResourcesPath))
         {
             File.Delete(MobileCenterResourcesPath);

@@ -16,7 +16,7 @@ public class CustomUrlPropertyDrawer : PropertyDrawer
         var urlLabel = new GUIContent("Custom " + urlName + " URL");
 
         // Though the property may have double height, each child should have
-        // half that height
+        // half that height.
         position.height = EditorGUIUtility.singleLineHeight;
         property.Next(false);
         EditorGUI.PropertyField(position, property, useLabel);

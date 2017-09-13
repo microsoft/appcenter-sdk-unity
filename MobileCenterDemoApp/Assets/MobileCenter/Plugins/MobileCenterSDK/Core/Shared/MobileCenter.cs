@@ -18,13 +18,6 @@ namespace Microsoft.Azure.Mobile.Unity
 
     public class MobileCenter
     {
-        public static void Configure(string appSecret)
-        {
-            SetWrapperSdk();
-            appSecret = GetSecretForPlatform(appSecret);
-            MobileCenterInternal.Configure(appSecret);
-        }
-
         public static LogLevel LogLevel
         {
             get { return (LogLevel)MobileCenterInternal.GetLogLevel(); }
@@ -76,38 +69,8 @@ namespace Microsoft.Azure.Mobile.Unity
             get { return MobileCenterInternal.IsConfigured(); }
         }
 
-        /// <summary>
-        /// Start services.
-        /// This may be called only once per service per application process lifetime.
-        /// </summary>
-        /// <param name="services">List of services to use.</param>
-        public static void Start(params Type[] services)
-        {
-            MobileCenterBehavior.InvokeInitializingServices();
-            SetWrapperSdk();
-            var nativeServiceTypes = ServicesToNativeTypes(services);
-            MobileCenterInternal.StartServices(nativeServiceTypes, services.Length);
-            MobileCenterBehavior.InvokeInitializedServices();
-        }
-
-        /// <summary>
-        ///     Initialize the SDK with the list of services to start.
-        ///     This may be called only once per application process lifetime.
-        /// </summary>
-        /// <param name="appSecret">A unique and secret key used to identify the application.</param>
-        /// <param name="services">List of services to use.</param>
-        public static void Start(string appSecret, params Type[] services)
-        {
-            MobileCenterBehavior.InvokeInitializingServices();
-            SetWrapperSdk();
-            appSecret = GetSecretForPlatform(appSecret);
-            var nativeServiceTypes = ServicesToNativeTypes(services);
-            MobileCenterInternal.Start(appSecret, nativeServiceTypes, services.Length);
-            MobileCenterBehavior.InvokeInitializedServices();
-        }
-
 #if UNITY_IOS
-        private static ServiceType[] ServicesToNativeTypes(Type[] services)
+        public static ServiceType[] ServicesToNativeTypes(Type[] services)
         {
             IntPtr[] classPointers = new IntPtr[services.Length];
             int currentIdx = 0;
@@ -119,7 +82,7 @@ namespace Microsoft.Azure.Mobile.Unity
             return classPointers;
         }
 #elif UNITY_ANDROID
-        private static ServiceType[] ServicesToNativeTypes(Type[] services)
+        public static ServiceType[] ServicesToNativeTypes(Type[] services)
         {
             var classClass = AndroidJNI.FindClass("java/lang/Class");
             var array = AndroidJNI.NewObjectArray(services.Length, classClass, classClass);
@@ -132,9 +95,7 @@ namespace Microsoft.Azure.Mobile.Unity
             return new ServiceType[] { array };
         }
 #elif UNITY_WSA_10_0
-#pragma warning disable IDE0001
-        private static ServiceType[] ServicesToNativeTypes(Type[] services)
-#pragma warning restore IDE0001
+        public static ServiceType[] ServicesToNativeTypes(Type[] services)
         {
             //TODO after all namespaces are changed to be in Microsoft.Azure.Mobile.Unity,
             //TODO remove case where 'method == null'
@@ -155,7 +116,7 @@ namespace Microsoft.Azure.Mobile.Unity
             return nativeTypes;
         }
 #else
-        private static ServiceType[] ServicesToNativeTypes(Type[] services)
+        public static ServiceType[] ServicesToNativeTypes(Type[] services)
         {
             return null;
         }
@@ -171,7 +132,7 @@ namespace Microsoft.Azure.Mobile.Unity
             MobileCenterInternal.SetCustomProperties(rawCustomProperties);
         }
 
-        private static void SetWrapperSdk()
+        public static void SetWrapperSdk()
         {
             MobileCenterInternal.SetWrapperSdk(WrapperSdk.WrapperSdkVersion,
                                                WrapperSdk.Name,
@@ -180,15 +141,14 @@ namespace Microsoft.Azure.Mobile.Unity
 
         // Gets the first instance of an app secret corresponding to the given platform name, or returns the string 
         // as-is if no identifier can be found.
-        internal static string GetSecretForPlatform(string secrets)
+        public static string GetSecretForPlatform(string secrets)
         {
-#if UNITY_IOS
-            var platformIdentifier = "ios";
-#elif UNITY_ANDROID
-            var platformIdentifier = "android";
-#else
-            var platformIdentifier = "uwp";
-#endif
+            var platformIdentifier = GetPlatformIdentifier();
+            if (platformIdentifier == null)
+            {
+                // Return as is for unsupported platform.
+                return secrets;
+            }
             if (secrets == null)
             {
                 // If "secrets" is null, return that and let the error be dealt
@@ -225,6 +185,19 @@ namespace Microsoft.Azure.Mobile.Unity
             }
 
             return platformSecret;
+        }
+
+        private static string GetPlatformIdentifier()
+        {
+#if UNITY_IOS
+            return "ios";
+#elif UNITY_ANDROID
+            return "android";
+#elif UNITY_WSA_10_0
+            return "uwp";
+#else
+            return null;
+#endif
         }
     }
 }

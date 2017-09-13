@@ -6,7 +6,7 @@
 #import "NSStringHelper.h"
 #import <Foundation/Foundation.h>
 
-char* mobile_center_unity_ns_string_dictionary_get_key_at_idx(NSDictionary *dictionary, int idx)
+const char* mobile_center_unity_ns_string_dictionary_get_key_at_idx(NSDictionary *dictionary, int idx)
 {
   id sortKeys = ^(NSString * key1, NSString * key2){
     return [key1 compare:key2];
@@ -15,7 +15,7 @@ char* mobile_center_unity_ns_string_dictionary_get_key_at_idx(NSDictionary *dict
   return mobile_center_unity_ns_string_to_cstr(keys[idx]);
 }
 
-char* mobile_center_unity_ns_string_dictionary_get_value_for_key(NSDictionary *dictionary, char* key)
+const char* mobile_center_unity_ns_string_dictionary_get_value_for_key(NSDictionary *dictionary, char* key)
 {
   NSString * keyString  = [NSString stringWithUTF8String:key];
   return mobile_center_unity_ns_string_to_cstr([dictionary objectForKey:keyString]);
