@@ -52,7 +52,6 @@ public class MobileCenterSettingsMakerAndroid
     public void StartPushClass()
     {
         _resourceValues[UsePushKey] = true.ToString();
-        _manifestNeedsWrite = true;
     }
 
     public void StartAnalyticsClass()
