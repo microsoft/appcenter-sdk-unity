@@ -20,6 +20,7 @@ string Token = EnvironmentVariable("MOBILE_CENTER_API_TOKEN");
 string BaseUrl = "https://api.mobile.azure.com";
 ApplicationInfo CurrentApp = null;
 string ProjectPath = "MobileCenterDemoApp";
+string BuildFolder = GetBuildFolder("Demo");
 
 public enum Environment
 {
@@ -108,6 +109,7 @@ Setup(context =>
         Token = EnvironmentVariable("MOBILE_CENTER_INT_API_TOKEN");
         BaseUrl = "https://asgard-int.trafficmanager.net/api";
         ProjectPath = "";
+        BuildFolder = GetBuildFolder("Puppet");
     }
     
     var platformString = Argument<string>("Platform", "ios");
@@ -155,9 +157,8 @@ Setup(context =>
 
 Task("CreateIosArchive").IsDependentOn("IncreaseIosVersion").Does(()=>
 {
-
     ExecuteUnityMethod(CurrentApp.BuildMethod, "ios", ProjectPath);
-    var xcodeProjectPath = GetDirectories(PuppetBuildsFolder + "/*/*.xcodeproj").Single().FullPath;
+    var xcodeProjectPath = GetDirectories(BuildFolder + "/*/*.xcodeproj").Single().FullPath;
     Information("Creating archive...");
     var archiveName = Statics.TemporaryPrefix + "iosArchive.xcarchive";
     StartProcess("xcodebuild", "-project \"" + xcodeProjectPath + "\" -configuration Release -scheme Unity-iPhone -archivePath \"" + archiveName + "\" archive");
@@ -184,7 +185,7 @@ Task("CreateIosArchive").IsDependentOn("IncreaseIosVersion").Does(()=>
 Task("CreateAndroidArchive").IsDependentOn("IncreaseAndroidVersion").Does(()=>
 {
     ExecuteUnityMethod(CurrentApp.BuildMethod, "android", ProjectPath);
-    var apkFile = GetFiles(PuppetBuildsFolder + "/*.apk").Single();
+    var apkFile = GetFiles(BuildFolder + "/*.apk").Single();
     MoveFile(apkFile, CurrentApp.AppPath);
 }).Finally(() => RunTarget("RemoveTemporaries"));
 

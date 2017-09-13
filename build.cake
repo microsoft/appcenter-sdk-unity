@@ -505,7 +505,7 @@ void VerifyWindowsAppsBuild(string type, string projectPath)
 
 void VerifyAppsBuild(string type, string platformIdentifier, string projectPath, string[] buildTypes, Action<string> verificatonMethod)
 {
-    var outputDirectory = Statics.TemporaryPrefix + type + "Builds";
+    var outputDirectory = GetBuildFolder(type);
     var methodPrefix = "Build" + type + ".Build" + type + "Scene";
     foreach (var buildType in buildTypes)
     {

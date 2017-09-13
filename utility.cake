@@ -74,6 +74,12 @@ static int ExecuteUnityCommand(string extraArgs, string projectPath = ".")
     return result;
 }
 
+// appType usually "Puppet" or "Demo"
+string GetBuildFolder(string appType)
+{
+     return Statics.TemporaryPrefix + appType + "Builds";
+}
+
 void ExecuteUnityMethod(string buildMethodName, string buildTarget, string projectPath = ".")
 {
     Statics.Context.Information("Executing method " + buildMethodName + ", this could take a while...");
