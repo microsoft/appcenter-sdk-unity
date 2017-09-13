@@ -57,6 +57,8 @@ google-services.json*
 *.csproj
 *.sln
 PuppetBuilds/
+DemoBuilds/
+MobileCenterDemoApp/Library
 
 # Firebase
 Assets/Plugins/Android/firebase-*
