@@ -12,17 +12,17 @@ int mobile_center_unity_release_details_get_id(MSReleaseDetails* details)
   return [[details id] intValue];
 }
 
-char* mobile_center_unity_release_details_get_version(MSReleaseDetails* details)
+const char* mobile_center_unity_release_details_get_version(MSReleaseDetails* details)
 {
   return mobile_center_unity_ns_string_to_cstr([details version]);
 }
 
-char* mobile_center_unity_release_details_get_short_version(MSReleaseDetails* details)
+const char* mobile_center_unity_release_details_get_short_version(MSReleaseDetails* details)
 {
   return mobile_center_unity_ns_string_to_cstr([details shortVersion]);
 }
 
-char* mobile_center_unity_release_details_get_release_notes(MSReleaseDetails* details)
+const char* mobile_center_unity_release_details_get_release_notes(MSReleaseDetails* details)
 {
   return mobile_center_unity_ns_string_to_cstr([details releaseNotes]);
 }
@@ -32,7 +32,7 @@ bool mobile_center_unity_release_details_get_mandatory_update(MSReleaseDetails* 
   return [details mandatoryUpdate];
 }
 
-char* mobile_center_unity_release_details_get_url(MSReleaseDetails* details)
+const char* mobile_center_unity_release_details_get_url(MSReleaseDetails* details)
 {
   return mobile_center_unity_ns_string_to_cstr([[details releaseNotesUrl] absoluteString]);
 }

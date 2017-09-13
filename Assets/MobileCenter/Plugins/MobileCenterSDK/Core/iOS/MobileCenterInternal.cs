@@ -10,21 +10,6 @@ namespace Microsoft.Azure.Mobile.Unity.Internal
 {
     class MobileCenterInternal
     {
-        public static void Configure(string appSecret)
-        {
-            mobile_center_unity_configure(appSecret);
-        }
-
-        public static void Start(string appSecret, IntPtr[] services, int numServices)
-        {
-            mobile_center_unity_start(appSecret, services, numServices);
-        }
-
-        public static void StartServices(IntPtr[] services, int numServices)
-        {
-            mobile_center_unity_start_services(services, numServices);
-        }
-
         public static void SetLogLevel(int logLevel)
         {
             mobile_center_unity_set_log_level(logLevel);
@@ -84,15 +69,6 @@ namespace Microsoft.Azure.Mobile.Unity.Internal
         }
 
 #region External
-
-        [DllImport("__Internal")]
-        private static extern void mobile_center_unity_configure(string appSecret);
-
-        [DllImport("__Internal")]
-        private static extern void mobile_center_unity_start(string appSecret, IntPtr[] services, int numServices);
-
-        [DllImport("__Internal")]
-        private static extern void mobile_center_unity_start_services(IntPtr[] services, int numServices);
 
         [DllImport("__Internal")]
         private static extern void mobile_center_unity_set_log_level(int logLevel);
