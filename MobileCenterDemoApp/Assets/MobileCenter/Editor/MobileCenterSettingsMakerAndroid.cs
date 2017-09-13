@@ -84,6 +84,7 @@ public class MobileCenterSettingsMakerAndroid
         if (manifestText.Contains(ManifestAppIdPlaceholder))
         {
             manifestText = manifestText.Replace(ManifestAppIdPlaceholder, appId);
+            File.Create(MobileCenterManifestPath).Dispose();
             File.WriteAllText(MobileCenterManifestPath, manifestText);
         }
         if (File.Exists(MobileCenterResourcesPath))
