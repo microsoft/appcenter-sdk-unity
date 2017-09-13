@@ -1,22 +1,27 @@
-// This contains various utilities that are or can be used by multiple cake scripts.
+// This file contains various utilities that are or can be used by multiple cake scripts.
 
-// Prefix for temporary intermediates that are created by this script
-var TemporaryPrefix = "CAKE_SCRIPT_TEMP";
-
-// Location of application builds
-var PuppetBuildsFolder = "PuppetBuilds";
-var DemoBuildsFolder = "DemoBuilds";
-
-static int ExecuteUnityCommand(string extraArgs, ICakeContext context, string projectPath = "")
+// Static variables defined outside of a class can cause issues.
+public class Statics
 {
-    var projectDir = projectPath == "" ? context.MakeAbsolute(context.Directory(".")) :
-                                         context.MakeAbsolute(context.Directory(projectPath));
-    var unityPath = context.EnvironmentVariable("UNITY_PATH");
+    // Cake context.
+    public static ICakeContext Context { get; set; }
+
+    // Prefix for temporary intermediates that are created by this script.
+    public const string TemporaryPrefix = "CAKE_SCRIPT_TEMP";
+}
+
+// Can't reference Context within the class, so set value outside
+Statics.Context = Context;
+
+static int ExecuteUnityCommand(string extraArgs, string projectPath = ".")
+{
+    var projectDir = Statics.Context.MakeAbsolute(Statics.Context.Directory(projectPath));
+    var unityPath = Statics.Context.EnvironmentVariable("UNITY_PATH");
 
     // If environment variable is not set, use default locations
     if (unityPath == null)
     {
-        if (context.IsRunningOnUnix())
+        if (Statics.Context.IsRunningOnUnix())
         {
             unityPath = "/Applications/Unity/Unity.app/Contents/MacOS/Unity";
         }
@@ -32,22 +37,22 @@ static int ExecuteUnityCommand(string extraArgs, ICakeContext context, string pr
     System.IO.File.Create(unityLogFile).Dispose();
     var logExec = "powershell.exe";
     var logArgs = "Get-Content -Path " + unityLogFile + " -Wait";
-    if (context.IsRunningOnUnix())
+    if (Statics.Context.IsRunningOnUnix())
     {
         logExec = "tail";
         logArgs = "-f " + unityLogFile;
     }
     int result = 0;
-    using (var unityProcess = context.StartAndReturnProcess(unityPath, new ProcessSettings{ Arguments = unityArgs }))
+    using (var unityProcess = Statics.Context.StartAndReturnProcess(unityPath, new ProcessSettings{ Arguments = unityArgs }))
     {
-        using (var logProcess = context.StartAndReturnProcess(logExec, new ProcessSettings{ Arguments = logArgs, RedirectStandardError = true}))
+        using (var logProcess = Statics.Context.StartAndReturnProcess(logExec, new ProcessSettings{ Arguments = logArgs, RedirectStandardError = true}))
         {
             unityProcess.WaitForExit();
             result = unityProcess.GetExitCode();
             if (logProcess.WaitForExit(0) &&
                 logProcess.GetExitCode() != 0)
             {
-                context.Warning("There was an error logging, but command still executed.");
+                Statics.Context.Warning("There was an error logging, but command still executed.");
             }
             else
             {
@@ -64,16 +69,16 @@ static int ExecuteUnityCommand(string extraArgs, ICakeContext context, string pr
     }
     if (System.IO.File.Exists(unityLogFile))
     {
-        context.DeleteFile(unityLogFile);
+        Statics.Context.DeleteFile(unityLogFile);
     }
     return result;
 }
 
-void ExecuteUnityMethod(string buildMethodName, string buildTarget, string projectPath = "")
+void ExecuteUnityMethod(string buildMethodName, string buildTarget, string projectPath = ".")
 {
-    Information("Executing method " + buildMethodName + ", this could take a while...");
+    Statics.Context.Information("Executing method " + buildMethodName + ", this could take a while...");
     var command = "-executeMethod " + buildMethodName + " -buildTarget " + buildTarget;
-    var result = ExecuteUnityCommand(command, Context, projectPath);
+    var result = ExecuteUnityCommand(command, projectPath);
     if (result != 0)
     {
         throw new Exception("Failed to execute method " + buildMethodName + ".");
@@ -116,12 +121,10 @@ void HandleError(Exception exception)
 // Remove all temporary files and folders
 Task("RemoveTemporaries").Does(()=>
 {
-    DeleteFiles(TemporaryPrefix + "*");
-    var dirs = GetDirectories(TemporaryPrefix + "*");
+    DeleteFiles(Statics.TemporaryPrefix + "*");
+    var dirs = GetDirectories(Statics.TemporaryPrefix + "*");
     foreach (var directory in dirs)
     {
         DeleteDirectory(directory, true);
     }
-    CleanDirectory(PuppetBuildsFolder);
-    DeleteFiles("./nuget/*.temp.nuspec");
 });

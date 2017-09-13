@@ -43,7 +43,6 @@ public enum ScriptingBackend
 
 public class ApplicationInfo
 {
-    public static ICakeContext Context;
     public static string OutputDirectory;
     public Environment AppEnvironment { get; }
     public ScriptingBackend AppScriptingBackend { get; }
@@ -75,7 +74,6 @@ public class ApplicationInfo
     }
 }
 
-ApplicationInfo.Context = Context;
 ApplicationInfo.OutputDirectory = ArchiveDirectory;
 IList<ApplicationInfo> Applications = new List<ApplicationInfo>
 {
@@ -161,11 +159,11 @@ Task("CreateIosArchive").IsDependentOn("IncreaseIosVersion").Does(()=>
     ExecuteUnityMethod(CurrentApp.BuildMethod, "ios", ProjectPath);
     var xcodeProjectPath = GetDirectories(PuppetBuildsFolder + "/*/*.xcodeproj").Single().FullPath;
     Information("Creating archive...");
-    var archiveName = TemporaryPrefix + "iosArchive.xcarchive";
+    var archiveName = Statics.TemporaryPrefix + "iosArchive.xcarchive";
     StartProcess("xcodebuild", "-project \"" + xcodeProjectPath + "\" -configuration Release -scheme Unity-iPhone -archivePath \"" + archiveName + "\" archive");
     
     // Just create the empty plist file here so it doesn't cluttering the repo.
-    var plistName = TemporaryPrefix + "exportoptions.plist";
+    var plistName = Statics.TemporaryPrefix + "exportoptions.plist";
     System.IO.File.WriteAllText(plistName,
         "<?xml version=\"1.0\" encoding=\"UTF-8\"?>" + 
         "<!DOCTYPE plist PUBLIC \"-//Apple//DTD PLIST 1.0//EN\" \"http://www.apple.com/DTDs/PropertyList-1.0.dtd\">" +
@@ -176,7 +174,7 @@ Task("CreateIosArchive").IsDependentOn("IncreaseIosVersion").Does(()=>
                     "\" -exportPath \"" + CurrentApp.AppPath + 
                     "\" -exportOptionsPlist \"" + plistName + "\"");
     var ipaFile = GetFiles(CurrentApp.AppPath + "/*.ipa").Single();
-    var temporaryIpaPath = ArchiveDirectory + "/" + TemporaryPrefix + "tempIpa.ipa";
+    var temporaryIpaPath = ArchiveDirectory + "/" + Statics.TemporaryPrefix + "tempIpa.ipa";
     MoveFile(ipaFile, temporaryIpaPath);
     DeleteDirectoryIfExists(CurrentApp.AppPath);
     var temporaryIpaFile = File(temporaryIpaPath);

@@ -11,7 +11,7 @@ using UnityEngine;
 // They are meant to be invoked from the build scripts in this repository.
 public class BuildDemo
 {
-    private static readonly string BuildFolder = "DemoBuilds";
+    private static readonly string BuildFolder = "CAKE_SCRIPT_TEMPDemoBuilds";
     private static readonly string AppIdentifier = "com.microsoft.azure.mobile.unity.demo";
 
     static BuildDemo()

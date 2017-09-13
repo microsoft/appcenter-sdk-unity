@@ -59,6 +59,7 @@ google-services.json*
 PuppetBuilds/
 DemoBuilds/
 MobileCenterDemoApp/Library
+RegisterIcalls.cpp
 
 # Firebase
 Assets/Plugins/Android/firebase-*

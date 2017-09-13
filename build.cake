@@ -121,7 +121,6 @@ class ExternalUnityPackage
 // Spec files can have up to one dependency.
 class UnityPackage
 {
-    public static ICakeContext Context;
     private string _packageName;
     private string _packageVersion;
     private List<string> _includePaths = new List<string>();
@@ -133,26 +132,26 @@ class UnityPackage
 
     private void AddFilesFromSpec(string specFilePath)
     {
-        var needsCore = Context.XmlPeek(specFilePath, "package/@needsCore") == "true";
+        var needsCore = Statics.Context.XmlPeek(specFilePath, "package/@needsCore") == "true";
         if (needsCore)
         {
             var specFileDirectory = System.IO.Path.GetDirectoryName(specFilePath);;
             AddFilesFromSpec(specFileDirectory + "/MobileCenter.unitypackagespec");
         }
-        _packageName = Context.XmlPeek(specFilePath, "package/@name");
-        _packageVersion = Context.XmlPeek(specFilePath, "package/@version");
+        _packageName = Statics.Context.XmlPeek(specFilePath, "package/@name");
+        _packageVersion = Statics.Context.XmlPeek(specFilePath, "package/@version");
         if (_packageName == null || _packageVersion == null)
         {
-            Context.Error("Invalid format for UnityPackageSpec file '" + specFilePath + "': missing package name or version");
+            Statics.Context.Error("Invalid format for UnityPackageSpec file '" + specFilePath + "': missing package name or version");
             return;
         }
 
         var xpathPrefix = "/package/include/file[";
         var xpathSuffix= "]/@path";
 
-        string lastPath = Context.XmlPeek(specFilePath, xpathPrefix + "last()" + xpathSuffix);
+        string lastPath = Statics.Context.XmlPeek(specFilePath, xpathPrefix + "last()" + xpathSuffix);
         var currentIdx = 1;
-        var currentPath =  Context.XmlPeek(specFilePath, xpathPrefix + currentIdx++ + xpathSuffix);
+        var currentPath =  Statics.Context.XmlPeek(specFilePath, xpathPrefix + currentIdx++ + xpathSuffix);
 
         if (currentPath != null)
         {
@@ -160,7 +159,7 @@ class UnityPackage
         }
         while (currentPath != lastPath)
         {
-            currentPath =  Context.XmlPeek(specFilePath, xpathPrefix + currentIdx++ + xpathSuffix);
+            currentPath =  Statics.Context.XmlPeek(specFilePath, xpathPrefix + currentIdx++ + xpathSuffix);
             _includePaths.Add(currentPath);
         }
     }
@@ -174,10 +173,10 @@ class UnityPackage
         }
         var fullPackageName =  _packageName + "-v" + _packageVersion + ".unitypackage";
         args += " " + targetDirectory + "/" + fullPackageName;
-        var result = ExecuteUnityCommand(args, Context);
+        var result = ExecuteUnityCommand(args);
         if (result != 0)
         {
-            Context.Error("Something went wrong while creating Unity package '" + fullPackageName + "'");
+            Statics.Context.Error("Something went wrong while creating Unity package '" + fullPackageName + "'");
         }
     }
 }
@@ -346,7 +345,7 @@ Task("Externals-Uwp-IL2CPP-Dependencies")
 
     // Process UWP IL2CPP dependencies.
     Information("Processing UWP IL2CPP dependencies. This could take a minute.");
-    ExecuteUnityCommand("-executeMethod MobileCenterPostBuild.ProcessUwpIl2CppDependencies", Context);
+    ExecuteUnityCommand("-executeMethod MobileCenterPostBuild.ProcessUwpIl2CppDependencies");
 }).OnError(HandleError);
 
 // Download and install all external Unity packages required.
@@ -360,7 +359,7 @@ Task("Externals-Unity-Packages").Does(()=>
         DownloadFile(package.Url, destination);
         var command = "-importPackage " + destination;
         Information("Importing package " + package.Name + ". This could take a minute.");
-        ExecuteUnityCommand(command, Context);
+        ExecuteUnityCommand(command);
     }
 }).OnError(HandleError);
 
@@ -374,7 +373,7 @@ Task("AddPackagesToDemoApp")
     {
         var command = "-importPackage " + package.FullPath;
         Information("Importing package " + package.FullPath + ". This could take a minute.");
-        ExecuteUnityCommand(command, Context, "MobileCenterDemoApp");
+        ExecuteUnityCommand(command, "MobileCenterDemoApp");
     }
 }).OnError(HandleError);
 
@@ -404,9 +403,6 @@ Task("Externals")
 // in "UnityPackageSpecs" folder.
 Task("Package").Does(()=>
 {
-    // Need to provide cake context so class methods can use cake apis.
-    UnityPackage.Context = Context;
-
     // Remove AndroidManifest.xml
     var path = "Assets/Plugins/Android/mobile-center/AndroidManifest.xml";
     if (System.IO.File.Exists(path))
@@ -436,17 +432,7 @@ Task("BuildPuppetApps")
     .IsDependentOn("PrepareAssets")
     .Does(()=>
 {
-    if (IsRunningOnUnix())
-    {
-        BuildAppsMac(Context, "Puppet", PuppetBuildsFolder);
-    }
-    else
-    {
-        BuildAppsWindows(Context, "Puppet", PuppetBuildsFolder);
-    }
-
-    // Remove all remaining builds.
-    CleanDirectory(PuppetBuildsFolder);
+    BuildApps("Puppet");
 }).OnError(HandleError);
 
 // Builds the puppet applications and throws an exception on failure.
@@ -454,92 +440,89 @@ Task("BuildDemoApps")
     .IsDependentOn("AddPackagesToDemoApp")
     .Does(()=>
 {
-    if (IsRunningOnUnix())
+    BuildApps("Demo", "MobileCenterDemoApp");
+}).OnError(HandleError);
+
+void BuildApps(string type, string projectPath = ".")
+{
+    if (Statics.Context.IsRunningOnUnix())
     {
-        BuildAppsMac(Context, "Demo", DemoBuildsFolder, "MobileCenterDemoApp");
+        VerifyIosAppsBuild(type, projectPath);
+        VerifyAndroidAppsBuild(type, projectPath);
     }
     else
     {
-        BuildAppsWindows(Context, "Demo", DemoBuildsFolder, "MobileCenterDemoApp");
-    }
-    
-    // Remove all remaining builds.
-    CleanDirectory(PuppetBuildsFolder);
-}).OnError(HandleError);
-
-void BuildAppsMac(ICakeContext context, string type, string outputDirectory, string projectPath = "")
-{
-    var methodPrefix = "Build" + type + ".Build" + type + "Scene";
-
-    // Android
-    string[] androidBuildTypes = {
-        "AndroidMono",
-        "AndroidIl2CPP"
-    };
-    foreach (var buildType in androidBuildTypes)
-    {
-        // Remove all current builds and create new build.
-        context.CleanDirectory(outputDirectory);
-        ExecuteUnityMethod(methodPrefix + buildType, "android", projectPath);
-
-        // Verify that an APK was generated. (".Single()" should throw an exception if the
-        // collection is empty).
-        context.Information("Verifying that apk was generated for method '" + buildType + "'");
-        context.GetFiles(outputDirectory + "/*.apk").Single();
-        context.Information("Found apk.");
-    }
-
-    // iOS
-    string[] iosBuildTypes = {
-        "IosMono",
-        "IosIl2CPP"
-    };
-    foreach (var buildType in iosBuildTypes)
-    {
-        // Remove all current builds and create new build.
-        context.CleanDirectory(outputDirectory);
-        ExecuteUnityMethod(methodPrefix + buildType, "ios", projectPath);
-
-        // Verify that an Xcode project was created and that it builds properly.
-        var xcodeProjectPath = GetDirectories(outputDirectory + "/*/*.xcodeproj").Single();
-
-        // Only one Xcode project should exist, so assume the first in the array is the correct one.
-        context.Information("Attempting to build '" + xcodeProjectPath.FullPath + "'...");
-        context.BuildXcodeProject(xcodeProjectPath.FullPath);
-        context.Information("Successfully built '" + xcodeProjectPath.FullPath + "'");
+        VerifyWindowsAppsBuild(type, projectPath);
     }
 }
 
-void BuildAppsWindows(ICakeContext context, string type, string outputDirectory, string projectPath = "")
+void VerifyIosAppsBuild(string type, string projectPath)
 {
+    VerifyAppsBuild(type, "ios", projectPath, 
+    new string[] { "IosMono", "IosIl2CPP" },
+    outputDirectory =>
+    {
+        var directories = GetDirectories(outputDirectory + "/*/*.xcodeproj");
+        if (directories.Count == 0)
+        {
+            throw new Exception("No ios projects found in directory '" + outputDirectory + "'");
+        }
+        var xcodeProjectPath = directories.Single();
+        Statics.Context.Information("Attempting to build '" + xcodeProjectPath.FullPath + "'...");
+        BuildXcodeProject(xcodeProjectPath.FullPath);
+        Statics.Context.Information("Successfully built '" + xcodeProjectPath.FullPath + "'");
+    });
+}
+
+void VerifyAndroidAppsBuild(string type, string projectPath)
+{
+    VerifyAppsBuild(type, "android", projectPath, 
+    new string[] { "AndroidMono", "AndroidIl2CPP" },
+    outputDirectory =>
+    {
+        // Verify that an APK was generated.
+        if (Statics.Context.GetFiles(outputDirectory + "/*.apk").Count == 0)
+        {
+            throw new Exception("No apk found in directory '" + outputDirectory + "'");
+        }
+        Statics.Context.Information("Found apk.");
+    });
+}
+
+void VerifyWindowsAppsBuild(string type, string projectPath)
+{
+    VerifyAppsBuild(type, "wsaplayer", projectPath, 
+    new string[] {  "WsaNetXaml", "WsaIl2CPPXaml", "WsaNetD3D", "WsaIl2CPPD3D" },
+    outputDirectory =>
+    {
+        var solutionFilePath = GetFiles(outputDirectory + "/*/*.sln").Single();
+        Statics.Context.Information("Attempting to build '" + solutionFilePath.ToString() + "'...");
+        Statics.Context.MSBuild(solutionFilePath.ToString(), c => c
+        .SetConfiguration("Master")
+        .WithProperty("Platform", "x86")
+        .SetVerbosity(Verbosity.Minimal)
+        .SetMSBuildPlatform(MSBuildPlatform.x86));
+        Statics.Context.Information("Successfully built '" + solutionFilePath.ToString() + "'");
+    });
+}
+
+void VerifyAppsBuild(string type, string platformIdentifier, string projectPath, string[] buildTypes, Action<string> verificatonMethod)
+{
+    var outputDirectory = Statics.TemporaryPrefix + type + "Builds";
     var methodPrefix = "Build" + type + ".Build" + type + "Scene";
-    string[] uwpBuildTypes = {
-        "WsaNetXaml",
-        "WsaIl2CPPXaml",
-        "WsaNetD3D",
-        "WsaIl2CPPD3D"
-    };
-    foreach (var buildType in uwpBuildTypes)
+    foreach (var buildType in buildTypes)
     {
         // Remove all existing builds and create new build.
-        context.CleanDirectory(PuppetBuildsFolder);
-        ExecuteUnityMethod(uwpBuildMethod, "wsaplayer");
+        Statics.Context.CleanDirectory(outputDirectory);
+        ExecuteUnityMethod(methodPrefix + buildType, platformIdentifier);
+        verificatonMethod(outputDirectory);
 
-        // Verify that a solution file was created and that it builds properly.
-        var solutionFilePath = GetFiles(outputDirectory + "/*/*.sln").Single();
-
-        // For now, only build for x86.
-        context.Information("Attempting to build '" + solutionFilePath.ToString() + "'...");
-        context.MSBuild(solutionFilePath.ToString(), c => c
-            .SetConfiguration("Master")
-            .WithProperty("Platform", "x86")
-            .SetVerbosity(Verbosity.Minimal)
-            .SetMSBuildPlatform(MSBuildPlatform.x86));
-        context.Information("Successfully built '" + solutionFilePath.ToString() + "'");
+        // Remove all remaining builds.
+        Statics.Context.CleanDirectory(outputDirectory);
     }
 
     // Remove all remaining builds.
-    context.CleanDirectory(outputDirectory);
+    Statics.Context.CleanDirectory(outputDirectory);
 }
 
 Task("PublishPackagesToStorage").Does(()=>
