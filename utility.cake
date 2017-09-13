@@ -67,17 +67,14 @@ static int ExecuteUnityCommand(string extraArgs, string projectPath = ".")
             }
         }
     }
-    if (System.IO.File.Exists(unityLogFile))
-    {
-        Statics.Context.DeleteFile(unityLogFile);
-    }
+    DeleteFileIfExists(unityLogFile);
     return result;
 }
 
 // appType usually "Puppet" or "Demo"
-string GetBuildFolder(string appType)
+string GetBuildFolder(string appType, string projectPath)
 {
-     return Statics.TemporaryPrefix + appType + "Builds";
+     return projectPath + "/" + Statics.TemporaryPrefix + appType + "Builds";
 }
 
 void ExecuteUnityMethod(string buildMethodName, string buildTarget, string projectPath = ".")
@@ -111,6 +108,15 @@ void DeleteDirectoryIfExists(string directoryName)
         DeleteDirectory(directoryName, true);
     }
 }
+
+void DeleteFileIfExists(string fileName)
+{
+    if (FileExists(fileName))
+    {
+        DeleteFile(fileName);
+    }
+}
+
 
 void CleanDirectory(string directoryName)
 {

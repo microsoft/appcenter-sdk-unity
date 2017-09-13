@@ -20,7 +20,7 @@ string Token = EnvironmentVariable("MOBILE_CENTER_API_TOKEN");
 string BaseUrl = "https://api.mobile.azure.com";
 ApplicationInfo CurrentApp = null;
 string ProjectPath = "MobileCenterDemoApp";
-string BuildFolder = GetBuildFolder("Demo");
+string BuildFolder = GetBuildFolder("Demo", ProjectPath);
 
 public enum Environment
 {
@@ -108,8 +108,8 @@ Setup(context =>
         environment = Environment.Int;
         Token = EnvironmentVariable("MOBILE_CENTER_INT_API_TOKEN");
         BaseUrl = "https://asgard-int.trafficmanager.net/api";
-        ProjectPath = "";
-        BuildFolder = GetBuildFolder("Puppet");
+        ProjectPath = ".";
+        BuildFolder = GetBuildFolder("Puppet", ProjectPath);
     }
     
     var platformString = Argument<string>("Platform", "ios");
@@ -155,7 +155,8 @@ Setup(context =>
 
 // Distribution Tasks
 
-Task("CreateIosArchive").IsDependentOn("IncreaseIosVersion").Does(()=>
+Task("CreateIosArchive").IsDependentOn("IncreaseIosVersion")
+.Does(()=>
 {
     ExecuteUnityMethod(CurrentApp.BuildMethod, "ios", ProjectPath);
     var xcodeProjectPath = GetDirectories(BuildFolder + "/*/*.xcodeproj").Single().FullPath;
@@ -170,7 +171,7 @@ Task("CreateIosArchive").IsDependentOn("IncreaseIosVersion").Does(()=>
         "<!DOCTYPE plist PUBLIC \"-//Apple//DTD PLIST 1.0//EN\" \"http://www.apple.com/DTDs/PropertyList-1.0.dtd\">" +
         "<plist version=\"1.0\"><dict></dict></plist>");
     Information("Creating ipa...");
-    DeleteFile(CurrentApp.AppPath);
+    DeleteFileIfExists(CurrentApp.AppPath);
     StartProcess("xcodebuild", "-exportArchive -archivePath \"" + archiveName + 
                     "\" -exportPath \"" + CurrentApp.AppPath + 
                     "\" -exportOptionsPlist \"" + plistName + "\"");
