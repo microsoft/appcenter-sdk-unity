@@ -72,12 +72,12 @@ static int ExecuteUnityCommand(string extraArgs, string projectPath = ".")
 }
 
 // appType usually "Puppet" or "Demo"
-string GetBuildFolder(string appType, string projectPath)
+static string GetBuildFolder(string appType, string projectPath)
 {
      return projectPath + "/" + Statics.TemporaryPrefix + appType + "Builds";
 }
 
-void ExecuteUnityMethod(string buildMethodName, string buildTarget, string projectPath = ".")
+static void ExecuteUnityMethod(string buildMethodName, string buildTarget, string projectPath = ".")
 {
     Statics.Context.Information("Executing method " + buildMethodName + ", this could take a while...");
     var command = "-executeMethod " + buildMethodName + " -buildTarget " + buildTarget;
@@ -89,7 +89,7 @@ void ExecuteUnityMethod(string buildMethodName, string buildTarget, string proje
 }
 
 // Copy files to a clean directory using string names instead of FilePath[] and DirectoryPath
-void CopyFiles(IEnumerable<string> files, string targetDirectory, bool clean = true)
+static void CopyFiles(IEnumerable<string> files, string targetDirectory, bool clean = true)
 {
     if (clean)
     {
@@ -97,31 +97,31 @@ void CopyFiles(IEnumerable<string> files, string targetDirectory, bool clean = t
     }
     foreach (var file in files)
     {
-        CopyFile(file, targetDirectory + "/" + System.IO.Path.GetFileName(file));
+        Statics.Context.CopyFile(file, targetDirectory + "/" + System.IO.Path.GetFileName(file));
     }
 }
 
-void DeleteDirectoryIfExists(string directoryName)
+static void DeleteDirectoryIfExists(string directoryName)
 {
-    if (DirectoryExists(directoryName))
+    if (Statics.Context.DirectoryExists(directoryName))
     {
-        DeleteDirectory(directoryName, true);
+        Statics.Context.DeleteDirectory(directoryName, true);
     }
 }
 
-void DeleteFileIfExists(string fileName)
+static void DeleteFileIfExists(string fileName)
 {
-    if (FileExists(fileName))
+    if (Statics.Context.FileExists(fileName))
     {
-        DeleteFile(fileName);
+        Statics.Context.DeleteFile(fileName);
     }
 }
 
 
-void CleanDirectory(string directoryName)
+static void CleanDirectory(string directoryName)
 {
     DeleteDirectoryIfExists(directoryName);
-    CreateDirectory(directoryName);
+    Statics.Context.CreateDirectory(directoryName);
 }
 
 void HandleError(Exception exception)
