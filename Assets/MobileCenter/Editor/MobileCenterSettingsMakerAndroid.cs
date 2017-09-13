@@ -10,6 +10,7 @@ public class MobileCenterSettingsMakerAndroid
     private const string MobileCenterResourcesFolderPath = "Assets/Plugins/Android/mobile-center/res/values/";
     private const string MobileCenterResourcesPath = MobileCenterResourcesFolderPath + "mobile-center-settings.xml";
     private const string MobileCenterManifestPath = "Assets/Plugins/Android/mobile-center/AndroidManifest.xml";
+    private const string MobileCenterManifestPlaceholderPath = "Assets/MobileCenter/Plugins/Android/AndroidManifestPlaceholder.xml";
     private const string ManifestAppIdPlaceholder = "${mobile-center-app-id-placeholder}";
     private const string AppSecretKey = "mobile_center_app_secret";
     private const string CustomLogUrlKey = "mobile_center_custom_log_url";
@@ -22,7 +23,6 @@ public class MobileCenterSettingsMakerAndroid
     private const string UseCustomApiUrlKey = "mobile_center_use_custom_api_url";
     private const string CustomInstallUrlKey = "mobile_center_custom_install_url";
     private const string UseCustomInstallUrlKey = "mobile_center_use_custom_install_url";
-
     private readonly IDictionary<string, string> _resourceValues = new Dictionary<string, string>();
 
     static MobileCenterSettingsMakerAndroid()
@@ -79,7 +79,7 @@ public class MobileCenterSettingsMakerAndroid
     public void CommitSettings()
     {
         var appId = ApplicationIdHelper.GetApplicationId();
-        var manifestText = File.ReadAllText(MobileCenterManifestPath);
+        var manifestText = File.ReadAllText(MobileCenterManifestPlaceholderPath);
         if (manifestText.Contains(ManifestAppIdPlaceholder))
         {
             manifestText = manifestText.Replace(ManifestAppIdPlaceholder, appId);
