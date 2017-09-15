@@ -2,6 +2,7 @@
 //
 // Licensed under the MIT license.
 
+using System.Linq;
 using Microsoft.Azure.Mobile.Unity.Push;
 using UnityEngine;
 
@@ -9,6 +10,8 @@ public class PuppetPushHandler : MonoBehaviour
 {
     private static PushNotificationReceivedEventArgs _pushEventArgs = null;
     private static object _pushLock = new object();
+
+    public PuppetPushDialog Dialog;
 
     void Awake()
     {
@@ -20,8 +23,7 @@ public class PuppetPushHandler : MonoBehaviour
             }
         };
     }
-
-    // Update is called once per frame
+    
     void Update()
     {
         if (_pushEventArgs == null)
@@ -34,18 +36,28 @@ public class PuppetPushHandler : MonoBehaviour
             {
                 return;
             }
+
+            // Show dialog.
+            if (Dialog != null)
+            {
+                Dialog.Title = _pushEventArgs.Title;
+                Dialog.Message = _pushEventArgs.Message;
+                Dialog.CustomData = _pushEventArgs.CustomData;
+                Dialog.Show();
+            }
+
+            // Print summary to log.
             var pushSummary = "Push notification received:" +
-                "\n\tNotification title: " + _pushEventArgs.Title +
-                "\n\tMessage: " + _pushEventArgs.Message;
+                              "\n\tNotification title: " + _pushEventArgs.Title +
+                              "\n\tMessage: " + _pushEventArgs.Message;
             if (_pushEventArgs.CustomData != null)
             {
-                pushSummary += "\n\tCustom data:\n";
-                foreach (var key in _pushEventArgs.CustomData.Keys)
-                {
-                    pushSummary += "\t\t" + key + " : " + _pushEventArgs.CustomData[key] + "\n";
-                }
+                pushSummary += string.Join("\n",
+                    _pushEventArgs.CustomData.Select(i => "\t\t" + i.Key + " : " + i.Value).ToArray());
             }
             print(pushSummary);
+
+            // Clear event arguments.
             _pushEventArgs = null;
         }
     }
