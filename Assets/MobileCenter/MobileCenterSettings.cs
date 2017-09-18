@@ -30,8 +30,8 @@ public class MobileCenterSettings : ScriptableObject
 
     [Tooltip("Mobile Center Push enables you to send push notifications to users of your app from the Mobile Center portal.")]
     public bool UsePush = true;
-	[Tooltip("By default, Mobile Center Push disables Firebase Analytics. Use this option to enable it. This only applies to Android applications.")]
-	public bool EnableFirebaseAnalytics = false;
+    [Tooltip("By default, Mobile Center Push disables Firebase Analytics. Use this option to enable it. This only applies to Android applications.")]
+    public bool EnableFirebaseAnalytics = false;
     public LogLevel InitialLogLevel = LogLevel.Info;
     public CustomUrlProperty CustomLogUrl = new CustomUrlProperty("Log");
 
