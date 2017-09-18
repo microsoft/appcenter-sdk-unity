@@ -23,6 +23,8 @@ public class MobileCenterSettingsMakerAndroid
     private const string UseCustomApiUrlKey = "mobile_center_use_custom_api_url";
     private const string CustomInstallUrlKey = "mobile_center_custom_install_url";
     private const string UseCustomInstallUrlKey = "mobile_center_use_custom_install_url";
+    private const string EnableFirebaseAnalyticsKey = "mobile_center_enable_firebase_analytics";
+
     private readonly IDictionary<string, string> _resourceValues = new Dictionary<string, string>();
 
     static MobileCenterSettingsMakerAndroid()
@@ -47,6 +49,11 @@ public class MobileCenterSettingsMakerAndroid
     public void SetAppSecret(string appSecret)
     {
         _resourceValues[AppSecretKey] = appSecret;
+    }
+
+    public void EnableFirebaseAnalytics()
+    {
+        _resourceValues[EnableFirebaseAnalyticsKey] = true.ToString();
     }
 
     public void StartPushClass()
