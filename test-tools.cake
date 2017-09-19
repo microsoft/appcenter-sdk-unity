@@ -19,6 +19,8 @@ string DistributionGroup = "Private Release Script Group";
 string Token = EnvironmentVariable("MOBILE_CENTER_API_TOKEN");
 string BaseUrl = "https://api.mobile.azure.com";
 ApplicationInfo CurrentApp = null;
+string ProjectPath = "MobileCenterDemoApp";
+string BuildFolder = GetBuildFolder("Demo", ProjectPath);
 
 public enum Environment
 {
@@ -42,7 +44,6 @@ public enum ScriptingBackend
 
 public class ApplicationInfo
 {
-    public static ICakeContext Context;
     public static string OutputDirectory;
     public Environment AppEnvironment { get; }
     public ScriptingBackend AppScriptingBackend { get; }
@@ -74,7 +75,6 @@ public class ApplicationInfo
     }
 }
 
-ApplicationInfo.Context = Context;
 ApplicationInfo.OutputDirectory = ArchiveDirectory;
 IList<ApplicationInfo> Applications = new List<ApplicationInfo>
 {
@@ -83,13 +83,17 @@ IList<ApplicationInfo> Applications = new List<ApplicationInfo>
     new ApplicationInfo(Environment.Int, Platform.Android, ScriptingBackend.Mono, "alchocro", "Unity-Android-Puppet", "BuildPuppet.BuildPuppetSceneAndroidMono", "BuildPuppet.IncrementVersionNumber", "apk"),
     new ApplicationInfo(Environment.Int, Platform.Android, ScriptingBackend.Il2Cpp, "alchocro", "Unity-Android-Puppet", "BuildPuppet.BuildPuppetSceneAndroidIl2CPP", "BuildPuppet.IncrementVersionNumber", "apk"),
     new ApplicationInfo(Environment.Int, Platform.UWP, ScriptingBackend.DotNet, "alchocro", "UWP-Unity-Puppet"),
-    new ApplicationInfo(Environment.Int, Platform.UWP, ScriptingBackend.Il2Cpp, "alchocro", "UWP-Unity-Puppet")
+    new ApplicationInfo(Environment.Int, Platform.UWP, ScriptingBackend.Il2Cpp, "alchocro", "UWP-Unity-Puppet"),
+    new ApplicationInfo(Environment.Prod, Platform.iOS, ScriptingBackend.Mono, "mobile-center-sdk", "iOS-Unity-Demo-App", "BuildDemo.BuildDemoSceneIosMonoDeviceSdk", "BuildDemo.IncrementVersionNumber", "ipa"),
+    new ApplicationInfo(Environment.Prod, Platform.iOS, ScriptingBackend.Il2Cpp, "mobile-center-sdk", "iOS-Unity-Demo-App", "BuildDemo.BuildDemoSceneIosIl2CPPDeviceSdk", "BuildDemo.IncrementVersionNumber", "ipa"),
+    new ApplicationInfo(Environment.Prod, Platform.Android, ScriptingBackend.Mono, "mobile-center-sdk", "Android-Unity-Demo-App", "BuildDemo.BuildDemoSceneAndroidMono", "BuildDemo.IncrementVersionNumber", "apk"),
+    new ApplicationInfo(Environment.Prod, Platform.Android, ScriptingBackend.Il2Cpp, "mobile-center-sdk", "Android-Unity-Demo-App", "BuildDemo.BuildDemoSceneAndroidIl2CPP", "BuildDemo.IncrementVersionNumber", "apk"),
+    new ApplicationInfo(Environment.Prod, Platform.UWP, ScriptingBackend.DotNet, "mobile-center-sdk", "UWP-Unity-Demo-App"),
+    new ApplicationInfo(Environment.Prod, Platform.UWP, ScriptingBackend.Il2Cpp, "mobile-center-sdk", "UWP-Unity-Demo-App")
 };
 
 Setup(context =>
 {
-    //TODO parse arguments correctly!!!!
-
     // Arguments:
     //  -Environment:       App "environment" ("prod" or "int") -- Default is "int"
     //  -Group:             Distribution group name -- Default is "Private Release Script Group"
@@ -104,7 +108,10 @@ Setup(context =>
         environment = Environment.Int;
         Token = EnvironmentVariable("MOBILE_CENTER_INT_API_TOKEN");
         BaseUrl = "https://asgard-int.trafficmanager.net/api";
+        ProjectPath = ".";
+        BuildFolder = GetBuildFolder("Puppet", ProjectPath);
     }
+    
     var platformString = Argument<string>("Platform", "ios");
     var platform = Platform.iOS;
     
@@ -148,27 +155,28 @@ Setup(context =>
 
 // Distribution Tasks
 
-Task("CreateIosArchive").IsDependentOn("IncreaseIosVersion").Does(()=>
+Task("CreateIosArchive").IsDependentOn("IncreaseIosVersion")
+.Does(()=>
 {
-    ExecuteUnityMethod(CurrentApp.BuildMethod, "ios");
-    var xcodeProjectPath = GetDirectories(PuppetBuildsFolder + "/*/*.xcodeproj").Single().FullPath;
+    ExecuteUnityMethod(CurrentApp.BuildMethod, "ios", ProjectPath);
+    var xcodeProjectPath = GetDirectories(BuildFolder + "/*/*.xcodeproj").Single().FullPath;
     Information("Creating archive...");
-    var archiveName = TemporaryPrefix + "iosArchive.xcarchive";
+    var archiveName = Statics.TemporaryPrefix + "iosArchive.xcarchive";
     StartProcess("xcodebuild", "-project \"" + xcodeProjectPath + "\" -configuration Release -scheme Unity-iPhone -archivePath \"" + archiveName + "\" archive");
     
     // Just create the empty plist file here so it doesn't cluttering the repo.
-    var plistName = TemporaryPrefix + "exportoptions.plist";
+    var plistName = Statics.TemporaryPrefix + "exportoptions.plist";
     System.IO.File.WriteAllText(plistName,
         "<?xml version=\"1.0\" encoding=\"UTF-8\"?>" + 
         "<!DOCTYPE plist PUBLIC \"-//Apple//DTD PLIST 1.0//EN\" \"http://www.apple.com/DTDs/PropertyList-1.0.dtd\">" +
         "<plist version=\"1.0\"><dict></dict></plist>");
     Information("Creating ipa...");
-    DeleteFile(CurrentApp.AppPath);
+    DeleteFileIfExists(CurrentApp.AppPath);
     StartProcess("xcodebuild", "-exportArchive -archivePath \"" + archiveName + 
                     "\" -exportPath \"" + CurrentApp.AppPath + 
                     "\" -exportOptionsPlist \"" + plistName + "\"");
     var ipaFile = GetFiles(CurrentApp.AppPath + "/*.ipa").Single();
-    var temporaryIpaPath = ArchiveDirectory + "/" + TemporaryPrefix + "tempIpa.ipa";
+    var temporaryIpaPath = ArchiveDirectory + "/" + Statics.TemporaryPrefix + "tempIpa.ipa";
     MoveFile(ipaFile, temporaryIpaPath);
     DeleteDirectoryIfExists(CurrentApp.AppPath);
     var temporaryIpaFile = File(temporaryIpaPath);
@@ -177,19 +185,19 @@ Task("CreateIosArchive").IsDependentOn("IncreaseIosVersion").Does(()=>
 
 Task("CreateAndroidArchive").IsDependentOn("IncreaseAndroidVersion").Does(()=>
 {
-    ExecuteUnityMethod(CurrentApp.BuildMethod, "android");
-    var apkFile = GetFiles(PuppetBuildsFolder + "/*.apk").Single();
+    ExecuteUnityMethod(CurrentApp.BuildMethod, "android", ProjectPath);
+    var apkFile = GetFiles(BuildFolder + "/*.apk").Single();
     MoveFile(apkFile, CurrentApp.AppPath);
 }).Finally(() => RunTarget("RemoveTemporaries"));
 
 Task("IncreaseIosVersion").Does(()=>
 {
-    ExecuteUnityMethod(CurrentApp.IncrementVersionMethod, "ios");
+    ExecuteUnityMethod(CurrentApp.IncrementVersionMethod, "ios", ProjectPath);
 });
 
 Task("IncreaseAndroidVersion").Does(()=>
 {
-    ExecuteUnityMethod(CurrentApp.IncrementVersionMethod, "android");
+    ExecuteUnityMethod(CurrentApp.IncrementVersionMethod, "android", ProjectPath);
 });
 
 Task("ReleaseApplication")

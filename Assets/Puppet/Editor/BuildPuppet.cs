@@ -11,7 +11,7 @@ using UnityEngine;
 // They are meant to be invoked from the build scripts in this repository.
 public class BuildPuppet
 {
-    private static readonly string BuildFolder = "PuppetBuilds";
+    private static readonly string BuildFolder = "CAKE_SCRIPT_TEMPPuppetBuilds";
     private static readonly string AppIdentifier = "com.microsoft.azure.mobile.unity.puppet";
 
     static BuildPuppet()
