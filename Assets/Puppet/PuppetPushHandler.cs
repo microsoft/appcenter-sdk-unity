@@ -23,7 +23,23 @@ public class PuppetPushHandler : MonoBehaviour
             }
         };
     }
-    
+
+#if UNITY_EDITOR
+    [ContextMenu("Test Notification")]
+    void TestNotification()
+    {
+        _pushEventArgs = new PushNotificationReceivedEventArgs
+        {
+            Title = "Some notification",
+            Message = 
+            "Lorem ipsum dolor sit amet, consectetur adipiscing elit. " +
+            "Etiam non est sit amet dui porta varius quis sed massa. " +
+            "Nullam libero libero, porta at augue eget, malesuada venenatis risus.",
+            CustomData = null
+        };
+    }
+#endif
+
     void Update()
     {
         if (_pushEventArgs == null)
