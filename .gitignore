@@ -22,11 +22,11 @@ xcuserdata
 [Bb]in/
 [Oo]bj/
 [Ll]og/
-/Temp/
-/UWP/
-/iOSBuild/
-/UWPBuild/
-/AndroidBuild/
+**/Temp/
+**/UWP/
+**/iOSBuild/
+**/UWPBuild/
+**/AndroidBuild/
 externals/
 output/
 TestResults/
@@ -54,17 +54,17 @@ google-services.json*
 *.pfx*
 
 # Unity
-/Library/
+**/Library/
 *.csproj
 *.sln
-PuppetBuilds/
+RegisterIcalls.cpp
 
 # Firebase
 Assets/Plugins/Android/firebase-*
 Assets/Plugins/Android/support-*
 Assets/Plugins/Android/play-services-*
-Assets/MobileCenter/Plugins/Android/mobile-center/res
-Assets/MobileCenter/Plugins/Android/mobile-center/res.meta
+Assets/Plugins/Android/mobile-center/res
+Assets/Plugins/Android/mobile-center/res.meta
 Assets/Firebase/
 Assets/PlayServicesResolver/
 Assets/PlayServicesResolver.meta

@@ -3,6 +3,7 @@
     <include>
         <!-- Editor related files -->
         <file path="Assets/MobileCenter/Editor" />
+        <file path="Assets/MobileCenter/Properties" />
         <file path="Assets/MobileCenter/MobileCenterBehavior.cs" />
         <file path="Assets/MobileCenter/MobileCenterSettings.cs" />
 

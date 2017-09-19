@@ -11,7 +11,7 @@ using UnityEngine;
 // They are meant to be invoked from the build scripts in this repository.
 public class BuildPuppet
 {
-    private static readonly string BuildFolder = "PuppetBuilds";
+    private static readonly string BuildFolder = "CAKE_SCRIPT_TEMPPuppetBuilds";
     private static readonly string AppIdentifier = "com.microsoft.azure.mobile.unity.puppet";
 
     static BuildPuppet()
@@ -44,6 +44,18 @@ public class BuildPuppet
     public static void BuildPuppetSceneIosIl2CPP()
     {
         PlayerSettings.iOS.sdkVersion = iOSSdkVersion.SimulatorSDK;
+        BuildPuppetScene(BuildTarget.iOS, BuildTargetGroup.iOS, ScriptingImplementation.IL2CPP, "iOSIL2CPPBuild");
+    }
+
+    public static void BuildPuppetSceneIosMonoDeviceSdk()
+    {
+        PlayerSettings.iOS.sdkVersion = iOSSdkVersion.DeviceSDK;
+        BuildPuppetScene(BuildTarget.iOS, BuildTargetGroup.iOS, ScriptingImplementation.Mono2x, "iOSMonoBuild");
+    }
+
+    public static void BuildPuppetSceneIosIl2CPPDeviceSdk()
+    {
+        PlayerSettings.iOS.sdkVersion = iOSSdkVersion.DeviceSDK;
         BuildPuppetScene(BuildTarget.iOS, BuildTargetGroup.iOS, ScriptingImplementation.IL2CPP, "iOSIL2CPPBuild");
     }
 
@@ -92,6 +104,27 @@ public class BuildPuppet
             target = target
         };
         BuildPipeline.BuildPlayer(options);
+    }
+
+    // Increments build version for all platforms
+    public static void IncrementVersionNumber()
+    {
+        var currentVersion = PlayerSettings.bundleVersion;
+        Debug.Log("current version: " + currentVersion);
+        var minorVersion = int.Parse(currentVersion.Substring(currentVersion.LastIndexOf(".") + 1)) + 1;
+        var newVersion = currentVersion.Substring(0, currentVersion.LastIndexOf(".") + 1) + minorVersion;
+        Debug.Log("new version: " + newVersion);
+        PlayerSettings.bundleVersion = newVersion;
+        PlayerSettings.Android.bundleVersionCode++;
+    }
+
+    // Sets version number for puppet app
+    public static void SetVersionNumber()
+    {
+        var currentVersion = PlayerSettings.bundleVersion;
+        var puppetVersion = Microsoft.Azure.Mobile.Unity.WrapperSdk.WrapperSdkVersion;
+        PlayerSettings.bundleVersion = puppetVersion;
+        PlayerSettings.Android.bundleVersionCode++;
     }
 
     // Detects whether there exists a "google-services.json" file, and if not,

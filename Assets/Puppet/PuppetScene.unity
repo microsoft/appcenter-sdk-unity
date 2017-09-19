@@ -6225,6 +6225,7 @@ GameObject:
   - component: {fileID: 1653541468}
   - component: {fileID: 1653541463}
   - component: {fileID: 1653541464}
+  - component: {fileID: 1653541465}
   m_Layer: 0
   m_Name: Mobile Center
   m_TagString: Untagged
@@ -6253,6 +6254,17 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 2321d743b725a43c5a653bbef90c5887, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &1653541465
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 1653541462}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: dd35f4c3c4b53414a84460f4da63cd17, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
 --- !u!4 &1653541468
