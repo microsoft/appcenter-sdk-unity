@@ -526,13 +526,9 @@ PlayerSettings:
   metroPackageVersion: 1.0.0.0
   metroCertificatePath: Assets\WSATestCertificate.pfx
   metroCertificatePassword: 
-  metroCertificateSubject: DefaultCompany
-  metroCertificateIssuer: DefaultCompany
-<<<<<<< HEAD
-  metroCertificateNotAfter: 8049b9813234d401
-=======
-  metroCertificateNotAfter: 8089fbd4c73cd401
->>>>>>> ci-scripts
+  metroCertificateSubject: Microsoft
+  metroCertificateIssuer: Microsoft
+  metroCertificateNotAfter: 80004bd9fc4bd401
   metroApplicationDescription: TestPackage
   wsaImages: {}
   metroTileShortName: Puppet Unity

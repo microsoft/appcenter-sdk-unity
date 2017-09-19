@@ -340,7 +340,7 @@ Task("Externals-Uwp-IL2CPP-Dependencies")
 
     // Process UWP IL2CPP dependencies.
     Information("Processing UWP IL2CPP dependencies. This could take a minute.");
-    ExecuteUnityCommand("-executeMethod MobileCenterPostBuild.ProcessUwpIl2CppDependencies", Context, true);
+    ExecuteUnityCommand("-executeMethod MobileCenterPostBuild.ProcessUwpIl2CppDependencies", Context);
 }).OnError(HandleError);
 
 // Download and install all external Unity packages required
@@ -355,7 +355,7 @@ Task("Externals-Unity-Packages")
         DownloadFile(package.Url, destination);
         var command = "-importPackage " + destination;
         Information("Importing package " + package.Name + ". This could take a minute.");
-        ExecuteUnityCommand(command, Context, true);
+        ExecuteUnityCommand(command, Context);
     }
 }).OnError(HandleError);
 
@@ -534,7 +534,7 @@ Task("clean")
 
 //Run unit tests
 Task("UnitTests")
-    .IsDependentOn("Externals")
+    .IsDependentOn("PrepareAssets")
     .Does(() =>
 {
     Information("Running unit tests");
@@ -733,7 +733,7 @@ void BuildXcodeProject(string projectPath)
     });
 }
 
-static int ExecuteUnityCommand(string extraArgs, ICakeContext context)
+static int ExecuteUnityCommand(string extraArgs, ICakeContext context, bool quit = true)
 {
     var projectDir = context.MakeAbsolute(context.Directory("."));
     var unityPath = context.EnvironmentVariable("UNITY_PATH");
