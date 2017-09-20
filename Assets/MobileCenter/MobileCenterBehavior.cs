@@ -7,6 +7,7 @@ using UnityEngine;
 using System;
 using System.Reflection;
 using Microsoft.Azure.Mobile.Unity.Internal;
+using System.Diagnostics;
 
 [HelpURL("https://docs.microsoft.com/en-us/mobile-center/sdk/")]
 public class MobileCenterBehavior : MonoBehaviour
@@ -24,7 +25,7 @@ public class MobileCenterBehavior : MonoBehaviour
         // Make sure that Mobile Center have only one instance.
         if (instance != null)
         {
-            Debug.LogError("Mobile Center should have only one instance!");
+            UnityEngine.Debug.LogError("Mobile Center should have only one instance!");
             DestroyImmediate(gameObject);
             return;
         }
@@ -34,7 +35,7 @@ public class MobileCenterBehavior : MonoBehaviour
         // Initialize Mobile Center.
         if (settings == null)
         {
-            Debug.LogError("Mobile Center isn't configured!");
+            UnityEngine.Debug.LogError("Mobile Center isn't configured!");
             return;
         }
         StartMobileCenter();
@@ -48,8 +49,30 @@ public class MobileCenterBehavior : MonoBehaviour
         }
     }
 
+#if ENABLE_IL2CPP
+    private class MobileCenterUnityTraceListener : TraceListener
+    {
+        public static void SetListener()
+        {
+            System.Diagnostics.Debug.Listeners.Clear();
+            System.Diagnostics.Debug.Listeners.Add(new MobileCenterUnityTraceListener());
+        }
+        public override void Write(string message)
+        {
+            UnityEngine.Debug.Log(message);
+        }
+
+        public override void WriteLine(string message)
+        {
+            UnityEngine.Debug.Log(message);
+        }
+    }
+#endif
     private void StartMobileCenter()
     {
+#if ENABLE_IL2CPP
+        MobileCenterUnityTraceListener.SetListener();
+#endif
         var services = settings.Services;
         PrepareEventHandlers(services);
         InvokeInitializingServices();

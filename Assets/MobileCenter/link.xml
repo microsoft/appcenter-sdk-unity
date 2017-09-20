@@ -10,6 +10,6 @@
     <assembly fullname="Microsoft.Azure.Mobile.Analytics" preserve="all" ignoreIfMissing="1"/>
     <assembly fullname="Microsoft.Azure.Mobile.Crashes" preserve="all" ignoreIfMissing="1"/>
     <assembly fullname="Microsoft.Azure.Mobile.Push" preserve="all" ignoreIfMissing="1"/>
-
-    <assembly fullname="SQLite-net" preserve="all" ignoreIfMissing="1"/>
+  <assembly fullname="MobileCenterUWPStarter" preserve="all" ignoreIfMissing="1"/>
+  <assembly fullname="SQLite-net" preserve="all" ignoreIfMissing="1"/>
 </linker>

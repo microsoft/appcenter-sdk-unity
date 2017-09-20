@@ -18,16 +18,20 @@ public class MobileCenterPostBuild
     [PostProcessBuild]
     public static void OnPostprocessBuild(BuildTarget target, string pathToBuiltProject)
     {
-        if (target == BuildTarget.WSAPlayer &&
-            PlayerSettings.GetScriptingBackend(BuildTargetGroup.WSA) != ScriptingImplementation.IL2CPP)
+        if (target == BuildTarget.WSAPlayer)
         {
-            // If UWP, need to add NuGet packages.
-            var projectJson = pathToBuiltProject + "/" + PlayerSettings.productName + "/project.json";
-            AddDependenciesToProjectJson(projectJson);
+            AddHelperCodeToUWPProject(pathToBuiltProject);
+            if (PlayerSettings.GetScriptingBackend(BuildTargetGroup.WSA) != ScriptingImplementation.IL2CPP)
+            {
+                // If UWP, need to add NuGet packages.
+                var projectJson = pathToBuiltProject + "/" + PlayerSettings.productName + "/project.json";
+                AddDependenciesToProjectJson(projectJson);
 
-            var nuget = EditorApplication.applicationContentsPath + "/PlaybackEngines/MetroSupport/Tools/nuget.exe";
-            ExecuteCommand(nuget, "restore \"" + projectJson + "\" -NonInteractive");
+                var nuget = EditorApplication.applicationContentsPath + "/PlaybackEngines/MetroSupport/Tools/nuget.exe";
+                ExecuteCommand(nuget, "restore \"" + projectJson + "\" -NonInteractive");
+            }
         }
+        
         if (target == BuildTarget.iOS)
         {
 #if UNITY_IOS
@@ -64,6 +68,28 @@ public class MobileCenterPostBuild
     }
 
     #region UWP Methods
+
+    public static void AddHelperCodeToUWPProject(string pathToBuiltProject)
+    {
+        // Four cases: IL2CPP+xaml, IL2CPP+d3d, .NET+xaml, .NET+d3d. Each one is different.
+        // TODO this is only needed for push so reorganize accordingly
+
+        // The first step is to add the winmd as a reference to the project.
+        var winmdLocation = "Assets/MobileCenter/Plugins/WSA/Push/MobileCenterUWPStarter.winmd";
+
+        // Step 1.1: Copy the winmd to the project directory at the same level as the application project
+        //TODO (see comment above)
+
+        //Case 1: csproj (.NET backend)
+        if (PlayerSettings.GetScriptingBackend(BuildTargetGroup.WSA) == ScriptingImplementation.WinRTDotNET)
+        {
+            // Get the csproj location
+            //TODO (see comment above)
+
+            // We know that the csproj will include the line to reference push, so replace it with itself + the line to reference the Starter, assuming it isn't already referenced
+        }
+    }
+
     public static void ProcessUwpIl2CppDependencies()
     {
         var binaries = AssetDatabase.FindAssets("*", new[] { "Assets/MobileCenter/Plugins/WSA/IL2CPP" });

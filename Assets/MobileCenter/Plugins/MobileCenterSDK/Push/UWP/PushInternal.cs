@@ -6,7 +6,7 @@
 using System;
 using System.Collections.Generic;
 using Windows.ApplicationModel.Activation;
-
+using System.Reflection;
 namespace Microsoft.Azure.Mobile.Unity.Push.Internal
 {
     using UWPPush = Microsoft.Azure.Mobile.Push.Push;
@@ -20,11 +20,27 @@ namespace Microsoft.Azure.Mobile.Unity.Push.Internal
         public static void PrepareEventHandlers()
         {
             MobileCenterBehavior.InitializingServices += Initialize;
-            MobileCenterBehavior.InitializedMobileCenterAndServices += PostInitialize;
         }
 
         private static void Initialize()
         {
+            Utils.ApplicationLifecycleHelper.Instance.ApplicationResuming += (s, e) =>
+            {
+                WSAApplication.InvokeOnAppThread(new UnityEngine.WSA.AppCallbackItem(() => {
+                    //TODO make version correspond to wrapper sdk version
+                    var starterTypeName = "MobileCenterUWPStarter.MobileCenterUWPStarter, MobileCenterUWPStarter, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null, ContentType=WindowsRuntime";
+                    var starterType = Type.GetType(starterTypeName);
+                    if (starterType == null)
+                    {
+                        starterType = Type.GetType("MobileCenterUWPStarter.MobileCenterUWPStarter");
+                    }
+                    var launchArgs = starterType.GetMethod("GetLaunchArgs").Invoke(null, null) as string;
+                    if (!string.IsNullOrEmpty(launchArgs))
+                    {
+                        UWPPush.Instance.InstanceCheckLaunchedFromNotification(launchArgs);
+                    }
+                }), false);
+            };
             UWPPush.PushNotificationReceived += (sender, e) =>
             {
                 var eventArgs = new PushNotificationReceivedEventArgs
@@ -35,11 +51,6 @@ namespace Microsoft.Azure.Mobile.Unity.Push.Internal
                 };
                 HandlePushNotification(eventArgs);
             };
-        }
-
-        private static void PostInitialize()
-        {
-            UWPPush.Instance.InstanceCheckLaunchedFromNotification(WSAApplication.arguments);
         }
 
         public static Type GetNativeType()

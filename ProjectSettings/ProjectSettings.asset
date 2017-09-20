@@ -240,6 +240,10 @@ PlayerSettings:
   - m_BuildTarget: iOS
     m_Enabled: 0
     m_Devices: []
+  - m_BuildTarget: Metro
+    m_Enabled: 0
+    m_Devices:
+    - HoloLens
   openGLRequireES31: 0
   openGLRequireES31AEP: 0
   webPlayerTemplate: APPLICATION:Default
@@ -527,9 +531,9 @@ PlayerSettings:
   metroPackageVersion: 1.0.0.0
   metroCertificatePath: Assets\WSATestCertificate.pfx
   metroCertificatePassword: 
-  metroCertificateSubject: DefaultCompany
-  metroCertificateIssuer: DefaultCompany
-  metroCertificateNotAfter: 8089fbd4c73cd401
+  metroCertificateSubject: Microsoft
+  metroCertificateIssuer: Microsoft
+  metroCertificateNotAfter: 806cd67c3951d401
   metroApplicationDescription: TestPackage
   wsaImages: {}
   metroTileShortName: Puppet Unity
