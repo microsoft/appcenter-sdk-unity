@@ -16,7 +16,9 @@ namespace Microsoft.Azure.Mobile.Unity.Push.Internal
     {
         public static List<PushNotificationReceivedEventArgs> _unprocessedPushNotifications = new List<PushNotificationReceivedEventArgs>();
         public static readonly object _lockObject = new object();
-        
+        private static string _prevIdString = "";
+        private static int _idLength = Guid.NewGuid().ToString().Length;
+
         public static void PrepareEventHandlers()
         {
             MobileCenterBehavior.InitializingServices += Initialize;
@@ -24,22 +26,24 @@ namespace Microsoft.Azure.Mobile.Unity.Push.Internal
 
         private static void Initialize()
         {
-            Utils.ApplicationLifecycleHelper.Instance.ApplicationResuming += (s, e) =>
+            Microsoft.Azure.Mobile.Utils.ApplicationLifecycleHelper.Instance.ApplicationResuming += (s, e) =>
             {
-                WSAApplication.InvokeOnAppThread(new UnityEngine.WSA.AppCallbackItem(() => {
-                    //TODO make version correspond to wrapper sdk version
-                    var starterTypeName = "MobileCenterUWPStarter.MobileCenterUWPStarter, MobileCenterUWPStarter, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null, ContentType=WindowsRuntime";
-                    var starterType = Type.GetType(starterTypeName);
-                    if (starterType == null)
-                    {
-                        starterType = Type.GetType("MobileCenterUWPStarter.MobileCenterUWPStarter");
-                    }
-                    var launchArgs = starterType.GetMethod("GetLaunchArgs").Invoke(null, null) as string;
-                    if (!string.IsNullOrEmpty(launchArgs))
-                    {
-                        UWPPush.Instance.InstanceCheckLaunchedFromNotification(launchArgs);
-                    }
-                }), false);
+                WSAApplication.InvokeOnAppThread(new UnityEngine.WSA.AppCallbackItem(() =>
+               {
+                   var arguments = WSAApplication.arguments;
+                   if (arguments.Contains("mobilecenterunity"))
+                   {
+                       var idPrefix = "\"mobilecenterunity\":\"";
+                       var idStartIdx = arguments.IndexOf(idPrefix) + idPrefix.Length;
+                       var idString = arguments.Substring(idStartIdx, _idLength);
+                       if (idString != _prevIdString)
+                       {
+                            UnityEngine.Debug.Log("id string = " + idString);
+                            _prevIdString = idString;
+                           UWPPush.Instance.InstanceCheckLaunchedFromNotification(WSAApplication.arguments);
+                       }
+                   }
+               }), false);
             };
             UWPPush.PushNotificationReceived += (sender, e) =>
             {

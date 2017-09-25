@@ -1,6 +1,6 @@
 fileFormatVersion: 2
-guid: 253b65628ef724c85ad364097ef2a0e8
-timeCreated: 1504718839
+guid: 314b29127f6e35a4c96de6bf59ebba2e
+timeCreated: 1505862099
 licenseType: Pro
 PluginImporter:
   serializedVersion: 2
@@ -26,8 +26,6 @@ PluginImporter:
           Exclude Win: 1
           Exclude Win64: 1
           Exclude WindowsStoreApps: 0
-          Exclude iOS: 1
-          Exclude tvOS: 1
     data:
       first:
         Any: 

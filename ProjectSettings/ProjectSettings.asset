@@ -533,7 +533,7 @@ PlayerSettings:
   metroCertificatePassword: 
   metroCertificateSubject: Microsoft
   metroCertificateIssuer: Microsoft
-  metroCertificateNotAfter: 8045b4cb2f55d401
+  metroCertificateNotAfter: 007a76f23755d401
   metroApplicationDescription: TestPackage
   wsaImages: {}
   metroTileShortName: Puppet Unity

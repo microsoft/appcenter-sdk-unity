@@ -14,11 +14,32 @@ public class MobileCenterBehavior : MonoBehaviour
 {
     public static event Action InitializingServices;
     public static event Action InitializedMobileCenterAndServices;
+    public static event Action BehaviorResuming;
+
     public static event Action Started;
 
     private static MobileCenterBehavior instance;
 
     public MobileCenterSettings settings;
+
+    bool isPaused;
+    private void OnApplicationFocus(bool focus)
+    {
+        isPaused = !focus;
+        if (isPaused)
+        {
+            print("is paused");
+        }
+        else if (BehaviorResuming != null)
+        {
+            BehaviorResuming.Invoke();
+        }
+    }
+
+    private void OnApplicationPause(bool pause)
+    {
+        isPaused = pause;
+    }
 
     private void Awake()
     {

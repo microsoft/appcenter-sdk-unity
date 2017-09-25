@@ -1,6 +1,6 @@
 fileFormatVersion: 2
-guid: 697d167ebd9f21e4bbf14409bec8678a
-timeCreated: 1504733014
+guid: 81d7177bacb213d48bae89f240332e1f
+timeCreated: 1505861887
 licenseType: Pro
 PluginImporter:
   serializedVersion: 2
@@ -127,7 +127,7 @@ PluginImporter:
           CPU: AnyCPU
           DontProcess: True
           PlaceholderPath: 
-          SDK: UWP
+          SDK: AnySDK
           ScriptingBackend: AnyScriptingBackend
   userData: 
   assetBundleName: 

@@ -20,6 +20,7 @@ public class MobileCenterPostBuild
     {
         if (target == BuildTarget.WSAPlayer)
         {
+#if UNITY_WSA_10_0
             AddHelperCodeToUWPProject(pathToBuiltProject);
             if (PlayerSettings.GetScriptingBackend(BuildTargetGroup.WSA) != ScriptingImplementation.IL2CPP)
             {
@@ -30,8 +31,8 @@ public class MobileCenterPostBuild
                 var nuget = EditorApplication.applicationContentsPath + "/PlaybackEngines/MetroSupport/Tools/nuget.exe";
                 ExecuteCommand(nuget, "restore \"" + projectJson + "\" -NonInteractive");
             }
+#endif
         }
-        
         if (target == BuildTarget.iOS)
         {
 #if UNITY_IOS
@@ -68,26 +69,88 @@ public class MobileCenterPostBuild
     }
 
     #region UWP Methods
-
+#if UNITY_WSA_10_0
     public static void AddHelperCodeToUWPProject(string pathToBuiltProject)
     {
-        // Four cases: IL2CPP+xaml, IL2CPP+d3d, .NET+xaml, .NET+d3d. Each one is different.
-        // TODO this is only needed for push so reorganize accordingly
-
-        // The first step is to add the winmd as a reference to the project.
-        var winmdLocation = "Assets/MobileCenter/Plugins/WSA/Push/MobileCenterUWPStarter.winmd";
-
-        // Step 1.1: Copy the winmd to the project directory at the same level as the application project
-        //TODO (see comment above)
-
-        //Case 1: csproj (.NET backend)
-        if (PlayerSettings.GetScriptingBackend(BuildTargetGroup.WSA) == ScriptingImplementation.WinRTDotNET)
+        var settingsPath = MobileCenterSettingsEditor.SettingsPath;
+        var settings = AssetDatabase.LoadAssetAtPath<MobileCenterSettings>(settingsPath);
+        if (!settings.UsePush)
         {
-            // Get the csproj location
-            //TODO (see comment above)
-
-            // We know that the csproj will include the line to reference push, so replace it with itself + the line to reference the Starter, assuming it isn't already referenced
+            return;
         }
+
+        // .NET, D3D
+        if (EditorUserBuildSettings.wsaUWPBuildType == WSAUWPBuildType.D3D &&
+            PlayerSettings.GetScriptingBackend(BuildTargetGroup.WSA) == ScriptingImplementation.WinRTDotNET)
+        {
+            var appFilePath = GetAppFilePath(pathToBuiltProject, "App.cs");
+            var regexPattern = "private[\\s]*void[\\s]*ApplicationView_Activated[\\s]*\\([\\s]*CoreApplicationView[\\s]*[a-zA-Z0-9_]*,[\\s]* IActivatedEventArgs[\\s]*[a-zA-Z0-9_]*[\\s]*\\)[\\s]*{";
+            var codeToInsert =
+@"            var launchArgs = args as LaunchActivatedEventArgs;
+            if (m_AppCallbacks != null && launchArgs != null)
+            {
+                if (!string.IsNullOrEmpty(launchArgs.Arguments))
+                {
+                    var idString = Guid.NewGuid();
+                    m_AppCallbacks.SetAppArguments(launchArgs.Arguments.Substring(0, launchArgs.Arguments.Length - 1) + "", \""mobilecenterunity\"":\"""" + idString + ""\""}"");
+                }
+                else
+                {
+                    m_AppCallbacks.SetAppArguments("""");
+                }
+            }";
+            InjectCodeToFile(appFilePath, regexPattern, codeToInsert);
+        }
+        else if (EditorUserBuildSettings.wsaUWPBuildType == WSAUWPBuildType.XAML &&
+                PlayerSettings.GetScriptingBackend(BuildTargetGroup.WSA) == ScriptingImplementation.WinRTDotNET)
+        {
+            var appFilePath = GetAppFilePath(pathToBuiltProject, "App.xaml.cs");
+            var regexPattern = "InitializeUnity\\(args.Arguments\\);";
+            var codeToInsert =
+@"            var launchArgs = args.Arguments;
+            if (!string.IsNullOrEmpty(launchArgs))
+            {
+                var idString = Guid.NewGuid();
+                launchArgs = launchArgs.Substring(0, launchArgs.Length - 1) + "", \""mobilecenterunity\"":\"""" + idString + ""\""}"";
+            }
+            InitializeUnity(launchArgs);";
+            InjectCodeToFile(appFilePath, regexPattern, codeToInsert, false);
+        }
+    }
+
+    public static void InjectCodeToFile(string appFilePath, string searchRegex, string codeToInsert, bool includeSearchText = true)
+    {
+        Debug.Log("Mobile Center Push injecting code into file '" + appFilePath + "'");
+        var commentText = "Mobile Center Push code:";
+        codeToInsert = "\n            // " + commentText + "\n" + codeToInsert;
+        var fileText = File.ReadAllText(appFilePath);
+        Regex regex = new Regex(searchRegex);
+        var matches = regex.Match(fileText);
+        if (matches.Success)
+        {
+            var codeToReplace = matches.ToString();
+            if (!fileText.Contains(commentText))
+            {
+                if (includeSearchText)
+                {
+                    codeToInsert = codeToReplace + codeToInsert;
+                }
+                fileText = fileText.Replace(codeToReplace, codeToInsert);
+            }
+            File.WriteAllText(appFilePath, fileText);
+        }
+        else
+        {
+            //TODO finish error message
+            Debug.LogError("Unable to automatically modify file '" + appFilePath + "'. For Mobile Center Push to work properly, please follow troubleshooting instructions at TODO: ADD LINK");
+        }
+    }
+
+    public static string GetAppFilePath(string pathToBuiltProject, string filename)
+    {
+        var candidate = Path.Combine(pathToBuiltProject, PlayerSettings.WSA.tileShortName);
+        candidate = Path.Combine(candidate, filename);
+        return File.Exists(candidate) ? candidate : null;
     }
 
     public static void ProcessUwpIl2CppDependencies()
@@ -159,6 +222,7 @@ public class MobileCenterPostBuild
             Debug.LogException(exception);
         }
     }
+#endif
     #endregion
 
     #region iOS Methods
