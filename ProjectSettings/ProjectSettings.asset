@@ -517,7 +517,7 @@ PlayerSettings:
     iOS: 0
   scriptingBackend:
     Android: 0
-    Metro: 1
+    Metro: 2
     iOS: 1
   incrementalIl2cppBuild: {}
   additionalIl2CppArgs: 
@@ -533,7 +533,7 @@ PlayerSettings:
   metroCertificatePassword: 
   metroCertificateSubject: Microsoft
   metroCertificateIssuer: Microsoft
-  metroCertificateNotAfter: 806cd67c3951d401
+  metroCertificateNotAfter: 8045b4cb2f55d401
   metroApplicationDescription: TestPackage
   wsaImages: {}
   metroTileShortName: Puppet Unity
