@@ -1,6 +1,6 @@
 fileFormatVersion: 2
-guid: f26bcf3f2106c3045a109237605d56dc
-timeCreated: 1505862100
+guid: 164cd007a37314fd5a973e38582191be
+timeCreated: 1504718839
 licenseType: Pro
 PluginImporter:
   serializedVersion: 2
@@ -26,6 +26,8 @@ PluginImporter:
           Exclude Win: 1
           Exclude Win64: 1
           Exclude WindowsStoreApps: 0
+          Exclude iOS: 1
+          Exclude tvOS: 1
     data:
       first:
         Android: Android
@@ -129,6 +131,22 @@ PluginImporter:
           PlaceholderPath: 
           SDK: UWP
           ScriptingBackend: Il2Cpp
+    data:
+      first:
+        iPhone: iOS
+      second:
+        enabled: 0
+        settings:
+          CompileFlags: 
+          FrameworkDependencies: 
+    data:
+      first:
+        tvOS: tvOS
+      second:
+        enabled: 0
+        settings:
+          CompileFlags: 
+          FrameworkDependencies: 
   userData: 
   assetBundleName: 
   assetBundleVariant: 
