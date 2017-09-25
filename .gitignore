@@ -73,3 +73,6 @@ CAKE_SCRIPT_TEMP*
 
 # Android Studio
 */.idea/
+
+# Android Manifest (not needed because it is regenerated at build time)
+Assets/Plugins/Android/mobile-center/AndroidManifest.xml*
