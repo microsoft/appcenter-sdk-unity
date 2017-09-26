@@ -34,7 +34,7 @@ static int ExecuteUnityCommand(string extraArgs, string projectPath = ".")
     // Unity log file
     var unityLogFile = "CAKE_SCRIPT_TEMPunity_build_log.log";
     var unityArgs = "-batchmode -quit -logFile " + unityLogFile + " -projectPath " + projectDir + " " + extraArgs;
-    System.IO.File.Create(unityLogFile).Dispose();
+    System.IO.File.Create(unityLogFile);
     var logExec = "powershell.exe";
     var logArgs = "Get-Content -Path " + unityLogFile + " -Wait";
     if (Statics.Context.IsRunningOnUnix())
@@ -67,7 +67,15 @@ static int ExecuteUnityCommand(string extraArgs, string projectPath = ".")
             }
         }
     }
-    DeleteFileIfExists(unityLogFile);
+    try
+    {
+        DeleteFileIfExists(unityLogFile);
+
+    }
+    catch (Exception e)
+    {
+        Statics.Context.Information("Unable to delete file '" + unityLogFile + "'.");
+    }
     return result;
 }
 
