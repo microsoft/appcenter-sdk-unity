@@ -11,6 +11,8 @@ public class PuppetReleaseHandler : MonoBehaviour
     private static ReleaseDetails _releaseDetails = null;
     private static readonly object _releaseLock = new object();
 
+    public PuppetUpdateDialog Dialog;
+
     void Awake()
     {
         Distribute.ReleaseAvailable = details =>
@@ -23,7 +25,6 @@ public class PuppetReleaseHandler : MonoBehaviour
         };
     }
 
-    // Update is called once per frame
     void Update()
     {
         if (_releaseDetails == null)
@@ -34,9 +35,24 @@ public class PuppetReleaseHandler : MonoBehaviour
         {
             if (_releaseDetails != null)
             {
+                if (Dialog != null)
+                {
+                    Dialog.Show(_releaseDetails);
+                }
                 print("There's a release available! Version = " + _releaseDetails.Version);
                 _releaseDetails = null;
             }
         }
     }
+
+#if UNITY_EDITOR
+    [ContextMenu("Test update available")]
+    void TestNewUpdate()
+    {
+        _releaseDetails = new ReleaseDetails
+        {
+            Version = "1.0.2"
+        };
+    }
+#endif
 }
