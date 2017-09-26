@@ -108,7 +108,7 @@ public class MobileCenterPostBuild
                 PlayerSettings.GetScriptingBackend(BuildTargetGroup.WSA) == ScriptingImplementation.IL2CPP)
         {
             var appFilePath = GetAppFilePath(pathToBuiltProject, "App.cpp");
-            var regexPattern = "void App::OnActivated\\(CoreApplicationView\\^ sender, IActivatedEventArgs\\^ args\\) {".Replace(" ", "[\\s]*");
+            var regexPattern = "void App::OnActivated\\(CoreApplicationView\\^ [a-zA-Z0-9_]*, IActivatedEventArgs\\^ [a-zA-Z0-9_]*\\) {".Replace(" ", "[\\s]*");
             InjectCodeToFile(appFilePath, regexPattern, "d3dil2cpp.txt");
         }
     }
