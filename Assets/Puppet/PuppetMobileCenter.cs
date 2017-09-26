@@ -11,7 +11,6 @@ public class PuppetMobileCenter : MonoBehaviour
 {
     public Toggle Enabled;
     public Dropdown LogLevel;
-    string installId = null;
 
     void OnEnable()
     {
@@ -23,19 +22,10 @@ public class PuppetMobileCenter : MonoBehaviour
         {
             if (task.Result.HasValue)
             {
-                installId = task.Result.ToString();
+                print("Install ID = " + task.Result.ToString());
             }
         });
         LogLevel.value = MobileCenter.LogLevel - Microsoft.Azure.Mobile.Unity.LogLevel.Verbose;
-    }
-
-    private void Update()
-    {
-        if (installId != null)
-        {
-            print("Install ID = " + installId);
-            installId = null;
-        }
     }
 
     public void SetEnabled(bool enabled)
