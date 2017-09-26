@@ -6,7 +6,7 @@
 using System;
 using System.Collections.Generic;
 using Windows.ApplicationModel.Activation;
-using System.Reflection;
+
 namespace Microsoft.Azure.Mobile.Unity.Push.Internal
 {
     using UWPPush = Microsoft.Azure.Mobile.Push.Push;
@@ -38,7 +38,6 @@ namespace Microsoft.Azure.Mobile.Unity.Push.Internal
                        var idString = arguments.Substring(idStartIdx, _idLength);
                        if (idString != _prevIdString)
                        {
-                            UnityEngine.Debug.Log("id string = " + idString);
                             _prevIdString = idString;
                            UWPPush.Instance.InstanceCheckLaunchedFromNotification(WSAApplication.arguments);
                        }
