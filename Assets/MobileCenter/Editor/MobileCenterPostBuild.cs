@@ -137,8 +137,7 @@ public class MobileCenterPostBuild
         }
         else
         {
-            //TODO finish error message
-            Debug.LogError("Unable to automatically modify file '" + appFilePath + "'. For Mobile Center Push to work properly, please follow troubleshooting instructions at TODO: ADD LINK");
+            Debug.LogError("Unable to automatically modify file '" + appFilePath + "'. For Mobile Center Push to work properly, please follow troubleshooting instructions at https://docs.microsoft.com/en-us/mobile-center/sdk/troubleshooting/unity");
         }
     }
 
