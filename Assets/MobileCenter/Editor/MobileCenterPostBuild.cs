@@ -78,49 +78,45 @@ public class MobileCenterPostBuild
         {
             return;
         }
-
+        
         // .NET, D3D
         if (EditorUserBuildSettings.wsaUWPBuildType == WSAUWPBuildType.D3D &&
             PlayerSettings.GetScriptingBackend(BuildTargetGroup.WSA) == ScriptingImplementation.WinRTDotNET)
         {
             var appFilePath = GetAppFilePath(pathToBuiltProject, "App.cs");
-            var regexPattern = "private[\\s]*void[\\s]*ApplicationView_Activated[\\s]*\\([\\s]*CoreApplicationView[\\s]*[a-zA-Z0-9_]*,[\\s]* IActivatedEventArgs[\\s]*[a-zA-Z0-9_]*[\\s]*\\)[\\s]*{";
-            var codeToInsert =
-@"            var launchArgs = args as LaunchActivatedEventArgs;
-            if (m_AppCallbacks != null && launchArgs != null)
-            {
-                if (!string.IsNullOrEmpty(launchArgs.Arguments))
-                {
-                    var idString = Guid.NewGuid();
-                    m_AppCallbacks.SetAppArguments(launchArgs.Arguments.Substring(0, launchArgs.Arguments.Length - 1) + "", \""mobilecenterunity\"":\"""" + idString + ""\""}"");
-                }
-                else
-                {
-                    m_AppCallbacks.SetAppArguments("""");
-                }
-            }";
-            InjectCodeToFile(appFilePath, regexPattern, codeToInsert);
+            var regexPattern = "private void ApplicationView_Activated \\( CoreApplicationView [a-zA-Z0-9_]*, IActivatedEventArgs [a-zA-Z0-9_]* \\) {".Replace(" ", "[\\s]*");
+            InjectCodeToFile(appFilePath, regexPattern, "d3ddotnet.txt");
         }
+        // .NET, XAML
         else if (EditorUserBuildSettings.wsaUWPBuildType == WSAUWPBuildType.XAML &&
                 PlayerSettings.GetScriptingBackend(BuildTargetGroup.WSA) == ScriptingImplementation.WinRTDotNET)
         {
             var appFilePath = GetAppFilePath(pathToBuiltProject, "App.xaml.cs");
             var regexPattern = "InitializeUnity\\(args.Arguments\\);";
-            var codeToInsert =
-@"            var launchArgs = args.Arguments;
-            if (!string.IsNullOrEmpty(launchArgs))
-            {
-                var idString = Guid.NewGuid();
-                launchArgs = launchArgs.Substring(0, launchArgs.Length - 1) + "", \""mobilecenterunity\"":\"""" + idString + ""\""}"";
-            }
-            InitializeUnity(launchArgs);";
-            InjectCodeToFile(appFilePath, regexPattern, codeToInsert, false);
+            InjectCodeToFile(appFilePath, regexPattern, "xamldotnet.txt", false);
+        }
+        // IL2CPP, XAML
+        else if (EditorUserBuildSettings.wsaUWPBuildType == WSAUWPBuildType.XAML &&
+                PlayerSettings.GetScriptingBackend(BuildTargetGroup.WSA) == ScriptingImplementation.IL2CPP)
+        {
+            var appFilePath = GetAppFilePath(pathToBuiltProject, "App.xaml.cpp");
+            var regexPattern = "InitializeUnity\\(e->Arguments\\);";
+            InjectCodeToFile(appFilePath, regexPattern, "xamlil2cpp.txt", false);
+        }
+        // IL2CPP, D3D
+        else if (EditorUserBuildSettings.wsaUWPBuildType == WSAUWPBuildType.D3D &&
+                PlayerSettings.GetScriptingBackend(BuildTargetGroup.WSA) == ScriptingImplementation.IL2CPP)
+        {
+            var appFilePath = GetAppFilePath(pathToBuiltProject, "App.cpp");
+            var regexPattern = "void App::OnActivated\\(CoreApplicationView\\^ sender, IActivatedEventArgs\\^ args\\) {".Replace(" ", "[\\s]*");
+            InjectCodeToFile(appFilePath, regexPattern, "d3dil2cpp.txt");
         }
     }
 
-    public static void InjectCodeToFile(string appFilePath, string searchRegex, string codeToInsert, bool includeSearchText = true)
+    public static void InjectCodeToFile(string appFilePath, string searchRegex, string codeToInsertFileName, bool includeSearchText = true)
     {
-        Debug.Log("Mobile Center Push injecting code into file '" + appFilePath + "'");
+        var appAdditionsFolder = "Assets/MobileCenter/Plugins/WSA/Push/AppAdditions";
+        var codeToInsert = File.ReadAllText(Path.Combine(appAdditionsFolder, codeToInsertFileName));
         var commentText = "Mobile Center Push code:";
         codeToInsert = "\n            // " + commentText + "\n" + codeToInsert;
         var fileText = File.ReadAllText(appFilePath);

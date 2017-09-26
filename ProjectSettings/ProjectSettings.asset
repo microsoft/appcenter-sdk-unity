@@ -517,7 +517,7 @@ PlayerSettings:
     iOS: 0
   scriptingBackend:
     Android: 0
-    Metro: 2
+    Metro: 1
     iOS: 1
   incrementalIl2cppBuild: {}
   additionalIl2CppArgs: 
