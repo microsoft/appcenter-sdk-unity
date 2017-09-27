@@ -84,7 +84,7 @@ public class MobileCenterPostBuild
             PlayerSettings.GetScriptingBackend(BuildTargetGroup.WSA) == ScriptingImplementation.WinRTDotNET)
         {
             var appFilePath = GetAppFilePath(pathToBuiltProject, "App.cs");
-            var regexPattern = "private void ApplicationView_Activated \\( CoreApplicationView [a-zA-Z0-9_]*, IActivatedEventArgs [a-zA-Z0-9_]* \\) {".Replace(" ", "[\\s]*");
+            var regexPattern = "private void ApplicationView_Activated \\( CoreApplicationView [a-zA-Z0-9_]*, IActivatedEventArgs args \\) {".Replace(" ", "[\\s]*");
             InjectCodeToFile(appFilePath, regexPattern, "d3ddotnet.txt");
         }
         // .NET, XAML
@@ -108,7 +108,7 @@ public class MobileCenterPostBuild
                 PlayerSettings.GetScriptingBackend(BuildTargetGroup.WSA) == ScriptingImplementation.IL2CPP)
         {
             var appFilePath = GetAppFilePath(pathToBuiltProject, "App.cpp");
-            var regexPattern = "void App::OnActivated\\(CoreApplicationView\\^ [a-zA-Z0-9_]*, IActivatedEventArgs\\^ [a-zA-Z0-9_]*\\) {".Replace(" ", "[\\s]*");
+            var regexPattern = "void App::OnActivated\\(CoreApplicationView \\^ [a-zA-Z0-9_]*, IActivatedEventArgs \\^ e\\) {".Replace(" ", "[\\s]*");
             InjectCodeToFile(appFilePath, regexPattern, "d3dil2cpp.txt");
         }
     }
