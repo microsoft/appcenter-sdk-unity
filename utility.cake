@@ -38,7 +38,7 @@ static int ExecuteUnityCommand(string extraArgs, string projectPath = ".")
         unityLogFile += "1";
     }
     var unityArgs = "-batchmode -quit -logFile " + unityLogFile + " -projectPath " + projectDir + " " + extraArgs;
-    System.IO.File.Create(unityLogFile);
+    System.IO.File.Create(unityLogFile).Dispose();
     var logExec = "powershell.exe";
     var logArgs = "Get-Content -Path " + unityLogFile + " -Wait";
     if (Statics.Context.IsRunningOnUnix())
