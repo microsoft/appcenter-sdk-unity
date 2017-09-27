@@ -122,9 +122,9 @@ static void DeleteFileIfExists(string fileName)
             Statics.Context.DeleteFile(fileName);
         }
     }
-    catch (Exception e)
+    catch
     {
-        Statics.Context.Information("Unable to delete file '" + unityLogFile + "'.");
+        Statics.Context.Information("Unable to delete file '" + fileName + "'.");
     }
 }
 
