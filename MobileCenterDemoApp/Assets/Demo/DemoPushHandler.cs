@@ -10,6 +10,8 @@ public class DemoPushHandler : MonoBehaviour
     private static PushNotificationReceivedEventArgs _pushEventArgs = null;
     private static object _pushLock = new object();
 
+    public DemoPushDialog Dialog;
+
     void Awake()
     {
         Push.PushNotificationReceived += (sender, e) =>
@@ -34,6 +36,16 @@ public class DemoPushHandler : MonoBehaviour
             {
                 return;
             }
+
+            // Show dialog.
+            if (Dialog != null)
+            {
+                Dialog.Title = _pushEventArgs.Title;
+                Dialog.Message = _pushEventArgs.Message;
+                Dialog.CustomData = _pushEventArgs.CustomData;
+                Dialog.Show();
+            }
+
             var pushSummary = "Push notification received:" +
                 "\n\tNotification title: " + _pushEventArgs.Title +
                 "\n\tMessage: " + _pushEventArgs.Message;
@@ -49,4 +61,20 @@ public class DemoPushHandler : MonoBehaviour
             _pushEventArgs = null;
         }
     }
+
+#if UNITY_EDITOR
+    [ContextMenu("Test Notification")]
+    void TestNotification()
+    {
+        _pushEventArgs = new PushNotificationReceivedEventArgs
+        {
+            Title = "Some notification",
+            Message = 
+            "Lorem ipsum dolor sit amet, consectetur adipiscing elit. " +
+            "Etiam non est sit amet dui porta varius quis sed massa. " +
+            "Nullam libero libero, porta at augue eget, malesuada venenatis risus.",
+            CustomData = null
+        };
+    }
+#endif
 }
