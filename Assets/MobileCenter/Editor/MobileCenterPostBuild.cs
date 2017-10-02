@@ -108,7 +108,7 @@ public class MobileCenterPostBuild
                 PlayerSettings.GetScriptingBackend(BuildTargetGroup.WSA) == ScriptingImplementation.IL2CPP)
         {
             var appFilePath = GetAppFilePath(pathToBuiltProject, "App.cpp");
-            var regexPattern = "void App::OnActivated\\(CoreApplicationView \\^ [a-zA-Z0-9_]*, IActivatedEventArgs \\^ e\\) {".Replace(" ", "[\\s]*");
+            var regexPattern = "void App::OnActivated\\(CoreApplicationView\\s*\\^ [a-zA-Z0-9_]+, IActivatedEventArgs\\s*\\^ [a-zA-Z0-9_]+\\) {".Replace(" ", "[\\s]*");
             InjectCodeToFile(appFilePath, regexPattern, "d3dil2cpp.txt");
         }
     }
@@ -120,7 +120,7 @@ public class MobileCenterPostBuild
         var commentText = "Mobile Center Push code:";
         codeToInsert = "\n            // " + commentText + "\n" + codeToInsert;
         var fileText = File.ReadAllText(appFilePath);
-        Regex regex = new Regex(searchRegex);
+        var regex = new Regex(searchRegex);
         var matches = regex.Match(fileText);
         if (matches.Success)
         {
@@ -137,7 +137,8 @@ public class MobileCenterPostBuild
         }
         else
         {
-            Debug.LogError("Unable to automatically modify file '" + appFilePath + "'. For Mobile Center Push to work properly, please follow troubleshooting instructions at https://docs.microsoft.com/en-us/mobile-center/sdk/troubleshooting/unity");
+            Debug.LogError("Unable to automatically modify file '" + appFilePath + "'. For Mobile Center Push to work properly, " +
+                           "please follow troubleshooting instructions at https://docs.microsoft.com/en-us/mobile-center/sdk/troubleshooting/unity");
         }
     }
 
