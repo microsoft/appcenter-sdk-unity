@@ -24,12 +24,17 @@ public class MobileCenterPostBuild
             AddHelperCodeToUWPProject(pathToBuiltProject);
             if (PlayerSettings.GetScriptingBackend(BuildTargetGroup.WSA) != ScriptingImplementation.IL2CPP)
             {
-                // If UWP, need to add NuGet packages.
+                // If UWP with .NET scripting backend, need to add NuGet packages.
                 var projectJson = pathToBuiltProject + "/" + PlayerSettings.productName + "/project.json";
                 AddDependenciesToProjectJson(projectJson);
 
                 var nuget = EditorApplication.applicationContentsPath + "/PlaybackEngines/MetroSupport/Tools/nuget.exe";
                 ExecuteCommand(nuget, "restore \"" + projectJson + "\" -NonInteractive");
+            }
+            else
+            {
+                // Fix System.Diagnostics.Debug IL2CPP implementation.
+                FixIl2CppLogging(pathToBuiltProject);
             }
 #endif
         }
@@ -108,7 +113,7 @@ public class MobileCenterPostBuild
                 PlayerSettings.GetScriptingBackend(BuildTargetGroup.WSA) == ScriptingImplementation.IL2CPP)
         {
             var appFilePath = GetAppFilePath(pathToBuiltProject, "App.cpp");
-            var regexPattern = "void App::OnActivated\\(CoreApplicationView \\^ [a-zA-Z0-9_]*, IActivatedEventArgs \\^ e\\) {".Replace(" ", "[\\s]*");
+            var regexPattern = "void App::OnActivated\\(CoreApplicationView\\s*\\^ [a-zA-Z0-9_]+, IActivatedEventArgs\\s*\\^ [a-zA-Z0-9_]+\\) {".Replace(" ", "[\\s]*");
             InjectCodeToFile(appFilePath, regexPattern, "d3dil2cpp.txt");
         }
     }
@@ -120,7 +125,7 @@ public class MobileCenterPostBuild
         var commentText = "Mobile Center Push code:";
         codeToInsert = "\n            // " + commentText + "\n" + codeToInsert;
         var fileText = File.ReadAllText(appFilePath);
-        Regex regex = new Regex(searchRegex);
+        var regex = new Regex(searchRegex);
         var matches = regex.Match(fileText);
         if (matches.Success)
         {
@@ -137,8 +142,17 @@ public class MobileCenterPostBuild
         }
         else
         {
-            Debug.LogError("Unable to automatically modify file '" + appFilePath + "'. For Mobile Center Push to work properly, please follow troubleshooting instructions at https://docs.microsoft.com/en-us/mobile-center/sdk/troubleshooting/unity");
+            Debug.LogError("Unable to automatically modify file '" + appFilePath + "'. For Mobile Center Push to work properly, " +
+                           "please follow troubleshooting instructions at https://docs.microsoft.com/en-us/mobile-center/sdk/troubleshooting/unity");
         }
+    }
+
+    public static void FixIl2CppLogging(string pathToBuiltProject)
+    {
+        var sourceDebuggerPath = "Assets\\MobileCenter\\Plugins\\WSA\\IL2CPP\\Debugger.cpp.txt";
+        var destDebuggerPath = Path.Combine(pathToBuiltProject,
+            "Il2CppOutputProject\\IL2CPP\\libil2cpp\\icalls\\mscorlib\\System.Diagnostics\\Debugger.cpp");
+        File.Copy(sourceDebuggerPath, destDebuggerPath, true);
     }
 
     public static string GetAppFilePath(string pathToBuiltProject, string filename)
