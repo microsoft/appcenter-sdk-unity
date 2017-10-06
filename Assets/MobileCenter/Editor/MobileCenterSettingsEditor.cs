@@ -48,10 +48,11 @@ public class MobileCenterSettingsEditor : Editor
             Header("Push");
             var serializedProperty = serializedObject.FindProperty("UsePush");
             EditorGUILayout.PropertyField(serializedProperty);
+            EditorGUILayout.PropertyField(serializedObject.FindProperty("EnableFirebaseAnalytics"));
 #if !UNITY_2017_1_OR_NEWER
             if (serializedProperty.boolValue)
             {
-                EditorGUILayout.HelpBox ("In Unity versions prior to 2017.1 you need to add required capabilities in XCode manually.", MessageType.Info);
+                EditorGUILayout.HelpBox ("In Unity versions prior to 2017.1 you need to add required capabilities in Xcode manually.", MessageType.Info);
             }
 #endif
         }
@@ -80,6 +81,10 @@ public class MobileCenterSettingsEditor : Editor
         if (settings.UsePush)
         {
             settingsMaker.StartPushClass();
+            if (settings.EnableFirebaseAnalytics)
+            {
+                settingsMaker.EnableFirebaseAnalytics();
+            }
         }
         if (settings.UseAnalytics)
         {

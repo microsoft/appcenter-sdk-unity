@@ -19,13 +19,14 @@ MonoBehaviour:
   UseDistribute: 1
   CustomApiUrl:
     UrlName: API
-    UseCustomUrl: 0
+    UseCustomUrl: 1
     Url: https://asgard-int.trafficmanager.net/api/v0.1
   CustomInstallUrl:
     UrlName: Install
-    UseCustomUrl: 0
+    UseCustomUrl: 1
     Url: http://install.asgard-int.trafficmanager.net
   UsePush: 1
+  EnableFirebaseAnalytics: 0
   InitialLogLevel: 2
   CustomLogUrl:
     UrlName: Log
