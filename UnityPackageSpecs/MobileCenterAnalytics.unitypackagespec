@@ -2,21 +2,21 @@
 <package name="MobileCenterAnalytics" version="0.0.1" needsCore="true">
     <include>
         <!-- Shared files -->
-        <file path="Assets/MobileCenter/Plugins/MobileCenterSDK/Analytics/Shared" />
+        <file path="Assets/AppCenter/Plugins/AppCenterSDK/Analytics/Shared" />
 
         <!-- "Blank" files -->
-        <file path="Assets/MobileCenter/Plugins/MobileCenterSDK/Analytics/Blank" />
+        <file path="Assets/AppCenter/Plugins/AppCenterSDK/Analytics/Blank" />
 
         <!-- Android files -->
-        <file path="Assets/MobileCenter/Plugins/Android/mobile-center-analytics-release.aar" />
-        <file path="Assets/MobileCenter/Plugins/MobileCenterSDK/Analytics/Android" />
+        <file path="Assets/AppCenter/Plugins/Android/mobile-center-analytics-release.aar" />
+        <file path="Assets/AppCenter/Plugins/AppCenterSDK/Analytics/Android" />
 
         <!-- iOS files -->
-        <file path="Assets/MobileCenter/Plugins/iOS/Analytics" />
-        <file path="Assets/MobileCenter/Plugins/MobileCenterSDK/Analytics/iOS" />
+        <file path="Assets/AppCenter/Plugins/iOS/Analytics" />
+        <file path="Assets/AppCenter/Plugins/AppCenterSDK/Analytics/iOS" />
 
         <!-- UWP files -->
-        <file path="Assets/MobileCenter/Plugins/WSA/Analytics" />
-        <file path="Assets/MobileCenter/Plugins/MobileCenterSDK/Analytics/UWP" />
+        <file path="Assets/AppCenter/Plugins/WSA/Analytics" />
+        <file path="Assets/AppCenter/Plugins/AppCenterSDK/Analytics/UWP" />
     </include>
 </package>

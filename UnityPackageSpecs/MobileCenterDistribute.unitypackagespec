@@ -2,20 +2,20 @@
 <package name="MobileCenterDistribute" version="0.0.1" needsCore="true">
     <include>
         <!-- Shared files -->
-        <file path="Assets/MobileCenter/Plugins/MobileCenterSDK/Distribute/Shared" />
+        <file path="Assets/AppCenter/Plugins/AppCenterSDK/Distribute/Shared" />
 
         <!-- "Blank" files -->
-        <file path="Assets/MobileCenter/Plugins/MobileCenterSDK/Distribute/Blank" />
+        <file path="Assets/AppCenter/Plugins/AppCenterSDK/Distribute/Blank" />
 
         <!-- Android files -->
-        <file path="Assets/MobileCenter/Plugins/Android/mobile-center-distribute-release.aar" />
-        <file path="Assets/MobileCenter/Plugins/MobileCenterSDK/Distribute/Android" />
+        <file path="Assets/AppCenter/Plugins/Android/mobile-center-distribute-release.aar" />
+        <file path="Assets/AppCenter/Plugins/AppCenterSDK/Distribute/Android" />
 
         <!-- iOS files -->
-        <file path="Assets/MobileCenter/Plugins/iOS/Distribute" />
-        <file path="Assets/MobileCenter/Plugins/MobileCenterSDK/Distribute/iOS" />
+        <file path="Assets/AppCenter/Plugins/iOS/Distribute" />
+        <file path="Assets/AppCenter/Plugins/AppCenterSDK/Distribute/iOS" />
 
         <!-- UWP files -->
-        <file path="Assets/MobileCenter/Plugins/MobileCenterSDK/Distribute/UWP" />
+        <file path="Assets/AppCenter/Plugins/AppCenterSDK/Distribute/UWP" />
     </include>
 </package>

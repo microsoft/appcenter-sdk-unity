@@ -192,7 +192,7 @@ Task("Externals-Android")
     foreach (var module in MobileCenterModules)
     {
         var files = GetFiles("./externals/android/*/" + module.AndroidModule);
-        CopyFiles(files, "Assets/MobileCenter/Plugins/Android/");
+        CopyFiles(files, "Assets/AppCenter/Plugins/Android/");
     }
 }).OnError(HandleError);
 
@@ -209,7 +209,7 @@ Task("Externals-Ios")
     // Copy files
     foreach (var module in MobileCenterModules)
     {
-        var destinationFolder = "Assets/MobileCenter/Plugins/iOS/" + module.Moniker + "/" + module.IosModule;
+        var destinationFolder = "Assets/AppCenter/Plugins/iOS/" + module.Moniker + "/" + module.IosModule;
         DeleteDirectoryIfExists(destinationFolder);
         MoveDirectory("./externals/ios/MobileCenter-SDK-Apple/iOS/" + module.IosModule, destinationFolder);
     }
@@ -220,7 +220,7 @@ Task("Externals-Uwp")
     .Does(() =>
 {
     CleanDirectory("externals/uwp");
-    EnsureDirectoryExists("Assets/MobileCenter/Plugins/WSA/");
+    EnsureDirectoryExists("Assets/AppCenter/Plugins/WSA/");
     // Download the nugets. We will use these to extract the dlls
     foreach (var module in MobileCenterModules)
     {
@@ -243,7 +243,7 @@ Task("Externals-Uwp")
         var contentPathSuffix = "lib/uap10.0/";
 
         // Prepare destination
-        var destination = "Assets/MobileCenter/Plugins/WSA/" + module.Moniker + "/";
+        var destination = "Assets/AppCenter/Plugins/WSA/" + module.Moniker + "/";
         EnsureDirectoryExists(destination);
         DeleteFiles(destination + "*.dll");
         DeleteFiles(destination + "*.winmd");
@@ -253,7 +253,7 @@ Task("Externals-Uwp")
         {
             foreach (var arch in module.NativeArchitectures)
             {
-                var dest = "Assets/MobileCenter/Plugins/WSA/" + module.Moniker + "/" + arch.ToString().ToUpper() + "/";
+                var dest = "Assets/AppCenter/Plugins/WSA/" + module.Moniker + "/" + arch.ToString().ToUpper() + "/";
                 EnsureDirectoryExists(dest);
                 var nativeFiles = GetFiles(tempContentPath + "runtimes/" + "win10-" + arch + "/native/*");
                 DeleteFiles(dest + "*.dll");
@@ -294,7 +294,7 @@ Task("BuildAndroidContentProvider").Does(()=>
     // Source and destination of generated aar
     var aarName = libraryName + "-release.aar";
     var aarSource = System.IO.Path.Combine(libraryFolder, "build/outputs/aar/" + aarName);
-    var aarDestination = "Assets/MobileCenter/Plugins/Android";
+    var aarDestination = "Assets/AppCenter/Plugins/Android";
 
     // Delete the aar in case it already exists in the Assets folder
     var existingAar = System.IO.Path.Combine(aarDestination, aarName);
@@ -303,7 +303,7 @@ Task("BuildAndroidContentProvider").Does(()=>
         DeleteFile(existingAar);
     }
 
-    // Move the .aar to Assets/MobileCenter/Plugins/Android
+    // Move the .aar to Assets/AppCenter/Plugins/Android
     MoveFileToDirectory(aarSource, aarDestination);
 }).OnError(HandleError);
 
@@ -311,7 +311,7 @@ Task("BuildAndroidContentProvider").Does(()=>
 Task("Externals-Uwp-IL2CPP-Dependencies")
     .Does(() =>
 {
-    var targetPath = "Assets/MobileCenter/Plugins/WSA/IL2CPP";
+    var targetPath = "Assets/AppCenter/Plugins/WSA/IL2CPP";
     EnsureDirectoryExists(targetPath);
     EnsureDirectoryExists(targetPath + "/ARM");
     EnsureDirectoryExists(targetPath + "/X86");
@@ -455,7 +455,7 @@ void BuildApps(string type, string projectPath = ".")
 
 void VerifyIosAppsBuild(string type, string projectPath)
 {
-    VerifyAppsBuild(type, "ios", projectPath, 
+    VerifyAppsBuild(type, "ios", projectPath,
     new string[] { "IosMono", "IosIl2CPP" },
     outputDirectory =>
     {
@@ -473,7 +473,7 @@ void VerifyIosAppsBuild(string type, string projectPath)
 
 void VerifyAndroidAppsBuild(string type, string projectPath)
 {
-    VerifyAppsBuild(type, "android", projectPath, 
+    VerifyAppsBuild(type, "android", projectPath,
     new string[] { "AndroidMono", "AndroidIl2CPP" },
     outputDirectory =>
     {
@@ -488,7 +488,7 @@ void VerifyAndroidAppsBuild(string type, string projectPath)
 
 void VerifyWindowsAppsBuild(string type, string projectPath)
 {
-    VerifyAppsBuild(type, "wsaplayer", projectPath, 
+    VerifyAppsBuild(type, "wsaplayer", projectPath,
     new string[] {  "WsaNetXaml", "WsaIl2CPPXaml", "WsaNetD3D", "WsaIl2CPPD3D" },
     outputDirectory =>
     {

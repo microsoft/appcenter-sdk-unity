@@ -66,7 +66,7 @@ public class MobileCenterPostBuild
     #region UWP Methods
     public static void ProcessUwpIl2CppDependencies()
     {
-        var binaries = AssetDatabase.FindAssets("*", new[] { "Assets/MobileCenter/Plugins/WSA/IL2CPP" });
+        var binaries = AssetDatabase.FindAssets("*", new[] { "Assets/AppCenter/Plugins/WSA/IL2CPP" });
         foreach (var guid in binaries)
         {
             var assetPath = AssetDatabase.GUIDToAssetPath(guid);

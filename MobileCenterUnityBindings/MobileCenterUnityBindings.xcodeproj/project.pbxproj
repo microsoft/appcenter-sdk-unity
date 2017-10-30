@@ -41,26 +41,26 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
-		3593B78E1F573AC500ED10AA /* iOS */ = {isa = PBXFileReference; lastKnownFileType = folder; name = iOS; path = ../Assets/MobileCenter/Plugins/iOS; sourceTree = "<group>"; };
-		3593B7911F573B0900ED10AA /* MobileCenter.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MobileCenter.framework; path = ../Assets/MobileCenter/Plugins/iOS/Core/MobileCenter.framework; sourceTree = "<group>"; };
-		3593B79F1F573BB100ED10AA /* MobileCenterAnalytics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MobileCenterAnalytics.framework; path = ../Assets/MobileCenter/Plugins/iOS/Analytics/MobileCenterAnalytics.framework; sourceTree = "<group>"; };
-		3593B7A31F573BC100ED10AA /* MobileCenterDistribute.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MobileCenterDistribute.framework; path = ../Assets/MobileCenter/Plugins/iOS/Distribute/MobileCenterDistribute.framework; sourceTree = "<group>"; };
-		3593B7A51F573BC800ED10AA /* MobileCenterPush.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MobileCenterPush.framework; path = ../Assets/MobileCenter/Plugins/iOS/Push/MobileCenterPush.framework; sourceTree = "<group>"; };
-		3593B7A71F573BF900ED10AA /* AnalyticsUnity.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; name = AnalyticsUnity.mm; path = ../Assets/MobileCenter/Plugins/iOS/Analytics/AnalyticsUnity.mm; sourceTree = "<group>"; };
-		3593B7A91F573C0F00ED10AA /* CustomProperties.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; name = CustomProperties.mm; path = ../Assets/MobileCenter/Plugins/iOS/Core/CustomProperties.mm; sourceTree = "<group>"; };
-		3593B7AA1F573C0F00ED10AA /* MobileCenterStarter.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; name = MobileCenterStarter.m; path = ../Assets/MobileCenter/Plugins/iOS/Core/MobileCenterStarter.m; sourceTree = "<group>"; };
-		3593B7AB1F573C0F00ED10AA /* MobileCenterUnity.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; name = MobileCenterUnity.mm; path = ../Assets/MobileCenter/Plugins/iOS/Core/MobileCenterUnity.mm; sourceTree = "<group>"; };
-		3593B7AF1F573C1300ED10AA /* AnalyticsUnity.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; name = AnalyticsUnity.mm; path = ../Assets/MobileCenter/Plugins/iOS/Analytics/AnalyticsUnity.mm; sourceTree = "<group>"; };
-		3593B7B61F573C4E00ED10AA /* DistributeDelegate.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; name = DistributeDelegate.m; path = ../Assets/MobileCenter/Plugins/iOS/Distribute/DistributeDelegate.m; sourceTree = "<group>"; };
-		3593B7B81F573C4E00ED10AA /* DistributeUnity.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; name = DistributeUnity.mm; path = ../Assets/MobileCenter/Plugins/iOS/Distribute/DistributeUnity.mm; sourceTree = "<group>"; };
-		3593B7B91F573C4E00ED10AA /* ReleaseDetails.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; name = ReleaseDetails.mm; path = ../Assets/MobileCenter/Plugins/iOS/Distribute/ReleaseDetails.mm; sourceTree = "<group>"; };
-		3593B7BE1F573C6200ED10AA /* PushDelegate.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; name = PushDelegate.m; path = ../Assets/MobileCenter/Plugins/iOS/Push/PushDelegate.m; sourceTree = "<group>"; };
-		3593B7C01F573C6200ED10AA /* PushNotification.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; name = PushNotification.mm; path = ../Assets/MobileCenter/Plugins/iOS/Push/PushNotification.mm; sourceTree = "<group>"; };
-		3593B7C11F573C6200ED10AA /* PushUnity.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; name = PushUnity.mm; path = ../Assets/MobileCenter/Plugins/iOS/Push/PushUnity.mm; sourceTree = "<group>"; };
-		3593B7C61F573C9100ED10AA /* NSDateHelper.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; name = NSDateHelper.mm; path = ../Assets/MobileCenter/Plugins/iOS/Core/Utility/NSDateHelper.mm; sourceTree = "<group>"; };
-		3593B7C71F573C9100ED10AA /* NSNumberHelper.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; name = NSNumberHelper.mm; path = ../Assets/MobileCenter/Plugins/iOS/Core/Utility/NSNumberHelper.mm; sourceTree = "<group>"; };
-		3593B7C81F573C9100ED10AA /* NSStringDictionaryHelper.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; name = NSStringDictionaryHelper.mm; path = ../Assets/MobileCenter/Plugins/iOS/Core/Utility/NSStringDictionaryHelper.mm; sourceTree = "<group>"; };
-		3593B7C91F573C9100ED10AA /* NSStringHelper.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; name = NSStringHelper.mm; path = ../Assets/MobileCenter/Plugins/iOS/Core/Utility/NSStringHelper.mm; sourceTree = "<group>"; };
+		3593B78E1F573AC500ED10AA /* iOS */ = {isa = PBXFileReference; lastKnownFileType = folder; name = iOS; path = ../Assets/AppCenter/Plugins/iOS; sourceTree = "<group>"; };
+		3593B7911F573B0900ED10AA /* MobileCenter.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MobileCenter.framework; path = ../Assets/AppCenter/Plugins/iOS/Core/MobileCenter.framework; sourceTree = "<group>"; };
+		3593B79F1F573BB100ED10AA /* MobileCenterAnalytics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MobileCenterAnalytics.framework; path = ../Assets/AppCenter/Plugins/iOS/Analytics/MobileCenterAnalytics.framework; sourceTree = "<group>"; };
+		3593B7A31F573BC100ED10AA /* MobileCenterDistribute.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MobileCenterDistribute.framework; path = ../Assets/AppCenter/Plugins/iOS/Distribute/MobileCenterDistribute.framework; sourceTree = "<group>"; };
+		3593B7A51F573BC800ED10AA /* MobileCenterPush.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MobileCenterPush.framework; path = ../Assets/AppCenter/Plugins/iOS/Push/MobileCenterPush.framework; sourceTree = "<group>"; };
+		3593B7A71F573BF900ED10AA /* AnalyticsUnity.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; name = AnalyticsUnity.mm; path = ../Assets/AppCenter/Plugins/iOS/Analytics/AnalyticsUnity.mm; sourceTree = "<group>"; };
+		3593B7A91F573C0F00ED10AA /* CustomProperties.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; name = CustomProperties.mm; path = ../Assets/AppCenter/Plugins/iOS/Core/CustomProperties.mm; sourceTree = "<group>"; };
+		3593B7AA1F573C0F00ED10AA /* MobileCenterStarter.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; name = MobileCenterStarter.m; path = ../Assets/AppCenter/Plugins/iOS/Core/MobileCenterStarter.m; sourceTree = "<group>"; };
+		3593B7AB1F573C0F00ED10AA /* MobileCenterUnity.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; name = MobileCenterUnity.mm; path = ../Assets/AppCenter/Plugins/iOS/Core/MobileCenterUnity.mm; sourceTree = "<group>"; };
+		3593B7AF1F573C1300ED10AA /* AnalyticsUnity.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; name = AnalyticsUnity.mm; path = ../Assets/AppCenter/Plugins/iOS/Analytics/AnalyticsUnity.mm; sourceTree = "<group>"; };
+		3593B7B61F573C4E00ED10AA /* DistributeDelegate.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; name = DistributeDelegate.m; path = ../Assets/AppCenter/Plugins/iOS/Distribute/DistributeDelegate.m; sourceTree = "<group>"; };
+		3593B7B81F573C4E00ED10AA /* DistributeUnity.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; name = DistributeUnity.mm; path = ../Assets/AppCenter/Plugins/iOS/Distribute/DistributeUnity.mm; sourceTree = "<group>"; };
+		3593B7B91F573C4E00ED10AA /* ReleaseDetails.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; name = ReleaseDetails.mm; path = ../Assets/AppCenter/Plugins/iOS/Distribute/ReleaseDetails.mm; sourceTree = "<group>"; };
+		3593B7BE1F573C6200ED10AA /* PushDelegate.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; name = PushDelegate.m; path = ../Assets/AppCenter/Plugins/iOS/Push/PushDelegate.m; sourceTree = "<group>"; };
+		3593B7C01F573C6200ED10AA /* PushNotification.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; name = PushNotification.mm; path = ../Assets/AppCenter/Plugins/iOS/Push/PushNotification.mm; sourceTree = "<group>"; };
+		3593B7C11F573C6200ED10AA /* PushUnity.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; name = PushUnity.mm; path = ../Assets/AppCenter/Plugins/iOS/Push/PushUnity.mm; sourceTree = "<group>"; };
+		3593B7C61F573C9100ED10AA /* NSDateHelper.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; name = NSDateHelper.mm; path = ../Assets/AppCenter/Plugins/iOS/Core/Utility/NSDateHelper.mm; sourceTree = "<group>"; };
+		3593B7C71F573C9100ED10AA /* NSNumberHelper.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; name = NSNumberHelper.mm; path = ../Assets/AppCenter/Plugins/iOS/Core/Utility/NSNumberHelper.mm; sourceTree = "<group>"; };
+		3593B7C81F573C9100ED10AA /* NSStringDictionaryHelper.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; name = NSStringDictionaryHelper.mm; path = ../Assets/AppCenter/Plugins/iOS/Core/Utility/NSStringDictionaryHelper.mm; sourceTree = "<group>"; };
+		3593B7C91F573C9100ED10AA /* NSStringHelper.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; name = NSStringHelper.mm; path = ../Assets/AppCenter/Plugins/iOS/Core/Utility/NSStringHelper.mm; sourceTree = "<group>"; };
 		35E9FC1D1EFADFDB00556A1F /* libMobileCenterUnityBindings.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libMobileCenterUnityBindings.a; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
@@ -203,11 +203,11 @@
 			buildSettings = {
 				CLANG_ENABLE_MODULES = YES;
 				"FRAMEWORK_SEARCH_PATHS[arch=*]" = (
-					"\"$(SRCROOT)/../Assets/MobileCenter/Plugins/iOS/Crashes\"",
-					"\"$(SRCROOT)/../Assets/MobileCenter/Plugins/iOS/Core\"",
-					"\"$(SRCROOT)/../Assets/MobileCenter/Plugins/iOS/Analytics\"",
-					"\"$(SRCROOT)/../Assets/MobileCenter/Plugins/iOS/Push\"",
-					"\"$(SRCROOT)/../Assets/MobileCenter/Plugins/iOS/Distribute\"",
+					"\"$(SRCROOT)/../Assets/AppCenter/Plugins/iOS/Crashes\"",
+					"\"$(SRCROOT)/../Assets/AppCenter/Plugins/iOS/Core\"",
+					"\"$(SRCROOT)/../Assets/AppCenter/Plugins/iOS/Analytics\"",
+					"\"$(SRCROOT)/../Assets/AppCenter/Plugins/iOS/Push\"",
+					"\"$(SRCROOT)/../Assets/AppCenter/Plugins/iOS/Distribute\"",
 				);
 			};
 			name = Debug;

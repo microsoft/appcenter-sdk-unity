@@ -10,7 +10,7 @@ public class MobileCenterSettingsMakerAndroid
     private const string MobileCenterResourcesFolderPath = "Assets/Plugins/Android/mobile-center/res/values/";
     private const string MobileCenterResourcesPath = MobileCenterResourcesFolderPath + "mobile-center-settings.xml";
     private const string MobileCenterManifestPath = "Assets/Plugins/Android/mobile-center/AndroidManifest.xml";
-    private const string MobileCenterManifestPlaceholderPath = "Assets/MobileCenter/Plugins/Android/AndroidManifestPlaceholder.xml";
+    private const string MobileCenterManifestPlaceholderPath = "Assets/AppCenter/Plugins/Android/AndroidManifestPlaceholder.xml";
     private const string ManifestAppIdPlaceholder = "${mobile-center-app-id-placeholder}";
     private const string AppSecretKey = "mobile_center_app_secret";
     private const string CustomLogUrlKey = "mobile_center_custom_log_url";
@@ -96,7 +96,7 @@ public class MobileCenterSettingsMakerAndroid
                 File.WriteAllText(MobileCenterManifestPath, manifestText);
             }
         }
-        
+
         if (File.Exists(MobileCenterResourcesPath))
         {
             File.Delete(MobileCenterResourcesPath);

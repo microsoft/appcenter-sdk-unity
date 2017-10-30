@@ -2,28 +2,28 @@
 <package name="MobileCenter" version="0.0.1">
     <include>
         <!-- Editor related files -->
-        <file path="Assets/MobileCenter/Editor" />
-        <file path="Assets/MobileCenter/Properties" />
-        <file path="Assets/MobileCenter/MobileCenterBehavior.cs" />
-        <file path="Assets/MobileCenter/MobileCenterSettings.cs" />
+        <file path="Assets/AppCenter/Editor" />
+        <file path="Assets/AppCenter/Properties" />
+        <file path="Assets/AppCenter/MobileCenterBehavior.cs" />
+        <file path="Assets/AppCenter/MobileCenterSettings.cs" />
 
         <!-- Android files -->
-        <file path="Assets/MobileCenter/Plugins/Android/Utility" />
-        <file path="Assets/MobileCenter/Plugins/Android/mobile-center-release.aar" />
-        <file path="Assets/MobileCenter/Plugins/MobileCenterSDK/Core/Android" />
+        <file path="Assets/AppCenter/Plugins/Android/Utility" />
+        <file path="Assets/AppCenter/Plugins/Android/mobile-center-release.aar" />
+        <file path="Assets/AppCenter/Plugins/AppCenterSDK/Core/Android" />
 
         <!-- Common files -->
-        <file path="Assets/MobileCenter/Plugins/MobileCenterSDK/Core/Shared" />
+        <file path="Assets/AppCenter/Plugins/AppCenterSDK/Core/Shared" />
 
         <!-- "Blank" files -->
-        <file path="Assets/MobileCenter/Plugins/MobileCenterSDK/Core/Blank" />
+        <file path="Assets/AppCenter/Plugins/AppCenterSDK/Core/Blank" />
 
         <!-- iOS files -->
-        <file path="Assets/MobileCenter/Plugins/iOS/Core" />
-        <file path="Assets/MobileCenter/Plugins/MobileCenterSDK/Core/iOS" />
+        <file path="Assets/AppCenter/Plugins/iOS/Core" />
+        <file path="Assets/AppCenter/Plugins/AppCenterSDK/Core/iOS" />
 
         <!-- UWP files -->
-        <file path="Assets/MobileCenter/Plugins/WSA/Core" />
-        <file path="Assets/MobileCenter/Plugins/MobileCenterSDK/Core/UWP" />
+        <file path="Assets/AppCenter/Plugins/WSA/Core" />
+        <file path="Assets/AppCenter/Plugins/AppCenterSDK/Core/UWP" />
     </include>
 </package>

@@ -6,8 +6,8 @@ using System.IO;
 
 public class MobileCenterSettingsMakerIos
 {
-    private const string TemplateFilePath = "Assets/MobileCenter/Plugins/iOS/Core/MobileCenterStarter.original";
-    private const string TargetFilePath = "Assets/MobileCenter/Plugins/iOS/Core/MobileCenterStarter.m";
+    private const string TemplateFilePath = "Assets/AppCenter/Plugins/iOS/Core/MobileCenterStarter.original";
+    private const string TargetFilePath = "Assets/AppCenter/Plugins/iOS/Core/MobileCenterStarter.m";
     private const string AppSecretSearchText = "mobile-center-app-secret";
     private const string LogUrlSearchText = "custom-log-url";
     private const string LogUrlToken = "MOBILE_CENTER_UNITY_USE_CUSTOM_LOG_URL";

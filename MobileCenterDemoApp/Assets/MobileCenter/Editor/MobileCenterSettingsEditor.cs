@@ -9,7 +9,7 @@ using UnityEditor.Callbacks;
 [CustomEditor(typeof(MobileCenterSettings))]
 public class MobileCenterSettingsEditor : Editor
 {
-    public const string SettingsPath = "Assets/MobileCenter/MobileCenterSettings.asset";
+    public const string SettingsPath = "Assets/AppCenter/MobileCenterSettings.asset";
 
     public static MobileCenterSettings Settings
     {
