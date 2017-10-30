@@ -24,7 +24,7 @@
 
 @implementation AppCenterStarter
 
-static NSString *const kMSAppSecret = @"mobile-center-app-secret";
+static NSString *const kMSAppSecret = @"appcenter-app-secret";
 static NSString *const kMSCustomLogUrl = @"custom-log-url";
 static NSString *const kMSCustomApiUrl = @"custom-api-url";
 static NSString *const kMSCustomInstallUrl = @"custom-install-url";

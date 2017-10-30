@@ -24,19 +24,19 @@ import java.util.List;
 
 public class AppCenterLoader extends ContentProvider {
 
-    private static final String CUSTOM_LOG_URL_KEY = "mobile_center_custom_log_url";
-    private static final String USE_CUSTOM_LOG_URL_KEY = "mobile_center_use_custom_log_url";
-    private static final String INITIAL_LOG_LEVEL_KEY = "mobile_center_initial_log_level";
-    private static final String USE_PUSH_KEY = "mobile_center_use_push";
-    private static final String ENABLE_FIREBASE_ANALYTICS_KEY = "mobile_center_enable_firebase_analytics";
-    private static final String USE_ANALYTICS_KEY = "mobile_center_use_analytics";
-    private static final String USE_DISTRIBUTE_KEY = "mobile_center_use_distribute";
-    private static final String USE_CUSTOM_API_URL_KEY = "mobile_center_use_custom_api_url";
-    private static final String USE_CUSTOM_INSTALL_URL_KEY = "mobile_center_use_custom_install_url";
-    private static final String CUSTOM_API_URL_KEY = "mobile_center_custom_api_url";
-    private static final String CUSTOM_INSTALL_URL_KEY = "mobile_center_custom_install_url";
-    private static final String USE_CRASHES_KEY = "mobile_center_use_crashes";
-    private static final String APP_SECRET_KEY = "mobile_center_app_secret";
+    private static final String CUSTOM_LOG_URL_KEY = "appcenter_custom_log_url";
+    private static final String USE_CUSTOM_LOG_URL_KEY = "appcenter_use_custom_log_url";
+    private static final String INITIAL_LOG_LEVEL_KEY = "appcenter_initial_log_level";
+    private static final String USE_PUSH_KEY = "appcenter_use_push";
+    private static final String ENABLE_FIREBASE_ANALYTICS_KEY = "appcenter_enable_firebase_analytics";
+    private static final String USE_ANALYTICS_KEY = "appcenter_use_analytics";
+    private static final String USE_DISTRIBUTE_KEY = "appcenter_use_distribute";
+    private static final String USE_CUSTOM_API_URL_KEY = "appcenter_use_custom_api_url";
+    private static final String USE_CUSTOM_INSTALL_URL_KEY = "appcenter_use_custom_install_url";
+    private static final String CUSTOM_API_URL_KEY = "appcenter_custom_api_url";
+    private static final String CUSTOM_INSTALL_URL_KEY = "appcenter_custom_install_url";
+    private static final String USE_CRASHES_KEY = "appcenter_use_crashes";
+    private static final String APP_SECRET_KEY = "appcenter_app_secret";
     private static final String TRUE_VALUE = "True";
 
     private Context mContext;

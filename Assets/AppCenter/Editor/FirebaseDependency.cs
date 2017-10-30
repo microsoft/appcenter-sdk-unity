@@ -19,7 +19,7 @@ public class FirebaseDependency : AssetPostprocessor
     private const string GoogleServicesFileBasename = "google-services";
     private const string GoogleServicesInputFile = GoogleServicesFileBasename + ".json";
     private const string GoogleServicesOutputFile = GoogleServicesFileBasename + ".xml";
-    private const string GoogleServicesOutputDirectory = "Assets/Plugins/Android/mobile-center/res/values";
+    private const string GoogleServicesOutputDirectory = "Assets/Plugins/Android/appcenter/res/values";
     private const string GoogleServicesOutputPath = GoogleServicesOutputDirectory + "/" + GoogleServicesOutputFile;
 
     /// <summary>

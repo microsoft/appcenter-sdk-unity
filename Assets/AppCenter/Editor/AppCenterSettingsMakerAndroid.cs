@@ -7,23 +7,23 @@ using System.IO;
 
 public class AppCenterSettingsMakerAndroid
 {
-    private const string AppCenterResourcesFolderPath = "Assets/Plugins/Android/mobile-center/res/values/";
-    private const string AppCenterResourcesPath = AppCenterResourcesFolderPath + "mobile-center-settings.xml";
-    private const string AppCenterManifestPath = "Assets/Plugins/Android/mobile-center/AndroidManifest.xml";
+    private const string AppCenterResourcesFolderPath = "Assets/Plugins/Android/appcenter/res/values/";
+    private const string AppCenterResourcesPath = AppCenterResourcesFolderPath + "appcenter-settings.xml";
+    private const string AppCenterManifestPath = "Assets/Plugins/Android/appcenter/AndroidManifest.xml";
     private const string AppCenterManifestPlaceholderPath = "Assets/AppCenter/Plugins/Android/AndroidManifestPlaceholder.xml";
-    private const string ManifestAppIdPlaceholder = "${mobile-center-app-id-placeholder}";
-    private const string AppSecretKey = "mobile_center_app_secret";
-    private const string CustomLogUrlKey = "mobile_center_custom_log_url";
-    private const string UseCustomLogUrlKey = "mobile_center_use_custom_log_url";
-    private const string InitialLogLevelKey = "mobile_center_initial_log_level";
-    private const string UsePushKey = "mobile_center_use_push";
-    private const string UseAnalyticsKey = "mobile_center_use_analytics";
-    private const string UseDistributeKey = "mobile_center_use_distribute";
-    private const string CustomApiUrlKey = "mobile_center_custom_api_url";
-    private const string UseCustomApiUrlKey = "mobile_center_use_custom_api_url";
-    private const string CustomInstallUrlKey = "mobile_center_custom_install_url";
-    private const string UseCustomInstallUrlKey = "mobile_center_use_custom_install_url";
-    private const string EnableFirebaseAnalyticsKey = "mobile_center_enable_firebase_analytics";
+    private const string ManifestAppIdPlaceholder = "${app-center-app-id-placeholder}";
+    private const string AppSecretKey = "appcenter_app_secret";
+    private const string CustomLogUrlKey = "appcenter_custom_log_url";
+    private const string UseCustomLogUrlKey = "appcenter_use_custom_log_url";
+    private const string InitialLogLevelKey = "appcenter_initial_log_level";
+    private const string UsePushKey = "appcenter_use_push";
+    private const string UseAnalyticsKey = "appcenter_use_analytics";
+    private const string UseDistributeKey = "appcenter_use_distribute";
+    private const string CustomApiUrlKey = "appcenter_custom_api_url";
+    private const string UseCustomApiUrlKey = "appcenter_use_custom_api_url";
+    private const string CustomInstallUrlKey = "appcenter_custom_install_url";
+    private const string UseCustomInstallUrlKey = "appcenter_use_custom_install_url";
+    private const string EnableFirebaseAnalyticsKey = "appcenter_enable_firebase_analytics";
 
     private readonly IDictionary<string, string> _resourceValues = new Dictionary<string, string>();
 

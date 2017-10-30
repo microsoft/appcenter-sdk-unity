@@ -62,8 +62,8 @@ RegisterIcalls.cpp
 Assets/Plugins/Android/firebase-*
 Assets/Plugins/Android/support-*
 Assets/Plugins/Android/play-services-*
-Assets/Plugins/Android/mobile-center/res
-Assets/Plugins/Android/mobile-center/res.meta
+Assets/Plugins/Android/appcenter/res
+Assets/Plugins/Android/appcenter/res.meta
 Assets/Firebase/
 Assets/PlayServicesResolver/
 Assets/PlayServicesResolver.meta
@@ -75,4 +75,4 @@ CAKE_SCRIPT_TEMP*
 */.idea/
 
 # Android Manifest (not needed because it is regenerated at build time)
-Assets/Plugins/Android/mobile-center/AndroidManifest.xml*
+Assets/Plugins/Android/appcenter/AndroidManifest.xml*

@@ -8,7 +8,7 @@ public class AppCenterSettingsMakerIos
 {
     private const string TemplateFilePath = "Assets/AppCenter/Plugins/iOS/Core/AppCenterStarter.original";
     private const string TargetFilePath = "Assets/AppCenter/Plugins/iOS/Core/AppCenterStarter.m";
-    private const string AppSecretSearchText = "mobile-center-app-secret";
+    private const string AppSecretSearchText = "appcenter-app-secret";
     private const string LogUrlSearchText = "custom-log-url";
     private const string LogUrlToken = "MOBILE_CENTER_UNITY_USE_CUSTOM_LOG_URL";
     private const string LogLevelSearchText = "0/*LOG_LEVEL*/";
