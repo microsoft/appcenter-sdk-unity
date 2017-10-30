@@ -277,8 +277,8 @@ Task("Externals-Uwp")
 Task("BuildAndroidContentProvider").Does(()=>
 {
     // Folder and script locations
-    var appName = "MobileCenterLoaderApp";
-    var libraryName = "mobilecenterloader";
+    var appName = "AppCenterLoaderApp";
+    var libraryName = "appcenterloader";
     var libraryFolder = System.IO.Path.Combine(appName, libraryName);
     var gradleScript = System.IO.Path.Combine(libraryFolder, "build.gradle");
 

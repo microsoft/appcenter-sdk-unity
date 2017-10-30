@@ -2,7 +2,7 @@
 //
 // Licensed under the MIT license.
 
-package com.microsoft.azure.mobile.mobilecenterloader;
+package com.microsoft.appcenter.appcenterloader;
 
 import android.app.Application;
 import android.content.ContentProvider;
@@ -22,7 +22,7 @@ import com.microsoft.azure.mobile.utils.MobileCenterLog;
 import java.util.ArrayList;
 import java.util.List;
 
-public class MobileCenterLoader extends ContentProvider {
+public class AppCenterLoader extends ContentProvider {
 
     private static final String CUSTOM_LOG_URL_KEY = "mobile_center_custom_log_url";
     private static final String USE_CUSTOM_LOG_URL_KEY = "mobile_center_use_custom_log_url";
@@ -67,7 +67,7 @@ public class MobileCenterLoader extends ContentProvider {
             classes.add(com.microsoft.azure.mobile.distribute.Distribute.class);
         }
         if (isTrueValue(getStringResource(USE_PUSH_KEY))) {
-            Push.setListener(new UnityMobileCenterPushDelegate());
+            Push.setListener(new UnityAppCenterPushDelegate());
             classes.add(com.microsoft.azure.mobile.push.Push.class);
 
             if (isTrueValue(getStringResource(ENABLE_FIREBASE_ANALYTICS_KEY))) {

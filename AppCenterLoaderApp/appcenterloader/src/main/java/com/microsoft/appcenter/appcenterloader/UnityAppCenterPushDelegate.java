@@ -1,4 +1,4 @@
-package com.microsoft.azure.mobile.mobilecenterloader;
+package com.microsoft.appcenter.appcenterloader;
 
 import android.app.Activity;
 
@@ -8,7 +8,7 @@ import com.microsoft.azure.mobile.push.PushNotification;
 import java.util.LinkedList;
 import java.util.List;
 
-public class UnityMobileCenterPushDelegate implements PushListener
+public class UnityAppCenterPushDelegate implements PushListener
 {
     static List<PushNotification> mUnprocessedNotifications = new LinkedList<>();
     static PushListener mPushListener;

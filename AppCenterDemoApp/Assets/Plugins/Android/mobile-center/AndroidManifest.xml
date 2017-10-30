@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.microsoft.azure.mobile.mobilecenterloader">
+    package="com.microsoft.appcenter.appcenterloader">
   <uses-sdk android:minSdkVersion="15"/>
     <application>
         <provider
-            android:authorities="com.microsoft.azure.mobile.unity.demo.microsoft.azure.mobile.mobilecenterloader"
+            android:authorities="com.microsoft.azure.mobile.unity.demo.microsoft.appcenter.appcenterloader"
             android:exported="false"
-            android:name=".MobileCenterLoader" />
+            android:name=".AppCenterLoader" />
     </application>
 </manifest>
