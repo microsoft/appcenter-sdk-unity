@@ -401,7 +401,7 @@ Task("Externals")
 Task("Package").Does(()=>
 {
     // Remove AndroidManifest.xml
-    var path = "Assets/Plugins/Android/mobile-center/AndroidManifest.xml";
+    var path = "Assets/Plugins/Android/appcenter/AndroidManifest.xml";
     if (System.IO.File.Exists(path))
     {
         DeleteFile(path);

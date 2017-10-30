@@ -59,9 +59,9 @@ google-services.json*
 RegisterIcalls.cpp
 
 # Firebase
-Assets/Plugins/Android/firebase-*
-Assets/Plugins/Android/support-*
-Assets/Plugins/Android/play-services-*
+**/Assets/Plugins/Android/firebase-*
+**/Assets/Plugins/Android/support-*
+**/Assets/Plugins/Android/play-services-*
 Assets/Plugins/Android/appcenter/res
 Assets/Plugins/Android/appcenter/res.meta
 Assets/Firebase/

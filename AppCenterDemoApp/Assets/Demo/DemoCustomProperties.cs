@@ -18,7 +18,7 @@ public class DemoCustomProperties : MonoBehaviour
 
     public void Send()
     {
-        MobileCenter.SetCustomProperties(GetProperties());
+        AppCenter.SetCustomProperties(GetProperties());
     }
 
     private CustomProperties GetProperties()
