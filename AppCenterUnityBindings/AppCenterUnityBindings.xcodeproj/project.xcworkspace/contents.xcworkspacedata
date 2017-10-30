@@ -2,6 +2,6 @@
 <Workspace
    version = "1.0">
    <FileRef
-      location = "self:MobileCenterUnityBindings.xcodeproj">
+      location = "self:AppCenterUnityBindings.xcodeproj">
    </FileRef>
 </Workspace>

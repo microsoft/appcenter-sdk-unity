@@ -61,7 +61,7 @@
 		3593B7C71F573C9100ED10AA /* NSNumberHelper.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; name = NSNumberHelper.mm; path = ../Assets/AppCenter/Plugins/iOS/Core/Utility/NSNumberHelper.mm; sourceTree = "<group>"; };
 		3593B7C81F573C9100ED10AA /* NSStringDictionaryHelper.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; name = NSStringDictionaryHelper.mm; path = ../Assets/AppCenter/Plugins/iOS/Core/Utility/NSStringDictionaryHelper.mm; sourceTree = "<group>"; };
 		3593B7C91F573C9100ED10AA /* NSStringHelper.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; name = NSStringHelper.mm; path = ../Assets/AppCenter/Plugins/iOS/Core/Utility/NSStringHelper.mm; sourceTree = "<group>"; };
-		35E9FC1D1EFADFDB00556A1F /* libMobileCenterUnityBindings.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libMobileCenterUnityBindings.a; sourceTree = BUILT_PRODUCTS_DIR; };
+		35E9FC1D1EFADFDB00556A1F /* libAppCenterUnityBindings.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libAppCenterUnityBindings.a; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -106,7 +106,7 @@
 		35E9FC1E1EFADFDB00556A1F /* Products */ = {
 			isa = PBXGroup;
 			children = (
-				35E9FC1D1EFADFDB00556A1F /* libMobileCenterUnityBindings.a */,
+				35E9FC1D1EFADFDB00556A1F /* libAppCenterUnityBindings.a */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -125,9 +125,9 @@
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
-		35E9FC1C1EFADFDB00556A1F /* MobileCenterUnityBindings */ = {
+		35E9FC1C1EFADFDB00556A1F /* AppCenterUnityBindings */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = 35E9FC241EFADFDB00556A1F /* Build configuration list for PBXNativeTarget "MobileCenterUnityBindings" */;
+			buildConfigurationList = 35E9FC241EFADFDB00556A1F /* Build configuration list for PBXNativeTarget "AppCenterUnityBindings" */;
 			buildPhases = (
 				35E9FC191EFADFDB00556A1F /* Sources */,
 				35E9FC1A1EFADFDB00556A1F /* Frameworks */,
@@ -137,9 +137,9 @@
 			);
 			dependencies = (
 			);
-			name = MobileCenterUnityBindings;
-			productName = MobileCenterUnityBindings;
-			productReference = 35E9FC1D1EFADFDB00556A1F /* libMobileCenterUnityBindings.a */;
+			name = AppCenterUnityBindings;
+			productName = AppCenterUnityBindings;
+			productReference = 35E9FC1D1EFADFDB00556A1F /* libAppCenterUnityBindings.a */;
 			productType = "com.apple.product-type.library.static";
 		};
 /* End PBXNativeTarget section */
@@ -156,7 +156,7 @@
 					};
 				};
 			};
-			buildConfigurationList = 35E9FBD21EFADE5A00556A1F /* Build configuration list for PBXProject "MobileCenterUnityBindings" */;
+			buildConfigurationList = 35E9FBD21EFADE5A00556A1F /* Build configuration list for PBXProject "AppCenterUnityBindings" */;
 			compatibilityVersion = "Xcode 3.2";
 			developmentRegion = English;
 			hasScannedForEncodings = 0;
@@ -168,7 +168,7 @@
 			projectDirPath = "";
 			projectRoot = "";
 			targets = (
-				35E9FC1C1EFADFDB00556A1F /* MobileCenterUnityBindings */,
+				35E9FC1C1EFADFDB00556A1F /* AppCenterUnityBindings */,
 			);
 		};
 /* End PBXProject section */
@@ -325,7 +325,7 @@
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
-		35E9FBD21EFADE5A00556A1F /* Build configuration list for PBXProject "MobileCenterUnityBindings" */ = {
+		35E9FBD21EFADE5A00556A1F /* Build configuration list for PBXProject "AppCenterUnityBindings" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				35E9FBD31EFADE5A00556A1F /* Debug */,
@@ -334,7 +334,7 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		35E9FC241EFADFDB00556A1F /* Build configuration list for PBXNativeTarget "MobileCenterUnityBindings" */ = {
+		35E9FC241EFADFDB00556A1F /* Build configuration list for PBXNativeTarget "AppCenterUnityBindings" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				35E9FC251EFADFDB00556A1F /* Debug */,
