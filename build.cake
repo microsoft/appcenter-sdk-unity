@@ -370,15 +370,15 @@ Task("AddPackagesToDemoApp")
     {
         var command = "-importPackage " + package.FullPath;
         Information("Importing package " + package.FullPath + ". This could take a minute.");
-        ExecuteUnityCommand(command, "MobileCenterDemoApp");
+        ExecuteUnityCommand(command, "AppCenterDemoApp");
     }
 }).OnError(HandleError);
 
 // Remove package files from demo app.
 Task("RemovePackagesFromDemoApp").Does(()=>
 {
-    DeleteDirectoryIfExists("MobileCenterDemoApp/Assets/MobileCenter");
-    DeleteDirectoryIfExists("MobileCenterDemoApp/Assets/Plugins");
+    DeleteDirectoryIfExists("AppCenterDemoApp/Assets/MobileCenter");
+    DeleteDirectoryIfExists("AppCenterDemoApp/Assets/Plugins");
 }).OnError(HandleError);
 
 // Create a common externals task depending on platform specific ones
@@ -437,7 +437,7 @@ Task("BuildDemoApps")
     .IsDependentOn("AddPackagesToDemoApp")
     .Does(()=>
 {
-    BuildApps("Demo", "MobileCenterDemoApp");
+    BuildApps("Demo", "AppCenterDemoApp");
 }).OnError(HandleError);
 
 void BuildApps(string type, string projectPath = ".")

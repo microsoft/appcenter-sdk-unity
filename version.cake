@@ -23,7 +23,7 @@ Task("StartNewVersion").Does(()=>
 
     // Increment app versions (they will use wrappersdkversion). The platform doesn't matter.
     ExecuteUnityMethod("BuildPuppet.SetVersionNumber", "ios");
-    ExecuteUnityMethod("BuildDemo.SetVersionNumber", "ios", "MobileCenterDemoApp");
+    ExecuteUnityMethod("BuildDemo.SetVersionNumber", "ios", "AppCenterDemoApp");
 });
 
 // Changes the Version field in WrapperSdk.cs to the given version
