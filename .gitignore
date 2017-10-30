@@ -23,14 +23,12 @@ xcuserdata
 [Oo]bj/
 [Ll]og/
 **/Temp/
-**/UWP/
+**/UWP/project.json
 **/iOSBuild/
 **/UWPBuild/
 **/AndroidBuild/
 externals/
 output/
-Assets/Plugins/Android/mobile-center/AndroidManifest.xml
-Assets/Plugins/Android/mobile-center/AndroidManifest.xml.meta
 
 # .NET Core
 project.lock.json
