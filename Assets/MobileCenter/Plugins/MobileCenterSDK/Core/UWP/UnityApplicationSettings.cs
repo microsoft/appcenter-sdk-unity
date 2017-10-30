@@ -9,7 +9,7 @@ using Microsoft.Azure.Mobile.Utils;
 using Newtonsoft.Json;
 using UnityEngine;
 
-namespace Microsoft.Azure.Mobile.Unity.Internal.Utils
+namespace Microsoft.AppCenter.Unity.Internal.Utils
 {
     public class UnityApplicationSettings : IApplicationSettings
     {

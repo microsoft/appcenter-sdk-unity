@@ -3,9 +3,9 @@
 // Licensed under the MIT license.
 
 using System;
-using Microsoft.Azure.Mobile.Unity.Distribute.Internal;
+using Microsoft.AppCenter.Unity.Distribute.Internal;
 
-namespace Microsoft.Azure.Mobile.Unity.Distribute
+namespace Microsoft.AppCenter.Unity.Distribute
 {
 #if UNITY_IOS || UNITY_ANDROID
     using RawType = System.IntPtr;
@@ -19,7 +19,7 @@ namespace Microsoft.Azure.Mobile.Unity.Distribute
         {
             DistributeInternal.PrepareEventHandlers();
         }
-        
+
         public static RawType GetNativeType()
         {
             return DistributeInternal.GetNativeType();

@@ -4,7 +4,7 @@
 
 using System;
 
-namespace Microsoft.Azure.Mobile.Unity.Distribute
+namespace Microsoft.AppCenter.Unity.Distribute
 {
     /// <summary>
     /// Release details.

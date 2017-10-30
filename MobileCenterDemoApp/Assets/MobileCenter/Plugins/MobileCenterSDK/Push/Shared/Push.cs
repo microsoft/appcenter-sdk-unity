@@ -3,9 +3,9 @@
 // Licensed under the MIT license.
 
 using System;
-using Microsoft.Azure.Mobile.Unity.Push.Internal;
+using Microsoft.AppCenter.Unity.Push.Internal;
 
-namespace Microsoft.Azure.Mobile.Unity.Push
+namespace Microsoft.AppCenter.Unity.Push
 {
 #if UNITY_IOS || UNITY_ANDROID
     using RawType = System.IntPtr;
@@ -20,7 +20,7 @@ namespace Microsoft.Azure.Mobile.Unity.Push
 
         private static event EventHandler<PushNotificationReceivedEventArgs> _pushNotificationReceived;
 
-        // Any notifications that were received before setting this handler for the first time 
+        // Any notifications that were received before setting this handler for the first time
         // will be sent to the first handler that is attached to this.
         public static event EventHandler<PushNotificationReceivedEventArgs> PushNotificationReceived
         {

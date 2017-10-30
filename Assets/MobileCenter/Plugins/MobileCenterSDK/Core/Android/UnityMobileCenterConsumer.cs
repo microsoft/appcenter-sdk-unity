@@ -8,7 +8,7 @@ using UnityEngine;
 using System.Threading;
 using System;
 
-namespace Microsoft.Azure.Mobile.Unity
+namespace Microsoft.AppCenter.Unity
 {
     public class UnityMobileCenterConsumer<T> : AndroidJavaProxy
     {

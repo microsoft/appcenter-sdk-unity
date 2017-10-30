@@ -6,7 +6,7 @@
 using UnityEngine;
 using System;
 
-namespace Microsoft.Azure.Mobile.Unity.Push.Internal
+namespace Microsoft.AppCenter.Unity.Push.Internal
 {
     class PushInternal
     {
@@ -43,7 +43,7 @@ namespace Microsoft.Azure.Mobile.Unity.Push.Internal
             var future = _push.CallStatic<AndroidJavaObject>("isEnabled");
             return new MobileCenterTask<bool>(future);
         }
-        
+
         public static IntPtr GetNativeType()
         {
             return AndroidJNI.FindClass("com/microsoft/azure/mobile/push/Push");

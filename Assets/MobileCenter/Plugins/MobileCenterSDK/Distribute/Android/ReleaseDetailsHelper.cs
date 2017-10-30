@@ -6,7 +6,7 @@
 using System;
 using UnityEngine;
 
-namespace Microsoft.Azure.Mobile.Unity.Distribute.Internal
+namespace Microsoft.AppCenter.Unity.Distribute.Internal
 {
     class ReleaseDetailsHelper
     {
@@ -29,7 +29,7 @@ namespace Microsoft.Azure.Mobile.Unity.Distribute.Internal
                 ReleaseNotes = releaseNotes,
                 MandatoryUpdate = mandatoryUpdate,
                 ReleaseNotesUrl = uri
-            }; 
+            };
         }
     }
 }

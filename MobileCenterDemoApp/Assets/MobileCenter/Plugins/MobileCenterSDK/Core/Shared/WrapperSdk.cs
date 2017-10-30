@@ -5,7 +5,7 @@
 using System;
 using System.Reflection;
 
-namespace Microsoft.Azure.Mobile.Unity
+namespace Microsoft.AppCenter.Unity
 {
     public static class WrapperSdk
     {

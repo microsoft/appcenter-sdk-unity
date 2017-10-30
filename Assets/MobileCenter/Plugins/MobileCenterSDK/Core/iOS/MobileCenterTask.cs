@@ -6,7 +6,7 @@
 
 using UnityEngine;
 
-namespace Microsoft.Azure.Mobile.Unity
+namespace Microsoft.AppCenter.Unity
 {
     public partial class MobileCenterTask
     {

@@ -7,7 +7,7 @@
 using UnityEngine;
 using System.Threading.Tasks;
 
-namespace Microsoft.Azure.Mobile.Unity
+namespace Microsoft.AppCenter.Unity
 {
     public partial class MobileCenterTask
     {
@@ -18,7 +18,7 @@ namespace Microsoft.Azure.Mobile.Unity
         // Task parameter should be started already!
         public MobileCenterTask(Task task)
         {
-            // Use the *actual* TPL's ContinueWith implementation to 
+            // Use the *actual* TPL's ContinueWith implementation to
             // perform the user's ContinueWith callbacks
             task.ContinueWith(t => {
                 CompletionAction();

@@ -7,7 +7,7 @@ using System;
 using System.Collections;
 using UnityEngine;
 
-namespace Microsoft.Azure.Mobile.Unity.Internal.Utils
+namespace Microsoft.AppCenter.Unity.Internal.Utils
 {
     using WSAApplication = UnityEngine.WSA.Application;
 

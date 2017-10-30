@@ -10,7 +10,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using UnityEngine;
 
-namespace Microsoft.Azure.Mobile.Unity
+namespace Microsoft.AppCenter.Unity
 {
     public partial class MobileCenterTask<TResult>
     {

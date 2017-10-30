@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 using UnityEngine;
 using Microsoft.Azure.Mobile.Utils;
 
-namespace Microsoft.Azure.Mobile.Unity.Internal.Utils
+namespace Microsoft.AppCenter.Unity.Internal.Utils
 {
     public class UnityScreenSizeProvider : ScreenSizeProviderBase
     {

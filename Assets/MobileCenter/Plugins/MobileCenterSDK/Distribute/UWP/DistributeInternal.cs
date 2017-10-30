@@ -7,7 +7,7 @@
 using System;
 using System.Threading.Tasks;
 
-namespace Microsoft.Azure.Mobile.Unity.Distribute.Internal
+namespace Microsoft.AppCenter.Unity.Distribute.Internal
 {
     class DistributeInternal
     {

@@ -2,11 +2,11 @@
 //
 // Licensed under the MIT license.
 
-using Microsoft.Azure.Mobile.Unity;
+using Microsoft.AppCenter.Unity;
 using UnityEngine;
 using System;
 using System.Reflection;
-using Microsoft.Azure.Mobile.Unity.Internal;
+using Microsoft.AppCenter.Unity.Internal;
 
 [HelpURL("https://docs.microsoft.com/en-us/mobile-center/sdk/")]
 public class MobileCenterBehavior : MonoBehaviour

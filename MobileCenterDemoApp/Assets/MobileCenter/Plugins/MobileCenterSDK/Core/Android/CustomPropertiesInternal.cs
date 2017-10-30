@@ -7,7 +7,7 @@ using System;
 using UnityEngine;
 using Microsoft.Azure.Mobile.Internal.Utility;
 
-namespace Microsoft.Azure.Mobile.Unity.Internal
+namespace Microsoft.AppCenter.Unity.Internal
 {
     class CustomPropertiesInternal
     {

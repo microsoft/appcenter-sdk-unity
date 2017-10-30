@@ -6,7 +6,7 @@
 using System;
 using System.Collections.Generic;
 
-namespace Microsoft.Azure.Mobile.Unity.Analytics.Internal
+namespace Microsoft.AppCenter.Unity.Analytics.Internal
 {
     using UWPAnalytics = Microsoft.Azure.Mobile.Analytics.Analytics;
 

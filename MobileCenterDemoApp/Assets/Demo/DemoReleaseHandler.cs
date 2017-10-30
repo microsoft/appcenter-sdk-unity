@@ -2,7 +2,7 @@
 //
 // Licensed under the MIT license.
 
-using Microsoft.Azure.Mobile.Unity.Distribute;
+using Microsoft.AppCenter.Unity.Distribute;
 using UnityEngine;
 
 // Very simple release handler.

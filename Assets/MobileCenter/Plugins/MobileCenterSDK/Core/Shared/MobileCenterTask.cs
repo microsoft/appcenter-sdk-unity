@@ -5,7 +5,7 @@
 using System;
 using System.Collections.Generic;
 
-namespace Microsoft.Azure.Mobile.Unity
+namespace Microsoft.AppCenter.Unity
 {
     /// <summary>
     /// MobileCenterTask provides a way of performing long-running
@@ -17,13 +17,13 @@ namespace Microsoft.Azure.Mobile.Unity
         protected readonly object _lockObject = new object();
 
         /// <summary>
-        /// Gets a value indicating whether this <see cref="T:Microsoft.Azure.Mobile.Unity.MobileCenterTask"/> is complete.
+        /// Gets a value indicating whether this <see cref="T:Microsoft.AppCenter.Unity.MobileCenterTask"/> is complete.
         /// </summary>
         /// <value><c>true</c> if it is complete; otherwise, <c>false</c>.</value>
         public bool IsComplete { get; private set; }
 
         /// <summary>
-        /// Adds a callback that will be invoked once the task is complete. If 
+        /// Adds a callback that will be invoked once the task is complete. If
         /// the task is already complete, it is invoked immediately after being set.
         /// </summary>
         /// <param name="continuationAction">Callback to be invoked after task completion.</param>

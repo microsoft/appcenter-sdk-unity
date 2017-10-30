@@ -8,7 +8,7 @@ using System;
 using System.Collections.Generic;
 using UnityEngine;
 
-namespace Microsoft.Azure.Mobile.Unity.Internal.Utility
+namespace Microsoft.AppCenter.Unity.Internal.Utility
 {
     public class JavaStringMapHelper
     {

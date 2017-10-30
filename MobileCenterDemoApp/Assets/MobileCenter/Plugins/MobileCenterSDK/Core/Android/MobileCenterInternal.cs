@@ -6,7 +6,7 @@
 using System;
 using UnityEngine;
 
-namespace Microsoft.Azure.Mobile.Unity.Internal
+namespace Microsoft.AppCenter.Unity.Internal
 {
     class MobileCenterInternal
     {
@@ -69,10 +69,10 @@ namespace Microsoft.Azure.Mobile.Unity.Internal
         }
 
         public static void SetWrapperSdk(string wrapperSdkVersion,
-                                         string wrapperSdkName, 
-                                         string wrapperRuntimeVersion, 
-                                         string liveUpdateReleaseLabel, 
-                                         string liveUpdateDeploymentKey, 
+                                         string wrapperSdkName,
+                                         string wrapperRuntimeVersion,
+                                         string liveUpdateReleaseLabel,
+                                         string liveUpdateDeploymentKey,
                                          string liveUpdatePackageHash)
         {
             var wrapperSdkObject = new AndroidJavaObject("com.microsoft.azure.mobile.ingestion.models.WrapperSdk");

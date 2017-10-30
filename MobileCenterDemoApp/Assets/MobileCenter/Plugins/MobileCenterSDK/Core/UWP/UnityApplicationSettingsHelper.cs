@@ -5,7 +5,7 @@
 #if UNITY_WSA_10_0
 using UnityEngine;
 
-namespace Microsoft.Azure.Mobile.Unity.Internal.Utils
+namespace Microsoft.AppCenter.Unity.Internal.Utils
 {
     public class UnityApplicationSettingsHelper : MonoBehaviour
     {

@@ -2,7 +2,7 @@
 //
 // Licensed under the MIT license.
 
-using Microsoft.Azure.Mobile.Unity.Push;
+using Microsoft.AppCenter.Unity.Push;
 using UnityEngine;
 
 public class DemoPushHandler : MonoBehaviour
@@ -69,7 +69,7 @@ public class DemoPushHandler : MonoBehaviour
         _pushEventArgs = new PushNotificationReceivedEventArgs
         {
             Title = "Some notification",
-            Message = 
+            Message =
             "Lorem ipsum dolor sit amet, consectetur adipiscing elit. " +
             "Etiam non est sit amet dui porta varius quis sed massa. " +
             "Nullam libero libero, porta at augue eget, malesuada venenatis risus.",

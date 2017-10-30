@@ -3,7 +3,7 @@
 // Licensed under the MIT license.
 
 using System.Collections;
-using Microsoft.Azure.Mobile.Unity;
+using Microsoft.AppCenter.Unity;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -25,7 +25,7 @@ public class DemoMobileCenter : MonoBehaviour
                 print("Install ID = " + task.Result.ToString());
             }
         });
-        LogLevel.value = MobileCenter.LogLevel - Microsoft.Azure.Mobile.Unity.LogLevel.Verbose;
+        LogLevel.value = MobileCenter.LogLevel - Microsoft.AppCenter.Unity.LogLevel.Verbose;
     }
 
     public void SetEnabled(bool enabled)
@@ -43,6 +43,6 @@ public class DemoMobileCenter : MonoBehaviour
 
     public void SetLogLevel(int logLevel)
     {
-        MobileCenter.LogLevel = Microsoft.Azure.Mobile.Unity.LogLevel.Verbose + logLevel;
+        MobileCenter.LogLevel = Microsoft.AppCenter.Unity.LogLevel.Verbose + logLevel;
     }
 }

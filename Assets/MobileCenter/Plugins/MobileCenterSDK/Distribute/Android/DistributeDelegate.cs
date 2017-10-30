@@ -5,7 +5,7 @@
 #if UNITY_ANDROID && !UNITY_EDITOR
 using UnityEngine;
 
-namespace Microsoft.Azure.Mobile.Unity.Distribute.Internal
+namespace Microsoft.AppCenter.Unity.Distribute.Internal
 {
     class DistributeDelegate : AndroidJavaProxy
     {

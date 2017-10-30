@@ -4,7 +4,7 @@
 
 using System;
 using System.Globalization;
-using Microsoft.Azure.Mobile.Unity;
+using Microsoft.AppCenter.Unity;
 using UnityEngine;
 using UnityEngine.UI;
 

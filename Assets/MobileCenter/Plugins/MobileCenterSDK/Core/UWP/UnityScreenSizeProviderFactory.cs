@@ -6,7 +6,7 @@
 
 using Microsoft.Azure.Mobile.Utils;
 
-namespace Microsoft.Azure.Mobile.Unity.Internal.Utils
+namespace Microsoft.AppCenter.Unity.Internal.Utils
 {
     public class UnityScreenSizeProviderFactory : IScreenSizeProviderFactory
     {

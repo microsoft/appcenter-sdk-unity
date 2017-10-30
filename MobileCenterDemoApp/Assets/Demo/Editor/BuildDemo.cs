@@ -12,7 +12,7 @@ using UnityEngine;
 public class BuildDemo
 {
     private static readonly string BuildFolder = "CAKE_SCRIPT_TEMPDemoBuilds";
-    private static readonly string AppIdentifier = "com.microsoft.azure.mobile.unity.demo";
+    private static readonly string AppIdentifier = "com.Microsoft.AppCenter.Unity.demo";
 
     static BuildDemo()
     {
@@ -122,7 +122,7 @@ public class BuildDemo
     public static void SetVersionNumber()
     {
         var currentVersion = PlayerSettings.bundleVersion;
-        var demoVersion = Microsoft.Azure.Mobile.Unity.WrapperSdk.WrapperSdkVersion;
+        var demoVersion = Microsoft.AppCenter.Unity.WrapperSdk.WrapperSdkVersion;
         PlayerSettings.bundleVersion = demoVersion;
         PlayerSettings.Android.bundleVersionCode++;
     }

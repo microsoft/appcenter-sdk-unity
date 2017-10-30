@@ -4,7 +4,7 @@
 
 using System;
 
-namespace Microsoft.Azure.Mobile.Unity
+namespace Microsoft.AppCenter.Unity
 {
     /// <summary>
     /// MobileCenterTask&lt;TResult&gt; extends the functionality of MobileCenterTask

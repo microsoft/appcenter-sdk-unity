@@ -5,7 +5,7 @@
 #if UNITY_WSA_10_0 && !UNITY_EDITOR
 using System;
 
-namespace Microsoft.Azure.Mobile.Unity.Internal
+namespace Microsoft.AppCenter.Unity.Internal
 {
     using UWPCustomProperties = Microsoft.Azure.Mobile.CustomProperties;
 

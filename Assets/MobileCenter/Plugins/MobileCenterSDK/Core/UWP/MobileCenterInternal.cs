@@ -5,13 +5,13 @@
 #if UNITY_WSA_10_0 && !UNITY_EDITOR
 using System;
 using Microsoft.Azure.Mobile.Utils;
-using Microsoft.Azure.Mobile.Unity.Internal.Utils;
+using Microsoft.AppCenter.Unity.Internal.Utils;
 
-namespace Microsoft.Azure.Mobile.Unity.Internal
+namespace Microsoft.AppCenter.Unity.Internal
 {
     using UWPMobileCenter = Microsoft.Azure.Mobile.MobileCenter;
 
-    class MobileCenterInternal 
+    class MobileCenterInternal
     {
         private static bool _prepared = false;
         private static object _lockObject = new object();
@@ -90,10 +90,10 @@ namespace Microsoft.Azure.Mobile.Unity.Internal
         }
 
         public static void SetWrapperSdk(string wrapperSdkVersion,
-                                         string wrapperSdkName, 
-                                         string wrapperRuntimeVersion, 
-                                         string liveUpdateReleaseLabel, 
-                                         string liveUpdateDeploymentKey, 
+                                         string wrapperSdkName,
+                                         string wrapperRuntimeVersion,
+                                         string liveUpdateReleaseLabel,
+                                         string liveUpdateDeploymentKey,
                                          string liveUpdatePackageHash)
         {
             //TODO once wrapper sdk exists for uwp, set it here
@@ -104,19 +104,19 @@ namespace Microsoft.Azure.Mobile.Unity.Internal
             switch ((Microsoft.Azure.Mobile.LogLevel)logLevel)
             {
                 case Microsoft.Azure.Mobile.LogLevel.Verbose:
-                    return (int)Microsoft.Azure.Mobile.Unity.LogLevel.Verbose;
+                    return (int)Microsoft.AppCenter.Unity.LogLevel.Verbose;
                 case Microsoft.Azure.Mobile.LogLevel.Debug:
-                    return (int)Microsoft.Azure.Mobile.Unity.LogLevel.Debug;
+                    return (int)Microsoft.AppCenter.Unity.LogLevel.Debug;
                 case Microsoft.Azure.Mobile.LogLevel.Info:
-                    return (int)Microsoft.Azure.Mobile.Unity.LogLevel.Info;
+                    return (int)Microsoft.AppCenter.Unity.LogLevel.Info;
                 case Microsoft.Azure.Mobile.LogLevel.Warn:
-                    return (int)Microsoft.Azure.Mobile.Unity.LogLevel.Warn;
+                    return (int)Microsoft.AppCenter.Unity.LogLevel.Warn;
                 case Microsoft.Azure.Mobile.LogLevel.Error:
-                    return (int)Microsoft.Azure.Mobile.Unity.LogLevel.Error;
+                    return (int)Microsoft.AppCenter.Unity.LogLevel.Error;
                 case Microsoft.Azure.Mobile.LogLevel.Assert:
-                    return (int)Microsoft.Azure.Mobile.Unity.LogLevel.Assert;
+                    return (int)Microsoft.AppCenter.Unity.LogLevel.Assert;
                 case Microsoft.Azure.Mobile.LogLevel.None:
-                    return (int)Microsoft.Azure.Mobile.Unity.LogLevel.None;
+                    return (int)Microsoft.AppCenter.Unity.LogLevel.None;
                 default:
                     return logLevel;
             }
@@ -124,21 +124,21 @@ namespace Microsoft.Azure.Mobile.Unity.Internal
 
         private static Microsoft.Azure.Mobile.LogLevel LogLevelFromUnity(int logLevel)
         {
-            switch ((Microsoft.Azure.Mobile.Unity.LogLevel)logLevel)
+            switch ((Microsoft.AppCenter.Unity.LogLevel)logLevel)
             {
-                case Microsoft.Azure.Mobile.Unity.LogLevel.Verbose:
+                case Microsoft.AppCenter.Unity.LogLevel.Verbose:
                     return Microsoft.Azure.Mobile.LogLevel.Verbose;
-                case Microsoft.Azure.Mobile.Unity.LogLevel.Debug:
+                case Microsoft.AppCenter.Unity.LogLevel.Debug:
                     return Microsoft.Azure.Mobile.LogLevel.Debug;
-                case Microsoft.Azure.Mobile.Unity.LogLevel.Info:
+                case Microsoft.AppCenter.Unity.LogLevel.Info:
                     return Microsoft.Azure.Mobile.LogLevel.Info;
-                case Microsoft.Azure.Mobile.Unity.LogLevel.Warn:
+                case Microsoft.AppCenter.Unity.LogLevel.Warn:
                     return Microsoft.Azure.Mobile.LogLevel.Warn;
-                case Microsoft.Azure.Mobile.Unity.LogLevel.Error:
+                case Microsoft.AppCenter.Unity.LogLevel.Error:
                     return Microsoft.Azure.Mobile.LogLevel.Error;
-                case Microsoft.Azure.Mobile.Unity.LogLevel.Assert:
+                case Microsoft.AppCenter.Unity.LogLevel.Assert:
                     return Microsoft.Azure.Mobile.LogLevel.Assert;
-                case Microsoft.Azure.Mobile.Unity.LogLevel.None:
+                case Microsoft.AppCenter.Unity.LogLevel.None:
                     return Microsoft.Azure.Mobile.LogLevel.None;
                 default:
                     return (Microsoft.Azure.Mobile.LogLevel)logLevel;
@@ -159,7 +159,7 @@ namespace Microsoft.Azure.Mobile.Unity.Internal
                     /**
                      * Workaround for known IL2CPP issue.
                      * See https://issuetracker.unity3d.com/issues/il2cpp-use-of-windows-dot-foundation-dot-collections-dot-propertyset-throws-a-notsupportedexception-on-uwp
-                     * 
+                     *
                      * NotSupportedException: Cannot call method
                      * 'System.Boolean System.Runtime.InteropServices.WindowsRuntime.IMapToIDictionaryAdapter`2::System.Collections.Generic.IDictionary`2.TryGetValue(TKey,TValue&)'.
                      * IL2CPP does not yet support calling this projected method.

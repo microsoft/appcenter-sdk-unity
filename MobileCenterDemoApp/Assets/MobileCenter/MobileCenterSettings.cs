@@ -6,7 +6,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
-using Microsoft.Azure.Mobile.Unity;
+using Microsoft.AppCenter.Unity;
 using UnityEngine;
 
 [Serializable]
@@ -74,17 +74,17 @@ public class MobileCenterSettings : ScriptableObject
 
     public static Type Analytics
     {
-        get { return MobileCenterAssembly.GetType("Microsoft.Azure.Mobile.Unity.Analytics.Analytics"); }
+        get { return MobileCenterAssembly.GetType("Microsoft.AppCenter.Unity.Analytics.Analytics"); }
     }
 
     public static Type Distribute
     {
-        get { return MobileCenterAssembly.GetType("Microsoft.Azure.Mobile.Unity.Distribute.Distribute"); }
+        get { return MobileCenterAssembly.GetType("Microsoft.AppCenter.Unity.Distribute.Distribute"); }
     }
 
     public static Type Push
     {
-        get { return MobileCenterAssembly.GetType("Microsoft.Azure.Mobile.Unity.Push.Push"); }
+        get { return MobileCenterAssembly.GetType("Microsoft.AppCenter.Unity.Push.Push"); }
     }
 
     private static Assembly MobileCenterAssembly

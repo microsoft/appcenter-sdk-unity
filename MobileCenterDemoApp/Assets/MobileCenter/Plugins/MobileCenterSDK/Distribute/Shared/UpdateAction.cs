@@ -2,7 +2,7 @@
 //
 // Licensed under the MIT license.
 
-namespace Microsoft.Azure.Mobile.Unity.Distribute
+namespace Microsoft.AppCenter.Unity.Distribute
 {
     /// <summary>
     /// User update action.

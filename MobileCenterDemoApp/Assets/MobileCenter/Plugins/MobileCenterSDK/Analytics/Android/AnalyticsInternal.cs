@@ -6,7 +6,7 @@
 using System;
 using UnityEngine;
 
-namespace Microsoft.Azure.Mobile.Unity.Analytics.Internal
+namespace Microsoft.AppCenter.Unity.Analytics.Internal
 {
     class AnalyticsInternal
     {

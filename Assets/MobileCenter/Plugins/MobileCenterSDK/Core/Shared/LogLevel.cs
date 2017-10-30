@@ -2,7 +2,7 @@
 //
 // Licensed under the MIT license.
 
-namespace Microsoft.Azure.Mobile.Unity
+namespace Microsoft.AppCenter.Unity
 {
     /// <summary>
     /// Log level threshold for logs emitted by the SDK.

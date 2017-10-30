@@ -7,7 +7,7 @@ using System;
 using System.Collections.Generic;
 using Windows.ApplicationModel.Activation;
 
-namespace Microsoft.Azure.Mobile.Unity.Push.Internal
+namespace Microsoft.AppCenter.Unity.Push.Internal
 {
     using UWPPush = Microsoft.Azure.Mobile.Push.Push;
     using WSAApplication = UnityEngine.WSA.Application;

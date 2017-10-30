@@ -4,9 +4,9 @@
 
 using System.Collections.Generic;
 using System.Linq;
-using Microsoft.Azure.Mobile.Unity.Analytics.Internal;
+using Microsoft.AppCenter.Unity.Analytics.Internal;
 
-namespace Microsoft.Azure.Mobile.Unity.Analytics
+namespace Microsoft.AppCenter.Unity.Analytics
 {
 #if UNITY_IOS || UNITY_ANDROID
     using RawType = System.IntPtr;

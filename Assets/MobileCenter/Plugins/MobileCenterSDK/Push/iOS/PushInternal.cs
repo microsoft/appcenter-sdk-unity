@@ -7,7 +7,7 @@ using System;
 using System.Runtime.InteropServices;
 using AOT;
 
-namespace Microsoft.Azure.Mobile.Unity.Push.Internal
+namespace Microsoft.AppCenter.Unity.Push.Internal
 {
     class PushInternal
     {
@@ -41,7 +41,7 @@ namespace Microsoft.Azure.Mobile.Unity.Push.Internal
         {
             return mobile_center_unity_push_get_type();
         }
-        
+
         public static MobileCenterTask SetEnabledAsync(bool isEnabled)
         {
             mobile_center_unity_push_set_enabled(isEnabled);
@@ -76,7 +76,7 @@ namespace Microsoft.Azure.Mobile.Unity.Push.Internal
 
         [DllImport("__Internal")]
         private static extern void mobile_center_unity_push_set_received_push_impl(ReceivedPushNotificationDelegate functionPtr);
-        
+
         [DllImport("__Internal")]
         private static extern void mobile_center_unity_push_replay_unprocessed_notifications();
 #endregion

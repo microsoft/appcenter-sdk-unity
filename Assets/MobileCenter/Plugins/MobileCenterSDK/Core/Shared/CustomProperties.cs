@@ -3,9 +3,9 @@
 // Licensed under the MIT license.
 
 using System;
-using Microsoft.Azure.Mobile.Unity.Internal;
+using Microsoft.AppCenter.Unity.Internal;
 
-namespace Microsoft.Azure.Mobile.Unity
+namespace Microsoft.AppCenter.Unity
 {
 #if UNITY_IOS
     using RawType = System.IntPtr;

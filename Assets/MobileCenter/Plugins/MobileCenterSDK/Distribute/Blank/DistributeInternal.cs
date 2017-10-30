@@ -4,20 +4,20 @@
 
 #if (!UNITY_IOS && !UNITY_ANDROID && !UNITY_WSA_10_0) || UNITY_EDITOR
 
-namespace Microsoft.Azure.Mobile.Unity.Distribute.Internal
+namespace Microsoft.AppCenter.Unity.Distribute.Internal
 {
 #if UNITY_IOS || UNITY_ANDROID
     using RawType = System.IntPtr;
 #else
     using RawType = System.Type;
 #endif
-    
+
     class DistributeInternal
     {
         public static void PrepareEventHandlers()
         {
         }
-        
+
         public static RawType GetNativeType()
         {
             return default(RawType);

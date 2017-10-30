@@ -7,7 +7,7 @@ using System;
 using System.Collections.Generic;
 using Windows.ApplicationModel.Activation;
 
-namespace Microsoft.Azure.Mobile.Unity.Push.Internal
+namespace Microsoft.AppCenter.Unity.Push.Internal
 {
     using UWPPush = Microsoft.Azure.Mobile.Push.Push;
     using WSAApplication = UnityEngine.WSA.Application;
@@ -16,7 +16,7 @@ namespace Microsoft.Azure.Mobile.Unity.Push.Internal
     {
         public static List<PushNotificationReceivedEventArgs> _unprocessedPushNotifications = new List<PushNotificationReceivedEventArgs>();
         public static readonly object _lockObject = new object();
-        
+
         public static void PrepareEventHandlers()
         {
             MobileCenterBehavior.InitializingServices += Initialize;

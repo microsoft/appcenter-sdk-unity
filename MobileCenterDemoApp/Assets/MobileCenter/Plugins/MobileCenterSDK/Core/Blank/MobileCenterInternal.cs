@@ -4,9 +4,9 @@
 
 #if (!UNITY_IOS && !UNITY_ANDROID && !UNITY_WSA_10_0) || UNITY_EDITOR
 using System;
-using Microsoft.Azure.Mobile.Unity;
+using Microsoft.AppCenter.Unity;
 
-namespace Microsoft.Azure.Mobile.Unity.Internal
+namespace Microsoft.AppCenter.Unity.Internal
 {
 #if UNITY_IOS
     using RawType = System.IntPtr;

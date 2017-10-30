@@ -6,7 +6,7 @@
 
 using UnityEngine;
 
-namespace Microsoft.Azure.Mobile.Unity
+namespace Microsoft.AppCenter.Unity
 {
     public partial class MobileCenterTask
     {
@@ -17,7 +17,7 @@ namespace Microsoft.Azure.Mobile.Unity
         public MobileCenterTask(AndroidJavaObject javaFuture)
         {
             var consumer = new UnityMobileCenterConsumer<AndroidJavaObject>();
-            consumer.CompletionCallback = t => 
+            consumer.CompletionCallback = t =>
             {
                 CompletionAction();
             };

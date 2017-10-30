@@ -7,7 +7,7 @@ using System;
 using System.Runtime.InteropServices;
 using UnityEngine;
 
-namespace Microsoft.Azure.Mobile.Unity.Push.Internal
+namespace Microsoft.AppCenter.Unity.Push.Internal
 {
     class PushDelegate : AndroidJavaProxy
     {

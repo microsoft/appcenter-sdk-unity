@@ -5,10 +5,10 @@
 using System;
 using System.Collections;
 using System.Reflection;
-using Microsoft.Azure.Mobile.Unity.Internal;
+using Microsoft.AppCenter.Unity.Internal;
 using UnityEngine;
 
-namespace Microsoft.Azure.Mobile.Unity
+namespace Microsoft.AppCenter.Unity
 {
 #if UNITY_IOS || UNITY_ANDROID
     using ServiceType = System.IntPtr;
@@ -97,7 +97,7 @@ namespace Microsoft.Azure.Mobile.Unity
 #elif UNITY_WSA_10_0
         public static ServiceType[] ServicesToNativeTypes(Type[] services)
         {
-            //TODO after all namespaces are changed to be in Microsoft.Azure.Mobile.Unity,
+            //TODO after all namespaces are changed to be in Microsoft.AppCenter.Unity,
             //TODO remove case where 'method == null'
             var nativeTypes = new ServiceType[services.Length];
             for (var i = 0; i < services.Length; ++i)
@@ -139,7 +139,7 @@ namespace Microsoft.Azure.Mobile.Unity
                                                WrapperSdk.WrapperRuntimeVersion, null, null, null);
         }
 
-        // Gets the first instance of an app secret corresponding to the given platform name, or returns the string 
+        // Gets the first instance of an app secret corresponding to the given platform name, or returns the string
         // as-is if no identifier can be found.
         public static string GetSecretForPlatform(string secrets)
         {

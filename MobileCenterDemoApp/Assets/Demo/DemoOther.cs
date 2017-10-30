@@ -3,8 +3,8 @@
 // Licensed under the MIT license.
 
 using System.Collections;
-using Microsoft.Azure.Mobile.Unity.Distribute;
-using Microsoft.Azure.Mobile.Unity.Push;
+using Microsoft.AppCenter.Unity.Distribute;
+using Microsoft.AppCenter.Unity.Push;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -24,7 +24,7 @@ public class DemoOther : MonoBehaviour
             DistributeEnabled.isOn = task.Result;
         });
 
-        Distribute.ReleaseAvailable = (releaseDetails) => 
+        Distribute.ReleaseAvailable = (releaseDetails) =>
         {
             return true;
         };

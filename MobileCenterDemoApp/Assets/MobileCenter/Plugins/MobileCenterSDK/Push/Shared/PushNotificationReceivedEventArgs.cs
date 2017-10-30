@@ -5,7 +5,7 @@
 using System;
 using System.Collections.Generic;
 
-namespace Microsoft.Azure.Mobile.Unity.Push
+namespace Microsoft.AppCenter.Unity.Push
 {
     /// <summary>
     /// Event args for event that occurs when a push notification is received.

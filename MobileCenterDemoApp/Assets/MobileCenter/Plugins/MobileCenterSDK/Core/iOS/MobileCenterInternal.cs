@@ -6,7 +6,7 @@
 using System;
 using System.Runtime.InteropServices;
 
-namespace Microsoft.Azure.Mobile.Unity.Internal
+namespace Microsoft.AppCenter.Unity.Internal
 {
     class MobileCenterInternal
     {

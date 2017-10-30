@@ -7,7 +7,7 @@ using System.Runtime.InteropServices;
 using System;
 using System.Collections.Generic;
 
-namespace Microsoft.Azure.Mobile.Unity.Internal.Utility
+namespace Microsoft.AppCenter.Unity.Internal.Utility
 {
     public class NSStringDictionaryHelper
     {

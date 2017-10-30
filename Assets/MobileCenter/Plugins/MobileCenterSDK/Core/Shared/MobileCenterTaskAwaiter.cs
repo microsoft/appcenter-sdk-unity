@@ -7,7 +7,7 @@
 using System.Runtime.CompilerServices;
 using System.Threading.Tasks;
 
-namespace Microsoft.Azure.Mobile.Unity
+namespace Microsoft.AppCenter.Unity
 {
     public partial class MobileCenterTask
     {

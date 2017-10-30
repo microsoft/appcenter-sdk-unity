@@ -6,7 +6,7 @@
 using System;
 using System.Runtime.InteropServices;
 
-namespace Microsoft.Azure.Mobile.Unity.Distribute.Internal
+namespace Microsoft.AppCenter.Unity.Distribute.Internal
 {
     class ReleaseDetailsHelper
     {
