@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
-<package name="MobileCenter" version="0.0.1">
+<package name="AppCenter" version="0.0.1">
     <include>
         <!-- Editor related files -->
         <file path="Assets/AppCenter/Editor" />
         <file path="Assets/AppCenter/Properties" />
-        <file path="Assets/AppCenter/MobileCenterBehavior.cs" />
-        <file path="Assets/AppCenter/MobileCenterSettings.cs" />
+        <file path="Assets/AppCenter/AppCenterBehavior.cs" />
+        <file path="Assets/AppCenter/AppCenterSettings.cs" />
 
         <!-- Android files -->
         <file path="Assets/AppCenter/Plugins/Android/Utility" />

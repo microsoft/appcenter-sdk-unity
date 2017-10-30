@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<package name="MobileCenterPush" version="0.0.1" needsCore="true">
+<package name="AppCenterPush" version="0.0.1" needsCore="true">
     <include>
         <!-- Shared files -->
         <file path="Assets/AppCenter/Plugins/AppCenterSDK/Push/Shared" />
