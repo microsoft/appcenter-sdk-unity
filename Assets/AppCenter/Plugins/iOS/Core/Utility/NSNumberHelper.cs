@@ -7,7 +7,7 @@
 using System;
 using System.Runtime.InteropServices;
 
-namespace Microsoft.Azure.Mobile.Internal.Utility
+namespace Microsoft.AppCenter.Unity.Internal.Utility
 {
     public class NSNumberHelper
     {

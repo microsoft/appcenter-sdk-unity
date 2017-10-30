@@ -5,7 +5,7 @@
 #if UNITY_ANDROID
 using UnityEngine;
 
-namespace Microsoft.Azure.Mobile.Internal.Utility
+namespace Microsoft.AppCenter.Unity.Internal.Utility
 {
     public class JavaNumberHelper
     {
@@ -18,7 +18,7 @@ namespace Microsoft.Azure.Mobile.Internal.Utility
         public static AndroidJavaObject Convert(long val)
         {
             AndroidJavaObject javaLong = new AndroidJavaObject("java.lang.Long", val);
-            return javaLong; 
+            return javaLong;
         }
 
         public static AndroidJavaObject Convert(float val)

@@ -7,7 +7,7 @@
 using System;
 using UnityEngine;
 
-namespace Microsoft.Azure.Mobile.Internal.Utility
+namespace Microsoft.AppCenter.Unity.Internal.Utility
 {
     public class JavaDateHelper
     {

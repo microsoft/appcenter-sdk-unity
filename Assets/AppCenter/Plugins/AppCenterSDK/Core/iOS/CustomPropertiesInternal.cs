@@ -5,7 +5,7 @@
 #if UNITY_IOS && !UNITY_EDITOR
 using System;
 using System.Runtime.InteropServices;
-using Microsoft.Azure.Mobile.Internal.Utility;
+using Microsoft.AppCenter.Unity.Internal.Utility;
 
 namespace Microsoft.AppCenter.Unity.Internal
 {

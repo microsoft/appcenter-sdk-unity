@@ -5,7 +5,7 @@
 #if UNITY_ANDROID && !UNITY_EDITOR
 using System;
 using UnityEngine;
-using Microsoft.Azure.Mobile.Internal.Utility;
+using Microsoft.AppCenter.Unity.Internal.Utility;
 
 namespace Microsoft.AppCenter.Unity.Internal
 {
