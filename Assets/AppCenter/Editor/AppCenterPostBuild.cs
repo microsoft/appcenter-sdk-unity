@@ -41,7 +41,7 @@ public class AppCenterPostBuild
         if (target == BuildTarget.iOS)
         {
 #if UNITY_IOS
-            // Load/Apply Mobile Center settings.
+            // Load/Apply App Center settings.
             var settingsPath = AppCenterSettingsEditor.SettingsPath;
             var settings = AssetDatabase.LoadAssetAtPath<AppCenterSettings>(settingsPath);
             ApplyIosSettings(settings);
@@ -122,7 +122,7 @@ public class AppCenterPostBuild
     {
         var appAdditionsFolder = "Assets/AppCenter/Plugins/WSA/Push/AppAdditions";
         var codeToInsert = File.ReadAllText(Path.Combine(appAdditionsFolder, codeToInsertFileName));
-        var commentText = "Mobile Center Push code:";
+        var commentText = "App Center Push code:";
         codeToInsert = "\n            // " + commentText + "\n" + codeToInsert;
         var fileText = File.ReadAllText(appFilePath);
         var regex = new Regex(searchRegex);
@@ -142,7 +142,7 @@ public class AppCenterPostBuild
         }
         else
         {
-            Debug.LogError("Unable to automatically modify file '" + appFilePath + "'. For Mobile Center Push to work properly, " +
+            Debug.LogError("Unable to automatically modify file '" + appFilePath + "'. For App Center Push to work properly, " +
                            "please follow troubleshooting instructions at https://docs.microsoft.com/en-us/mobile-center/sdk/troubleshooting/unity");
         }
     }
@@ -252,7 +252,7 @@ public class AppCenterPostBuild
     {
         if (settings.UseDistribute && AppCenterSettings.Distribute != null)
         {
-            // Add Mobile Center URL sceme.
+            // Add App Center URL sceme.
             var urlTypes = info.root.CreateArray("CFBundleURLTypes");
             var urlType = urlTypes.AddDict();
             urlType.SetString("CFBundleTypeRole", "None");

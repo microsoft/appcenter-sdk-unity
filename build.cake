@@ -360,7 +360,7 @@ Task("Externals-Unity-Packages").Does(()=>
     }
 }).OnError(HandleError);
 
-// Add Mobile Center packages to demo app.
+// Add App Center packages to demo app.
 Task("AddPackagesToDemoApp")
     .IsDependentOn("CreatePackages")
     .Does(()=>

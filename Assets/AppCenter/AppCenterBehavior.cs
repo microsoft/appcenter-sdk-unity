@@ -8,6 +8,7 @@ using System;
 using System.Reflection;
 using Microsoft.AppCenter.Unity.Internal;
 
+// TODO Update documentation link
 [HelpURL("https://docs.microsoft.com/en-us/mobile-center/sdk/")]
 public class AppCenterBehavior : MonoBehaviour
 {
@@ -21,20 +22,20 @@ public class AppCenterBehavior : MonoBehaviour
 
     private void Awake()
     {
-        // Make sure that Mobile Center have only one instance.
+        // Make sure that App Center have only one instance.
         if (instance != null)
         {
-            Debug.LogError("Mobile Center should have only one instance!");
+            Debug.LogError("App Center should have only one instance!");
             DestroyImmediate(gameObject);
             return;
         }
         instance = this;
         DontDestroyOnLoad(gameObject);
 
-        // Initialize Mobile Center.
+        // Initialize App Center.
         if (settings == null)
         {
-            Debug.LogError("Mobile Center isn't configured!");
+            Debug.LogError("App Center isn't configured!");
             return;
         }
         StartAppCenter();
@@ -55,7 +56,7 @@ public class AppCenterBehavior : MonoBehaviour
         InvokeInitializingServices();
         AppCenter.SetWrapperSdk();
 
-        // On iOS and Android Mobile Center starting automatically.
+        // On iOS and Android App Center starting automatically.
 #if UNITY_EDITOR || (!UNITY_IOS && !UNITY_ANDROID)
         AppCenter.LogLevel = settings.InitialLogLevel;
         if (settings.CustomLogUrl.UseCustomUrl)

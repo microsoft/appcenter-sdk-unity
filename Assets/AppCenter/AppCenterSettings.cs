@@ -19,18 +19,18 @@ public class AppCenterSettings : ScriptableObject
     [AppSecret]
     public string UWPAppSecret = "uwp-app-secret";
 
-    [Tooltip("Mobile Center Analytics helps you understand user behavior and customer engagement to improve your app.")]
+    [Tooltip("App Center Analytics helps you understand user behavior and customer engagement to improve your app.")]
     public bool UseAnalytics = true;
-    [Tooltip("Mobile Center Crashes will automatically generate a crash log every time your app crashes.")]
+    [Tooltip("App Center Crashes will automatically generate a crash log every time your app crashes.")]
     public bool UseCrashes = true;
-    [Tooltip("Mobile Center Distribute will let your users install a new version of the app when you distribute it via the Mobile Center.")]
+    [Tooltip("App Center Distribute will let your users install a new version of the app when you distribute it via the App Center.")]
     public bool UseDistribute = true;
     public CustomUrlProperty CustomApiUrl = new CustomUrlProperty("API");
     public CustomUrlProperty CustomInstallUrl = new CustomUrlProperty("Install");
 
-    [Tooltip("Mobile Center Push enables you to send push notifications to users of your app from the Mobile Center portal.")]
+    [Tooltip("App Center Push enables you to send push notifications to users of your app from the App Center portal.")]
     public bool UsePush = true;
-    [Tooltip("By default, Mobile Center Push disables Firebase Analytics. Use this option to enable it. This only applies to Android applications.")]
+    [Tooltip("By default, App Center Push disables Firebase Analytics. Use this option to enable it. This only applies to Android applications.")]
     public bool EnableFirebaseAnalytics = false;
     public LogLevel InitialLogLevel = LogLevel.Info;
     public CustomUrlProperty CustomLogUrl = new CustomUrlProperty("Log");

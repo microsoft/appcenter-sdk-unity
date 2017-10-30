@@ -20,7 +20,7 @@ namespace Microsoft.AppCenter.Unity.Internal.Utils
                 var instance = FindObjectOfType<UnityCoroutineHelper>();
                 if (instance == null)
                 {
-                    var gameObject = new GameObject("Mobile Center Helper")
+                    var gameObject = new GameObject("App Center Helper")
                     {
                         hideFlags = HideFlags.HideAndDontSave
                     };

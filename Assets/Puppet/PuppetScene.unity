@@ -3415,7 +3415,7 @@ GameObject:
   - component: {fileID: 769943388}
   - component: {fileID: 769943387}
   m_Layer: 5
-  m_Name: Mobile Center
+  m_Name: App Center
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -4177,7 +4177,7 @@ GameObject:
   - component: {fileID: 943080981}
   - component: {fileID: 943080983}
   m_Layer: 5
-  m_Name: Mobile Center Enabled
+  m_Name: App Center Enabled
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -5097,7 +5097,7 @@ GameObject:
   - component: {fileID: 1253538759}
   - component: {fileID: 1253538760}
   m_Layer: 5
-  m_Name: Mobile Center
+  m_Name: App Center
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -5620,7 +5620,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: Mobile Center Enabled
+  m_Text: App Center Enabled
 --- !u!222 &1290651687
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -5979,7 +5979,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: Mobile Center
+  m_Text: App Center
 --- !u!222 &1393567127
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -7270,7 +7270,7 @@ GameObject:
   - component: {fileID: 1653541464}
   - component: {fileID: 1653541465}
   m_Layer: 0
-  m_Name: Mobile Center
+  m_Name: App Center
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -9311,7 +9311,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: Mobile Center Puppet Application
+  m_Text: App Center Puppet Application
 --- !u!222 &2069133842
 CanvasRenderer:
   m_ObjectHideFlags: 0
