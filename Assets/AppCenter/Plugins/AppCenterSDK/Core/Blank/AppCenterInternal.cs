@@ -19,7 +19,7 @@ namespace Microsoft.AppCenter.Unity.Internal
     using ServiceType = System.Type;
 #endif
 
-    class MobileCenterInternal
+    class AppCenterInternal
     {
         public static void Configure(string appSecret)
         {
@@ -51,19 +51,19 @@ namespace Microsoft.AppCenter.Unity.Internal
         {
         }
 
-        public static MobileCenterTask SetEnabledAsync(bool enabled)
+        public static AppCenterTask SetEnabledAsync(bool enabled)
         {
-            return MobileCenterTask.FromCompleted();
+            return AppCenterTask.FromCompleted();
         }
 
-        public static MobileCenterTask<bool> IsEnabledAsync()
+        public static AppCenterTask<bool> IsEnabledAsync()
         {
-            return MobileCenterTask<bool>.FromCompleted(false);
+            return AppCenterTask<bool>.FromCompleted(false);
         }
 
-        public static MobileCenterTask<string> GetInstallIdAsync()
+        public static AppCenterTask<string> GetInstallIdAsync()
         {
-            return MobileCenterTask<string>.FromCompleted("");
+            return AppCenterTask<string>.FromCompleted("");
         }
 
         public static void SetCustomProperties(RawType properties)

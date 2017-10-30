@@ -16,22 +16,22 @@ namespace Microsoft.AppCenter.Unity
     using ServiceType = System.Type;
 #endif
 
-    public class MobileCenter
+    public class AppCenter
     {
         public static LogLevel LogLevel
         {
-            get { return (LogLevel)MobileCenterInternal.GetLogLevel(); }
-            set { MobileCenterInternal.SetLogLevel((int)value); }
+            get { return (LogLevel)AppCenterInternal.GetLogLevel(); }
+            set { AppCenterInternal.SetLogLevel((int)value); }
         }
 
-        public static MobileCenterTask SetEnabledAsync(bool enabled)
+        public static AppCenterTask SetEnabledAsync(bool enabled)
         {
-            return MobileCenterInternal.SetEnabledAsync(enabled);
+            return AppCenterInternal.SetEnabledAsync(enabled);
         }
 
-        public static MobileCenterTask<bool> IsEnabledAsync()
+        public static AppCenterTask<bool> IsEnabledAsync()
         {
-            return MobileCenterInternal.IsEnabledAsync();
+            return AppCenterInternal.IsEnabledAsync();
         }
 
         /// <summary>
@@ -40,10 +40,10 @@ namespace Microsoft.AppCenter.Unity
         /// <remarks>
         /// The identifier is lost if clearing application data or uninstalling application.
         /// </remarks>
-        public static MobileCenterTask<Guid?> GetInstallIdAsync()
+        public static AppCenterTask<Guid?> GetInstallIdAsync()
         {
-            var stringTask = MobileCenterInternal.GetInstallIdAsync();
-            var guidTask = new MobileCenterTask<Guid?>();
+            var stringTask = AppCenterInternal.GetInstallIdAsync();
+            var guidTask = new AppCenterTask<Guid?>();
             stringTask.ContinueWith(t =>
             {
                 var installId = !string.IsNullOrEmpty(t.Result) ? new Guid(t.Result) : (Guid?)null;
@@ -58,7 +58,7 @@ namespace Microsoft.AppCenter.Unity
         /// <param name="logUrl">Base URL to use for server communication.</param>
         public static void SetLogUrl(string logUrl)
         {
-            MobileCenterInternal.SetLogUrl(logUrl);
+            AppCenterInternal.SetLogUrl(logUrl);
         }
 
         /// <summary>
@@ -66,7 +66,7 @@ namespace Microsoft.AppCenter.Unity
         /// </summary>
         public static bool Configured
         {
-            get { return MobileCenterInternal.IsConfigured(); }
+            get { return AppCenterInternal.IsConfigured(); }
         }
 
 #if UNITY_IOS
@@ -129,12 +129,12 @@ namespace Microsoft.AppCenter.Unity
         public static void SetCustomProperties(Unity.CustomProperties customProperties)
         {
             var rawCustomProperties = customProperties.GetRawObject();
-            MobileCenterInternal.SetCustomProperties(rawCustomProperties);
+            AppCenterInternal.SetCustomProperties(rawCustomProperties);
         }
 
         public static void SetWrapperSdk()
         {
-            MobileCenterInternal.SetWrapperSdk(WrapperSdk.WrapperSdkVersion,
+            AppCenterInternal.SetWrapperSdk(WrapperSdk.WrapperSdkVersion,
                                                WrapperSdk.Name,
                                                WrapperSdk.WrapperRuntimeVersion, null, null, null);
         }

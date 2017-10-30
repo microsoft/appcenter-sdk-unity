@@ -2,7 +2,7 @@
 //
 // Licensed under the MIT license.
 
-#import "MobileCenterStarter.h"
+#import "AppCenterStarter.h"
 #import <Foundation/Foundation.h>
 #import <UIKit/UIKit.h>
 
@@ -22,7 +22,7 @@
 #import "../Distribute/DistributeDelegate.h"
 #endif
 
-@implementation MobileCenterStarter
+@implementation AppCenterStarter
 
 static NSString *const kMSAppSecret = @"mobile-center-app-secret";
 static NSString *const kMSCustomLogUrl = @"custom-log-url";
@@ -33,12 +33,12 @@ static const int kMSLogLevel = 0/*LOG_LEVEL*/;
 
 + (void)load {
   [[NSNotificationCenter defaultCenter] addObserver:self
-                                           selector:@selector(startMobileCenter)
+                                           selector:@selector(startAppCenter)
                                                name:UIApplicationDidFinishLaunchingNotification
                                              object:nil];
 }
 
-+ (void)startMobileCenter {
++ (void)startAppCenter {
   NSMutableArray<Class>* classes = [[NSMutableArray alloc] init];
 
 #ifdef MOBILE_CENTER_UNITY_USE_PUSH

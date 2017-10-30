@@ -6,7 +6,7 @@ using UnityEngine;
 
 namespace Microsoft.AppCenter.Unity
 {
-    public partial class MobileCenterTask : CustomYieldInstruction
+    public partial class AppCenterTask : CustomYieldInstruction
     {
         public override bool keepWaiting
         {

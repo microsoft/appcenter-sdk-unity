@@ -14,8 +14,8 @@ namespace Microsoft.AppCenter.Unity.Distribute.Internal
 
         public static void PrepareEventHandlers()
         {
-            MobileCenterBehavior.InitializingServices += Initialize;
-            MobileCenterBehavior.Started += StartBehavior;
+            AppCenterBehavior.InitializingServices += Initialize;
+            AppCenterBehavior.Started += StartBehavior;
         }
 
         private static void Initialize()
@@ -31,16 +31,16 @@ namespace Microsoft.AppCenter.Unity.Distribute.Internal
             instance.Call("onActivityResumed", activity);
         }
 
-        public static MobileCenterTask SetEnabledAsync(bool isEnabled)
+        public static AppCenterTask SetEnabledAsync(bool isEnabled)
         {
             var future = _distribute.CallStatic<AndroidJavaObject>("setEnabled", isEnabled);
-            return new MobileCenterTask(future);
+            return new AppCenterTask(future);
         }
 
-        public static MobileCenterTask<bool> IsEnabledAsync()
+        public static AppCenterTask<bool> IsEnabledAsync()
         {
             var future = _distribute.CallStatic<AndroidJavaObject>("isEnabled");
-            return new MobileCenterTask<bool>(future);
+            return new AppCenterTask<bool>(future);
         }
 
         public static IntPtr GetNativeType()

@@ -13,7 +13,7 @@ using UnityEditor.Callbacks;
 using UnityEditor.iOS.Xcode;
 #endif
 
-public class MobileCenterPostBuild
+public class AppCenterPostBuild
 {
     [PostProcessBuild]
     public static void OnPostprocessBuild(BuildTarget target, string pathToBuiltProject)
@@ -42,8 +42,8 @@ public class MobileCenterPostBuild
         {
 #if UNITY_IOS
             // Load/Apply Mobile Center settings.
-            var settingsPath = MobileCenterSettingsEditor.SettingsPath;
-            var settings = AssetDatabase.LoadAssetAtPath<MobileCenterSettings>(settingsPath);
+            var settingsPath = AppCenterSettingsEditor.SettingsPath;
+            var settings = AssetDatabase.LoadAssetAtPath<AppCenterSettings>(settingsPath);
             ApplyIosSettings(settings);
 
             // Update project.
@@ -77,8 +77,8 @@ public class MobileCenterPostBuild
 #if UNITY_WSA_10_0
     public static void AddHelperCodeToUWPProject(string pathToBuiltProject)
     {
-        var settingsPath = MobileCenterSettingsEditor.SettingsPath;
-        var settings = AssetDatabase.LoadAssetAtPath<MobileCenterSettings>(settingsPath);
+        var settingsPath = AppCenterSettingsEditor.SettingsPath;
+        var settings = AssetDatabase.LoadAssetAtPath<AppCenterSettings>(settingsPath);
         if (!settings.UsePush)
         {
             return;
@@ -149,7 +149,7 @@ public class MobileCenterPostBuild
 
     public static void FixIl2CppLogging(string pathToBuiltProject)
     {
-        var sourceDebuggerPath = "Assets\\MobileCenter\\Plugins\\WSA\\IL2CPP\\Debugger.cpp.txt";
+        var sourceDebuggerPath = "Assets\\AppCenter\\Plugins\\WSA\\IL2CPP\\Debugger.cpp.txt";
         var destDebuggerPath = Path.Combine(pathToBuiltProject,
             "Il2CppOutputProject\\IL2CPP\\libil2cpp\\icalls\\mscorlib\\System.Diagnostics\\Debugger.cpp");
         File.Copy(sourceDebuggerPath, destDebuggerPath, true);
@@ -236,7 +236,7 @@ public class MobileCenterPostBuild
 
     #region iOS Methods
 #if UNITY_IOS
-    private static void OnPostprocessProject(PBXProject project, MobileCenterSettings settings)
+    private static void OnPostprocessProject(PBXProject project, AppCenterSettings settings)
     {
         // The target we want to add to is created by Unity.
         var targetName = PBXProject.GetUnityTargetName();
@@ -248,9 +248,9 @@ public class MobileCenterPostBuild
         project.AddBuildProperty(targetGuid, "CLANG_ENABLE_MODULES", "YES");
     }
 
-    private static void OnPostprocessInfo(PlistDocument info, MobileCenterSettings settings)
+    private static void OnPostprocessInfo(PlistDocument info, AppCenterSettings settings)
     {
-        if (settings.UseDistribute && MobileCenterSettings.Distribute != null)
+        if (settings.UseDistribute && AppCenterSettings.Distribute != null)
         {
             // Add Mobile Center URL sceme.
             var urlTypes = info.root.CreateArray("CFBundleURLTypes");
@@ -262,9 +262,9 @@ public class MobileCenterPostBuild
         }
     }
 
-    private static void ApplyIosSettings(MobileCenterSettings settings)
+    private static void ApplyIosSettings(AppCenterSettings settings)
     {
-        var settingsMaker = new MobileCenterSettingsMakerIos();
+        var settingsMaker = new AppCenterSettingsMakerIos();
         if (settings.CustomLogUrl.UseCustomUrl)
         {
             settingsMaker.SetLogUrl(settings.CustomLogUrl.Url);
@@ -295,9 +295,9 @@ public class MobileCenterPostBuild
     }
 
 #if UNITY_2017_1_OR_NEWER
-    private static void OnPostprocessCapabilities(ProjectCapabilityManager capabilityManager, MobileCenterSettings settings)
+    private static void OnPostprocessCapabilities(ProjectCapabilityManager capabilityManager, AppCenterSettings settings)
     {
-        if (settings.UsePush && MobileCenterSettings.Push != null)
+        if (settings.UsePush && AppCenterSettings.Push != null)
         {
             capabilityManager.AddPushNotifications(true);
             capabilityManager.AddBackgroundModes(BackgroundModesOptions.RemoteNotifications);

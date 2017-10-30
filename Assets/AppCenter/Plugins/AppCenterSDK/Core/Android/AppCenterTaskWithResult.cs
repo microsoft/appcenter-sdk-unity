@@ -9,11 +9,11 @@ using UnityEngine;
 
 namespace Microsoft.AppCenter.Unity
 {
-    public partial class MobileCenterTask<TResult>
+    public partial class AppCenterTask<TResult>
     {
         private ManualResetEvent _completionEvent = new ManualResetEvent(false);
         private TResult _result;
-        private UnityMobileCenterConsumer<TResult> _consumer = new UnityMobileCenterConsumer<TResult>();
+        private UnityAppCenterConsumer<TResult> _consumer = new UnityAppCenterConsumer<TResult>();
 
         // This will block if it is called before the task is complete
         public TResult Result
@@ -26,11 +26,11 @@ namespace Microsoft.AppCenter.Unity
             }
         }
 
-        public MobileCenterTask()
+        public AppCenterTask()
         {
         }
 
-        public MobileCenterTask(AndroidJavaObject javaFuture)
+        public AppCenterTask(AndroidJavaObject javaFuture)
         {
             _consumer.CompletionCallback = SetResult;
             javaFuture.Call("thenAccept", _consumer);

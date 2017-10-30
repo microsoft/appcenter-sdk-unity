@@ -8,15 +8,15 @@ using UnityEngine;
 
 namespace Microsoft.AppCenter.Unity
 {
-    public partial class MobileCenterTask
+    public partial class AppCenterTask
     {
-        protected MobileCenterTask()
+        protected AppCenterTask()
         {
         }
 
-        public MobileCenterTask(AndroidJavaObject javaFuture)
+        public AppCenterTask(AndroidJavaObject javaFuture)
         {
-            var consumer = new UnityMobileCenterConsumer<AndroidJavaObject>();
+            var consumer = new UnityAppCenterConsumer<AndroidJavaObject>();
             consumer.CompletionCallback = t =>
             {
                 CompletionAction();

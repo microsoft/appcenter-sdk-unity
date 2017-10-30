@@ -4,6 +4,6 @@
 
 #import <Foundation/Foundation.h>
 
-@interface MobileCenterStarter : NSObject
+@interface AppCenterStarter : NSObject
 
 @end

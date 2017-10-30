@@ -14,7 +14,7 @@ namespace Microsoft.AppCenter.Unity.Analytics.Internal
 
         public static void PrepareEventHandlers()
         {
-            MobileCenterBehavior.InitializedMobileCenterAndServices += PostInitialize;
+            AppCenterBehavior.InitializedAppCenterAndServices += PostInitialize;
         }
 
         private static void PostInitialize()
@@ -45,16 +45,16 @@ namespace Microsoft.AppCenter.Unity.Analytics.Internal
             _analytics.CallStatic("trackEvent", eventName, properties);
         }
 
-        public static MobileCenterTask SetEnabledAsync(bool isEnabled)
+        public static AppCenterTask SetEnabledAsync(bool isEnabled)
         {
             var future = _analytics.CallStatic<AndroidJavaObject>("setEnabled", isEnabled);
-            return new MobileCenterTask(future);
+            return new AppCenterTask(future);
         }
 
-        public static MobileCenterTask<bool> IsEnabledAsync()
+        public static AppCenterTask<bool> IsEnabledAsync()
         {
             var future = _analytics.CallStatic<AndroidJavaObject>("isEnabled");
-            return new MobileCenterTask<bool>(future);
+            return new AppCenterTask<bool>(future);
         }
     }
 }

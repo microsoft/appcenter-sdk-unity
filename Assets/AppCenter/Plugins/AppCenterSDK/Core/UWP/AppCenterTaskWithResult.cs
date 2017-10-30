@@ -12,7 +12,7 @@ using UnityEngine;
 
 namespace Microsoft.AppCenter.Unity
 {
-    public partial class MobileCenterTask<TResult>
+    public partial class AppCenterTask<TResult>
     {
         private Task<TResult> _task;
         private ManualResetEvent _completionEvent = new ManualResetEvent(false);
@@ -28,11 +28,11 @@ namespace Microsoft.AppCenter.Unity
             }
         }
 
-        internal MobileCenterTask()
+        internal AppCenterTask()
         {
         }
 
-        public MobileCenterTask(Task<TResult> task) : base(task)
+        public AppCenterTask(Task<TResult> task) : base(task)
         {
             // Need to save the task to access result later
             _task = task;

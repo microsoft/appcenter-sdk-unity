@@ -8,7 +8,7 @@ using System.Runtime.InteropServices;
 
 namespace Microsoft.AppCenter.Unity.Internal
 {
-    class MobileCenterInternal
+    class AppCenterInternal
     {
         public static void SetLogLevel(int logLevel)
         {
@@ -30,22 +30,22 @@ namespace Microsoft.AppCenter.Unity.Internal
             appcenter_unity_set_log_url(logUrl);
         }
 
-        public static MobileCenterTask SetEnabledAsync(bool isEnabled)
+        public static AppCenterTask SetEnabledAsync(bool isEnabled)
         {
             appcenter_unity_set_enabled(isEnabled);
-            return MobileCenterTask.FromCompleted();
+            return AppCenterTask.FromCompleted();
         }
 
-        public static MobileCenterTask<bool> IsEnabledAsync()
+        public static AppCenterTask<bool> IsEnabledAsync()
         {
             var isEnabled = appcenter_unity_is_enabled();
-            return MobileCenterTask<bool>.FromCompleted(isEnabled);
+            return AppCenterTask<bool>.FromCompleted(isEnabled);
         }
 
-        public static MobileCenterTask<string> GetInstallIdAsync()
+        public static AppCenterTask<string> GetInstallIdAsync()
         {
             var installId = appcenter_unity_get_install_id();
-            return MobileCenterTask<string>.FromCompleted(installId);
+            return AppCenterTask<string>.FromCompleted(installId);
         }
 
         public static void SetCustomProperties(IntPtr properties)

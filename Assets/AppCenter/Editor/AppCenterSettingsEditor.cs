@@ -6,16 +6,16 @@ using UnityEngine;
 using UnityEditor;
 using UnityEditor.Callbacks;
 
-[CustomEditor(typeof(MobileCenterSettings))]
-public class MobileCenterSettingsEditor : Editor
+[CustomEditor(typeof(AppCenterSettings))]
+public class AppCenterSettingsEditor : Editor
 {
-    public const string SettingsPath = "Assets/AppCenter/MobileCenterSettings.asset";
+    public const string SettingsPath = "Assets/AppCenter/AppCenterSettings.asset";
 
-    public static MobileCenterSettings Settings
+    public static AppCenterSettings Settings
     {
         get
         {
-            return AssetDatabase.LoadAssetAtPath<MobileCenterSettings>(SettingsPath);
+            return AssetDatabase.LoadAssetAtPath<AppCenterSettings>(SettingsPath);
         }
     }
 
@@ -30,12 +30,12 @@ public class MobileCenterSettingsEditor : Editor
         EditorGUILayout.PropertyField(serializedObject.FindProperty("UWPAppSecret"));
 
         // Draw modules.
-        if (MobileCenterSettings.Analytics != null)
+        if (AppCenterSettings.Analytics != null)
         {
             Header("Analytics");
             EditorGUILayout.PropertyField(serializedObject.FindProperty("UseAnalytics"));
         }
-        if (MobileCenterSettings.Distribute != null)
+        if (AppCenterSettings.Distribute != null)
         {
             Header("Distribute");
             var serializedProperty = serializedObject.FindProperty("UseDistribute");
@@ -43,7 +43,7 @@ public class MobileCenterSettingsEditor : Editor
             EditorGUILayout.PropertyField(serializedObject.FindProperty("CustomApiUrl"));
             EditorGUILayout.PropertyField(serializedObject.FindProperty("CustomInstallUrl"));
         }
-        if (MobileCenterSettings.Push != null)
+        if (AppCenterSettings.Push != null)
         {
             Header("Push");
             var serializedProperty = serializedObject.FindProperty("UsePush");
@@ -72,7 +72,7 @@ public class MobileCenterSettingsEditor : Editor
         {
             return;
         }
-        var settingsMaker = new MobileCenterSettingsMakerAndroid();
+        var settingsMaker = new AppCenterSettingsMakerAndroid();
         settingsMaker.SetAppSecret(settings.AndroidAppSecret);
         if (settings.CustomLogUrl.UseCustomUrl)
         {

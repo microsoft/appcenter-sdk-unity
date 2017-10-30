@@ -6,7 +6,7 @@
 
 namespace Microsoft.AppCenter.Unity
 {
-    public partial class MobileCenterTask<TResult>
+    public partial class AppCenterTask<TResult>
     {
         public TResult Result { get; private set; }
 

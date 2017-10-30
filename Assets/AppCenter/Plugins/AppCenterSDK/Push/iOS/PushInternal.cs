@@ -28,7 +28,7 @@ namespace Microsoft.AppCenter.Unity.Push.Internal
 #endregion
         public static void PrepareEventHandlers()
         {
-            MobileCenterBehavior.InitializingServices += Initialize;
+            AppCenterBehavior.InitializingServices += Initialize;
         }
 
         private static void Initialize()
@@ -42,16 +42,16 @@ namespace Microsoft.AppCenter.Unity.Push.Internal
             return appcenter_unity_push_get_type();
         }
 
-        public static MobileCenterTask SetEnabledAsync(bool isEnabled)
+        public static AppCenterTask SetEnabledAsync(bool isEnabled)
         {
             appcenter_unity_push_set_enabled(isEnabled);
-            return MobileCenterTask.FromCompleted();
+            return AppCenterTask.FromCompleted();
         }
 
-        public static MobileCenterTask<bool> IsEnabledAsync()
+        public static AppCenterTask<bool> IsEnabledAsync()
         {
             var isEnabled = appcenter_unity_push_is_enabled();
-            return MobileCenterTask<bool>.FromCompleted(isEnabled);
+            return AppCenterTask<bool>.FromCompleted(isEnabled);
         }
 
         public static void EnableFirebaseAnalytics()

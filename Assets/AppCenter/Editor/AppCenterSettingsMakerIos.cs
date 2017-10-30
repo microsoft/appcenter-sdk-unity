@@ -4,10 +4,10 @@
 
 using System.IO;
 
-public class MobileCenterSettingsMakerIos
+public class AppCenterSettingsMakerIos
 {
-    private const string TemplateFilePath = "Assets/AppCenter/Plugins/iOS/Core/MobileCenterStarter.original";
-    private const string TargetFilePath = "Assets/AppCenter/Plugins/iOS/Core/MobileCenterStarter.m";
+    private const string TemplateFilePath = "Assets/AppCenter/Plugins/iOS/Core/AppCenterStarter.original";
+    private const string TargetFilePath = "Assets/AppCenter/Plugins/iOS/Core/AppCenterStarter.m";
     private const string AppSecretSearchText = "mobile-center-app-secret";
     private const string LogUrlSearchText = "custom-log-url";
     private const string LogUrlToken = "MOBILE_CENTER_UNITY_USE_CUSTOM_LOG_URL";
@@ -22,7 +22,7 @@ public class MobileCenterSettingsMakerIos
 
     private string _loaderFileText;
 
-    public MobileCenterSettingsMakerIos()
+    public AppCenterSettingsMakerIos()
     {
         _loaderFileText = File.ReadAllText(TemplateFilePath);
     }

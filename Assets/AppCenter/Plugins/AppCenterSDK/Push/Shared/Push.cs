@@ -62,12 +62,12 @@ namespace Microsoft.AppCenter.Unity.Push
             return PushInternal.GetNativeType();
         }
 
-        public static MobileCenterTask<bool> IsEnabledAsync()
+        public static AppCenterTask<bool> IsEnabledAsync()
         {
             return PushInternal.IsEnabledAsync();
         }
 
-        public static MobileCenterTask SetEnabledAsync(bool enabled)
+        public static AppCenterTask SetEnabledAsync(bool enabled)
         {
             return PushInternal.SetEnabledAsync(enabled);
         }

@@ -13,8 +13,8 @@
 		3593B7A61F573BC800ED10AA /* MobileCenterPush.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3593B7A51F573BC800ED10AA /* MobileCenterPush.framework */; };
 		3593B7A81F573BF900ED10AA /* AnalyticsUnity.mm in Sources */ = {isa = PBXBuildFile; fileRef = 3593B7A71F573BF900ED10AA /* AnalyticsUnity.mm */; };
 		3593B7AC1F573C0F00ED10AA /* CustomProperties.mm in Sources */ = {isa = PBXBuildFile; fileRef = 3593B7A91F573C0F00ED10AA /* CustomProperties.mm */; };
-		3593B7AD1F573C0F00ED10AA /* MobileCenterStarter.m in Sources */ = {isa = PBXBuildFile; fileRef = 3593B7AA1F573C0F00ED10AA /* MobileCenterStarter.m */; };
-		3593B7AE1F573C0F00ED10AA /* MobileCenterUnity.mm in Sources */ = {isa = PBXBuildFile; fileRef = 3593B7AB1F573C0F00ED10AA /* MobileCenterUnity.mm */; };
+		3593B7AD1F573C0F00ED10AA /* AppCenterStarter.m in Sources */ = {isa = PBXBuildFile; fileRef = 3593B7AA1F573C0F00ED10AA /* AppCenterStarter.m */; };
+		3593B7AE1F573C0F00ED10AA /* AppCenterUnity.mm in Sources */ = {isa = PBXBuildFile; fileRef = 3593B7AB1F573C0F00ED10AA /* AppCenterUnity.mm */; };
 		3593B7BA1F573C4E00ED10AA /* DistributeDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 3593B7B61F573C4E00ED10AA /* DistributeDelegate.m */; };
 		3593B7BC1F573C4E00ED10AA /* DistributeUnity.mm in Sources */ = {isa = PBXBuildFile; fileRef = 3593B7B81F573C4E00ED10AA /* DistributeUnity.mm */; };
 		3593B7BD1F573C4E00ED10AA /* ReleaseDetails.mm in Sources */ = {isa = PBXBuildFile; fileRef = 3593B7B91F573C4E00ED10AA /* ReleaseDetails.mm */; };
@@ -48,8 +48,8 @@
 		3593B7A51F573BC800ED10AA /* MobileCenterPush.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MobileCenterPush.framework; path = ../Assets/AppCenter/Plugins/iOS/Push/MobileCenterPush.framework; sourceTree = "<group>"; };
 		3593B7A71F573BF900ED10AA /* AnalyticsUnity.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; name = AnalyticsUnity.mm; path = ../Assets/AppCenter/Plugins/iOS/Analytics/AnalyticsUnity.mm; sourceTree = "<group>"; };
 		3593B7A91F573C0F00ED10AA /* CustomProperties.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; name = CustomProperties.mm; path = ../Assets/AppCenter/Plugins/iOS/Core/CustomProperties.mm; sourceTree = "<group>"; };
-		3593B7AA1F573C0F00ED10AA /* MobileCenterStarter.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; name = MobileCenterStarter.m; path = ../Assets/AppCenter/Plugins/iOS/Core/MobileCenterStarter.m; sourceTree = "<group>"; };
-		3593B7AB1F573C0F00ED10AA /* MobileCenterUnity.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; name = MobileCenterUnity.mm; path = ../Assets/AppCenter/Plugins/iOS/Core/MobileCenterUnity.mm; sourceTree = "<group>"; };
+		3593B7AA1F573C0F00ED10AA /* AppCenterStarter.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; name = AppCenterStarter.m; path = ../Assets/AppCenter/Plugins/iOS/Core/AppCenterStarter.m; sourceTree = "<group>"; };
+		3593B7AB1F573C0F00ED10AA /* AppCenterUnity.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; name = AppCenterUnity.mm; path = ../Assets/AppCenter/Plugins/iOS/Core/AppCenterUnity.mm; sourceTree = "<group>"; };
 		3593B7AF1F573C1300ED10AA /* AnalyticsUnity.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; name = AnalyticsUnity.mm; path = ../Assets/AppCenter/Plugins/iOS/Analytics/AnalyticsUnity.mm; sourceTree = "<group>"; };
 		3593B7B61F573C4E00ED10AA /* DistributeDelegate.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; name = DistributeDelegate.m; path = ../Assets/AppCenter/Plugins/iOS/Distribute/DistributeDelegate.m; sourceTree = "<group>"; };
 		3593B7B81F573C4E00ED10AA /* DistributeUnity.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; name = DistributeUnity.mm; path = ../Assets/AppCenter/Plugins/iOS/Distribute/DistributeUnity.mm; sourceTree = "<group>"; };
@@ -94,8 +94,8 @@
 				3593B7B91F573C4E00ED10AA /* ReleaseDetails.mm */,
 				3593B7AF1F573C1300ED10AA /* AnalyticsUnity.mm */,
 				3593B7A91F573C0F00ED10AA /* CustomProperties.mm */,
-				3593B7AA1F573C0F00ED10AA /* MobileCenterStarter.m */,
-				3593B7AB1F573C0F00ED10AA /* MobileCenterUnity.mm */,
+				3593B7AA1F573C0F00ED10AA /* AppCenterStarter.m */,
+				3593B7AB1F573C0F00ED10AA /* AppCenterUnity.mm */,
 				3593B7A71F573BF900ED10AA /* AnalyticsUnity.mm */,
 				3593B78E1F573AC500ED10AA /* iOS */,
 				35E9FC1E1EFADFDB00556A1F /* Products */,
@@ -180,8 +180,8 @@
 			files = (
 				3593B7AC1F573C0F00ED10AA /* CustomProperties.mm in Sources */,
 				3593B7A81F573BF900ED10AA /* AnalyticsUnity.mm in Sources */,
-				3593B7AD1F573C0F00ED10AA /* MobileCenterStarter.m in Sources */,
-				3593B7AE1F573C0F00ED10AA /* MobileCenterUnity.mm in Sources */,
+				3593B7AD1F573C0F00ED10AA /* AppCenterStarter.m in Sources */,
+				3593B7AE1F573C0F00ED10AA /* AppCenterUnity.mm in Sources */,
 				3593B7BA1F573C4E00ED10AA /* DistributeDelegate.m in Sources */,
 				3593B7BC1F573C4E00ED10AA /* DistributeUnity.mm in Sources */,
 				3593B7BD1F573C4E00ED10AA /* ReleaseDetails.mm in Sources */,

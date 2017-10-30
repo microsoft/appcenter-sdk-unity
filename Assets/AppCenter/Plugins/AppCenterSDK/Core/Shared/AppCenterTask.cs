@@ -8,16 +8,16 @@ using System.Collections.Generic;
 namespace Microsoft.AppCenter.Unity
 {
     /// <summary>
-    /// MobileCenterTask provides a way of performing long-running
+    /// AppCenterTask provides a way of performing long-running
     /// tasks on any thread and invoking callbacks upon completion.
     /// </summary>
-    public partial class MobileCenterTask
+    public partial class AppCenterTask
     {
-        private readonly List<Action<MobileCenterTask>> _continuationActions = new List<Action<MobileCenterTask>>();
+        private readonly List<Action<AppCenterTask>> _continuationActions = new List<Action<AppCenterTask>>();
         protected readonly object _lockObject = new object();
 
         /// <summary>
-        /// Gets a value indicating whether this <see cref="T:Microsoft.AppCenter.Unity.MobileCenterTask"/> is complete.
+        /// Gets a value indicating whether this <see cref="T:Microsoft.AppCenter.Unity.AppCenterTask"/> is complete.
         /// </summary>
         /// <value><c>true</c> if it is complete; otherwise, <c>false</c>.</value>
         public bool IsComplete { get; private set; }
@@ -27,7 +27,7 @@ namespace Microsoft.AppCenter.Unity
         /// the task is already complete, it is invoked immediately after being set.
         /// </summary>
         /// <param name="continuationAction">Callback to be invoked after task completion.</param>
-        public void ContinueWith(Action<MobileCenterTask> continuationAction)
+        public void ContinueWith(Action<AppCenterTask> continuationAction)
         {
             lock (_lockObject)
             {
@@ -66,9 +66,9 @@ namespace Microsoft.AppCenter.Unity
         /// Returns an already completed task.
         /// </summary>
         /// <returns>The completed task.</returns>
-        internal static MobileCenterTask FromCompleted()
+        internal static AppCenterTask FromCompleted()
         {
-            var task = new MobileCenterTask();
+            var task = new AppCenterTask();
             task.CompletionAction();
             return task;
         }
@@ -78,7 +78,7 @@ namespace Microsoft.AppCenter.Unity
             // Save the actions and then invoke them; could have a deadlock
             // if one of the actions calls ContinueWith on another thread for
             // the same task object.
-            var continuationActionsSnapshot = new List<Action<MobileCenterTask>>();
+            var continuationActionsSnapshot = new List<Action<AppCenterTask>>();
             lock (_lockObject)
             {
                 if (!IsComplete)

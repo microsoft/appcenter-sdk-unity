@@ -15,8 +15,8 @@ namespace Microsoft.AppCenter.Unity.Push.Internal
 
         public static void PrepareEventHandlers()
         {
-            MobileCenterBehavior.InitializingServices += Initialize;
-            MobileCenterBehavior.InitializedMobileCenterAndServices += PostInitialize;
+            AppCenterBehavior.InitializingServices += Initialize;
+            AppCenterBehavior.InitializedAppCenterAndServices += PostInitialize;
         }
 
         private static void Initialize()
@@ -32,16 +32,16 @@ namespace Microsoft.AppCenter.Unity.Push.Internal
             instance.Call("onActivityResumed", activity);
         }
 
-        public static MobileCenterTask SetEnabledAsync(bool isEnabled)
+        public static AppCenterTask SetEnabledAsync(bool isEnabled)
         {
             var future = _push.CallStatic<AndroidJavaObject>("setEnabled", isEnabled);
-            return new MobileCenterTask(future);
+            return new AppCenterTask(future);
         }
 
-        public static MobileCenterTask<bool> IsEnabledAsync()
+        public static AppCenterTask<bool> IsEnabledAsync()
         {
             var future = _push.CallStatic<AndroidJavaObject>("isEnabled");
-            return new MobileCenterTask<bool>(future);
+            return new AppCenterTask<bool>(future);
         }
 
         public static IntPtr GetNativeType()

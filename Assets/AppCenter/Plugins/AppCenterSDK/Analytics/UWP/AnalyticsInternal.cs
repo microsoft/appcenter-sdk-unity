@@ -36,14 +36,14 @@ namespace Microsoft.AppCenter.Unity.Analytics.Internal
             UWPAnalytics.TrackEvent(eventName, properties);
         }
 
-        public static MobileCenterTask SetEnabledAsync(bool isEnabled)
+        public static AppCenterTask SetEnabledAsync(bool isEnabled)
         {
-            return new MobileCenterTask(UWPAnalytics.SetEnabledAsync(isEnabled));
+            return new AppCenterTask(UWPAnalytics.SetEnabledAsync(isEnabled));
         }
 
-        public static MobileCenterTask<bool> IsEnabledAsync()
+        public static AppCenterTask<bool> IsEnabledAsync()
         {
-            return new MobileCenterTask<bool>(UWPAnalytics.IsEnabledAsync());
+            return new AppCenterTask<bool>(UWPAnalytics.IsEnabledAsync());
         }
     }
 }

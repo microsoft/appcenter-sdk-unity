@@ -21,7 +21,7 @@ namespace Microsoft.AppCenter.Unity.Push.Internal
 
         public static void PrepareEventHandlers()
         {
-            MobileCenterBehavior.InitializingServices += Initialize;
+            AppCenterBehavior.InitializingServices += Initialize;
         }
 
         private static void Initialize()
@@ -61,14 +61,14 @@ namespace Microsoft.AppCenter.Unity.Push.Internal
             return typeof(UWPPush);
         }
 
-        public static MobileCenterTask SetEnabledAsync(bool isEnabled)
+        public static AppCenterTask SetEnabledAsync(bool isEnabled)
         {
-            return new MobileCenterTask(UWPPush.SetEnabledAsync(isEnabled));
+            return new AppCenterTask(UWPPush.SetEnabledAsync(isEnabled));
         }
 
-        public static MobileCenterTask<bool> IsEnabledAsync()
+        public static AppCenterTask<bool> IsEnabledAsync()
         {
-            return new MobileCenterTask<bool>(UWPPush.IsEnabledAsync());
+            return new AppCenterTask<bool>(UWPPush.IsEnabledAsync());
         }
 
         public static void HandlePushNotification(PushNotificationReceivedEventArgs eventArgs)

@@ -29,16 +29,16 @@ namespace Microsoft.AppCenter.Unity.Analytics.Internal
             appcenter_unity_analytics_track_event_with_properties(eventName, keys, values, count);
         }
 
-        public static MobileCenterTask SetEnabledAsync(bool isEnabled)
+        public static AppCenterTask SetEnabledAsync(bool isEnabled)
         {
             appcenter_unity_analytics_set_enabled(isEnabled);
-            return MobileCenterTask.FromCompleted();
+            return AppCenterTask.FromCompleted();
         }
 
-        public static MobileCenterTask<bool> IsEnabledAsync()
+        public static AppCenterTask<bool> IsEnabledAsync()
         {
             var isEnabled = appcenter_unity_analytics_is_enabled();
-            return MobileCenterTask<bool>.FromCompleted(isEnabled);
+            return AppCenterTask<bool>.FromCompleted(isEnabled);
         }
 
 #region External

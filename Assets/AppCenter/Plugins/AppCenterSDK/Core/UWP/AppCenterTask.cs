@@ -9,14 +9,14 @@ using System.Threading.Tasks;
 
 namespace Microsoft.AppCenter.Unity
 {
-    public partial class MobileCenterTask
+    public partial class AppCenterTask
     {
-        protected MobileCenterTask()
+        protected AppCenterTask()
         {
         }
 
         // Task parameter should be started already!
-        public MobileCenterTask(Task task)
+        public AppCenterTask(Task task)
         {
             // Use the *actual* TPL's ContinueWith implementation to
             // perform the user's ContinueWith callbacks

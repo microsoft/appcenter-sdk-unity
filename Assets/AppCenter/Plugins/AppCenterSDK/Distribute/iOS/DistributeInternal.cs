@@ -34,8 +34,8 @@ namespace Microsoft.AppCenter.Unity.Distribute.Internal
 
         public static void PrepareEventHandlers()
         {
-            MobileCenterBehavior.InitializingServices += Initialize;
-            MobileCenterBehavior.Started += StartBehavior;
+            AppCenterBehavior.InitializingServices += Initialize;
+            AppCenterBehavior.Started += StartBehavior;
         }
 
         private static void StartBehavior()
@@ -54,16 +54,16 @@ namespace Microsoft.AppCenter.Unity.Distribute.Internal
             return appcenter_unity_distribute_get_type();
         }
 
-        public static MobileCenterTask SetEnabledAsync(bool isEnabled)
+        public static AppCenterTask SetEnabledAsync(bool isEnabled)
         {
             appcenter_unity_distribute_set_enabled(isEnabled);
-            return MobileCenterTask.FromCompleted();
+            return AppCenterTask.FromCompleted();
         }
 
-        public static MobileCenterTask<bool> IsEnabledAsync()
+        public static AppCenterTask<bool> IsEnabledAsync()
         {
             var isEnabled = appcenter_unity_distribute_is_enabled();
-            return MobileCenterTask<bool>.FromCompleted(isEnabled);
+            return AppCenterTask<bool>.FromCompleted(isEnabled);
         }
 
         public static void SetInstallUrl(string installUrl)

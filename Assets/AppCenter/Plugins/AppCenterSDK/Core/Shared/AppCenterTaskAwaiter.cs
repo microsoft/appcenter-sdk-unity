@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 
 namespace Microsoft.AppCenter.Unity
 {
-    public partial class MobileCenterTask
+    public partial class AppCenterTask
     {
         public TaskAwaiter GetAwaiter()
         {
@@ -19,7 +19,7 @@ namespace Microsoft.AppCenter.Unity
         }
     }
 
-    public partial class MobileCenterTask<TResult>
+    public partial class AppCenterTask<TResult>
     {
         public new TaskAwaiter<TResult> GetAwaiter()
         {

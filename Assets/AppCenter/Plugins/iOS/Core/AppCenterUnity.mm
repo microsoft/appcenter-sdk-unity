@@ -2,7 +2,7 @@
 //
 // Licensed under the MIT license.
 
-#import "MobileCenterUnity.h"
+#import "AppCenterUnity.h"
 #import "Utility/NSStringHelper.h"
 #import <MobileCenter/MobileCenter.h>
 #import <Foundation/Foundation.h>

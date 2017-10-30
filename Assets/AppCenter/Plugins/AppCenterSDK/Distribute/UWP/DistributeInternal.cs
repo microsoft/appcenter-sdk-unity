@@ -20,14 +20,14 @@ namespace Microsoft.AppCenter.Unity.Distribute.Internal
             return typeof(Microsoft.Azure.Mobile.Distribute.Distribute);
         }
 
-        public static MobileCenterTask SetEnabledAsync(bool isEnabled)
+        public static AppCenterTask SetEnabledAsync(bool isEnabled)
         {
-            return MobileCenterTask.FromCompleted();
+            return AppCenterTask.FromCompleted();
         }
 
-        public static MobileCenterTask<bool> IsEnabledAsync()
+        public static AppCenterTask<bool> IsEnabledAsync()
         {
-            return MobileCenterTask<bool>.FromCompleted(false);
+            return AppCenterTask<bool>.FromCompleted(false);
         }
 
         public static void SetInstallUrl(string installUrl)

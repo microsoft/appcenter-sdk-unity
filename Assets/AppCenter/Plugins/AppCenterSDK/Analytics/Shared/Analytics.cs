@@ -38,12 +38,12 @@ namespace Microsoft.AppCenter.Unity.Analytics
             }
         }
 
-        public static MobileCenterTask<bool> IsEnabledAsync()
+        public static AppCenterTask<bool> IsEnabledAsync()
         {
             return AnalyticsInternal.IsEnabledAsync();
         }
 
-        public static MobileCenterTask SetEnabledAsync(bool enabled)
+        public static AppCenterTask SetEnabledAsync(bool enabled)
         {
             return AnalyticsInternal.SetEnabledAsync(enabled);
         }

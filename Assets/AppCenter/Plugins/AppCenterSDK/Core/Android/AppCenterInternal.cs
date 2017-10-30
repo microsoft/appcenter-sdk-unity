@@ -8,7 +8,7 @@ using UnityEngine;
 
 namespace Microsoft.AppCenter.Unity.Internal
 {
-    class MobileCenterInternal
+    class AppCenterInternal
     {
         private static AndroidJavaClass _mobileCenter = new AndroidJavaClass("com.microsoft.azure.mobile.MobileCenter");
 
@@ -32,23 +32,23 @@ namespace Microsoft.AppCenter.Unity.Internal
             _mobileCenter.CallStatic("setLogUrl", logUrl);
         }
 
-        public static MobileCenterTask SetEnabledAsync(bool enabled)
+        public static AppCenterTask SetEnabledAsync(bool enabled)
         {
             var future = _mobileCenter.CallStatic<AndroidJavaObject>("setEnabled", enabled);
-            return new MobileCenterTask(future);
+            return new AppCenterTask(future);
         }
 
-        public static MobileCenterTask<bool> IsEnabledAsync()
+        public static AppCenterTask<bool> IsEnabledAsync()
         {
             var future = _mobileCenter.CallStatic<AndroidJavaObject>("isEnabled");
-            return new MobileCenterTask<bool>(future);
+            return new AppCenterTask<bool>(future);
         }
 
-        public static MobileCenterTask<string> GetInstallIdAsync()
+        public static AppCenterTask<string> GetInstallIdAsync()
         {
             AndroidJavaObject future = _mobileCenter.CallStatic<AndroidJavaObject>("getInstallId");
-            var javaUUIDtask = new MobileCenterTask<AndroidJavaObject>(future);
-            var stringTask = new MobileCenterTask<string>();
+            var javaUUIDtask = new AppCenterTask<AndroidJavaObject>(future);
+            var stringTask = new AppCenterTask<string>();
             javaUUIDtask.ContinueWith(t => {
                 var installId = t.Result.Call<string>("toString");
                 stringTask.SetResult(installId);

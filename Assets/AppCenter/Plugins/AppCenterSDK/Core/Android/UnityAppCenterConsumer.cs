@@ -10,11 +10,11 @@ using System;
 
 namespace Microsoft.AppCenter.Unity
 {
-    public class UnityMobileCenterConsumer<T> : AndroidJavaProxy
+    public class UnityAppCenterConsumer<T> : AndroidJavaProxy
     {
         internal Action<T> CompletionCallback { get; set; }
 
-        internal UnityMobileCenterConsumer() : base("com.microsoft.azure.mobile.utils.async.MobileCenterConsumer")
+        internal UnityAppCenterConsumer() : base("com.microsoft.azure.mobile.utils.async.MobileCenterConsumer")
         {
         }
 

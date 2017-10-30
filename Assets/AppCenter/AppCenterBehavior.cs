@@ -9,15 +9,15 @@ using System.Reflection;
 using Microsoft.AppCenter.Unity.Internal;
 
 [HelpURL("https://docs.microsoft.com/en-us/mobile-center/sdk/")]
-public class MobileCenterBehavior : MonoBehaviour
+public class AppCenterBehavior : MonoBehaviour
 {
     public static event Action InitializingServices;
-    public static event Action InitializedMobileCenterAndServices;
+    public static event Action InitializedAppCenterAndServices;
     public static event Action Started;
 
-    private static MobileCenterBehavior instance;
+    private static AppCenterBehavior instance;
 
-    public MobileCenterSettings settings;
+    public AppCenterSettings settings;
 
     private void Awake()
     {
@@ -37,7 +37,7 @@ public class MobileCenterBehavior : MonoBehaviour
             Debug.LogError("Mobile Center isn't configured!");
             return;
         }
-        StartMobileCenter();
+        StartAppCenter();
     }
 
     private void Start()
@@ -48,23 +48,23 @@ public class MobileCenterBehavior : MonoBehaviour
         }
     }
 
-    private void StartMobileCenter()
+    private void StartAppCenter()
     {
         var services = settings.Services;
         PrepareEventHandlers(services);
         InvokeInitializingServices();
-        MobileCenter.SetWrapperSdk();
+        AppCenter.SetWrapperSdk();
 
         // On iOS and Android Mobile Center starting automatically.
 #if UNITY_EDITOR || (!UNITY_IOS && !UNITY_ANDROID)
-        MobileCenter.LogLevel = settings.InitialLogLevel;
+        AppCenter.LogLevel = settings.InitialLogLevel;
         if (settings.CustomLogUrl.UseCustomUrl)
         {
-            MobileCenter.SetLogUrl(settings.CustomLogUrl.Url);
+            AppCenter.SetLogUrl(settings.CustomLogUrl.Url);
         }
-        var appSecret = MobileCenter.GetSecretForPlatform(settings.AppSecret);
-        var nativeServiceTypes = MobileCenter.ServicesToNativeTypes(services);
-        MobileCenterInternal.Start(appSecret, nativeServiceTypes, services.Length);
+        var appSecret = AppCenter.GetSecretForPlatform(settings.AppSecret);
+        var nativeServiceTypes = AppCenter.ServicesToNativeTypes(services);
+        AppCenterInternal.Start(appSecret, nativeServiceTypes, services.Length);
 #endif
         InvokeInitializedServices();
     }
@@ -91,9 +91,9 @@ public class MobileCenterBehavior : MonoBehaviour
 
     private static void InvokeInitializedServices()
     {
-        if (InitializedMobileCenterAndServices != null)
+        if (InitializedAppCenterAndServices != null)
         {
-            InitializedMobileCenterAndServices.Invoke();
+            InitializedAppCenterAndServices.Invoke();
         }
     }
 }

@@ -11,7 +11,7 @@ using UnityEngine;
 
 namespace Microsoft.AppCenter.Unity
 {
-    public partial class MobileCenterTask<TResult>
+    public partial class AppCenterTask<TResult>
     {
         private TResult _result;
         public TResult Result

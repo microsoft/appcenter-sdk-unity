@@ -13,7 +13,7 @@ namespace Microsoft.AppCenter.Unity.Internal.Utils
 {
     public class UnityApplicationSettings : IApplicationSettings
     {
-        private const string MobileCenterSettingsKey = "MobileCenterSettings";
+        private const string AppCenterSettingsKey = "AppCenterSettings";
 
         private static readonly object _lockObject = new object();
         private static IDictionary<string, object> _current;
@@ -61,7 +61,7 @@ namespace Microsoft.AppCenter.Unity.Internal.Utils
 
         private static IDictionary<string, object> ReadAll()
         {
-            var json = PlayerPrefs.GetString(MobileCenterSettingsKey, null);
+            var json = PlayerPrefs.GetString(AppCenterSettingsKey, null);
             var settings = JsonConvert.DeserializeObject(json) as IDictionary<string, object>;
             return settings != null ? settings : new Dictionary<string, object>();
         }
@@ -88,7 +88,7 @@ namespace Microsoft.AppCenter.Unity.Internal.Utils
                         json = JsonConvert.SerializeObject(_current);
                         _dirty = false;
                     }
-                    PlayerPrefs.SetString(MobileCenterSettingsKey, json);
+                    PlayerPrefs.SetString(AppCenterSettingsKey, json);
                     PlayerPrefs.Save();
                 }
             }

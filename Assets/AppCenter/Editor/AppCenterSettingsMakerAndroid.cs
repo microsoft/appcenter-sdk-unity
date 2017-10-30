@@ -5,12 +5,12 @@
 using System.Collections.Generic;
 using System.IO;
 
-public class MobileCenterSettingsMakerAndroid
+public class AppCenterSettingsMakerAndroid
 {
-    private const string MobileCenterResourcesFolderPath = "Assets/Plugins/Android/mobile-center/res/values/";
-    private const string MobileCenterResourcesPath = MobileCenterResourcesFolderPath + "mobile-center-settings.xml";
-    private const string MobileCenterManifestPath = "Assets/Plugins/Android/mobile-center/AndroidManifest.xml";
-    private const string MobileCenterManifestPlaceholderPath = "Assets/AppCenter/Plugins/Android/AndroidManifestPlaceholder.xml";
+    private const string AppCenterResourcesFolderPath = "Assets/Plugins/Android/mobile-center/res/values/";
+    private const string AppCenterResourcesPath = AppCenterResourcesFolderPath + "mobile-center-settings.xml";
+    private const string AppCenterManifestPath = "Assets/Plugins/Android/mobile-center/AndroidManifest.xml";
+    private const string AppCenterManifestPlaceholderPath = "Assets/AppCenter/Plugins/Android/AndroidManifestPlaceholder.xml";
     private const string ManifestAppIdPlaceholder = "${mobile-center-app-id-placeholder}";
     private const string AppSecretKey = "mobile_center_app_secret";
     private const string CustomLogUrlKey = "mobile_center_custom_log_url";
@@ -27,11 +27,11 @@ public class MobileCenterSettingsMakerAndroid
 
     private readonly IDictionary<string, string> _resourceValues = new Dictionary<string, string>();
 
-    static MobileCenterSettingsMakerAndroid()
+    static AppCenterSettingsMakerAndroid()
     {
-        if (!Directory.Exists(MobileCenterResourcesFolderPath))
+        if (!Directory.Exists(AppCenterResourcesFolderPath))
         {
-            Directory.CreateDirectory(MobileCenterResourcesFolderPath);
+            Directory.CreateDirectory(AppCenterResourcesFolderPath);
         }
     }
 
@@ -86,21 +86,21 @@ public class MobileCenterSettingsMakerAndroid
     public void CommitSettings()
     {
         var appId = ApplicationIdHelper.GetApplicationId();
-        if (File.Exists(MobileCenterManifestPlaceholderPath))
+        if (File.Exists(AppCenterManifestPlaceholderPath))
         {
-            var manifestText = File.ReadAllText(MobileCenterManifestPlaceholderPath);
-            File.Create(MobileCenterManifestPath).Dispose();
+            var manifestText = File.ReadAllText(AppCenterManifestPlaceholderPath);
+            File.Create(AppCenterManifestPath).Dispose();
             if (manifestText.Contains(ManifestAppIdPlaceholder))
             {
                 manifestText = manifestText.Replace(ManifestAppIdPlaceholder, appId);
-                File.WriteAllText(MobileCenterManifestPath, manifestText);
+                File.WriteAllText(AppCenterManifestPath, manifestText);
             }
         }
 
-        if (File.Exists(MobileCenterResourcesPath))
+        if (File.Exists(AppCenterResourcesPath))
         {
-            File.Delete(MobileCenterResourcesPath);
+            File.Delete(AppCenterResourcesPath);
         }
-        XmlResourceHelper.WriteXmlResource(MobileCenterResourcesPath, _resourceValues);
+        XmlResourceHelper.WriteXmlResource(AppCenterResourcesPath, _resourceValues);
     }
 }

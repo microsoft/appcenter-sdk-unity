@@ -4,23 +4,23 @@
 
 using UnityEditor;
 
-[CustomEditor(typeof(MobileCenterBehavior))]
-public class MobileCenterBehaviorEditor : Editor
+[CustomEditor(typeof(AppCenterBehavior))]
+public class AppCenterBehaviorEditor : Editor
 {
     private Editor settingsEditor;
 
     public override void OnInspectorGUI()
     {
         // Load or create settings.
-        var settingsPath = MobileCenterSettingsEditor.SettingsPath;
-        var behaviour = (MobileCenterBehavior) target;
+        var settingsPath = AppCenterSettingsEditor.SettingsPath;
+        var behaviour = (AppCenterBehavior) target;
         if (behaviour.settings == null)
         {
-            behaviour.settings = AssetDatabase.LoadAssetAtPath<MobileCenterSettings>(settingsPath);
+            behaviour.settings = AssetDatabase.LoadAssetAtPath<AppCenterSettings>(settingsPath);
         }
         if (behaviour.settings == null)
         {
-            behaviour.settings = CreateInstance<MobileCenterSettings>();
+            behaviour.settings = CreateInstance<AppCenterSettings>();
             AssetDatabase.CreateAsset(behaviour.settings, settingsPath);
             AssetDatabase.SaveAssets();
         }

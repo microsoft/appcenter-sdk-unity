@@ -9,9 +9,9 @@ using Microsoft.AppCenter.Unity.Internal.Utils;
 
 namespace Microsoft.AppCenter.Unity.Internal
 {
-    using UWPMobileCenter = Microsoft.Azure.Mobile.MobileCenter;
+    using UWPAppCenter = Microsoft.Azure.Mobile.MobileCenter;
 
-    class MobileCenterInternal
+    class AppCenterInternal
     {
         private static bool _prepared = false;
         private static object _lockObject = new object();
@@ -19,62 +19,62 @@ namespace Microsoft.AppCenter.Unity.Internal
         public static void Configure(string appSecret)
         {
             Prepare();
-            UWPMobileCenter.Configure(appSecret);
+            UWPAppCenter.Configure(appSecret);
         }
 
         public static void Start(string appSecret, Type[] services, int numServices)
         {
             Prepare();
-            UWPMobileCenter.Start(appSecret, services);
+            UWPAppCenter.Start(appSecret, services);
         }
 
         public static void StartServices(Type[] services, int numServices)
         {
             Prepare();
-            UWPMobileCenter.Start(services);
+            UWPAppCenter.Start(services);
         }
 
         public static void SetLogLevel(int logLevel)
         {
             Prepare();
-            UWPMobileCenter.LogLevel = (Microsoft.Azure.Mobile.LogLevel)LogLevelFromUnity(logLevel);
+            UWPAppCenter.LogLevel = (Microsoft.Azure.Mobile.LogLevel)LogLevelFromUnity(logLevel);
         }
 
         public static int GetLogLevel()
         {
             Prepare();
-            return (int)LogLevelFromUnity((int)UWPMobileCenter.LogLevel);
+            return (int)LogLevelFromUnity((int)UWPAppCenter.LogLevel);
         }
 
         public static bool IsConfigured()
         {
             Prepare();
-            return UWPMobileCenter.Configured;
+            return UWPAppCenter.Configured;
         }
 
         public static void SetLogUrl(string logUrl)
         {
             Prepare();
-            UWPMobileCenter.SetLogUrl(logUrl);
+            UWPAppCenter.SetLogUrl(logUrl);
         }
 
-        public static MobileCenterTask SetEnabledAsync(bool isEnabled)
+        public static AppCenterTask SetEnabledAsync(bool isEnabled)
         {
             Prepare();
-            return new MobileCenterTask(UWPMobileCenter.SetEnabledAsync(isEnabled));
+            return new AppCenterTask(UWPAppCenter.SetEnabledAsync(isEnabled));
         }
 
-        public static MobileCenterTask<bool> IsEnabledAsync()
+        public static AppCenterTask<bool> IsEnabledAsync()
         {
             Prepare();
-            return new MobileCenterTask<bool>(UWPMobileCenter.IsEnabledAsync());
+            return new AppCenterTask<bool>(UWPAppCenter.IsEnabledAsync());
         }
 
-        public static MobileCenterTask<string> GetInstallIdAsync()
+        public static AppCenterTask<string> GetInstallIdAsync()
         {
             Prepare();
-            var installIdTask = UWPMobileCenter.GetInstallIdAsync();
-            var stringTask = new MobileCenterTask<string>();
+            var installIdTask = UWPAppCenter.GetInstallIdAsync();
+            var stringTask = new AppCenterTask<string>();
             installIdTask.ContinueWith(t => {
                 var installId = t.Result?.ToString();
                 stringTask.SetResult(installId);
@@ -86,7 +86,7 @@ namespace Microsoft.AppCenter.Unity.Internal
         {
             Prepare();
             var uwpProperties = properties as Microsoft.Azure.Mobile.CustomProperties;
-            UWPMobileCenter.SetCustomProperties(uwpProperties);
+            UWPAppCenter.SetCustomProperties(uwpProperties);
         }
 
         public static void SetWrapperSdk(string wrapperSdkVersion,
@@ -165,13 +165,13 @@ namespace Microsoft.AppCenter.Unity.Internal
                      * IL2CPP does not yet support calling this projected method.
                      */
                     UnityApplicationSettings.Initialize();
-                    UWPMobileCenter.SetApplicationSettingsFactory(new UnityApplicationSettingsFactory());
+                    UWPAppCenter.SetApplicationSettingsFactory(new UnityApplicationSettingsFactory());
 
                     /**
                      * Workaround for another IL2CPP issue.
                      * System.Net.Http.HttpClient doesn't work properly so, replace to unity specific implementation.
                      */
-                    UWPMobileCenter.SetChannelGroupFactory(new UnityChannelGroupFactory());
+                    UWPAppCenter.SetChannelGroupFactory(new UnityChannelGroupFactory());
 #pragma warning restore 612
 #endif
                     _prepared = true;

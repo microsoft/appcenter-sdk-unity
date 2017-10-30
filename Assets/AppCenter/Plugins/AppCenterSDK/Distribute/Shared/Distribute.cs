@@ -25,12 +25,12 @@ namespace Microsoft.AppCenter.Unity.Distribute
             return DistributeInternal.GetNativeType();
         }
 
-        public static MobileCenterTask<bool> IsEnabledAsync()
+        public static AppCenterTask<bool> IsEnabledAsync()
         {
             return DistributeInternal.IsEnabledAsync();
         }
 
-        public static MobileCenterTask SetEnabledAsync(bool enabled)
+        public static AppCenterTask SetEnabledAsync(bool enabled)
         {
             return DistributeInternal.SetEnabledAsync(enabled);
         }

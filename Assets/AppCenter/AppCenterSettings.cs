@@ -10,7 +10,7 @@ using Microsoft.AppCenter.Unity;
 using UnityEngine;
 
 [Serializable]
-public class MobileCenterSettings : ScriptableObject
+public class AppCenterSettings : ScriptableObject
 {
     [AppSecret("iOS App Secret")]
     public string iOSAppSecret = "ios-app-secret";
@@ -75,25 +75,25 @@ public class MobileCenterSettings : ScriptableObject
 
     public static Type Analytics
     {
-        get { return MobileCenterAssembly.GetType("Microsoft.AppCenter.Unity.Analytics.Analytics"); }
+        get { return AppCenterAssembly.GetType("Microsoft.AppCenter.Unity.Analytics.Analytics"); }
     }
 
     public static Type Distribute
     {
-        get { return MobileCenterAssembly.GetType("Microsoft.AppCenter.Unity.Distribute.Distribute"); }
+        get { return AppCenterAssembly.GetType("Microsoft.AppCenter.Unity.Distribute.Distribute"); }
     }
 
     public static Type Push
     {
-        get { return MobileCenterAssembly.GetType("Microsoft.AppCenter.Unity.Push.Push"); }
+        get { return AppCenterAssembly.GetType("Microsoft.AppCenter.Unity.Push.Push"); }
     }
 
-    private static Assembly MobileCenterAssembly
+    private static Assembly AppCenterAssembly
     {
         get
         {
 #if !UNITY_EDITOR && UNITY_WSA_10_0
-            return typeof(MobileCenterSettings).GetTypeInfo().Assembly;
+            return typeof(AppCenterSettings).GetTypeInfo().Assembly;
 #else
             return Assembly.GetExecutingAssembly();
 #endif

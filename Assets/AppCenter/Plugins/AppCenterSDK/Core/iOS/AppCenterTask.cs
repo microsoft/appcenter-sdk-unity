@@ -8,7 +8,7 @@ using UnityEngine;
 
 namespace Microsoft.AppCenter.Unity
 {
-    public partial class MobileCenterTask
+    public partial class AppCenterTask
     {
         internal void SetResult()
         {
