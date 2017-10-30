@@ -40,72 +40,72 @@ namespace Microsoft.AppCenter.Unity.Distribute.Internal
 
         private static void StartBehavior()
         {
-            mobile_center_unity_distribute_replay_release_available();
+            appcenter_unity_distribute_replay_release_available();
         }
 
         private static void Initialize()
         {
             del = ReleaseAvailableFunc;
-            mobile_center_unity_distribute_set_release_available_impl(del);
+            appcenter_unity_distribute_set_release_available_impl(del);
         }
 
         public static IntPtr GetNativeType()
         {
-            return mobile_center_unity_distribute_get_type();
+            return appcenter_unity_distribute_get_type();
         }
 
         public static MobileCenterTask SetEnabledAsync(bool isEnabled)
         {
-            mobile_center_unity_distribute_set_enabled(isEnabled);
+            appcenter_unity_distribute_set_enabled(isEnabled);
             return MobileCenterTask.FromCompleted();
         }
 
         public static MobileCenterTask<bool> IsEnabledAsync()
         {
-            var isEnabled = mobile_center_unity_distribute_is_enabled();
+            var isEnabled = appcenter_unity_distribute_is_enabled();
             return MobileCenterTask<bool>.FromCompleted(isEnabled);
         }
 
         public static void SetInstallUrl(string installUrl)
         {
-            mobile_center_unity_distribute_set_install_url(installUrl);
+            appcenter_unity_distribute_set_install_url(installUrl);
         }
 
         public static void SetApiUrl(string apiUrl)
         {
-            mobile_center_unity_distribute_set_api_url(apiUrl);
+            appcenter_unity_distribute_set_api_url(apiUrl);
         }
 
         public static void NotifyUpdateAction(int updateAction)
         {
-            mobile_center_unity_distribute_notify_update_action(updateAction);
+            appcenter_unity_distribute_notify_update_action(updateAction);
         }
 
 #region External
 
         [DllImport("__Internal")]
-        private static extern IntPtr mobile_center_unity_distribute_get_type();
+        private static extern IntPtr appcenter_unity_distribute_get_type();
 
         [DllImport("__Internal")]
-        private static extern void mobile_center_unity_distribute_set_enabled(bool isEnabled);
+        private static extern void appcenter_unity_distribute_set_enabled(bool isEnabled);
 
         [DllImport("__Internal")]
-        private static extern bool mobile_center_unity_distribute_is_enabled();
+        private static extern bool appcenter_unity_distribute_is_enabled();
 
         [DllImport("__Internal")]
-        private static extern void mobile_center_unity_distribute_set_install_url(string installUrl);
+        private static extern void appcenter_unity_distribute_set_install_url(string installUrl);
 
         [DllImport("__Internal")]
-        private static extern void mobile_center_unity_distribute_set_api_url(string apiUrl);
+        private static extern void appcenter_unity_distribute_set_api_url(string apiUrl);
 
         [DllImport("__Internal")]
-        private static extern void mobile_center_unity_distribute_notify_update_action(int updateAction);
+        private static extern void appcenter_unity_distribute_notify_update_action(int updateAction);
 
         [DllImport("__Internal")]
-        private static extern void mobile_center_unity_distribute_set_release_available_impl(ReleaseAvailableDelegate functionPtr);
+        private static extern void appcenter_unity_distribute_set_release_available_impl(ReleaseAvailableDelegate functionPtr);
 
         [DllImport("__Internal")]
-        private static extern void mobile_center_unity_distribute_replay_release_available();
+        private static extern void appcenter_unity_distribute_replay_release_available();
 
 #endregion
     }

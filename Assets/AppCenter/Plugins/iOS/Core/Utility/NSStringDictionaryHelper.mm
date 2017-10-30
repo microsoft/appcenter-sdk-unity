@@ -6,22 +6,22 @@
 #import "NSStringHelper.h"
 #import <Foundation/Foundation.h>
 
-const char* mobile_center_unity_ns_string_dictionary_get_key_at_idx(NSDictionary *dictionary, int idx)
+const char* appcenter_unity_ns_string_dictionary_get_key_at_idx(NSDictionary *dictionary, int idx)
 {
   id sortKeys = ^(NSString * key1, NSString * key2){
     return [key1 compare:key2];
   };
   NSArray *keys = [[dictionary allKeys] sortedArrayUsingComparator:sortKeys];
-  return mobile_center_unity_ns_string_to_cstr(keys[idx]);
+  return appcenter_unity_ns_string_to_cstr(keys[idx]);
 }
 
-const char* mobile_center_unity_ns_string_dictionary_get_value_for_key(NSDictionary *dictionary, char* key)
+const char* appcenter_unity_ns_string_dictionary_get_value_for_key(NSDictionary *dictionary, char* key)
 {
   NSString * keyString  = [NSString stringWithUTF8String:key];
-  return mobile_center_unity_ns_string_to_cstr([dictionary objectForKey:keyString]);
+  return appcenter_unity_ns_string_to_cstr([dictionary objectForKey:keyString]);
 }
 
-NSDictionary* mobile_center_unity_create_ns_string_dictionary(char** keys, char** values, int count)
+NSDictionary* appcenter_unity_create_ns_string_dictionary(char** keys, char** values, int count)
 {
   // Convert the two arrays to a single dictionary
   NSMutableDictionary<NSString*, NSString*> *nsdictionary = [[NSMutableDictionary<NSString*, NSString*> alloc] init];
@@ -34,7 +34,7 @@ NSDictionary* mobile_center_unity_create_ns_string_dictionary(char** keys, char*
   return nsdictionary;
 }
 
-size_t mobile_center_unity_ns_dictionary_get_length(NSDictionary *dictionary)
+size_t appcenter_unity_ns_dictionary_get_length(NSDictionary *dictionary)
 {
   return [dictionary count];
 }

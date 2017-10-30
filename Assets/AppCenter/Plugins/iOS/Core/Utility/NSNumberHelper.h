@@ -7,9 +7,9 @@
 
 #import <Foundation/Foundation.h>
 
-extern "C" void* mobile_center_unity_nsnumber_convert_int(int val);
-extern "C" NSNumber* mobile_center_unity_nsnumber_convert_long(long val);
-extern "C" NSNumber* mobile_center_unity_nsnumber_convert_float(float val);
-extern "C" NSNumber* mobile_center_unity_nsnumber_convert_double(double val);
+extern "C" void* appcenter_unity_nsnumber_convert_int(int val);
+extern "C" NSNumber* appcenter_unity_nsnumber_convert_long(long val);
+extern "C" NSNumber* appcenter_unity_nsnumber_convert_float(float val);
+extern "C" NSNumber* appcenter_unity_nsnumber_convert_double(double val);
 
 #endif

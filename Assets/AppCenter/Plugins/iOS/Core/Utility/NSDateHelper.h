@@ -7,6 +7,6 @@
 
 #import <Foundation/Foundation.h>
 
-extern "C" NSDate* mobile_center_unity_ns_date_convert(char* format, char* dateString);
+extern "C" NSDate* appcenter_unity_ns_date_convert(char* format, char* dateString);
 
 #endif

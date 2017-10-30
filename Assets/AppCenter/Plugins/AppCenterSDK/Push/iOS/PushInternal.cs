@@ -34,23 +34,23 @@ namespace Microsoft.AppCenter.Unity.Push.Internal
         private static void Initialize()
         {
             _receivedPushDel = ReceivedPushNotificationFunc;
-            mobile_center_unity_push_set_received_push_impl(_receivedPushDel);
+            appcenter_unity_push_set_received_push_impl(_receivedPushDel);
         }
 
         public static IntPtr GetNativeType()
         {
-            return mobile_center_unity_push_get_type();
+            return appcenter_unity_push_get_type();
         }
 
         public static MobileCenterTask SetEnabledAsync(bool isEnabled)
         {
-            mobile_center_unity_push_set_enabled(isEnabled);
+            appcenter_unity_push_set_enabled(isEnabled);
             return MobileCenterTask.FromCompleted();
         }
 
         public static MobileCenterTask<bool> IsEnabledAsync()
         {
-            var isEnabled = mobile_center_unity_push_is_enabled();
+            var isEnabled = appcenter_unity_push_is_enabled();
             return MobileCenterTask<bool>.FromCompleted(isEnabled);
         }
 
@@ -60,25 +60,25 @@ namespace Microsoft.AppCenter.Unity.Push.Internal
 
         internal static void ReplayUnprocessedPushNotifications()
         {
-            mobile_center_unity_push_replay_unprocessed_notifications();
+            appcenter_unity_push_replay_unprocessed_notifications();
         }
 
 #region External
 
         [DllImport("__Internal")]
-        private static extern IntPtr mobile_center_unity_push_get_type();
+        private static extern IntPtr appcenter_unity_push_get_type();
 
         [DllImport("__Internal")]
-        private static extern void mobile_center_unity_push_set_enabled(bool isEnabled);
+        private static extern void appcenter_unity_push_set_enabled(bool isEnabled);
 
         [DllImport("__Internal")]
-        private static extern bool mobile_center_unity_push_is_enabled();
+        private static extern bool appcenter_unity_push_is_enabled();
 
         [DllImport("__Internal")]
-        private static extern void mobile_center_unity_push_set_received_push_impl(ReceivedPushNotificationDelegate functionPtr);
+        private static extern void appcenter_unity_push_set_received_push_impl(ReceivedPushNotificationDelegate functionPtr);
 
         [DllImport("__Internal")]
-        private static extern void mobile_center_unity_push_replay_unprocessed_notifications();
+        private static extern void appcenter_unity_push_replay_unprocessed_notifications();
 #endregion
     }
 }

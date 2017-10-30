@@ -7,33 +7,33 @@
 #import <MobileCenterDistribute/MobileCenterDistribute.h>
 #import <Foundation/Foundation.h>
 
-int mobile_center_unity_release_details_get_id(MSReleaseDetails* details)
+int appcenter_unity_release_details_get_id(MSReleaseDetails* details)
 {
   return [[details id] intValue];
 }
 
-const char* mobile_center_unity_release_details_get_version(MSReleaseDetails* details)
+const char* appcenter_unity_release_details_get_version(MSReleaseDetails* details)
 {
-  return mobile_center_unity_ns_string_to_cstr([details version]);
+  return appcenter_unity_ns_string_to_cstr([details version]);
 }
 
-const char* mobile_center_unity_release_details_get_short_version(MSReleaseDetails* details)
+const char* appcenter_unity_release_details_get_short_version(MSReleaseDetails* details)
 {
-  return mobile_center_unity_ns_string_to_cstr([details shortVersion]);
+  return appcenter_unity_ns_string_to_cstr([details shortVersion]);
 }
 
-const char* mobile_center_unity_release_details_get_release_notes(MSReleaseDetails* details)
+const char* appcenter_unity_release_details_get_release_notes(MSReleaseDetails* details)
 {
-  return mobile_center_unity_ns_string_to_cstr([details releaseNotes]);
+  return appcenter_unity_ns_string_to_cstr([details releaseNotes]);
 }
 
-bool mobile_center_unity_release_details_get_mandatory_update(MSReleaseDetails* details)
+bool appcenter_unity_release_details_get_mandatory_update(MSReleaseDetails* details)
 {
   return [details mandatoryUpdate];
 }
 
-const char* mobile_center_unity_release_details_get_url(MSReleaseDetails* details)
+const char* appcenter_unity_release_details_get_url(MSReleaseDetails* details)
 {
-  return mobile_center_unity_ns_string_to_cstr([[details releaseNotesUrl] absoluteString]);
+  return appcenter_unity_ns_string_to_cstr([[details releaseNotesUrl] absoluteString]);
 }
 

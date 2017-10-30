@@ -5,7 +5,7 @@
 #import "NSDateHelper.h"
 #import <Foundation/Foundation.h>
 
-NSDate* mobile_center_unity_ns_date_convert(char* format, char* dateString)
+NSDate* appcenter_unity_ns_date_convert(char* format, char* dateString)
 {
   NSString *formatNSStr = [NSString stringWithUTF8String:format];
   NSString *dateNSStr = [NSString stringWithUTF8String:dateString];

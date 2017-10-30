@@ -5,22 +5,22 @@
 #import "NSNumberHelper.h"
 #import <Foundation/Foundation.h>
 
-void* mobile_center_unity_nsnumber_convert_int(int val)
+void* appcenter_unity_nsnumber_convert_int(int val)
 {
   return (__bridge void*)[NSNumber numberWithInt:val];
 }
 
-NSNumber* mobile_center_unity_nsnumber_convert_long(long val)
+NSNumber* appcenter_unity_nsnumber_convert_long(long val)
 {
   return [NSNumber numberWithLong:val];
 }
 
-NSNumber* mobile_center_unity_nsnumber_convert_float(float val)
+NSNumber* appcenter_unity_nsnumber_convert_float(float val)
 {
   return [NSNumber numberWithFloat:val];
 }
 
-NSNumber* mobile_center_unity_nsnumber_convert_double(double val)
+NSNumber* appcenter_unity_nsnumber_convert_double(double val)
 {
   return [NSNumber numberWithDouble:val];
 }

@@ -16,11 +16,11 @@ namespace Microsoft.Azure.Mobile.Internal.Utility
             var format = "yyyy-MM-dd'T'HH:mm:ss.fffK";
             var nsdateformat = "yyyy-MM-dd'T'HH:mm:ss.SSS";
             var dateString = date.ToString(format);
-            return mobile_center_unity_ns_date_convert(nsdateformat, dateString);
+            return appcenter_unity_ns_date_convert(nsdateformat, dateString);
         }
 
         [DllImport("__Internal")]
-        private static extern IntPtr mobile_center_unity_ns_date_convert(string format, string dateString);
+        private static extern IntPtr appcenter_unity_ns_date_convert(string format, string dateString);
     }
 }
 #endif

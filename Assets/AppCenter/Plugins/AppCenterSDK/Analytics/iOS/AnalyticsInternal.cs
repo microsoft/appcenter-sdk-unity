@@ -16,47 +16,47 @@ namespace Microsoft.AppCenter.Unity.Analytics.Internal
 
         public static IntPtr GetNativeType()
         {
-            return mobile_center_unity_analytics_get_type();
+            return appcenter_unity_analytics_get_type();
         }
 
         public static void TrackEvent(string eventName)
         {
-            mobile_center_unity_analytics_track_event(eventName);
+            appcenter_unity_analytics_track_event(eventName);
         }
 
         public static void TrackEventWithProperties(string eventName, string[] keys, string[] values, int count)
         {
-            mobile_center_unity_analytics_track_event_with_properties(eventName, keys, values, count);
+            appcenter_unity_analytics_track_event_with_properties(eventName, keys, values, count);
         }
 
         public static MobileCenterTask SetEnabledAsync(bool isEnabled)
         {
-            mobile_center_unity_analytics_set_enabled(isEnabled);
+            appcenter_unity_analytics_set_enabled(isEnabled);
             return MobileCenterTask.FromCompleted();
         }
 
         public static MobileCenterTask<bool> IsEnabledAsync()
         {
-            var isEnabled = mobile_center_unity_analytics_is_enabled();
+            var isEnabled = appcenter_unity_analytics_is_enabled();
             return MobileCenterTask<bool>.FromCompleted(isEnabled);
         }
 
 #region External
 
         [DllImport("__Internal")]
-        private static extern IntPtr mobile_center_unity_analytics_get_type();
+        private static extern IntPtr appcenter_unity_analytics_get_type();
 
         [DllImport("__Internal")]
-        private static extern void mobile_center_unity_analytics_track_event(string eventName);
+        private static extern void appcenter_unity_analytics_track_event(string eventName);
 
         [DllImport("__Internal")]
-        private static extern void mobile_center_unity_analytics_track_event_with_properties(string eventName, string[] keys, string[] values, int count);
+        private static extern void appcenter_unity_analytics_track_event_with_properties(string eventName, string[] keys, string[] values, int count);
 
         [DllImport("__Internal")]
-        private static extern void mobile_center_unity_analytics_set_enabled(bool isEnabled);
+        private static extern void appcenter_unity_analytics_set_enabled(bool isEnabled);
 
         [DllImport("__Internal")]
-        private static extern bool mobile_center_unity_analytics_is_enabled();
+        private static extern bool appcenter_unity_analytics_is_enabled();
 
 #endregion
     }
