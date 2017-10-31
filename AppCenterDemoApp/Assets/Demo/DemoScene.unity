@@ -7321,7 +7321,7 @@ GameObject:
   - component: {fileID: 1653541465}
   - component: {fileID: 1653541464}
   m_Layer: 0
-  m_Name: Mobile Center
+  m_Name: App Center
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

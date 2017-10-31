@@ -141,9 +141,9 @@ PlayerSettings:
   targetPixelDensity: 0
   resolutionScalingMode: 0
   applicationIdentifier:
-    Android: com.microsoft.azure.mobile.unity.demo
-    Standalone: com.microsoft.azure.mobile.unity.puppet
-    iOS: com.microsoft.azure.mobile.unity.demo
+    Android: com.microsoft.appcenter.unity.demo
+    Standalone: com.microsoft.appcenter.unity.demo
+    iOS: com.microsoft.appcenter.unity.demo
   buildNumber: {}
   AndroidBundleVersionCode: 1
   AndroidMinSdkVersion: 16
