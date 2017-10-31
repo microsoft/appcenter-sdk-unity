@@ -12,7 +12,7 @@ using UnityEngine;
 public class BuildPuppet
 {
     private static readonly string BuildFolder = "CAKE_SCRIPT_TEMPPuppetBuilds";
-    private static readonly string AppIdentifier = "com.Microsoft.AppCenter.Unity.puppet";
+    private static readonly string AppIdentifier = "com.microsoft.appcenter.unity.puppet";
 
     static BuildPuppet()
     {

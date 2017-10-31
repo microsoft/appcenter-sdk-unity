@@ -12,7 +12,7 @@ using UnityEngine;
 public class BuildDemo
 {
     private static readonly string BuildFolder = "CAKE_SCRIPT_TEMPDemoBuilds";
-    private static readonly string AppIdentifier = "com.Microsoft.AppCenter.Unity.demo";
+    private static readonly string AppIdentifier = "com.microsoft.appcenter.unity.demo";
 
     static BuildDemo()
     {
