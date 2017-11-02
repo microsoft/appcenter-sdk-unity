@@ -22,8 +22,6 @@ xcuserdata
 [Bb]in/
 [Oo]bj/
 [Ll]og/
-**/Temp/
-**/UWP/project.json
 **/iOSBuild/
 **/UWPBuild/
 **/AndroidBuild/
@@ -53,7 +51,9 @@ google-services.json*
 *.pfx*
 
 # Unity
-**/Library/
+Library/
+Temp/
+UWP/project.json
 *.csproj
 *.sln
 RegisterIcalls.cpp

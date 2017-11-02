@@ -176,6 +176,21 @@ class UnityPackage
             Statics.Context.Error("Something went wrong while creating Unity package '" + fullPackageName + "'");
         }
     }
+
+    public void CopyFiles(DirectoryPath targetDirectory)
+    {
+        foreach (var path in _includePaths)
+        {
+            if (Statics.Context.DirectoryExists(path))
+            {
+                Statics.Context.CopyDirectory(path, targetDirectory.Combine(path));
+            }
+            else
+            {
+                Statics.Context.CopyFile(path, targetDirectory.CombineWithFilePath(path));
+            }
+        }
+    }
 }
 
 // Downloading Android binaries.
@@ -365,12 +380,12 @@ Task("AddPackagesToDemoApp")
     .IsDependentOn("CreatePackages")
     .Does(()=>
 {
-    var packages = GetFiles("output/*.unitypackage");
-    foreach (var package in packages)
+    var specFiles = GetFiles("UnityPackageSpecs/*.unitypackagespec");
+    foreach (var spec in specFiles)
     {
-        var command = "-importPackage " + package.FullPath;
-        Information("Importing package " + package.FullPath + ". This could take a minute.");
-        ExecuteUnityCommand(command, "AppCenterDemoApp");
+        Information("Add files from " + spec);
+        var package = new UnityPackage(spec.FullPath);
+        package.CopyFiles("AppCenterDemoApp");
     }
 }).OnError(HandleError);
 
