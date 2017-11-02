@@ -11,7 +11,7 @@ public class AppCenterSettingsMakerAndroid
     private const string AppCenterResourcesPath = AppCenterResourcesFolderPath + "appcenter-settings.xml";
     private const string AppCenterManifestPath = "Assets/Plugins/Android/appcenter/AndroidManifest.xml";
     private const string AppCenterManifestPlaceholderPath = "Assets/AppCenter/Plugins/Android/AndroidManifestPlaceholder.xml";
-    private const string ManifestAppIdPlaceholder = "${app-center-app-id-placeholder}";
+    private const string ManifestAppIdPlaceholder = "${appcenter-app-id-placeholder}";
     private const string AppSecretKey = "appcenter_app_secret";
     private const string CustomLogUrlKey = "appcenter_custom_log_url";
     private const string UseCustomLogUrlKey = "appcenter_use_custom_log_url";

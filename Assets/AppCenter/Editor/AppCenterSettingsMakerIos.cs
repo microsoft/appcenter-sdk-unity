@@ -10,15 +10,15 @@ public class AppCenterSettingsMakerIos
     private const string TargetFilePath = "Assets/AppCenter/Plugins/iOS/Core/AppCenterStarter.m";
     private const string AppSecretSearchText = "appcenter-app-secret";
     private const string LogUrlSearchText = "custom-log-url";
-    private const string LogUrlToken = "MOBILE_CENTER_UNITY_USE_CUSTOM_LOG_URL";
+    private const string LogUrlToken = "APPCENTER_UNITY_USE_CUSTOM_LOG_URL";
     private const string LogLevelSearchText = "0/*LOG_LEVEL*/";
-    private const string UsePushToken = "MOBILE_CENTER_UNITY_USE_PUSH";
-    private const string UseAnalyticsToken = "MOBILE_CENTER_UNITY_USE_ANALYTICS";
-    private const string UseDistributeToken = "MOBILE_CENTER_UNITY_USE_DISTRIBUTE";
+    private const string UsePushToken = "APPCENTER_UNITY_USE_PUSH";
+    private const string UseAnalyticsToken = "APPCENTER_UNITY_USE_ANALYTICS";
+    private const string UseDistributeToken = "APPCENTER_UNITY_USE_DISTRIBUTE";
     private const string ApiUrlSearchText = "custom-api-url";
-    private const string ApiUrlToken = "MOBILE_CENTER_UNITY_USE_CUSTOM_API_URL";
+    private const string ApiUrlToken = "APPCENTER_UNITY_USE_CUSTOM_API_URL";
     private const string InstallUrlSearchText = "custom-install-url";
-    private const string InstallUrlToken = "MOBILE_CENTER_UNITY_USE_CUSTOM_INSTALL_URL";
+    private const string InstallUrlToken = "APPCENTER_UNITY_USE_CUSTOM_INSTALL_URL";
 
     private string _loaderFileText;
 

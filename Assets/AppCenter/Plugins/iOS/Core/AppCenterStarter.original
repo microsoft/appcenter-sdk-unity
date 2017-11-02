@@ -8,16 +8,16 @@
 
 @import MobileCenter;
 
-#ifdef MOBILE_CENTER_UNITY_USE_PUSH
+#ifdef APPCENTER_UNITY_USE_PUSH
 @import MobileCenterPush;
 #import "../Push/PushDelegate.h"
 #endif
 
-#ifdef MOBILE_CENTER_UNITY_USE_ANALYTICS
+#ifdef APPCENTER_UNITY_USE_ANALYTICS
 @import MobileCenterAnalytics;
 #endif
 
-#ifdef MOBILE_CENTER_UNITY_USE_DISTRIBUTE
+#ifdef APPCENTER_UNITY_USE_DISTRIBUTE
 @import MobileCenterDistribute;
 #import "../Distribute/DistributeDelegate.h"
 #endif
@@ -41,32 +41,32 @@ static const int kMSLogLevel = 0/*LOG_LEVEL*/;
 + (void)startAppCenter {
   NSMutableArray<Class>* classes = [[NSMutableArray alloc] init];
 
-#ifdef MOBILE_CENTER_UNITY_USE_PUSH
+#ifdef APPCENTER_UNITY_USE_PUSH
   [MSPush setDelegate:[UnityPushDelegate sharedInstance]];
   [classes addObject:MSPush.class];
 #endif
 
-#ifdef MOBILE_CENTER_UNITY_USE_ANALYTICS
+#ifdef APPCENTER_UNITY_USE_ANALYTICS
   [classes addObject:MSAnalytics.class];
 #endif
 
-#ifdef MOBILE_CENTER_UNITY_USE_DISTRIBUTE
+#ifdef APPCENTER_UNITY_USE_DISTRIBUTE
 
-#ifdef MOBILE_CENTER_UNITY_USE_CUSTOM_API_URL
+#ifdef APPCENTER_UNITY_USE_CUSTOM_API_URL
   [MSDistribute setApiUrl:kMSCustomApiUrl];
-#endif // MOBILE_CENTER_UNITY_USE_CUSTOM_API_URL
+#endif // APPCENTER_UNITY_USE_CUSTOM_API_URL
 
-#ifdef MOBILE_CENTER_UNITY_USE_CUSTOM_INSTALL_URL
+#ifdef APPCENTER_UNITY_USE_CUSTOM_INSTALL_URL
   [MSDistribute setInstallUrl:kMSCustomInstallUrl];
-#endif // MOBILE_CENTER_UNITY_USE_CUSTOM_INSTALL_URL
+#endif // APPCENTER_UNITY_USE_CUSTOM_INSTALL_URL
   [MSDistribute setDelegate:[UnityDistributeDelegate sharedInstance]];
   [classes addObject:MSDistribute.class];
 
-#endif // MOBILE_CENTER_UNITY_USE_DISTRIBUTE
+#endif // APPCENTER_UNITY_USE_DISTRIBUTE
 
   [MSMobileCenter setLogLevel:(MSLogLevel)kMSLogLevel];
 
-#ifdef MOBILE_CENTER_UNITY_USE_CUSTOM_LOG_URL
+#ifdef APPCENTER_UNITY_USE_CUSTOM_LOG_URL
   [MSMobileCenter setLogUrl:kMSCustomLogUrl];
 #endif
 

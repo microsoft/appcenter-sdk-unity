@@ -4,7 +4,7 @@
   <uses-sdk android:minSdkVersion="15"/>
     <application>
         <provider
-            android:authorities="${app-center-app-id-placeholder}.microsoft.appcenter.appcenterloader"
+            android:authorities="${appcenter-app-id-placeholder}.microsoft.appcenter.appcenterloader"
             android:exported="false"
             android:name=".AppCenterLoader" />
     </application>
