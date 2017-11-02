@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
+using Microsoft.Azure.Mobile;
 using Microsoft.Azure.Mobile.Ingestion.Http;
 using UnityEngine.Networking;
 
