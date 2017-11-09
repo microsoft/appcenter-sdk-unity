@@ -4,12 +4,12 @@
 
 #if UNITY_WSA_10_0 && !UNITY_EDITOR
 using System;
-using Microsoft.Azure.Mobile.Utils;
+using Microsoft.AppCenter.Utils;
 using Microsoft.AppCenter.Unity.Internal.Utils;
 
 namespace Microsoft.AppCenter.Unity.Internal
 {
-    using UWPAppCenter = Microsoft.Azure.Mobile.MobileCenter;
+    using UWPAppCenter = Microsoft.AppCenter.AppCenter;
 
     class AppCenterInternal
     {
@@ -37,7 +37,7 @@ namespace Microsoft.AppCenter.Unity.Internal
         public static void SetLogLevel(int logLevel)
         {
             Prepare();
-            UWPAppCenter.LogLevel = (Microsoft.Azure.Mobile.LogLevel)LogLevelFromUnity(logLevel);
+            UWPAppCenter.LogLevel = (Microsoft.AppCenter.LogLevel)LogLevelFromUnity(logLevel);
         }
 
         public static int GetLogLevel()
@@ -85,7 +85,7 @@ namespace Microsoft.AppCenter.Unity.Internal
         public static void SetCustomProperties(object properties)
         {
             Prepare();
-            var uwpProperties = properties as Microsoft.Azure.Mobile.CustomProperties;
+            var uwpProperties = properties as Microsoft.AppCenter.CustomProperties;
             UWPAppCenter.SetCustomProperties(uwpProperties);
         }
 
@@ -101,47 +101,47 @@ namespace Microsoft.AppCenter.Unity.Internal
 
         private static int LogLevelToUnity(int logLevel)
         {
-            switch ((Microsoft.Azure.Mobile.LogLevel)logLevel)
+            switch ((Microsoft.AppCenter.LogLevel)logLevel)
             {
-                case Microsoft.Azure.Mobile.LogLevel.Verbose:
+                case Microsoft.AppCenter.LogLevel.Verbose:
                     return (int)Microsoft.AppCenter.Unity.LogLevel.Verbose;
-                case Microsoft.Azure.Mobile.LogLevel.Debug:
+                case Microsoft.AppCenter.LogLevel.Debug:
                     return (int)Microsoft.AppCenter.Unity.LogLevel.Debug;
-                case Microsoft.Azure.Mobile.LogLevel.Info:
+                case Microsoft.AppCenter.LogLevel.Info:
                     return (int)Microsoft.AppCenter.Unity.LogLevel.Info;
-                case Microsoft.Azure.Mobile.LogLevel.Warn:
+                case Microsoft.AppCenter.LogLevel.Warn:
                     return (int)Microsoft.AppCenter.Unity.LogLevel.Warn;
-                case Microsoft.Azure.Mobile.LogLevel.Error:
+                case Microsoft.AppCenter.LogLevel.Error:
                     return (int)Microsoft.AppCenter.Unity.LogLevel.Error;
-                case Microsoft.Azure.Mobile.LogLevel.Assert:
+                case Microsoft.AppCenter.LogLevel.Assert:
                     return (int)Microsoft.AppCenter.Unity.LogLevel.Assert;
-                case Microsoft.Azure.Mobile.LogLevel.None:
+                case Microsoft.AppCenter.LogLevel.None:
                     return (int)Microsoft.AppCenter.Unity.LogLevel.None;
                 default:
                     return logLevel;
             }
         }
 
-        private static Microsoft.Azure.Mobile.LogLevel LogLevelFromUnity(int logLevel)
+        private static Microsoft.AppCenter.LogLevel LogLevelFromUnity(int logLevel)
         {
             switch ((Microsoft.AppCenter.Unity.LogLevel)logLevel)
             {
                 case Microsoft.AppCenter.Unity.LogLevel.Verbose:
-                    return Microsoft.Azure.Mobile.LogLevel.Verbose;
+                    return Microsoft.AppCenter.LogLevel.Verbose;
                 case Microsoft.AppCenter.Unity.LogLevel.Debug:
-                    return Microsoft.Azure.Mobile.LogLevel.Debug;
+                    return Microsoft.AppCenter.LogLevel.Debug;
                 case Microsoft.AppCenter.Unity.LogLevel.Info:
-                    return Microsoft.Azure.Mobile.LogLevel.Info;
+                    return Microsoft.AppCenter.LogLevel.Info;
                 case Microsoft.AppCenter.Unity.LogLevel.Warn:
-                    return Microsoft.Azure.Mobile.LogLevel.Warn;
+                    return Microsoft.AppCenter.LogLevel.Warn;
                 case Microsoft.AppCenter.Unity.LogLevel.Error:
-                    return Microsoft.Azure.Mobile.LogLevel.Error;
+                    return Microsoft.AppCenter.LogLevel.Error;
                 case Microsoft.AppCenter.Unity.LogLevel.Assert:
-                    return Microsoft.Azure.Mobile.LogLevel.Assert;
+                    return Microsoft.AppCenter.LogLevel.Assert;
                 case Microsoft.AppCenter.Unity.LogLevel.None:
-                    return Microsoft.Azure.Mobile.LogLevel.None;
+                    return Microsoft.AppCenter.LogLevel.None;
                 default:
-                    return (Microsoft.Azure.Mobile.LogLevel)logLevel;
+                    return (Microsoft.AppCenter.LogLevel)logLevel;
             }
         }
 

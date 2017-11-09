@@ -6,7 +6,7 @@
 using System;
 using System.Threading.Tasks;
 using UnityEngine;
-using Microsoft.Azure.Mobile.Utils;
+using Microsoft.AppCenter.Utils;
 
 namespace Microsoft.AppCenter.Unity.Internal.Utils
 {

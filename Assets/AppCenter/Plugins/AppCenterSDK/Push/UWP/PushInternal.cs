@@ -9,7 +9,7 @@ using Windows.ApplicationModel.Activation;
 
 namespace Microsoft.AppCenter.Unity.Push.Internal
 {
-    using UWPPush = Microsoft.Azure.Mobile.Push.Push;
+    using UWPPush = Microsoft.AppCenter.Push.Push;
     using WSAApplication = UnityEngine.WSA.Application;
 
     class PushInternal
@@ -26,7 +26,7 @@ namespace Microsoft.AppCenter.Unity.Push.Internal
 
         private static void Initialize()
         {
-            Microsoft.Azure.Mobile.Utils.ApplicationLifecycleHelper.Instance.ApplicationResuming += (s, e) =>
+            Microsoft.AppCenter.Utils.ApplicationLifecycleHelper.Instance.ApplicationResuming += (s, e) =>
             {
                 WSAApplication.InvokeOnAppThread(new UnityEngine.WSA.AppCallbackItem(() =>
                {

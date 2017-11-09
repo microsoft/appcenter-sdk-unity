@@ -14,7 +14,7 @@ using NuGet;
 // Native SDK versions
 var AndroidSdkVersion = "0.12.0";
 var IosSdkVersion = "0.12.1";
-var UwpSdkVersion = "0.15.0";
+var UwpSdkVersion = "1.0.0-r0008-e3e7467";
 
 // URLs for downloading binaries.
 /*
@@ -30,10 +30,10 @@ var AndroidUrl = SdkStorageUrl + "MobileCenter-SDK-Android-" + AndroidSdkVersion
 var IosUrl = SdkStorageUrl + "MobileCenter-SDK-Apple-" + IosSdkVersion + ".zip";
 
 var AppCenterModules = new [] {
-    new AppCenterModule("mobile-center-release.aar", "MobileCenter.framework", "Microsoft.Azure.Mobile", "Core"),
-    new AppCenterModule("mobile-center-analytics-release.aar", "MobileCenterAnalytics.framework", "Microsoft.Azure.Mobile.Analytics", "Analytics"),
-    new AppCenterModule("mobile-center-distribute-release.aar", "MobileCenterDistribute.framework", "Microsoft.Azure.Mobile.Distribute", "Distribute"),
-    new AppCenterModule("mobile-center-push-release.aar", "MobileCenterPush.framework", "Microsoft.Azure.Mobile.Push", "Push")
+    new AppCenterModule("mobile-center-release.aar", "MobileCenter.framework", "Microsoft.AppCenter", "Core"),
+    new AppCenterModule("mobile-center-analytics-release.aar", "MobileCenterAnalytics.framework", "Microsoft.AppCenter.Analytics", "Analytics"),
+    new AppCenterModule("mobile-center-distribute-release.aar", "MobileCenterDistribute.framework", "Microsoft.AppCenter.Distribute", "Distribute"),
+    new AppCenterModule("mobile-center-push-release.aar", "MobileCenterPush.framework", "Microsoft.AppCenter.Push", "Push")
 };
 
 // External Unity Packages

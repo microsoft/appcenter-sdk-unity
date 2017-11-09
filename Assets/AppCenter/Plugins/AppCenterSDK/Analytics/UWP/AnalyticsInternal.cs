@@ -8,7 +8,7 @@ using System.Collections.Generic;
 
 namespace Microsoft.AppCenter.Unity.Analytics.Internal
 {
-    using UWPAnalytics = Microsoft.Azure.Mobile.Analytics.Analytics;
+    using UWPAnalytics = Microsoft.AppCenter.Analytics.Analytics;
 
     class AnalyticsInternal
     {
@@ -18,7 +18,7 @@ namespace Microsoft.AppCenter.Unity.Analytics.Internal
 
         public static Type GetNativeType()
         {
-            return typeof(Microsoft.Azure.Mobile.Analytics.Analytics);
+            return typeof(UWPAnalytics);
         }
 
         public static void TrackEvent(string eventName)

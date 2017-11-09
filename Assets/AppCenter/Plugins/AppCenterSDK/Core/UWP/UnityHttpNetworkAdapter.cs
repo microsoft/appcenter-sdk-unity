@@ -5,8 +5,7 @@ using System.Collections.Generic;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
-using Microsoft.Azure.Mobile;
-using Microsoft.Azure.Mobile.Ingestion.Http;
+using Microsoft.AppCenter.Ingestion.Http;
 using UnityEngine.Networking;
 
 namespace Microsoft.AppCenter.Unity.Internal.Utils
@@ -42,7 +41,7 @@ namespace Microsoft.AppCenter.Unity.Internal.Utils
                 else
                 {
                     var responseContent = request.downloadHandler.text;
-                    MobileCenterLog.Verbose(MobileCenterLog.LogTag, $"HTTP response status={(int)request.responseCode} payload={responseContent}");
+                    AppCenterLog.Verbose(AppCenterLog.LogTag, $"HTTP response status={(int)request.responseCode} payload={responseContent}");
                     tcs.SetResult(responseContent);
                 }
             }));

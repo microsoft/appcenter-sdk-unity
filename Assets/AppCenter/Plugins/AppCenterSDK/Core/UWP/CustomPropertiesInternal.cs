@@ -7,7 +7,7 @@ using System;
 
 namespace Microsoft.AppCenter.Unity.Internal
 {
-    using UWPCustomProperties = Microsoft.Azure.Mobile.CustomProperties;
+    using UWPCustomProperties = Microsoft.AppCenter.CustomProperties;
 
     class CustomPropertiesInternal
     {

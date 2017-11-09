@@ -5,7 +5,7 @@
 #if UNITY_WSA_10_0 && ENABLE_IL2CPP && !UNITY_EDITOR
 using System.Collections;
 using System.Collections.Generic;
-using Microsoft.Azure.Mobile.Utils;
+using Microsoft.AppCenter.Utils;
 using Newtonsoft.Json;
 using UnityEngine;
 
