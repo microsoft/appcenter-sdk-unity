@@ -43,6 +43,7 @@ tools/**
 *.dll
 *.aar
 *.framework
+*.bundle
 *.apk
 *.ipa
 

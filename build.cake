@@ -32,7 +32,7 @@ var IosUrl = SdkStorageUrl + "AppCenter-SDK-Apple-" + IosSdkVersion + ".zip";
 var AppCenterModules = new [] {
     new AppCenterModule("appcenter-release.aar", "AppCenter.framework", "Microsoft.AppCenter", "Core"),
     new AppCenterModule("appcenter-analytics-release.aar", "AppCenterAnalytics.framework", "Microsoft.AppCenter.Analytics", "Analytics"),
-    new AppCenterModule("appcenter-distribute-release.aar", "AppCenterDistribute.framework", "Microsoft.AppCenter.Distribute", "Distribute"),
+    new AppCenterModule("appcenter-distribute-release.aar", new[] { "AppCenterDistribute.framework", "MobileCenterDistributeResources.bundle" }, "Microsoft.AppCenter.Distribute", "Distribute"),
     new AppCenterModule("appcenter-push-release.aar", "AppCenterPush.framework", "Microsoft.AppCenter.Push", "Push")
 };
 
@@ -61,17 +61,22 @@ var Target = Argument("target", Argument("t", "Default"));
 // AppCenter module class definition.
 class AppCenterModule
 {
-    public string AndroidModule { get; set; }
-    public string IosModule { get; set; }
-    public string DotNetModule { get; set; }
-    public string Moniker { get; set; }
-    public bool UWPHasNativeCode { get; set; }
-    public string[] NativeArchitectures { get; set; }
+    public string AndroidModule { get; private set; }
+    public string[] IosModules { get; private set; }
+    public string DotNetModule { get; private set; }
+    public string Moniker { get; private set; }
+    public bool UWPHasNativeCode { get; private set; }
+    public string[] NativeArchitectures { get; private set; }
 
-    public AppCenterModule(string android, string ios, string dotnet, string moniker, bool hasNative = false)
+    public AppCenterModule(string android, string ios, string dotnet, string moniker, bool hasNative = false) :
+        this(android, new[] { ios }, dotnet, moniker, hasNative)
+    {
+    }
+
+    public AppCenterModule(string android, string[] ios, string dotnet, string moniker, bool hasNative = false)
     {
         AndroidModule = android;
-        IosModule = ios;
+        IosModules = ios;
         DotNetModule = dotnet;
         Moniker = moniker;
         UWPHasNativeCode = hasNative;
@@ -224,9 +229,12 @@ Task("Externals-Ios")
     // Copy files
     foreach (var module in AppCenterModules)
     {
-        var destinationFolder = "Assets/AppCenter/Plugins/iOS/" + module.Moniker + "/" + module.IosModule;
-        DeleteDirectoryIfExists(destinationFolder);
-        MoveDirectory("./externals/ios/MobileCenter-SDK-Apple/iOS/" + module.IosModule, destinationFolder);
+        foreach (var iosModule in module.IosModules)
+        {
+            var destinationFolder = "Assets/AppCenter/Plugins/iOS/" + module.Moniker + "/" + iosModule;
+            DeleteDirectoryIfExists(destinationFolder);
+            MoveDirectory("./externals/ios/AppCenter-SDK-Apple/iOS/" + iosModule, destinationFolder);
+        }
     }
 }).OnError(HandleError);
 
