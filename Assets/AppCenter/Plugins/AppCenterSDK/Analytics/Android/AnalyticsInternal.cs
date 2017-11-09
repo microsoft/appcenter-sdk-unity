@@ -27,7 +27,7 @@ namespace Microsoft.AppCenter.Unity.Analytics.Internal
 
         public static IntPtr GetNativeType()
         {
-            return AndroidJNI.FindClass("com/microsoft/azure/mobile/analytics/Analytics");
+            return AndroidJNI.FindClass("com/microsoft/appcenter/analytics/Analytics");
         }
 
         public static void TrackEvent(string eventName)

@@ -1,9 +1,9 @@
             var launchArgs = args as LaunchActivatedEventArgs;
             if (m_AppCallbacks != null && launchArgs != null)
             {
-                if (launchArgs.Arguments.Contains("{\"mobile_center\":{"))
+                if (launchArgs.Arguments.Contains("{\"appcenter\":{"))
                 {
-                    m_AppCallbacks.SetAppArguments(launchArgs.Arguments.Substring(0, launchArgs.Arguments.Length - 1) + ", \"mobilecenterunity\":\"" + Guid.NewGuid() + "\"}");
+                    m_AppCallbacks.SetAppArguments(launchArgs.Arguments.Substring(0, launchArgs.Arguments.Length - 1) + ", \"appcenterunity\":\"" + Guid.NewGuid() + "\"}");
                 }
                 else
                 {

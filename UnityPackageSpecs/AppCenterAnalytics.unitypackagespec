@@ -8,7 +8,7 @@
         <file path="Assets/AppCenter/Plugins/AppCenterSDK/Analytics/Blank" />
 
         <!-- Android files -->
-        <file path="Assets/AppCenter/Plugins/Android/mobile-center-analytics-release.aar" />
+        <file path="Assets/AppCenter/Plugins/Android/appcenter-analytics-release.aar" />
         <file path="Assets/AppCenter/Plugins/AppCenterSDK/Analytics/Android" />
 
         <!-- iOS files -->

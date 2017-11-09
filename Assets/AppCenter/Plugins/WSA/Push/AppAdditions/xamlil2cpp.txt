@@ -1,5 +1,5 @@
     auto launchArgs = std::wstring(e->Arguments->Data());
-    if (launchArgs.find(L"{\"mobile_center\":{") == 0)
+    if (launchArgs.find(L"{\"appcenter\":{") == 0)
     {
         GUID guid;
         CoCreateGuid(&guid);
@@ -8,7 +8,7 @@
         {
             guidString += std::to_wstring(guid.Data4[i]);
         }
-        launchArgs = launchArgs.substr(0, launchArgs.length() - 1) + L", \"mobilecenterunity\":\"" + guidString + L"\"}";
+        launchArgs = launchArgs.substr(0, launchArgs.length() - 1) + L", \"appcenterunity\":\"" + guidString + L"\"}";
     }
     Platform::String ^launchArgsPlatformString = ref new Platform::String(launchArgs.data());
     InitializeUnity(launchArgsPlatformString);

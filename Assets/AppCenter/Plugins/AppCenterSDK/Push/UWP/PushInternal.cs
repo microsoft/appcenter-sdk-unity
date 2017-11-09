@@ -31,9 +31,9 @@ namespace Microsoft.AppCenter.Unity.Push.Internal
                 WSAApplication.InvokeOnAppThread(new UnityEngine.WSA.AppCallbackItem(() =>
                {
                    var arguments = WSAApplication.arguments;
-                   if (arguments.Contains("mobilecenterunity"))
+                   if (arguments.Contains("appcenterunity"))
                    {
-                       var idPrefix = "\"mobilecenterunity\":\"";
+                       var idPrefix = "\"appcenterunity\":\"";
                        var idStartIdx = arguments.IndexOf(idPrefix) + idPrefix.Length;
                        var idString = arguments.Substring(idStartIdx, _idLength);
                        if (idString != _prevIdString)

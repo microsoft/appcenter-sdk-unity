@@ -32,7 +32,7 @@ var IosUrl = SdkStorageUrl + "AppCenter-SDK-Apple-" + IosSdkVersion + ".zip";
 var AppCenterModules = new [] {
     new AppCenterModule("appcenter-release.aar", "AppCenter.framework", "Microsoft.AppCenter", "Core"),
     new AppCenterModule("appcenter-analytics-release.aar", "AppCenterAnalytics.framework", "Microsoft.AppCenter.Analytics", "Analytics"),
-    new AppCenterModule("appcenter-distribute-release.aar", new[] { "AppCenterDistribute.framework", "MobileCenterDistributeResources.bundle" }, "Microsoft.AppCenter.Distribute", "Distribute"),
+    new AppCenterModule("appcenter-distribute-release.aar", new[] { "AppCenterDistribute.framework", "AppCenterDistributeResources.bundle" }, "Microsoft.AppCenter.Distribute", "Distribute"),
     new AppCenterModule("appcenter-push-release.aar", "AppCenterPush.framework", "Microsoft.AppCenter.Push", "Push")
 };
 

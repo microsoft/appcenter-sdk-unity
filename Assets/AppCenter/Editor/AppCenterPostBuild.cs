@@ -258,7 +258,7 @@ public class AppCenterPostBuild
             urlType.SetString("CFBundleTypeRole", "None");
             urlType.SetString("CFBundleURLName", ApplicationIdHelper.GetApplicationId());
             var urlSchemes = urlType.CreateArray("CFBundleURLSchemes");
-            urlSchemes.AddString("mobilecenter-" + settings.iOSAppSecret);
+            urlSchemes.AddString("appcenter-" + settings.iOSAppSecret);
         }
     }
 

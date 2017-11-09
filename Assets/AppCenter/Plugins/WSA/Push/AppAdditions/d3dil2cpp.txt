@@ -2,7 +2,7 @@
     {
         auto launchTypeArgs = safe_cast<LaunchActivatedEventArgs^>(args);
         auto launchArgs = launchTypeArgs->Arguments;
-        Platform::String ^stringPrefix = L"{\"mobile_center\":{";
+        Platform::String ^stringPrefix = L"{\"appcenter\":{";
         if (launchArgs && launchArgs->Length() >= stringPrefix->Length())
         {
             bool hasPrefix = true;
@@ -21,7 +21,7 @@
                 {
                     launchArgsCopy += launchArgs->Data()[i];
                 }
-                launchArgsCopy += L", \"mobilecenterunity\":\"";
+                launchArgsCopy += L", \"appcenterunity\":\"";
                 GUID guid;
                 CoCreateGuid(&guid);
                 Platform::String ^guidString = guid.Data1.ToString() + guid.Data2.ToString() + guid.Data3.ToString();

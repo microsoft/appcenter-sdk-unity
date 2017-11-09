@@ -8,7 +8,7 @@
         <file path="Assets/AppCenter/Plugins/AppCenterSDK/Distribute/Blank" />
 
         <!-- Android files -->
-        <file path="Assets/AppCenter/Plugins/Android/mobile-center-distribute-release.aar" />
+        <file path="Assets/AppCenter/Plugins/Android/appcenter-distribute-release.aar" />
         <file path="Assets/AppCenter/Plugins/AppCenterSDK/Distribute/Android" />
 
         <!-- iOS files -->

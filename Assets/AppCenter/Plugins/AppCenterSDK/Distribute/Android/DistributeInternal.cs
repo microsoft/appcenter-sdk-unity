@@ -45,7 +45,7 @@ namespace Microsoft.AppCenter.Unity.Distribute.Internal
 
         public static IntPtr GetNativeType()
         {
-            return AndroidJNI.FindClass("com/microsoft/azure/mobile/distribute/Distribute");
+            return AndroidJNI.FindClass("com/microsoft/appcenter/distribute/Distribute");
         }
 
         public static void SetInstallUrl(string installUrl)
