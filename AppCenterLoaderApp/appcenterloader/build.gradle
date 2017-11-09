@@ -26,9 +26,10 @@ dependencies {
     })
     compile 'com.android.support:appcompat-v7:26.1.0'
     testCompile 'junit:junit:4.12'
-    def mobileCenterSdkVersion = '0.12.0'
-    provided "com.microsoft.azure.mobile:mobile-center-analytics:${mobileCenterSdkVersion}"
-    provided "com.microsoft.azure.mobile:mobile-center-crashes:${mobileCenterSdkVersion}"
-    provided "com.microsoft.azure.mobile:mobile-center-push:${mobileCenterSdkVersion}"
-    provided "com.microsoft.azure.mobile:mobile-center-distribute:${mobileCenterSdkVersion}"
+    def appCenterSdkVersion = '1.0.0-0'
+    provided "com.microsoft.appcenter:appcenter-analytics:${appCenterSdkVersion}"
+    provided "com.microsoft.appcenter:appcenter-crashes:${appCenterSdkVersion}"
+    provided "com.microsoft.appcenter:appcenter-distribute:${appCenterSdkVersion}"
+    provided "com.microsoft.appcenter:appcenter-push:${appCenterSdkVersion}"
+
 }

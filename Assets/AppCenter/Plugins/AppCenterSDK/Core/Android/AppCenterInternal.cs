@@ -10,43 +10,43 @@ namespace Microsoft.AppCenter.Unity.Internal
 {
     class AppCenterInternal
     {
-        private static AndroidJavaClass _mobileCenter = new AndroidJavaClass("com.microsoft.azure.mobile.MobileCenter");
+        private static AndroidJavaClass _appCenter = new AndroidJavaClass("com.microsoft.appcenter.AppCenter");
 
         public static void SetLogLevel(int logLevel)
         {
-            _mobileCenter.CallStatic("setLogLevel", logLevel);
+            _appCenter.CallStatic("setLogLevel", logLevel);
         }
 
         public static int GetLogLevel()
         {
-            return _mobileCenter.CallStatic<int>("getLogLevel");
+            return _appCenter.CallStatic<int>("getLogLevel");
         }
 
         public static bool IsConfigured()
         {
-            return _mobileCenter.CallStatic<bool>("isConfigured");
+            return _appCenter.CallStatic<bool>("isConfigured");
         }
 
         public static void SetLogUrl(string logUrl)
         {
-            _mobileCenter.CallStatic("setLogUrl", logUrl);
+            _appCenter.CallStatic("setLogUrl", logUrl);
         }
 
         public static AppCenterTask SetEnabledAsync(bool enabled)
         {
-            var future = _mobileCenter.CallStatic<AndroidJavaObject>("setEnabled", enabled);
+            var future = _appCenter.CallStatic<AndroidJavaObject>("setEnabled", enabled);
             return new AppCenterTask(future);
         }
 
         public static AppCenterTask<bool> IsEnabledAsync()
         {
-            var future = _mobileCenter.CallStatic<AndroidJavaObject>("isEnabled");
+            var future = _appCenter.CallStatic<AndroidJavaObject>("isEnabled");
             return new AppCenterTask<bool>(future);
         }
 
         public static AppCenterTask<string> GetInstallIdAsync()
         {
-            AndroidJavaObject future = _mobileCenter.CallStatic<AndroidJavaObject>("getInstallId");
+            AndroidJavaObject future = _appCenter.CallStatic<AndroidJavaObject>("getInstallId");
             var javaUUIDtask = new AppCenterTask<AndroidJavaObject>(future);
             var stringTask = new AppCenterTask<string>();
             javaUUIDtask.ContinueWith(t => {
@@ -58,7 +58,7 @@ namespace Microsoft.AppCenter.Unity.Internal
 
         public static void SetCustomProperties(AndroidJavaObject properties)
         {
-            _mobileCenter.CallStatic("setCustomProperties", properties);
+            _appCenter.CallStatic("setCustomProperties", properties);
         }
 
         private static AndroidJavaObject GetAndroidApplication()
@@ -75,14 +75,14 @@ namespace Microsoft.AppCenter.Unity.Internal
                                          string liveUpdateDeploymentKey,
                                          string liveUpdatePackageHash)
         {
-            var wrapperSdkObject = new AndroidJavaObject("com.microsoft.azure.mobile.ingestion.models.WrapperSdk");
+            var wrapperSdkObject = new AndroidJavaObject("com.microsoft.appcanter.ingestion.models.WrapperSdk");
             wrapperSdkObject.Call("setWrapperSdkVersion", wrapperSdkVersion);
             wrapperSdkObject.Call("setWrapperSdkName", wrapperSdkName);
             wrapperSdkObject.Call("setWrapperRuntimeVersion", wrapperRuntimeVersion);
             wrapperSdkObject.Call("setLiveUpdateReleaseLabel", liveUpdateReleaseLabel);
             wrapperSdkObject.Call("setLiveUpdateDeploymentKey", liveUpdateDeploymentKey);
             wrapperSdkObject.Call("setLiveUpdatePackageHash", liveUpdatePackageHash);
-            _mobileCenter.CallStatic("setWrapperSdk", wrapperSdkObject);
+            _appCenter.CallStatic("setWrapperSdk", wrapperSdkObject);
         }
     }
 }

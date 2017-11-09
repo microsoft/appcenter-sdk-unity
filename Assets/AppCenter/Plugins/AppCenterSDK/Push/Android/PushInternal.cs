@@ -10,7 +10,7 @@ namespace Microsoft.AppCenter.Unity.Push.Internal
 {
     class PushInternal
     {
-        private static AndroidJavaClass _push = new AndroidJavaClass("com.microsoft.azure.mobile.push.Push");
+        private static AndroidJavaClass _push = new AndroidJavaClass("com.microsoft.appcanter.push.Push");
         private static AndroidJavaClass _unityListener = new AndroidJavaClass("com.microsoft.appcenter.appcenterloader.UnityAppCenterPushDelegate");
 
         public static void PrepareEventHandlers()

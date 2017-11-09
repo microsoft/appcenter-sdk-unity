@@ -13,7 +13,7 @@ namespace Microsoft.AppCenter.Unity.Internal
     {
         public static AndroidJavaObject Create()
         {
-            return new AndroidJavaObject("com.microsoft.azure.mobile.CustomProperties");
+            return new AndroidJavaObject("com.microsoft.appcanter.CustomProperties");
         }
 
         public static void SetString(AndroidJavaObject properties, string key, string val)

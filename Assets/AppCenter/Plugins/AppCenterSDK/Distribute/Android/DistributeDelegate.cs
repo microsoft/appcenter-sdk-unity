@@ -9,13 +9,13 @@ namespace Microsoft.AppCenter.Unity.Distribute.Internal
 {
     class DistributeDelegate : AndroidJavaProxy
     {
-        private DistributeDelegate() : base("com.microsoft.azure.mobile.distribute.DistributeListener")
+        private DistributeDelegate() : base("com.microsoft.appcanter.distribute.DistributeListener")
         {
         }
 
         public static void SetDelegate()
         {
-            var distribute = new AndroidJavaClass("com.microsoft.azure.mobile.distribute.Distribute");
+            var distribute = new AndroidJavaClass("com.microsoft.appcanter.distribute.Distribute");
             distribute.CallStatic("setListener", new DistributeDelegate());
         }
 

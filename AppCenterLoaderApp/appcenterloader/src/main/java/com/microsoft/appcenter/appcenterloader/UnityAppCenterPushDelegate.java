@@ -2,8 +2,8 @@ package com.microsoft.appcenter.appcenterloader;
 
 import android.app.Activity;
 
-import com.microsoft.azure.mobile.push.PushListener;
-import com.microsoft.azure.mobile.push.PushNotification;
+import com.microsoft.appcenter.push.PushListener;
+import com.microsoft.appcenter.push.PushNotification;
 
 import java.util.LinkedList;
 import java.util.List;

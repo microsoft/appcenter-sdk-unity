@@ -10,7 +10,7 @@ namespace Microsoft.AppCenter.Unity.Analytics.Internal
 {
     class AnalyticsInternal
     {
-        private static AndroidJavaClass _analytics = new AndroidJavaClass("com.microsoft.azure.mobile.analytics.Analytics");
+        private static AndroidJavaClass _analytics = new AndroidJavaClass("com.microsoft.appcanter.analytics.Analytics");
 
         public static void PrepareEventHandlers()
         {

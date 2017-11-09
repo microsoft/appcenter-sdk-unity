@@ -13,11 +13,13 @@ import android.net.Uri;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 
-import com.microsoft.azure.mobile.MobileCenter;
-import com.microsoft.azure.mobile.MobileCenterService;
-import com.microsoft.azure.mobile.distribute.Distribute;
-import com.microsoft.azure.mobile.push.Push;
-import com.microsoft.azure.mobile.utils.MobileCenterLog;
+import com.microsoft.appcenter.AppCenter;
+import com.microsoft.appcenter.AppCenterService;
+import com.microsoft.appcenter.analytics.Analytics;
+import com.microsoft.appcenter.crashes.Crashes;
+import com.microsoft.appcenter.distribute.Distribute;
+import com.microsoft.appcenter.push.Push;
+import com.microsoft.appcenter.utils.AppCenterLog;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -44,12 +46,12 @@ public class AppCenterLoader extends ContentProvider {
     @Override
     public boolean onCreate() {
         mContext = getApplicationContext();
-        List<Class<? extends MobileCenterService>> classes = new ArrayList<>();
+        List<Class<? extends AppCenterService>> classes = new ArrayList<>();
         if (isTrueValue(getStringResource(USE_ANALYTICS_KEY))) {
-            classes.add(com.microsoft.azure.mobile.analytics.Analytics.class);
+            classes.add(Analytics.class);
         }
         if (isTrueValue(getStringResource(USE_CRASHES_KEY))) {
-            classes.add(com.microsoft.azure.mobile.crashes.Crashes.class);
+            classes.add(Crashes.class);
         }
         if (isTrueValue(getStringResource(USE_DISTRIBUTE_KEY))) {
             if (isTrueValue(getStringResource(USE_CUSTOM_API_URL_KEY))) {
@@ -64,31 +66,31 @@ public class AppCenterLoader extends ContentProvider {
                     Distribute.setInstallUrl(customInstallUrl);
                 }
             }
-            classes.add(com.microsoft.azure.mobile.distribute.Distribute.class);
+            classes.add(Distribute.class);
         }
         if (isTrueValue(getStringResource(USE_PUSH_KEY))) {
             Push.setListener(new UnityAppCenterPushDelegate());
-            classes.add(com.microsoft.azure.mobile.push.Push.class);
+            classes.add(Push.class);
 
             if (isTrueValue(getStringResource(ENABLE_FIREBASE_ANALYTICS_KEY))) {
                 Push.enableFirebaseAnalytics(mContext);
             }
         }
         int logLevel = Integer.parseInt(getStringResource(INITIAL_LOG_LEVEL_KEY));
-        MobileCenterLog.setLogLevel(logLevel);
+        AppCenterLog.setLogLevel(logLevel);
         if (isTrueValue(getStringResource(USE_CUSTOM_LOG_URL_KEY))) {
             String customLogUrl = getStringResource(CUSTOM_LOG_URL_KEY);
             if (customLogUrl != null) {
-                MobileCenter.setLogUrl(customLogUrl);
+                AppCenter.setLogUrl(customLogUrl);
             }
         }
         String appSecret = getStringResource(APP_SECRET_KEY);
         if (classes.size() > 0) {
             @SuppressWarnings("unchecked")
-            Class<? extends MobileCenterService>[] classesArray = classes.toArray(new Class[classes.size()]);
-            MobileCenter.start((Application) mContext, appSecret, classesArray);
+            Class<? extends AppCenterService>[] classesArray = classes.toArray(new Class[classes.size()]);
+            AppCenter.start((Application) mContext, appSecret, classesArray);
         } else {
-            MobileCenter.configure((Application) mContext, appSecret);
+            AppCenter.configure((Application) mContext, appSecret);
         }
         return true;
     }
