@@ -4,7 +4,7 @@
 
 #import "ReleaseDetails.h"
 #import "../Core/Utility/NSStringHelper.h"
-#import <MobileCenterDistribute/MobileCenterDistribute.h>
+#import <AppCenterDistribute/AppCenterDistribute.h>
 #import <Foundation/Foundation.h>
 
 int appcenter_unity_release_details_get_id(MSReleaseDetails* details)

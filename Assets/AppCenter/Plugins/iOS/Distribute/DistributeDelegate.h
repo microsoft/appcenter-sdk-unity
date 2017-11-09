@@ -5,7 +5,7 @@
 #ifndef DISTRIBUTE_DELEGATE_H
 #define DISTRIBUTE_DELEGATE_H
 
-#import <MobileCenterDistribute/MobileCenterDistribute.h>
+#import <AppCenterDistribute/AppCenterDistribute.h>
 
 typedef bool (__cdecl *ReleaseAvailableFunction)(MSReleaseDetails*);
 

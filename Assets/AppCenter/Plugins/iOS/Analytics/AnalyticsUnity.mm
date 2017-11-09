@@ -4,7 +4,7 @@
 
 #import "AnalyticsUnity.h"
 #import "../Core/Utility/NSStringDictionaryHelper.h"
-#import <MobileCenterAnalytics/MobileCenterAnalytics.h>
+#import <AppCenterAnalytics/AppCenterAnalytics.h>
 #import <Foundation/Foundation.h>
 
 void* appcenter_unity_analytics_get_type()

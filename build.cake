@@ -26,14 +26,14 @@ var UwpSdkVersion = "1.0.0-r0008-e3e7467";
  */
 
 var SdkStorageUrl = "https://mobilecentersdkdev.blob.core.windows.net/sdk/";
-var AndroidUrl = SdkStorageUrl + "MobileCenter-SDK-Android-" + AndroidSdkVersion + ".zip";
-var IosUrl = SdkStorageUrl + "MobileCenter-SDK-Apple-" + IosSdkVersion + ".zip";
+var AndroidUrl = SdkStorageUrl + "AppCenter-SDK-Android-" + AndroidSdkVersion + ".zip";
+var IosUrl = SdkStorageUrl + "AppCenter-SDK-Apple-" + IosSdkVersion + ".zip";
 
 var AppCenterModules = new [] {
-    new AppCenterModule("appcenter-release.aar", "MobileCenter.framework", "Microsoft.AppCenter", "Core"),
-    new AppCenterModule("appcenter-analytics-release.aar", "MobileCenterAnalytics.framework", "Microsoft.AppCenter.Analytics", "Analytics"),
-    new AppCenterModule("appcenter-distribute-release.aar", "MobileCenterDistribute.framework", "Microsoft.AppCenter.Distribute", "Distribute"),
-    new AppCenterModule("appcenter-push-release.aar", "MobileCenterPush.framework", "Microsoft.AppCenter.Push", "Push")
+    new AppCenterModule("appcenter-release.aar", "AppCenter.framework", "Microsoft.AppCenter", "Core"),
+    new AppCenterModule("appcenter-analytics-release.aar", "AppCenterAnalytics.framework", "Microsoft.AppCenter.Analytics", "Analytics"),
+    new AppCenterModule("appcenter-distribute-release.aar", "AppCenterDistribute.framework", "Microsoft.AppCenter.Distribute", "Distribute"),
+    new AppCenterModule("appcenter-push-release.aar", "AppCenterPush.framework", "Microsoft.AppCenter.Push", "Push")
 };
 
 // External Unity Packages

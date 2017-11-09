@@ -5,7 +5,7 @@
 #ifndef DISTRIBUTE_UNITY_H
 #define DISTRIBUTE_UNITY_H
 
-#import <MobileCenterDistribute/MobileCenterDistribute.h>
+#import <AppCenterDistribute/AppCenterDistribute.h>
 #import "DistributeDelegate.h"
 
 extern "C" void* appcenter_unity_distribute_get_type();

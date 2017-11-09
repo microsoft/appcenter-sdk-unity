@@ -6,19 +6,19 @@
 #import <Foundation/Foundation.h>
 #import <UIKit/UIKit.h>
 
-@import MobileCenter;
+@import AppCenter;
 
 #ifdef APPCENTER_UNITY_USE_PUSH
-@import MobileCenterPush;
+@import AppCenterPush;
 #import "../Push/PushDelegate.h"
 #endif
 
 #ifdef APPCENTER_UNITY_USE_ANALYTICS
-@import MobileCenterAnalytics;
+@import AppCenterAnalytics;
 #endif
 
 #ifdef APPCENTER_UNITY_USE_DISTRIBUTE
-@import MobileCenterDistribute;
+@import AppCenterDistribute;
 #import "../Distribute/DistributeDelegate.h"
 #endif
 
@@ -64,13 +64,13 @@ static const int kMSLogLevel = 0/*LOG_LEVEL*/;
 
 #endif // APPCENTER_UNITY_USE_DISTRIBUTE
 
-  [MSMobileCenter setLogLevel:(MSLogLevel)kMSLogLevel];
+  [MSAppCenter setLogLevel:(MSLogLevel)kMSLogLevel];
 
 #ifdef APPCENTER_UNITY_USE_CUSTOM_LOG_URL
-  [MSMobileCenter setLogUrl:kMSCustomLogUrl];
+  [MSAppCenter setLogUrl:kMSCustomLogUrl];
 #endif
 
-  [MSMobileCenter start:kMSAppSecret withServices:classes];
+  [MSAppCenter start:kMSAppSecret withServices:classes];
 }
 
 @end

@@ -2,7 +2,7 @@
 //
 // Licensed under the MIT license.
 
-#import <MobileCenter/MobileCenter.h>
+#import <AppCenter/AppCenter.h>
 #import <Foundation/Foundation.h>
 
 // Don't need to return value because reference is kept by wrapper

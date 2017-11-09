@@ -4,7 +4,7 @@
 
 #import "PushNotification.h"
 #import "../Core/Utility/NSStringHelper.h"
-#import <MobileCenterPush/MobileCenterPush.h>
+#import <AppCenterPush/AppCenterPush.h>
 #import <Foundation/Foundation.h>
 
 const char* appcenter_unity_push_notification_get_title(MSPushNotification* push)

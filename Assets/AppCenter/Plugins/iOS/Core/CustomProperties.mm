@@ -3,7 +3,7 @@
 // Licensed under the MIT license.
 
 #import "CustomProperties.h"
-#import <MobileCenter/MobileCenter.h>
+#import <AppCenter/AppCenter.h>
 #import <Foundation/Foundation.h>
 
 MSCustomProperties* appcenter_unity_custom_properties_create()

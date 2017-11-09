@@ -2,7 +2,7 @@
 //
 // Licensed under the MIT license.
 
-#import <MobileCenterDistribute/MobileCenterDistribute.h>
+#import <AppCenterDistribute/AppCenterDistribute.h>
 
 extern "C" int appcenter_unity_release_details_get_id(MSReleaseDetails* details);
 extern "C" const char* appcenter_unity_release_details_get_version(MSReleaseDetails* details);

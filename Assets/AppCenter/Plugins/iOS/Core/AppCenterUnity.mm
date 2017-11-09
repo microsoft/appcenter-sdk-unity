@@ -4,48 +4,48 @@
 
 #import "AppCenterUnity.h"
 #import "Utility/NSStringHelper.h"
-#import <MobileCenter/MobileCenter.h>
+#import <AppCenter/AppCenter.h>
 #import <Foundation/Foundation.h>
 
 void appcenter_unity_set_log_level(int logLevel)
 {
-  [MSMobileCenter setLogLevel:(MSLogLevel)logLevel];
+  [MSAppCenter setLogLevel:(MSLogLevel)logLevel];
 }
 
 int appcenter_unity_get_log_level()
 {
-  return (int)MSMobileCenter.logLevel;
+  return (int)MSAppCenter.logLevel;
 }
 
 bool appcenter_unity_is_configured()
 {
-  return [MSMobileCenter isConfigured];
+  return [MSAppCenter isConfigured];
 }
 
 void appcenter_unity_set_log_url(const char* logUrl)
 {
-  [MSMobileCenter setLogUrl:appcenter_unity_cstr_to_ns_string(logUrl)];
+  [MSAppCenter setLogUrl:appcenter_unity_cstr_to_ns_string(logUrl)];
 }
 
 void appcenter_unity_set_enabled(bool isEnabled)
 {
-  [MSMobileCenter setEnabled:isEnabled];
+  [MSAppCenter setEnabled:isEnabled];
 }
 
 bool appcenter_unity_is_enabled()
 {
-  return [MSMobileCenter isEnabled];
+  return [MSAppCenter isEnabled];
 }
 
 const char* appcenter_unity_get_install_id()
 {
-  NSString *uuidString =  [[MSMobileCenter installId] UUIDString];
+  NSString *uuidString =  [[MSAppCenter installId] UUIDString];
   return appcenter_unity_ns_string_to_cstr(uuidString);
 }
 
 void appcenter_unity_set_custom_properties(MSCustomProperties* properties)
 {
-  [MSMobileCenter setCustomProperties:properties];
+  [MSAppCenter setCustomProperties:properties];
 }
 
 void appcenter_unity_set_wrapper_sdk(const char* wrapperSdkVersion,
@@ -62,7 +62,7 @@ void appcenter_unity_set_wrapper_sdk(const char* wrapperSdkVersion,
                                  liveUpdateReleaseLabel:appcenter_unity_cstr_to_ns_string(liveUpdateReleaseLabel)
                                 liveUpdateDeploymentKey:appcenter_unity_cstr_to_ns_string(liveUpdateDeploymentKey)
                                   liveUpdatePackageHash:appcenter_unity_cstr_to_ns_string(liveUpdatePackageHash)];
-  [MSMobileCenter setWrapperSdk:wrapperSdk];
+  [MSAppCenter setWrapperSdk:wrapperSdk];
 }
 
 

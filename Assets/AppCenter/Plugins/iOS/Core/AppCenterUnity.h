@@ -2,7 +2,7 @@
 //
 // Licensed under the MIT license.
 
-#import <MobileCenter/MobileCenter.h>
+#import <AppCenter/AppCenter.h>
 
 extern "C" void appcenter_unity_set_log_level(int logLevel);
 extern "C" int appcenter_unity_get_log_level();
