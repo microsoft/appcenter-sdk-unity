@@ -142,6 +142,7 @@ public class AppCenterPostBuild
         }
         else
         {
+            // TODO Update documentation link
             Debug.LogError("Unable to automatically modify file '" + appFilePath + "'. For App Center Push to work properly, " +
                            "please follow troubleshooting instructions at https://docs.microsoft.com/en-us/mobile-center/sdk/troubleshooting/unity");
         }
