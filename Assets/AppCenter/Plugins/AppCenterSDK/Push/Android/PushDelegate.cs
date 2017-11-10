@@ -11,7 +11,7 @@ namespace Microsoft.AppCenter.Unity.Push.Internal
 {
     class PushDelegate : AndroidJavaProxy
     {
-        public PushDelegate() : base("com.microsoft.appcanter.push.PushListener")
+        public PushDelegate() : base("com.microsoft.appcenter.push.PushListener")
         {
         }
 

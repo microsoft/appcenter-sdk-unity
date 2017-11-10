@@ -75,7 +75,7 @@ namespace Microsoft.AppCenter.Unity.Internal
                                          string liveUpdateDeploymentKey,
                                          string liveUpdatePackageHash)
         {
-            var wrapperSdkObject = new AndroidJavaObject("com.microsoft.appcanter.ingestion.models.WrapperSdk");
+            var wrapperSdkObject = new AndroidJavaObject("com.microsoft.appcenter.ingestion.models.WrapperSdk");
             wrapperSdkObject.Call("setWrapperSdkVersion", wrapperSdkVersion);
             wrapperSdkObject.Call("setWrapperSdkName", wrapperSdkName);
             wrapperSdkObject.Call("setWrapperRuntimeVersion", wrapperRuntimeVersion);

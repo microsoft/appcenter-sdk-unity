@@ -14,7 +14,7 @@ namespace Microsoft.AppCenter.Unity
     {
         internal Action<T> CompletionCallback { get; set; }
 
-        internal UnityAppCenterConsumer() : base("com.microsoft.appcanter.utils.async.AppCenterConsumer")
+        internal UnityAppCenterConsumer() : base("com.microsoft.appcenter.utils.async.AppCenterConsumer")
         {
         }
 

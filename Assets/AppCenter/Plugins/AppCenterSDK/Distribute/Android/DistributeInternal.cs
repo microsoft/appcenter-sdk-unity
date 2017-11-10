@@ -10,7 +10,7 @@ namespace Microsoft.AppCenter.Unity.Distribute.Internal
 {
     class DistributeInternal
     {
-        private static AndroidJavaClass _distribute = new AndroidJavaClass("com.microsoft.appcanter.distribute.Distribute");
+        private static AndroidJavaClass _distribute = new AndroidJavaClass("com.microsoft.appcenter.distribute.Distribute");
 
         public static void PrepareEventHandlers()
         {
