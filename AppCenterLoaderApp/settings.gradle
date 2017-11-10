@@ -1,1 +1,1 @@
-include ':app', ':appcenterloader'
+include ':app', ':appcenter-loader'

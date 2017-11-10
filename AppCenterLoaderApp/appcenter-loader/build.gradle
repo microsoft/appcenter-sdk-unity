@@ -20,16 +20,10 @@ android {
 }
 
 dependencies {
-    compile fileTree(dir: 'libs', include: ['*.jar'])
+    compile fileTree(dir: '../../Assets/AppCenter/Plugins/Android', include: ['appcenter*.aar'])
     androidTestCompile('com.android.support.test.espresso:espresso-core:2.2.2', {
         exclude group: 'com.android.support', module: 'support-annotations'
     })
     compile 'com.android.support:appcompat-v7:26.1.0'
     testCompile 'junit:junit:4.12'
-    def appCenterSdkVersion = '1.0.0-0'
-    provided "com.microsoft.appcenter:appcenter-analytics:${appCenterSdkVersion}"
-    provided "com.microsoft.appcenter:appcenter-crashes:${appCenterSdkVersion}"
-    provided "com.microsoft.appcenter:appcenter-distribute:${appCenterSdkVersion}"
-    provided "com.microsoft.appcenter:appcenter-push:${appCenterSdkVersion}"
-
 }

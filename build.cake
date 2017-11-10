@@ -301,7 +301,7 @@ Task("BuildAndroidContentProvider").Does(()=>
 {
     // Folder and script locations
     var appName = "AppCenterLoaderApp";
-    var libraryName = "appcenterloader";
+    var libraryName = "appcenter-loader";
     var libraryFolder = System.IO.Path.Combine(appName, libraryName);
     var gradleScript = System.IO.Path.Combine(libraryFolder, "build.gradle");
 
@@ -412,6 +412,7 @@ Task("Externals")
     .IsDependentOn("Externals-Uwp")
     .IsDependentOn("Externals-Ios")
     .IsDependentOn("Externals-Android")
+    .IsDependentOn("BuildAndroidContentProvider")
     .IsDependentOn("Externals-Uwp-IL2CPP-Dependencies")
     .IsDependentOn("Externals-Unity-Packages")
     .Does(()=>
@@ -441,7 +442,7 @@ Task("Package").Does(()=>
     }
 });
 
-Task("PrepareAssets").IsDependentOn("BuildAndroidContentProvider").IsDependentOn("Externals");
+Task("PrepareAssets").IsDependentOn("Externals");
 
 // Creates Unity packages corresponding to all ".unitypackagespec" files
 // in "UnityPackageSpecs" folder (and downloads binaries)

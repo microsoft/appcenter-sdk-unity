@@ -1,4 +1,4 @@
-package com.microsoft.appcenter.appcenterloader;
+package com.microsoft.appcenter.loader;
 
 import android.app.Activity;
 

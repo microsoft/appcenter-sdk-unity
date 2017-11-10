@@ -4,7 +4,7 @@ android {
     compileSdkVersion 26
 
     defaultConfig {
-        applicationId "com.microsoft.appcenter.appcenterloaderapp"
+        applicationId "com.microsoft.appcenter.loaderapp"
         minSdkVersion 16
         targetSdkVersion 26
         versionCode 1
