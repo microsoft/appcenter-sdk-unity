@@ -12,11 +12,11 @@ namespace Microsoft.AppCenter.Unity.Internal.Utils
 {
     public class UnityHttpNetworkAdapter : IHttpNetworkAdapter
     {
-        public Task<string> SendAsync(string uri, IDictionary<string, string> headers, string jsonContent,
+        public Task<string> SendAsync(string uri, string method, IDictionary<string, string> headers, string jsonContent,
             CancellationToken cancellationToken)
         {
             var tcs = new TaskCompletionSource<string>();
-            UnityCoroutineHelper.StartCoroutine(() => SendAsync(uri, headers, jsonContent, request =>
+            UnityCoroutineHelper.StartCoroutine(() => SendAsync(uri, method, headers, jsonContent, request =>
             {
                 if (cancellationToken.IsCancellationRequested)
                 {
@@ -52,13 +52,15 @@ namespace Microsoft.AppCenter.Unity.Internal.Utils
         {
         }
 
-        private IEnumerator SendAsync(string uri, IDictionary<string, string> headers, string jsonContent, Action<UnityWebRequest> callback)
+        private IEnumerator SendAsync(string uri, string method, IDictionary<string, string> headers, string jsonContent, Action<UnityWebRequest> callback)
         {
-            using (var request = UnityWebRequest.Post(uri, jsonContent))
+            using (var request = new UnityWebRequest(uri, method))
             {
-                var uploadHandler = new UploadHandlerRaw(Encoding.UTF8.GetBytes(jsonContent));
-                uploadHandler.contentType = "application/json; charset=utf-8";
-                request.uploadHandler = uploadHandler;
+                request.uploadHandler = new UploadHandlerRaw(Encoding.UTF8.GetBytes(jsonContent))
+                {
+                    contentType = "application/json; charset=utf-8"
+                };
+                request.downloadHandler = new DownloadHandlerBuffer();
                 foreach (var header in headers)
                 {
                     request.SetRequestHeader(header.Key, header.Value);
