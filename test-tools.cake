@@ -16,8 +16,8 @@ var Target = Argument("target", Argument("t", "Default"));
 string ArchiveDirectory = "archives";
 bool IsMandatory = false;
 string DistributionGroup = "Private Release Script Group";
-string Token = EnvironmentVariable("MOBILE_CENTER_API_TOKEN");
-string BaseUrl = "https://api.mobile.azure.com";
+string Token = EnvironmentVariable("APPCENTER_API_TOKEN");
+string BaseUrl = "https://api.appcenter.ms";
 ApplicationInfo CurrentApp = null;
 string ProjectPath = "AppCenterDemoApp";
 string BuildFolder = GetBuildFolder("Demo", ProjectPath);
@@ -106,7 +106,7 @@ Setup(context =>
     if (Argument("Environment", "int") == "int")
     {
         environment = Environment.Int;
-        Token = EnvironmentVariable("MOBILE_CENTER_INT_API_TOKEN");
+        Token = EnvironmentVariable("APPCENTER_INT_API_TOKEN");
         BaseUrl = "https://asgard-int.trafficmanager.net/api";
         ProjectPath = ".";
         BuildFolder = GetBuildFolder("Puppet", ProjectPath);

@@ -10,7 +10,7 @@
       "client_info": {
         "mobilesdk_app_id": "placeholder-value",
         "android_client_info": {
-          "package_name": "com.microsoft.azure.mobile.unity.demo"
+          "package_name": "com.microsoft.appcenter.unity.demo"
         }
       },
       "oauth_client": [
