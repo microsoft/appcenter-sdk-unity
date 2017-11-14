@@ -2,22 +2,22 @@
 //
 // Licensed under the MIT license.
 
-using Microsoft.Azure.Mobile.Unity.Distribute;
+using Microsoft.AppCenter.Unity.Distribute;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class PuppetUpdateDialog : MonoBehaviour 
+public class PuppetUpdateDialog : MonoBehaviour
 {
     [SerializeField]
     private Text _messageText;
 
-    public void PerformUpdate () 
+    public void PerformUpdate ()
     {
         Distribute.NotifyUpdateAction(UpdateAction.Update);
         Hide();
     }
 
-    public void PostponeUpdate () 
+    public void PostponeUpdate ()
     {
         Distribute.NotifyUpdateAction(UpdateAction.Postpone);
         Hide();

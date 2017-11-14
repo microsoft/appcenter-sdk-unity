@@ -5,7 +5,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
-using Microsoft.Azure.Mobile.Unity.Analytics;
+using Microsoft.AppCenter.Unity.Analytics;
 using UnityEngine;
 using UnityEngine.UI;
 

@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<package name="AppCenterDistribute" version="0.0.1" needsCore="true">
+    <include>
+        <!-- Shared files -->
+        <file path="Assets/AppCenter/Plugins/AppCenterSDK/Distribute/Shared" />
+
+        <!-- "Blank" files -->
+        <file path="Assets/AppCenter/Plugins/AppCenterSDK/Distribute/Blank" />
+
+        <!-- Android files -->
+        <file path="Assets/AppCenter/Plugins/Android/appcenter-distribute-release.aar" />
+        <file path="Assets/AppCenter/Plugins/AppCenterSDK/Distribute/Android" />
+
+        <!-- iOS files -->
+        <file path="Assets/AppCenter/Plugins/iOS/Distribute" />
+        <file path="Assets/AppCenter/Plugins/AppCenterSDK/Distribute/iOS" />
+
+        <!-- UWP files -->
+        <file path="Assets/AppCenter/Plugins/AppCenterSDK/Distribute/UWP" />
+    </include>
+</package>

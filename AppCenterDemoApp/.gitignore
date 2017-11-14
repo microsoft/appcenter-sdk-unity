@@ -1,0 +1,9 @@
+Assets/AppCenter/
+Assets/AppCenter.meta
+Assets/PlayServicesResolver/
+Assets/PlayServicesResolver.meta
+
+# Unity
+Library/
+Temp/
+UWP/project.json

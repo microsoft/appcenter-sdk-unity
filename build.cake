@@ -12,9 +12,9 @@ using System.Runtime.Versioning;
 using NuGet;
 
 // Native SDK versions
-var AndroidSdkVersion = "0.12.0";
-var IosSdkVersion = "0.12.1";
-var UwpSdkVersion = "0.15.0";
+var AndroidSdkVersion = "1.0.0-8%2Bf9123c3";
+var IosSdkVersion = "1.0.0-1%2Bd664bd61866ede19479cf97047a8bebdeceba309";
+var UwpSdkVersion = "1.0.0-r0015-2c2097d";
 
 // URLs for downloading binaries.
 /*
@@ -26,14 +26,14 @@ var UwpSdkVersion = "0.15.0";
  */
 
 var SdkStorageUrl = "https://mobilecentersdkdev.blob.core.windows.net/sdk/";
-var AndroidUrl = SdkStorageUrl + "MobileCenter-SDK-Android-" + AndroidSdkVersion + ".zip";
-var IosUrl = SdkStorageUrl + "MobileCenter-SDK-Apple-" + IosSdkVersion + ".zip";
+var AndroidUrl = SdkStorageUrl + "AppCenter-SDK-Android-" + AndroidSdkVersion + ".zip";
+var IosUrl = SdkStorageUrl + "AppCenter-SDK-Apple-" + IosSdkVersion + ".zip";
 
-var MobileCenterModules = new [] {
-    new MobileCenterModule("mobile-center-release.aar", "MobileCenter.framework", "Microsoft.Azure.Mobile", "Core"),
-    new MobileCenterModule("mobile-center-analytics-release.aar", "MobileCenterAnalytics.framework", "Microsoft.Azure.Mobile.Analytics", "Analytics"),
-    new MobileCenterModule("mobile-center-distribute-release.aar", "MobileCenterDistribute.framework", "Microsoft.Azure.Mobile.Distribute", "Distribute"),
-    new MobileCenterModule("mobile-center-push-release.aar", "MobileCenterPush.framework", "Microsoft.Azure.Mobile.Push", "Push")
+var AppCenterModules = new [] {
+    new AppCenterModule("appcenter-release.aar", "AppCenter.framework", "Microsoft.AppCenter", "Core"),
+    new AppCenterModule("appcenter-analytics-release.aar", "AppCenterAnalytics.framework", "Microsoft.AppCenter.Analytics", "Analytics"),
+    new AppCenterModule("appcenter-distribute-release.aar", new[] { "AppCenterDistribute.framework", "AppCenterDistributeResources.bundle" }, "Microsoft.AppCenter.Distribute", "Distribute"),
+    new AppCenterModule("appcenter-push-release.aar", "AppCenterPush.framework", "Microsoft.AppCenter.Push", "Push")
 };
 
 // External Unity Packages
@@ -57,21 +57,26 @@ var UwpIL2CPPJsonUrl = SdkStorageUrl + "Newtonsoft.Json.dll";
 // Task TARGET for build
 var Target = Argument("target", Argument("t", "Default"));
 
-// Available MobileCenter modules.
-// MobileCenter module class definition.
-class MobileCenterModule
+// Available AppCenter modules.
+// AppCenter module class definition.
+class AppCenterModule
 {
-    public string AndroidModule { get; set; }
-    public string IosModule { get; set; }
-    public string DotNetModule { get; set; }
-    public string Moniker { get; set; }
-    public bool UWPHasNativeCode { get; set; }
-    public string[] NativeArchitectures { get; set; }
+    public string AndroidModule { get; private set; }
+    public string[] IosModules { get; private set; }
+    public string DotNetModule { get; private set; }
+    public string Moniker { get; private set; }
+    public bool UWPHasNativeCode { get; private set; }
+    public string[] NativeArchitectures { get; private set; }
 
-    public MobileCenterModule(string android, string ios, string dotnet, string moniker, bool hasNative = false)
+    public AppCenterModule(string android, string ios, string dotnet, string moniker, bool hasNative = false) :
+        this(android, new[] { ios }, dotnet, moniker, hasNative)
+    {
+    }
+
+    public AppCenterModule(string android, string[] ios, string dotnet, string moniker, bool hasNative = false)
     {
         AndroidModule = android;
-        IosModule = ios;
+        IosModules = ios;
         DotNetModule = dotnet;
         Moniker = moniker;
         UWPHasNativeCode = hasNative;
@@ -133,7 +138,7 @@ class UnityPackage
         if (needsCore)
         {
             var specFileDirectory = System.IO.Path.GetDirectoryName(specFilePath);;
-            AddFilesFromSpec(specFileDirectory + "/MobileCenter.unitypackagespec");
+            AddFilesFromSpec(specFileDirectory + "/AppCenter.unitypackagespec");
         }
         _packageName = Statics.Context.XmlPeek(specFilePath, "package/@name");
         _packageVersion = Statics.Context.XmlPeek(specFilePath, "package/@version");
@@ -176,6 +181,21 @@ class UnityPackage
             Statics.Context.Error("Something went wrong while creating Unity package '" + fullPackageName + "'");
         }
     }
+
+    public void CopyFiles(DirectoryPath targetDirectory)
+    {
+        foreach (var path in _includePaths)
+        {
+            if (Statics.Context.DirectoryExists(path))
+            {
+                Statics.Context.CopyDirectory(path, targetDirectory.Combine(path));
+            }
+            else
+            {
+                Statics.Context.CopyFile(path, targetDirectory.CombineWithFilePath(path));
+            }
+        }
+    }
 }
 
 // Downloading Android binaries.
@@ -189,10 +209,10 @@ Task("Externals-Android")
     Unzip("./externals/android/android.zip", "./externals/android/");
 
     // Copy files
-    foreach (var module in MobileCenterModules)
+    foreach (var module in AppCenterModules)
     {
         var files = GetFiles("./externals/android/*/" + module.AndroidModule);
-        CopyFiles(files, "Assets/MobileCenter/Plugins/Android/");
+        CopyFiles(files, "Assets/AppCenter/Plugins/Android/");
     }
 }).OnError(HandleError);
 
@@ -202,16 +222,19 @@ Task("Externals-Ios")
 {
     CleanDirectory("./externals/ios");
 
-    // Download zip file containing MobileCenter frameworks
+    // Download zip file containing AppCenter frameworks
     DownloadFile(IosUrl, "./externals/ios/ios.zip");
     Unzip("./externals/ios/ios.zip", "./externals/ios/");
 
     // Copy files
-    foreach (var module in MobileCenterModules)
+    foreach (var module in AppCenterModules)
     {
-        var destinationFolder = "Assets/MobileCenter/Plugins/iOS/" + module.Moniker + "/" + module.IosModule;
-        DeleteDirectoryIfExists(destinationFolder);
-        MoveDirectory("./externals/ios/MobileCenter-SDK-Apple/iOS/" + module.IosModule, destinationFolder);
+        foreach (var iosModule in module.IosModules)
+        {
+            var destinationFolder = "Assets/AppCenter/Plugins/iOS/" + module.Moniker + "/" + iosModule;
+            DeleteDirectoryIfExists(destinationFolder);
+            MoveDirectory("./externals/ios/AppCenter-SDK-Apple/iOS/" + iosModule, destinationFolder);
+        }
     }
 }).OnError(HandleError);
 
@@ -220,9 +243,9 @@ Task("Externals-Uwp")
     .Does(() =>
 {
     CleanDirectory("externals/uwp");
-    EnsureDirectoryExists("Assets/MobileCenter/Plugins/WSA/");
+    EnsureDirectoryExists("Assets/AppCenter/Plugins/WSA/");
     // Download the nugets. We will use these to extract the dlls
-    foreach (var module in MobileCenterModules)
+    foreach (var module in AppCenterModules)
     {
         if (module.Moniker == "Distribute")
         {
@@ -243,7 +266,7 @@ Task("Externals-Uwp")
         var contentPathSuffix = "lib/uap10.0/";
 
         // Prepare destination
-        var destination = "Assets/MobileCenter/Plugins/WSA/" + module.Moniker + "/";
+        var destination = "Assets/AppCenter/Plugins/WSA/" + module.Moniker + "/";
         EnsureDirectoryExists(destination);
         DeleteFiles(destination + "*.dll");
         DeleteFiles(destination + "*.winmd");
@@ -253,7 +276,7 @@ Task("Externals-Uwp")
         {
             foreach (var arch in module.NativeArchitectures)
             {
-                var dest = "Assets/MobileCenter/Plugins/WSA/" + module.Moniker + "/" + arch.ToString().ToUpper() + "/";
+                var dest = "Assets/AppCenter/Plugins/WSA/" + module.Moniker + "/" + arch.ToString().ToUpper() + "/";
                 EnsureDirectoryExists(dest);
                 var nativeFiles = GetFiles(tempContentPath + "runtimes/" + "win10-" + arch + "/native/*");
                 DeleteFiles(dest + "*.dll");
@@ -277,8 +300,8 @@ Task("Externals-Uwp")
 Task("BuildAndroidContentProvider").Does(()=>
 {
     // Folder and script locations
-    var appName = "MobileCenterLoaderApp";
-    var libraryName = "mobilecenterloader";
+    var appName = "AppCenterLoaderApp";
+    var libraryName = "appcenter-loader";
     var libraryFolder = System.IO.Path.Combine(appName, libraryName);
     var gradleScript = System.IO.Path.Combine(libraryFolder, "build.gradle");
 
@@ -294,7 +317,7 @@ Task("BuildAndroidContentProvider").Does(()=>
     // Source and destination of generated aar
     var aarName = libraryName + "-release.aar";
     var aarSource = System.IO.Path.Combine(libraryFolder, "build/outputs/aar/" + aarName);
-    var aarDestination = "Assets/MobileCenter/Plugins/Android";
+    var aarDestination = "Assets/AppCenter/Plugins/Android";
 
     // Delete the aar in case it already exists in the Assets folder
     var existingAar = System.IO.Path.Combine(aarDestination, aarName);
@@ -303,7 +326,7 @@ Task("BuildAndroidContentProvider").Does(()=>
         DeleteFile(existingAar);
     }
 
-    // Move the .aar to Assets/MobileCenter/Plugins/Android
+    // Move the .aar to Assets/AppCenter/Plugins/Android
     MoveFileToDirectory(aarSource, aarDestination);
 }).OnError(HandleError);
 
@@ -311,7 +334,7 @@ Task("BuildAndroidContentProvider").Does(()=>
 Task("Externals-Uwp-IL2CPP-Dependencies")
     .Does(() =>
 {
-    var targetPath = "Assets/MobileCenter/Plugins/WSA/IL2CPP";
+    var targetPath = "Assets/AppCenter/Plugins/WSA/IL2CPP";
     EnsureDirectoryExists(targetPath);
     EnsureDirectoryExists(targetPath + "/ARM");
     EnsureDirectoryExists(targetPath + "/X86");
@@ -342,7 +365,7 @@ Task("Externals-Uwp-IL2CPP-Dependencies")
 
     // Process UWP IL2CPP dependencies.
     Information("Processing UWP IL2CPP dependencies. This could take a minute.");
-    ExecuteUnityCommand("-executeMethod MobileCenterPostBuild.ProcessUwpIl2CppDependencies");
+    ExecuteUnityCommand("-executeMethod AppCenterPostBuild.ProcessUwpIl2CppDependencies");
 }).OnError(HandleError);
 
 // Download and install all external Unity packages required.
@@ -360,25 +383,25 @@ Task("Externals-Unity-Packages").Does(()=>
     }
 }).OnError(HandleError);
 
-// Add Mobile Center packages to demo app.
+// Add App Center packages to demo app.
 Task("AddPackagesToDemoApp")
     .IsDependentOn("CreatePackages")
     .Does(()=>
 {
-    var packages = GetFiles("output/*.unitypackage");
-    foreach (var package in packages)
+    var specFiles = GetFiles("UnityPackageSpecs/*.unitypackagespec");
+    foreach (var spec in specFiles)
     {
-        var command = "-importPackage " + package.FullPath;
-        Information("Importing package " + package.FullPath + ". This could take a minute.");
-        ExecuteUnityCommand(command, "MobileCenterDemoApp");
+        Information("Add files from " + spec);
+        var package = new UnityPackage(spec.FullPath);
+        package.CopyFiles("AppCenterDemoApp");
     }
 }).OnError(HandleError);
 
 // Remove package files from demo app.
 Task("RemovePackagesFromDemoApp").Does(()=>
 {
-    DeleteDirectoryIfExists("MobileCenterDemoApp/Assets/MobileCenter");
-    DeleteDirectoryIfExists("MobileCenterDemoApp/Assets/Plugins");
+    DeleteDirectoryIfExists("AppCenterDemoApp/Assets/AppCenter");
+    DeleteDirectoryIfExists("AppCenterDemoApp/Assets/Plugins");
 }).OnError(HandleError);
 
 // Create a common externals task depending on platform specific ones
@@ -389,6 +412,7 @@ Task("Externals")
     .IsDependentOn("Externals-Uwp")
     .IsDependentOn("Externals-Ios")
     .IsDependentOn("Externals-Android")
+    .IsDependentOn("BuildAndroidContentProvider")
     .IsDependentOn("Externals-Uwp-IL2CPP-Dependencies")
     .IsDependentOn("Externals-Unity-Packages")
     .Does(()=>
@@ -401,7 +425,7 @@ Task("Externals")
 Task("Package").Does(()=>
 {
     // Remove AndroidManifest.xml
-    var path = "Assets/Plugins/Android/mobile-center/AndroidManifest.xml";
+    var path = "Assets/Plugins/Android/appcenter/AndroidManifest.xml";
     if (System.IO.File.Exists(path))
     {
         DeleteFile(path);
@@ -418,7 +442,7 @@ Task("Package").Does(()=>
     }
 });
 
-Task("PrepareAssets").IsDependentOn("BuildAndroidContentProvider").IsDependentOn("Externals");
+Task("PrepareAssets").IsDependentOn("Externals");
 
 // Creates Unity packages corresponding to all ".unitypackagespec" files
 // in "UnityPackageSpecs" folder (and downloads binaries)
@@ -437,7 +461,7 @@ Task("BuildDemoApps")
     .IsDependentOn("AddPackagesToDemoApp")
     .Does(()=>
 {
-    BuildApps("Demo", "MobileCenterDemoApp");
+    BuildApps("Demo", "AppCenterDemoApp");
 }).OnError(HandleError);
 
 void BuildApps(string type, string projectPath = ".")
@@ -455,7 +479,7 @@ void BuildApps(string type, string projectPath = ".")
 
 void VerifyIosAppsBuild(string type, string projectPath)
 {
-    VerifyAppsBuild(type, "ios", projectPath, 
+    VerifyAppsBuild(type, "ios", projectPath,
     new string[] { "IosMono", "IosIl2CPP" },
     outputDirectory =>
     {
@@ -473,7 +497,7 @@ void VerifyIosAppsBuild(string type, string projectPath)
 
 void VerifyAndroidAppsBuild(string type, string projectPath)
 {
-    VerifyAppsBuild(type, "android", projectPath, 
+    VerifyAppsBuild(type, "android", projectPath,
     new string[] { "AndroidMono", "AndroidIl2CPP" },
     outputDirectory =>
     {
@@ -488,7 +512,7 @@ void VerifyAndroidAppsBuild(string type, string projectPath)
 
 void VerifyWindowsAppsBuild(string type, string projectPath)
 {
-    VerifyAppsBuild(type, "wsaplayer", projectPath, 
+    VerifyAppsBuild(type, "wsaplayer", projectPath,
     new string[] {  "WsaNetXaml", "WsaIl2CPPXaml", "WsaNetD3D", "WsaIl2CPPD3D" },
     outputDirectory =>
     {
@@ -527,8 +551,8 @@ Task("PublishPackagesToStorage").Does(()=>
     // The environment variables below must be set for this task to succeed
     var apiKey = Argument("AzureStorageAccessKey", EnvironmentVariable("AZURE_STORAGE_ACCESS_KEY"));
     var accountName = EnvironmentVariable("AZURE_STORAGE_ACCOUNT");
-    var corePackageVersion = XmlPeek(File("UnityPackageSpecs/MobileCenter.unitypackagespec"), "package/@version");
-    var zippedPackages = "MobileCenter-SDK-Unity-" + corePackageVersion + ".zip";
+    var corePackageVersion = XmlPeek(File("UnityPackageSpecs/AppCenter.unitypackagespec"), "package/@version");
+    var zippedPackages = "AppCenter-SDK-Unity-" + corePackageVersion + ".zip";
     Information("Publishing packages to blob " + zippedPackages);
     var files = GetFiles("output/*.unitypackage");
     Zip("./", zippedPackages, files);

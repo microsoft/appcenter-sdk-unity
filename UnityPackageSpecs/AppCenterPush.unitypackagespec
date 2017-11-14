@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<package name="AppCenterPush" version="0.0.1" needsCore="true">
+    <include>
+        <!-- Shared files -->
+        <file path="Assets/AppCenter/Plugins/AppCenterSDK/Push/Shared" />
+
+        <!-- "Blank" files -->
+        <file path="Assets/AppCenter/Plugins/AppCenterSDK/Push/Blank" />
+
+        <!-- Android files -->
+        <file path="Assets/AppCenter/Plugins/Android/appcenter-push-release.aar" />
+        <file path="Assets/AppCenter/Plugins/AppCenterSDK/Push/Android" />
+        <file path="Assets/PlayServicesResolver" />
+        <file path="Assets/AppCenter/Plugins/Android/AndroidManifestPlaceholder.xml" />
+
+        <!-- iOS files -->
+        <file path="Assets/AppCenter/Plugins/iOS/Push" />
+        <file path="Assets/AppCenter/Plugins/AppCenterSDK/Push/iOS" />
+
+        <!-- UWP files -->
+        <file path="Assets/AppCenter/Plugins/WSA/Push" />
+        <file path="Assets/AppCenter/Plugins/AppCenterSDK/Push/UWP" />
+    </include>
+</package>

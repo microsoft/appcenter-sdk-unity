@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<package name="AppCenterAnalytics" version="0.0.1" needsCore="true">
+    <include>
+        <!-- Shared files -->
+        <file path="Assets/AppCenter/Plugins/AppCenterSDK/Analytics/Shared" />
+
+        <!-- "Blank" files -->
+        <file path="Assets/AppCenter/Plugins/AppCenterSDK/Analytics/Blank" />
+
+        <!-- Android files -->
+        <file path="Assets/AppCenter/Plugins/Android/appcenter-analytics-release.aar" />
+        <file path="Assets/AppCenter/Plugins/AppCenterSDK/Analytics/Android" />
+
+        <!-- iOS files -->
+        <file path="Assets/AppCenter/Plugins/iOS/Analytics" />
+        <file path="Assets/AppCenter/Plugins/AppCenterSDK/Analytics/iOS" />
+
+        <!-- UWP files -->
+        <file path="Assets/AppCenter/Plugins/WSA/Analytics" />
+        <file path="Assets/AppCenter/Plugins/AppCenterSDK/Analytics/UWP" />
+    </include>
+</package>

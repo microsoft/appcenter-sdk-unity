@@ -16,10 +16,10 @@ var Target = Argument("target", Argument("t", "Default"));
 string ArchiveDirectory = "archives";
 bool IsMandatory = false;
 string DistributionGroup = "Private Release Script Group";
-string Token = EnvironmentVariable("MOBILE_CENTER_API_TOKEN");
-string BaseUrl = "https://api.mobile.azure.com";
+string Token = EnvironmentVariable("APPCENTER_API_TOKEN");
+string BaseUrl = "https://api.appcenter.ms";
 ApplicationInfo CurrentApp = null;
-string ProjectPath = "MobileCenterDemoApp";
+string ProjectPath = "AppCenterDemoApp";
 string BuildFolder = GetBuildFolder("Demo", ProjectPath);
 
 public enum Environment
@@ -106,15 +106,15 @@ Setup(context =>
     if (Argument("Environment", "int") == "int")
     {
         environment = Environment.Int;
-        Token = EnvironmentVariable("MOBILE_CENTER_INT_API_TOKEN");
+        Token = EnvironmentVariable("APPCENTER_INT_API_TOKEN");
         BaseUrl = "https://asgard-int.trafficmanager.net/api";
         ProjectPath = ".";
         BuildFolder = GetBuildFolder("Puppet", ProjectPath);
     }
-    
+
     var platformString = Argument<string>("Platform", "ios");
     var platform = Platform.iOS;
-    
+
     if (platformString == "android")
     {
         platform = Platform.Android;
@@ -163,17 +163,17 @@ Task("CreateIosArchive").IsDependentOn("IncreaseIosVersion")
     Information("Creating archive...");
     var archiveName = Statics.TemporaryPrefix + "iosArchive.xcarchive";
     StartProcess("xcodebuild", "-project \"" + xcodeProjectPath + "\" -configuration Release -scheme Unity-iPhone -archivePath \"" + archiveName + "\" archive");
-    
+
     // Just create the empty plist file here so it doesn't cluttering the repo.
     var plistName = Statics.TemporaryPrefix + "exportoptions.plist";
     System.IO.File.WriteAllText(plistName,
-        "<?xml version=\"1.0\" encoding=\"UTF-8\"?>" + 
+        "<?xml version=\"1.0\" encoding=\"UTF-8\"?>" +
         "<!DOCTYPE plist PUBLIC \"-//Apple//DTD PLIST 1.0//EN\" \"http://www.apple.com/DTDs/PropertyList-1.0.dtd\">" +
         "<plist version=\"1.0\"><dict></dict></plist>");
     Information("Creating ipa...");
     DeleteFileIfExists(CurrentApp.AppPath);
-    StartProcess("xcodebuild", "-exportArchive -archivePath \"" + archiveName + 
-                    "\" -exportPath \"" + CurrentApp.AppPath + 
+    StartProcess("xcodebuild", "-exportArchive -archivePath \"" + archiveName +
+                    "\" -exportPath \"" + CurrentApp.AppPath +
                     "\" -exportOptionsPlist \"" + plistName + "\"");
     var ipaFile = GetFiles(CurrentApp.AppPath + "/*.ipa").Single();
     var temporaryIpaPath = ArchiveDirectory + "/" + Statics.TemporaryPrefix + "tempIpa.ipa";
@@ -216,7 +216,7 @@ Task("ReleaseApplication")
         Error("Cannot distribute for this platform.");
         return;
     }
-    
+
     // Start the upload.
     Information("Initiating distribution process...");
     var startUploadUrl = GetApiUrl(BaseUrl, CurrentApp.AppOwner, CurrentApp.AppId, "release_uploads");
@@ -226,7 +226,7 @@ Task("ReleaseApplication")
     // Upload the file to the given endpoint. The label "ipa" is correct for all platforms.
     var uploadUrl = startUploadResponse["upload_url"].ToString();
     HttpUploadFile(uploadUrl, CurrentApp.AppPath, "ipa");
-    
+
     // Commit the upload
     Information("Committing distribution...");
     var uploadId = startUploadResponse["upload_id"].ToString();
@@ -242,15 +242,15 @@ Task("ReleaseApplication")
     Information("Finalizing release...");
     var releaseRequest = GetWebRequest(releaseUrl, Token, "PATCH");
     var releaseNotes = "This release has been created by the script test-tools.cake.";
-    AttachJsonPayload(releaseRequest, 
+    AttachJsonPayload(releaseRequest,
                         new JObject(
                             new JProperty("destination_name", DistributionGroup),
                             new JProperty("release_notes", releaseNotes),
                             new JProperty("mandatory", IsMandatory.ToString().ToLower())));
     releaseRequest.GetResponse().Dispose();
     var mandatorySuffix = IsMandatory ? " as a mandatory update" : "";
-    Information("Successfully released " + CurrentApp.AppOwner + 
-                    "/" + CurrentApp.AppId + " to group " + 
+    Information("Successfully released " + CurrentApp.AppOwner +
+                    "/" + CurrentApp.AppId + " to group " +
                     DistributionGroup + mandatorySuffix + ".");
 });
 

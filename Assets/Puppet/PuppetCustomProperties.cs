@@ -2,14 +2,14 @@
 //
 // Licensed under the MIT license.
 
-using Microsoft.Azure.Mobile.Unity;
+using Microsoft.AppCenter.Unity;
 using UnityEngine;
 
 public class PuppetCustomProperties : MonoBehaviour
 {
     public GameObject CustomProperty;
     public RectTransform PropertiesList;
-    
+
     public void AddProperty()
     {
         var property = Instantiate(CustomProperty);
@@ -18,7 +18,7 @@ public class PuppetCustomProperties : MonoBehaviour
 
     public void Send()
     {
-        MobileCenter.SetCustomProperties(GetProperties());
+        AppCenter.SetCustomProperties(GetProperties());
     }
 
     private CustomProperties GetProperties()

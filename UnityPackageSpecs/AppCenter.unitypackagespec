@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<package name="AppCenter" version="0.0.1">
+    <include>
+        <!-- Editor related files -->
+        <file path="Assets/AppCenter/Editor" />
+        <file path="Assets/AppCenter/Properties" />
+        <file path="Assets/AppCenter/AppCenterBehavior.cs" />
+        <file path="Assets/AppCenter/AppCenterSettings.cs" />
+
+        <!-- Android files -->
+        <file path="Assets/AppCenter/Plugins/Android/Utility" />
+        <file path="Assets/AppCenter/Plugins/Android/appcenter-release.aar" />
+        <file path="Assets/AppCenter/Plugins/AppCenterSDK/Core/Android" />
+
+        <!-- Common files -->
+        <file path="Assets/AppCenter/Plugins/AppCenterSDK/Core/Shared" />
+
+        <!-- "Blank" files -->
+        <file path="Assets/AppCenter/Plugins/AppCenterSDK/Core/Blank" />
+
+        <!-- iOS files -->
+        <file path="Assets/AppCenter/Plugins/iOS/Core" />
+        <file path="Assets/AppCenter/Plugins/AppCenterSDK/Core/iOS" />
+
+        <!-- UWP files -->
+        <file path="Assets/AppCenter/Plugins/WSA/Core" />
+        <file path="Assets/AppCenter/Plugins/AppCenterSDK/Core/UWP" />
+    </include>
+</package>

@@ -12,7 +12,7 @@ using UnityEngine;
 public class BuildPuppet
 {
     private static readonly string BuildFolder = "CAKE_SCRIPT_TEMPPuppetBuilds";
-    private static readonly string AppIdentifier = "com.microsoft.azure.mobile.unity.puppet";
+    private static readonly string AppIdentifier = "com.microsoft.appcenter.unity.puppet";
 
     static BuildPuppet()
     {
@@ -122,7 +122,7 @@ public class BuildPuppet
     public static void SetVersionNumber()
     {
         var currentVersion = PlayerSettings.bundleVersion;
-        var puppetVersion = Microsoft.Azure.Mobile.Unity.WrapperSdk.WrapperSdkVersion;
+        var puppetVersion = Microsoft.AppCenter.Unity.WrapperSdk.WrapperSdkVersion;
         PlayerSettings.bundleVersion = puppetVersion;
         PlayerSettings.Android.bundleVersionCode++;
     }

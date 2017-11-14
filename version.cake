@@ -23,13 +23,13 @@ Task("StartNewVersion").Does(()=>
 
     // Increment app versions (they will use wrappersdkversion). The platform doesn't matter.
     ExecuteUnityMethod("BuildPuppet.SetVersionNumber", "ios");
-    ExecuteUnityMethod("BuildDemo.SetVersionNumber", "ios", "MobileCenterDemoApp");
+    ExecuteUnityMethod("BuildDemo.SetVersionNumber", "ios", "AppCenterDemoApp");
 });
 
 // Changes the Version field in WrapperSdk.cs to the given version
 void UpdateWrapperSdkVersion(string newVersion)
 {
-    var path = "Assets/MobileCenter/Plugins/MobileCenterSDK/Core/Shared/WrapperSdk.cs";
+    var path = "Assets/AppCenter/Plugins/AppCenterSDK/Core/Shared/WrapperSdk.cs";
     var patternString = "WrapperSdkVersion = \"[^\"]+\";";
     var newString = "WrapperSdkVersion = \"" + newVersion + "\";";
     ReplaceRegexInFiles(path, patternString, newString);

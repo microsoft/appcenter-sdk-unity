@@ -1,7 +1,0 @@
-            var launchArgs = args.Arguments;
-            if (launchArgs != null && launchArgs.Contains("{\"mobile_center\":{"))
-            {
-                var idString = Guid.NewGuid();
-                launchArgs = launchArgs.Substring(0, launchArgs.Length - 1) + ", \"mobilecenterunity\":\"" + idString + "\"}";
-            }
-            InitializeUnity(launchArgs);
