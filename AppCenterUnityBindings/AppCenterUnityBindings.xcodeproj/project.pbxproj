@@ -21,12 +21,12 @@
 		3593B7CB1F573C9100ED10AA /* NSNumberHelper.mm in Sources */ = {isa = PBXBuildFile; fileRef = 3593B7C71F573C9100ED10AA /* NSNumberHelper.mm */; };
 		3593B7CC1F573C9100ED10AA /* NSStringDictionaryHelper.mm in Sources */ = {isa = PBXBuildFile; fileRef = 3593B7C81F573C9100ED10AA /* NSStringDictionaryHelper.mm */; };
 		3593B7CD1F573C9100ED10AA /* NSStringHelper.mm in Sources */ = {isa = PBXBuildFile; fileRef = 3593B7C91F573C9100ED10AA /* NSStringHelper.mm */; };
+		6E553B361FE03E8400E87418 /* AppCenterAnalytics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6E553B351FE03E8400E87418 /* AppCenterAnalytics.framework */; };
+		6E553B381FE03E9700E87418 /* AppCenter.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6E553B371FE03E9700E87418 /* AppCenter.framework */; };
+		6E553B3A1FE03EA700E87418 /* AppCenterPush.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6E553B391FE03EA700E87418 /* AppCenterPush.framework */; };
+		6E553B3C1FE03EBC00E87418 /* AppCenterDistribute.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6E553B3B1FE03EBC00E87418 /* AppCenterDistribute.framework */; };
 		6ECEA5FF1FD56D2300BF2205 /* CrashesUnity.mm in Sources */ = {isa = PBXBuildFile; fileRef = 6ECEA5FC1FD56D2300BF2205 /* CrashesUnity.mm */; };
 		6ECEA6041FD572DB00BF2205 /* AppCenterCrashes.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6ECEA6011FD56DF400BF2205 /* AppCenterCrashes.framework */; };
-		6ECEA6061FD5730B00BF2205 /* (null) in Frameworks */ = {isa = PBXBuildFile; };
-		6ECEA6081FD5731F00BF2205 /* (null) in Frameworks */ = {isa = PBXBuildFile; };
-		6ECEA60A1FD5733700BF2205 /* (null) in Frameworks */ = {isa = PBXBuildFile; };
-		6ECEA60C1FD5734D00BF2205 /* (null) in Frameworks */ = {isa = PBXBuildFile; };
 /* End PBXBuildFile section */
 
 /* Begin PBXCopyFilesBuildPhase section */
@@ -73,10 +73,10 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				6ECEA60C1FD5734D00BF2205 /* (null) in Frameworks */,
-				6ECEA60A1FD5733700BF2205 /* (null) in Frameworks */,
-				6ECEA6081FD5731F00BF2205 /* (null) in Frameworks */,
-				6ECEA6061FD5730B00BF2205 /* (null) in Frameworks */,
+				6E553B3C1FE03EBC00E87418 /* AppCenterDistribute.framework in Frameworks */,
+				6E553B3A1FE03EA700E87418 /* AppCenterPush.framework in Frameworks */,
+				6E553B381FE03E9700E87418 /* AppCenter.framework in Frameworks */,
+				6E553B361FE03E8400E87418 /* AppCenterAnalytics.framework in Frameworks */,
 				6ECEA6041FD572DB00BF2205 /* AppCenterCrashes.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
