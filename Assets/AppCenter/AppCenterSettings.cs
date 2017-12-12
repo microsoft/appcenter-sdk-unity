@@ -61,6 +61,10 @@ public class AppCenterSettings : ScriptableObject
             {
                 services.Add(Analytics);
             }
+            if (UseCrashes)
+            {
+                services.Add(Crashes);
+            }
             if (UseDistribute)
             {
                 services.Add(Distribute);
@@ -76,6 +80,11 @@ public class AppCenterSettings : ScriptableObject
     public static Type Analytics
     {
         get { return AppCenterAssembly.GetType("Microsoft.AppCenter.Unity.Analytics.Analytics"); }
+    }
+
+    public static Type Crashes
+    {
+        get { return AppCenterAssembly.GetType("Microsoft.AppCenter.Unity.Crashes.Crashes"); }
     }
 
     public static Type Distribute

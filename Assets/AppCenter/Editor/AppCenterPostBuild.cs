@@ -272,6 +272,10 @@ public class AppCenterPostBuild
         }
         settingsMaker.SetLogLevel((int)settings.InitialLogLevel);
         settingsMaker.SetAppSecret(settings.iOSAppSecret);
+        if (settings.UseCrashes)
+        {
+            settingsMaker.StartCrashesClass();
+        }
         if (settings.UsePush)
         {
             settingsMaker.StartPushClass();
