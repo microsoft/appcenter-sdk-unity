@@ -31,13 +31,13 @@ namespace Microsoft.AppCenter.Unity.Crashes {
             }
         }
 
-        public static void OnHandleUnresolvedException (object sender, System.UnhandledExceptionEventArgs args) {
+        public static void OnHandleUnresolvedException (object sender, UnhandledExceptionEventArgs args) {
             if (args == null || args.ExceptionObject == null) {
                 return;
             }
 
-            if (args.ExceptionObject.GetType () == typeof (System.Exception)) {
-                System.Exception e = (System.Exception) args.ExceptionObject;
+            if (args.ExceptionObject.GetType () == typeof (Exception)) {
+                Exception e = (Exception) args.ExceptionObject;
                 var exception = CreateWrapperException (e.Source, e.StackTrace);
                 CrashesInternal.TrackException (exception.GetRawObject ());
             }

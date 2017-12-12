@@ -80,7 +80,7 @@ public class AppCenterBehavior : MonoBehaviour
         #endif
     }
 
-    public void OnHandleUnresolvedException (object sender, System.UnhandledExceptionEventArgs args)
+    public void OnHandleUnresolvedException (object sender, UnhandledExceptionEventArgs args)
     {
         #if (!UNITY_EDITOR)
         foreach (var service in settings.Services)
