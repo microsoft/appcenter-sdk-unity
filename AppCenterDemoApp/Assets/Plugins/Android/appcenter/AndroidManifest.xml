@@ -4,7 +4,7 @@
   <uses-sdk android:minSdkVersion="15"/>
     <application>
         <provider
-            android:authorities="com.microsoft.azure.mobile.unity.demo.microsoft.appcenter.appcenterloader"
+            android:authorities="com.microsoft.appcenter.unity.demo.microsoft.appcenter.appcenterloader"
             android:exported="false"
             android:name=".AppCenterLoader" />
     </application>

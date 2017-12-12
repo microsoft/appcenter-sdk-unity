@@ -1,7 +1,6 @@
 #tool nuget:?package=XamarinComponent
 #addin nuget:?package=Cake.Xamarin
 #addin nuget:?package=Cake.FileHelpers
-#addin nuget:?package=Cake.SemVer
 #addin nuget:?package=Newtonsoft.Json
 #load "utility.cake"
 
@@ -16,7 +15,7 @@ var Target = Argument("target", Argument("t", "Default"));
 string ArchiveDirectory = "archives";
 bool IsMandatory = false;
 string DistributionGroup = "Private Release Script Group";
-string Token = EnvironmentVariable("APPCENTER_API_TOKEN");
+string Token = EnvironmentVariable("APP_CENTER_API_TOKEN");
 string BaseUrl = "https://api.appcenter.ms";
 ApplicationInfo CurrentApp = null;
 string ProjectPath = "AppCenterDemoApp";
@@ -106,7 +105,7 @@ Setup(context =>
     if (Argument("Environment", "int") == "int")
     {
         environment = Environment.Int;
-        Token = EnvironmentVariable("APPCENTER_INT_API_TOKEN");
+        Token = EnvironmentVariable("APP_CENTER_INT_API_TOKEN");
         BaseUrl = "https://asgard-int.trafficmanager.net/api";
         ProjectPath = ".";
         BuildFolder = GetBuildFolder("Puppet", ProjectPath);
@@ -315,12 +314,6 @@ void AttachJsonPayload(HttpWebRequest request, JObject json)
     {
         sr.Write(json.ToString());
     }
-}
-
-string IncrementSemVer(string semVer)
-{
-    var parsedVersion = ParseSemVer(semVer);
-    return CreateSemVer(parsedVersion.Major, parsedVersion.Minor, parsedVersion.Patch + 1).ToString();
 }
 
 // Adapted from https://stackoverflow.com/questions/566462/upload-files-with-httpwebrequest-multipart-form-data/2996904#2996904

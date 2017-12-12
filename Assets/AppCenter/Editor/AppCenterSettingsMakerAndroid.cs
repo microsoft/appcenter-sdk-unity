@@ -7,16 +7,14 @@ using System.IO;
 
 public class AppCenterSettingsMakerAndroid
 {
-    private const string AppCenterResourcesFolderPath = "Assets/Plugins/Android/appcenter/res/values/";
+    private const string AppCenterResourcesFolderPath = "Assets/Plugins/Android/res/values/";
     private const string AppCenterResourcesPath = AppCenterResourcesFolderPath + "appcenter-settings.xml";
-    private const string AppCenterManifestPath = "Assets/Plugins/Android/appcenter/AndroidManifest.xml";
-    private const string AppCenterManifestPlaceholderPath = "Assets/AppCenter/Plugins/Android/AndroidManifestPlaceholder.xml";
-    private const string ManifestAppIdPlaceholder = "${appcenter-app-id-placeholder}";
     private const string AppSecretKey = "appcenter_app_secret";
     private const string CustomLogUrlKey = "appcenter_custom_log_url";
     private const string UseCustomLogUrlKey = "appcenter_use_custom_log_url";
     private const string InitialLogLevelKey = "appcenter_initial_log_level";
     private const string UsePushKey = "appcenter_use_push";
+    private const string SenderIdKey = "appcenter_sender_id";
     private const string UseAnalyticsKey = "appcenter_use_analytics";
     private const string UseDistributeKey = "appcenter_use_distribute";
     private const string CustomApiUrlKey = "appcenter_custom_api_url";
@@ -49,6 +47,11 @@ public class AppCenterSettingsMakerAndroid
     public void SetAppSecret(string appSecret)
     {
         _resourceValues[AppSecretKey] = appSecret;
+    }
+
+    public void SetSenderId(string senderId)
+    {
+        _resourceValues[SenderIdKey] = senderId;
     }
 
     public void EnableFirebaseAnalytics()
@@ -85,18 +88,6 @@ public class AppCenterSettingsMakerAndroid
 
     public void CommitSettings()
     {
-        var appId = ApplicationIdHelper.GetApplicationId();
-        if (File.Exists(AppCenterManifestPlaceholderPath))
-        {
-            var manifestText = File.ReadAllText(AppCenterManifestPlaceholderPath);
-            File.Create(AppCenterManifestPath).Dispose();
-            if (manifestText.Contains(ManifestAppIdPlaceholder))
-            {
-                manifestText = manifestText.Replace(ManifestAppIdPlaceholder, appId);
-                File.WriteAllText(AppCenterManifestPath, manifestText);
-            }
-        }
-
         if (File.Exists(AppCenterResourcesPath))
         {
             File.Delete(AppCenterResourcesPath);

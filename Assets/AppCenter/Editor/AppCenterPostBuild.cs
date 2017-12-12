@@ -70,6 +70,7 @@ public class AppCenterPostBuild
             capabilityManager.WriteToFile();
 #endif
 #endif
+            
         }
     }
 

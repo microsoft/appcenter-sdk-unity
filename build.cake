@@ -12,9 +12,9 @@ using System.Runtime.Versioning;
 using NuGet;
 
 // Native SDK versions
-var AndroidSdkVersion = "1.0.0";
-var IosSdkVersion = "1.0.1";
-var UwpSdkVersion = "1.0.1";
+var AndroidSdkVersion = "1.1.0";
+var IosSdkVersion = "1.1.0";
+var UwpSdkVersion = "1.1.0";
 
 // URLs for downloading binaries.
 /*
@@ -34,15 +34,6 @@ var AppCenterModules = new [] {
     new AppCenterModule("appcenter-analytics-release.aar", "AppCenterAnalytics.framework", "Microsoft.AppCenter.Analytics", "Analytics"),
     new AppCenterModule("appcenter-distribute-release.aar", new[] { "AppCenterDistribute.framework", "AppCenterDistributeResources.bundle" }, "Microsoft.AppCenter.Distribute", "Distribute"),
     new AppCenterModule("appcenter-push-release.aar", "AppCenterPush.framework", "Microsoft.AppCenter.Push", "Push")
-};
-
-// External Unity Packages
-var JarResolverPackageName =  "play-services-resolver-" + ExternalUnityPackage.VersionPlaceholder + ".unitypackage";
-var JarResolverVersion = "1.2.35.0";
-var JarResolverUrl = SdkStorageUrl + ExternalUnityPackage.NamePlaceholder;
-
-var ExternalUnityPackages = new [] {
-    new ExternalUnityPackage(JarResolverPackageName, JarResolverVersion, JarResolverUrl)
 };
 
 // UWP IL2CPP dependencies.
@@ -100,23 +91,6 @@ class NugetDependency
         Version = version;
         Framework = framework;
         IncludeDependencies = includeDependencies;
-    }
-}
-
-class ExternalUnityPackage
-{
-    public static string VersionPlaceholder = "<version>";
-    public static string NamePlaceholder = "<name>";
-
-    public string Name { get; private set; }
-    public string Version { get; private set; }
-    public string Url { get; private set; }
-
-    public ExternalUnityPackage(string name, string version, string url)
-    {
-        Version = version;
-        Name = name.Replace(VersionPlaceholder, Version);
-        Url = url.Replace(NamePlaceholder, Name).Replace(VersionPlaceholder, Version);
     }
 }
 
@@ -368,21 +342,6 @@ Task("Externals-Uwp-IL2CPP-Dependencies")
     ExecuteUnityCommand("-executeMethod AppCenterPostBuild.ProcessUwpIl2CppDependencies");
 }).OnError(HandleError);
 
-// Download and install all external Unity packages required.
-Task("Externals-Unity-Packages").Does(()=>
-{
-    var directoryName = "externals/unity-packages";
-    CleanDirectory(directoryName);
-    foreach (var package in ExternalUnityPackages)
-    {
-        var destination = directoryName + "/" + package.Name;
-        DownloadFile(package.Url, destination);
-        var command = "-importPackage " + destination;
-        Information("Importing package " + package.Name + ". This could take a minute.");
-        ExecuteUnityCommand(command);
-    }
-}).OnError(HandleError);
-
 // Add App Center packages to demo app.
 Task("AddPackagesToDemoApp")
     .IsDependentOn("CreatePackages")
@@ -405,8 +364,8 @@ Task("RemovePackagesFromDemoApp").Does(()=>
 }).OnError(HandleError);
 
 // Create a common externals task depending on platform specific ones
-// NOTE: It is important to execute Externals-Unity-Packages and Externals-Uwp-IL2CPP-Dependencies *last*
-// or the steps that runs the Unity commands might cause the *.meta files to be deleted!
+// NOTE: It is important to execute Externals-Uwp-IL2CPP-Dependencies *last*
+// or steps that run Unity commands might cause the *.meta files to be deleted!
 // (Unity deletes meta data files when it is opened if the corresponding files are not on disk.)
 Task("Externals")
     .IsDependentOn("Externals-Uwp")
@@ -414,7 +373,6 @@ Task("Externals")
     .IsDependentOn("Externals-Android")
     .IsDependentOn("BuildAndroidContentProvider")
     .IsDependentOn("Externals-Uwp-IL2CPP-Dependencies")
-    .IsDependentOn("Externals-Unity-Packages")
     .Does(()=>
 {
     DeleteDirectoryIfExists("externals");
