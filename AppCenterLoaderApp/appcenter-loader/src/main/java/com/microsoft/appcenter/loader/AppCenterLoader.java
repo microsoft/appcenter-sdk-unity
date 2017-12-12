@@ -16,6 +16,7 @@ import android.support.annotation.Nullable;
 import com.microsoft.appcenter.AppCenter;
 import com.microsoft.appcenter.AppCenterService;
 import com.microsoft.appcenter.analytics.Analytics;
+import com.microsoft.appcenter.crashes.Crashes;
 import com.microsoft.appcenter.distribute.Distribute;
 import com.microsoft.appcenter.push.Push;
 import com.microsoft.appcenter.utils.AppCenterLog;
@@ -49,9 +50,9 @@ public class AppCenterLoader extends ContentProvider {
         if (isTrueValue(getStringResource(USE_ANALYTICS_KEY))) {
             classes.add(Analytics.class);
         }
-        //if (isTrueValue(getStringResource(USE_CRASHES_KEY))) {
-        //    classes.add(Crashes.class);
-        //}
+        if (isTrueValue(getStringResource(USE_CRASHES_KEY))) {
+            classes.add(Crashes.class);
+        }
         if (isTrueValue(getStringResource(USE_DISTRIBUTE_KEY))) {
             if (isTrueValue(getStringResource(USE_CUSTOM_API_URL_KEY))) {
                 String customApiUrl = getStringResource(CUSTOM_API_URL_KEY);
