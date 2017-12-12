@@ -2,10 +2,10 @@
 //
 // Licensed under the MIT license.
 
-using System.Collections;
+using Microsoft.AppCenter.Unity.Crashes;
 using Microsoft.AppCenter.Unity.Distribute;
 using Microsoft.AppCenter.Unity.Push;
-using Microsoft.AppCenter.Unity.Crashes;
+using System.Collections;
 using UnityEngine;
 using UnityEngine.UI;
 

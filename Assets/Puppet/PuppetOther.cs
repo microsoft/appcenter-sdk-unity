@@ -2,10 +2,10 @@
 //
 // Licensed under the MIT license.
 
-using System.Collections;
+using Microsoft.AppCenter.Unity.Crashes;
 using Microsoft.AppCenter.Unity.Distribute;
 using Microsoft.AppCenter.Unity.Push;
-using Microsoft.AppCenter.Unity.Crashes;
+using System.Collections;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -61,7 +61,7 @@ public class PuppetOther : MonoBehaviour
         yield return isEnabled;
         DistributeEnabled.isOn = isEnabled.Result;
     }
-		
+
 	public void SetCrashesEnabled(bool enabled)
 	{
 	    StartCoroutine(SetCrashesEnabledCoroutine(enabled));
