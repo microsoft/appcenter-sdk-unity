@@ -3,7 +3,8 @@
 // Licensed under the MIT license.
 
 #if (!UNITY_IOS && !UNITY_ANDROID && !UNITY_WSA_10_0) || UNITY_EDITOR
-namespace Microsoft.AppCenter.Unity.Crashes.Internal {
+namespace Microsoft.AppCenter.Unity.Crashes.Internal
+{
 
 #if UNITY_IOS
     using NativeType = System.IntPtr;
@@ -16,29 +17,40 @@ namespace Microsoft.AppCenter.Unity.Crashes.Internal {
     using RawType = System.Object;
 #endif
 
-    class CrashesInternal {
+    class CrashesInternal
+    {
 
-        public static NativeType GetNativeType () {
-            return default (NativeType);
+        public static NativeType GetNativeType()
+        {
+            return default(NativeType);
         }
 
-        public static void TrackException (RawType exception) { }
-
-        public static AppCenterTask SetEnabledAsync (bool enabled) {
-            return AppCenterTask.FromCompleted ();
+        public static void TrackException(RawType exception)
+        {
         }
 
-        public static AppCenterTask<bool> IsEnabledAsync () {
-            return AppCenterTask<bool>.FromCompleted (false);
+        public static AppCenterTask SetEnabledAsync(bool enabled)
+        {
+            return AppCenterTask.FromCompleted();
         }
 
-        public static void GenerateTestCrash () { }
-
-        public static AppCenterTask<bool> HasCrashedInLastSession () {
-            return AppCenterTask<bool>.FromCompleted (false);
+        public static AppCenterTask<bool> IsEnabledAsync()
+        {
+            return AppCenterTask<bool>.FromCompleted(false);
         }
 
-        public static void DisableMachExceptionHandler () { }
+        public static void GenerateTestCrash()
+        {
+        }
+
+        public static AppCenterTask<bool> HasCrashedInLastSession()
+        {
+            return AppCenterTask<bool>.FromCompleted(false);
+        }
+
+        public static void DisableMachExceptionHandler()
+        {
+        }
     }
 }
 #endif

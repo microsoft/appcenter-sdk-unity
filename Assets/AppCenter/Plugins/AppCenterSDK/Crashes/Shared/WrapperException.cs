@@ -2,11 +2,12 @@
 //
 // Licensed under the MIT license.
 
-using System;
 using Microsoft.AppCenter.Unity.Crashes.Internal;
+using System;
 
-namespace Microsoft.AppCenter.Unity.Crashes {
-    
+namespace Microsoft.AppCenter.Unity.Crashes
+{
+
 #if UNITY_IOS
     using RawType = System.IntPtr;
 #elif UNITY_ANDROID
@@ -15,39 +16,45 @@ namespace Microsoft.AppCenter.Unity.Crashes {
     using RawType = System.Object;
 #endif
 
-    public class WrapperException {
+    public class WrapperException
+    {
         private readonly RawType _rawObject;
 
-        internal RawType GetRawObject () {
+        internal RawType GetRawObject() {
             return _rawObject;
         }
 
-        public WrapperException () {
-            _rawObject = WrapperExceptionInternal.Create ();
+        public WrapperException() {
+            _rawObject = WrapperExceptionInternal.Create();
         }
 
-        public WrapperException SetType (string type) {
-            WrapperExceptionInternal.SetType (_rawObject, type);
+        public WrapperException SetType(string type)
+        {
+            WrapperExceptionInternal.SetType(_rawObject, type);
             return this;
         }
 
-        public WrapperException SetMessage (string message) {
-            WrapperExceptionInternal.SetMessage (_rawObject, message);
+        public WrapperException SetMessage(string message)
+        {
+            WrapperExceptionInternal.SetMessage(_rawObject, message);
             return this;
         }
 
-        public WrapperException SetStacktrace (string stacktrace) {
-            WrapperExceptionInternal.SetStacktrace (_rawObject, stacktrace);
+        public WrapperException SetStacktrace(string stacktrace)
+        {
+            WrapperExceptionInternal.SetStacktrace(_rawObject, stacktrace);
             return this;
         }
 
-        public WrapperException SetInnerExceptions (RawType innerExceptions) {
-            WrapperExceptionInternal.SetInnerExceptions (_rawObject, innerExceptions);
+        public WrapperException SetInnerExceptions(RawType innerExceptions)
+        {
+            WrapperExceptionInternal.SetInnerExceptions(_rawObject, innerExceptions);
             return this;
         }
 
-        public WrapperException SetWrapperSdkName (string sdkName) {
-            WrapperExceptionInternal.SetWrapperSdkName (_rawObject, sdkName);
+        public WrapperException SetWrapperSdkName(string sdkName)
+        {
+            WrapperExceptionInternal.SetWrapperSdkName(_rawObject, sdkName);
             return this;
         }
     }

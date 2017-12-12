@@ -49,15 +49,15 @@ public class AppCenterBehavior : MonoBehaviour
         }
     }
 
-    void OnEnable ()
+    void OnEnable()
 	{
         #if !UNITY_EDITOR
         System.AppDomain.CurrentDomain.UnhandledException += OnHandleUnresolvedException;
         Application.logMessageReceived += OnHandleLogCallback;
 	    #endif
 	}
-	
-	void OnDisable ()
+
+	void OnDisable()
 	{
 		#if !UNITY_EDITOR
         System.AppDomain.CurrentDomain.UnhandledException -= OnHandleUnresolvedException;
@@ -65,7 +65,7 @@ public class AppCenterBehavior : MonoBehaviour
 		#endif
 	}
 
-    public void OnHandleLogCallback (string logString, string stackTrace, LogType type)
+    public void OnHandleLogCallback(string logString, string stackTrace, LogType type)
     {
         #if !UNITY_EDITOR
         foreach (var service in settings.Services)
@@ -80,7 +80,7 @@ public class AppCenterBehavior : MonoBehaviour
         #endif
     }
 
-    public void OnHandleUnresolvedException (object sender, UnhandledExceptionEventArgs args)
+    public void OnHandleUnresolvedException(object sender, UnhandledExceptionEventArgs args)
     {
         #if !UNITY_EDITOR
         foreach (var service in settings.Services)

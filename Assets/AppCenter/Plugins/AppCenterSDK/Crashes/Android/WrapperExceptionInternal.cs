@@ -7,31 +7,39 @@ using System;
 using System.Runtime.InteropServices;
 using UnityEngine;
 
-namespace Microsoft.AppCenter.Unity.Crashes.Internal {
-    class WrapperExceptionInternal {
-        
-        public static AndroidJavaObject Create () {
-            return new AndroidJavaObject ("com.microsoft.appcenter.crashes.ingestion.models.Exception");
+namespace Microsoft.AppCenter.Unity.Crashes.Internal
+{
+    class WrapperExceptionInternal
+    {
+
+        public static AndroidJavaObject Create()
+        {
+            return new AndroidJavaObject("com.microsoft.appcenter.crashes.ingestion.models.Exception");
         }
 
-        public static void SetType (AndroidJavaObject exception, string type) {
-            exception.Call ("setType", type);
+        public static void SetType(AndroidJavaObject exception, string type)
+        {
+            exception.Call("setType", type);
         }
 
-        public static void SetMessage (AndroidJavaObject exception, string message) {
-            exception.Call ("setMessage", message);
+        public static void SetMessage(AndroidJavaObject exception, string message)
+        {
+            exception.Call("setMessage", message);
         }
 
-        public static void SetStacktrace (AndroidJavaObject exception, string stacktrace) {
-            exception.Call ("setStackTrace", stacktrace);
+        public static void SetStacktrace(AndroidJavaObject exception, string stacktrace)
+        {
+            exception.Call("setStackTrace", stacktrace);
         }
 
-        public static void SetInnerExceptions (AndroidJavaObject exception, AndroidJavaObject innerExceptions) {
-            exception.Call ("setInnerExceptions", innerExceptions);
+        public static void SetInnerExceptions(AndroidJavaObject exception, AndroidJavaObject innerExceptions)
+        {
+            exception.Call("setInnerExceptions", innerExceptions);
         }
 
-        public static void SetWrapperSdkName (AndroidJavaObject exception, string sdkName) {
-            exception.Call ("setWrapperSdkName", sdkName);
+        public static void SetWrapperSdkName(AndroidJavaObject exception, string sdkName)
+        {
+            exception.Call("setWrapperSdkName", sdkName);
         }
     }
 }

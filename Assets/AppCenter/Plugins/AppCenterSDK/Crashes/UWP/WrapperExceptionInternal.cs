@@ -6,20 +6,34 @@
 using System;
 using System.Runtime.InteropServices;
 
-namespace Microsoft.AppCenter.Unity.Crashes.Internal {
-    class WrapperExceptionInternal {
-        
-        public static object Create () { }
+namespace Microsoft.AppCenter.Unity.Crashes.Internal
+{
+    class WrapperExceptionInternal
+    {
 
-        public static void SetType (object exception, string type) { }
+        public static object Create()
+        {
+        }
 
-        public static void SetMessage (object exception, string message) { }
+        public static void SetType(object exception, string type)
+        {
+        }
 
-        public static void SetStacktrace (object exception, string stacktrace) { }
+        public static void SetMessage(object exception, string message)
+        {
+        }
 
-        public static void SetInnerExceptions (object exception, object innerExceptions) { }
+        public static void SetStacktrace(object exception, string stacktrace)
+        {
+        }
 
-        public static void SetWrapperSdkName (object exception, string sdkName) { }
+        public static void SetInnerExceptions(object exception, object innerExceptions)
+        {
+        }
+
+        public static void SetWrapperSdkName(object exception, string sdkName)
+        {
+        }
     }
 }
 #endif

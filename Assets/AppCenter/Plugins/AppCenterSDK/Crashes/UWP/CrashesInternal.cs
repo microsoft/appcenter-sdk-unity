@@ -7,30 +7,42 @@
 using System;
 using System.Threading.Tasks;
 
-namespace Microsoft.AppCenter.Unity.Crashes.Internal {
-    class CrashesInternal {
-        
-        public static Type GetNativeType () {
-            return typeof (Microsoft.AppCenter.Crashes.Crashes);
+namespace Microsoft.AppCenter.Unity.Crashes.Internal
+{
+    class CrashesInternal
+    {
+
+        public static Type GetNativeType()
+        {
+            return typeof(Microsoft.AppCenter.Crashes.Crashes);
         }
 
-        public static void TrackException (object exception) { }
-
-        public static AppCenterTask SetEnabledAsync (bool enabled) {
-            return AppCenterTask.FromCompleted ();
+        public static void TrackException(object exception)
+        {
         }
 
-        public static AppCenterTask<bool> IsEnabledAsync () {
-            return AppCenterTask<bool>.FromCompleted (false);
+        public static AppCenterTask SetEnabledAsync(bool enabled)
+        {
+            return AppCenterTask.FromCompleted();
         }
 
-        public static void GenerateTestCrash () { }
-
-        public static AppCenterTask<bool> HasCrashedInLastSession () {
-            return AppCenterTask<bool>.FromCompleted (false);
+        public static AppCenterTask<bool> IsEnabledAsync()
+        {
+            return AppCenterTask<bool>.FromCompleted(false);
         }
 
-        public static void DisableMachExceptionHandler () { }
+        public static void GenerateTestCrash()
+        {
+        }
+
+        public static AppCenterTask<bool> HasCrashedInLastSession()
+        {
+            return AppCenterTask<bool>.FromCompleted(false);
+        }
+
+        public static void DisableMachExceptionHandler()
+        {
+        }
     }
 }
 #endif
