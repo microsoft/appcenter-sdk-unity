@@ -2,8 +2,8 @@
 //
 // Licensed under the MIT license.
 
-#ifndef DISTRIBUTE_UNITY_H
-#define DISTRIBUTE_UNITY_H
+#ifndef CRASHES_UNITY_H
+#define CRASHES_UNITY_H
 
 #import <AppCenterCrashes/AppCenterCrashes.h>
 
