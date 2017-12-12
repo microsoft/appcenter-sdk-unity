@@ -1,9 +1,16 @@
 fileFormatVersion: 2
+<<<<<<< HEAD
 guid: 4c3f231fe8edd4d63807d60f84840df7
 timeCreated: 1512519361
 licenseType: Free
 MonoImporter:
   externalObjects: {}
+=======
+guid: 9ea2ed0cf64c6492fb812ccf97907675
+timeCreated: 1497560789
+licenseType: Pro
+MonoImporter:
+>>>>>>> upstream/feature/crashes
   serializedVersion: 2
   defaultReferences: []
   executionOrder: 0

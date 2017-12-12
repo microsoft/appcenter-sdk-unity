@@ -4,6 +4,7 @@
 
 #import "MSException.h"
 #import "CrashesUnity.h"
+#import "CrashesDelegate.h"
 #import <Foundation/Foundation.h>
 
 void* appcenter_unity_crashes_get_type() {
@@ -39,4 +40,13 @@ void appcenter_unity_crashes_disable_mach_exception_handler()
   [MSCrashes disableMachExceptionHandler];
 }
 
+MSErrorReport* app_center_unity_crashes_last_session_crash_report()
+{
+    return [MSCrashes lastSessionCrashReport];
+}
+
+//void app_center_unity_crashes_set_user_confirmation_handler(void* userConfirmationHandler);
+//
+//void app_center_unity_crashes_notify_with_user_confirmation(int userConfirmation);
+//
 
