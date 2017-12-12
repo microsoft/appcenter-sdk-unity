@@ -1,0 +1,18 @@
+fileFormatVersion: 2
+<<<<<<< HEAD
+guid: 5e6188b3d234f4b888dbe6e8b27c6cc6
+folderAsset: yes
+timeCreated: 1512409292
+licenseType: Pro
+DefaultImporter:
+  externalObjects: {}
+=======
+guid: 36ab64aba1f4c4ea38a3b1d4f909e77e
+folderAsset: yes
+timeCreated: 1498060008
+licenseType: Pro
+DefaultImporter:
+>>>>>>> upstream/feature/crashes
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 

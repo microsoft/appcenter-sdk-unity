@@ -33,7 +33,8 @@ var AppCenterModules = new [] {
     new AppCenterModule("appcenter-release.aar", "AppCenter.framework", "Microsoft.AppCenter", "Core"),
     new AppCenterModule("appcenter-analytics-release.aar", "AppCenterAnalytics.framework", "Microsoft.AppCenter.Analytics", "Analytics"),
     new AppCenterModule("appcenter-distribute-release.aar", new[] { "AppCenterDistribute.framework", "AppCenterDistributeResources.bundle" }, "Microsoft.AppCenter.Distribute", "Distribute"),
-    new AppCenterModule("appcenter-push-release.aar", "AppCenterPush.framework", "Microsoft.AppCenter.Push", "Push")
+    new AppCenterModule("appcenter-push-release.aar", "AppCenterPush.framework", "Microsoft.AppCenter.Push", "Push"),
+    new AppCenterModule("appcenter-crashes-release.aar", "AppCenterCrashes.framework", "Microsoft.AppCenter.Crashes", "Crashes")
 };
 
 // External Unity Packages
@@ -250,6 +251,11 @@ Task("Externals-Uwp")
         if (module.Moniker == "Distribute")
         {
             Warning("Skipping 'Distribute' for UWP.");
+            continue;
+        }
+        if (module.Moniker == "Crashes")
+        {
+            Warning("Skipping 'Crashes' for UWP.");
             continue;
         }
         Information("Downloading " + module.DotNetModule + "...");

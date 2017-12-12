@@ -2,9 +2,10 @@
 //
 // Licensed under the MIT license.
 
-using System.Collections;
+using Microsoft.AppCenter.Unity.Crashes;
 using Microsoft.AppCenter.Unity.Distribute;
 using Microsoft.AppCenter.Unity.Push;
+using System.Collections;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -12,6 +13,7 @@ public class PuppetOther : MonoBehaviour
 {
     public Toggle DistributeEnabled;
     public Toggle PushEnabled;
+	public Toggle CrashesEnabled;
 
     void OnEnable()
     {
@@ -28,6 +30,10 @@ public class PuppetOther : MonoBehaviour
         {
             return true;
         };
+		Crashes.IsEnabledAsync().ContinueWith(task =>
+		{
+			CrashesEnabled.isOn = task.Result;
+		});
     }
 
     public void SetPushEnabled(bool enabled)
@@ -55,4 +61,17 @@ public class PuppetOther : MonoBehaviour
         yield return isEnabled;
         DistributeEnabled.isOn = isEnabled.Result;
     }
+
+	public void SetCrashesEnabled(bool enabled)
+	{
+	    StartCoroutine(SetCrashesEnabledCoroutine(enabled));
+	}
+
+	private IEnumerator SetCrashesEnabledCoroutine(bool enabled)
+	{
+	    yield return Crashes.SetEnabledAsync(enabled);
+	    var isEnabled = Crashes.IsEnabledAsync();
+	    yield return isEnabled;
+	    CrashesEnabled.isOn = isEnabled.Result;
+	}
 }
