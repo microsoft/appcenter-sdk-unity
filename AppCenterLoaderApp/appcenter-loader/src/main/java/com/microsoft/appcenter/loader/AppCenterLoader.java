@@ -71,7 +71,7 @@ public class AppCenterLoader extends ContentProvider {
         if (isTrueValue(getStringResource(USE_PUSH_KEY))) {
             Push.setListener(new UnityAppCenterPushDelegate());
             classes.add(Push.class);
-            Push.setSenderId(getStringResource(CUSTOM_API_URL_KEY));
+            Push.setSenderId(getStringResource(SENDER_ID_KEY));
             if (isTrueValue(getStringResource(ENABLE_FIREBASE_ANALYTICS_KEY))) {
                 Push.enableFirebaseAnalytics(mContext);
             }
