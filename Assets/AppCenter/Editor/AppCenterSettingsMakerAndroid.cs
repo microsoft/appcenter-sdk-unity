@@ -7,9 +7,9 @@ using System.IO;
 
 public class AppCenterSettingsMakerAndroid
 {
-    private const string AppCenterResourcesFolderPath = "Assets/Plugins/Android/appcenter/res/values/";
+    private const string AppCenterResourcesFolderPath = "Assets/Plugins/Android/res/values/";
     private const string AppCenterResourcesPath = AppCenterResourcesFolderPath + "appcenter-settings.xml";
-    private const string AppCenterManifestPath = "Assets/Plugins/Android/appcenter/AndroidManifest.xml";
+    private const string AppCenterManifestPath = "Assets/Plugins/Android/AndroidManifest.xml";
     private const string AppCenterManifestPlaceholderPath = "Assets/AppCenter/Plugins/Android/AndroidManifestPlaceholder.xml";
     private const string ManifestAppIdPlaceholder = "${appcenter-app-id-placeholder}";
     private const string AppSecretKey = "appcenter_app_secret";
@@ -85,18 +85,6 @@ public class AppCenterSettingsMakerAndroid
 
     public void CommitSettings()
     {
-        var appId = ApplicationIdHelper.GetApplicationId();
-        if (File.Exists(AppCenterManifestPlaceholderPath))
-        {
-            var manifestText = File.ReadAllText(AppCenterManifestPlaceholderPath);
-            File.Create(AppCenterManifestPath).Dispose();
-            if (manifestText.Contains(ManifestAppIdPlaceholder))
-            {
-                manifestText = manifestText.Replace(ManifestAppIdPlaceholder, appId);
-                File.WriteAllText(AppCenterManifestPath, manifestText);
-            }
-        }
-
         if (File.Exists(AppCenterResourcesPath))
         {
             File.Delete(AppCenterResourcesPath);

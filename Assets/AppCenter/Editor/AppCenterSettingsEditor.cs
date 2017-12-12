@@ -28,7 +28,7 @@ public class AppCenterSettingsEditor : Editor
         EditorGUILayout.PropertyField(serializedObject.FindProperty("iOSAppSecret"));
         EditorGUILayout.PropertyField(serializedObject.FindProperty("AndroidAppSecret"));
         EditorGUILayout.PropertyField(serializedObject.FindProperty("UWPAppSecret"));
-
+        
         // Draw modules.
         if (AppCenterSettings.Analytics != null)
         {
