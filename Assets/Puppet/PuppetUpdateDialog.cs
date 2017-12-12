@@ -22,6 +22,7 @@ public class PuppetUpdateDialog : MonoBehaviour
         Distribute.NotifyUpdateAction(UpdateAction.Postpone);
         Hide();
     }
+
     public void Show(ReleaseDetails releaseDetails)
     {
         _messageText.text = "Perform update to version " + releaseDetails.Version + " ?";

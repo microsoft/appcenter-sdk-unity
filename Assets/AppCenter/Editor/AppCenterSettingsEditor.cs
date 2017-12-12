@@ -48,6 +48,7 @@ public class AppCenterSettingsEditor : Editor
             Header("Push");
             var serializedProperty = serializedObject.FindProperty("UsePush");
             EditorGUILayout.PropertyField(serializedProperty);
+            EditorGUILayout.PropertyField(serializedObject.FindProperty("SenderId"));
             EditorGUILayout.PropertyField(serializedObject.FindProperty("EnableFirebaseAnalytics"));
 #if !UNITY_2017_1_OR_NEWER
             if (serializedProperty.boolValue)
@@ -81,6 +82,7 @@ public class AppCenterSettingsEditor : Editor
         if (settings.UsePush)
         {
             settingsMaker.StartPushClass();
+            settingsMaker.SetSenderId(settings.SenderId);
             if (settings.EnableFirebaseAnalytics)
             {
                 settingsMaker.EnableFirebaseAnalytics();
