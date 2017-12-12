@@ -5,6 +5,7 @@
 using System.Collections;
 using Microsoft.AppCenter.Unity.Distribute;
 using Microsoft.AppCenter.Unity.Push;
+using Microsoft.AppCenter.Unity.Crashes;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -12,6 +13,7 @@ public class DemoOther : MonoBehaviour
 {
     public Toggle DistributeEnabled;
     public Toggle PushEnabled;
+    public Toggle CrashesEnabled;
 
     void OnEnable()
     {
@@ -22,6 +24,10 @@ public class DemoOther : MonoBehaviour
         Distribute.IsEnabledAsync().ContinueWith(task =>
         {
             DistributeEnabled.isOn = task.Result;
+        });
+        Crashes.IsEnabledAsync().ContinueWith(task =>
+        {
+            CrashesEnabled.isOn = task.Result;
         });
 
         Distribute.ReleaseAvailable = (releaseDetails) =>
@@ -54,5 +60,18 @@ public class DemoOther : MonoBehaviour
         var isEnabled = Distribute.IsEnabledAsync();
         yield return isEnabled;
         DistributeEnabled.isOn = isEnabled.Result;
+    }
+
+    public void SetCrashesEnabled(bool enabled)
+    {
+        StartCoroutine(SetCrashesEnabledCoroutine(enabled));
+    }
+
+    private IEnumerator SetCrashesEnabledCoroutine(bool enabled)
+    {
+        yield return Crashes.SetEnabledAsync(enabled);
+        var isEnabled = Crashes.IsEnabledAsync();
+        yield return isEnabled;
+        CrashesEnabled.isOn = isEnabled.Result;
     }
 }
