@@ -67,7 +67,7 @@ public class AppCenterBehavior : MonoBehaviour
 
     public void OnHandleLogCallback (string logString, string stackTrace, LogType type)
     {
-        #if (!UNITY_EDITOR)
+        #if !UNITY_EDITOR
         foreach (var service in settings.Services)
         {
             var OnHanldeLogMethod = service.GetMethod("OnHandleLog");
@@ -82,7 +82,7 @@ public class AppCenterBehavior : MonoBehaviour
 
     public void OnHandleUnresolvedException (object sender, UnhandledExceptionEventArgs args)
     {
-        #if (!UNITY_EDITOR)
+        #if !UNITY_EDITOR
         foreach (var service in settings.Services)
         {
             var OnHandleUnresolvedExceptionMethod = service.GetMethod("OnHandleUnresolvedException");
