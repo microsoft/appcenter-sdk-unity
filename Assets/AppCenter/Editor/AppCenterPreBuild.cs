@@ -1,6 +1,5 @@
 using UnityEditor;
 using UnityEditor.Build;
-using UnityEngine;
 
 public class AppCenterPreBuild : IPreprocessBuild
 {

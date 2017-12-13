@@ -8,15 +8,17 @@ using System.Reflection;
 using System.Text.RegularExpressions;
 using UnityEngine;
 using UnityEditor;
+using UnityEditor.Build;
 using UnityEditor.Callbacks;
 #if UNITY_IOS
 using UnityEditor.iOS.Xcode;
 #endif
 
-public class AppCenterPostBuild
+public class AppCenterPostBuild : IPostprocessBuild
 {
-    [PostProcessBuild]
-    public static void OnPostprocessBuild(BuildTarget target, string pathToBuiltProject)
+    public int callbackOrder { get { return 0; } }
+
+    public void OnPostprocessBuild(BuildTarget target, string pathToBuiltProject)
     {
         if (target == BuildTarget.WSAPlayer)
         {
