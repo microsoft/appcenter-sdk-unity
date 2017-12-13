@@ -9,16 +9,6 @@ using UnityEditor.Callbacks;
 [CustomEditor(typeof(AppCenterSettings))]
 public class AppCenterSettingsEditor : Editor
 {
-    public const string SettingsPath = "Assets/AppCenter/AppCenterSettings.asset";
-
-    public static AppCenterSettings Settings
-    {
-        get
-        {
-            return AssetDatabase.LoadAssetAtPath<AppCenterSettings>(SettingsPath);
-        }
-    }
-
     public override void OnInspectorGUI()
     {
         serializedObject.Update();
@@ -62,87 +52,6 @@ public class AppCenterSettingsEditor : Editor
         EditorGUILayout.PropertyField(serializedObject.FindProperty("InitialLogLevel"));
         EditorGUILayout.PropertyField(serializedObject.FindProperty("CustomLogUrl"));
         serializedObject.ApplyModifiedProperties();
-    }
-
-    [PostProcessScene]
-    static void AddStartupCodeToAndroid()
-    {
-        var settings = Settings;
-        if (settings == null)
-        {
-            return;
-        }
-        var settingsMaker = new AppCenterSettingsMakerAndroid();
-        settingsMaker.SetAppSecret(settings.AndroidAppSecret);
-        if (settings.CustomLogUrl.UseCustomUrl)
-        {
-            settingsMaker.SetLogUrl(settings.CustomLogUrl.Url);
-        }
-        if (settings.UsePush)
-        {
-            settingsMaker.StartPushClass();
-            if (settings.EnableFirebaseAnalytics)
-            {
-                settingsMaker.EnableFirebaseAnalytics();
-            }
-        }
-        if (settings.UseAnalytics)
-        {
-            settingsMaker.StartAnalyticsClass();
-        }
-        if (settings.UseDistribute)
-        {
-            if (settings.CustomApiUrl.UseCustomUrl)
-            {
-                settingsMaker.SetApiUrl(settings.CustomApiUrl.Url);
-            }
-            if (settings.CustomInstallUrl.UseCustomUrl)
-            {
-                settingsMaker.SetInstallUrl(settings.CustomInstallUrl.Url);
-            }
-            settingsMaker.StartDistributeClass();
-        }
-        settingsMaker.SetLogLevel((int)settings.InitialLogLevel);
-        settingsMaker.CommitSettings();
-    }
-
-    [PostProcessScene]
-    static void AddStartupCodeToiOS()
-    {
-        // Load/Apply App Center settings.
-        var settings = Settings;
-        if (settings == null)
-        {
-            return;
-        }
-        var settingsMaker = new AppCenterSettingsMakerIos();
-        if (settings.CustomLogUrl.UseCustomUrl)
-        {
-            settingsMaker.SetLogUrl(settings.CustomLogUrl.Url);
-        }
-        settingsMaker.SetLogLevel((int)settings.InitialLogLevel);
-        settingsMaker.SetAppSecret(settings.iOSAppSecret);
-        if (settings.UsePush)
-        {
-            settingsMaker.StartPushClass();
-        }
-        if (settings.UseAnalytics)
-        {
-            settingsMaker.StartAnalyticsClass();
-        }
-        if (settings.UseDistribute)
-        {
-            if (settings.CustomApiUrl.UseCustomUrl)
-            {
-                settingsMaker.SetApiUrl(settings.CustomApiUrl.Url);
-            }
-            if (settings.CustomInstallUrl.UseCustomUrl)
-            {
-                settingsMaker.SetInstallUrl(settings.CustomInstallUrl.Url);
-            }
-            settingsMaker.StartDistributeClass();
-        }
-        settingsMaker.CommitSettings();
     }
 
     private static void Header(string label)
