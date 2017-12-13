@@ -27,6 +27,8 @@ xcuserdata
 **/AndroidBuild/
 externals/
 output/
+AppCenterStarter.m
+AppCenterStarter.m.meta
 
 # .NET Core
 project.lock.json

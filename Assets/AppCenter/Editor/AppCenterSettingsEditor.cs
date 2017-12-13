@@ -106,6 +106,45 @@ public class AppCenterSettingsEditor : Editor
         settingsMaker.CommitSettings();
     }
 
+    [PostProcessScene]
+    static void AddStartupCodeToiOS()
+    {
+        // Load/Apply App Center settings.
+        var settings = Settings;
+        if (settings == null)
+        {
+            return;
+        }
+        var settingsMaker = new AppCenterSettingsMakerIos();
+        if (settings.CustomLogUrl.UseCustomUrl)
+        {
+            settingsMaker.SetLogUrl(settings.CustomLogUrl.Url);
+        }
+        settingsMaker.SetLogLevel((int)settings.InitialLogLevel);
+        settingsMaker.SetAppSecret(settings.iOSAppSecret);
+        if (settings.UsePush)
+        {
+            settingsMaker.StartPushClass();
+        }
+        if (settings.UseAnalytics)
+        {
+            settingsMaker.StartAnalyticsClass();
+        }
+        if (settings.UseDistribute)
+        {
+            if (settings.CustomApiUrl.UseCustomUrl)
+            {
+                settingsMaker.SetApiUrl(settings.CustomApiUrl.Url);
+            }
+            if (settings.CustomInstallUrl.UseCustomUrl)
+            {
+                settingsMaker.SetInstallUrl(settings.CustomInstallUrl.Url);
+            }
+            settingsMaker.StartDistributeClass();
+        }
+        settingsMaker.CommitSettings();
+    }
+
     private static void Header(string label)
     {
         GUILayout.Label(label, EditorStyles.boldLabel);

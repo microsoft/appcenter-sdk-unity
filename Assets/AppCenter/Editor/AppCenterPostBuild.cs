@@ -41,20 +41,18 @@ public class AppCenterPostBuild
         if (target == BuildTarget.iOS)
         {
 #if UNITY_IOS
-            // Load/Apply App Center settings.
-            var settingsPath = AppCenterSettingsEditor.SettingsPath;
-            var settings = AssetDatabase.LoadAssetAtPath<AppCenterSettings>(settingsPath);
-            ApplyIosSettings(settings);
 
             // Update project.
             var projectPath = PBXProject.GetPBXProjectPath(pathToBuiltProject);
             var targetName = PBXProject.GetUnityTargetName();
             var project = new PBXProject();
             project.ReadFromFile(projectPath);
-            OnPostprocessProject(project, settings);
+            OnPostprocessProject(project);
             project.WriteToFile(projectPath);
 
             // Update Info.plist.
+            var settingsPath = AppCenterSettingsEditor.SettingsPath;
+            var settings = AssetDatabase.LoadAssetAtPath<AppCenterSettings>(settingsPath);
             var infoPath = pathToBuiltProject + "/Info.plist";
             var info = new PlistDocument();
             info.ReadFromFile(infoPath);
@@ -235,7 +233,7 @@ public class AppCenterPostBuild
 
     #region iOS Methods
 #if UNITY_IOS
-    private static void OnPostprocessProject(PBXProject project, AppCenterSettings settings)
+    private static void OnPostprocessProject(PBXProject project)
     {
         // The target we want to add to is created by Unity.
         var targetName = PBXProject.GetUnityTargetName();
@@ -259,38 +257,6 @@ public class AppCenterPostBuild
             var urlSchemes = urlType.CreateArray("CFBundleURLSchemes");
             urlSchemes.AddString("appcenter-" + settings.iOSAppSecret);
         }
-    }
-
-    private static void ApplyIosSettings(AppCenterSettings settings)
-    {
-        var settingsMaker = new AppCenterSettingsMakerIos();
-        if (settings.CustomLogUrl.UseCustomUrl)
-        {
-            settingsMaker.SetLogUrl(settings.CustomLogUrl.Url);
-        }
-        settingsMaker.SetLogLevel((int)settings.InitialLogLevel);
-        settingsMaker.SetAppSecret(settings.iOSAppSecret);
-        if (settings.UsePush)
-        {
-            settingsMaker.StartPushClass();
-        }
-        if (settings.UseAnalytics)
-        {
-            settingsMaker.StartAnalyticsClass();
-        }
-        if (settings.UseDistribute)
-        {
-            if (settings.CustomApiUrl.UseCustomUrl)
-            {
-                settingsMaker.SetApiUrl(settings.CustomApiUrl.Url);
-            }
-            if (settings.CustomInstallUrl.UseCustomUrl)
-            {
-                settingsMaker.SetInstallUrl(settings.CustomInstallUrl.Url);
-            }
-            settingsMaker.StartDistributeClass();
-        }
-        settingsMaker.CommitSettings();
     }
 
 #if UNITY_2017_1_OR_NEWER
