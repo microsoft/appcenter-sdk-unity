@@ -58,6 +58,7 @@ UWP/project.json
 *.csproj
 *.sln
 RegisterIcalls.cpp
+UnityPackageManager
 
 # Firebase
 **/Assets/Plugins/Android/firebase-*

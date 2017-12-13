@@ -68,13 +68,12 @@ public class AppCenterPostBuild
                 PBXProject.GetUnityTargetName());
             OnPostprocessCapabilities(capabilityManager, settings);
             capabilityManager.WriteToFile();
-#endif
-#endif
+#endif //UNITY_2017_1_OR_NEWER
+#endif //UNITY_IOS
         }
     }
 
     #region UWP Methods
-#if UNITY_WSA_10_0
     public static void AddHelperCodeToUWPProject(string pathToBuiltProject)
     {
         var settingsPath = AppCenterSettingsEditor.SettingsPath;
@@ -232,7 +231,6 @@ public class AppCenterPostBuild
             Debug.LogException(exception);
         }
     }
-#endif
     #endregion
 
     #region iOS Methods
