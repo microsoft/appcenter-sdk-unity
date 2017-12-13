@@ -4,7 +4,6 @@
 
 using UnityEngine;
 using UnityEditor;
-using UnityEditor.Callbacks;
 
 [CustomEditor(typeof(AppCenterSettings))]
 public class AppCenterSettingsEditor : Editor

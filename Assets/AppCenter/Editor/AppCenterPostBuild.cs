@@ -51,7 +51,7 @@ public class AppCenterPostBuild
             project.WriteToFile(projectPath);
 
             // Update Info.plist.
-            var settings = AppCenterSettings.SettingsInstance;
+            var settings = AppCenterSettingsContext.SettingsInstance;
             var infoPath = pathToBuiltProject + "/Info.plist";
             var info = new PlistDocument();
             info.ReadFromFile(infoPath);
@@ -73,7 +73,7 @@ public class AppCenterPostBuild
     #region UWP Methods
     public static void AddHelperCodeToUWPProject(string pathToBuiltProject)
     {
-        var settings = AppCenterSettings.SettingsInstance;
+        var settings = AppCenterSettingsContext.SettingsInstance;
         if (!settings.UsePush)
         {
             return;

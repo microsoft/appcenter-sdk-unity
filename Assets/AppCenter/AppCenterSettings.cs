@@ -8,31 +8,10 @@ using System.Linq;
 using System.Reflection;
 using Microsoft.AppCenter.Unity;
 using UnityEngine;
-using UnityEditor;
 
 [Serializable]
 public class AppCenterSettings : ScriptableObject
 {
-    private static readonly object SettingsLock = new object();
-    private const string SettingsPath = "Assets/AppCenter/AppCenterSettings.asset";
-    public static AppCenterSettings SettingsInstance
-    {
-        get
-        {
-            lock (SettingsLock)
-            {
-                var instance = AssetDatabase.LoadAssetAtPath<AppCenterSettings>(SettingsPath);
-                if (instance == null)
-                {
-                    instance = CreateInstance<AppCenterSettings>();
-                    AssetDatabase.CreateAsset(instance, SettingsPath);
-                    AssetDatabase.SaveAssets();
-                }
-                return instance;
-            }
-        }
-    }
-
     [AppSecret("iOS App Secret")]
     public string iOSAppSecret = "ios-app-secret";
     [AppSecret]

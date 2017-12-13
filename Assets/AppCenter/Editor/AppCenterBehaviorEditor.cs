@@ -15,9 +15,9 @@ public class AppCenterBehaviorEditor : Editor
         var behaviour = (AppCenterBehavior) target;
         if (behaviour.settings == null)
         {
-            behaviour.settings = AppCenterSettings.SettingsInstance;
+            behaviour.settings = AppCenterSettingsContext.SettingsInstance;
         }
-
+        
         // Draw settings.
         if (settingsEditor == null)
         {

@@ -20,7 +20,7 @@ public class AppCenterPreBuild : IPreprocessBuild
 
     void AddStartupCodeToAndroid()
     {
-        var settings = AppCenterSettings.SettingsInstance;
+        var settings = AppCenterSettingsContext.SettingsInstance;
         if (settings == null)
         {
             return;
@@ -61,7 +61,7 @@ public class AppCenterPreBuild : IPreprocessBuild
 
     static void AddStartupCodeToiOS()
     {
-        var settings = AppCenterSettings.SettingsInstance;
+        var settings = AppCenterSettingsContext.SettingsInstance;
         if (settings == null)
         {
             return;
