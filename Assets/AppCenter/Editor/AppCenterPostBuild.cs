@@ -17,10 +17,6 @@ public class AppCenterPostBuild : IPostprocessBuild
 
     public void OnPostprocessBuild(BuildTarget target, string pathToBuiltProject)
     {
-        Debug.Log("Postprocessing step: Begun");
-        Debug.Log("Postprocessing step: Build target = " + target);
-        Debug.Log("Postprocessing step: Path to build project = " + pathToBuiltProject);
-
         if (target == BuildTarget.WSAPlayer)
         {
             AddHelperCodeToUWPProject(pathToBuiltProject);
