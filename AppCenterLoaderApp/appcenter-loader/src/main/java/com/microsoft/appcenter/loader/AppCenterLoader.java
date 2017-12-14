@@ -29,6 +29,7 @@ public class AppCenterLoader extends ContentProvider {
     private static final String USE_CUSTOM_LOG_URL_KEY = "appcenter_use_custom_log_url";
     private static final String INITIAL_LOG_LEVEL_KEY = "appcenter_initial_log_level";
     private static final String USE_PUSH_KEY = "appcenter_use_push";
+    private static final String SENDER_ID_KEY = "appcenter_sender_id";
     private static final String ENABLE_FIREBASE_ANALYTICS_KEY = "appcenter_enable_firebase_analytics";
     private static final String USE_ANALYTICS_KEY = "appcenter_use_analytics";
     private static final String USE_DISTRIBUTE_KEY = "appcenter_use_distribute";
@@ -70,7 +71,7 @@ public class AppCenterLoader extends ContentProvider {
         if (isTrueValue(getStringResource(USE_PUSH_KEY))) {
             Push.setListener(new UnityAppCenterPushDelegate());
             classes.add(Push.class);
-
+            Push.setSenderId(getStringResource(SENDER_ID_KEY));
             if (isTrueValue(getStringResource(ENABLE_FIREBASE_ANALYTICS_KEY))) {
                 Push.enableFirebaseAnalytics(mContext);
             }
