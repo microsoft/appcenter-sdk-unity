@@ -4,25 +4,25 @@
 
 using System;
 using System.IO;
-using System.Reflection;
 using System.Text.RegularExpressions;
 using UnityEngine;
 using UnityEditor;
 using UnityEditor.Build;
-using UnityEditor.Callbacks;
-#if UNITY_IOS
-using UnityEditor.iOS.Xcode;
-#endif
 
+// Warning: Don't use #if #endif for conditional compilation here as Unity
+// doesn't always set the flags early enough.
 public class AppCenterPostBuild : IPostprocessBuild
 {
     public int callbackOrder { get { return 0; } }
 
     public void OnPostprocessBuild(BuildTarget target, string pathToBuiltProject)
     {
+        Debug.Log("Postprocessing step: Begun");
+        Debug.Log("Postprocessing step: Build target = " + target);
+        Debug.Log("Postprocessing step: Path to build project = " + pathToBuiltProject);
+
         if (target == BuildTarget.WSAPlayer)
         {
-#if UNITY_WSA_10_0
             AddHelperCodeToUWPProject(pathToBuiltProject);
             if (PlayerSettings.GetScriptingBackend(BuildTargetGroup.WSA) != ScriptingImplementation.IL2CPP)
             {
@@ -38,37 +38,34 @@ public class AppCenterPostBuild : IPostprocessBuild
                 // Fix System.Diagnostics.Debug IL2CPP implementation.
                 FixIl2CppLogging(pathToBuiltProject);
             }
-#endif
         }
-        if (target == BuildTarget.iOS)
+        if (target == BuildTarget.iOS &&
+            PBXProjectWrapper.PBXProjectIsAvailable &&
+            PlistDocumentWrapper.PlistDocumentIsAvailable)
         {
-#if UNITY_IOS
+            var pbxProject = new PBXProjectWrapper(pathToBuiltProject);
 
             // Update project.
-            var projectPath = PBXProject.GetPBXProjectPath(pathToBuiltProject);
-            var targetName = PBXProject.GetUnityTargetName();
-            var project = new PBXProject();
-            project.ReadFromFile(projectPath);
-            OnPostprocessProject(project);
-            project.WriteToFile(projectPath);
+            OnPostprocessProject(pbxProject);
+            pbxProject.WriteToFile();
 
             // Update Info.plist.
             var settings = AppCenterSettingsContext.SettingsInstance;
             var infoPath = pathToBuiltProject + "/Info.plist";
-            var info = new PlistDocument();
-            info.ReadFromFile(infoPath);
+            var info = new PlistDocumentWrapper(infoPath);
             OnPostprocessInfo(info, settings);
-            info.WriteToFile(infoPath);
+            info.WriteToFile();
 
-#if UNITY_2017_1_OR_NEWER
-            // Update capabilities.
-            var capabilityManager = new ProjectCapabilityManager(
-                projectPath, targetName + ".entitlements",
-                PBXProject.GetUnityTargetName());
-            OnPostprocessCapabilities(capabilityManager, settings);
-            capabilityManager.WriteToFile();
-#endif //UNITY_2017_1_OR_NEWER
-#endif //UNITY_IOS
+            // Update capabilities (if possible).
+            if (ProjectCapabilityManagerWrapper.ProjectCapabilityManagerIsAvailable)
+            {
+                var capabilityManager = new ProjectCapabilityManagerWrapper(pbxProject.ProjectPath,
+                                                                            PBXProjectWrapper.GetUnityTargetName());
+                OnPostprocessCapabilities(capabilityManager, settings);
+                capabilityManager.GetType().GetMethod("WriteToFile").Invoke(capabilityManager, null);
+                OnPostprocessCapabilities(capabilityManager, settings);
+                capabilityManager.WriteToFile();
+            }
         }
     }
 
@@ -232,43 +229,38 @@ public class AppCenterPostBuild : IPostprocessBuild
     #endregion
 
     #region iOS Methods
-#if UNITY_IOS
-    private static void OnPostprocessProject(PBXProject project)
-    {
-        // The target we want to add to is created by Unity.
-        var targetName = PBXProject.GetUnityTargetName();
-        var targetGuid = project.TargetGuidByName(targetName);
 
+    private static void OnPostprocessProject(PBXProjectWrapper project)
+    {
         // Need to add "-lsqlite3" linker flag to "Other linker flags" due to
         // SQLite dependency.
-        project.AddBuildProperty(targetGuid, "OTHER_LDFLAGS", "-lsqlite3");
-        project.AddBuildProperty(targetGuid, "CLANG_ENABLE_MODULES", "YES");
+        project.AddBuildProperty("OTHER_LDFLAGS", "-lsqlite3");
+        project.AddBuildProperty("CLANG_ENABLE_MODULES", "YES");
     }
 
-    private static void OnPostprocessInfo(PlistDocument info, AppCenterSettings settings)
+    private static void OnPostprocessInfo(PlistDocumentWrapper info, AppCenterSettings settings)
     {
         if (settings.UseDistribute && AppCenterSettings.Distribute != null)
         {
             // Add App Center URL sceme.
-            var urlTypes = info.root.CreateArray("CFBundleURLTypes");
-            var urlType = urlTypes.AddDict();
-            urlType.SetString("CFBundleTypeRole", "None");
-            urlType.SetString("CFBundleURLName", ApplicationIdHelper.GetApplicationId());
-            var urlSchemes = urlType.CreateArray("CFBundleURLSchemes");
-            urlSchemes.AddString("appcenter-" + settings.iOSAppSecret);
+            var root = info.GetRoot();
+            var urlTypes = root.GetType().GetMethod("CreateArray").Invoke(root, new object[] { "CFBundleURLTypes" });
+            var urlType = urlTypes.GetType().GetMethod("AddDict").Invoke(urlTypes, null);
+            var setStringMethod = urlType.GetType().GetMethod("SetString");
+            setStringMethod.Invoke(urlType, new object[] { "CFBundleTypeRole", "None" });
+            setStringMethod.Invoke(urlType, new object[] { "CFBundleURLName", ApplicationIdHelper.GetApplicationId() });
+            var urlSchemes = urlType.GetType().GetMethod("CreateArray").Invoke(urlType, new[] { "CFBundleURLSchemes" });
+            urlSchemes.GetType().GetMethod("AddString").Invoke(urlSchemes, new[] { "appcenter-" + settings.iOSAppSecret });
         }
     }
 
-#if UNITY_2017_1_OR_NEWER
-    private static void OnPostprocessCapabilities(ProjectCapabilityManager capabilityManager, AppCenterSettings settings)
-    {
+    private static void OnPostprocessCapabilities(ProjectCapabilityManagerWrapper capabilityManager, AppCenterSettings settings)
+    {       
         if (settings.UsePush && AppCenterSettings.Push != null)
         {
-            capabilityManager.AddPushNotifications(true);
-            capabilityManager.AddBackgroundModes(BackgroundModesOptions.RemoteNotifications);
+            capabilityManager.AddPushNotifications();
+            capabilityManager.AddRemoteNotificationsToBackgroundModes();
         }
     }
-#endif
-#endif
     #endregion
 }
