@@ -62,8 +62,6 @@ public class AppCenterPostBuild : IPostprocessBuild
                 var capabilityManager = new ProjectCapabilityManagerWrapper(pbxProject.ProjectPath,
                                                                             PBXProjectWrapper.GetUnityTargetName());
                 OnPostprocessCapabilities(capabilityManager, settings);
-                capabilityManager.GetType().GetMethod("WriteToFile").Invoke(capabilityManager, null);
-                OnPostprocessCapabilities(capabilityManager, settings);
                 capabilityManager.WriteToFile();
             }
         }
