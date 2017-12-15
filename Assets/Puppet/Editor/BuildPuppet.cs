@@ -25,13 +25,11 @@ public class BuildPuppet
 
     public static void BuildPuppetSceneAndroidMono()
     {
-        CreateGoogleServicesJsonIfNotPresent();
         BuildPuppetScene(BuildTarget.Android, BuildTargetGroup.Android, ScriptingImplementation.Mono2x, "AndroidMonoBuild.apk");
     }
 
     public static void BuildPuppetSceneAndroidIl2CPP()
     {
-        CreateGoogleServicesJsonIfNotPresent();
         BuildPuppetScene(BuildTarget.Android, BuildTargetGroup.Android, ScriptingImplementation.IL2CPP, "AndroidIL2CPPBuild.apk");
     }
 
@@ -125,25 +123,5 @@ public class BuildPuppet
         var puppetVersion = Microsoft.AppCenter.Unity.WrapperSdk.WrapperSdkVersion;
         PlayerSettings.bundleVersion = puppetVersion;
         PlayerSettings.Android.bundleVersionCode++;
-    }
-
-    // Detects whether there exists a "google-services.json" file, and if not,
-    // copies the "google-services-placeholder.json" and imports it as a
-    // "google-services.json" file. The resulting file contains only
-    // placeholders for keys, not actual keys.
-    private static void CreateGoogleServicesJsonIfNotPresent()
-    {
-        var actualFile = "Assets/google-services.json";
-        if (File.Exists(actualFile))
-        {
-            return;
-        }
-        var placeholderFile = "Assets/google-services-placeholder.json";
-        if (!File.Exists(placeholderFile))
-        {
-            Debug.Log("Could not find google services placeholder.");
-        }
-        File.Copy(placeholderFile, actualFile);
-        AssetDatabase.ImportAsset(actualFile, ImportAssetOptions.Default);
     }
 }
