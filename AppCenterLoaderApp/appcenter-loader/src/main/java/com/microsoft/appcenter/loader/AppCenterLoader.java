@@ -46,6 +46,17 @@ public class AppCenterLoader extends ContentProvider {
     @Override
     public boolean onCreate() {
         mContext = getApplicationContext();
+        String appSecret = getStringResource(APP_SECRET_KEY);
+
+        /*
+         * If app secret isn't found in resources, return immediately. It's possible that resources
+         * weren't added properly.
+         */
+        if (appSecret == null) {
+            AppCenterLog.error(AppCenterLog.LOG_TAG, "Failed to retrieve app secret from " +
+                    "resources. App Center cannot be started.");
+            return false;
+        }
         List<Class<? extends AppCenterService>> classes = new ArrayList<>();
         if (isTrueValue(getStringResource(USE_ANALYTICS_KEY))) {
             classes.add(Analytics.class);
@@ -84,7 +95,6 @@ public class AppCenterLoader extends ContentProvider {
                 AppCenter.setLogUrl(customLogUrl);
             }
         }
-        String appSecret = getStringResource(APP_SECRET_KEY);
         if (classes.size() > 0) {
             @SuppressWarnings("unchecked")
             Class<? extends AppCenterService>[] classesArray = classes.toArray(new Class[classes.size()]);
