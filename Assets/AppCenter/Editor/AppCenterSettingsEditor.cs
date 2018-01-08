@@ -2,6 +2,8 @@
 //
 // Licensed under the MIT license.
 
+#if UNITY_EDITOR
+
 using UnityEngine;
 using UnityEditor;
 using UnityEditor.Callbacks;
@@ -112,3 +114,4 @@ public class AppCenterSettingsEditor : Editor
         GUILayout.Space(-4);
     }
 }
+#endif

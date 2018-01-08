@@ -2,6 +2,8 @@
 //
 // Licensed under the MIT license.
 
+#if UNITY_EDITOR
+
 using System;
 using System.IO;
 using System.Reflection;
@@ -308,3 +310,4 @@ public class AppCenterPostBuild
 #endif
     #endregion
 }
+#endif

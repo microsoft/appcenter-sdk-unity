@@ -2,6 +2,8 @@
 //
 // Licensed under the MIT license.
 
+#if UNITY_EDITOR
+
 using System.Collections.Generic;
 using System.IO;
 using System.Xml;
@@ -39,3 +41,4 @@ public static class XmlResourceHelper
         }
     }
 }
+#endif
