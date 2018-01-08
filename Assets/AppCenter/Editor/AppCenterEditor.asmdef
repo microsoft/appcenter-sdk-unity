@@ -1,0 +1,9 @@
+{
+    "name": "Microsoft.AppCenter.Unity.Editor",
+    "references": [
+        "Microsoft.AppCenter.Unity"
+    ],
+    "includePlatforms": [
+        "Editor"
+    ]
+}
