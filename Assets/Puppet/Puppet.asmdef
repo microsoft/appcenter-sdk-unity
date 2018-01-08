@@ -1,0 +1,6 @@
+{
+    "name": "Puppet",
+    "references": [
+        "AppCenter"
+    ]
+}

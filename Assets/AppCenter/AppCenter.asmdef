@@ -1,0 +1,9 @@
+{
+    "name": "AppCenter",
+    "includePlatforms": [
+        "Android",
+        "Editor",
+        "iOS",
+        "WSA"
+    ]
+}
