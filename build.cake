@@ -567,6 +567,20 @@ Task("PublishPackagesToStorage").Does(()=>
     DeleteFiles(zippedPackages);
 }).OnError(HandleError);
 
+Task("RegisterUnity").Does(()=>
+{
+    var serialNumber = Argument<string>("UnitySerialNumber");
+    var username = Argument<string>("UnityUsername");
+    var password = Argument<string>("UnityPassword");
+    ExecuteUnityCommand($"-serial {serialNumber} -username {username} -password {password}", null);
+}).OnError(HandleError);
+
+Task("UnregisterUnity").Does(()=>
+{
+    ExecuteUnityCommand("-returnLicense", null);
+}).OnError(HandleError);
+
+
 // Default Task.
 Task("Default").IsDependentOn("PrepareAssets");
 
