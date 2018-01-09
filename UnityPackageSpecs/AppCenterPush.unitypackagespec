@@ -10,8 +10,6 @@
         <!-- Android files -->
         <file path="Assets/AppCenter/Plugins/Android/appcenter-push-release.aar" />
         <file path="Assets/AppCenter/Plugins/AppCenterSDK/Push/Android" />
-        <file path="Assets/PlayServicesResolver" />
-        <file path="Assets/AppCenter/Plugins/Android/AndroidManifestPlaceholder.xml" />
 
         <!-- iOS files -->
         <file path="Assets/AppCenter/Plugins/iOS/Push" />

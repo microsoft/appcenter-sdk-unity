@@ -142,6 +142,7 @@ PlayerSettings:
   resolutionScalingMode: 0
   applicationIdentifier:
     Android: com.microsoft.appcenter.unity.puppet
+    Metro: com.microsoft.appcenter.unity.puppet
     Standalone: com.microsoft.appcenter.unity.puppet
     iOS: com.microsoft.appcenter.unity.puppet
   buildNumber: {}
@@ -166,7 +167,7 @@ PlayerSettings:
   iOSTargetOSVersionString: 8.0
   tvOSSdkVersion: 0
   tvOSRequireExtendedGameController: 0
-  tvOSTargetOSVersionString: 
+  tvOSTargetOSVersionString: 9.0
   uIPrerenderedIcon: 0
   uIRequiresPersistentWiFi: 0
   uIRequiresFullScreen: 1
@@ -533,7 +534,7 @@ PlayerSettings:
   metroCertificatePassword: 
   metroCertificateSubject: Microsoft
   metroCertificateIssuer: Microsoft
-  metroCertificateNotAfter: 007a76f23755d401
+  metroCertificateNotAfter: 80b6d1c33794d401
   metroApplicationDescription: TestPackage
   wsaImages: {}
   metroTileShortName: Puppet Unity
