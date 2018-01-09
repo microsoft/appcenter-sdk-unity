@@ -37,7 +37,7 @@ static int ExecuteUnityCommand(string extraArgs, string projectPath = ".")
     {
         unityLogFile += "1";
     }
-    var unityArgs = "-batchmode -quit -logFile " + unityLogFile;
+    var unityArgs = "-batchmode -quit -nographics -logFile " + unityLogFile;
 
     // If the command has an associated project, add it to the arguments
     if (projectDir != null)
