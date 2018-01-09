@@ -12,19 +12,12 @@ public class AppCenterBehaviorEditor : Editor
     public override void OnInspectorGUI()
     {
         // Load or create settings.
-        var settingsPath = AppCenterSettingsEditor.SettingsPath;
         var behaviour = (AppCenterBehavior) target;
         if (behaviour.settings == null)
         {
-            behaviour.settings = AssetDatabase.LoadAssetAtPath<AppCenterSettings>(settingsPath);
+            behaviour.settings = AppCenterSettingsContext.SettingsInstance;
         }
-        if (behaviour.settings == null)
-        {
-            behaviour.settings = CreateInstance<AppCenterSettings>();
-            AssetDatabase.CreateAsset(behaviour.settings, settingsPath);
-            AssetDatabase.SaveAssets();
-        }
-
+        
         // Draw settings.
         if (settingsEditor == null)
         {

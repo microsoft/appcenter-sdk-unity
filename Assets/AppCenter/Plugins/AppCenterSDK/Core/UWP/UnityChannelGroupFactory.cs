@@ -1,5 +1,6 @@
 ﻿#if UNITY_WSA_10_0 && ENABLE_IL2CPP && !UNITY_EDITOR
 using Microsoft.AppCenter.Channel;
+using Microsoft.AppCenter.Ingestion.Http;
 
 namespace Microsoft.AppCenter.Unity.Internal.Utils
 {
@@ -7,7 +8,8 @@ namespace Microsoft.AppCenter.Unity.Internal.Utils
     {
         public IChannelGroup CreateChannelGroup(string appSecret)
         {
-            return new ChannelGroup(appSecret, new UnityHttpNetworkAdapter());
+            //TODO use argument for networkstateadapter once sdk is updated
+            return new ChannelGroup(appSecret, new UnityHttpNetworkAdapter(), new NetworkStateAdapter());
         }
     }
 }

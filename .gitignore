@@ -27,6 +27,9 @@ xcuserdata
 **/AndroidBuild/
 externals/
 output/
+AppCenterStarter.m
+AppCenterStarter.m.meta
+Assets/Plugins/Android/res/values/appcenter-settings.xml
 
 # .NET Core
 project.lock.json
@@ -58,6 +61,7 @@ UWP/project.json
 *.csproj
 *.sln
 RegisterIcalls.cpp
+UnityPackageManager
 
 # Firebase
 **/Assets/Plugins/Android/firebase-*
