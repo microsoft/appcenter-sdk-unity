@@ -432,7 +432,7 @@ Task("BuildDemoApps")
 Task("DownloadNdk")
     .Does(()=>
 {
-    var ndkUrl = Argument("NdkUrl", EnvironmentVariable("UNITY_NDK_URL"));
+    var ndkUrl = EnvironmentVariable("ANDROID_NDK_URL");
     if (string.IsNullOrEmpty(ndkUrl))
     {
         throw new Exception("Ndk Url is empty string or null");
