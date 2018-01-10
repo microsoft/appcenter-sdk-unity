@@ -6,6 +6,7 @@ using System;
 using System.IO;
 using UnityEditor;
 using UnityEngine;
+using System.Linq;
 
 // This class provides methods to build the puppet app in many different configurations.
 // They are meant to be invoked from the build scripts in this repository.
@@ -23,7 +24,12 @@ public class BuildPuppet
 #endif
     }
 
-    public static void SetNdkRoot()
+    public static void BuildPuppetSceneAndroidMono()
+    {
+        BuildPuppetScene(BuildTarget.Android, BuildTargetGroup.Android, ScriptingImplementation.Mono2x, "AndroidMonoBuild.apk");
+    }
+
+    public static void BuildPuppetSceneAndroidIl2CPP()
     {
         // Set NDK location if provided
         var args = Environment.GetCommandLineArgs();
@@ -33,8 +39,9 @@ public class BuildPuppet
             if (next)
             {
                 var ndkLocation = arg;
-                Debug.Log("Setting NDK location to " + ndkLocation);
-                EditorPrefs.SetString("AndroidNdkRoot", ndkLocation);
+                var subdir = System.IO.Directory.GetDirectories(ndkLocation).Single();
+                Debug.Log("Setting NDK location to " + subdir);
+                EditorPrefs.SetString("AndroidNdkRoot", subdir);
                 Debug.Log("NDK Location is now '" + EditorPrefs.GetString("AndroidNdkRoot") + "'");
                 break;
             }
@@ -43,16 +50,6 @@ public class BuildPuppet
                 next = true;
             }
         }
-    }
-
-    public static void BuildPuppetSceneAndroidMono()
-    {
-        BuildPuppetScene(BuildTarget.Android, BuildTargetGroup.Android, ScriptingImplementation.Mono2x, "AndroidMonoBuild.apk");
-    }
-
-    public static void BuildPuppetSceneAndroidIl2CPP()
-    {
-        SetNdkRoot();
         BuildPuppetScene(BuildTarget.Android, BuildTargetGroup.Android, ScriptingImplementation.IL2CPP, "AndroidIL2CPPBuild.apk");
     }
 

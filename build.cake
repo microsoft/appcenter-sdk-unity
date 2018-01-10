@@ -49,7 +49,7 @@ var UwpIL2CPPJsonUrl = SdkStorageUrl + "Newtonsoft.Json.dll";
 // Download from a link here: https://developer.android.com/ndk/downloads/older_releases.html
 // Unity 2017.3 requires NDK r13b.
 // The destination for the NDK download.
-var NdkFolder = Statics.TemporaryPrefix + "ndk";
+var NdkFolder = "android_ndk";
 
 // Task TARGET for build
 var Target = Argument("target", Argument("t", "Default"));
@@ -479,8 +479,6 @@ void VerifyAndroidAppsBuild(string type, string projectPath)
         var absoluteNdkFolder = Statics.Context.MakeAbsolute(Statics.Context.Directory(NdkFolder));
         extraArgs += "-NdkLocation \"" + absoluteNdkFolder + "\"";
     }
-    ExecuteUnityMethod("BuildPuppet.SetNdkRoot" , null, null);
-
     VerifyAppsBuild(type, "android", projectPath,
     new string[] { "AndroidMono", "AndroidIl2CPP" },
     outputDirectory =>
@@ -519,7 +517,7 @@ void VerifyAppsBuild(string type, string platformIdentifier, string projectPath,
     {
         // Remove all existing builds and create new build.
         Statics.Context.CleanDirectory(outputDirectory);
-        ExecuteUnityMethod(methodPrefix + buildType + extraArgs, platformIdentifier);
+        ExecuteUnityMethod(methodPrefix + buildType + " " + extraArgs, platformIdentifier);
         verificatonMethod(outputDirectory);
 
         // Remove all remaining builds.

@@ -14,7 +14,21 @@ public class BuildDemo
     private static readonly string BuildFolder = "CAKE_SCRIPT_TEMPDemoBuilds";
     private static readonly string AppIdentifier = "com.microsoft.appcenter.unity.demo";
 
-    public static void SetNdkRoot()
+    static BuildDemo()
+    {
+#if UNITY_5_6_OR_NEWER
+        PlayerSettings.applicationIdentifier = AppIdentifier;
+#else
+        PlayerSettings.bundleIdentifier = AppIdentifier;
+#endif
+    }
+
+    public static void BuildDemoSceneAndroidMono()
+    {
+        BuildDemoScene(BuildTarget.Android, BuildTargetGroup.Android, ScriptingImplementation.Mono2x, "AndroidMonoBuild.apk");
+    }
+
+    public static void BuildDemoSceneAndroidIl2CPP()
     {
         // Set NDK location if provided
         var args = Environment.GetCommandLineArgs();
@@ -34,25 +48,6 @@ public class BuildDemo
                 next = true;
             }
         }
-    }
-
-    static BuildDemo()
-    {
-#if UNITY_5_6_OR_NEWER
-        PlayerSettings.applicationIdentifier = AppIdentifier;
-#else
-        PlayerSettings.bundleIdentifier = AppIdentifier;
-#endif
-    }
-
-    public static void BuildDemoSceneAndroidMono()
-    {
-        BuildDemoScene(BuildTarget.Android, BuildTargetGroup.Android, ScriptingImplementation.Mono2x, "AndroidMonoBuild.apk");
-    }
-
-    public static void BuildDemoSceneAndroidIl2CPP()
-    {
-        SetNdkRoot();
         BuildDemoScene(BuildTarget.Android, BuildTargetGroup.Android, ScriptingImplementation.IL2CPP, "AndroidIL2CPPBuild.apk");
     }
 
