@@ -23,6 +23,28 @@ public class BuildPuppet
 #endif
     }
 
+    public static void SetNdkRoot()
+    {
+        // Set NDK location if provided
+        var args = Environment.GetCommandLineArgs();
+        bool next = false;
+        foreach (var arg in args)
+        {
+            if (next)
+            {
+                var ndkLocation = arg;
+                Debug.Log("Setting NDK location to " + ndkLocation);
+                EditorPrefs.SetString("AndroidNdkRoot", ndkLocation);
+                Debug.Log("NDK Location is now '" + EditorPrefs.GetString("AndroidNdkRoot") + "'");
+                break;
+            }
+            if (arg == "-NdkLocation")
+            {
+                next = true;
+            }
+        }
+    }
+
     public static void BuildPuppetSceneAndroidMono()
     {
         BuildPuppetScene(BuildTarget.Android, BuildTargetGroup.Android, ScriptingImplementation.Mono2x, "AndroidMonoBuild.apk");
@@ -30,6 +52,7 @@ public class BuildPuppet
 
     public static void BuildPuppetSceneAndroidIl2CPP()
     {
+        SetNdkRoot();
         BuildPuppetScene(BuildTarget.Android, BuildTargetGroup.Android, ScriptingImplementation.IL2CPP, "AndroidIL2CPPBuild.apk");
     }
 

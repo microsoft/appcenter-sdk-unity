@@ -89,10 +89,14 @@ static string GetBuildFolder(string appType, string projectPath)
      return projectPath + "/" + Statics.TemporaryPrefix + appType + "Builds";
 }
 
-static void ExecuteUnityMethod(string buildMethodName, string buildTarget, string projectPath = ".")
+static void ExecuteUnityMethod(string buildMethodName, string buildTarget = null, string projectPath = ".")
 {
     Statics.Context.Information("Executing method " + buildMethodName + ", this could take a while...");
-    var command = "-executeMethod " + buildMethodName + " -buildTarget " + buildTarget;
+    var command = "-executeMethod " + buildMethodName; 
+    if (buildTarget != null)
+    {
+        command += " -buildTarget " + buildTarget;
+    }
     var result = ExecuteUnityCommand(command, projectPath);
     if (result != 0)
     {
