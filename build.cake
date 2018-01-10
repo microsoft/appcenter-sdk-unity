@@ -432,12 +432,26 @@ Task("BuildDemoApps")
 Task("DownloadNdk")
     .Does(()=>
 {
-    var ndkUrl = Argument<string>("NdkUrl");
+    var ndkUrl = Argument("NdkUrl", EnvironmentVariable("UNITY_NDK_URL"));
+    if (string.IsNullOrEmpty(ndkUrl))
+    {
+        throw new Exception("Ndk Url is empty string or null");
+    }
     var zipDestination = Statics.TemporaryPrefix + "ndk.zip";
     
     // Download required NDK
     DownloadFile(ndkUrl, zipDestination);
-    Unzip(zipDestination, NdkFolder);
+
+    // Something is buggy about the way Cake unzips, so use shell on mac
+    if (IsRunningOnUnix())
+    {
+        CleanDirectory(NdkFolder);
+        StartProcess("unzip", new ProcessSettings{ Arguments = $"{zipDestination} -d {NdkFolder}"});
+    }
+    else
+    {
+        Unzip(zipDestination, NdkFolder);
+    }
 }).OnError(HandleError);
 
 void BuildApps(string type, string projectPath = ".")
