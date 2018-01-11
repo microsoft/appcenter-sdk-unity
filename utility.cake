@@ -15,7 +15,7 @@ Statics.Context = Context;
 
 static int ExecuteUnityCommand(string extraArgs, string projectPath = ".")
 {
-    var projectDir = Statics.Context.MakeAbsolute(Statics.Context.Directory(projectPath));
+    var projectDir = projectPath == null ? null : Statics.Context.MakeAbsolute(Statics.Context.Directory(projectPath));
     var unityPath = Statics.Context.EnvironmentVariable("UNITY_PATH");
 
     // If environment variable is not set, use default locations
@@ -37,7 +37,16 @@ static int ExecuteUnityCommand(string extraArgs, string projectPath = ".")
     {
         unityLogFile += "1";
     }
-    var unityArgs = "-batchmode -quit -logFile " + unityLogFile + " -projectPath " + projectDir + " " + extraArgs;
+    var unityArgs = "-batchmode -quit -logFile " + unityLogFile;
+
+    // If the command has an associated project, add it to the arguments
+    if (projectDir != null)
+    {
+        unityArgs += " -projectPath " + projectDir;
+    }
+
+    unityArgs += " " + extraArgs;
+
     System.IO.File.Create(unityLogFile).Dispose();
     var logExec = "powershell.exe";
     var logArgs = "Get-Content -Path " + unityLogFile + " -Wait";
@@ -53,8 +62,7 @@ static int ExecuteUnityCommand(string extraArgs, string projectPath = ".")
         {
             unityProcess.WaitForExit();
             result = unityProcess.GetExitCode();
-            if (logProcess.WaitForExit(0) &&
-                logProcess.GetExitCode() != 0)
+            if (logProcess.WaitForExit(0) && (logProcess.GetExitCode() != 0))
             {
                 Statics.Context.Warning("There was an error logging, but command still executed.");
             }
@@ -81,10 +89,14 @@ static string GetBuildFolder(string appType, string projectPath)
      return projectPath + "/" + Statics.TemporaryPrefix + appType + "Builds";
 }
 
-static void ExecuteUnityMethod(string buildMethodName, string buildTarget, string projectPath = ".")
+static void ExecuteUnityMethod(string buildMethodName, string buildTarget = null, string projectPath = ".")
 {
     Statics.Context.Information("Executing method " + buildMethodName + ", this could take a while...");
-    var command = "-executeMethod " + buildMethodName + " -buildTarget " + buildTarget;
+    var command = "-executeMethod " + buildMethodName; 
+    if (buildTarget != null)
+    {
+        command += " -buildTarget " + buildTarget;
+    }
     var result = ExecuteUnityCommand(command, projectPath);
     if (result != 0)
     {

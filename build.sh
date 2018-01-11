@@ -115,4 +115,4 @@ fi
 
 # Start Cake
 # TODO remove "--settings_skipverification=true" as soon as addins support latest cake version
-exec mono "$CAKE_EXE" $SCRIPT "${CAKE_ARGUMENTS[@]}" --settings_skipverification=true
+exec mono "$CAKE_EXE" $SCRIPT "${CAKE_ARGUMENTS[@]}" --settings_skipverification=true --verbosity=diagnostic

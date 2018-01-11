@@ -45,6 +45,12 @@ var UwpIL2CPPDependencies = new [] {
 };
 var UwpIL2CPPJsonUrl = SdkStorageUrl + "Newtonsoft.Json.dll";
 
+// Unity requires a specific NDK version for building Android with IL2CPP.
+// Download from a link here: https://developer.android.com/ndk/downloads/older_releases.html
+// Unity 2017.3 requires NDK r13b.
+// The destination for the NDK download.
+var NdkFolder = "android_ndk";
+
 // Task TARGET for build
 var Target = Argument("target", Argument("t", "Default"));
 
@@ -414,12 +420,38 @@ Task("BuildPuppetApps")
     BuildApps("Puppet");
 }).OnError(HandleError);
 
-// Builds the puppet applications and throws an exception on failure.
+// Builds the demo applications and throws an exception on failure.
 Task("BuildDemoApps")
     .IsDependentOn("AddPackagesToDemoApp")
     .Does(()=>
 {
     BuildApps("Demo", "AppCenterDemoApp");
+}).OnError(HandleError);
+
+// Downloads the NDK from the specified location.
+Task("DownloadNdk")
+    .Does(()=>
+{
+    var ndkUrl = EnvironmentVariable("ANDROID_NDK_URL");
+    if (string.IsNullOrEmpty(ndkUrl))
+    {
+        throw new Exception("Ndk Url is empty string or null");
+    }
+    var zipDestination = Statics.TemporaryPrefix + "ndk.zip";
+    
+    // Download required NDK
+    DownloadFile(ndkUrl, zipDestination);
+
+    // Something is buggy about the way Cake unzips, so use shell on mac
+    if (IsRunningOnUnix())
+    {
+        CleanDirectory(NdkFolder);
+        StartProcess("unzip", new ProcessSettings{ Arguments = $"{zipDestination} -d {NdkFolder}"});
+    }
+    else
+    {
+        Unzip(zipDestination, NdkFolder);
+    }
 }).OnError(HandleError);
 
 void BuildApps(string type, string projectPath = ".")
@@ -455,6 +487,12 @@ void VerifyIosAppsBuild(string type, string projectPath)
 
 void VerifyAndroidAppsBuild(string type, string projectPath)
 {
+    var extraArgs = "";
+    if (DirectoryExists(NdkFolder))
+    {
+        var absoluteNdkFolder = Statics.Context.MakeAbsolute(Statics.Context.Directory(NdkFolder));
+        extraArgs += "-NdkLocation \"" + absoluteNdkFolder + "\"";
+    }
     VerifyAppsBuild(type, "android", projectPath,
     new string[] { "AndroidMono", "AndroidIl2CPP" },
     outputDirectory =>
@@ -465,7 +503,7 @@ void VerifyAndroidAppsBuild(string type, string projectPath)
             throw new Exception("No apk found in directory '" + outputDirectory + "'");
         }
         Statics.Context.Information("Found apk.");
-    });
+    }, extraArgs);
 }
 
 void VerifyWindowsAppsBuild(string type, string projectPath)
@@ -485,7 +523,7 @@ void VerifyWindowsAppsBuild(string type, string projectPath)
     });
 }
 
-void VerifyAppsBuild(string type, string platformIdentifier, string projectPath, string[] buildTypes, Action<string> verificatonMethod)
+void VerifyAppsBuild(string type, string platformIdentifier, string projectPath, string[] buildTypes, Action<string> verificatonMethod, string extraArgs = "")
 {
     var outputDirectory = GetBuildFolder(type, projectPath);
     var methodPrefix = "Build" + type + ".Build" + type + "Scene";
@@ -493,7 +531,7 @@ void VerifyAppsBuild(string type, string platformIdentifier, string projectPath,
     {
         // Remove all existing builds and create new build.
         Statics.Context.CleanDirectory(outputDirectory);
-        ExecuteUnityMethod(methodPrefix + buildType, platformIdentifier);
+        ExecuteUnityMethod(methodPrefix + buildType + " " + extraArgs, platformIdentifier);
         verificatonMethod(outputDirectory);
 
         // Remove all remaining builds.
@@ -524,6 +562,20 @@ Task("PublishPackagesToStorage").Does(()=>
     }, zippedPackages);
     DeleteFiles(zippedPackages);
 }).OnError(HandleError);
+
+Task("RegisterUnity").Does(()=>
+{
+    var serialNumber = Argument<string>("UnitySerialNumber");
+    var username = Argument<string>("UnityUsername");
+    var password = Argument<string>("UnityPassword");
+    ExecuteUnityCommand($"-serial {serialNumber} -username {username} -password {password}", null);
+}).OnError(HandleError);
+
+Task("UnregisterUnity").Does(()=>
+{
+    ExecuteUnityCommand("-returnLicense", null);
+}).OnError(HandleError);
+
 
 // Default Task.
 Task("Default").IsDependentOn("PrepareAssets");

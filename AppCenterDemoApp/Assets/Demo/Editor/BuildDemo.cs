@@ -30,6 +30,24 @@ public class BuildDemo
 
     public static void BuildDemoSceneAndroidIl2CPP()
     {
+        // Set NDK location if provided
+        var args = Environment.GetCommandLineArgs();
+        bool next = false;
+        foreach (var arg in args)
+        {
+            if (next)
+            {
+                var ndkLocation = arg;
+                Debug.Log("Setting NDK location to " + ndkLocation);
+                EditorPrefs.SetString("AndroidNdkRoot", ndkLocation);
+                Debug.Log("NDK Location is now '" + EditorPrefs.GetString("AndroidNdkRoot") + "'");
+                break;
+            }
+            if (arg == "-NdkLocation")
+            {
+                next = true;
+            }
+        }
         BuildDemoScene(BuildTarget.Android, BuildTargetGroup.Android, ScriptingImplementation.IL2CPP, "AndroidIL2CPPBuild.apk");
     }
 

@@ -6,6 +6,7 @@ using System;
 using System.IO;
 using UnityEditor;
 using UnityEngine;
+using System.Linq;
 
 // This class provides methods to build the puppet app in many different configurations.
 // They are meant to be invoked from the build scripts in this repository.
@@ -30,6 +31,25 @@ public class BuildPuppet
 
     public static void BuildPuppetSceneAndroidIl2CPP()
     {
+        // Set NDK location if provided
+        var args = Environment.GetCommandLineArgs();
+        bool next = false;
+        foreach (var arg in args)
+        {
+            if (next)
+            {
+                var ndkLocation = arg;
+                var subdir = System.IO.Directory.GetDirectories(ndkLocation).Single();
+                Debug.Log("Setting NDK location to " + subdir);
+                EditorPrefs.SetString("AndroidNdkRoot", subdir);
+                Debug.Log("NDK Location is now '" + EditorPrefs.GetString("AndroidNdkRoot") + "'");
+                break;
+            }
+            if (arg == "-NdkLocation")
+            {
+                next = true;
+            }
+        }
         BuildPuppetScene(BuildTarget.Android, BuildTargetGroup.Android, ScriptingImplementation.IL2CPP, "AndroidIL2CPPBuild.apk");
     }
 
