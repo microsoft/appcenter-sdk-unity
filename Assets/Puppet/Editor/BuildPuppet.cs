@@ -6,6 +6,7 @@ using System;
 using System.IO;
 using UnityEditor;
 using UnityEngine;
+using System.Linq;
 
 // This class provides methods to build the puppet app in many different configurations.
 // They are meant to be invoked from the build scripts in this repository.
@@ -25,13 +26,30 @@ public class BuildPuppet
 
     public static void BuildPuppetSceneAndroidMono()
     {
-        CreateGoogleServicesJsonIfNotPresent();
         BuildPuppetScene(BuildTarget.Android, BuildTargetGroup.Android, ScriptingImplementation.Mono2x, "AndroidMonoBuild.apk");
     }
 
     public static void BuildPuppetSceneAndroidIl2CPP()
     {
-        CreateGoogleServicesJsonIfNotPresent();
+        // Set NDK location if provided
+        var args = Environment.GetCommandLineArgs();
+        bool next = false;
+        foreach (var arg in args)
+        {
+            if (next)
+            {
+                var ndkLocation = arg;
+                var subdir = System.IO.Directory.GetDirectories(ndkLocation).Single();
+                Debug.Log("Setting NDK location to " + subdir);
+                EditorPrefs.SetString("AndroidNdkRoot", subdir);
+                Debug.Log("NDK Location is now '" + EditorPrefs.GetString("AndroidNdkRoot") + "'");
+                break;
+            }
+            if (arg == "-NdkLocation")
+            {
+                next = true;
+            }
+        }
         BuildPuppetScene(BuildTarget.Android, BuildTargetGroup.Android, ScriptingImplementation.IL2CPP, "AndroidIL2CPPBuild.apk");
     }
 
@@ -125,25 +143,5 @@ public class BuildPuppet
         var puppetVersion = Microsoft.AppCenter.Unity.WrapperSdk.WrapperSdkVersion;
         PlayerSettings.bundleVersion = puppetVersion;
         PlayerSettings.Android.bundleVersionCode++;
-    }
-
-    // Detects whether there exists a "google-services.json" file, and if not,
-    // copies the "google-services-placeholder.json" and imports it as a
-    // "google-services.json" file. The resulting file contains only
-    // placeholders for keys, not actual keys.
-    private static void CreateGoogleServicesJsonIfNotPresent()
-    {
-        var actualFile = "Assets/google-services.json";
-        if (File.Exists(actualFile))
-        {
-            return;
-        }
-        var placeholderFile = "Assets/google-services-placeholder.json";
-        if (!File.Exists(placeholderFile))
-        {
-            Debug.Log("Could not find google services placeholder.");
-        }
-        File.Copy(placeholderFile, actualFile);
-        AssetDatabase.ImportAsset(actualFile, ImportAssetOptions.Default);
     }
 }

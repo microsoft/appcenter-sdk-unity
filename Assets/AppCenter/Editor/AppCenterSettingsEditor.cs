@@ -6,21 +6,10 @@
 
 using UnityEngine;
 using UnityEditor;
-using UnityEditor.Callbacks;
 
 [CustomEditor(typeof(AppCenterSettings))]
 public class AppCenterSettingsEditor : Editor
 {
-    public const string SettingsPath = "Assets/AppCenter/AppCenterSettings.asset";
-
-    public static AppCenterSettings Settings
-    {
-        get
-        {
-            return AssetDatabase.LoadAssetAtPath<AppCenterSettings>(SettingsPath);
-        }
-    }
-
     public override void OnInspectorGUI()
     {
         serializedObject.Update();
@@ -30,7 +19,7 @@ public class AppCenterSettingsEditor : Editor
         EditorGUILayout.PropertyField(serializedObject.FindProperty("iOSAppSecret"));
         EditorGUILayout.PropertyField(serializedObject.FindProperty("AndroidAppSecret"));
         EditorGUILayout.PropertyField(serializedObject.FindProperty("UWPAppSecret"));
-
+        
         // Draw modules.
         if (AppCenterSettings.Analytics != null)
         {
@@ -50,6 +39,7 @@ public class AppCenterSettingsEditor : Editor
             Header("Push");
             var serializedProperty = serializedObject.FindProperty("UsePush");
             EditorGUILayout.PropertyField(serializedProperty);
+            EditorGUILayout.PropertyField(serializedObject.FindProperty("SenderId"));
             EditorGUILayout.PropertyField(serializedObject.FindProperty("EnableFirebaseAnalytics"));
 #if !UNITY_2017_1_OR_NEWER
             if (serializedProperty.boolValue)
@@ -64,48 +54,6 @@ public class AppCenterSettingsEditor : Editor
         EditorGUILayout.PropertyField(serializedObject.FindProperty("InitialLogLevel"));
         EditorGUILayout.PropertyField(serializedObject.FindProperty("CustomLogUrl"));
         serializedObject.ApplyModifiedProperties();
-    }
-
-    [PostProcessScene]
-    static void AddStartupCodeToAndroid()
-    {
-        var settings = Settings;
-        if (settings == null)
-        {
-            return;
-        }
-        var settingsMaker = new AppCenterSettingsMakerAndroid();
-        settingsMaker.SetAppSecret(settings.AndroidAppSecret);
-        if (settings.CustomLogUrl.UseCustomUrl)
-        {
-            settingsMaker.SetLogUrl(settings.CustomLogUrl.Url);
-        }
-        if (settings.UsePush)
-        {
-            settingsMaker.StartPushClass();
-            if (settings.EnableFirebaseAnalytics)
-            {
-                settingsMaker.EnableFirebaseAnalytics();
-            }
-        }
-        if (settings.UseAnalytics)
-        {
-            settingsMaker.StartAnalyticsClass();
-        }
-        if (settings.UseDistribute)
-        {
-            if (settings.CustomApiUrl.UseCustomUrl)
-            {
-                settingsMaker.SetApiUrl(settings.CustomApiUrl.Url);
-            }
-            if (settings.CustomInstallUrl.UseCustomUrl)
-            {
-                settingsMaker.SetInstallUrl(settings.CustomInstallUrl.Url);
-            }
-            settingsMaker.StartDistributeClass();
-        }
-        settingsMaker.SetLogLevel((int)settings.InitialLogLevel);
-        settingsMaker.CommitSettings();
     }
 
     private static void Header(string label)

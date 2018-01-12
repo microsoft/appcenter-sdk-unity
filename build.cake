@@ -12,9 +12,9 @@ using System.Runtime.Versioning;
 using NuGet;
 
 // Native SDK versions
-var AndroidSdkVersion = "1.0.0";
-var IosSdkVersion = "1.0.1";
-var UwpSdkVersion = "1.0.1";
+var AndroidSdkVersion = "1.1.0";
+var IosSdkVersion = "1.1.0";
+var UwpSdkVersion = "1.1.0";
 
 // URLs for downloading binaries.
 /*
@@ -36,15 +36,6 @@ var AppCenterModules = new [] {
     new AppCenterModule("appcenter-push-release.aar", "AppCenterPush.framework", "Microsoft.AppCenter.Push", "Push")
 };
 
-// External Unity Packages
-var JarResolverPackageName =  "play-services-resolver-" + ExternalUnityPackage.VersionPlaceholder + ".unitypackage";
-var JarResolverVersion = "1.2.35.0";
-var JarResolverUrl = SdkStorageUrl + ExternalUnityPackage.NamePlaceholder;
-
-var ExternalUnityPackages = new [] {
-    new ExternalUnityPackage(JarResolverPackageName, JarResolverVersion, JarResolverUrl)
-};
-
 // UWP IL2CPP dependencies.
 var UwpIL2CPPDependencies = new [] {
     new NugetDependency("sqlite-net-pcl", "1.3.1", "UAP, Version=v10.0"),
@@ -53,6 +44,12 @@ var UwpIL2CPPDependencies = new [] {
     new NugetDependency("System.Threading.Tasks", "4.0.10", ".NETCore, Version=v5.0", false)
 };
 var UwpIL2CPPJsonUrl = SdkStorageUrl + "Newtonsoft.Json.dll";
+
+// Unity requires a specific NDK version for building Android with IL2CPP.
+// Download from a link here: https://developer.android.com/ndk/downloads/older_releases.html
+// Unity 2017.3 requires NDK r13b.
+// The destination for the NDK download.
+var NdkFolder = "android_ndk";
 
 // Task TARGET for build
 var Target = Argument("target", Argument("t", "Default"));
@@ -100,23 +97,6 @@ class NugetDependency
         Version = version;
         Framework = framework;
         IncludeDependencies = includeDependencies;
-    }
-}
-
-class ExternalUnityPackage
-{
-    public static string VersionPlaceholder = "<version>";
-    public static string NamePlaceholder = "<name>";
-
-    public string Name { get; private set; }
-    public string Version { get; private set; }
-    public string Url { get; private set; }
-
-    public ExternalUnityPackage(string name, string version, string url)
-    {
-        Version = version;
-        Name = name.Replace(VersionPlaceholder, Version);
-        Url = url.Replace(NamePlaceholder, Name).Replace(VersionPlaceholder, Version);
     }
 }
 
@@ -368,21 +348,6 @@ Task("Externals-Uwp-IL2CPP-Dependencies")
     ExecuteUnityCommand("-executeMethod AppCenterPostBuild.ProcessUwpIl2CppDependencies");
 }).OnError(HandleError);
 
-// Download and install all external Unity packages required.
-Task("Externals-Unity-Packages").Does(()=>
-{
-    var directoryName = "externals/unity-packages";
-    CleanDirectory(directoryName);
-    foreach (var package in ExternalUnityPackages)
-    {
-        var destination = directoryName + "/" + package.Name;
-        DownloadFile(package.Url, destination);
-        var command = "-importPackage " + destination;
-        Information("Importing package " + package.Name + ". This could take a minute.");
-        ExecuteUnityCommand(command);
-    }
-}).OnError(HandleError);
-
 // Add App Center packages to demo app.
 Task("AddPackagesToDemoApp")
     .IsDependentOn("CreatePackages")
@@ -405,8 +370,8 @@ Task("RemovePackagesFromDemoApp").Does(()=>
 }).OnError(HandleError);
 
 // Create a common externals task depending on platform specific ones
-// NOTE: It is important to execute Externals-Unity-Packages and Externals-Uwp-IL2CPP-Dependencies *last*
-// or the steps that runs the Unity commands might cause the *.meta files to be deleted!
+// NOTE: It is important to execute Externals-Uwp-IL2CPP-Dependencies *last*
+// or steps that run Unity commands might cause the *.meta files to be deleted!
 // (Unity deletes meta data files when it is opened if the corresponding files are not on disk.)
 Task("Externals")
     .IsDependentOn("Externals-Uwp")
@@ -414,7 +379,6 @@ Task("Externals")
     .IsDependentOn("Externals-Android")
     .IsDependentOn("BuildAndroidContentProvider")
     .IsDependentOn("Externals-Uwp-IL2CPP-Dependencies")
-    .IsDependentOn("Externals-Unity-Packages")
     .Does(()=>
 {
     DeleteDirectoryIfExists("externals");
@@ -456,12 +420,38 @@ Task("BuildPuppetApps")
     BuildApps("Puppet");
 }).OnError(HandleError);
 
-// Builds the puppet applications and throws an exception on failure.
+// Builds the demo applications and throws an exception on failure.
 Task("BuildDemoApps")
     .IsDependentOn("AddPackagesToDemoApp")
     .Does(()=>
 {
     BuildApps("Demo", "AppCenterDemoApp");
+}).OnError(HandleError);
+
+// Downloads the NDK from the specified location.
+Task("DownloadNdk")
+    .Does(()=>
+{
+    var ndkUrl = EnvironmentVariable("ANDROID_NDK_URL");
+    if (string.IsNullOrEmpty(ndkUrl))
+    {
+        throw new Exception("Ndk Url is empty string or null");
+    }
+    var zipDestination = Statics.TemporaryPrefix + "ndk.zip";
+    
+    // Download required NDK
+    DownloadFile(ndkUrl, zipDestination);
+
+    // Something is buggy about the way Cake unzips, so use shell on mac
+    if (IsRunningOnUnix())
+    {
+        CleanDirectory(NdkFolder);
+        StartProcess("unzip", new ProcessSettings{ Arguments = $"{zipDestination} -d {NdkFolder}"});
+    }
+    else
+    {
+        Unzip(zipDestination, NdkFolder);
+    }
 }).OnError(HandleError);
 
 void BuildApps(string type, string projectPath = ".")
@@ -497,6 +487,12 @@ void VerifyIosAppsBuild(string type, string projectPath)
 
 void VerifyAndroidAppsBuild(string type, string projectPath)
 {
+    var extraArgs = "";
+    if (DirectoryExists(NdkFolder))
+    {
+        var absoluteNdkFolder = Statics.Context.MakeAbsolute(Statics.Context.Directory(NdkFolder));
+        extraArgs += "-NdkLocation \"" + absoluteNdkFolder + "\"";
+    }
     VerifyAppsBuild(type, "android", projectPath,
     new string[] { "AndroidMono", "AndroidIl2CPP" },
     outputDirectory =>
@@ -507,7 +503,7 @@ void VerifyAndroidAppsBuild(string type, string projectPath)
             throw new Exception("No apk found in directory '" + outputDirectory + "'");
         }
         Statics.Context.Information("Found apk.");
-    });
+    }, extraArgs);
 }
 
 void VerifyWindowsAppsBuild(string type, string projectPath)
@@ -527,7 +523,7 @@ void VerifyWindowsAppsBuild(string type, string projectPath)
     });
 }
 
-void VerifyAppsBuild(string type, string platformIdentifier, string projectPath, string[] buildTypes, Action<string> verificatonMethod)
+void VerifyAppsBuild(string type, string platformIdentifier, string projectPath, string[] buildTypes, Action<string> verificatonMethod, string extraArgs = "")
 {
     var outputDirectory = GetBuildFolder(type, projectPath);
     var methodPrefix = "Build" + type + ".Build" + type + "Scene";
@@ -535,7 +531,7 @@ void VerifyAppsBuild(string type, string platformIdentifier, string projectPath,
     {
         // Remove all existing builds and create new build.
         Statics.Context.CleanDirectory(outputDirectory);
-        ExecuteUnityMethod(methodPrefix + buildType, platformIdentifier);
+        ExecuteUnityMethod(methodPrefix + buildType + " " + extraArgs, platformIdentifier);
         verificatonMethod(outputDirectory);
 
         // Remove all remaining builds.
@@ -566,6 +562,20 @@ Task("PublishPackagesToStorage").Does(()=>
     }, zippedPackages);
     DeleteFiles(zippedPackages);
 }).OnError(HandleError);
+
+Task("RegisterUnity").Does(()=>
+{
+    var serialNumber = Argument<string>("UnitySerialNumber");
+    var username = Argument<string>("UnityUsername");
+    var password = Argument<string>("UnityPassword");
+    ExecuteUnityCommand($"-serial {serialNumber} -username {username} -password {password}", null);
+}).OnError(HandleError);
+
+Task("UnregisterUnity").Does(()=>
+{
+    ExecuteUnityCommand("-returnLicense", null);
+}).OnError(HandleError);
+
 
 // Default Task.
 Task("Default").IsDependentOn("PrepareAssets");
