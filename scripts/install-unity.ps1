@@ -6,11 +6,11 @@ $path = (Get-Location).Path + "\UnitySetup64.exe";
 Write-Host "Downloading Unity Editor..."
 (New-Object System.Net.WebClient).DownloadFile($WindowsUnityEditorUrl, $path) 
 Write-Host "Installing Unity Editor..."
-./UnitySetup64.exe /S /D=C:\Program Files\Unity
+./UnitySetup64.exe /S /D=Unity
 
 #install support (.net)
 $path = (Get-Location).Path + "\UnityNetSupport.exe";
 Write-Host "Downloading Unity .NET support..."
 (New-Object System.Net.WebClient).DownloadFile($WSADotNetSupportWindowsUrl, $path) 
 Write-Host "Installing Unity .NET support..."
-./UnityNetSupport.exe /S /D=C:\Program Files\Unity
+./UnityNetSupport.exe /S /D=Unity
