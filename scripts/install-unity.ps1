@@ -3,7 +3,7 @@
 [CmdletBinding()]
 Param(
     # Path to install unity and tools to
-    [switch]$InstallPath
+    [string]$InstallPath
 )
 
 # Download links for Unity 2017.3.0f3, editor and support
