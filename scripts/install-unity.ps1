@@ -1,12 +1,10 @@
 # Installs Unity and required components for WSA .NET and IL2CPP builds
 
-[CmdletBinding()]
-Param(
-    # Path to install unity and tools to
+param(
     [string]$InstallPath
 )
 
-Write-Host "Installing Unity Editor and tools to directory $(InstallPath)"
+Write-Host "Installing Unity Editor and tools to directory $InstallPath"
 
 # Download links for Unity 2017.3.0f3, editor and support
 $WindowsUnityEditorUrl = "https://download.unity3d.com/download_unity/a9f86dcd79df/Windows64EditorInstaller/UnitySetup64-2017.3.0f3.exe?_ga=2.69975952.1053985475.1515441432-1315763065.1501872160"
