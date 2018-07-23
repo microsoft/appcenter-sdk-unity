@@ -1,6 +1,7 @@
 ﻿// Copyright (c) Microsoft Corporation. All rights reserved.
 //
 // Licensed under the MIT license.
+
 using Microsoft.AppCenter.Unity;
 using Microsoft.AppCenter.Unity.Crashes.Internal;
 using System;
@@ -20,6 +21,11 @@ namespace Microsoft.AppCenter.Unity.Crashes
 
     public class Crashes
     {
+        public static void Initialize()
+        {
+            CrashesDelegate.SetDelegate();
+        }
+
         public static RawType GetNativeType()
         {
             return CrashesInternal.GetNativeType();
