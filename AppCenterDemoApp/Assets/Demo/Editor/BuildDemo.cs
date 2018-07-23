@@ -25,13 +25,29 @@ public class BuildDemo
 
     public static void BuildDemoSceneAndroidMono()
     {
-        CreateGoogleServicesJsonIfNotPresent();
         BuildDemoScene(BuildTarget.Android, BuildTargetGroup.Android, ScriptingImplementation.Mono2x, "AndroidMonoBuild.apk");
     }
 
     public static void BuildDemoSceneAndroidIl2CPP()
     {
-        CreateGoogleServicesJsonIfNotPresent();
+        // Set NDK location if provided
+        var args = Environment.GetCommandLineArgs();
+        bool next = false;
+        foreach (var arg in args)
+        {
+            if (next)
+            {
+                var ndkLocation = arg;
+                Debug.Log("Setting NDK location to " + ndkLocation);
+                EditorPrefs.SetString("AndroidNdkRoot", ndkLocation);
+                Debug.Log("NDK Location is now '" + EditorPrefs.GetString("AndroidNdkRoot") + "'");
+                break;
+            }
+            if (arg == "-NdkLocation")
+            {
+                next = true;
+            }
+        }
         BuildDemoScene(BuildTarget.Android, BuildTargetGroup.Android, ScriptingImplementation.IL2CPP, "AndroidIL2CPPBuild.apk");
     }
 
@@ -125,25 +141,5 @@ public class BuildDemo
         var demoVersion = Microsoft.AppCenter.Unity.WrapperSdk.WrapperSdkVersion;
         PlayerSettings.bundleVersion = demoVersion;
         PlayerSettings.Android.bundleVersionCode++;
-    }
-
-    // Detects whether there exists a "google-services.json" file, and if not,
-    // copies the "google-services-placeholder.json" and imports it as a
-    // "google-services.json" file. The resulting file contains only
-    // placeholders for keys, not actual keys.
-    private static void CreateGoogleServicesJsonIfNotPresent()
-    {
-        var actualFile = "Assets/google-services.json";
-        if (File.Exists(actualFile))
-        {
-            return;
-        }
-        var placeholderFile = "Assets/google-services-placeholder.json";
-        if (!File.Exists(placeholderFile))
-        {
-            Debug.Log("Could not find google services placeholder.");
-        }
-        File.Copy(placeholderFile, actualFile);
-        AssetDatabase.ImportAsset(actualFile, ImportAssetOptions.Default);
     }
 }

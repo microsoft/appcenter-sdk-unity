@@ -1,18 +1,10 @@
 fileFormatVersion: 2
-<<<<<<< HEAD
 guid: 3d0c42fb4423a4c9d9177718ffb37314
 folderAsset: yes
 timeCreated: 1512409292
 licenseType: Pro
 DefaultImporter:
   externalObjects: {}
-=======
-guid: e80d713a543074cbe9727303b8195065
-folderAsset: yes
-timeCreated: 1498059996
-licenseType: Pro
-DefaultImporter:
->>>>>>> upstream/feature/crashes
   userData: 
   assetBundleName: 
   assetBundleVariant: 

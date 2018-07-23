@@ -34,6 +34,8 @@ public class AppCenterSettings : ScriptableObject
     public bool EnableFirebaseAnalytics = false;
     public LogLevel InitialLogLevel = LogLevel.Info;
     public CustomUrlProperty CustomLogUrl = new CustomUrlProperty("Log");
+    [Tooltip("To enable push for Android apps, you need to set the Sender ID found in the Firebase portal for your application.")]
+    public string SenderId;
 
     public string AppSecret
     {

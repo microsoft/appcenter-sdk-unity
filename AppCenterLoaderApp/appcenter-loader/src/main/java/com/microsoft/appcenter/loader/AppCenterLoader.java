@@ -30,6 +30,7 @@ public class AppCenterLoader extends ContentProvider {
     private static final String USE_CUSTOM_LOG_URL_KEY = "appcenter_use_custom_log_url";
     private static final String INITIAL_LOG_LEVEL_KEY = "appcenter_initial_log_level";
     private static final String USE_PUSH_KEY = "appcenter_use_push";
+    private static final String SENDER_ID_KEY = "appcenter_sender_id";
     private static final String ENABLE_FIREBASE_ANALYTICS_KEY = "appcenter_enable_firebase_analytics";
     private static final String USE_ANALYTICS_KEY = "appcenter_use_analytics";
     private static final String USE_DISTRIBUTE_KEY = "appcenter_use_distribute";
@@ -46,6 +47,17 @@ public class AppCenterLoader extends ContentProvider {
     @Override
     public boolean onCreate() {
         mContext = getApplicationContext();
+        String appSecret = getStringResource(APP_SECRET_KEY);
+
+        /*
+         * If app secret isn't found in resources, return immediately. It's possible that resources
+         * weren't added properly.
+         */
+        if (appSecret == null) {
+            AppCenterLog.error(AppCenterLog.LOG_TAG, "Failed to retrieve app secret from " +
+                    "resources. App Center cannot be started.");
+            return false;
+        }
         List<Class<? extends AppCenterService>> classes = new ArrayList<>();
         if (isTrueValue(getStringResource(USE_ANALYTICS_KEY))) {
             classes.add(Analytics.class);
@@ -71,7 +83,7 @@ public class AppCenterLoader extends ContentProvider {
         if (isTrueValue(getStringResource(USE_PUSH_KEY))) {
             Push.setListener(new UnityAppCenterPushDelegate());
             classes.add(Push.class);
-
+            Push.setSenderId(getStringResource(SENDER_ID_KEY));
             if (isTrueValue(getStringResource(ENABLE_FIREBASE_ANALYTICS_KEY))) {
                 Push.enableFirebaseAnalytics(mContext);
             }
@@ -84,7 +96,6 @@ public class AppCenterLoader extends ContentProvider {
                 AppCenter.setLogUrl(customLogUrl);
             }
         }
-        String appSecret = getStringResource(APP_SECRET_KEY);
         if (classes.size() > 0) {
             @SuppressWarnings("unchecked")
             Class<? extends AppCenterService>[] classesArray = classes.toArray(new Class[classes.size()]);
