@@ -11,7 +11,6 @@ namespace Microsoft.AppCenter.Unity.Crashes.Internal
 {
     class WrapperExceptionInternal
     {
-
         public static AndroidJavaObject Create()
         {
             return new AndroidJavaObject("com.microsoft.appcenter.crashes.ingestion.models.Exception");

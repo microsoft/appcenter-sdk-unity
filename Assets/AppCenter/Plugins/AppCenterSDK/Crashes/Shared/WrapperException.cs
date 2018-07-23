@@ -7,7 +7,6 @@ using System;
 
 namespace Microsoft.AppCenter.Unity.Crashes
 {
-
 #if UNITY_IOS
     using RawType = System.IntPtr;
 #elif UNITY_ANDROID

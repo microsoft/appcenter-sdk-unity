@@ -12,14 +12,14 @@ using UnityEngine;
 
 namespace Microsoft.AppCenter.Unity.Crashes
 {
-
 #if UNITY_IOS || UNITY_ANDROID
     using RawType = System.IntPtr;
 #else
     using RawType = System.Type;
 #endif
 
-    public class Crashes {
+    public class Crashes
+    {
         public static RawType GetNativeType()
         {
             return CrashesInternal.GetNativeType();
@@ -43,7 +43,7 @@ namespace Microsoft.AppCenter.Unity.Crashes
 
             if (args.ExceptionObject.GetType() == typeof(Exception))
             {
-                Exception e =(Exception)args.ExceptionObject;
+                Exception e = (Exception)args.ExceptionObject;
                 var exception = CreateWrapperException(e.Source, e.StackTrace);
                 CrashesInternal.TrackException(exception.GetRawObject());
             }

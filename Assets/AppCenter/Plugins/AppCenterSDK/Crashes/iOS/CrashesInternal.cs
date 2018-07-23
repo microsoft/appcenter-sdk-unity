@@ -11,7 +11,6 @@ namespace Microsoft.AppCenter.Unity.Crashes.Internal
 {
     class CrashesInternal
     {
-
         public static IntPtr GetNativeType()
         {
             return appcenter_unity_crashes_get_type();

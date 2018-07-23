@@ -11,7 +11,6 @@ namespace Microsoft.AppCenter.Unity.Crashes.Internal
 {
     class CrashesInternal
     {
-
         public static Type GetNativeType()
         {
             return typeof(Microsoft.AppCenter.Crashes.Crashes);

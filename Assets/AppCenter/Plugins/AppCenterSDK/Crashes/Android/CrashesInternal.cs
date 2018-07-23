@@ -10,7 +10,6 @@ namespace Microsoft.AppCenter.Unity.Crashes.Internal
 {
     class CrashesInternal
     {
-
         private static AndroidJavaClass _crashes = new AndroidJavaClass("com.microsoft.appcenter.crashes.Crashes");
 
         public static IntPtr GetNativeType()

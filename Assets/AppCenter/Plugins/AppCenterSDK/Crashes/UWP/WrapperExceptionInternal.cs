@@ -10,7 +10,6 @@ namespace Microsoft.AppCenter.Unity.Crashes.Internal
 {
     class WrapperExceptionInternal
     {
-
         public static object Create()
         {
         }

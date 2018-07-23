@@ -10,7 +10,6 @@ namespace Microsoft.AppCenter.Unity.Crashes.Internal
 {
     class WrapperExceptionInternal
     {
-
         public static IntPtr Create()
         {
             return appcenter_unity_exception_create();

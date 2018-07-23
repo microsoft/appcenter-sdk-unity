@@ -5,7 +5,6 @@
 #if (!UNITY_IOS && !UNITY_ANDROID && !UNITY_WSA_10_0) || UNITY_EDITOR
 namespace Microsoft.AppCenter.Unity.Crashes.Internal
 {
-
 #if UNITY_IOS
     using NativeType = System.IntPtr;
     using RawType = System.IntPtr;
@@ -19,7 +18,6 @@ namespace Microsoft.AppCenter.Unity.Crashes.Internal
 
     class CrashesInternal
     {
-
         public static NativeType GetNativeType()
         {
             return default(NativeType);
