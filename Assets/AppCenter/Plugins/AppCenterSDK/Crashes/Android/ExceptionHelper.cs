@@ -6,7 +6,7 @@ namespace Microsoft.AppCenter.Unity.Crashes.Models
 {
     public class ExceptionHelper
     {
-        public static AndroidJavaObject ExceptionConvert(Models.Exception exception)
+        public static AndroidJavaObject ExceptionConvert(Exception exception)
         {
             var androidException = new AndroidJavaObject("com.microsoft.appcenter.crashes.ingestion.models.Exception");
             androidException.Call("setType", exception.Type);

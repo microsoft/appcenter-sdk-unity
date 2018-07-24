@@ -3,6 +3,7 @@
     <include>
         <!-- Shared files -->
         <file path="Assets/AppCenter/Plugins/AppCenterSDK/Crashes/Shared" />
+        <file path="Assets/AppCenter/Plugins/AppCenterSDK/Crashes/Models" />
 
         <!-- "Blank" files -->
         <file path="Assets/AppCenter/Plugins/AppCenterSDK/Crashes/Blank" />
