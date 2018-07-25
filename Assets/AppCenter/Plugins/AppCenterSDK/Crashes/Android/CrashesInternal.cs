@@ -11,6 +11,7 @@ namespace Microsoft.AppCenter.Unity.Crashes.Internal
     class CrashesInternal
     {
         private static AndroidJavaClass _crashes = new AndroidJavaClass("com.microsoft.appcenter.crashes.Crashes");
+        private static AndroidJavaClass _wrapperSdkExceptionManager = new AndroidJavaClass("com.microsoft.appcenter.crashes.WrapperSdkExceptionManager");
 
         public static IntPtr GetNativeType()
         {
@@ -19,7 +20,7 @@ namespace Microsoft.AppCenter.Unity.Crashes.Internal
 
         public static void TrackException(AndroidJavaObject exception)
         {
-            _crashes.CallStatic("trackException", exception);
+            _wrapperSdkExceptionManager.CallStatic("trackException", exception);
         }
 
         public static AppCenterTask SetEnabledAsync(bool isEnabled)

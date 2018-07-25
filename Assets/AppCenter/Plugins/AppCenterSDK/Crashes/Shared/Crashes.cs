@@ -47,9 +47,9 @@ namespace Microsoft.AppCenter.Unity.Crashes
                 return;
             }
 
-            if (args.ExceptionObject.GetType() == typeof(Exception))
+            Exception e = args.ExceptionObject as Exception;
+            if (e != null)
             {
-                Exception e = (Exception)args.ExceptionObject;
                 var exception = CreateWrapperException(e.Source, e.StackTrace);
                 CrashesInternal.TrackException(exception.GetRawObject());
             }
@@ -86,8 +86,8 @@ namespace Microsoft.AppCenter.Unity.Crashes
             exception.SetWrapperSdkName(WrapperSdk.Name);
 
             string sanitizedLogString = logString.Replace("\n", " ");
-            var logStringComponents = sanitizedLogString.Split(new [] { ':' }, 2);
-            if(logStringComponents.Length > 1)
+            var logStringComponents = sanitizedLogString.Split(new[] { ':' }, 2);
+            if (logStringComponents.Length > 1)
             {
                 var type = logStringComponents[0].Trim();
                 exception.SetType(type);
