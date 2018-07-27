@@ -1,17 +1,19 @@
+﻿using System.IO;
 using UnityEditor;
 using UnityEditor.Build;
+using UnityEditor.Build.Reporting;
 
-public class AppCenterPreBuild : IPreprocessBuild
+public class AppCenterPreBuild : IPreprocessBuildWithReport
 {
     public int callbackOrder { get { return 0; } }
 
-    public void OnPreprocessBuild(BuildTarget target, string path)
+    public void OnPreprocessBuild(BuildReport report)
     {
-        if (target == BuildTarget.Android)
+        if (report.summary.platform == BuildTarget.Android)
         {
             AddStartupCodeToAndroid();
         }
-        else if (target == BuildTarget.iOS)
+        else if (report.summary.platform == BuildTarget.iOS)
         {
             AddStartupCodeToiOS();
         }
@@ -72,15 +74,15 @@ public class AppCenterPreBuild : IPreprocessBuild
         }
         settingsMaker.SetLogLevel((int)settings.InitialLogLevel);
         settingsMaker.SetAppSecret(settings.iOSAppSecret);
-        if (settings.UsePush)
+        if (settings.UsePush && IsPushAvailable())
         {
             settingsMaker.StartPushClass();
         }
-        if (settings.UseAnalytics)
+        if (settings.UseAnalytics && IsAnalyticsAvailable())
         {
             settingsMaker.StartAnalyticsClass();
         }
-        if (settings.UseDistribute)
+        if (settings.UseDistribute && IsDistributeAvailable())
         {
             if (settings.CustomApiUrl.UseCustomUrl)
             {
@@ -93,5 +95,20 @@ public class AppCenterPreBuild : IPreprocessBuild
             settingsMaker.StartDistributeClass();
         }
         settingsMaker.CommitSettings();
+    }
+
+    static bool IsDistributeAvailable()
+    {
+        return Directory.Exists("Assets/AppCenter/Plugins/iOS/Distribute");
+    }
+
+    static bool IsPushAvailable()
+    {
+        return Directory.Exists("Assets/AppCenter/Plugins/iOS/Push");
+    }
+
+    static bool IsAnalyticsAvailable()
+    {
+        return Directory.Exists("Assets/AppCenter/Plugins/iOS/Analytics");
     }
 }
