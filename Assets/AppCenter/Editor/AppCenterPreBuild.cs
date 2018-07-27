@@ -1,12 +1,19 @@
 using System.IO;
 using UnityEditor;
 using UnityEditor.Build;
+#if UNITY_2018_1_OR_NEWER
 using UnityEditor.Build.Reporting;
+#endif
 
+#if UNITY_2018_1_OR_NEWER
 public class AppCenterPreBuild : IPreprocessBuildWithReport
+#else
+public class AppCenterPreBuild : IPreprocessBuild
+#endif
 {
     public int callbackOrder { get { return 0; } }
 
+#if UNITY_2018_1_OR_NEWER
     public void OnPreprocessBuild(BuildReport report)
     {
         if (report.summary.platform == BuildTarget.Android)
@@ -18,6 +25,19 @@ public class AppCenterPreBuild : IPreprocessBuildWithReport
             AddStartupCodeToiOS();
         }
     }
+#else
+    public void OnPreprocessBuild(BuildTarget target, string path)
+    {
+        if (target == BuildTarget.Android)
+        {
+            AddStartupCodeToAndroid();
+        }
+        else if (target == BuildTarget.iOS)
+        {
+            AddStartupCodeToiOS();
+        }
+    }
+#endif
 
     void AddStartupCodeToAndroid()
     {
