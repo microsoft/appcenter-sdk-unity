@@ -12,6 +12,7 @@ import android.database.Cursor;
 import android.net.Uri;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.util.Log;
 
 import com.microsoft.appcenter.AppCenter;
 import com.microsoft.appcenter.AppCenterService;
@@ -40,6 +41,7 @@ public class AppCenterLoader extends ContentProvider {
     private static final String USE_CRASHES_KEY = "appcenter_use_crashes";
     private static final String APP_SECRET_KEY = "appcenter_app_secret";
     private static final String TRUE_VALUE = "True";
+    private static final String TAG = "AppCenterLoader";
 
     private Context mContext;
 
@@ -58,13 +60,15 @@ public class AppCenterLoader extends ContentProvider {
             return false;
         }
         List<Class<? extends AppCenterService>> classes = new ArrayList<>();
-        if (isTrueValue(getStringResource(USE_ANALYTICS_KEY))) {
+        if (isTrueValue(getStringResource(USE_ANALYTICS_KEY)) &&
+            isModuleAvailable("com.microsoft.appcenter.analytics.Analytics", "Analytics")) {
             classes.add(Analytics.class);
         }
         //if (isTrueValue(getStringResource(USE_CRASHES_KEY))) {
         //    classes.add(Crashes.class);
         //}
-        if (isTrueValue(getStringResource(USE_DISTRIBUTE_KEY))) {
+        if (isTrueValue(getStringResource(USE_DISTRIBUTE_KEY)) &&
+            isModuleAvailable("com.microsoft.appcenter.distribute.Distribute", "Distribute")) {
             if (isTrueValue(getStringResource(USE_CUSTOM_API_URL_KEY))) {
                 String customApiUrl = getStringResource(CUSTOM_API_URL_KEY);
                 if (customApiUrl != null) {
@@ -79,7 +83,8 @@ public class AppCenterLoader extends ContentProvider {
             }
             classes.add(Distribute.class);
         }
-        if (isTrueValue(getStringResource(USE_PUSH_KEY))) {
+        if (isTrueValue(getStringResource(USE_PUSH_KEY)) &&
+            isModuleAvailable("com.microsoft.appcenter.push.Push", "Push")) {
             Push.setListener(new UnityAppCenterPushDelegate());
             classes.add(Push.class);
             Push.setSenderId(getStringResource(SENDER_ID_KEY));
@@ -149,5 +154,15 @@ public class AppCenterLoader extends ContentProvider {
             return null;
         }
         return mContext.getResources().getString(identifier);
+    }
+
+    private boolean isModuleAvailable(String className, String moduleName) {
+        try {
+            Class.forName(className);
+            return true;
+        } catch (ClassNotFoundException e) {
+            Log.i(TAG, moduleName + " is not available: " + e.getMessage());
+            return false;
+        }
     }
 }
