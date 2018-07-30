@@ -2,7 +2,7 @@
 //
 // Licensed under the MIT license.
 
-#import <MAppCenterCrashes/AppCenterCrashes.h>
+#import <AppCenterCrashes/AppCenterCrashes.h>
 #import <Foundation/Foundation.h>
 
 typedef bool (__cdecl *ShouldProcessErrorReportFunction)(MSErrorReport*);
