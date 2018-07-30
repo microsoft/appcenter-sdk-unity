@@ -13,7 +13,7 @@ public class PuppetOther : MonoBehaviour
 {
     public Toggle DistributeEnabled;
     public Toggle PushEnabled;
-	public Toggle CrashesEnabled;
+    public Toggle CrashesEnabled;
 
     void OnEnable()
     {

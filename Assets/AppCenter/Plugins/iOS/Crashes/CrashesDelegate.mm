@@ -7,7 +7,7 @@
 #import <Foundation/Foundation.h>
 
 static ShouldProcessErrorReportFunction *shouldProcessErrorReport;
-static UnityCrashesDelegate *del;
+static UnityCrashesDelegate *unityCrashesDelegate;
 
 void app_center_unity_crashes_crashes_delegate_set_should_process_error_report_delegate(ShouldProcessErrorReportFunction* functionPtr)
 {
@@ -16,8 +16,8 @@ void app_center_unity_crashes_crashes_delegate_set_should_process_error_report_d
 
 void app_center_unity_crashes_set_delegate()
 {
-  del = [[UnityCrashesDelegate alloc] init];
-  [MSCrashes setDelegate:del];
+  unityCrashesDelegate = [[UnityCrashesDelegate alloc] init];
+  [MSCrashes setDelegate:unityCrashesDelegate];
 }
 
 @implementation UnityCrashesDelegate

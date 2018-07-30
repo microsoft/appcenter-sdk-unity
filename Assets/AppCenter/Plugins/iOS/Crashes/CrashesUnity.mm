@@ -7,11 +7,13 @@
 #import "CrashesDelegate.h"
 #import <Foundation/Foundation.h>
 
-void* appcenter_unity_crashes_get_type() {
+void* appcenter_unity_crashes_get_type()
+{
   return (void *)CFBridgingRetain([MSCrashes class]);
 }
 
-void appcenter_unity_crashes_track_model_exception(MSException* exception) {
+void appcenter_unity_crashes_track_model_exception(MSException* exception)
+{
   [MSCrashes trackModelException: exception];
 }
 

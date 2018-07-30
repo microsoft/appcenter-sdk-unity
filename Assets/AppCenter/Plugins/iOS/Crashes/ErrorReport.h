@@ -2,15 +2,15 @@
 //
 // Licensed under the MIT license.
 
-extern "C" char* app_center_unity_crashes_error_report_incident_identifier(void* errorReport);
+extern "C" const char* app_center_unity_crashes_error_report_incident_identifier(void* errorReport);
 
-extern "C" char* app_center_unity_crashes_error_report_reporter_key(void* errorReport);
+extern "C" const char* app_center_unity_crashes_error_report_reporter_key(void* errorReport);
 
-extern "C" char* app_center_unity_crashes_error_report_signal(void* errorReport);
+extern "C" const char* app_center_unity_crashes_error_report_signal(void* errorReport);
 
-extern "C" char* app_center_unity_crashes_error_report_exception_name(void* errorReport);
+extern "C" const char* app_center_unity_crashes_error_report_exception_name(void* errorReport);
 
-extern "C" char* app_center_unity_crashes_error_report_exception_reason(void* errorReport);
+extern "C" const char* app_center_unity_crashes_error_report_exception_reason(void* errorReport);
 
 extern "C" char* app_center_unity_crashes_error_report_app_start_time(void* errorReport);
 
