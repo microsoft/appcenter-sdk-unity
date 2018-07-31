@@ -52,7 +52,7 @@ public class AppCenterPreBuild : IPreprocessBuild
         {
             settingsMaker.SetLogUrl(settings.CustomLogUrl.Url);
         }
-        if (settings.UsePush)
+        if (settings.UsePush && IsAndroidPushAvailable())
         {
             settingsMaker.StartPushClass();
             if (settings.EnableFirebaseAnalytics)
@@ -60,15 +60,15 @@ public class AppCenterPreBuild : IPreprocessBuild
                 settingsMaker.EnableFirebaseAnalytics();
             }
         }
-        if (settings.UseAnalytics)
+        if (settings.UseAnalytics && IsAndroidAnalyticsAvailable())
         {
             settingsMaker.StartAnalyticsClass();
         }
-        if (settings.UseCrashes)
+        if (settings.UseCrashes && IsAndroidCrashesAvailable())
         {
             settingsMaker.StartCrashesClass();
         }
-        if (settings.UseDistribute)
+        if (settings.UseDistribute && IsAndroidDistributeAvailable())
         {
             if (settings.CustomApiUrl.UseCustomUrl)
             {
@@ -123,6 +123,26 @@ public class AppCenterPreBuild : IPreprocessBuild
             settingsMaker.StartDistributeClass();
         }
         settingsMaker.CommitSettings();
+    }
+
+    static bool IsAndroidDistributeAvailable()
+    {
+        return File.Exists("Assets/AppCenter/Plugins/Android/appcenter-distribute-release.aar");
+    }
+
+    static bool IsAndroidPushAvailable()
+    {
+        return File.Exists("Assets/AppCenter/Plugins/Android/appcenter-push-release.aar");
+    }
+
+    static bool IsAndroidAnalyticsAvailable()
+    {
+        return File.Exists("Assets/AppCenter/Plugins/Android/appcenter-analytics-release.aar");
+    }
+
+    static bool IsAndroidCrashesAvailable()
+    {
+        return File.Exists("Assets/AppCenter/Plugins/Android/appcenter-crashes-release.aar");
     }
 
     static bool IsIOSDistributeAvailable()
