@@ -98,19 +98,19 @@ public class AppCenterPreBuild : IPreprocessBuild
         }
         settingsMaker.SetLogLevel((int)settings.InitialLogLevel);
         settingsMaker.SetAppSecret(settings.iOSAppSecret);
-        if (settings.UseCrashes && IsCrashesAvailable())
+        if (settings.UseCrashes && IsIOSCrashesAvailable())
         {
             settingsMaker.StartCrashesClass();
         }
-        if (settings.UsePush && IsPushAvailable())
+        if (settings.UsePush && IsIOSPushAvailable())
         {
             settingsMaker.StartPushClass();
         }
-        if (settings.UseAnalytics && IsAnalyticsAvailable())
+        if (settings.UseAnalytics && IsIOSAnalyticsAvailable())
         {
             settingsMaker.StartAnalyticsClass();
         }
-        if (settings.UseDistribute && IsDistributeAvailable())
+        if (settings.UseDistribute && IsIOSDistributeAvailable())
         {
             if (settings.CustomApiUrl.UseCustomUrl)
             {
@@ -125,22 +125,22 @@ public class AppCenterPreBuild : IPreprocessBuild
         settingsMaker.CommitSettings();
     }
 
-    static bool IsDistributeAvailable()
+    static bool IsIOSDistributeAvailable()
     {
         return Directory.Exists("Assets/AppCenter/Plugins/iOS/Distribute");
     }
 
-    static bool IsPushAvailable()
+    static bool IsIOSPushAvailable()
     {
         return Directory.Exists("Assets/AppCenter/Plugins/iOS/Push");
     }
 
-    static bool IsAnalyticsAvailable()
+    static bool IsIOSAnalyticsAvailable()
     {
         return Directory.Exists("Assets/AppCenter/Plugins/iOS/Analytics");
     }
 
-    static bool IsCrashesAvailable()
+    static bool IsIOSCrashesAvailable()
     {
         return Directory.Exists("Assets/AppCenter/Plugins/iOS/Crashes");
     }
