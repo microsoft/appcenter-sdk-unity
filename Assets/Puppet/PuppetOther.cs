@@ -30,10 +30,10 @@ public class PuppetOther : MonoBehaviour
         {
             return true;
         };
-		Crashes.IsEnabledAsync().ContinueWith(task =>
-		{
-			CrashesEnabled.isOn = task.Result;
-		});
+        Crashes.IsEnabledAsync().ContinueWith(task =>
+        {
+            CrashesEnabled.isOn = task.Result;
+        });
     }
 
     public void SetPushEnabled(bool enabled)
@@ -62,16 +62,16 @@ public class PuppetOther : MonoBehaviour
         DistributeEnabled.isOn = isEnabled.Result;
     }
 
-	public void SetCrashesEnabled(bool enabled)
-	{
-	    StartCoroutine(SetCrashesEnabledCoroutine(enabled));
-	}
+    public void SetCrashesEnabled(bool enabled)
+    {
+        StartCoroutine(SetCrashesEnabledCoroutine(enabled));
+    }
 
-	private IEnumerator SetCrashesEnabledCoroutine(bool enabled)
-	{
-	    yield return Crashes.SetEnabledAsync(enabled);
-	    var isEnabled = Crashes.IsEnabledAsync();
-	    yield return isEnabled;
-	    CrashesEnabled.isOn = isEnabled.Result;
-	}
+    private IEnumerator SetCrashesEnabledCoroutine(bool enabled)
+    {
+        yield return Crashes.SetEnabledAsync(enabled);
+        var isEnabled = Crashes.IsEnabledAsync();
+        yield return isEnabled;
+        CrashesEnabled.isOn = isEnabled.Result;
+    }
 }
