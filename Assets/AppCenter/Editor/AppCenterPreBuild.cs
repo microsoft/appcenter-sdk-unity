@@ -1,10 +1,31 @@
+﻿using System.IO;
 using UnityEditor;
 using UnityEditor.Build;
+#if UNITY_2018_1_OR_NEWER
+using UnityEditor.Build.Reporting;
+#endif
 
+#if UNITY_2018_1_OR_NEWER
+public class AppCenterPreBuild : IPreprocessBuildWithReport
+#else
 public class AppCenterPreBuild : IPreprocessBuild
+#endif
 {
     public int callbackOrder { get { return 0; } }
 
+#if UNITY_2018_1_OR_NEWER
+    public void OnPreprocessBuild(BuildReport report)
+    {
+        if (report.summary.platform == BuildTarget.Android)
+        {
+            AddStartupCodeToAndroid();
+        }
+        else if (report.summary.platform == BuildTarget.iOS)
+        {
+            AddStartupCodeToiOS();
+        }
+    }
+#else
     public void OnPreprocessBuild(BuildTarget target, string path)
     {
         if (target == BuildTarget.Android)
@@ -16,6 +37,7 @@ public class AppCenterPreBuild : IPreprocessBuild
             AddStartupCodeToiOS();
         }
     }
+#endif
 
     void AddStartupCodeToAndroid()
     {
@@ -72,15 +94,15 @@ public class AppCenterPreBuild : IPreprocessBuild
         }
         settingsMaker.SetLogLevel((int)settings.InitialLogLevel);
         settingsMaker.SetAppSecret(settings.iOSAppSecret);
-        if (settings.UsePush)
+        if (settings.UsePush && IsPushAvailable())
         {
             settingsMaker.StartPushClass();
         }
-        if (settings.UseAnalytics)
+        if (settings.UseAnalytics && IsAnalyticsAvailable())
         {
             settingsMaker.StartAnalyticsClass();
         }
-        if (settings.UseDistribute)
+        if (settings.UseDistribute && IsDistributeAvailable())
         {
             if (settings.CustomApiUrl.UseCustomUrl)
             {
@@ -93,5 +115,20 @@ public class AppCenterPreBuild : IPreprocessBuild
             settingsMaker.StartDistributeClass();
         }
         settingsMaker.CommitSettings();
+    }
+
+    static bool IsDistributeAvailable()
+    {
+        return Directory.Exists("Assets/AppCenter/Plugins/iOS/Distribute");
+    }
+
+    static bool IsPushAvailable()
+    {
+        return Directory.Exists("Assets/AppCenter/Plugins/iOS/Push");
+    }
+
+    static bool IsAnalyticsAvailable()
+    {
+        return Directory.Exists("Assets/AppCenter/Plugins/iOS/Analytics");
     }
 }
