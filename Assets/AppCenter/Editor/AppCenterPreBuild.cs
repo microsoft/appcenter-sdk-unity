@@ -16,16 +16,10 @@ public class AppCenterPreBuild : IPreprocessBuild
 #if UNITY_2018_1_OR_NEWER
     public void OnPreprocessBuild(BuildReport report)
     {
-        if (report.summary.platform == BuildTarget.Android)
-        {
-            AddStartupCodeToAndroid();
-        }
-        else if (report.summary.platform == BuildTarget.iOS)
-        {
-            AddStartupCodeToiOS();
-        }
+        OnPreprocessBuild(report.summary.platform, report.summary.outputPath);
     }
-#else
+#endif
+
     public void OnPreprocessBuild(BuildTarget target, string path)
     {
         if (target == BuildTarget.Android)
@@ -37,7 +31,6 @@ public class AppCenterPreBuild : IPreprocessBuild
             AddStartupCodeToiOS();
         }
     }
-#endif
 
     void AddStartupCodeToAndroid()
     {
