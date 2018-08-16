@@ -17,6 +17,7 @@ import android.util.Log;
 import com.microsoft.appcenter.AppCenter;
 import com.microsoft.appcenter.AppCenterService;
 import com.microsoft.appcenter.analytics.Analytics;
+import com.microsoft.appcenter.crashes.Crashes;
 import com.microsoft.appcenter.distribute.Distribute;
 import com.microsoft.appcenter.push.Push;
 import com.microsoft.appcenter.utils.AppCenterLog;
@@ -64,9 +65,10 @@ public class AppCenterLoader extends ContentProvider {
             isModuleAvailable("com.microsoft.appcenter.analytics.Analytics", "Analytics")) {
             classes.add(Analytics.class);
         }
-        //if (isTrueValue(getStringResource(USE_CRASHES_KEY))) {
-        //    classes.add(Crashes.class);
-        //}
+        if (isTrueValue(getStringResource(USE_CRASHES_KEY)) &&
+            isModuleAvailable("com.microsoft.appcenter.crashes.Crashes", "Crashes")) {
+            classes.add(Crashes.class);
+        }
         if (isTrueValue(getStringResource(USE_DISTRIBUTE_KEY)) &&
             isModuleAvailable("com.microsoft.appcenter.distribute.Distribute", "Distribute")) {
             if (isTrueValue(getStringResource(USE_CUSTOM_API_URL_KEY))) {

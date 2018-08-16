@@ -13,6 +13,7 @@ public class AppCenterSettingsMakerAndroid
     private const string CustomLogUrlKey = "appcenter_custom_log_url";
     private const string UseCustomLogUrlKey = "appcenter_use_custom_log_url";
     private const string InitialLogLevelKey = "appcenter_initial_log_level";
+    private const string UseCrashesKey = "appcenter_use_crashes";
     private const string UsePushKey = "appcenter_use_push";
     private const string SenderIdKey = "appcenter_sender_id";
     private const string UseAnalyticsKey = "appcenter_use_analytics";
@@ -57,6 +58,11 @@ public class AppCenterSettingsMakerAndroid
     public void EnableFirebaseAnalytics()
     {
         _resourceValues[EnableFirebaseAnalyticsKey] = true.ToString();
+    }
+
+    public void StartCrashesClass()
+    {
+        _resourceValues[UseCrashesKey] = true.ToString();
     }
 
     public void StartPushClass()

@@ -8,6 +8,10 @@
 
 @import AppCenter;
 
+#ifdef APPCENTER_UNITY_USE_CRASHES
+@import AppCenterCrashes;
+#endif
+
 #ifdef APPCENTER_UNITY_USE_PUSH
 @import AppCenterPush;
 #import "../Push/PushDelegate.h"
@@ -50,8 +54,12 @@ static const int kMSLogLevel = 0/*LOG_LEVEL*/;
   [classes addObject:MSAnalytics.class];
 #endif
 
-#ifdef APPCENTER_UNITY_USE_DISTRIBUTE
+#ifdef APPCENTER_UNITY_USE_CRASHES
+  [classes addObject:MSCrashes.class];
+#endif
 
+#ifdef APPCENTER_UNITY_USE_DISTRIBUTE
+  
 #ifdef APPCENTER_UNITY_USE_CUSTOM_API_URL
   [MSDistribute setApiUrl:kMSCustomApiUrl];
 #endif // APPCENTER_UNITY_USE_CUSTOM_API_URL
