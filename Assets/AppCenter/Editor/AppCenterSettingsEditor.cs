@@ -24,6 +24,11 @@ public class AppCenterSettingsEditor : Editor
             Header("Analytics");
             EditorGUILayout.PropertyField(serializedObject.FindProperty("UseAnalytics"));
         }
+        if (AppCenterSettings.Crashes != null)
+        {
+            Header("Crashes");
+            EditorGUILayout.PropertyField(serializedObject.FindProperty("UseCrashes"));
+        }
         if (AppCenterSettings.Distribute != null)
         {
             Header("Distribute");
