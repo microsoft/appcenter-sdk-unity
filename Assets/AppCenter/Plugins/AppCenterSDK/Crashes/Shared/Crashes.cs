@@ -83,7 +83,8 @@ namespace Microsoft.AppCenter.Unity.Crashes
         private static WrapperException CreateWrapperException(string logString, string stackTrace)
         {
             var exception = new WrapperException();
-            exception.SetWrapperSdkName(WrapperSdk.Name);
+            //exception.SetWrapperSdkName(WrapperSdk.Name);
+            exception.SetWrapperSdkName("appcenter.xamarin"); // fix stack traces are not showing up in the portal UI
 
             string sanitizedLogString = logString.Replace("\n", " ");
             var logStringComponents = sanitizedLogString.Split(new[] { ':' }, 2);
