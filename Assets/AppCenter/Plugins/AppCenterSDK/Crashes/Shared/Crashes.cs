@@ -2,13 +2,9 @@
 //
 // Licensed under the MIT license.
 
-using Microsoft.AppCenter.Unity;
 using Microsoft.AppCenter.Unity.Crashes.Internal;
 using System;
-using System.Collections;
 using System.Collections.Generic;
-using System.IO;
-using System.Runtime.InteropServices;
 using UnityEngine;
 
 namespace Microsoft.AppCenter.Unity.Crashes
@@ -29,6 +25,22 @@ namespace Microsoft.AppCenter.Unity.Crashes
         public static RawType GetNativeType()
         {
             return CrashesInternal.GetNativeType();
+        }
+
+        public static void TrackError(Exception exception, IDictionary<string, string> properties = null)
+        {
+            if (exception != null)
+            {
+                var exceptionWrapper = CreateWrapperException(exception);
+                if (properties == null || properties.Count == 0)
+                {
+                    CrashesInternal.TrackException(exceptionWrapper.GetRawObject());
+                }
+                else
+                {
+                    CrashesInternal.TrackException(exceptionWrapper.GetRawObject(), properties);
+                }
+            }
         }
 
         public static void OnHandleLog(string logString, string stackTrace, LogType type)
@@ -78,6 +90,16 @@ namespace Microsoft.AppCenter.Unity.Crashes
         public static void DisableMachExceptionHandler()
         {
             CrashesInternal.DisableMachExceptionHandler();
+        }
+
+        private static WrapperException CreateWrapperException(Exception exception)
+        {
+            var exceptionWrapper = new WrapperException();
+            exceptionWrapper.SetWrapperSdkName(WrapperSdk.Name);
+            exceptionWrapper.SetStacktrace(exception.StackTrace);
+            exceptionWrapper.SetMessage(exception.Message);
+            exceptionWrapper.SetType(exception.GetType().ToString());
+            return exceptionWrapper;
         }
 
         private static WrapperException CreateWrapperException(string logString, string stackTrace)

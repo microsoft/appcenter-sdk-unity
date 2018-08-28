@@ -2,6 +2,7 @@
 //
 // Licensed under the MIT license.
 
+#import "../Core/Utility/NSStringDictionaryHelper.h"
 #import "MSException.h"
 #import "CrashesUnity.h"
 #import "CrashesDelegate.h"
@@ -14,7 +15,13 @@ void* appcenter_unity_crashes_get_type()
 
 void appcenter_unity_crashes_track_model_exception(MSException* exception)
 {
-  [MSCrashes trackModelException: exception];
+  [MSCrashes trackModelException:exception];
+}
+
+void appcenter_unity_crashes_track_model_exception_with_properties(MSException* exception, char** keys, char** values, int count)
+{
+  NSDictionary<NSString*, NSString*> *properties = appcenter_unity_create_ns_string_dictionary(keys, values, count);
+  [MSCrashes trackModelException:exception withProperties:properties];
 }
 
 void appcenter_unity_crashes_set_enabled(bool isEnabled)

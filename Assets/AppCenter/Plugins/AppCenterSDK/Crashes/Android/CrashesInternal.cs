@@ -3,7 +3,9 @@
 // Licensed under the MIT license.
 
 #if UNITY_ANDROID && !UNITY_EDITOR
+using Microsoft.AppCenter.Unity.Internal.Utility;
 using System;
+using System.Collections.Generic;
 using UnityEngine;
 
 namespace Microsoft.AppCenter.Unity.Crashes.Internal
@@ -21,6 +23,12 @@ namespace Microsoft.AppCenter.Unity.Crashes.Internal
         public static void TrackException(AndroidJavaObject exception)
         {
             _wrapperSdkExceptionManager.CallStatic("trackException", exception);
+        }
+
+        public static void TrackException(AndroidJavaObject exception, IDictionary<string, string> properties)
+        {
+            var propertiesMap = JavaStringMapHelper.Convert(properties);
+            _wrapperSdkExceptionManager.CallStatic("trackException", exception, propertiesMap);
         }
 
         public static AppCenterTask SetEnabledAsync(bool isEnabled)

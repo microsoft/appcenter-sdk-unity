@@ -11,5 +11,5 @@
 
 @interface MSCrashes ()
 + (void)trackModelException:(MSException *)exception;
++ (void)trackModelException:(MSException *)exception withProperties:(nullable NSDictionary<NSString *, NSString *> *)properties;
 @end
-

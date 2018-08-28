@@ -5,6 +5,7 @@
 #if (!UNITY_IOS && !UNITY_ANDROID && !UNITY_WSA_10_0) || UNITY_EDITOR
 namespace Microsoft.AppCenter.Unity.Crashes.Internal
 {
+    using System.Collections.Generic;
 #if UNITY_IOS
     using NativeType = System.IntPtr;
     using RawType = System.IntPtr;
@@ -24,6 +25,10 @@ namespace Microsoft.AppCenter.Unity.Crashes.Internal
         }
 
         public static void TrackException(RawType exception)
+        {
+        }
+
+        public static void TrackException(RawType exception, IDictionary<string, string> properties)
         {
         }
 

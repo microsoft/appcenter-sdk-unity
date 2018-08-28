@@ -3,8 +3,6 @@
 // Licensed under the MIT license.
 
 #if UNITY_ANDROID
-using System.Runtime.InteropServices;
-using System;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -24,6 +22,16 @@ namespace Microsoft.AppCenter.Unity.Internal.Utility
                 dictionary[key] = val;
             }
             return dictionary;
+        }
+
+        public static AndroidJavaObject Convert(IDictionary<string, string> properties)
+        {
+            var javaMap = new AndroidJavaObject("java.util.HashMap");
+            foreach (var pair in properties)
+            {
+                javaMap.Call<AndroidJavaObject>("put", pair.Key, pair.Value);
+            }
+            return javaMap;
         }
     }
 }
