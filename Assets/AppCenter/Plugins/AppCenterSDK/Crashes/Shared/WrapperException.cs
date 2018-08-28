@@ -19,42 +19,39 @@ namespace Microsoft.AppCenter.Unity.Crashes
     {
         private readonly RawType _rawObject;
 
-        internal RawType GetRawObject() {
+        internal RawType GetRawObject()
+        {
             return _rawObject;
         }
 
-        public WrapperException() {
+        public WrapperException()
+        {
             _rawObject = WrapperExceptionInternal.Create();
         }
 
-        public WrapperException SetType(string type)
+        public void SetType(string type)
         {
             WrapperExceptionInternal.SetType(_rawObject, type);
-            return this;
         }
 
-        public WrapperException SetMessage(string message)
+        public void SetMessage(string message)
         {
             WrapperExceptionInternal.SetMessage(_rawObject, message);
-            return this;
         }
 
-        public WrapperException SetStacktrace(string stacktrace)
+        public void SetStacktrace(string stacktrace)
         {
             WrapperExceptionInternal.SetStacktrace(_rawObject, stacktrace);
-            return this;
         }
 
-        public WrapperException SetInnerExceptions(RawType innerExceptions)
+        public void SetInnerException(RawType innerException)
         {
-            WrapperExceptionInternal.SetInnerExceptions(_rawObject, innerExceptions);
-            return this;
+            WrapperExceptionInternal.SetInnerException(_rawObject, innerException);
         }
 
-        public WrapperException SetWrapperSdkName(string sdkName)
+        public void SetWrapperSdkName(string sdkName)
         {
             WrapperExceptionInternal.SetWrapperSdkName(_rawObject, sdkName);
-            return this;
         }
     }
 }

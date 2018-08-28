@@ -25,8 +25,9 @@ void appcenter_unity_exception_set_stacktrace(MSException* exception, char* stac
     [exception setStackTrace:[NSString stringWithUTF8String:stacktrace]];
 }
 
-void appcenter_unity_exception_set_inner_exceptions(MSException* exception, NSArray* innerExceptions)
+void appcenter_unity_exception_set_inner_exception(MSException* exception, MSException* innerException)
 {
+    NSArray* innerExceptions = @[innerException];
     [exception setInnerExceptions:innerExceptions];
 }
 

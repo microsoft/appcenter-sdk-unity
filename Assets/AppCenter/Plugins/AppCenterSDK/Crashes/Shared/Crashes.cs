@@ -99,6 +99,13 @@ namespace Microsoft.AppCenter.Unity.Crashes
             exceptionWrapper.SetStacktrace(exception.StackTrace);
             exceptionWrapper.SetMessage(exception.Message);
             exceptionWrapper.SetType(exception.GetType().ToString());
+
+            if (exception.InnerException != null)
+            {
+                var innerExceptionWrapper = CreateWrapperException(exception.InnerException).GetRawObject();
+                exceptionWrapper.SetInnerException(innerExceptionWrapper);
+            }
+
             return exceptionWrapper;
         }
 
