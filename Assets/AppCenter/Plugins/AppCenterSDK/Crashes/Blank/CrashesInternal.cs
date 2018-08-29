@@ -3,9 +3,10 @@
 // Licensed under the MIT license.
 
 #if (!UNITY_IOS && !UNITY_ANDROID && !UNITY_WSA_10_0) || UNITY_EDITOR
+using System.Collections.Generic;
+
 namespace Microsoft.AppCenter.Unity.Crashes.Internal
 {
-    using System.Collections.Generic;
 #if UNITY_IOS
     using NativeType = System.IntPtr;
     using RawType = System.IntPtr;

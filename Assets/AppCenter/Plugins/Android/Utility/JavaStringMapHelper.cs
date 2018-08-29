@@ -10,7 +10,7 @@ namespace Microsoft.AppCenter.Unity.Internal.Utility
 {
     public class JavaStringMapHelper
     {
-        public static Dictionary<string, string> JavaMapConvert(AndroidJavaObject map)
+        public static Dictionary<string, string> ConvertFromJava(AndroidJavaObject map)
         {
             var keySet = map.Call<AndroidJavaObject>("keySet");
             var keyArray = keySet.Call<AndroidJavaObject>("toArray");
@@ -24,7 +24,7 @@ namespace Microsoft.AppCenter.Unity.Internal.Utility
             return dictionary;
         }
 
-        public static AndroidJavaObject Convert(IDictionary<string, string> properties)
+        public static AndroidJavaObject ConvertToJava(IDictionary<string, string> properties)
         {
             var javaMap = new AndroidJavaObject("java.util.HashMap");
             foreach (var pair in properties)

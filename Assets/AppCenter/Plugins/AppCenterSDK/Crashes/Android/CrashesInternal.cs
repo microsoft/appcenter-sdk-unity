@@ -27,7 +27,7 @@ namespace Microsoft.AppCenter.Unity.Crashes.Internal
 
         public static void TrackException(AndroidJavaObject exception, IDictionary<string, string> properties)
         {
-            var propertiesMap = JavaStringMapHelper.Convert(properties);
+            var propertiesMap = JavaStringMapHelper.ConvertToJava(properties);
             _wrapperSdkExceptionManager.CallStatic("trackException", exception, propertiesMap);
         }
 
