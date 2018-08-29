@@ -9,6 +9,7 @@
 
 extern "C" void* appcenter_unity_crashes_get_type();
 extern "C" void appcenter_unity_crashes_track_model_exception(MSException* exception);
+extern "C" void appcenter_unity_crashes_track_model_exception_with_properties(MSException* exception, char** keys, char** values, int count);
 extern "C" void appcenter_unity_crashes_set_enabled(bool isEnabled);
 extern "C" bool appcenter_unity_crashes_is_enabled();
 extern "C" void appcenter_unity_crashes_generate_test_crash();

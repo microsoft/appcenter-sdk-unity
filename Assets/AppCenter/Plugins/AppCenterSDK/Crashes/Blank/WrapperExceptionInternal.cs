@@ -35,7 +35,7 @@ namespace Microsoft.AppCenter.Unity.Crashes
         {
         }
 
-        public static void SetInnerExceptions(RawType exception, RawType innerExceptions)
+        public static void SetInnerException(RawType exception, RawType innerException)
         {
         }
 

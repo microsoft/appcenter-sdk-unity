@@ -30,9 +30,9 @@ namespace Microsoft.AppCenter.Unity.Crashes.Internal
             appcenter_unity_exception_set_stacktrace(exception, stacktrace);
         }
 
-        public static void SetInnerExceptions(IntPtr exception, IntPtr innerExcetions)
+        public static void SetInnerException(IntPtr exception, IntPtr innerExcetion)
         {
-            appcenter_unity_exception_set_inner_exceptions(exception, innerExcetions);
+            appcenter_unity_exception_set_inner_exception(exception, innerExcetion);
         }
 
         public static void SetWrapperSdkName(IntPtr exception, string sdkName)
@@ -55,7 +55,7 @@ namespace Microsoft.AppCenter.Unity.Crashes.Internal
         private static extern void appcenter_unity_exception_set_stacktrace(IntPtr exception, string stacktrace);
 
         [DllImport("__Internal")]
-        private static extern void appcenter_unity_exception_set_inner_exceptions(IntPtr exception, IntPtr innerExcetions);
+        private static extern void appcenter_unity_exception_set_inner_exception(IntPtr exception, IntPtr innerExcetion);
 
         [DllImport("__Internal")]
         private static extern void appcenter_unity_exception_set_wrapper_sdk_name(IntPtr exception, string key);

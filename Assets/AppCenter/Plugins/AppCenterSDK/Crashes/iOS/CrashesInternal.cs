@@ -5,6 +5,8 @@
 #if UNITY_IOS && !UNITY_EDITOR
 using AOT;
 using System;
+using System.Linq;
+using System.Collections.Generic;
 using System.Runtime.InteropServices;
 
 namespace Microsoft.AppCenter.Unity.Crashes.Internal
@@ -19,6 +21,11 @@ namespace Microsoft.AppCenter.Unity.Crashes.Internal
         public static void TrackException(IntPtr exception)
         {
             appcenter_unity_crashes_track_model_exception(exception);
+        }
+
+        public static void TrackException(IntPtr exception, IDictionary<string, string> properties)
+        {
+            appcenter_unity_crashes_track_model_exception_with_properties(exception, properties.Keys.ToArray(), properties.Values.ToArray(), properties.Count);
         }
 
         public static AppCenterTask SetEnabledAsync(bool isEnabled)
@@ -56,6 +63,9 @@ namespace Microsoft.AppCenter.Unity.Crashes.Internal
 
         [DllImport("__Internal")]
         private static extern void appcenter_unity_crashes_track_model_exception(IntPtr exception);
+
+        [DllImport("__Internal")]
+        private static extern void appcenter_unity_crashes_track_model_exception_with_properties(IntPtr exception, string[] keys, string[] values, int count);
 
         [DllImport("__Internal")]
         private static extern void appcenter_unity_crashes_set_enabled(bool isEnabled);

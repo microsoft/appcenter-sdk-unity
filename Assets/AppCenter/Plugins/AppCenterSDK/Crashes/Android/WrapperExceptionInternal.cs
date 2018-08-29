@@ -31,9 +31,11 @@ namespace Microsoft.AppCenter.Unity.Crashes.Internal
             exception.Call("setStackTrace", stacktrace);
         }
 
-        public static void SetInnerExceptions(AndroidJavaObject exception, AndroidJavaObject innerExceptions)
+        public static void SetInnerException(AndroidJavaObject exception, AndroidJavaObject innerException)
         {
-            exception.Call("setInnerExceptions", innerExceptions);
+            var javaList = new AndroidJavaObject("java.util.LinkedList");
+            javaList.Call("addLast", innerException);
+            exception.Call("setInnerExceptions", javaList);
         }
 
         public static void SetWrapperSdkName(AndroidJavaObject exception, string sdkName)

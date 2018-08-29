@@ -3,8 +3,6 @@
 // Licensed under the MIT license.
 
 #if UNITY_ANDROID
-using System.Runtime.InteropServices;
-using System;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -12,7 +10,7 @@ namespace Microsoft.AppCenter.Unity.Internal.Utility
 {
     public class JavaStringMapHelper
     {
-        public static Dictionary<string, string> JavaMapConvert(AndroidJavaObject map)
+        public static Dictionary<string, string> ConvertFromJava(AndroidJavaObject map)
         {
             var keySet = map.Call<AndroidJavaObject>("keySet");
             var keyArray = keySet.Call<AndroidJavaObject>("toArray");
@@ -24,6 +22,16 @@ namespace Microsoft.AppCenter.Unity.Internal.Utility
                 dictionary[key] = val;
             }
             return dictionary;
+        }
+
+        public static AndroidJavaObject ConvertToJava(IDictionary<string, string> properties)
+        {
+            var javaMap = new AndroidJavaObject("java.util.HashMap");
+            foreach (var pair in properties)
+            {
+                javaMap.Call<AndroidJavaObject>("put", pair.Key, pair.Value);
+            }
+            return javaMap;
         }
     }
 }

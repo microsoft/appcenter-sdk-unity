@@ -5,6 +5,7 @@
 #if UNITY_WSA_10_0 && !UNITY_EDITOR
 
 using System;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 
 namespace Microsoft.AppCenter.Unity.Crashes.Internal
@@ -17,6 +18,10 @@ namespace Microsoft.AppCenter.Unity.Crashes.Internal
         }
 
         public static void TrackException(object exception)
+        {
+        }
+
+        public static void TrackException(object exception, IDictionary<string, string> properties)
         {
         }
 
