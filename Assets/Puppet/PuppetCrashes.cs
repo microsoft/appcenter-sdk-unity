@@ -3,7 +3,9 @@
 // Licensed under the MIT license.
 
 using Microsoft.AppCenter.Unity.Crashes;
+using System;
 using System.Collections;
+using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -30,6 +32,19 @@ public class PuppetCrashes : MonoBehaviour
         var isEnabled = Crashes.IsEnabledAsync();
         yield return isEnabled;
         CrashesEnabled.isOn = isEnabled.Result;
+    }
+
+    public void TestHandledError()
+    {
+        try
+        {
+            throw new Exception("Test error");
+        }
+        catch (Exception ex)
+        {
+            var properties = new Dictionary<string, string> { { "Category", "Music" }, { "Wifi", "On" } };
+            Crashes.TrackError(ex, properties);
+        }
     }
 
     public void TestCrash()
