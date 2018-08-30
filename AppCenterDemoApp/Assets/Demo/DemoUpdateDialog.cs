@@ -11,13 +11,13 @@ public class DemoUpdateDialog : MonoBehaviour
     [SerializeField]
     private Text _messageText;
 
-    public void PerformUpdate ()
+    public void PerformUpdate()
     {
         Distribute.NotifyUpdateAction(UpdateAction.Update);
         Hide();
     }
 
-    public void PostponeUpdate ()
+    public void PostponeUpdate()
     {
         Distribute.NotifyUpdateAction(UpdateAction.Postpone);
         Hide();

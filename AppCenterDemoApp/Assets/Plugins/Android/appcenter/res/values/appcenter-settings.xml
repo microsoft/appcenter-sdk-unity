@@ -3,6 +3,7 @@
   <string name="appcenter_app_secret" translatable="false">ee0e4596-fff8-492c-bb53-b476e6335ec3</string>
   <string name="appcenter_use_push" translatable="false">True</string>
   <string name="appcenter_use_analytics" translatable="false">True</string>
+  <string name="appcenter_use_crashes" translatable="false">True</string>
   <string name="appcenter_use_distribute" translatable="false">True</string>
   <string name="appcenter_initial_log_level" translatable="false">2</string>
 </resources>

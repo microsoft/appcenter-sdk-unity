@@ -49,6 +49,52 @@ public class AppCenterBehavior : MonoBehaviour
         }
     }
 
+    void OnEnable()
+    {
+#if !UNITY_EDITOR
+        System.AppDomain.CurrentDomain.UnhandledException += OnHandleUnresolvedException;
+        Application.logMessageReceived += OnHandleLogCallback;
+#endif
+    }
+
+    void OnDisable()
+    {
+#if !UNITY_EDITOR
+        System.AppDomain.CurrentDomain.UnhandledException -= OnHandleUnresolvedException;
+        Application.logMessageReceived -= OnHandleLogCallback;
+#endif
+    }
+
+    public void OnHandleLogCallback(string logString, string stackTrace, LogType type)
+    {
+#if !UNITY_EDITOR
+        foreach (var service in settings.Services)
+        {
+            var OnHanldeLogMethod = service.GetMethod("OnHandleLog");
+            if (OnHanldeLogMethod != null)
+            {   
+                object[] parametersArray = new object[] { logString, stackTrace, type };
+                OnHanldeLogMethod.Invoke(this, parametersArray);
+            }
+        }
+#endif
+    }
+
+    public void OnHandleUnresolvedException(object sender, UnhandledExceptionEventArgs args)
+    {
+#if !UNITY_EDITOR
+        foreach (var service in settings.Services)
+        {
+            var OnHandleUnresolvedExceptionMethod = service.GetMethod("OnHandleUnresolvedException");
+            if (OnHandleUnresolvedExceptionMethod != null)
+            {
+                object[] parametersArray = new object[] { sender, args };
+                OnHandleUnresolvedExceptionMethod.Invoke(this, parametersArray);
+            }
+        }
+#endif
+    }
+
     private void StartAppCenter()
     {
         var services = settings.Services;
@@ -57,7 +103,7 @@ public class AppCenterBehavior : MonoBehaviour
         AppCenter.SetWrapperSdk();
 
         // On iOS and Android App Center starting automatically.
-#if UNITY_EDITOR || (!UNITY_IOS && !UNITY_ANDROID)
+        #if UNITY_EDITOR || (!UNITY_IOS && !UNITY_ANDROID)
         AppCenter.LogLevel = settings.InitialLogLevel;
         if (settings.CustomLogUrl.UseCustomUrl)
         {
@@ -66,7 +112,7 @@ public class AppCenterBehavior : MonoBehaviour
         var appSecret = AppCenter.GetSecretForPlatform(settings.AppSecret);
         var nativeServiceTypes = AppCenter.ServicesToNativeTypes(services);
         AppCenterInternal.Start(appSecret, nativeServiceTypes, services.Length);
-#endif
+        #endif
         InvokeInitializedServices();
     }
 

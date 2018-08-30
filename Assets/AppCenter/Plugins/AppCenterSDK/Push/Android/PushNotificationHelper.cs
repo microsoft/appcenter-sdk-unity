@@ -15,7 +15,7 @@ namespace Microsoft.AppCenter.Unity.Push.Internal
         public static PushNotificationReceivedEventArgs PushConvert(AndroidJavaObject javaPush)
         {
             var customDataMap = javaPush.Call<AndroidJavaObject>("getCustomData");
-            var customData = JavaStringMapHelper.JavaMapConvert(customDataMap);
+            var customData = JavaStringMapHelper.ConvertFromJava(customDataMap);
             var title = javaPush.Call<string>("getTitle");
             var message = javaPush.Call<string>("getMessage");
             return new PushNotificationReceivedEventArgs

@@ -8,12 +8,27 @@ using System.Text.RegularExpressions;
 using UnityEngine;
 using UnityEditor;
 using UnityEditor.Build;
+#if UNITY_2018_1_OR_NEWER
+using UnityEditor.Build.Reporting;
+#endif
 
 // Warning: Don't use #if #endif for conditional compilation here as Unity
 // doesn't always set the flags early enough.
+
+#if UNITY_2018_1_OR_NEWER
+public class AppCenterPostBuild : IPostprocessBuildWithReport
+#else
 public class AppCenterPostBuild : IPostprocessBuild
+#endif
 {
     public int callbackOrder { get { return 0; } }
+
+#if UNITY_2018_1_OR_NEWER
+    public void OnPostprocessBuild(BuildReport report)
+    {
+        OnPostprocessBuild(report.summary.platform, report.summary.outputPath);
+    }
+#endif
 
     public void OnPostprocessBuild(BuildTarget target, string pathToBuiltProject)
     {
@@ -249,7 +264,7 @@ public class AppCenterPostBuild : IPostprocessBuild
     }
 
     private static void OnPostprocessCapabilities(ProjectCapabilityManagerWrapper capabilityManager, AppCenterSettings settings)
-    {       
+    {
         if (settings.UsePush && AppCenterSettings.Push != null)
         {
             capabilityManager.AddPushNotifications();

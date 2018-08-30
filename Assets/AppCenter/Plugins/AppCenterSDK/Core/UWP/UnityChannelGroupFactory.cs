@@ -6,10 +6,9 @@ namespace Microsoft.AppCenter.Unity.Internal.Utils
 {
     public class UnityChannelGroupFactory : IChannelGroupFactory
     {
-        public IChannelGroup CreateChannelGroup(string appSecret)
+        public IChannelGroup CreateChannelGroup(string appSecret, INetworkStateAdapter networkState)
         {
-            //TODO use argument for networkstateadapter once sdk is updated
-            return new ChannelGroup(appSecret, new UnityHttpNetworkAdapter(), new NetworkStateAdapter());
+            return new ChannelGroup(appSecret, new UnityHttpNetworkAdapter(), networkState);
         }
     }
 }
