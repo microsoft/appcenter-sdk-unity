@@ -3,6 +3,8 @@
 // Licensed under the MIT license.
 
 #if (!UNITY_IOS && !UNITY_ANDROID && !UNITY_WSA_10_0) || UNITY_EDITOR
+using System.Collections.Generic;
+
 namespace Microsoft.AppCenter.Unity.Crashes.Internal
 {
 #if UNITY_IOS
@@ -24,6 +26,10 @@ namespace Microsoft.AppCenter.Unity.Crashes.Internal
         }
 
         public static void TrackException(RawType exception)
+        {
+        }
+
+        public static void TrackException(RawType exception, IDictionary<string, string> properties)
         {
         }
 

@@ -26,7 +26,7 @@ namespace Microsoft.AppCenter.Unity.Crashes.Internal
         {
         }
 
-        public static void SetInnerExceptions(object exception, object innerExceptions)
+        public static void SetInnerException(object exception, object innerException)
         {
         }
 
