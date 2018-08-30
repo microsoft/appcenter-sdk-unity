@@ -95,7 +95,7 @@ namespace Microsoft.AppCenter.Unity.Crashes
         private static WrapperException CreateWrapperException(Exception exception)
         {
             var exceptionWrapper = new WrapperException();
-            exceptionWrapper.SetWrapperSdkName(WrapperSdk.Name);
+            exceptionWrapper.SetWrapperSdkName(GetExceptionWrapperSdkName());
             exceptionWrapper.SetStacktrace(exception.StackTrace);
             exceptionWrapper.SetMessage(exception.Message);
             exceptionWrapper.SetType(exception.GetType().ToString());
@@ -112,8 +112,7 @@ namespace Microsoft.AppCenter.Unity.Crashes
         private static WrapperException CreateWrapperException(string logString, string stackTrace)
         {
             var exception = new WrapperException();
-            //exception.SetWrapperSdkName(WrapperSdk.Name);
-            exception.SetWrapperSdkName("appcenter.xamarin"); // fix stack traces are not showing up in the portal UI
+            exception.SetWrapperSdkName(GetExceptionWrapperSdkName());
 
             string sanitizedLogString = logString.Replace("\n", " ");
             var logStringComponents = sanitizedLogString.Split(new[] { ':' }, 2);
@@ -137,6 +136,12 @@ namespace Microsoft.AppCenter.Unity.Crashes
             exception.SetStacktrace(stackTraceString);
 
             return exception;
+        }
+
+        private static string GetExceptionWrapperSdkName()
+        {
+            //return WrapperSdk.Name;
+            return "appcenter.xamarin"; // fix stack traces are not showing up in the portal UI
         }
     }
 }
