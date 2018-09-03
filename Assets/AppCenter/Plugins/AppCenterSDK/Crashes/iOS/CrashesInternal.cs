@@ -64,7 +64,7 @@ namespace Microsoft.AppCenter.Unity.Crashes.Internal
             if (errorReportPtr == IntPtr.Zero)
                 return null;
  
-            var proc_id = app_center_unity_crashes_error_report_app_process_identifier(errorReportPtr);
+            var procId = app_center_unity_crashes_error_report_app_process_identifier(errorReportPtr);
             var identifier = app_center_unity_crashes_error_report_incident_identifier(errorReportPtr);
             var exceptionName = app_center_unity_crashes_error_report_exception_name(errorReportPtr);
             var reporterKey = app_center_unity_crashes_error_report_reporter_key(errorReportPtr);
@@ -77,17 +77,12 @@ namespace Microsoft.AppCenter.Unity.Crashes.Internal
             var condition = exceptionName + " : " + exceptionReason;
 
             // as we don't have stack trace, we can put some additional information here
-            var stackTrace = "ProcessID = " + proc_id + ", ReporterKey = " + reporterKey + ", ReporterSignal = " + reporterSignal + ", IsAppKill = " + isAppKill;
+            //var stackTrace = "ProcessID = " + proc_id + ", ReporterKey = " + reporterKey + ", ReporterSignal = " + reporterSignal + ", IsAppKill = " + isAppKill;
 
-            Models.Exception exception = new Models.Exception(condition, stackTrace);
-            Models.ErrorReport errorReport = new Models.ErrorReport(identifier, startTime, errorTime, exception);
+            Models.Exception exception = new Models.Exception(condition, "");
+Models.ErrorReport errorReport = new Models.ErrorReport(identifier, startTime, errorTime, exception, procId, reporterKey, reporterSignal, isAppKill);
  
             return errorReport;
-        }
-
-        public static void SetUserConfirmationHandler(IntPtr handler)
-        {
-            appcenter_unity_crashes_set_user_confirmation_handler(handler);
         }
         
 #region External

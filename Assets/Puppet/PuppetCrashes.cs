@@ -14,7 +14,6 @@ using System.Linq;
 public class PuppetCrashes : MonoBehaviour
 {
     public Toggle CrashesEnabled;
-    public PuppetPushDialog ErrorReportDialog;
     public Text LastSessionCrashReport;
 
     void OnEnable()
@@ -70,23 +69,24 @@ public class PuppetCrashes : MonoBehaviour
     public void LastCrashReport()
     {
         ErrorReport errorReport = Crashes.LastSessionCrashReport();
+        IDictionary<string, string> info = new Dictionary<string, string>();
         if (errorReport != null)
         {
-            IDictionary<string, string> info = new Dictionary<string, string>();
             info.Add("Type", errorReport.Exception.Type);
             info.Add("Message", errorReport.Exception.Message);
             info.Add("App Start Time", errorReport.AppStartTime.ToString());
             info.Add("App Error Time", errorReport.AppErrorTime.ToString());
             info.Add("Report Id", errorReport.Id);
+            info.Add("Process Id", errorReport.ProcessId.ToString());
+            info.Add("Reporter Key", errorReport.ReporterKey);
+            info.Add("Reporter Signal", errorReport.ReporterSignal);
+            info.Add("Is App Killed", errorReport.IsAppKill.ToString());
             info.Add("Stack Trace", errorReport.Exception.StackTrace);
-            LastSessionCrashReport.text = string.Join("\n", info.Select(i => i.Key + " : " + i.Value).ToArray());
         }
         else
         {
-            ErrorReportDialog.Title = "No crash in last session";
-            ErrorReportDialog.Message = "";
-            ErrorReportDialog.CustomData = new Dictionary<string, string>();
-            ErrorReportDialog.Show();
+            info.Add("Result", "No crash in last session");
         }
+        LastSessionCrashReport.text = string.Join("\n", info.Select(i => i.Key + " : " + i.Value).ToArray());
     }
 }
