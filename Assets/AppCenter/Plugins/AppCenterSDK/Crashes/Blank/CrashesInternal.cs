@@ -4,8 +4,10 @@
 
 #if (!UNITY_IOS && !UNITY_ANDROID && !UNITY_WSA_10_0) || UNITY_EDITOR
 using System.Collections.Generic;
+using Microsoft.AppCenter.Unity.Crashes.Models;
 
 namespace Microsoft.AppCenter.Unity.Crashes.Internal
+
 {
 #if UNITY_IOS
     using NativeType = System.IntPtr;
@@ -56,7 +58,7 @@ namespace Microsoft.AppCenter.Unity.Crashes.Internal
         {
         }
 
-        public static Microsoft.AppCenter.Unity.Crashes.Models.ErrorReport LastSessionCrashReport()
+        public static ErrorReport LastSessionCrashReport()
         {
             return null;
         }
