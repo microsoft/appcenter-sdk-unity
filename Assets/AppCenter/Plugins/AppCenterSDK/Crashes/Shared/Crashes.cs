@@ -3,6 +3,7 @@
 // Licensed under the MIT license.
 
 using Microsoft.AppCenter.Unity.Crashes.Internal;
+using Microsoft.AppCenter.Unity.Crashes.Models;
 using System;
 using System.Collections.Generic;
 using UnityEngine;
@@ -93,7 +94,7 @@ namespace Microsoft.AppCenter.Unity.Crashes
             CrashesInternal.DisableMachExceptionHandler();
         }
 
-        public static Microsoft.AppCenter.Unity.Crashes.Models.ErrorReport LastSessionCrashReport()
+        public static ErrorReport LastSessionCrashReport()
         {
             return CrashesInternal.LastSessionCrashReport();
         }

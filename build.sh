@@ -6,10 +6,6 @@
 # Feel free to change this file to fit your needs.
 ##########################################################################
 
-export NUGET_USER=mobilecenter
-export NUGET_FEED_ID=56ee7f9f-bc95-4d96-bce5-11b0d8ff66d6
-export NUGET_PASSWORD=_VSTS_PAT_
-
 # Define directories.
 SCRIPT_DIR=$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )
 TOOLS_DIR=$SCRIPT_DIR/tools
