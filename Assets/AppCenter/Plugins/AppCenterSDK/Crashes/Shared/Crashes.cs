@@ -6,6 +6,7 @@ using Microsoft.AppCenter.Unity.Crashes.Internal;
 using System;
 using System.Collections.Generic;
 using UnityEngine;
+using System.Runtime.InteropServices;
 
 namespace Microsoft.AppCenter.Unity.Crashes
 {
@@ -91,6 +92,25 @@ namespace Microsoft.AppCenter.Unity.Crashes
         {
             CrashesInternal.DisableMachExceptionHandler();
         }
+
+        public static Microsoft.AppCenter.Unity.Crashes.Models.ErrorReport LastSessionCrashReport()
+        {
+            Debug.Log("Crashes LastSessionCrashReport");
+
+            return CrashesInternal.LastSessionCrashReport();
+        }
+
+
+        public static void SetUserConfirmationHandler(Func<bool> handler)
+        {
+            Debug.Log("Crashes.cs SetUserConfirmationHandler(Func<bool> handler)");
+
+            // Get a function pointer for the delegate
+            IntPtr funcPtr = Marshal.GetFunctionPointerForDelegate(handler);
+
+            CrashesInternal.SetUserConfirmationHandler(funcPtr);
+        }
+
 
         private static WrapperException CreateWrapperException(Exception exception)
         {

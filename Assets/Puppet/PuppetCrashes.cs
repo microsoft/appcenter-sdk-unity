@@ -8,10 +8,13 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using System.Linq;
 
 public class PuppetCrashes : MonoBehaviour
 {
     public Toggle CrashesEnabled;
+    public PuppetPushDialog ErrorReportDialog;
+    public Text LastSessionCrashReport;
 
     void OnEnable()
     {
@@ -61,5 +64,43 @@ public class PuppetCrashes : MonoBehaviour
     {
         string str = null;
         Debug.Log(str.Length);
+    }
+
+    public bool UserConfirmationHandler()
+    {
+        Debug.Log("UserConfirmationHandler");
+        return false;
+    }
+
+    public void LastCrashReport()
+    {
+        Debug.Log("LastCrashReport");
+
+        Microsoft.AppCenter.Unity.Crashes.Models.ErrorReport errorReport = Crashes.LastSessionCrashReport();
+
+        if (errorReport != null)
+        {
+            Debug.Log("PuppetCrahses.cs:LastCrashReport() -> GOT Crash");
+
+            IDictionary<string, string> info = new Dictionary<string, string>();
+            info.Add("Type", errorReport.Exception.Type);
+            info.Add("Message", errorReport.Exception.Message);
+            info.Add("App Start Time", errorReport.AppStartTime.ToString());
+            info.Add("App Error Time", errorReport.AppErrorTime.ToString());
+            info.Add("Report Id", errorReport.Id);
+            info.Add("Stack Trace", errorReport.Exception.StackTrace);
+            LastSessionCrashReport.text = string.Join("\n", info.Select(i => i.Key + " : " + i.Value).ToArray());
+
+
+        }
+        else
+        {
+            Debug.Log("PuppetCrahses.cs:LastCrashReport() -> NO Crash");
+
+            ErrorReportDialog.Title = "No crash in last session";
+            ErrorReportDialog.Message = "";
+            ErrorReportDialog.CustomData = new Dictionary<string, string>();
+            ErrorReportDialog.Show();
+        }
     }
 }

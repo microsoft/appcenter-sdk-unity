@@ -8,6 +8,7 @@ using System;
 using System.Linq;
 using System.Collections.Generic;
 using System.Runtime.InteropServices;
+using UnityEngine;
 
 namespace Microsoft.AppCenter.Unity.Crashes.Internal
 {
@@ -56,7 +57,61 @@ namespace Microsoft.AppCenter.Unity.Crashes.Internal
             appcenter_unity_crashes_disable_mach_exception_handler();
         }
 
-        #region External
+        public static Microsoft.AppCenter.Unity.Crashes.Models.ErrorReport LastSessionCrashReport()
+        {
+            var errorReportPtr = appcenter_unity_crashes_last_session_crash_report();
+
+            if (errorReportPtr == System.IntPtr.Zero)
+            {
+                Debug.Log("No last session crash report");
+                return null;
+            }
+            else
+            {
+                Debug.Log("Last session crashed");
+            }
+
+            var proc_id = app_center_unity_crashes_error_report_app_process_identifier(errorReportPtr);
+            Debug.Log("proc_id = " + proc_id);
+            var identifier = app_center_unity_crashes_error_report_incident_identifier(errorReportPtr);
+            Debug.Log("id = " + identifier);
+            var exceptionName = app_center_unity_crashes_error_report_exception_name(errorReportPtr);
+            Debug.Log("exname = " + exceptionName);
+            var reporterKey = app_center_unity_crashes_error_report_reporter_key(errorReportPtr);
+            Debug.Log("reporterKey = " + reporterKey);
+            var reporterSignal = app_center_unity_crashes_error_report_signal(errorReportPtr);
+            Debug.Log("reporterSignal = " + reporterSignal);
+            var exceptionReason = app_center_unity_crashes_error_report_exception_reason(errorReportPtr);
+            Debug.Log("exceptionReason = " + exceptionReason); 
+            var startTime = DateTimeOffset.Parse(app_center_unity_crashes_error_report_app_start_time(errorReportPtr));
+            Debug.Log("startTime = " + startTime); 
+            var errorTime = DateTimeOffset.Parse(app_center_unity_crashes_error_report_app_error_time(errorReportPtr));
+            Debug.Log("errorTime = " + errorTime); 
+            bool isAppKill = app_center_unity_crashes_error_report_is_app_kill(errorReportPtr);
+            Debug.Log("isAppKill = " + isAppKill); 
+        
+            var condition = exceptionName + " : " + exceptionReason;
+            Debug.Log("condition = " + condition); 
+
+            // as we don't have stack trace, we can put some additional information here
+            var stackTrace = "ProcessID = " + proc_id + ", ReporterKey = " + reporterKey + ", ReporterSignal = " + reporterSignal + ", IsAppKill = " + isAppKill;
+            Debug.Log("stackTrace = " + stackTrace); 
+
+            Microsoft.AppCenter.Unity.Crashes.Models.Exception exception = new Microsoft.AppCenter.Unity.Crashes.Models.Exception(condition, stackTrace);
+            Microsoft.AppCenter.Unity.Crashes.Models.ErrorReport errorReport = new Microsoft.AppCenter.Unity.Crashes.Models.ErrorReport(identifier, startTime, errorTime, exception);
+ 
+            return errorReport;
+        }
+
+        public static void SetUserConfirmationHandler(IntPtr handler)
+        {
+            Debug.Log("CrashesInternal.cs SetUserConfirmationHandler(IntPtr handler)");
+            appcenter_unity_crashes_set_user_confirmation_handler(handler);
+        }
+        
+
+
+#region External
 
         [DllImport("__Internal")]
         private static extern IntPtr appcenter_unity_crashes_get_type();
@@ -82,7 +137,40 @@ namespace Microsoft.AppCenter.Unity.Crashes.Internal
         [DllImport("__Internal")]
         private static extern void appcenter_unity_crashes_disable_mach_exception_handler();
 
-        #endregion
+        [DllImport("__Internal")]
+        private static extern IntPtr appcenter_unity_crashes_last_session_crash_report();
+
+        [DllImport("__Internal")]
+        private static extern void appcenter_unity_crashes_set_user_confirmation_handler(IntPtr handler);
+
+        [DllImport("__Internal")]
+        private static extern string app_center_unity_crashes_error_report_exception_name(IntPtr errorReport);
+
+        [DllImport("__Internal")]
+        private static extern int app_center_unity_crashes_error_report_app_process_identifier(IntPtr errorReport);
+
+        [DllImport("__Internal")]
+        private static extern string app_center_unity_crashes_error_report_incident_identifier(IntPtr errorReport);
+
+        [DllImport("__Internal")]
+        private static extern string app_center_unity_crashes_error_report_reporter_key(IntPtr errorReport);
+
+        [DllImport("__Internal")]
+        private static extern string app_center_unity_crashes_error_report_signal(IntPtr errorReport);
+
+        [DllImport("__Internal")]
+        private static extern string app_center_unity_crashes_error_report_exception_reason(IntPtr errorReport);
+
+        [DllImport("__Internal")]
+        private static extern string app_center_unity_crashes_error_report_app_start_time(IntPtr errorReport);
+
+        [DllImport("__Internal")]
+        private static extern string app_center_unity_crashes_error_report_app_error_time(IntPtr errorReport);
+
+        [DllImport("__Internal")]
+        private static extern bool app_center_unity_crashes_error_report_is_app_kill(IntPtr errorReport);
+
+#endregion
     }
 }
 #endif

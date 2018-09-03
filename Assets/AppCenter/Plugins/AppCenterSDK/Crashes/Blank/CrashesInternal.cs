@@ -55,6 +55,15 @@ namespace Microsoft.AppCenter.Unity.Crashes.Internal
         public static void DisableMachExceptionHandler()
         {
         }
+
+        public static Microsoft.AppCenter.Unity.Crashes.Models.ErrorReport LastSessionCrashReport()
+        {
+            return null;
+        }
+
+        public static void SetUserConfirmationHandler(System.IntPtr handler)
+        {
+        }
     }
 }
 #endif

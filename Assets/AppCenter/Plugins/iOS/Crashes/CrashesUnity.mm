@@ -59,3 +59,16 @@ MSErrorReport* app_center_unity_crashes_last_session_crash_report()
 //void app_center_unity_crashes_notify_with_user_confirmation(int userConfirmation);
 //
 
+void* appcenter_unity_crashes_last_session_crash_report()
+{
+    return (void *)CFBridgingRetain([MSCrashes lastSessionCrashReport]);
+}
+
+void appcenter_unity_crashes_set_user_confirmation_handler(bool(*userConfirmationHandler)())
+{
+/*    if (userConfirmationHandler())
+    {
+        return;
+    }*/
+}
+
