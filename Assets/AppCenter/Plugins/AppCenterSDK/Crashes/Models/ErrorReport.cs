@@ -8,7 +8,6 @@ namespace Microsoft.AppCenter.Unity.Crashes.Models
 {
     public class ErrorReport
     {
-
         public ErrorReport(string id, DateTimeOffset appStartTime, DateTimeOffset appErrorTime, Models.Exception exception)
         {
             Id = id;

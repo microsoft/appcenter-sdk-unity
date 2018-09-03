@@ -95,20 +95,12 @@ namespace Microsoft.AppCenter.Unity.Crashes
 
         public static Microsoft.AppCenter.Unity.Crashes.Models.ErrorReport LastSessionCrashReport()
         {
-            Debug.Log("Crashes LastSessionCrashReport");
-
             return CrashesInternal.LastSessionCrashReport();
         }
 
 
         public static void SetUserConfirmationHandler(Func<bool> handler)
         {
-            Debug.Log("Crashes.cs SetUserConfirmationHandler(Func<bool> handler)");
-
-            // Get a function pointer for the delegate
-            IntPtr funcPtr = Marshal.GetFunctionPointerForDelegate(handler);
-
-            CrashesInternal.SetUserConfirmationHandler(funcPtr);
         }
 
 
