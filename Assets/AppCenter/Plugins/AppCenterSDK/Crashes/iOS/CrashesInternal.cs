@@ -9,6 +9,7 @@ using System.Linq;
 using System.Collections.Generic;
 using System.Runtime.InteropServices;
 using UnityEngine;
+using Microsoft.AppCenter.Unity.Crashes;
 
 namespace Microsoft.AppCenter.Unity.Crashes.Internal
 {
@@ -57,11 +58,11 @@ namespace Microsoft.AppCenter.Unity.Crashes.Internal
             appcenter_unity_crashes_disable_mach_exception_handler();
         }
 
-        public static Microsoft.AppCenter.Unity.Crashes.Models.ErrorReport LastSessionCrashReport()
+        public static Models.ErrorReport LastSessionCrashReport()
         {
             var errorReportPtr = appcenter_unity_crashes_last_session_crash_report();
 
-            if (errorReportPtr == System.IntPtr.Zero)
+            if (errorReportPtr == IntPtr.Zero)
                 return null;
  
             var proc_id = app_center_unity_crashes_error_report_app_process_identifier(errorReportPtr);
@@ -79,8 +80,8 @@ namespace Microsoft.AppCenter.Unity.Crashes.Internal
             // as we don't have stack trace, we can put some additional information here
             var stackTrace = "ProcessID = " + proc_id + ", ReporterKey = " + reporterKey + ", ReporterSignal = " + reporterSignal + ", IsAppKill = " + isAppKill;
 
-            Microsoft.AppCenter.Unity.Crashes.Models.Exception exception = new Microsoft.AppCenter.Unity.Crashes.Models.Exception(condition, stackTrace);
-            Microsoft.AppCenter.Unity.Crashes.Models.ErrorReport errorReport = new Microsoft.AppCenter.Unity.Crashes.Models.ErrorReport(identifier, startTime, errorTime, exception);
+            Models.Exception exception = new Models.Exception(condition, stackTrace);
+            Models.ErrorReport errorReport = new Models.ErrorReport(identifier, startTime, errorTime, exception);
  
             return errorReport;
         }
@@ -90,8 +91,6 @@ namespace Microsoft.AppCenter.Unity.Crashes.Internal
             appcenter_unity_crashes_set_user_confirmation_handler(handler);
         }
         
-
-
 #region External
 
         [DllImport("__Internal")]

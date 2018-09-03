@@ -3,7 +3,7 @@
 // Licensed under the MIT license.
 
 using Microsoft.AppCenter.Unity.Crashes.Internal;
-using Microsoft.AppCenter.Unity.Crashes.Models;
+using Microsoft.AppCenter.Unity.Crashes;
 using System;
 using System.Collections.Generic;
 using UnityEngine;
@@ -94,16 +94,10 @@ namespace Microsoft.AppCenter.Unity.Crashes
             CrashesInternal.DisableMachExceptionHandler();
         }
 
-        public static ErrorReport LastSessionCrashReport()
+        public static Models.ErrorReport LastSessionCrashReport()
         {
             return CrashesInternal.LastSessionCrashReport();
         }
-
-
-        public static void SetUserConfirmationHandler(Func<bool> handler)
-        {
-        }
-
 
         private static WrapperException CreateWrapperException(Exception exception)
         {

@@ -60,10 +60,6 @@ namespace Microsoft.AppCenter.Unity.Crashes.Internal
         {
             return null;
         }
-
-        public static void SetUserConfirmationHandler(System.IntPtr handler)
-        {
-        }
     }
 }
 #endif

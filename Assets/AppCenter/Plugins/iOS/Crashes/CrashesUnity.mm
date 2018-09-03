@@ -63,12 +63,3 @@ void* appcenter_unity_crashes_last_session_crash_report()
 {
     return (void *)CFBridgingRetain([MSCrashes lastSessionCrashReport]);
 }
-
-void appcenter_unity_crashes_set_user_confirmation_handler(bool(*userConfirmationHandler)())
-{
-/*    if (userConfirmationHandler())
-    {
-        return;
-    }*/
-}
-
