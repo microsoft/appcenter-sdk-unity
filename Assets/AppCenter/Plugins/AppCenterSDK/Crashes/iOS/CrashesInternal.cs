@@ -61,7 +61,6 @@ namespace Microsoft.AppCenter.Unity.Crashes.Internal
         public static Models.ErrorReport LastSessionCrashReport()
         {
             var errorReportPtr = appcenter_unity_crashes_last_session_crash_report();
-
             if (errorReportPtr == IntPtr.Zero)
                 return null;
  

@@ -68,8 +68,7 @@ public class PuppetCrashes : MonoBehaviour
 
     public void LastCrashReport()
     {
-        Microsoft.AppCenter.Unity.Crashes.Models.ErrorReport errorReport = Crashes.LastSessionCrashReport();
-
+        Models.ErrorReport errorReport = Crashes.LastSessionCrashReport();
         if (errorReport != null)
         {
             IDictionary<string, string> info = new Dictionary<string, string>();
