@@ -7,7 +7,6 @@ using System.Collections.Generic;
 using Microsoft.AppCenter.Unity.Crashes.Models;
 
 namespace Microsoft.AppCenter.Unity.Crashes.Internal
-
 {
 #if UNITY_IOS
     using NativeType = System.IntPtr;
