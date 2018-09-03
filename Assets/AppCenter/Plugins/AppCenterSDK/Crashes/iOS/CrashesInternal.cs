@@ -76,11 +76,8 @@ namespace Microsoft.AppCenter.Unity.Crashes.Internal
         
             var condition = exceptionName + " : " + exceptionReason;
 
-            // as we don't have stack trace, we can put some additional information here
-            //var stackTrace = "ProcessID = " + proc_id + ", ReporterKey = " + reporterKey + ", ReporterSignal = " + reporterSignal + ", IsAppKill = " + isAppKill;
-
             Models.Exception exception = new Models.Exception(condition, "");
-Models.ErrorReport errorReport = new Models.ErrorReport(identifier, startTime, errorTime, exception, procId, reporterKey, reporterSignal, isAppKill);
+            Models.ErrorReport errorReport = new Models.ErrorReport(identifier, startTime, errorTime, exception, procId, reporterKey, reporterSignal, isAppKill);
  
             return errorReport;
         }
