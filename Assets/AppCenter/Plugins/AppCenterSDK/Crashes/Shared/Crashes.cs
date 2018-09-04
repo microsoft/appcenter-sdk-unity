@@ -3,7 +3,6 @@
 // Licensed under the MIT license.
 
 using Microsoft.AppCenter.Unity.Crashes.Internal;
-using Microsoft.AppCenter.Unity.Crashes;
 using System;
 using System.Collections.Generic;
 using UnityEngine;

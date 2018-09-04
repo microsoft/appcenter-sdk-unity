@@ -8,8 +8,7 @@ using System;
 using System.Linq;
 using System.Collections.Generic;
 using System.Runtime.InteropServices;
-using UnityEngine;
-using Microsoft.AppCenter.Unity.Crashes;
+using Microsoft.AppCenter.Unity.Crashes.Models;
 
 namespace Microsoft.AppCenter.Unity.Crashes.Internal
 {
@@ -58,12 +57,12 @@ namespace Microsoft.AppCenter.Unity.Crashes.Internal
             appcenter_unity_crashes_disable_mach_exception_handler();
         }
 
-        public static Models.ErrorReport LastSessionCrashReport()
+        public static ErrorReport LastSessionCrashReport()
         {
             var errorReportPtr = appcenter_unity_crashes_last_session_crash_report();
             if (errorReportPtr == IntPtr.Zero)
                 return null;
- 
+
             var procId = app_center_unity_crashes_error_report_app_process_identifier(errorReportPtr);
             var identifier = app_center_unity_crashes_error_report_incident_identifier(errorReportPtr);
             var exceptionName = app_center_unity_crashes_error_report_exception_name(errorReportPtr);
@@ -72,16 +71,12 @@ namespace Microsoft.AppCenter.Unity.Crashes.Internal
             var exceptionReason = app_center_unity_crashes_error_report_exception_reason(errorReportPtr);
             var startTime = DateTimeOffset.Parse(app_center_unity_crashes_error_report_app_start_time(errorReportPtr));
             var errorTime = DateTimeOffset.Parse(app_center_unity_crashes_error_report_app_error_time(errorReportPtr));
-            bool isAppKill = app_center_unity_crashes_error_report_is_app_kill(errorReportPtr);
-        
+            var isAppKill = app_center_unity_crashes_error_report_is_app_kill(errorReportPtr);
             var condition = exceptionName + " : " + exceptionReason;
-
-            Models.Exception exception = new Models.Exception(condition, "");
-            Models.ErrorReport errorReport = new Models.ErrorReport(identifier, startTime, errorTime, exception, procId, reporterKey, reporterSignal, isAppKill);
- 
-            return errorReport;
+            var exception = new Models.Exception(condition, "");
+            return new ErrorReport(identifier, startTime, errorTime, exception, procId, reporterKey, reporterSignal, isAppKill);
         }
-        
+
 #region External
 
         [DllImport("__Internal")]
