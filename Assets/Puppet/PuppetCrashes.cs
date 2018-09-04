@@ -3,15 +3,18 @@
 // Licensed under the MIT license.
 
 using Microsoft.AppCenter.Unity.Crashes;
+using Microsoft.AppCenter.Unity.Crashes.Models;
 using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using System.Linq;
 
 public class PuppetCrashes : MonoBehaviour
 {
     public Toggle CrashesEnabled;
+    public Text LastSessionCrashReport;
 
     void OnEnable()
     {
@@ -38,9 +41,9 @@ public class PuppetCrashes : MonoBehaviour
     {
         try
         {
-            throw new Exception("Test error");
+            throw new System.Exception("Test error");
         }
-        catch (Exception ex)
+        catch (System.Exception ex)
         {
             var properties = new Dictionary<string, string> { { "Category", "Music" }, { "Wifi", "On" } };
             Crashes.TrackError(ex, properties);
@@ -61,5 +64,29 @@ public class PuppetCrashes : MonoBehaviour
     {
         string str = null;
         Debug.Log(str.Length);
+    }
+
+    public void LastCrashReport()
+    {
+        ErrorReport errorReport = Crashes.LastSessionCrashReport();
+        IDictionary<string, string> info = new Dictionary<string, string>();
+        if (errorReport != null)
+        {
+            info.Add("Type", errorReport.Exception.Type);
+            info.Add("Message", errorReport.Exception.Message);
+            info.Add("App Start Time", errorReport.AppStartTime.ToString());
+            info.Add("App Error Time", errorReport.AppErrorTime.ToString());
+            info.Add("Report Id", errorReport.Id);
+            info.Add("Process Id", errorReport.ProcessId.ToString());
+            info.Add("Reporter Key", errorReport.ReporterKey);
+            info.Add("Reporter Signal", errorReport.ReporterSignal);
+            info.Add("Is App Killed", errorReport.IsAppKill.ToString());
+            info.Add("Stack Trace", errorReport.Exception.StackTrace);
+        }
+        else
+        {
+            info.Add("Result", "No crash in last session");
+        }
+        LastSessionCrashReport.text = string.Join("\n", info.Select(i => i.Key + " : " + i.Value).ToArray());
     }
 }

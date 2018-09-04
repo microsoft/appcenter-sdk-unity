@@ -3,6 +3,7 @@
 // Licensed under the MIT license.
 
 using Microsoft.AppCenter.Unity.Crashes.Internal;
+using Microsoft.AppCenter.Unity.Crashes;
 using System;
 using System.Collections.Generic;
 using UnityEngine;
@@ -92,6 +93,11 @@ namespace Microsoft.AppCenter.Unity.Crashes
             CrashesInternal.DisableMachExceptionHandler();
         }
 
+        public static Models.ErrorReport LastSessionCrashReport()
+        {
+            return CrashesInternal.LastSessionCrashReport();
+        }
+        
         private static WrapperException CreateWrapperException(Exception exception)
         {
             var exceptionWrapper = new WrapperException();
