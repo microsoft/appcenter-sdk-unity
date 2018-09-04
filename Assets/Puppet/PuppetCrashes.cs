@@ -4,12 +4,11 @@
 
 using Microsoft.AppCenter.Unity.Crashes;
 using Microsoft.AppCenter.Unity.Crashes.Models;
-using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 using UnityEngine.UI;
-using System.Linq;
 
 public class PuppetCrashes : MonoBehaviour
 {
@@ -68,8 +67,8 @@ public class PuppetCrashes : MonoBehaviour
 
     public void LastCrashReport()
     {
-        ErrorReport errorReport = Crashes.LastSessionCrashReport();
-        IDictionary<string, string> info = new Dictionary<string, string>();
+        var errorReport = Crashes.LastSessionCrashReport();
+        var info = new Dictionary<string, string>();
         if (errorReport != null)
         {
             info.Add("Type", errorReport.Exception.Type);
