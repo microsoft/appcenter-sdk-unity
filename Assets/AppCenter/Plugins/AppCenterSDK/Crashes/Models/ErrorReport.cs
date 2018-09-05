@@ -8,6 +8,18 @@ namespace Microsoft.AppCenter.Unity.Crashes.Models
 {
     public class ErrorReport
     {
+        public ErrorReport(string id, DateTimeOffset appStartTime, DateTimeOffset appErrorTime, Models.Exception exception, int processId, string reporterKey, string reporterSignal, bool isAppKill)
+        {
+            Id = id;
+            AppStartTime = appStartTime;
+            AppErrorTime = appErrorTime;
+            Exception = exception;
+            ProcessId = processId;
+            ReporterKey = reporterKey;
+            ReporterSignal = reporterSignal;
+            IsAppKill = isAppKill;
+        }
+
         /// <summary>
         /// Gets the report identifier.
         /// </summary>
@@ -37,6 +49,30 @@ namespace Microsoft.AppCenter.Unity.Crashes.Models
         /// </summary>
         /// <value>The exception.</value>
         public Models.Exception Exception { get; private set; }
+
+        /// <summary>
+        /// Gets the process identifier.
+        /// </summary>
+        /// <value>Process Id.</value>
+        public int ProcessId { get; private set; }
+
+        /// <summary>
+        /// Gets the reporter key.
+        /// </summary>
+        /// <value>Reporter Key.</value>
+        public string ReporterKey { get; private set; }
+
+        /// <summary>
+        /// Gets the reporter signal.
+        /// </summary>
+        /// <value>Reporter Signal.</value>
+        public string ReporterSignal { get; private set; }
+
+        /// <summary>
+        /// True if the details represent an app kill instead of a crash.
+        /// </summary>
+        /// <value>True if the details represent an app kill instead of a crash</value>
+        public bool IsAppKill { get; private set; }
 
         //TODO don't have android or ios details
         //TODO bind device
