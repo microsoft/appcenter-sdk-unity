@@ -4,6 +4,7 @@
 
 #if UNITY_WSA_10_0 && !UNITY_EDITOR
 
+using Microsoft.AppCenter.Unity.Crashes.Models;
 using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
@@ -42,6 +43,11 @@ namespace Microsoft.AppCenter.Unity.Crashes.Internal
         public static AppCenterTask<bool> HasCrashedInLastSession()
         {
             return AppCenterTask<bool>.FromCompleted(false);
+        }
+
+        public static ErrorReport LastSessionCrashReport()
+        {
+            return null;
         }
 
         public static void DisableMachExceptionHandler()
