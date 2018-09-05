@@ -2,6 +2,8 @@
 //
 // Licensed under the MIT license.
 
+#if UNITY_EDITOR
+
 using System.Collections.Generic;
 using System.IO;
 
@@ -101,3 +103,4 @@ public class AppCenterSettingsMakerAndroid
         XmlResourceHelper.WriteXmlResource(AppCenterResourcesPath, _resourceValues);
     }
 }
+#endif

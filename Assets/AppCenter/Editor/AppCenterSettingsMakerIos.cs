@@ -2,6 +2,8 @@
 //
 // Licensed under the MIT license.
 
+#if UNITY_EDITOR
+
 using System.IO;
 
 public class AppCenterSettingsMakerIos
@@ -87,3 +89,4 @@ public class AppCenterSettingsMakerIos
         _loaderFileText = tokenText + _loaderFileText;
     }
 }
+#endif

@@ -2,6 +2,8 @@
 //
 // Licensed under the MIT license.
 
+#if UNITY_EDITOR
+
 using UnityEngine;
 using UnityEditor;
 
@@ -42,3 +44,4 @@ public class CustomUrlPropertyDrawer : PropertyDrawer
         return height;
     }
 }
+#endif

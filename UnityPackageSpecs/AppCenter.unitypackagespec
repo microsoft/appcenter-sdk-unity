@@ -4,6 +4,7 @@
         <!-- Editor related files -->
         <file path="Assets/AppCenter/Editor" />
         <file path="Assets/AppCenter/Properties" />
+        <file path="Assets/AppCenter/AppCenter.asmdef" />
         <file path="Assets/AppCenter/AppCenterBehavior.cs" />
         <file path="Assets/AppCenter/AppCenterSettings.cs" />
 

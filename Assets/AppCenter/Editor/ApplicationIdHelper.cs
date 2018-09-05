@@ -1,3 +1,9 @@
+// Copyright (c) Microsoft Corporation. All rights reserved.
+//
+// Licensed under the MIT license.
+
+#if UNITY_EDITOR
+
 using UnityEditor;
 
 public static class ApplicationIdHelper
@@ -13,3 +19,4 @@ public static class ApplicationIdHelper
         return appId;
     }
 }
+#endif

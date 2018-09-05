@@ -2,6 +2,8 @@
 //
 // Licensed under the MIT license.
 
+#if UNITY_EDITOR
+
 using System;
 using System.IO;
 using System.Text.RegularExpressions;
@@ -273,3 +275,4 @@ public class AppCenterPostBuild : IPostprocessBuild
     }
     #endregion
 }
+#endif

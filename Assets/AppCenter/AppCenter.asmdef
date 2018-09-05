@@ -1,0 +1,9 @@
+{
+    "name": "Microsoft.AppCenter.Unity",
+    "includePlatforms": [
+        "Android",
+        "Editor",
+        "iOS",
+        "WSA"
+    ]
+}

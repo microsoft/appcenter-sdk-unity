@@ -2,6 +2,8 @@
 //
 // Licensed under the MIT license.
 
+#if UNITY_EDITOR
+
 using UnityEditor;
 using UnityEngine;
 
@@ -18,3 +20,4 @@ public class AppSecretDrawer : PropertyDrawer
         EditorGUI.PropertyField(position, property, label);
     }
 }
+#endif

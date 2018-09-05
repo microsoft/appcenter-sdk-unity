@@ -2,6 +2,8 @@
 //
 // Licensed under the MIT license.
 
+#if UNITY_EDITOR
+
 using UnityEditor;
 
 [CustomEditor(typeof(AppCenterBehavior))]
@@ -26,3 +28,4 @@ public class AppCenterBehaviorEditor : Editor
         settingsEditor.OnInspectorGUI();
     }
 }
+#endif
