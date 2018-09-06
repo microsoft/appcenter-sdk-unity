@@ -1,9 +1,24 @@
+using System.IO;
 using UnityEditor;
 using UnityEditor.Build;
+#if UNITY_2018_1_OR_NEWER
+using UnityEditor.Build.Reporting;
+#endif
 
+#if UNITY_2018_1_OR_NEWER
+public class AppCenterPreBuild : IPreprocessBuildWithReport
+#else
 public class AppCenterPreBuild : IPreprocessBuild
+#endif
 {
     public int callbackOrder { get { return 0; } }
+
+#if UNITY_2018_1_OR_NEWER
+    public void OnPreprocessBuild(BuildReport report)
+    {
+        OnPreprocessBuild(report.summary.platform, report.summary.outputPath);
+    }
+#endif
 
     public void OnPreprocessBuild(BuildTarget target, string path)
     {
@@ -30,7 +45,7 @@ public class AppCenterPreBuild : IPreprocessBuild
         {
             settingsMaker.SetLogUrl(settings.CustomLogUrl.Url);
         }
-        if (settings.UsePush)
+        if (settings.UsePush && IsAndroidPushAvailable())
         {
             settingsMaker.StartPushClass();
             if (settings.EnableFirebaseAnalytics)
@@ -38,11 +53,15 @@ public class AppCenterPreBuild : IPreprocessBuild
                 settingsMaker.EnableFirebaseAnalytics();
             }
         }
-        if (settings.UseAnalytics)
+        if (settings.UseAnalytics && IsAndroidAnalyticsAvailable())
         {
             settingsMaker.StartAnalyticsClass();
         }
-        if (settings.UseDistribute)
+        if (settings.UseCrashes && IsAndroidCrashesAvailable())
+        {
+            settingsMaker.StartCrashesClass();
+        }
+        if (settings.UseDistribute && IsAndroidDistributeAvailable())
         {
             if (settings.CustomApiUrl.UseCustomUrl)
             {
@@ -72,15 +91,19 @@ public class AppCenterPreBuild : IPreprocessBuild
         }
         settingsMaker.SetLogLevel((int)settings.InitialLogLevel);
         settingsMaker.SetAppSecret(settings.iOSAppSecret);
-        if (settings.UsePush)
+        if (settings.UseCrashes && IsIOSCrashesAvailable())
+        {
+            settingsMaker.StartCrashesClass();
+        }
+        if (settings.UsePush && IsIOSPushAvailable())
         {
             settingsMaker.StartPushClass();
         }
-        if (settings.UseAnalytics)
+        if (settings.UseAnalytics && IsIOSAnalyticsAvailable())
         {
             settingsMaker.StartAnalyticsClass();
         }
-        if (settings.UseDistribute)
+        if (settings.UseDistribute && IsIOSDistributeAvailable())
         {
             if (settings.CustomApiUrl.UseCustomUrl)
             {
@@ -93,5 +116,45 @@ public class AppCenterPreBuild : IPreprocessBuild
             settingsMaker.StartDistributeClass();
         }
         settingsMaker.CommitSettings();
+    }
+
+    static bool IsAndroidDistributeAvailable()
+    {
+        return File.Exists("Assets/AppCenter/Plugins/Android/appcenter-distribute-release.aar");
+    }
+
+    static bool IsAndroidPushAvailable()
+    {
+        return File.Exists("Assets/AppCenter/Plugins/Android/appcenter-push-release.aar");
+    }
+
+    static bool IsAndroidAnalyticsAvailable()
+    {
+        return File.Exists("Assets/AppCenter/Plugins/Android/appcenter-analytics-release.aar");
+    }
+
+    static bool IsAndroidCrashesAvailable()
+    {
+        return File.Exists("Assets/AppCenter/Plugins/Android/appcenter-crashes-release.aar");
+    }
+
+    static bool IsIOSDistributeAvailable()
+    {
+        return Directory.Exists("Assets/AppCenter/Plugins/iOS/Distribute");
+    }
+
+    static bool IsIOSPushAvailable()
+    {
+        return Directory.Exists("Assets/AppCenter/Plugins/iOS/Push");
+    }
+
+    static bool IsIOSAnalyticsAvailable()
+    {
+        return Directory.Exists("Assets/AppCenter/Plugins/iOS/Analytics");
+    }
+
+    static bool IsIOSCrashesAvailable()
+    {
+        return Directory.Exists("Assets/AppCenter/Plugins/iOS/Crashes");
     }
 }

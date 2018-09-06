@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<package name="AppCenterCrashes" version="0.0.1" needsCore="true">
+    <include>
+        <!-- Shared files -->
+        <file path="Assets/AppCenter/Plugins/AppCenterSDK/Crashes/Shared" />
+        <file path="Assets/AppCenter/Plugins/AppCenterSDK/Crashes/Models" />
+
+        <!-- "Blank" files -->
+        <file path="Assets/AppCenter/Plugins/AppCenterSDK/Crashes/Blank" />
+
+        <!-- Android files -->
+        <file path="Assets/AppCenter/Plugins/Android/appcenter-crashes-release.aar" />
+        <file path="Assets/AppCenter/Plugins/AppCenterSDK/Crashes/Android" />
+
+        <!-- iOS files -->
+        <file path="Assets/AppCenter/Plugins/iOS/Crashes" />
+        <file path="Assets/AppCenter/Plugins/AppCenterSDK/Crashes/iOS" />
+
+        <!-- UWP files -->
+        <file path="Assets/AppCenter/Plugins/AppCenterSDK/Crashes/UWP" />
+    </include>
+</package>

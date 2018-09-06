@@ -12,9 +12,9 @@ using System.Runtime.Versioning;
 using NuGet;
 
 // Native SDK versions
-var AndroidSdkVersion = "1.1.0";
-var IosSdkVersion = "1.1.0";
-var UwpSdkVersion = "1.1.0";
+var AndroidSdkVersion = "1.8.0";
+var IosSdkVersion = "1.9.0";
+var UwpSdkVersion = "1.9.0";
 
 // URLs for downloading binaries.
 /*
@@ -33,15 +33,13 @@ var AppCenterModules = new [] {
     new AppCenterModule("appcenter-release.aar", "AppCenter.framework", "Microsoft.AppCenter", "Core"),
     new AppCenterModule("appcenter-analytics-release.aar", "AppCenterAnalytics.framework", "Microsoft.AppCenter.Analytics", "Analytics"),
     new AppCenterModule("appcenter-distribute-release.aar", new[] { "AppCenterDistribute.framework", "AppCenterDistributeResources.bundle" }, "Microsoft.AppCenter.Distribute", "Distribute"),
-    new AppCenterModule("appcenter-push-release.aar", "AppCenterPush.framework", "Microsoft.AppCenter.Push", "Push")
+    new AppCenterModule("appcenter-push-release.aar", "AppCenterPush.framework", "Microsoft.AppCenter.Push", "Push"),
+    new AppCenterModule("appcenter-crashes-release.aar", "AppCenterCrashes.framework", "Microsoft.AppCenter.Crashes", "Crashes")
 };
 
 // UWP IL2CPP dependencies.
 var UwpIL2CPPDependencies = new [] {
-    new NugetDependency("sqlite-net-pcl", "1.3.1", "UAP, Version=v10.0"),
-
-    // Force use this version to avoid types conflicts.
-    new NugetDependency("System.Threading.Tasks", "4.0.10", ".NETCore, Version=v5.0", false)
+    new NugetDependency("sqlite-net-pcl", "1.3.1", "UAP, Version=v10.0")
 };
 var UwpIL2CPPJsonUrl = SdkStorageUrl + "Newtonsoft.Json.dll";
 
@@ -117,7 +115,7 @@ class UnityPackage
         var needsCore = Statics.Context.XmlPeek(specFilePath, "package/@needsCore") == "true";
         if (needsCore)
         {
-            var specFileDirectory = System.IO.Path.GetDirectoryName(specFilePath);;
+            var specFileDirectory = System.IO.Path.GetDirectoryName(specFilePath);
             AddFilesFromSpec(specFileDirectory + "/AppCenter.unitypackagespec");
         }
         _packageName = Statics.Context.XmlPeek(specFilePath, "package/@name");
@@ -230,6 +228,11 @@ Task("Externals-Uwp")
         if (module.Moniker == "Distribute")
         {
             Warning("Skipping 'Distribute' for UWP.");
+            continue;
+        }
+        if (module.Moniker == "Crashes")
+        {
+            Warning("Skipping 'Crashes' for UWP.");
             continue;
         }
         Information("Downloading " + module.DotNetModule + "...");
