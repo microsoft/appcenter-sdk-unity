@@ -25,6 +25,8 @@
 
         <!-- UWP files -->
         <file path="Assets/AppCenter/Plugins/WSA/Core" />
+        <file path="Assets/AppCenter/Plugins/WSA/IL2CPP" />
         <file path="Assets/AppCenter/Plugins/AppCenterSDK/Core/UWP" />
+        <file path="Assets/AppCenter/link.xml" />
     </include>
 </package>
