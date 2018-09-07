@@ -109,9 +109,6 @@ namespace Microsoft.AppCenter.Unity.Crashes.Internal
         private static extern IntPtr appcenter_unity_crashes_last_session_crash_report();
 
         [DllImport("__Internal")]
-        private static extern void appcenter_unity_crashes_set_user_confirmation_handler(IntPtr handler);
-
-        [DllImport("__Internal")]
         private static extern string app_center_unity_crashes_error_report_exception_name(IntPtr errorReport);
 
         [DllImport("__Internal")]
