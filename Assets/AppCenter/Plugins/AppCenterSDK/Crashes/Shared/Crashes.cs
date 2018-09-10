@@ -17,6 +17,13 @@ namespace Microsoft.AppCenter.Unity.Crashes
 
     public class Crashes
     {
+        public static bool ReportUnhandledExceptions { get; set; }
+
+        static Crashes()
+        {
+            ReportUnhandledExceptions = false;
+        }
+
         public static void Initialize()
         {
             CrashesDelegate.SetDelegate();
@@ -45,7 +52,7 @@ namespace Microsoft.AppCenter.Unity.Crashes
 
         public static void OnHandleLog(string logString, string stackTrace, LogType type)
         {
-            if (LogType.Assert == type || LogType.Exception == type || LogType.Error == type)
+            if (ReportUnhandledExceptions && LogType.Assert == type || LogType.Exception == type || LogType.Error == type)
             {
                 var exception = CreateWrapperException(logString, stackTrace);
                 CrashesInternal.TrackException(exception.GetRawObject());
@@ -54,12 +61,12 @@ namespace Microsoft.AppCenter.Unity.Crashes
 
         public static void OnHandleUnresolvedException(object sender, UnhandledExceptionEventArgs args)
         {
-            if (args == null || args.ExceptionObject == null)
+            if (!ReportUnhandledExceptions || args == null || args.ExceptionObject == null)
             {
                 return;
             }
 
-            Exception e = args.ExceptionObject as Exception;
+            var e = args.ExceptionObject as Exception;
             if (e != null)
             {
                 var exception = CreateWrapperException(e.Source, e.StackTrace);
@@ -96,7 +103,7 @@ namespace Microsoft.AppCenter.Unity.Crashes
         {
             return CrashesInternal.LastSessionCrashReport();
         }
-        
+
         private static WrapperException CreateWrapperException(Exception exception)
         {
             var exceptionWrapper = new WrapperException();

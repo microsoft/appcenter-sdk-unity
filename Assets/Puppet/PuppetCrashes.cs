@@ -13,6 +13,7 @@ using UnityEngine.UI;
 public class PuppetCrashes : MonoBehaviour
 {
     public Toggle CrashesEnabled;
+    public Toggle ReportUnhandledExceptions;
     public Text LastSessionCrashReport;
 
     void OnEnable()
@@ -21,11 +22,17 @@ public class PuppetCrashes : MonoBehaviour
         {
             CrashesEnabled.isOn = task.Result;
         });
+        ReportUnhandledExceptions.isOn = Crashes.ReportUnhandledExceptions;
     }
 
     public void SetCrashesEnabled(bool enabled)
     {
         StartCoroutine(SetCrashesEnabledCoroutine(enabled));
+    }
+
+    public void SetReportUnhandledExceptions(bool enabled)
+    {
+        Crashes.ReportUnhandledExceptions = enabled;
     }
 
     private IEnumerator SetCrashesEnabledCoroutine(bool enabled)
