@@ -66,11 +66,11 @@ namespace Microsoft.AppCenter.Unity.Crashes
                 return;
             }
 
-            var e = args.ExceptionObject as Exception;
-            if (e != null)
+            var exception = args.ExceptionObject as Exception;
+            if (exception != null)
             {
-                var exception = CreateWrapperException(e.Source, e.StackTrace);
-                CrashesInternal.TrackException(exception.GetRawObject());
+                var exceptionWrapper = CreateWrapperException(exception);
+                CrashesInternal.TrackException(exceptionWrapper.GetRawObject());
             }
         }
 

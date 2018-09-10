@@ -3,10 +3,11 @@
 // Licensed under the MIT license.
 
 using Microsoft.AppCenter.Unity.Crashes;
-using Microsoft.AppCenter.Unity.Crashes.Models;
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -47,9 +48,9 @@ public class PuppetCrashes : MonoBehaviour
     {
         try
         {
-            throw new System.Exception("Test error");
+            throw new Exception("Test error");
         }
-        catch (System.Exception ex)
+        catch (Exception ex)
         {
             var properties = new Dictionary<string, string> { { "Category", "Music" }, { "Wifi", "On" } };
             Crashes.TrackError(ex, properties);
@@ -70,6 +71,16 @@ public class PuppetCrashes : MonoBehaviour
     {
         string str = null;
         Debug.Log(str.Length);
+    }
+
+    public void ExceptionInNewThread()
+    {
+        new Thread(() =>
+        {
+            Thread.Sleep(3000);
+            object obj = null;
+            obj.ToString();
+        }).Start();
     }
 
     public void LastCrashReport()
