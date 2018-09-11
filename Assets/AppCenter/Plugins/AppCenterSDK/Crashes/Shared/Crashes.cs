@@ -17,6 +17,9 @@ namespace Microsoft.AppCenter.Unity.Crashes
 
     public class Crashes
     {
+        /// <summary>
+        /// Report unhandled exceptions, automatically captured by Unity, as handled errors
+        /// </summary>
         public static bool ReportUnhandledExceptions { get; set; }
 
         static Crashes()
