@@ -7,6 +7,11 @@
 
 const char* appcenter_unity_ns_string_to_cstr(NSString* nsstring)
 {
+  if (!nsstring)
+  {
+    return NULL;
+  }
+
   // It seems that with (at least) IL2CPP, when returning a char* that is to be
   // converted to a System.String in C#, the char array is freed - which causes
   // a double-deallocation if ARC also tries to free it. To prevent this, we

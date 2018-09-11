@@ -12,6 +12,7 @@ namespace Microsoft.AppCenter.Unity.Crashes.Internal
     {
         public static object Create()
         {
+            return new object();
         }
 
         public static void SetType(object exception, string type)

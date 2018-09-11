@@ -39,10 +39,7 @@ var AppCenterModules = new [] {
 
 // UWP IL2CPP dependencies.
 var UwpIL2CPPDependencies = new [] {
-    new NugetDependency("sqlite-net-pcl", "1.3.1", "UAP, Version=v10.0"),
-
-    // Force use this version to avoid types conflicts.
-    new NugetDependency("System.Threading.Tasks", "4.0.10", ".NETCore, Version=v5.0", false)
+    new NugetDependency("sqlite-net-pcl", "1.3.1", "UAP, Version=v10.0")
 };
 var UwpIL2CPPJsonUrl = SdkStorageUrl + "Newtonsoft.Json.dll";
 

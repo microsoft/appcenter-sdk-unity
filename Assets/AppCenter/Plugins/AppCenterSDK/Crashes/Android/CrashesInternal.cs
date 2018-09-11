@@ -3,6 +3,7 @@
 // Licensed under the MIT license.
 
 #if UNITY_ANDROID && !UNITY_EDITOR
+using Microsoft.AppCenter.Unity.Crashes.Models;
 using Microsoft.AppCenter.Unity.Internal.Utility;
 using System;
 using System.Collections.Generic;
@@ -52,6 +53,11 @@ namespace Microsoft.AppCenter.Unity.Crashes.Internal
         {
             var future = _crashes.CallStatic<AndroidJavaObject>("hasCrashedInLastSession");
             return new AppCenterTask<bool>(future);
+        }
+
+        public static ErrorReport LastSessionCrashReport()
+        {
+            return null;
         }
 
         public static void DisableMachExceptionHandler()

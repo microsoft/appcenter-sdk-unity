@@ -92,6 +92,11 @@ namespace Microsoft.AppCenter.Unity.Crashes
             CrashesInternal.DisableMachExceptionHandler();
         }
 
+        public static Models.ErrorReport LastSessionCrashReport()
+        {
+            return CrashesInternal.LastSessionCrashReport();
+        }
+        
         private static WrapperException CreateWrapperException(Exception exception)
         {
             var exceptionWrapper = new WrapperException();
