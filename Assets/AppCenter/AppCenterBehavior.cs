@@ -52,16 +52,22 @@ public class AppCenterBehavior : MonoBehaviour
     void OnEnable()
     {
 #if !UNITY_EDITOR
-        System.AppDomain.CurrentDomain.UnhandledException += OnHandleUnresolvedException;
         Application.logMessageReceived += OnHandleLogCallback;
+#endif
+
+#if UNITY_IOS && !UNITY_EDITOR
+        System.AppDomain.CurrentDomain.UnhandledException += OnHandleUnresolvedException;
 #endif
     }
 
     void OnDisable()
     {
 #if !UNITY_EDITOR
-        System.AppDomain.CurrentDomain.UnhandledException -= OnHandleUnresolvedException;
         Application.logMessageReceived -= OnHandleLogCallback;
+#endif
+
+#if UNITY_IOS && !UNITY_EDITOR
+        System.AppDomain.CurrentDomain.UnhandledException -= OnHandleUnresolvedException;
 #endif
     }
 
