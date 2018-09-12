@@ -47,7 +47,7 @@ namespace Microsoft.AppCenter.Unity.Crashes
 
         public static void OnHandleLog(string logString, string stackTrace, LogType type)
         {
-            if (_reportUnhandledExceptions && LogType.Assert == type || LogType.Exception == type || LogType.Error == type)
+            if (_reportUnhandledExceptions && (LogType.Assert == type || LogType.Exception == type || LogType.Error == type))
             {
                 var exception = CreateWrapperException(logString, stackTrace);
                 CrashesInternal.TrackException(exception.GetRawObject());
