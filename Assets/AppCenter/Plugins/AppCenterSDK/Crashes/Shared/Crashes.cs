@@ -17,9 +17,6 @@ namespace Microsoft.AppCenter.Unity.Crashes
 
     public class Crashes
     {
-        /// <summary>
-        /// Report unhandled exceptions, automatically captured by Unity, as handled errors
-        /// </summary>
         private static bool _reportUnhandledExceptions = false;
 
         public static void Initialize()
@@ -102,6 +99,9 @@ namespace Microsoft.AppCenter.Unity.Crashes
             return CrashesInternal.LastSessionCrashReport();
         }
 
+        /// <summary>
+        /// Report unhandled exceptions, automatically captured by Unity, as handled errors
+        /// </summary>
         public static void ReportUnhandledExceptions(bool enabled)
         {
             _reportUnhandledExceptions = enabled;
