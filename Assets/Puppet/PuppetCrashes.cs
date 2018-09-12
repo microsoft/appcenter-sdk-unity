@@ -23,7 +23,7 @@ public class PuppetCrashes : MonoBehaviour
         {
             CrashesEnabled.isOn = task.Result;
         });
-        ReportUnhandledExceptions.isOn = Crashes.ReportUnhandledExceptions;
+        ReportUnhandledExceptions.isOn = Crashes.IsReportingUnhandledExceptions();
     }
 
     public void SetCrashesEnabled(bool enabled)
@@ -33,7 +33,7 @@ public class PuppetCrashes : MonoBehaviour
 
     public void SetReportUnhandledExceptions(bool enabled)
     {
-        Crashes.ReportUnhandledExceptions = enabled;
+        Crashes.ReportUnhandledExceptions(enabled);
     }
 
     private IEnumerator SetCrashesEnabledCoroutine(bool enabled)
