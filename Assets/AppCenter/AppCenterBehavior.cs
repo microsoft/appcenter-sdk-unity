@@ -108,8 +108,15 @@ public class AppCenterBehavior : MonoBehaviour
         InvokeInitializingServices();
         AppCenter.SetWrapperSdk();
 
+        // On iOS we start crash service here, to give app an opportunity to assign handlers after crash and restart in Awake method
+#if UNITY_IOS
+        int pos = Array.IndexOf(services, AppCenterSettings.Crashes);
+        if (pos > -1)
+            AppCenterInternal.StartCrashes();
+#endif
+
         // On iOS and Android App Center starting automatically.
-        #if UNITY_EDITOR || (!UNITY_IOS && !UNITY_ANDROID)
+#if UNITY_EDITOR || (!UNITY_IOS && !UNITY_ANDROID)
         AppCenter.LogLevel = settings.InitialLogLevel;
         if (settings.CustomLogUrl.UseCustomUrl)
         {
@@ -118,7 +125,7 @@ public class AppCenterBehavior : MonoBehaviour
         var appSecret = AppCenter.GetSecretForPlatform(settings.AppSecret);
         var nativeServiceTypes = AppCenter.ServicesToNativeTypes(services);
         AppCenterInternal.Start(appSecret, nativeServiceTypes, services.Length);
-        #endif
+#endif
         InvokeInitializedServices();
     }
 

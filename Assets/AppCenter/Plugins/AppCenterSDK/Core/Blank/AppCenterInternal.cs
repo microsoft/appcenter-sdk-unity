@@ -78,6 +78,10 @@ namespace Microsoft.AppCenter.Unity.Internal
                                          string liveUpdatePackageHash)
         {
         }
+
+        public static void StartCrashes()
+        {
+        }
     }
 }
 #endif

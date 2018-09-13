@@ -5,6 +5,7 @@
 #if (!UNITY_IOS && !UNITY_ANDROID && !UNITY_WSA_10_0) || UNITY_EDITOR
 using System.Collections.Generic;
 using Microsoft.AppCenter.Unity.Crashes.Models;
+using Microsoft.AppCenter.Unity.Crashes;
 
 namespace Microsoft.AppCenter.Unity.Crashes.Internal
 {
@@ -60,6 +61,14 @@ namespace Microsoft.AppCenter.Unity.Crashes.Internal
         public static ErrorReport LastSessionCrashReport()
         {
             return null;
+        }
+
+        public static void SetUserConfirmationHandler(Crashes.UserConfirmationHandler handler)
+        {
+        }
+
+        public static void NotifyWithUserConfirmation(int code)
+        {
         }
     }
 }

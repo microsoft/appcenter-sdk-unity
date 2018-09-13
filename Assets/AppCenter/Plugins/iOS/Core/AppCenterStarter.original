@@ -54,10 +54,6 @@ static const int kMSLogLevel = 0/*LOG_LEVEL*/;
   [classes addObject:MSAnalytics.class];
 #endif
 
-#ifdef APPCENTER_UNITY_USE_CRASHES
-  [classes addObject:MSCrashes.class];
-#endif
-
 #ifdef APPCENTER_UNITY_USE_DISTRIBUTE
   
 #ifdef APPCENTER_UNITY_USE_CUSTOM_API_URL

@@ -6,6 +6,7 @@ using Microsoft.AppCenter.Unity.Crashes.Internal;
 using System;
 using System.Collections.Generic;
 using UnityEngine;
+using System.Runtime.InteropServices;
 
 namespace Microsoft.AppCenter.Unity.Crashes
 {
@@ -111,6 +112,21 @@ namespace Microsoft.AppCenter.Unity.Crashes
         public static bool IsReportingUnhandledExceptions()
         {
             return _reportUnhandledExceptions;
+        }
+
+        #if ENABLE_IL2CPP
+        [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
+        #endif
+        public delegate void UserConfirmationHandler();
+
+        public static void SetUserConfirmationHandler(UserConfirmationHandler handler)
+        {
+            CrashesInternal.SetUserConfirmationHandler(handler);
+        }
+
+        public static void NotifyWithUserConfirmation(int code)
+        {
+            CrashesInternal.NotifyWithUserConfirmation(code);
         }
 
         private static WrapperException CreateWrapperException(Exception exception)

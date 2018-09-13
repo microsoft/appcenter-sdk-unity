@@ -79,6 +79,16 @@ namespace Microsoft.AppCenter.Unity.Crashes.Internal
             return new ErrorReport(identifier, startTime, errorTime, exception, procId, reporterKey, reporterSignal, isAppKill);
         }
 
+        public static void SetUserConfirmationHandler(Crashes.UserConfirmationHandler handler)
+        {
+            appcenter_unity_crashes_set_user_confirmation_handler(handler);
+        }
+
+        public static void NotifyWithUserConfirmation(int code)
+        {
+            appcenter_unity_crashes_notify_with_user_confirmation(code);
+        }
+
 #region External
 
         [DllImport("__Internal")]
@@ -107,6 +117,12 @@ namespace Microsoft.AppCenter.Unity.Crashes.Internal
 
         [DllImport("__Internal")]
         private static extern IntPtr appcenter_unity_crashes_last_session_crash_report();
+
+        [DllImport("__Internal")]
+        private static extern void appcenter_unity_crashes_set_user_confirmation_handler(Crashes.UserConfirmationHandler handler);
+
+        [DllImport("__Internal")]
+        private static extern void appcenter_unity_crashes_notify_with_user_confirmation(int code);
 
         [DllImport("__Internal")]
         private static extern string app_center_unity_crashes_error_report_exception_name(IntPtr errorReport);

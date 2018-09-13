@@ -68,6 +68,11 @@ namespace Microsoft.AppCenter.Unity.Internal
                                                 liveUpdatePackageHash);
         }
 
+        public static void StartCrashes()
+        {
+            appcenter_unity_start_crashes();
+        }
+
 #region External
 
         [DllImport("__Internal")]
@@ -101,6 +106,9 @@ namespace Microsoft.AppCenter.Unity.Internal
                                                                        string liveUpdateReleaseLabel,
                                                                        string liveUpdateDeploymentKey,
                                                                        string liveUpdatePackageHash);
+    
+        [DllImport("__Internal")]
+        private static extern void appcenter_unity_start_crashes();
 
 #endregion
     }
