@@ -56,16 +56,41 @@ In the **Project** window, navigate to the "AppCenter" folder that was added to 
 
 Click on the new "App Center" object and add your app secrets to the corresponding fields in the **Inspector** window. Make sure to also check the "Use {service}" boxes for each App Center service you intend to use
 
-# Contributing
+# Contributing to Visual Studio App Center SDK for Unity
 
-This project welcomes contributions and suggestions.  Most contributions require you to agree to a
-Contributor License Agreement (CLA) declaring that you have the right to, and actually do, grant us
-the rights to use your contribution. For details, visit https://cla.microsoft.com.
+## Making changes
+1. Fork the repo and download it.
+2. Using `Android Studio`, open android project located in folder `AppCenterLoaderApp`, download any missing SDK’s and click `Sync Project with Gradle Files` button (you might need to open some gradle file for it to become active).
+3. Make the necessary changes:
+The main SDK code is located in the `Assets/AppCenter` folder. Inside it:
+- `Plugins/Android` contains the native android SDK libraries;
+- `Plugins/iOS` contains the native iOS SDK frameworks + the code to access them;
+- `Plugins/WSA` contains the native .Net SDK dlls;
+- `Plugins/AppCenterSDK` contains the general C# code. The classes available for use from the outside are located in the `Shared` folder. The code in this folder references the classes in platform-specific folders. For example, if you are referencing `AppCenterInternal.someMethod()` from `AppCenter.cs`, you will need to implement that code in *each* of the platform-specific files `AppCenterInternal.cs`.
+- `AppCenterBehavior.cs` contains the code initializing and settings up the services.
+- `AppCenterSettings.cs` contains the settings that are going to be available on App Center game object.
 
-When you submit a pull request, a CLA-bot will automatically determine whether you need to provide
-a CLA and decorate the PR appropriately (e.g., label, comment). Simply follow the instructions
-provided by the bot. You will only need to do this once across all repos using our CLA.
+## Building the packages
+1. Use existing or [create](https://msmobilecenter.visualstudio.com/_usersSettings/tokens) new VSTS token with scopes Release (read) and Packaging (read).
+2. Before running the build script set the following environment variables in the console (replace _VSTS_PAT_ with your token value):
+- On Windows
 
-This project has adopted the [Microsoft Open Source Code of Conduct](https://opensource.microsoft.com/codeofconduct/).
-For more information see the [Code of Conduct FAQ](https://opensource.microsoft.com/codeofconduct/faq/) or
-contact [opencode@microsoft.com](mailto:opencode@microsoft.com) with any additional questions or comments.
+    `$Env:NUGET_USER="mobilecenter"`    
+    `$Env:NUGET_FEED_ID="56ee7f9f-bc95-4d96-bce5-11b0d8ff66d6"`
+    `$Env:NUGET_PASSWORD="_VSTS_PAT_"`
+ - On Mac
+
+    `export NUGET_USER=mobilecenter`    
+    `export NUGET_FEED_ID=56ee7f9f-bc95-4d96-bce5-11b0d8ff66d6`
+    `export NUGET_PASSWORD=_VSTS_PAT_`
+3. Build SDK and create Unity Packages using these two commands, one after another:
+ - On Windows:
+
+    `.\build.ps1`    
+    `.\build.ps1 -Target Package`
+ - On Mac
+
+    `./build.sh`    
+    `./build.sh -target=Package`
+    
+The packages will be located in the `output` folder.
