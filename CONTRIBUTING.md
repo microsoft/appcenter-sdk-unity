@@ -13,26 +13,25 @@ The main SDK code is located in the `Assets/AppCenter` folder. Inside it:
 - `AppCenterSettings.cs` contains the settings that are going to be available on App Center game object.
 
 ## Building the packages
-1. Use existing or [create](https://msmobilecenter.visualstudio.com/_usersSettings/tokens) new VSTS token with scopes Release (read) and Packaging (read).
-2. Before running the build script set the following environment variables in the console (replace _VSTS_PAT_ with your token value):
-- On Windows
-
-    `$Env:NUGET_USER="mobilecenter"`    
-    `$Env:NUGET_FEED_ID="56ee7f9f-bc95-4d96-bce5-11b0d8ff66d6"`
-    `$Env:NUGET_PASSWORD="_VSTS_PAT_"`
- - On Mac
-
-    `export NUGET_USER=mobilecenter`    
-    `export NUGET_FEED_ID=56ee7f9f-bc95-4d96-bce5-11b0d8ff66d6`
-    `export NUGET_PASSWORD=_VSTS_PAT_`
-3. Build SDK and create Unity Packages using these two commands, one after another:
+You can build SDK and create Unity Packages using these two commands, one after another:
  - On Windows:
 
-    `.\build.ps1`    
+    `.\build.ps1 -Target Externals`    
     `.\build.ps1 -Target Package`
  - On Mac
 
-    `./build.sh`    
+    `./build.sh -target=Externals`    
     `./build.sh -target=Package`
     
 The packages will be located in the `output` folder.
+
+# Contributing
+ This project welcomes contributions and suggestions.  Most contributions require you to agree to a
+Contributor License Agreement (CLA) declaring that you have the right to, and actually do, grant us
+the rights to use your contribution. For details, visit https://cla.microsoft.com.
+ When you submit a pull request, a CLA-bot will automatically determine whether you need to provide
+a CLA and decorate the PR appropriately (e.g., label, comment). Simply follow the instructions
+provided by the bot. You will only need to do this once across all repos using our CLA.
+ This project has adopted the [Microsoft Open Source Code of Conduct](https://opensource.microsoft.com/codeofconduct/).
+For more information see the [Code of Conduct FAQ](https://opensource.microsoft.com/codeofconduct/faq/) or
+contact [opencode@microsoft.com](mailto:opencode@microsoft.com) with any additional questions or comments.
