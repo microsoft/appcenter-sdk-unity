@@ -223,6 +223,9 @@ Task("Externals-Uwp")
     CleanDirectory("externals/uwp");
     EnsureDirectoryExists("Assets/AppCenter/Plugins/WSA/");
     // Download the nugets. We will use these to extract the dlls
+    
+    var packageSource = "https://www.nuget.org/api/v2/";
+    var repository = PackageRepositoryFactory.Default.CreateRepository(packageSource);
     foreach (var module in AppCenterModules)
     {
         if (module.Moniker == "Distribute")
@@ -237,44 +240,16 @@ Task("Externals-Uwp")
         }
         Information("Downloading " + module.DotNetModule + "...");
         // Download nuget package
-        var nupkgPath = GetNuGetPackage(module.DotNetModule, UwpSdkVersion);
-
-        var tempContentPath = "externals/uwp/" + module.Moniker + "/";
-        DeleteDirectoryIfExists(tempContentPath);
-        // Unzip into externals/uwp/
-        Unzip(nupkgPath, tempContentPath);
-        // Delete the package
-        DeleteFiles(nupkgPath);
-
-        var contentPathSuffix = "lib/uap10.0/";
+        var package = repository.FindPackage(module.DotNetModule, SemanticVersion.Parse(UwpSdkVersion));
+        IEnumerable<IPackage> dependencies;
+        dependencies = new [] { package };  
 
         // Prepare destination
         var destination = "Assets/AppCenter/Plugins/WSA/" + module.Moniker + "/";
         EnsureDirectoryExists(destination);
         DeleteFiles(destination + "*.dll");
         DeleteFiles(destination + "*.winmd");
-
-        // Deal with any native components
-        if (module.UWPHasNativeCode)
-        {
-            foreach (var arch in module.NativeArchitectures)
-            {
-                var dest = "Assets/AppCenter/Plugins/WSA/" + module.Moniker + "/" + arch.ToString().ToUpper() + "/";
-                EnsureDirectoryExists(dest);
-                var nativeFiles = GetFiles(tempContentPath + "runtimes/" + "win10-" + arch + "/native/*");
-                DeleteFiles(dest + "*.dll");
-                MoveFiles(nativeFiles, dest);
-            }
-
-            // Use managed runtimes from one of the architecture for all architectures.
-            // Even though they are architecture dependent, Unity converts
-            // them to AnyCPU automatically
-            contentPathSuffix = "runtimes/win10-" + module.NativeArchitectures[0] + "/" + contentPathSuffix;
-        }
-
-        // Move the files to the proper location
-        var files = GetFiles(tempContentPath + contentPathSuffix + "*");
-        MoveFiles(files, destination);
+        ExtractNuGetPackages(dependencies, destination, new FrameworkName("UAP, Version=v10.0"));        
     }
 }).OnError(HandleError);
 
