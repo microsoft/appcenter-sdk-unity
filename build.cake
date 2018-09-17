@@ -220,92 +220,27 @@ Task("Externals-Ios")
 Task("Externals-Uwp")
     .Does(() =>
 {
+    var usePrivateNugetEnv = EnvironmentVariable("NUGET_PRIVATE");
+    var usePublicFeed = string.IsNullOrEmpty(usePrivateNugetEnv) || usePrivateNugetEnv != "Yes";
     CleanDirectory("externals/uwp");
     EnsureDirectoryExists("Assets/AppCenter/Plugins/WSA/");
-    // Download the nugets. We will use these to extract the dlls
-    if (EnvironmentVariable("NUGET_PRIVATE") != "Yes") {
-		var packageSource = "https://www.nuget.org/api/v2/";
-		var repository = PackageRepositoryFactory.Default.CreateRepository(packageSource);
-		foreach (var module in AppCenterModules)
+	foreach (var module in AppCenterModules)
+	{
+		if (module.Moniker == "Distribute")
 		{
-			if (module.Moniker == "Distribute")
-			{
-				Warning("Skipping 'Distribute' for UWP.");
-				continue;
-			}
-			if (module.Moniker == "Crashes")
-			{
-				Warning("Skipping 'Crashes' for UWP.");
-				continue;
-			}
-			Information("Downloading " + module.DotNetModule + "...");
-			// Download nuget package
-			var package = repository.FindPackage(module.DotNetModule, SemanticVersion.Parse(UwpSdkVersion));
-			IEnumerable<IPackage> dependencies;
-			dependencies = new [] { package };  
-
-			// Prepare destination
-			var destination = "Assets/AppCenter/Plugins/WSA/" + module.Moniker + "/";
-			EnsureDirectoryExists(destination);
-			DeleteFiles(destination + "*.dll");
-			DeleteFiles(destination + "*.winmd");
-			ExtractNuGetPackages(dependencies, destination, new FrameworkName("UAP, Version=v10.0"));      
+			Warning("Skipping 'Distribute' for UWP.");
+			continue;
 		}
-	} else {
-		foreach (var module in AppCenterModules)
+		if (module.Moniker == "Crashes")
 		{
-			if (module.Moniker == "Distribute")
-			{
-				Warning("Skipping 'Distribute' for UWP.");
-				continue;
-			}
-			if (module.Moniker == "Crashes")
-			{
-				Warning("Skipping 'Crashes' for UWP.");
-				continue;
-			}
-			Information("Downloading " + module.DotNetModule + "...");
-			// Download nuget package
-			var nupkgPath = GetNuGetPackage(module.DotNetModule, UwpSdkVersion);
-
-			var tempContentPath = "externals/uwp/" + module.Moniker + "/";
-			DeleteDirectoryIfExists(tempContentPath);
-			// Unzip into externals/uwp/
-			Unzip(nupkgPath, tempContentPath);
-			// Delete the package
-			DeleteFiles(nupkgPath);
-
-			var contentPathSuffix = "lib/uap10.0/";
-
-			// Prepare destination
-			var destination = "Assets/AppCenter/Plugins/WSA/" + module.Moniker + "/";
-			EnsureDirectoryExists(destination);
-			DeleteFiles(destination + "*.dll");
-			DeleteFiles(destination + "*.winmd");
-
-			// Deal with any native components
-			if (module.UWPHasNativeCode)
-			{
-				foreach (var arch in module.NativeArchitectures)
-				{
-					var dest = "Assets/AppCenter/Plugins/WSA/" + module.Moniker + "/" + arch.ToString().ToUpper() + "/";
-					EnsureDirectoryExists(dest);
-					var nativeFiles = GetFiles(tempContentPath + "runtimes/" + "win10-" + arch + "/native/*");
-					DeleteFiles(dest + "*.dll");
-					MoveFiles(nativeFiles, dest);
-				}
-
-				// Use managed runtimes from one of the architecture for all architectures.
-				// Even though they are architecture dependent, Unity converts
-				// them to AnyCPU automatically
-				contentPathSuffix = "runtimes/win10-" + module.NativeArchitectures[0] + "/" + contentPathSuffix;
-			}
-
-			// Move the files to the proper location
-			var files = GetFiles(tempContentPath + contentPathSuffix + "*");
-			MoveFiles(files, destination);
+			Warning("Skipping 'Crashes' for UWP.");
+			continue;
 		}
-	}  
+		Information("Downloading " + module.DotNetModule + "...");
+		// Download nuget package
+			
+		GetUwpPackage(module, usePublicFeed);
+	}
 }).OnError(HandleError);
 
 // Builds the ContentProvider for the Android package and puts it in the
@@ -486,6 +421,55 @@ Task("DownloadNdk")
         Unzip(zipDestination, NdkFolder);
     }
 }).OnError(HandleError);
+
+void GetUwpPackage(AppCenterModule module, bool usePublicFeed) 
+{
+    // Prepare destination
+	var destination = "Assets/AppCenter/Plugins/WSA/" + module.Moniker + "/";
+	EnsureDirectoryExists(destination);
+	DeleteFiles(destination + "*.dll");
+	DeleteFiles(destination + "*.winmd");		
+	if (usePublicFeed) 
+	{
+	    	var packageSource = "https://www.nuget.org/api/v2/";
+		var repository = PackageRepositoryFactory.Default.CreateRepository(packageSource);
+	
+		var package = repository.FindPackage(module.DotNetModule, SemanticVersion.Parse(UwpSdkVersion));
+		IEnumerable<IPackage> dependencies = new [] { package };  
+		ExtractNuGetPackages(dependencies, destination, new FrameworkName("UAP, Version=v10.0"));      
+    } else {
+		var nupkgPath = GetNuGetPackage(module.DotNetModule, UwpSdkVersion);
+
+		var tempContentPath = "externals/uwp/" + module.Moniker + "/";
+		DeleteDirectoryIfExists(tempContentPath);
+		// Unzip into externals/uwp/
+		Unzip(nupkgPath, tempContentPath);
+		// Delete the package
+		DeleteFiles(nupkgPath);
+
+		var contentPathSuffix = "lib/uap10.0/";		
+		// Deal with any native components
+		if (module.UWPHasNativeCode)
+		{
+			foreach (var arch in module.NativeArchitectures)
+			{
+				var dest = "Assets/AppCenter/Plugins/WSA/" + module.Moniker + "/" + arch.ToString().ToUpper() + "/";
+				EnsureDirectoryExists(dest);
+				var nativeFiles = GetFiles(tempContentPath + "runtimes/" + "win10-" + arch + "/native/*");
+				DeleteFiles(dest + "*.dll");
+				MoveFiles(nativeFiles, dest);
+			}
+			// Use managed runtimes from one of the architecture for all architectures.
+			// Even though they are architecture dependent, Unity converts
+			// them to AnyCPU automatically
+			contentPathSuffix = "runtimes/win10-" + module.NativeArchitectures[0] + "/" + contentPathSuffix;
+		}
+
+		// Move the files to the proper location
+		var files = GetFiles(tempContentPath + contentPathSuffix + "*");
+		MoveFiles(files, destination);
+	}
+}
 
 void BuildApps(string type, string projectPath = ".")
 {
