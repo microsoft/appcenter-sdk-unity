@@ -69,7 +69,7 @@ namespace Microsoft.AppCenter.Unity.Crashes.Internal
         {
         }
 
-        public static void NotifyWithUserConfirmation(int code)
+        public static void NotifyWithUserConfirmation(Crashes.ConfirmationResult answer)
         {
         }
     }

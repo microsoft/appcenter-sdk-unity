@@ -84,9 +84,9 @@ namespace Microsoft.AppCenter.Unity.Crashes.Internal
             appcenter_unity_crashes_set_user_confirmation_handler(handler);
         }
 
-        public static void NotifyWithUserConfirmation(int code)
+        public static void NotifyWithUserConfirmation(Crashes.ConfirmationResult answer)
         {
-            appcenter_unity_crashes_notify_with_user_confirmation(code);
+            appcenter_unity_crashes_notify_with_user_confirmation((int)answer);
         }
 
 #region External

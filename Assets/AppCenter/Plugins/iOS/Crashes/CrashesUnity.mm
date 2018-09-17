@@ -50,11 +50,6 @@ void appcenter_unity_crashes_disable_mach_exception_handler()
   [MSCrashes disableMachExceptionHandler];
 }
 
-MSErrorReport* app_center_unity_crashes_last_session_crash_report()
-{
-    return [MSCrashes lastSessionCrashReport];
-}
-
 void appcenter_unity_crashes_set_user_confirmation_handler(void(* userConfirmationHandler)())
 {
     [MSCrashes setUserConfirmationHandler:^BOOL(NSArray<MSErrorReport *> *_Nonnull errorReports){
@@ -68,12 +63,12 @@ void appcenter_unity_crashes_notify_with_user_confirmation(int userConfirmation)
     [MSCrashes notifyWithUserConfirmation:(MSUserConfirmation)userConfirmation];
 }
 
-void appcenter_unity_start_crashes()
-{
-    [MSAppCenter startService:MSCrashes.class];
-}
-
 void* appcenter_unity_crashes_last_session_crash_report()
 {
     return (void *)CFBridgingRetain([MSCrashes lastSessionCrashReport]);
+}
+
+void appcenter_unity_start_crashes()
+{
+    [MSAppCenter startService:MSCrashes.class];
 }

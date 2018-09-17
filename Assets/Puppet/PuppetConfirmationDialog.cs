@@ -8,19 +8,19 @@ public class PuppetConfirmationDialog : MonoBehaviour
 {
     public void Send()
     {
-        Crashes.NotifyWithUserConfirmation(1);
+        Crashes.NotifyWithUserConfirmation(Crashes.ConfirmationResult.Send);
         Hide();
     }
 
     public void AlwaysSend()
     {
-        Crashes.NotifyWithUserConfirmation(2);
+        Crashes.NotifyWithUserConfirmation(Crashes.ConfirmationResult.AlwaysSend);
         Hide();
     }
 
     public void DontSend()
     {
-        Crashes.NotifyWithUserConfirmation(0);
+        Crashes.NotifyWithUserConfirmation(Crashes.ConfirmationResult.DontSend);
         Hide();
     }
 

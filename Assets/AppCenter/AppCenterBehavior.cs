@@ -7,6 +7,7 @@ using UnityEngine;
 using System;
 using System.Reflection;
 using Microsoft.AppCenter.Unity.Internal;
+using System.Linq;
 
 // TODO Update documentation link
 [HelpURL("https://docs.microsoft.com/en-us/mobile-center/sdk/")]
@@ -107,16 +108,15 @@ public class AppCenterBehavior : MonoBehaviour
         PrepareEventHandlers(services);
         InvokeInitializingServices();
         AppCenter.SetWrapperSdk();
-
+        
         // On iOS we start crash service here, to give app an opportunity to assign handlers after crash and restart in Awake method
 #if UNITY_IOS
-        int pos = Array.IndexOf(services, AppCenterSettings.Crashes);
-        if (pos > -1)
+        if (services.Contains(AppCenterSettings.Crashes))
             AppCenterInternal.StartCrashes();
 #endif
 
         // On iOS and Android App Center starting automatically.
-#if UNITY_EDITOR || (!UNITY_IOS && !UNITY_ANDROID)
+#if UNITY_EDITOR || (!UNITY_ANDROID && !UNITY_IOS)
         AppCenter.LogLevel = settings.InitialLogLevel;
         if (settings.CustomLogUrl.UseCustomUrl)
         {

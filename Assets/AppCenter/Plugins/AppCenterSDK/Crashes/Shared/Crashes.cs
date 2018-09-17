@@ -124,9 +124,11 @@ namespace Microsoft.AppCenter.Unity.Crashes
             CrashesInternal.SetUserConfirmationHandler(handler);
         }
 
-        public static void NotifyWithUserConfirmation(int code)
+        public enum ConfirmationResult { DontSend, Send, AlwaysSend };
+        
+        public static void NotifyWithUserConfirmation(ConfirmationResult answer)
         {
-            CrashesInternal.NotifyWithUserConfirmation(code);
+            CrashesInternal.NotifyWithUserConfirmation(answer);
         }
 
         private static WrapperException CreateWrapperException(Exception exception)
