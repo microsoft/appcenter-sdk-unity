@@ -220,8 +220,11 @@ Task("Externals-Ios")
 Task("Externals-Uwp")
     .Does(() =>
 {
-    var usePrivateNugetEnv = EnvironmentVariable("NUGET_PRIVATE");
-    var usePublicFeed = string.IsNullOrEmpty(usePrivateNugetEnv) || usePrivateNugetEnv != "Yes";
+    var feedIdNugetEnv = EnvironmentVariable("NUGET_FEED_ID");
+    var userNugetEnv = EnvironmentVariable("NUGET_USER");
+    var passwordNugetEnv = EnvironmentVariable("NUGET_PASSWORD");
+    var usePublicFeed = (string.IsNullOrEmpty(feedIdNugetEnv) || string.IsNullOrEmpty(userNugetEnv) || string.IsNullOrEmpty(passwordNugetEnv));
+    
     CleanDirectory("externals/uwp");
     EnsureDirectoryExists("Assets/AppCenter/Plugins/WSA/");
 	foreach (var module in AppCenterModules)
