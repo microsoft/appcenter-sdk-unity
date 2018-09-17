@@ -3,8 +3,7 @@
 ## Making changes
 
 1. Fork the repo and download it.
-2. Using `Android Studio`, open android project located in folder `AppCenterLoaderApp`, download any missing SDK’s and click `Sync Project with Gradle Files` button (you might need to open some gradle file for it to become active).
-3. Make the necessary changes:
+2. Make the necessary changes:
 The main SDK code is located in the `Assets/AppCenter` folder. Inside it:
 - `Plugins/Android` contains the native android SDK libraries;
 - `Plugins/iOS` contains the native iOS SDK frameworks + the code to access them;
