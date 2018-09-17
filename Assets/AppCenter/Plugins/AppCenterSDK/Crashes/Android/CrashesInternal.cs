@@ -44,12 +44,10 @@ namespace Microsoft.AppCenter.Unity.Crashes.Internal
             return new AppCenterTask<bool>(future);
         }
 
-        // We use Application.ForceCrash here instead of native call because AFAIK this is the one of two known ways to crash Unity Android application:
-        // 1) Application.ForceCrash()
-        // 2) System.Diagnostics.Process.GetCurrentProcess().Kill()
+        // We use Application.ForceCrash here instead of native call because AFAIK this is the only way that we know ti crash Unity Android application:
         public static void GenerateTestCrash()
         {
-            Application.ForceCrash(1);
+            Application.ForceCrash(0);
         }
 
         public static AppCenterTask<bool> HasCrashedInLastSession()
