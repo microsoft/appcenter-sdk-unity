@@ -1,6 +1,7 @@
 # Contributing to Visual Studio App Center SDK for Unity
 
 ## Making changes
+
 1. Fork the repo and download it.
 2. Using `Android Studio`, open android project located in folder `AppCenterLoaderApp`, download any missing SDK’s and click `Sync Project with Gradle Files` button (you might need to open some gradle file for it to become active).
 3. Make the necessary changes:
@@ -13,6 +14,7 @@ The main SDK code is located in the `Assets/AppCenter` folder. Inside it:
 - `AppCenterSettings.cs` contains the settings that are going to be available on App Center game object.
 
 ## Building the packages
+
 You can build SDK and create Unity Packages using these two commands, one after another:
  - On Windows:
 
@@ -25,5 +27,6 @@ You can build SDK and create Unity Packages using these two commands, one after 
     
 The packages will be located in the `output` folder.
 
-# Contributing
+## Contributing
+
 [Refer to the contributing section](./README.md)
