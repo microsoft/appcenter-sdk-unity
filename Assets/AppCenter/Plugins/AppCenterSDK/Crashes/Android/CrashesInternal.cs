@@ -8,6 +8,7 @@ using Microsoft.AppCenter.Unity.Internal.Utility;
 using System;
 using System.Collections.Generic;
 using UnityEngine;
+using Microsoft.AppCenter.Unity.Crashes;
 
 namespace Microsoft.AppCenter.Unity.Crashes.Internal
 {
@@ -46,7 +47,7 @@ namespace Microsoft.AppCenter.Unity.Crashes.Internal
 
         public static void GenerateTestCrash()
         {
-            _crashes.CallStatic("generateTestCrash");
+            Application.ForceCrash(1);
         }
 
         public static AppCenterTask<bool> HasCrashedInLastSession()
@@ -61,6 +62,14 @@ namespace Microsoft.AppCenter.Unity.Crashes.Internal
         }
 
         public static void DisableMachExceptionHandler()
+        {
+        }
+
+        public static void SetUserConfirmationHandler(Crashes.UserConfirmationHandler handler)
+        {
+        }
+
+        public static void NotifyWithUserConfirmation(Crashes.ConfirmationResult answer)
         {
         }
     }
