@@ -8,7 +8,6 @@ using Microsoft.AppCenter.Unity.Internal.Utility;
 using System;
 using System.Collections.Generic;
 using UnityEngine;
-using Microsoft.AppCenter.Unity.Crashes;
 
 namespace Microsoft.AppCenter.Unity.Crashes.Internal
 {
