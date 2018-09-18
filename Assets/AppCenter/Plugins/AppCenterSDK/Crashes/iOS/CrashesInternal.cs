@@ -89,6 +89,11 @@ namespace Microsoft.AppCenter.Unity.Crashes.Internal
             appcenter_unity_crashes_notify_with_user_confirmation((int)answer);
         }
 
+        public static void StartCrashes()
+        {
+            appcenter_unity_start_crashes();
+        }
+
 #region External
 
         [DllImport("__Internal")]
@@ -150,6 +155,9 @@ namespace Microsoft.AppCenter.Unity.Crashes.Internal
 
         [DllImport("__Internal")]
         private static extern bool app_center_unity_crashes_error_report_is_app_kill(IntPtr errorReport);
+
+        [DllImport("__Internal")]
+        private static extern void appcenter_unity_start_crashes();
 
 #endregion
     }

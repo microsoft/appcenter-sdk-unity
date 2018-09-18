@@ -131,6 +131,11 @@ namespace Microsoft.AppCenter.Unity.Crashes
             CrashesInternal.NotifyWithUserConfirmation(answer);
         }
 
+        public static void StartCrashes()
+        {
+            CrashesInternal.StartCrashes();
+        }
+
         private static WrapperException CreateWrapperException(Exception exception)
         {
             var exceptionWrapper = new WrapperException();

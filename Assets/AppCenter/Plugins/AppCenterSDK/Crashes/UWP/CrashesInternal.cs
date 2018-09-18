@@ -8,6 +8,7 @@ using Microsoft.AppCenter.Unity.Crashes.Models;
 using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using Microsoft.AppCenter.Unity.Crashes;
 
 namespace Microsoft.AppCenter.Unity.Crashes.Internal
 {
@@ -55,6 +56,14 @@ namespace Microsoft.AppCenter.Unity.Crashes.Internal
         }
 
         private class Crashes
+        {
+        }
+
+        public static void SetUserConfirmationHandler(Crashes.UserConfirmationHandler handler)
+        {
+        }
+
+        public static void NotifyWithUserConfirmation(Crashes.ConfirmationResult answer)
         {
         }
     }

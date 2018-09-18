@@ -108,11 +108,14 @@ public class AppCenterBehavior : MonoBehaviour
         PrepareEventHandlers(services);
         InvokeInitializingServices();
         AppCenter.SetWrapperSdk();
-        
+
         // On iOS we start crash service here, to give app an opportunity to assign handlers after crash and restart in Awake method
 #if UNITY_IOS
-        if (services.Contains(AppCenterSettings.Crashes))
-            AppCenterInternal.StartCrashes();
+        foreach (var service in services)
+        {
+            var startCrashes = service.GetMethod("StartCrashes");
+            startCrashes.Invoke(null, null);
+        }
 #endif
 
         // On iOS and Android App Center starting automatically.
