@@ -217,34 +217,30 @@ Task("Externals-Ios")
 }).OnError(HandleError);
 
 // Downloading UWP binaries.
-Task("Externals-Uwp")
-    .Does(() =>
-{
-    var feedIdNugetEnv = EnvironmentVariable("NUGET_FEED_ID");
-    var userNugetEnv = EnvironmentVariable("NUGET_USER");
-    var passwordNugetEnv = EnvironmentVariable("NUGET_PASSWORD");
-    var usePublicFeed = (string.IsNullOrEmpty(feedIdNugetEnv) || string.IsNullOrEmpty(userNugetEnv) || string.IsNullOrEmpty(passwordNugetEnv));
-    
-    CleanDirectory("externals/uwp");
-    EnsureDirectoryExists("Assets/AppCenter/Plugins/WSA/");
-	foreach (var module in AppCenterModules)
-	{
-		if (module.Moniker == "Distribute")
-		{
-			Warning("Skipping 'Distribute' for UWP.");
-			continue;
-		}
-		if (module.Moniker == "Crashes")
-		{
-			Warning("Skipping 'Crashes' for UWP.");
-			continue;
-		}
-		Information("Downloading " + module.DotNetModule + "...");
-		// Download nuget package
-			
-		GetUwpPackage(module, usePublicFeed);
-	}
-}).OnError(HandleError);
+Task ("Externals-Uwp")
+    .Does (() => {
+        var feedIdNugetEnv = EnvironmentVariable ("NUGET_FEED_ID");
+        var userNugetEnv = EnvironmentVariable ("NUGET_USER");
+        var passwordNugetEnv = EnvironmentVariable ("NUGET_PASSWORD");
+        var usePublicFeed = (string.IsNullOrEmpty (feedIdNugetEnv) || string.IsNullOrEmpty (userNugetEnv) || string.IsNullOrEmpty (passwordNugetEnv));
+
+        CleanDirectory ("externals/uwp");
+        EnsureDirectoryExists ("Assets/AppCenter/Plugins/WSA/");
+        foreach (var module in AppCenterModules) {
+            if (module.Moniker == "Distribute") {
+                Warning ("Skipping 'Distribute' for UWP.");
+                continue;
+            }
+            if (module.Moniker == "Crashes") {
+                Warning ("Skipping 'Crashes' for UWP.");
+                continue;
+            }
+            Information ("Downloading " + module.DotNetModule + "...");
+            // Download nuget package
+
+            GetUwpPackage (module, usePublicFeed);
+        }
+    }).OnError (HandleError);
 
 // Builds the ContentProvider for the Android package and puts it in the
 // proper folder.
@@ -425,53 +421,49 @@ Task("DownloadNdk")
     }
 }).OnError(HandleError);
 
-void GetUwpPackage(AppCenterModule module, bool usePublicFeed) 
-{
+void GetUwpPackage (AppCenterModule module, bool usePublicFeed) {
     // Prepare destination
-	var destination = "Assets/AppCenter/Plugins/WSA/" + module.Moniker + "/";
-	EnsureDirectoryExists(destination);
-	DeleteFiles(destination + "*.dll");
-	DeleteFiles(destination + "*.winmd");		
-	if (usePublicFeed) 
-	{
-	    	var packageSource = "https://www.nuget.org/api/v2/";
-		var repository = PackageRepositoryFactory.Default.CreateRepository(packageSource);
-	
-		var package = repository.FindPackage(module.DotNetModule, SemanticVersion.Parse(UwpSdkVersion));
-		IEnumerable<IPackage> dependencies = new [] { package };  
-		ExtractNuGetPackages(dependencies, destination, new FrameworkName("UAP, Version=v10.0"));      
+    var destination = "Assets/AppCenter/Plugins/WSA/" + module.Moniker + "/";
+    EnsureDirectoryExists (destination);
+    DeleteFiles (destination + "*.dll");
+    DeleteFiles (destination + "*.winmd");
+    if (usePublicFeed) {
+        var packageSource = "https://www.nuget.org/api/v2/";
+        var repository = PackageRepositoryFactory.Default.CreateRepository (packageSource);
+
+        var package = repository.FindPackage (module.DotNetModule, SemanticVersion.Parse (UwpSdkVersion));
+        IEnumerable<IPackage> dependencies = new [] { package };
+        ExtractNuGetPackages (dependencies, destination, new FrameworkName ("UAP, Version=v10.0"));
     } else {
-		var nupkgPath = GetNuGetPackage(module.DotNetModule, UwpSdkVersion);
+        var nupkgPath = GetNuGetPackage (module.DotNetModule, UwpSdkVersion);
 
-		var tempContentPath = "externals/uwp/" + module.Moniker + "/";
-		DeleteDirectoryIfExists(tempContentPath);
-		// Unzip into externals/uwp/
-		Unzip(nupkgPath, tempContentPath);
-		// Delete the package
-		DeleteFiles(nupkgPath);
+        var tempContentPath = "externals/uwp/" + module.Moniker + "/";
+        DeleteDirectoryIfExists (tempContentPath);
+        // Unzip into externals/uwp/
+        Unzip (nupkgPath, tempContentPath);
+        // Delete the package
+        DeleteFiles (nupkgPath);
 
-		var contentPathSuffix = "lib/uap10.0/";		
-		// Deal with any native components
-		if (module.UWPHasNativeCode)
-		{
-			foreach (var arch in module.NativeArchitectures)
-			{
-				var dest = "Assets/AppCenter/Plugins/WSA/" + module.Moniker + "/" + arch.ToString().ToUpper() + "/";
-				EnsureDirectoryExists(dest);
-				var nativeFiles = GetFiles(tempContentPath + "runtimes/" + "win10-" + arch + "/native/*");
-				DeleteFiles(dest + "*.dll");
-				MoveFiles(nativeFiles, dest);
-			}
-			// Use managed runtimes from one of the architecture for all architectures.
-			// Even though they are architecture dependent, Unity converts
-			// them to AnyCPU automatically
-			contentPathSuffix = "runtimes/win10-" + module.NativeArchitectures[0] + "/" + contentPathSuffix;
-		}
+        var contentPathSuffix = "lib/uap10.0/";
+        // Deal with any native components
+        if (module.UWPHasNativeCode) {
+            foreach (var arch in module.NativeArchitectures) {
+                var dest = "Assets/AppCenter/Plugins/WSA/" + module.Moniker + "/" + arch.ToString ().ToUpper () + "/";
+                EnsureDirectoryExists (dest);
+                var nativeFiles = GetFiles (tempContentPath + "runtimes/" + "win10-" + arch + "/native/*");
+                DeleteFiles (dest + "*.dll");
+                MoveFiles (nativeFiles, dest);
+            }
+            // Use managed runtimes from one of the architecture for all architectures.
+            // Even though they are architecture dependent, Unity converts
+            // them to AnyCPU automatically
+            contentPathSuffix = "runtimes/win10-" + module.NativeArchitectures[0] + "/" + contentPathSuffix;
+        }
 
-		// Move the files to the proper location
-		var files = GetFiles(tempContentPath + contentPathSuffix + "*");
-		MoveFiles(files, destination);
-	}
+        // Move the files to the proper location
+        var files = GetFiles (tempContentPath + contentPathSuffix + "*");
+        MoveFiles (files, destination);
+    }
 }
 
 void BuildApps(string type, string projectPath = ".")
