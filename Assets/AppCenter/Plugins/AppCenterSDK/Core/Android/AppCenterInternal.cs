@@ -84,10 +84,6 @@ namespace Microsoft.AppCenter.Unity.Internal
             wrapperSdkObject.Call("setLiveUpdatePackageHash", liveUpdatePackageHash);
             _appCenter.CallStatic("setWrapperSdk", wrapperSdkObject);
         }
-
-        public static void StartCrashes()
-        {
-        }
     }
 }
 #endif
