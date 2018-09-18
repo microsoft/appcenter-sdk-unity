@@ -306,10 +306,6 @@ Task ("Externals-Uwp-IL2CPP-Dependencies")
                 var path = "externals/uwp/" + depPackage.Id;
                 depPackage.ExtractContents (fileSystem, path);
 
-                // Get assemblies list.
-                IEnumerable<IPackageAssemblyReference> assemblies;
-                VersionUtility.TryGetCompatibleItems (frameworkName, depPackage.AssemblyReferences, out assemblies);
-
                 ExtractNuGetPackage (depPackage, frameworkName, path, targetPath);
             }
         }
