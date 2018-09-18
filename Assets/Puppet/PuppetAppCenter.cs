@@ -24,9 +24,10 @@ public class PuppetAppCenter : MonoBehaviour
     }
 
     [MonoPInvokeCallback(typeof(Crashes.UserConfirmationHandler))]
-    public static void UserConfirmationHandler()
+    public static bool UserConfirmationHandler()
     {
         instance.userConfirmationDialog.Show();
+        return false;
     }
 
     void OnEnable()

@@ -117,7 +117,7 @@ namespace Microsoft.AppCenter.Unity.Crashes
         #if ENABLE_IL2CPP
         [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
         #endif
-        public delegate void UserConfirmationHandler();
+        public delegate bool UserConfirmationHandler();
 
         public static void SetUserConfirmationHandler(UserConfirmationHandler handler)
         {

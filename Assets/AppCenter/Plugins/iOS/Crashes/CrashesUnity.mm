@@ -50,11 +50,10 @@ void appcenter_unity_crashes_disable_mach_exception_handler()
   [MSCrashes disableMachExceptionHandler];
 }
 
-void appcenter_unity_crashes_set_user_confirmation_handler(void(* userConfirmationHandler)())
+void appcenter_unity_crashes_set_user_confirmation_handler(bool(* userConfirmationHandler)())
 {
     [MSCrashes setUserConfirmationHandler:^BOOL(NSArray<MSErrorReport *> *_Nonnull errorReports){
-        userConfirmationHandler();
-        return false;
+        return userConfirmationHandler();
     }];
 }
 
