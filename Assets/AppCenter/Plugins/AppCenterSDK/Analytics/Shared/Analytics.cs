@@ -14,6 +14,13 @@ namespace Microsoft.AppCenter.Unity.Analytics
     using RawType = System.Type;
 #endif
 
+#if UNITY_IOS || UNITY_EDITOR
+    using RawTypeTransmission = System.IntPtr;
+#elif UNITY_ANDROID
+    using RawTypeTransmission = UnityEngine.AndroidJavaObject;
+#else
+    using RawTypeTransmission = System.Object;
+#endif
     public class Analytics
     {
         public static void PrepareEventHandlers()
@@ -47,5 +54,11 @@ namespace Microsoft.AppCenter.Unity.Analytics
         {
             return AnalyticsInternal.SetEnabledAsync(enabled);
         }
+
+        public static RawTypeTransmission GetTransmissionTarget (string transmissionTargetToken)
+        {
+            return AnalyticsInternal.GetTransmissionTarget(transmissionTargetToken);
+        }
+        
     }
 }

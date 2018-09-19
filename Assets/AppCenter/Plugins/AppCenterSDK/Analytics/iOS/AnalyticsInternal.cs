@@ -41,6 +41,11 @@ namespace Microsoft.AppCenter.Unity.Analytics.Internal
             return AppCenterTask<bool>.FromCompleted(isEnabled);
         }
 
+        public static IntPtr GetTransmissionTarget (string transmissionTargetToken) 
+        {
+            return appcenter_unity_analytics_transmission_target_for_token(transmissionTargetToken);
+        }
+
 #region External
 
         [DllImport("__Internal")]
@@ -57,6 +62,9 @@ namespace Microsoft.AppCenter.Unity.Analytics.Internal
 
         [DllImport("__Internal")]
         private static extern bool appcenter_unity_analytics_is_enabled();
+
+        [DllImport("__Internal")]
+        private static extern IntPtr appcenter_unity_analytics_transmission_target_for_token(string transmissionTargetToken);
 
 #endregion
     }
