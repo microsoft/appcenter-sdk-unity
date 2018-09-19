@@ -27,7 +27,7 @@ public class PuppetAppCenter : MonoBehaviour
     public static bool UserConfirmationHandler()
     {
         instance.userConfirmationDialog.Show();
-        return false;
+        return true;
     }
 
     void OnEnable()
