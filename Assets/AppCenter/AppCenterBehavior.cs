@@ -8,28 +8,27 @@ using System;
 using System.Reflection;
 using Microsoft.AppCenter.Unity.Internal;
 
-// TODO Update documentation link
-[HelpURL("https://docs.microsoft.com/en-us/mobile-center/sdk/")]
+[HelpURL("https://docs.microsoft.com/en-us/appcenter/sdk/crashes/unity")]
 public class AppCenterBehavior : MonoBehaviour
 {
     public static event Action InitializingServices;
     public static event Action InitializedAppCenterAndServices;
     public static event Action Started;
 
-    private static AppCenterBehavior instance;
-
     public AppCenterSettings settings;
+
+    public static AppCenterBehavior Instance { get; private set; }
 
     private void Awake()
     {
         // Make sure that App Center have only one instance.
-        if (instance != null)
+        if (Instance != null)
         {
             Debug.LogError("App Center should have only one instance!");
             DestroyImmediate(gameObject);
             return;
         }
-        instance = this;
+        Instance = this;
         DontDestroyOnLoad(gameObject);
 
         // Initialize App Center.
@@ -53,9 +52,6 @@ public class AppCenterBehavior : MonoBehaviour
     {
 #if !UNITY_EDITOR
         Application.logMessageReceived += OnHandleLogCallback;
-#endif
-
-#if UNITY_IOS && !UNITY_EDITOR
         System.AppDomain.CurrentDomain.UnhandledException += OnHandleUnresolvedException;
 #endif
     }
@@ -64,9 +60,6 @@ public class AppCenterBehavior : MonoBehaviour
     {
 #if !UNITY_EDITOR
         Application.logMessageReceived -= OnHandleLogCallback;
-#endif
-
-#if UNITY_IOS && !UNITY_EDITOR
         System.AppDomain.CurrentDomain.UnhandledException -= OnHandleUnresolvedException;
 #endif
     }
@@ -109,7 +102,7 @@ public class AppCenterBehavior : MonoBehaviour
         AppCenter.SetWrapperSdk();
 
         // On iOS and Android App Center starting automatically.
-        #if UNITY_EDITOR || (!UNITY_IOS && !UNITY_ANDROID)
+#if UNITY_EDITOR || (!UNITY_IOS && !UNITY_ANDROID)
         AppCenter.LogLevel = settings.InitialLogLevel;
         if (settings.CustomLogUrl.UseCustomUrl)
         {
@@ -118,7 +111,8 @@ public class AppCenterBehavior : MonoBehaviour
         var appSecret = AppCenter.GetSecretForPlatform(settings.AppSecret);
         var nativeServiceTypes = AppCenter.ServicesToNativeTypes(services);
         AppCenterInternal.Start(appSecret, nativeServiceTypes, services.Length);
-        #endif
+#endif
+
         InvokeInitializedServices();
     }
 

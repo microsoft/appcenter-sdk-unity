@@ -4,6 +4,7 @@
 
 using Microsoft.AppCenter.Unity.Crashes.Internal;
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -18,6 +19,16 @@ namespace Microsoft.AppCenter.Unity.Crashes
     public class Crashes
     {
         private static bool _reportUnhandledExceptions = false;
+
+#if UNITY_ANDROID
+        private static Queue<Exception> _unhandledExceptions = new Queue<Exception>();
+        private static Coroutine _unhandledExceptionsCoroutine;
+
+        public static void PrepareEventHandlers()
+        {
+            AppCenterBehavior.InitializedAppCenterAndServices += HandleAppCenterInitialized;
+        }
+#endif
 
         public static void Initialize()
         {
@@ -64,8 +75,15 @@ namespace Microsoft.AppCenter.Unity.Crashes
             var exception = args.ExceptionObject as Exception;
             if (exception != null)
             {
+#if UNITY_ANDROID
+                lock (_unhandledExceptions)
+                {
+                    _unhandledExceptions.Enqueue(exception);
+                }
+#else
                 var exceptionWrapper = CreateWrapperException(exception);
                 CrashesInternal.TrackException(exceptionWrapper.GetRawObject());
+#endif
             }
         }
 
@@ -106,12 +124,65 @@ namespace Microsoft.AppCenter.Unity.Crashes
         public static void ReportUnhandledExceptions(bool enabled)
         {
             _reportUnhandledExceptions = enabled;
+#if UNITY_ANDROID
+            if (enabled)
+            {
+                StartUnhandledExceptionsCoroutine();
+            }
+            else
+            {
+                StopUnhandledExceptionsCoroutine();
+            }
+#endif
         }
 
         public static bool IsReportingUnhandledExceptions()
         {
             return _reportUnhandledExceptions;
         }
+
+#if UNITY_ANDROID
+        private static void HandleAppCenterInitialized()
+        {
+            if (_reportUnhandledExceptions)
+            {
+                StartUnhandledExceptionsCoroutine();
+            }
+        }
+
+        private static void StartUnhandledExceptionsCoroutine()
+        {
+            if (_unhandledExceptionsCoroutine == null && AppCenterBehavior.Instance != null)
+            {
+                _unhandledExceptionsCoroutine = AppCenterBehavior.Instance.StartCoroutine(SendUnhandledExceptionReports());
+            }
+        }
+
+        private static void StopUnhandledExceptionsCoroutine()
+        {
+            if (_unhandledExceptionsCoroutine != null && AppCenterBehavior.Instance != null)
+            {
+                AppCenterBehavior.Instance.StopCoroutine(_unhandledExceptionsCoroutine);
+            }
+        }
+
+        private static IEnumerator SendUnhandledExceptionReports()
+        {
+            while (true)
+            {
+                lock (_unhandledExceptions)
+                {
+                    if (_unhandledExceptions.Count != 0)
+                    {
+                        var exception = _unhandledExceptions.Dequeue();
+                        var exceptionWrapper = CreateWrapperException(exception);
+                        CrashesInternal.TrackException(exceptionWrapper.GetRawObject());
+                    }
+                }
+                yield return null;
+            }
+        }
+#endif
 
         private static WrapperException CreateWrapperException(Exception exception)
         {
