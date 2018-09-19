@@ -163,6 +163,7 @@ namespace Microsoft.AppCenter.Unity.Crashes
             if (_unhandledExceptionsCoroutine != null && AppCenterBehavior.Instance != null)
             {
                 AppCenterBehavior.Instance.StopCoroutine(_unhandledExceptionsCoroutine);
+                _unhandledExceptionsCoroutine = null;
             }
         }
 
