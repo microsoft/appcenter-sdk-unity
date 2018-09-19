@@ -25,9 +25,9 @@ namespace Microsoft.AppCenter.Unity.Analytics
             return _rawObject;
         }
 
-        public WrapperTransmissionTarget()
+        public WrapperTransmissionTarget(RawType rawObject)
         {
-            _rawObject = WrapperTransmissionTargetInternal.Create();
+            _rawObject = rawObject;
         }
 
         public void TrackEvent(string eventName)

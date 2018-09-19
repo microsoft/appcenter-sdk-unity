@@ -12,11 +12,6 @@ namespace Microsoft.AppCenter.Unity.Analytics
     public class WrapperTransmissionTargetInternal
     {
 
-        public static UnityEngine.AndroidJavaObject Create()
-        {
-            return default(RawType);
-        }
-
         public static void TrackEvent(UnityEngine.AndroidJavaObject transmissionTarget, string eventName)
         {
             

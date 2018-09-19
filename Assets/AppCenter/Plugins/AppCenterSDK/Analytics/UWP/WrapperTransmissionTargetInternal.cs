@@ -20,11 +20,6 @@ namespace Microsoft.AppCenter.Unity.Analytics
     public class WrapperTransmissionTargetInternal
     {
 
-        public static RawType Create()
-        {
-            return default(RawType);
-        }
-
         public static void TrackEvent(IntPtr transmissionTarget, string eventName)
         {
             
