@@ -120,7 +120,7 @@ public class AppCenterBehavior : MonoBehaviour
 #endif
 
         // On iOS and Android App Center starting automatically.
-#if UNITY_EDITOR || (!UNITY_ANDROID && !UNITY_IOS)
+#if UNITY_EDITOR || (!UNITY_IOS && !UNITY_ANDROID)
         AppCenter.LogLevel = settings.InitialLogLevel;
         if (settings.CustomLogUrl.UseCustomUrl)
         {
@@ -130,6 +130,7 @@ public class AppCenterBehavior : MonoBehaviour
         var nativeServiceTypes = AppCenter.ServicesToNativeTypes(services);
         AppCenterInternal.Start(appSecret, nativeServiceTypes, services.Length);
 #endif
+
         InvokeInitializedServices();
     }
 
