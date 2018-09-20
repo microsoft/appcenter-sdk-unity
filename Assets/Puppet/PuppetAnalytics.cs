@@ -12,6 +12,7 @@ using UnityEngine.UI;
 public class PuppetAnalytics : MonoBehaviour
 {
     public Toggle Enabled;
+    public Toggle TransmissionEnabled;
     public InputField EventName;
     public GameObject EventProperty;
     public RectTransform EventPropertiesList;
@@ -22,11 +23,22 @@ public class PuppetAnalytics : MonoBehaviour
         {
             Enabled.isOn = task.Result;
         });
+
+        WrapperTransmissionTarget transmissionTarget = Analytics.GetTransmissionTarget();
+        transmissionTarget.IsEnabledAsync().ContinueWith(task => 
+        {
+            TransmissionEnabled.isOn = task.Result;
+        });
     }
 
     public void SetEnabled(bool enabled)
     {
         StartCoroutine(SetEnabledCoroutine(enabled));
+    }
+
+    public void SetTransmissionEnabled(bool enabled)
+    {
+        StartCoroutine(SetTransmissionEnabledCoroutine(enabled));
     }
 
     private IEnumerator SetEnabledCoroutine(bool enabled)
@@ -35,6 +47,15 @@ public class PuppetAnalytics : MonoBehaviour
         var isEnabled = Analytics.IsEnabledAsync();
         yield return isEnabled;
         Enabled.isOn = isEnabled.Result;
+    }
+
+    private IEnumerator SetTransmissionEnabledCoroutine(bool enabled)
+    {
+        WrapperTransmissionTarget transmissionTarget = Analytics.GetTransmissionTarget();
+        yield return transmissionTarget.SetEnabledAsync(enabled);
+        var isEnabled = transmissionTarget.IsEnabledAsync();
+        yield return isEnabled;
+        TransmissionEnabled.isOn = isEnabled.Result;
     }
 
     public void AddProperty()
@@ -46,6 +67,20 @@ public class PuppetAnalytics : MonoBehaviour
     public void TrackEvent()
     {
         Analytics.TrackEvent(EventName.text, GetProperties());
+    }
+
+    public void TrackEventTransmission() 
+    { 
+        WrapperTransmissionTarget transmissionTarget = Analytics.GetTransmissionTarget();
+        Dictionary<string, string> properties = GetProperties();
+        if (properties == null) 
+        {
+            transmissionTarget.TrackEvent(EventName.text);
+        }
+        else
+        {
+            transmissionTarget.TrackEventWithProperties(EventName.text, GetProperties());
+        }
     }
 
     private Dictionary<string, string> GetProperties()

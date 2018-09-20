@@ -18,6 +18,8 @@ public class AppCenterSettings : ScriptableObject
     public string AndroidAppSecret = "android-app-secret";
     [AppSecret]
     public string UWPAppSecret = "uwp-app-secret";
+    [AppSecret("Transmission Target Token")]
+    public string TransmissionTargetToken = "transmission-target-token";
 
     [Tooltip("App Center Analytics helps you understand user behavior and customer engagement to improve your app.")]
     public bool UseAnalytics = true;
