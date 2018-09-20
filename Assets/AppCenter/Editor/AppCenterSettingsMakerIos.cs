@@ -10,6 +10,7 @@ public class AppCenterSettingsMakerIos
     private const string TargetFilePath = "Assets/AppCenter/Plugins/iOS/Core/AppCenterStarter.m";
     private const string AppSecretSearchText = "appcenter-app-secret";
     private const string TransmissionTargetSearchText = "appcenter-transmission-target";
+    private const string ChildTransmissionTargetSearchText = "appcenter-child-transmission-target";
     private const string LogUrlSearchText = "custom-log-url";
     private const string LogUrlToken = "APPCENTER_UNITY_USE_CUSTOM_LOG_URL";
     private const string LogLevelSearchText = "0/*LOG_LEVEL*/";
@@ -48,6 +49,11 @@ public class AppCenterSettingsMakerIos
     public void SetTransmissionTarget(string transmissionTarget)
     {
         _loaderFileText = _loaderFileText.Replace(TransmissionTargetSearchText, transmissionTarget);
+    }
+
+    public void SetChildTransmissionTarget(string childTransmissionTarget)
+    {
+        _loaderFileText = _loaderFileText.Replace(ChildTransmissionTargetSearchText, childTransmissionTarget);
     }
 
     public void StartCrashesClass()

@@ -83,6 +83,21 @@ public class PuppetAnalytics : MonoBehaviour
         }
     }
 
+    public void TrackEventChildTransmission()
+    {
+        WrapperTransmissionTarget transmissionTarget = Analytics.GetTransmissionTarget();
+        WrapperTransmissionTarget childTransmissionTarget = transmissionTarget.GetTransmissionTarget();
+        Dictionary<string, string> properties = GetProperties();
+        if (properties == null)
+        {
+            childTransmissionTarget.TrackEvent(EventName.text);
+        }
+        else
+        {
+            childTransmissionTarget.TrackEventWithProperties(EventName.text, GetProperties());
+        }
+    }
+
     private Dictionary<string, string> GetProperties()
     {
         var properties = EventPropertiesList.GetComponentsInChildren<PuppetEventProperty>();

@@ -46,6 +46,11 @@ namespace Microsoft.AppCenter.Unity.Analytics
             var future = transmissionTarget.Call<AndroidJavaObject>("isEnabledAsync");
             return new AppCenterTask<bool>(future);
         }
+
+        public static AndroidJavaObject GetTransmissionTarget (UnityEngine.AndroidJavaObject transmissionTargetParent, string transmissionTargetToken) 
+        {
+            return transmissionTargetParent.Call<AndroidJavaObject>("getTransmissionTarget", transmissionTargetToken);
+        }
     }
 }
 #endif

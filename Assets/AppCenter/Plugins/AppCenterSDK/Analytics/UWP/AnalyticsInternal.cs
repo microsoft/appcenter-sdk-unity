@@ -49,7 +49,6 @@ namespace Microsoft.AppCenter.Unity.Analytics.Internal
         public static Type GetTransmissionTarget (string transmissionTargetToken) 
         {
             return null;
-            
         }
     }
 }

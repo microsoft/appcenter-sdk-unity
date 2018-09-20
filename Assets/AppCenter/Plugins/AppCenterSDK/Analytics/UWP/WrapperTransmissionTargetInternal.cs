@@ -39,6 +39,16 @@ namespace Microsoft.AppCenter.Unity.Analytics
         {
             return AppCenterTask<bool>.FromCompleted(false);
         }
+
+        public static AppCenterTask<bool> IsEnabledAsync(IntPtr transmissionTarget)
+        {
+            return AppCenterTask<bool>.FromCompleted(false);
+        }
+
+        public static Type GetTransmissionTarget (IntPtr transmissionTargetParent, string transmissionTargetToken) 
+        {
+            return null;
+        }
     }
 }
 #endif

@@ -20,6 +20,8 @@ public class AppCenterSettings : ScriptableObject
     public string UWPAppSecret = "uwp-app-secret";
     [AppSecret("Transmission Target Token")]
     public string TransmissionTargetToken = "transmission-target-token";
+    [AppSecret("Child Transmission Target Token")]
+    public string ChildTransmissionTargetToken = "child-transmission-target-token";
 
     [Tooltip("App Center Analytics helps you understand user behavior and customer engagement to improve your app.")]
     public bool UseAnalytics = true;

@@ -32,6 +32,11 @@ namespace Microsoft.AppCenter.Unity.Analytics
         {
             return AppCenterTask<bool>.FromCompleted(false);
         }
+
+        public static IntPtr GetTransmissionTarget(IntPtr transmissionTargetParent, string transmissionTargetToken)
+        {
+            return default(IntPtr);
+        }
     }
 }
 #endif
