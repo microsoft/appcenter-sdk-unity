@@ -59,11 +59,11 @@ namespace Microsoft.AppCenter.Unity.Crashes.Internal
         {
         }
 
-        public static void SetUserConfirmationHandler(Crashes.UserConfirmationHandler handler)
+        public static void SetUserConfirmationHandler(Unity.Crashes.Crashes.UserConfirmationHandler handler)
         {
         }
 
-        public static void NotifyWithUserConfirmation(Crashes.ConfirmationResult answer)
+        public static void NotifyWithUserConfirmation(Unity.Crashes.Crashes.ConfirmationResult answer)
         {
         }
 
