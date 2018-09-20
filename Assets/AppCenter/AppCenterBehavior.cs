@@ -20,6 +20,11 @@ public class AppCenterBehavior : MonoBehaviour
 
     public AppCenterSettings settings;
 
+    public static AppCenterSettings SettingsInstance {
+        get {
+            return instance.settings;
+        }
+    }
     private void Awake()
     {
         // Make sure that App Center have only one instance.
