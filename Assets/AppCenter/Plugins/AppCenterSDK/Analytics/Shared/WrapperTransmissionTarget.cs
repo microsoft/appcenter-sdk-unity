@@ -40,14 +40,14 @@ namespace Microsoft.AppCenter.Unity.Analytics
             WrapperTransmissionTargetInternal.TrackEventWithProperties(_rawObject, eventName, properties);
         }
 
-        public void SetEnabled(bool enabled)
+        public AppCenterTask<bool> IsEnabledAsync()
         {
-            WrapperTransmissionTargetInternal.SetEnabled(_rawObject, enabled);
+            return WrapperTransmissionTargetInternal.IsEnabledAsync(_rawObject);
         }
 
-        public bool IsEnabled() 
+        public AppCenterTask SetEnabledAsync(bool enabled)
         {
-            return WrapperTransmissionTargetInternal.IsEnabled(_rawObject);
+            return WrapperTransmissionTargetInternal.SetEnabledAsync(_rawObject, enabled);
         }
     }
 }

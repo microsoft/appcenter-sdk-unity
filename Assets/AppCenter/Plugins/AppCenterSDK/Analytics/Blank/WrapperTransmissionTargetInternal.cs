@@ -23,14 +23,14 @@ namespace Microsoft.AppCenter.Unity.Analytics
             
         }
 
-        public static void SetEnabled(IntPtr transmissionTarget, bool enabled)
+        public static AppCenterTask SetEnabledAsync(IntPtr transmissionTarget, bool enabled)
         {
-            
+            return AppCenterTask.FromCompleted();
         }
 
-        public static bool IsEnabled(IntPtr transmissionTarget)
+        public static AppCenterTask<bool> IsEnabledAsync(IntPtr transmissionTarget)
         {
-            return false;
+            return AppCenterTask<bool>.FromCompleted(false);
         }
     }
 }
