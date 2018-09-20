@@ -9,8 +9,7 @@ using System.Reflection;
 using Microsoft.AppCenter.Unity.Internal;
 using System.Linq;
 
-// TODO Update documentation link
-[HelpURL("https://docs.microsoft.com/en-us/mobile-center/sdk/")]
+[HelpURL("https://docs.microsoft.com/en-us/appcenter/sdk/crashes/unity")]
 public class AppCenterBehavior : MonoBehaviour
 {
     public static event Action InitializingServices;
@@ -48,58 +47,6 @@ public class AppCenterBehavior : MonoBehaviour
         {
             Started.Invoke();
         }
-    }
-
-    void OnEnable()
-    {
-#if !UNITY_EDITOR
-        Application.logMessageReceived += OnHandleLogCallback;
-#endif
-
-#if UNITY_IOS && !UNITY_EDITOR
-        System.AppDomain.CurrentDomain.UnhandledException += OnHandleUnresolvedException;
-#endif
-    }
-
-    void OnDisable()
-    {
-#if !UNITY_EDITOR
-        Application.logMessageReceived -= OnHandleLogCallback;
-#endif
-
-#if UNITY_IOS && !UNITY_EDITOR
-        System.AppDomain.CurrentDomain.UnhandledException -= OnHandleUnresolvedException;
-#endif
-    }
-
-    public void OnHandleLogCallback(string logString, string stackTrace, LogType type)
-    {
-#if !UNITY_EDITOR
-        foreach (var service in settings.Services)
-        {
-            var OnHanldeLogMethod = service.GetMethod("OnHandleLog");
-            if (OnHanldeLogMethod != null)
-            {   
-                object[] parametersArray = new object[] { logString, stackTrace, type };
-                OnHanldeLogMethod.Invoke(this, parametersArray);
-            }
-        }
-#endif
-    }
-
-    public void OnHandleUnresolvedException(object sender, UnhandledExceptionEventArgs args)
-    {
-#if !UNITY_EDITOR
-        foreach (var service in settings.Services)
-        {
-            var OnHandleUnresolvedExceptionMethod = service.GetMethod("OnHandleUnresolvedException");
-            if (OnHandleUnresolvedExceptionMethod != null)
-            {
-                object[] parametersArray = new object[] { sender, args };
-                OnHandleUnresolvedExceptionMethod.Invoke(this, parametersArray);
-            }
-        }
-#endif
     }
 
     private void StartAppCenter()
