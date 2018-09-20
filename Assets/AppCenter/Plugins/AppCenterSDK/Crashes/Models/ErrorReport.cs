@@ -4,7 +4,7 @@
 
 using System;
 
-namespace Microsoft.AppCenter.Unity.Crashes.Models
+namespace Microsoft.AppCenter.Unity.Crashes
 {
     public class ErrorReport
     {

@@ -19,7 +19,9 @@ public class PuppetAppCenter : MonoBehaviour
 
     private void Awake()
     {
-        Crashes.SetUserConfirmationHandler(UserConfirmationHandler);
+        Crashes.Initialize();
+        Crashes.ShouldProcessErrorReport = ShouldProcessErrorReportHandler;
+        Crashes.ShouldAwaitUserConfirmation = UserConfirmationHandler;
         instance = this;
     }
 
@@ -27,6 +29,12 @@ public class PuppetAppCenter : MonoBehaviour
     public static bool UserConfirmationHandler()
     {
         instance.userConfirmationDialog.Show();
+        return true;
+    }
+
+    [MonoPInvokeCallback(typeof(Crashes.ShouldProcessErrorReportHandler))]
+    public static bool ShouldProcessErrorReportHandler(ErrorReport errorReport)
+    {
         return true;
     }
 

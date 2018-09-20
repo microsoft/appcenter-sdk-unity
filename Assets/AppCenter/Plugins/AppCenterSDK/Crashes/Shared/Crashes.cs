@@ -95,7 +95,7 @@ namespace Microsoft.AppCenter.Unity.Crashes
             CrashesInternal.DisableMachExceptionHandler();
         }
 
-        public static Models.ErrorReport LastSessionCrashReport()
+        public static ErrorReport LastSessionCrashReport()
         {
             return CrashesInternal.LastSessionCrashReport();
         }
@@ -114,14 +114,17 @@ namespace Microsoft.AppCenter.Unity.Crashes
             return _reportUnhandledExceptions;
         }
 
-        #if ENABLE_IL2CPP
+#if ENABLE_IL2CPP
         [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
-        #endif
+#endif
         public delegate bool UserConfirmationHandler();
 
-        public static void SetUserConfirmationHandler(UserConfirmationHandler handler)
+        public static UserConfirmationHandler ShouldAwaitUserConfirmation
         {
-            CrashesInternal.SetUserConfirmationHandler(handler);
+            set
+            {
+                CrashesInternal.SetUserConfirmationHandler(value);
+            }
         }
 
         public enum ConfirmationResult { DontSend, Send, AlwaysSend };
@@ -129,6 +132,19 @@ namespace Microsoft.AppCenter.Unity.Crashes
         public static void NotifyWithUserConfirmation(ConfirmationResult answer)
         {
             CrashesInternal.NotifyWithUserConfirmation(answer);
+        }
+
+#if ENABLE_IL2CPP
+        [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
+#endif
+        public delegate bool ShouldProcessErrorReportHandler(ErrorReport errorReport);
+
+        public static ShouldProcessErrorReportHandler ShouldProcessErrorReport 
+        {
+            set
+            {
+                CrashesDelegate.SetShouldProcessErrorReportHandler(value);
+            }
         }
 
         public static void StartCrashes()

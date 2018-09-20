@@ -60,23 +60,7 @@ namespace Microsoft.AppCenter.Unity.Crashes.Internal
         public static ErrorReport LastSessionCrashReport()
         {
             var errorReportPtr = appcenter_unity_crashes_last_session_crash_report();
-            if (errorReportPtr == IntPtr.Zero)
-            {
-                return null;
-            }
-
-            var procId = app_center_unity_crashes_error_report_app_process_identifier(errorReportPtr);
-            var identifier = app_center_unity_crashes_error_report_incident_identifier(errorReportPtr);
-            var exceptionName = app_center_unity_crashes_error_report_exception_name(errorReportPtr);
-            var reporterKey = app_center_unity_crashes_error_report_reporter_key(errorReportPtr);
-            var reporterSignal = app_center_unity_crashes_error_report_signal(errorReportPtr);
-            var exceptionReason = app_center_unity_crashes_error_report_exception_reason(errorReportPtr);
-            var startTime = DateTimeOffset.Parse(app_center_unity_crashes_error_report_app_start_time(errorReportPtr));
-            var errorTime = DateTimeOffset.Parse(app_center_unity_crashes_error_report_app_error_time(errorReportPtr));
-            var isAppKill = app_center_unity_crashes_error_report_is_app_kill(errorReportPtr);
-            var condition = exceptionName + " : " + exceptionReason;
-            var exception = new Models.Exception(condition, "");
-            return new ErrorReport(identifier, startTime, errorTime, exception, procId, reporterKey, reporterSignal, isAppKill);
+            return GetErrorReportFromIntPtr(errorReportPtr);
         }
 
         public static void SetUserConfirmationHandler(Crashes.UserConfirmationHandler handler)
@@ -92,6 +76,34 @@ namespace Microsoft.AppCenter.Unity.Crashes.Internal
         public static void StartCrashes()
         {
             appcenter_unity_start_crashes();
+        }
+
+        public static ErrorReport GetErrorReportFromIntPtr(IntPtr errorReportPtr)
+        {
+            if (errorReportPtr == IntPtr.Zero)
+            {
+                return null;
+            }
+            if (errorReportPtr == null)
+            {
+                return null;
+            }
+            var procId = app_center_unity_crashes_error_report_app_process_identifier(errorReportPtr);
+            var identifier = app_center_unity_crashes_error_report_incident_identifier(errorReportPtr);
+            var exceptionName = app_center_unity_crashes_error_report_exception_name(errorReportPtr);
+            var reporterKey = app_center_unity_crashes_error_report_reporter_key(errorReportPtr);
+            var reporterSignal = app_center_unity_crashes_error_report_signal(errorReportPtr);
+            var exceptionReason = app_center_unity_crashes_error_report_exception_reason(errorReportPtr);
+            var startTime = app_center_unity_crashes_error_report_app_start_time(errorReportPtr);
+            DateTimeOffset dtoStart;
+            if (startTime != null) dtoStart = DateTimeOffset.Parse(startTime);
+            var errorTime = app_center_unity_crashes_error_report_app_error_time(errorReportPtr);
+            DateTimeOffset dtoError;
+            if (errorTime != null) dtoError = DateTimeOffset.Parse(errorTime);
+            var isAppKill = app_center_unity_crashes_error_report_is_app_kill(errorReportPtr);
+            var condition = exceptionName + " : " + exceptionReason;
+            var exception = new Models.Exception(condition, "");
+            return new ErrorReport(identifier, dtoStart, dtoError, exception, procId, reporterKey, reporterSignal, isAppKill);
         }
 
 #region External
