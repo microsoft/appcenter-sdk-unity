@@ -152,6 +152,72 @@ namespace Microsoft.AppCenter.Unity.Crashes
             CrashesInternal.StartCrashes();
         }
 
+        private static void SubscribeToUnhandledExceptions()
+        {
+#if !UNITY_EDITOR
+            Application.logMessageReceived += OnHandleLog;
+            System.AppDomain.CurrentDomain.UnhandledException += OnHandleUnresolvedException;
+#endif
+
+#if !UNITY_EDITOR && UNITY_ANDROID
+            UnityCoroutineHelper.StartCoroutine(SendUnhandledExceptionReports);
+#endif
+        }
+
+        private static void UnsubscribeFromUnhandledExceptions()
+        {
+#if !UNITY_EDITOR
+            Application.logMessageReceived -= OnHandleLog;
+            System.AppDomain.CurrentDomain.UnhandledException -= OnHandleUnresolvedException;
+#endif
+        }
+
+        private static void HandleAppCenterInitialized()
+        {
+            if (_reportUnhandledExceptions)
+            {
+                SubscribeToUnhandledExceptions();
+            }
+        }
+
+#if UNITY_ANDROID
+        private static IEnumerator SendUnhandledExceptionReports()
+        {
+            while (true)
+            {
+                if (!_reportUnhandledExceptions)
+                {
+                    yield break;
+                }
+
+                if (_unhandledExceptionsExists)
+                {
+                    Exception exception = null;
+                    lock (_unhandledExceptions)
+                    {
+                        if (_unhandledExceptions.Count > 0)
+                        {
+                            exception = _unhandledExceptions.Dequeue();
+                        }
+
+                        if (_unhandledExceptions.Count == 0)
+                        {
+                            _unhandledExceptionsExists = false;
+                        }
+                    }
+
+                    if (exception != null)
+                    {
+                        var exceptionWrapper = CreateWrapperException(exception);
+                        CrashesInternal.TrackException(exceptionWrapper.GetRawObject());
+                    }
+                }
+
+                yield return null;
+            }
+        }
+#endif
+
         private static WrapperException CreateWrapperException(Exception exception)
         {
             var exceptionWrapper = new WrapperException();
