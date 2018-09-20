@@ -15,20 +15,20 @@ public class AppCenterBehavior : MonoBehaviour
     public static event Action InitializedAppCenterAndServices;
     public static event Action Started;
 
-    public AppCenterSettings settings;
+    private static AppCenterBehavior instance;
 
-    public static AppCenterBehavior Instance { get; private set; }
+    public AppCenterSettings settings;
 
     private void Awake()
     {
         // Make sure that App Center have only one instance.
-        if (Instance != null)
+        if (instance != null)
         {
             Debug.LogError("App Center should have only one instance!");
             DestroyImmediate(gameObject);
             return;
         }
-        Instance = this;
+        instance = this;
         DontDestroyOnLoad(gameObject);
 
         // Initialize App Center.
@@ -46,52 +46,6 @@ public class AppCenterBehavior : MonoBehaviour
         {
             Started.Invoke();
         }
-    }
-
-    void OnEnable()
-    {
-#if !UNITY_EDITOR
-        Application.logMessageReceived += OnHandleLogCallback;
-        System.AppDomain.CurrentDomain.UnhandledException += OnHandleUnresolvedException;
-#endif
-    }
-
-    void OnDisable()
-    {
-#if !UNITY_EDITOR
-        Application.logMessageReceived -= OnHandleLogCallback;
-        System.AppDomain.CurrentDomain.UnhandledException -= OnHandleUnresolvedException;
-#endif
-    }
-
-    public void OnHandleLogCallback(string logString, string stackTrace, LogType type)
-    {
-#if !UNITY_EDITOR
-        foreach (var service in settings.Services)
-        {
-            var OnHanldeLogMethod = service.GetMethod("OnHandleLog");
-            if (OnHanldeLogMethod != null)
-            {   
-                object[] parametersArray = new object[] { logString, stackTrace, type };
-                OnHanldeLogMethod.Invoke(this, parametersArray);
-            }
-        }
-#endif
-    }
-
-    public void OnHandleUnresolvedException(object sender, UnhandledExceptionEventArgs args)
-    {
-#if !UNITY_EDITOR
-        foreach (var service in settings.Services)
-        {
-            var OnHandleUnresolvedExceptionMethod = service.GetMethod("OnHandleUnresolvedException");
-            if (OnHandleUnresolvedExceptionMethod != null)
-            {
-                object[] parametersArray = new object[] { sender, args };
-                OnHandleUnresolvedExceptionMethod.Invoke(this, parametersArray);
-            }
-        }
-#endif
     }
 
     private void StartAppCenter()
