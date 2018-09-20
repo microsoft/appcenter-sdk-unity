@@ -31,19 +31,19 @@ namespace Microsoft.AppCenter.Unity.Analytics
             {
                 androidProperties.Call<AndroidJavaObject>("put", keys[i], values[i]);
             }
-            transmissionTarget.Call("trackEvent", eventName, properties);
+            transmissionTarget.Call("trackEvent", eventName, androidProperties);
             
         }
 
         public static AppCenterTask SetEnabledAsync(UnityEngine.AndroidJavaObject transmissionTarget, bool enabled)
         {
-            var future = transmissionTarget.Call<AndroidJavaObject>("setEnabled", enabled);
+            var future = transmissionTarget.Call<AndroidJavaObject>("setEnabledAsync", enabled);
             return new AppCenterTask(future);
         }
 
         public static AppCenterTask<bool> IsEnabledAsync(UnityEngine.AndroidJavaObject transmissionTarget)
         {
-            var future = transmissionTarget.CallStatic<AndroidJavaObject>("isEnabled");
+            var future = transmissionTarget.Call<AndroidJavaObject>("isEnabledAsync");
             return new AppCenterTask<bool>(future);
         }
     }
