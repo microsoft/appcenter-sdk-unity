@@ -17,7 +17,7 @@ namespace Microsoft.AppCenter.Unity.Distribute.Internal
 
         public static Type GetNativeType()
         {
-            return typeof(Microsoft.AppCenter.Distribute.Distribute);
+            return typeof(DistributeInternal.Distribute);
         }
 
         public static AppCenterTask SetEnabledAsync(bool isEnabled)
@@ -39,6 +39,10 @@ namespace Microsoft.AppCenter.Unity.Distribute.Internal
         }
 
         public static void NotifyUpdateAction(int updateAction)
+        {
+        }
+
+        private class Distribute
         {
         }
     }

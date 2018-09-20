@@ -17,6 +17,8 @@ namespace Microsoft.AppCenter.Unity.Crashes
 
     public class Crashes
     {
+        private static bool _reportUnhandledExceptions = false;
+
         public static void Initialize()
         {
             CrashesDelegate.SetDelegate();
@@ -45,7 +47,7 @@ namespace Microsoft.AppCenter.Unity.Crashes
 
         public static void OnHandleLog(string logString, string stackTrace, LogType type)
         {
-            if (LogType.Assert == type || LogType.Exception == type || LogType.Error == type)
+            if (_reportUnhandledExceptions && (LogType.Assert == type || LogType.Exception == type || LogType.Error == type))
             {
                 var exception = CreateWrapperException(logString, stackTrace);
                 CrashesInternal.TrackException(exception.GetRawObject());
@@ -54,16 +56,16 @@ namespace Microsoft.AppCenter.Unity.Crashes
 
         public static void OnHandleUnresolvedException(object sender, UnhandledExceptionEventArgs args)
         {
-            if (args == null || args.ExceptionObject == null)
+            if (!_reportUnhandledExceptions || args == null || args.ExceptionObject == null)
             {
                 return;
             }
 
-            Exception e = args.ExceptionObject as Exception;
-            if (e != null)
+            var exception = args.ExceptionObject as Exception;
+            if (exception != null)
             {
-                var exception = CreateWrapperException(e.Source, e.StackTrace);
-                CrashesInternal.TrackException(exception.GetRawObject());
+                var exceptionWrapper = CreateWrapperException(exception);
+                CrashesInternal.TrackException(exceptionWrapper.GetRawObject());
             }
         }
 
@@ -96,7 +98,21 @@ namespace Microsoft.AppCenter.Unity.Crashes
         {
             return CrashesInternal.LastSessionCrashReport();
         }
-        
+
+        /// <summary>
+        /// Report unhandled exceptions, automatically captured by Unity, as handled errors
+        /// </summary>
+        /// <param name="enabled">Specify true to enable reporting of unhandled exceptions, automatically captured by Unity, as handled errors; otherwise, false.</param>
+        public static void ReportUnhandledExceptions(bool enabled)
+        {
+            _reportUnhandledExceptions = enabled;
+        }
+
+        public static bool IsReportingUnhandledExceptions()
+        {
+            return _reportUnhandledExceptions;
+        }
+
         private static WrapperException CreateWrapperException(Exception exception)
         {
             var exceptionWrapper = new WrapperException();
