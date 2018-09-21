@@ -48,9 +48,9 @@ namespace Microsoft.AppCenter.Unity.Analytics
             return AnalyticsInternal.SetEnabledAsync(enabled);
         }
 
-        public static WrapperTransmissionTarget GetTransmissionTarget(string transmissionTargetToken)
+        public static WrapperTransmissionTarget GetTransmissionTarget()
         {
-            return new WrapperTransmissionTarget(AnalyticsInternal.GetTransmissionTarget(transmissionTargetToken));
+            return new WrapperTransmissionTarget(AnalyticsInternal.GetTransmissionTarget(AppCenterBehavior.SettingsInstance.TransmissionTargetToken));
         }
     }
 }
