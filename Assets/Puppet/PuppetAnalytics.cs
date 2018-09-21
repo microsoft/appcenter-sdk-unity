@@ -16,6 +16,7 @@ public class PuppetAnalytics : MonoBehaviour
     public InputField EventName;
     public GameObject EventProperty;
     public RectTransform EventPropertiesList;
+    private string TransmissionTargetToken = "";
 
     void OnEnable()
     {
@@ -24,7 +25,7 @@ public class PuppetAnalytics : MonoBehaviour
             Enabled.isOn = task.Result;
         });
 
-        WrapperTransmissionTarget transmissionTarget = Analytics.GetTransmissionTarget(AppCenterBehavior.SettingsInstance.TransmissionTargetToken);
+        WrapperTransmissionTarget transmissionTarget = Analytics.GetTransmissionTarget(TransmissionTargetToken);
         transmissionTarget.IsEnabledAsync().ContinueWith(task => 
         {
             TransmissionEnabled.isOn = task.Result;
@@ -51,7 +52,7 @@ public class PuppetAnalytics : MonoBehaviour
 
     private IEnumerator SetTransmissionEnabledCoroutine(bool enabled)
     {
-        WrapperTransmissionTarget transmissionTarget = Analytics.GetTransmissionTarget(AppCenterBehavior.SettingsInstance.TransmissionTargetToken);
+        WrapperTransmissionTarget transmissionTarget = Analytics.GetTransmissionTarget(TransmissionTargetToken);
         yield return transmissionTarget.SetEnabledAsync(enabled);
         var isEnabled = transmissionTarget.IsEnabledAsync();
         yield return isEnabled;
@@ -71,7 +72,7 @@ public class PuppetAnalytics : MonoBehaviour
 
     public void TrackEventTransmission() 
     { 
-        WrapperTransmissionTarget transmissionTarget = Analytics.GetTransmissionTarget(AppCenterBehavior.SettingsInstance.TransmissionTargetToken);
+        WrapperTransmissionTarget transmissionTarget = Analytics.GetTransmissionTarget(TransmissionTargetToken);
         Dictionary<string, string> properties = GetProperties();
         if (properties == null) 
         {
