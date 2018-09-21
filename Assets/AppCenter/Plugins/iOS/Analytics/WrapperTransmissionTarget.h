@@ -2,8 +2,9 @@
 //
 // Licensed under the MIT license.
 
-#import "AppCenterAnalytics/MSAnalyticsTransmissionTarget.h"
 #import <Foundation/Foundation.h>
+
+@class MSAnalyticsTransmissionTarget;
 
 extern "C" MSAnalyticsTransmissionTarget* appcenter_unity_transmission_target_create();
 extern "C" void appcenter_unity_transmission_target_track_event(MSAnalyticsTransmissionTarget *transmission, char* eventName);
