@@ -3,8 +3,10 @@
 // Licensed under the MIT license.
 
 #if UNITY_ANDROID && !UNITY_EDITOR
+using System.Collections.Generic;
+using UnityEngine;
 using Microsoft.AppCenter.Unity.Analytics.Internal;
-using System;
+using Microsoft.AppCenter.Unity.Internal.Utility;
 
 namespace Microsoft.AppCenter.Unity.Analytics
 {
@@ -14,22 +16,25 @@ namespace Microsoft.AppCenter.Unity.Analytics
 
         public static void TrackEvent(UnityEngine.AndroidJavaObject transmissionTarget, string eventName)
         {
-            
+            transmissionTarget.Call("trackEvent", eventName);
         }
 
         public static void TrackEventWithProperties(UnityEngine.AndroidJavaObject transmissionTarget, string eventName, IDictionary<string, string> properties)
         {
-            
+            var propertiesMap = JavaStringMapHelper.ConvertToJava(properties);
+            transmissionTarget.Call("trackEvent", eventName, properties);
         }
 
-        public static void SetEnabled(UnityEngine.AndroidJavaObject transmissionTarget, bool enabled)
+        public static AppCenterTask SetEnabledAsync(UnityEngine.AndroidJavaObject transmissionTarget, bool enabled)
         {
-            
+            var future = transmissionTarget.Call<AndroidJavaObject>("setEnabledAsync", enabled);
+            return new AppCenterTask(future);
         }
 
-        public static bool IsEnabled(UnityEngine.AndroidJavaObject transmissionTarget)
+        public static AppCenterTask<bool> IsEnabledAsync(UnityEngine.AndroidJavaObject transmissionTarget)
         {
-            return false;
+            var future = transmissionTarget.Call<AndroidJavaObject>("isEnabledAsync");
+            return new AppCenterTask<bool>(future);
         }
     }
 }

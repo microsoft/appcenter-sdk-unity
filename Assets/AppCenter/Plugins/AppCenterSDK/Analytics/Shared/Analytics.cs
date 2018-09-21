@@ -52,6 +52,5 @@ namespace Microsoft.AppCenter.Unity.Analytics
         {
             return new WrapperTransmissionTarget(AnalyticsInternal.GetTransmissionTarget(transmissionTargetToken));
         }
-        
     }
 }

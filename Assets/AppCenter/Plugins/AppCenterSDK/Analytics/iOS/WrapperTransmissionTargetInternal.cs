@@ -24,14 +24,16 @@ namespace Microsoft.AppCenter.Unity.Analytics.Internal
             appcenter_unity_transmission_target_track_event_with_props(transmissionTarget, eventName, properties.Keys.ToArray(), properties.Values.ToArray(), properties.Count);
         }
 
-        public static void SetEnabled(IntPtr transmissionTarget, bool enabled)
+        public static AppCenterTask SetEnabledAsync(IntPtr transmissionTarget, bool enabled)
         {
             appcenter_unity_transmission_target_set_enabled(transmissionTarget, enabled);
+            return AppCenterTask.FromCompleted();
         }
 
-         public static bool IsEnabled(IntPtr transmissionTarget)
+        public static AppCenterTask<bool> IsEnabledAsync(IntPtr transmissionTarget)
         {
-            return appcenter_unity_transmission_target_is_enabled(transmissionTarget);
+            bool isEnabled = appcenter_unity_transmission_target_is_enabled(transmissionTarget);
+            return AppCenterTask<bool>.FromCompleted(isEnabled);
         }
 
 #region External

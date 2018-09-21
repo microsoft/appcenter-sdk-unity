@@ -30,14 +30,14 @@ namespace Microsoft.AppCenter.Unity.Analytics
             
         }
 
-        public static void SetEnabled(RawType transmissionTarget, bool enabled)
+        public static AppCenterTask SetEnabledAsync(RawType transmissionTarget, bool enabled)
         {
-            
+            return AppCenterTask.FromCompleted();
         }
 
-        public static bool IsEnabled(RawType transmissionTarget)
+        public static AppCenterTask<bool> IsEnabledAsync(RawType transmissionTarget)
         {
-            return false;
+            return AppCenterTask<bool>.FromCompleted(false);
         }
     }
 }
