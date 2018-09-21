@@ -8,6 +8,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using System.Runtime.InteropServices;
 
 namespace Microsoft.AppCenter.Unity.Crashes
 {
@@ -28,6 +29,7 @@ namespace Microsoft.AppCenter.Unity.Crashes
 
         public static void PrepareEventHandlers()
         {
+            AppCenterBehavior.InitializingServices += Initialize;
             AppCenterBehavior.InitializedAppCenterAndServices += HandleAppCenterInitialized;
         }
 
@@ -116,7 +118,7 @@ namespace Microsoft.AppCenter.Unity.Crashes
             CrashesInternal.DisableMachExceptionHandler();
         }
 
-        public static Models.ErrorReport LastSessionCrashReport()
+        public static ErrorReport LastSessionCrashReport()
         {
             return CrashesInternal.LastSessionCrashReport();
         }
@@ -147,6 +149,44 @@ namespace Microsoft.AppCenter.Unity.Crashes
         public static bool IsReportingUnhandledExceptions()
         {
             return _reportUnhandledExceptions;
+        }
+
+#if ENABLE_IL2CPP
+        [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
+#endif
+        public delegate bool UserConfirmationHandler();
+
+        public static UserConfirmationHandler ShouldAwaitUserConfirmation
+        {
+            set
+            {
+                CrashesInternal.SetUserConfirmationHandler(value);
+            }
+        }
+
+        public enum ConfirmationResult { DontSend, Send, AlwaysSend };
+        
+        public static void NotifyWithUserConfirmation(ConfirmationResult answer)
+        {
+            CrashesInternal.NotifyWithUserConfirmation(answer);
+        }
+
+#if ENABLE_IL2CPP
+        [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
+#endif
+        public delegate bool ShouldProcessErrorReportHandler(ErrorReport errorReport);
+
+        public static ShouldProcessErrorReportHandler ShouldProcessErrorReport 
+        {
+            set
+            {
+                CrashesDelegate.SetShouldProcessErrorReportHandler(value);
+            }
+        }
+
+        public static void StartCrashes()
+        {
+            CrashesInternal.StartCrashes();
         }
 
         private static void SubscribeToUnhandledExceptions()
