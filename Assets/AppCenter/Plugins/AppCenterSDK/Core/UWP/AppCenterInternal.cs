@@ -9,6 +9,12 @@ using Microsoft.AppCenter.Unity.Internal.Utils;
 
 namespace Microsoft.AppCenter.Unity.Internal
 {
+#if UNITY_IOS || UNITY_ANDROID
+    using ServiceType = System.IntPtr;
+#else
+    using ServiceType = System.Type;
+#endif
+
     using UWPAppCenter = Microsoft.AppCenter.AppCenter;
 
     class AppCenterInternal
@@ -143,6 +149,11 @@ namespace Microsoft.AppCenter.Unity.Internal
                 default:
                     return (Microsoft.AppCenter.LogLevel)logLevel;
             }
+        }
+
+
+        public static void StartFromLibrary(ServiceType[] services) {
+
         }
 
         private static void Prepare()

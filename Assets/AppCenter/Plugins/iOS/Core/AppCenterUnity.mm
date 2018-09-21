@@ -32,6 +32,15 @@ void appcenter_unity_set_enabled(bool isEnabled)
   [MSAppCenter setEnabled:isEnabled];
 }
 
+void appcenter_unity_start_from_library(__strong Class classes[], int count) {
+    NSMutableArray<Class>* mutableClasses = [[NSMutableArray alloc] init];
+    for (int i=0; i<count; i++) {
+        [mutableClasses addObject:classes[i]];
+    }
+    
+    [MSAppCenter startFromLibraryWithServices:mutableClasses];
+}
+
 bool appcenter_unity_is_enabled()
 {
   return [MSAppCenter isEnabled];
