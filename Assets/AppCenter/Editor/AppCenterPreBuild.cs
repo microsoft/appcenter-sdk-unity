@@ -41,8 +41,6 @@ public class AppCenterPreBuild : IPreprocessBuild
         }
         var settingsMaker = new AppCenterSettingsMakerAndroid();
         settingsMaker.SetAppSecret(settings.AndroidAppSecret);
-        settingsMaker.SetTransmissionTargetToken(settings.TransmissionTargetToken);
-        settingsMaker.SetChildTransmissionTargetToken(settings.ChildTransmissionTargetToken);
         if (settings.CustomLogUrl.UseCustomUrl)
         {
             settingsMaker.SetLogUrl(settings.CustomLogUrl.Url);
@@ -93,8 +91,6 @@ public class AppCenterPreBuild : IPreprocessBuild
         }
         settingsMaker.SetLogLevel((int)settings.InitialLogLevel);
         settingsMaker.SetAppSecret(settings.iOSAppSecret);
-        settingsMaker.SetChildTransmissionTarget(settings.ChildTransmissionTargetToken);
-        settingsMaker.SetTransmissionTarget(settings.TransmissionTargetToken);
         if (settings.UseCrashes && IsIOSCrashesAvailable())
         {
             settingsMaker.StartCrashesClass();
