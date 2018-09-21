@@ -6,15 +6,16 @@
 using Microsoft.AppCenter.Unity.Analytics.Internal;
 using System;
 using System.Collections.Generic;
+
+namespace Microsoft.AppCenter.Unity.Analytics
+{
 #if UNITY_IOS
     using RawType = System.IntPtr;
 #elif UNITY_ANDROID
-using RawType = UnityEngine.AndroidJavaObject;
+    using RawType = UnityEngine.AndroidJavaObject;
 #else
     using RawType = System.Object;
 #endif
-namespace Microsoft.AppCenter.Unity.Analytics
-{
 
     public class WrapperTransmissionTargetInternal
     {
