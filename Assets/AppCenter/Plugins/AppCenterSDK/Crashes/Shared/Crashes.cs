@@ -29,6 +29,7 @@ namespace Microsoft.AppCenter.Unity.Crashes
 
         public static void PrepareEventHandlers()
         {
+            AppCenterBehavior.InitializingServices += Initialize;
             AppCenterBehavior.InitializedAppCenterAndServices += HandleAppCenterInitialized;
         }
 

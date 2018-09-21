@@ -62,11 +62,7 @@ public class AppCenterBehavior : MonoBehaviour
         {
             var startCrashes = service.GetMethod("StartCrashes");
             if (startCrashes != null)
-            { 
                 startCrashes.Invoke(null, null);
-                var initCrashes = service.GetMethod("Initialize");
-                initCrashes.Invoke(null, null);
-            }
         }
 #endif
 

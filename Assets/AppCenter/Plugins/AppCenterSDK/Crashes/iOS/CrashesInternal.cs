@@ -84,10 +84,6 @@ namespace Microsoft.AppCenter.Unity.Crashes.Internal
             {
                 return null;
             }
-            if (errorReportPtr == null)
-            {
-                return null;
-            }
             var procId = app_center_unity_crashes_error_report_app_process_identifier(errorReportPtr);
             var identifier = app_center_unity_crashes_error_report_incident_identifier(errorReportPtr);
             var exceptionName = app_center_unity_crashes_error_report_exception_name(errorReportPtr);
