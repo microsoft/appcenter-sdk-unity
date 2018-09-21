@@ -19,7 +19,6 @@ public class PuppetAppCenter : MonoBehaviour
 
     private void Awake()
     {
-        Crashes.Initialize();
         Crashes.ShouldProcessErrorReport = ShouldProcessErrorReportHandler;
         Crashes.ShouldAwaitUserConfirmation = UserConfirmationHandler;
         instance = this;
