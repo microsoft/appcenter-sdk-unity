@@ -56,6 +56,11 @@ namespace Microsoft.AppCenter.Unity.Analytics.Internal
             var future = _analytics.CallStatic<AndroidJavaObject>("isEnabled");
             return new AppCenterTask<bool>(future);
         }
+
+        public static IntPtr GetTransmissionTarget(string transmissionTargetToken) 
+        {
+            return default(IntPtr);
+        }
     }
 }
 #endif
