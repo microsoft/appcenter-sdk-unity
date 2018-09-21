@@ -1,7 +1,7 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 //
 // Licensed under the MIT license.
-#import "AppCenterAnalytics/MSAnalyticsTransmissionTarget.h"
+@class MSAnalyticsTransmissionTarget;
 
 extern "C" void* appcenter_unity_analytics_get_type();
 extern "C" void appcenter_unity_analytics_track_event(char* eventName);
