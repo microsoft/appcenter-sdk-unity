@@ -9,26 +9,33 @@ using System.Collections.Generic;
 
 namespace Microsoft.AppCenter.Unity.Analytics
 {
+#if UNITY_IOS
+    using RawType = System.IntPtr;
+#elif UNITY_ANDROID
+    using RawType = UnityEngine.AndroidJavaObject;
+#else
+    using RawType = System.Object;
+#endif
 
     public class WrapperTransmissionTargetInternal
     {
 
-        public static void TrackEvent(IntPtr transmissionTarget, string eventName)
+        public static void TrackEvent(RawType transmissionTarget, string eventName)
         {
             
         }
 
-        public static void TrackEventWithProperties(IntPtr transmissionTarget, string eventName, IDictionary<string, string> properties)
+        public static void TrackEventWithProperties(RawType transmissionTarget, string eventName, IDictionary<string, string> properties)
         {
             
         }
 
-        public static AppCenterTask SetEnabledAsync(IntPtr transmissionTarget, bool enabled)
+        public static AppCenterTask SetEnabledAsync(RawType transmissionTarget, bool enabled)
         {
             return AppCenterTask.FromCompleted();
         }
 
-        public static AppCenterTask<bool> IsEnabledAsync(IntPtr transmissionTarget)
+        public static AppCenterTask<bool> IsEnabledAsync(RawType transmissionTarget)
         {
             return AppCenterTask<bool>.FromCompleted(false);
         }

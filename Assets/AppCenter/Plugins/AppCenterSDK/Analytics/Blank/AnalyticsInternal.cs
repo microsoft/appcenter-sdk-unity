@@ -13,6 +13,14 @@ namespace Microsoft.AppCenter.Unity.Analytics.Internal
     using RawType = System.Type;
 #endif
 
+#if UNITY_IOS
+    using TransmissionTargetType = System.IntPtr;
+#elif UNITY_ANDROID
+    using TransmissionTargetType = UnityEngine.AndroidJavaObject;
+#else
+    using TransmissionTargetType = System.Object;
+#endif
+
     class AnalyticsInternal
     {
         public static void PrepareEventHandlers()
@@ -41,9 +49,10 @@ namespace Microsoft.AppCenter.Unity.Analytics.Internal
         {
             return AppCenterTask<bool>.FromCompleted(false);
         }
-        public static IntPtr GetTransmissionTarget (string transmissionTargetToken) 
+
+        public static TransmissionTargetType GetTransmissionTarget(string transmissionTargetToken) 
         {
-            return default(IntPtr);
+            return default(TransmissionTargetType);
         }
     }
 }

@@ -17,8 +17,6 @@ public class AppCenterSettingsEditor : Editor
         EditorGUILayout.PropertyField(serializedObject.FindProperty("iOSAppSecret"));
         EditorGUILayout.PropertyField(serializedObject.FindProperty("AndroidAppSecret"));
         EditorGUILayout.PropertyField(serializedObject.FindProperty("UWPAppSecret"));
-        EditorGUILayout.PropertyField(serializedObject.FindProperty("TransmissionTargetToken"));
-        EditorGUILayout.PropertyField(serializedObject.FindProperty("ChildTransmissionTargetToken"));
 
         // Draw modules.
         if (AppCenterSettings.Analytics != null)

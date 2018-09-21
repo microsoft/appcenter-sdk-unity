@@ -41,7 +41,7 @@ namespace Microsoft.AppCenter.Unity.Analytics.Internal
             return AppCenterTask<bool>.FromCompleted(isEnabled);
         }
 
-        public static IntPtr GetTransmissionTarget (string transmissionTargetToken) 
+        public static IntPtr GetTransmissionTarget(string transmissionTargetToken) 
         {
             return appcenter_unity_analytics_transmission_target_for_token(transmissionTargetToken);
         }

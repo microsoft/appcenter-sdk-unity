@@ -46,7 +46,7 @@ namespace Microsoft.AppCenter.Unity.Analytics.Internal
             return new AppCenterTask<bool>(UWPAnalytics.IsEnabledAsync());
         }
 
-        public static Type GetTransmissionTarget (string transmissionTargetToken) 
+        public static Type GetTransmissionTarget(string transmissionTargetToken) 
         {
             return null;
         }

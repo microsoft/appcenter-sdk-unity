@@ -3,13 +3,10 @@
 // Licensed under the MIT license.
 
 #if UNITY_ANDROID && !UNITY_EDITOR
-using Microsoft.AppCenter.Unity.Analytics.Internal;
-using AOT;
-using System;
-using System.Linq;
 using System.Collections.Generic;
-using System.Runtime.InteropServices;
 using UnityEngine;
+using Microsoft.AppCenter.Unity.Analytics.Internal;
+using Microsoft.AppCenter.Unity.Internal.Utility;
 
 namespace Microsoft.AppCenter.Unity.Analytics
 {
@@ -24,15 +21,8 @@ namespace Microsoft.AppCenter.Unity.Analytics
 
         public static void TrackEventWithProperties(UnityEngine.AndroidJavaObject transmissionTarget, string eventName, IDictionary<string, string> properties)
         {
-            string[] keys = properties.Keys.ToArray();
-            string[] values = properties.Values.ToArray();
-            var androidProperties = new AndroidJavaObject("java.util.HashMap");
-            for (int i = 0; i < properties.Count; ++i)
-            {
-                androidProperties.Call<AndroidJavaObject>("put", keys[i], values[i]);
-            }
-            transmissionTarget.Call("trackEvent", eventName, androidProperties);
-            
+            var propertiesMap = JavaStringMapHelper.ConvertToJava(properties);
+            transmissionTarget.Call("trackEvent", eventName, properties);
         }
 
         public static AppCenterTask SetEnabledAsync(UnityEngine.AndroidJavaObject transmissionTarget, bool enabled)

@@ -14,8 +14,18 @@ public class PuppetAnalytics : MonoBehaviour
     public Toggle Enabled;
     public Toggle TransmissionEnabled;
     public InputField EventName;
+    public InputField TransmissionTarget;
     public GameObject EventProperty;
     public RectTransform EventPropertiesList;
+    private string TransmissionTargetToken = "";
+
+    private string ResolveToken() {
+        if (string.IsNullOrEmpty(TransmissionTarget.text)) {
+            return TransmissionTargetToken;
+        } else {
+            return TransmissionTarget.text;
+        }
+    }
 
     void OnEnable()
     {
@@ -24,7 +34,7 @@ public class PuppetAnalytics : MonoBehaviour
             Enabled.isOn = task.Result;
         });
 
-        WrapperTransmissionTarget transmissionTarget = Analytics.GetTransmissionTarget();
+        WrapperTransmissionTarget transmissionTarget = Analytics.GetTransmissionTarget(ResolveToken());
         transmissionTarget.IsEnabledAsync().ContinueWith(task => 
         {
             TransmissionEnabled.isOn = task.Result;
@@ -51,7 +61,7 @@ public class PuppetAnalytics : MonoBehaviour
 
     private IEnumerator SetTransmissionEnabledCoroutine(bool enabled)
     {
-        WrapperTransmissionTarget transmissionTarget = Analytics.GetTransmissionTarget();
+        WrapperTransmissionTarget transmissionTarget = Analytics.GetTransmissionTarget(ResolveToken());
         yield return transmissionTarget.SetEnabledAsync(enabled);
         var isEnabled = transmissionTarget.IsEnabledAsync();
         yield return isEnabled;
@@ -69,20 +79,6 @@ public class PuppetAnalytics : MonoBehaviour
         Analytics.TrackEvent(EventName.text, GetProperties());
     }
 
-    public void TrackEventTransmission() 
-    { 
-        WrapperTransmissionTarget transmissionTarget = Analytics.GetTransmissionTarget();
-        Dictionary<string, string> properties = GetProperties();
-        if (properties == null) 
-        {
-            transmissionTarget.TrackEvent(EventName.text);
-        }
-        else
-        {
-            transmissionTarget.TrackEventWithProperties(EventName.text, GetProperties());
-        }
-    }
-
     public void TrackEventChildTransmission()
     {
         WrapperTransmissionTarget transmissionTarget = Analytics.GetTransmissionTarget();
@@ -95,6 +91,20 @@ public class PuppetAnalytics : MonoBehaviour
         else
         {
             childTransmissionTarget.TrackEventWithProperties(EventName.text, GetProperties());
+        }
+    }
+
+    public void TrackEventTransmission() 
+    { 
+        WrapperTransmissionTarget transmissionTarget = Analytics.GetTransmissionTarget(ResolveToken());
+        Dictionary<string, string> properties = GetProperties();
+        if (properties == null) 
+        {
+            transmissionTarget.TrackEvent(EventName.text);
+        }
+        else
+        {
+            transmissionTarget.TrackEventWithProperties(EventName.text, properties);
         }
     }
 

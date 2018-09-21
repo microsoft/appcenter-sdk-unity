@@ -8,7 +8,7 @@ using System.Collections.Generic;
 
 namespace Microsoft.AppCenter.Unity.Analytics
 {
-#if UNITY_IOS || UNITY_EDITOR
+#if UNITY_IOS
     using RawType = System.IntPtr;
 #elif UNITY_ANDROID
     using RawType = UnityEngine.AndroidJavaObject;

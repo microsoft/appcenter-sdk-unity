@@ -2,8 +2,8 @@
 //
 // Licensed under the MIT license.
 
+#import "WrapperTransmissionTarget.h"
 #import "AppCenterAnalytics/MSAnalyticsTransmissionTarget.h"
-#import <Foundation/Foundation.h>
 #import "../Core/Utility/NSStringDictionaryHelper.h"
 
 extern "C" void appcenter_unity_transmission_target_track_event(MSAnalyticsTransmissionTarget *transmission, char* eventName) {
