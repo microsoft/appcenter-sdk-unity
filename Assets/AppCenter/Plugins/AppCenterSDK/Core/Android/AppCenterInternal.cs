@@ -8,6 +8,12 @@ using UnityEngine;
 
 namespace Microsoft.AppCenter.Unity.Internal
 {
+#if UNITY_IOS || UNITY_ANDROID
+    using ServiceType = System.IntPtr;
+#else
+    using ServiceType = System.Type;
+#endif
+
     class AppCenterInternal
     {
         private static AndroidJavaClass _appCenter = new AndroidJavaClass("com.microsoft.appcenter.AppCenter");
@@ -83,6 +89,20 @@ namespace Microsoft.AppCenter.Unity.Internal
             wrapperSdkObject.Call("setLiveUpdateDeploymentKey", liveUpdateDeploymentKey);
             wrapperSdkObject.Call("setLiveUpdatePackageHash", liveUpdatePackageHash);
             _appCenter.CallStatic("setWrapperSdk", wrapperSdkObject);
+        }
+
+        public static void StartFromLibrary(ServiceType[] services) {
+            AndroidJavaClass context = new AndroidJavaClass("android.content.Context");
+            AndroidJavaClass arrayClass = new AndroidJavaClass( "java.lang.reflect.Array" );
+            AndroidJavaClass classClass = new AndroidJavaClass( "java.lang.Class" );
+            AndroidJavaObject classObject = classClass.CallStatic<AndroidJavaObject>("forName", "com.microsoft.appcenter.analytics.Analytics");
+            AndroidJavaObject arrayObject = arrayClass.CallStatic< AndroidJavaObject >( "newInstance", new AndroidJavaClass( "java.lang.Class" ), 1 );
+            //AndroidJavaObject [] ooo = new AndroidJavaObject[] { classObject };
+            arrayClass.CallStatic( "set", arrayObject, 0, classObject );
+
+
+            _appCenter.CallStatic("startFromLibrary", context, classObject);
+            //_appCenter.CallStatic("startFromLibrary", context, ooo);
         }
     }
 }

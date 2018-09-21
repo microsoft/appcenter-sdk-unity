@@ -7,7 +7,11 @@ using UnityEngine;
 using System;
 using System.Reflection;
 using Microsoft.AppCenter.Unity.Internal;
-
+#if UNITY_IOS || UNITY_ANDROID
+using ServiceType = System.IntPtr;
+#else
+    using ServiceType = System.Type;
+#endif
 [HelpURL("https://docs.microsoft.com/en-us/appcenter/sdk/crashes/unity")]
 public class AppCenterBehavior : MonoBehaviour
 {
@@ -66,7 +70,8 @@ public class AppCenterBehavior : MonoBehaviour
         var nativeServiceTypes = AppCenter.ServicesToNativeTypes(services);
         AppCenterInternal.Start(appSecret, nativeServiceTypes, services.Length);
 #endif
-
+        Type[] types = new Type[1] { AppCenterSettings.Analytics };
+        AppCenterInternal.StartFromLibrary(AppCenter.ServicesToNativeTypes(types));
         InvokeInitializedServices();
     }
 
