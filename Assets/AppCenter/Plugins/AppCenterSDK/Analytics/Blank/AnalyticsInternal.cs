@@ -42,9 +42,9 @@ namespace Microsoft.AppCenter.Unity.Analytics.Internal
             return AppCenterTask<bool>.FromCompleted(false);
         }
 
-        public static IntPtr GetTransmissionTarget (string transmissionTargetToken) 
+        public static RawType GetTransmissionTarget(string transmissionTargetToken) 
         {
-            return default(IntPtr);
+            return default(RawType);
         }
     }
 }

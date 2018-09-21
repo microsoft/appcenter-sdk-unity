@@ -57,9 +57,9 @@ namespace Microsoft.AppCenter.Unity.Analytics.Internal
             return new AppCenterTask<bool>(future);
         }
 
-        public static IntPtr GetTransmissionTarget (string transmissionTargetToken) 
+        public static IntPtr GetTransmissionTarget(string transmissionTargetToken) 
         {
-            return null;
+            return default(IntPtr);
         }
     }
 }
