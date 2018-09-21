@@ -3,13 +3,13 @@
 // Licensed under the MIT license.
 
 #if UNITY_ANDROID && !UNITY_EDITOR
-using Microsoft.AppCenter.Unity.Analytics.Internal;
-using AOT;
 using System;
 using System.Linq;
 using System.Collections.Generic;
 using System.Runtime.InteropServices;
+using AOT;
 using UnityEngine;
+using Microsoft.AppCenter.Unity.Analytics.Internal;
 
 namespace Microsoft.AppCenter.Unity.Analytics
 {
@@ -32,7 +32,6 @@ namespace Microsoft.AppCenter.Unity.Analytics
                 androidProperties.Call<AndroidJavaObject>("put", keys[i], values[i]);
             }
             transmissionTarget.Call("trackEvent", eventName, androidProperties);
-            
         }
 
         public static AppCenterTask SetEnabledAsync(UnityEngine.AndroidJavaObject transmissionTarget, bool enabled)

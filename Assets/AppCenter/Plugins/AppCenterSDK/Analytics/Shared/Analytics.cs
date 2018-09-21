@@ -5,7 +5,6 @@
 using System.Collections.Generic;
 using System.Linq;
 using Microsoft.AppCenter.Unity.Analytics.Internal;
-using UnityEngine;
 
 namespace Microsoft.AppCenter.Unity.Analytics
 {
@@ -51,8 +50,7 @@ namespace Microsoft.AppCenter.Unity.Analytics
 
         public static WrapperTransmissionTarget GetTransmissionTarget(string transmissionTargetToken)
         {
-            return new WrapperTransmissionTarget(AnalyticsInternal.GetTransmissionTarget(AppCenterBehavior.SettingsInstance.TransmissionTargetToken));
+            return new WrapperTransmissionTarget(AnalyticsInternal.GetTransmissionTarget(transmissionTargetToken));
         }
-        
     }
 }
