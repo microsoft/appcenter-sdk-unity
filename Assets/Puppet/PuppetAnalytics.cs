@@ -24,7 +24,7 @@ public class PuppetAnalytics : MonoBehaviour
             Enabled.isOn = task.Result;
         });
 
-        WrapperTransmissionTarget transmissionTarget = Analytics.GetTransmissionTarget();
+        WrapperTransmissionTarget transmissionTarget = Analytics.GetTransmissionTarget(AppCenterBehavior.SettingsInstance.TransmissionTargetToken);
         transmissionTarget.IsEnabledAsync().ContinueWith(task => 
         {
             TransmissionEnabled.isOn = task.Result;
@@ -51,7 +51,7 @@ public class PuppetAnalytics : MonoBehaviour
 
     private IEnumerator SetTransmissionEnabledCoroutine(bool enabled)
     {
-        WrapperTransmissionTarget transmissionTarget = Analytics.GetTransmissionTarget();
+        WrapperTransmissionTarget transmissionTarget = Analytics.GetTransmissionTarget(AppCenterBehavior.SettingsInstance.TransmissionTargetToken);
         yield return transmissionTarget.SetEnabledAsync(enabled);
         var isEnabled = transmissionTarget.IsEnabledAsync();
         yield return isEnabled;
@@ -71,7 +71,7 @@ public class PuppetAnalytics : MonoBehaviour
 
     public void TrackEventTransmission() 
     { 
-        WrapperTransmissionTarget transmissionTarget = Analytics.GetTransmissionTarget();
+        WrapperTransmissionTarget transmissionTarget = Analytics.GetTransmissionTarget(AppCenterBehavior.SettingsInstance.TransmissionTargetToken);
         Dictionary<string, string> properties = GetProperties();
         if (properties == null) 
         {
