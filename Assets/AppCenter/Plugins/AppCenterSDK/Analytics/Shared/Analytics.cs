@@ -17,7 +17,7 @@ namespace Microsoft.AppCenter.Unity.Analytics
     public class Analytics
     {
         public static void PrepareEventHandlers()
-        { 
+        {
             AnalyticsInternal.PrepareEventHandlers();
         }
 
