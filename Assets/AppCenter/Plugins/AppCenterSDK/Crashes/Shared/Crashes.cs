@@ -61,7 +61,7 @@ namespace Microsoft.AppCenter.Unity.Crashes
         {
             if (LogType.Assert == type || LogType.Exception == type || LogType.Error == type)
             {
-                var exception = CreateWrapperException(logString, stackTrace);
+                var exception = CreateWrapperException(logString, stackTrace, type);
                 CrashesInternal.TrackException(exception.GetRawObject());
             }
         }
@@ -232,20 +232,14 @@ namespace Microsoft.AppCenter.Unity.Crashes
             return exceptionWrapper;
         }
 
-        private static WrapperException CreateWrapperException(string logString, string stackTrace)
+        private static WrapperException CreateWrapperException(string logString, string stackTrace, LogType type)
         {
             var exception = new WrapperException();
             exception.SetWrapperSdkName(WrapperSdk.Name);
 
             string sanitizedLogString = logString.Replace("\n", " ");
-            var logStringComponents = sanitizedLogString.Split(new[] { ':' }, 2);
-            if (logStringComponents.Length > 1)
-            {
-                var type = logStringComponents[0].Trim();
-                exception.SetType(type);
-                var message = logStringComponents[1].Trim();
-                exception.SetMessage(message);
-            }
+            exception.SetMessage(sanitizedLogString);
+            exception.SetType(type.ToString());
 
             string[] stacktraceLines = stackTrace.Split('\n');
             string stackTraceString = "";
