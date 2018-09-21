@@ -80,7 +80,7 @@ public class PuppetAnalytics : MonoBehaviour
         }
         else
         {
-            transmissionTarget.TrackEventWithProperties(EventName.text, GetProperties());
+            transmissionTarget.TrackEventWithProperties(EventName.text, properties);
         }
     }
 
