@@ -16,7 +16,9 @@ extern "C" void appcenter_unity_crashes_generate_test_crash();
 extern "C" bool appcenter_unity_crashes_has_crashed_in_last_session();
 extern "C" void appcenter_unity_crashes_disable_mach_exception_handler();
 extern "C" void app_center_unity_crashes_set_user_confirmation_handler(void* userConfirmationHandler);
-extern "C" void app_center_unity_crashes_notify_with_user_confirmation(int userConfirmation);
 extern "C" void* appcenter_unity_crashes_last_session_crash_report();
+extern "C" void appcenter_unity_crashes_set_user_confirmation_handler(bool(* userConfirmationHandler)());
+extern "C" void appcenter_unity_crashes_notify_with_user_confirmation(int userConfirmation);
+extern "C" void appcenter_unity_start_crashes();
 
 #endif

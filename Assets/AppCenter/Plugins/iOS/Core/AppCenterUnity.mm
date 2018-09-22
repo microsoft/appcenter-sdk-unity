@@ -73,5 +73,3 @@ void appcenter_unity_set_wrapper_sdk(const char* wrapperSdkVersion,
                                   liveUpdatePackageHash:appcenter_unity_cstr_to_ns_string(liveUpdatePackageHash)];
   [MSAppCenter setWrapperSdk:wrapperSdk];
 }
-
-

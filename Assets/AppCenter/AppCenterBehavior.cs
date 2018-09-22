@@ -7,11 +7,7 @@ using UnityEngine;
 using System;
 using System.Reflection;
 using Microsoft.AppCenter.Unity.Internal;
-#if UNITY_IOS || UNITY_ANDROID
-using ServiceType = System.IntPtr;
-#else
-    using ServiceType = System.Type;
-#endif
+using System.Linq;
 [HelpURL("https://docs.microsoft.com/en-us/appcenter/sdk/crashes/unity")]
 public class AppCenterBehavior : MonoBehaviour
 {
@@ -34,7 +30,10 @@ public class AppCenterBehavior : MonoBehaviour
         }
         instance = this;
         DontDestroyOnLoad(gameObject);
+    }
 
+    private void Start()
+    {
         // Initialize App Center.
         if (settings == null)
         {
@@ -42,10 +41,7 @@ public class AppCenterBehavior : MonoBehaviour
             return;
         }
         StartAppCenter();
-    }
 
-    private void Start()
-    {
         if (Started != null)
         {
             Started.Invoke();
@@ -58,6 +54,16 @@ public class AppCenterBehavior : MonoBehaviour
         PrepareEventHandlers(services);
         InvokeInitializingServices();
         AppCenter.SetWrapperSdk();
+
+        // On iOS we start crash service here, to give app an opportunity to assign handlers after crash and restart in Awake method
+#if UNITY_IOS
+        foreach (var service in services)
+        {
+            var startCrashes = service.GetMethod("StartCrashes");
+            if (startCrashes != null)
+                startCrashes.Invoke(null, null);
+        }
+#endif
 
         // On iOS and Android App Center starting automatically.
 #if UNITY_EDITOR || (!UNITY_IOS && !UNITY_ANDROID)
