@@ -7,6 +7,7 @@
 #import "CrashesUnity.h"
 #import "CrashesDelegate.h"
 #import <Foundation/Foundation.h>
+#import <AppCenter/MSAppCenter.h>
 
 void* appcenter_unity_crashes_get_type()
 {
@@ -49,17 +50,24 @@ void appcenter_unity_crashes_disable_mach_exception_handler()
   [MSCrashes disableMachExceptionHandler];
 }
 
-MSErrorReport* app_center_unity_crashes_last_session_crash_report()
+void appcenter_unity_crashes_set_user_confirmation_handler(bool(* userConfirmationHandler)())
 {
-    return [MSCrashes lastSessionCrashReport];
+    [MSCrashes setUserConfirmationHandler:^BOOL(NSArray<MSErrorReport *> *_Nonnull errorReports){
+        return userConfirmationHandler();
+    }];
 }
 
-//void app_center_unity_crashes_set_user_confirmation_handler(void* userConfirmationHandler);
-//
-//void app_center_unity_crashes_notify_with_user_confirmation(int userConfirmation);
-//
+void appcenter_unity_crashes_notify_with_user_confirmation(int userConfirmation)
+{
+    [MSCrashes notifyWithUserConfirmation:(MSUserConfirmation)userConfirmation];
+}
 
 void* appcenter_unity_crashes_last_session_crash_report()
 {
     return (void *)CFBridgingRetain([MSCrashes lastSessionCrashReport]);
+}
+
+void appcenter_unity_start_crashes()
+{
+    [MSAppCenter startService:MSCrashes.class];
 }

@@ -8,6 +8,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using System.Runtime.InteropServices;
 
 namespace Microsoft.AppCenter.Unity.Crashes
 {
@@ -28,6 +29,7 @@ namespace Microsoft.AppCenter.Unity.Crashes
 
         public static void PrepareEventHandlers()
         {
+            AppCenterBehavior.InitializingServices += Initialize;
             AppCenterBehavior.InitializedAppCenterAndServices += HandleAppCenterInitialized;
         }
 
@@ -61,7 +63,7 @@ namespace Microsoft.AppCenter.Unity.Crashes
         {
             if (LogType.Assert == type || LogType.Exception == type || LogType.Error == type)
             {
-                var exception = CreateWrapperException(logString, stackTrace);
+                var exception = CreateWrapperException(logString, stackTrace, type);
                 CrashesInternal.TrackException(exception.GetRawObject());
             }
         }
@@ -116,7 +118,7 @@ namespace Microsoft.AppCenter.Unity.Crashes
             CrashesInternal.DisableMachExceptionHandler();
         }
 
-        public static Models.ErrorReport LastSessionCrashReport()
+        public static ErrorReport LastSessionCrashReport()
         {
             return CrashesInternal.LastSessionCrashReport();
         }
@@ -147,6 +149,44 @@ namespace Microsoft.AppCenter.Unity.Crashes
         public static bool IsReportingUnhandledExceptions()
         {
             return _reportUnhandledExceptions;
+        }
+
+#if ENABLE_IL2CPP
+        [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
+#endif
+        public delegate bool UserConfirmationHandler();
+
+        public static UserConfirmationHandler ShouldAwaitUserConfirmation
+        {
+            set
+            {
+                CrashesInternal.SetUserConfirmationHandler(value);
+            }
+        }
+
+        public enum ConfirmationResult { DontSend, Send, AlwaysSend };
+        
+        public static void NotifyWithUserConfirmation(ConfirmationResult answer)
+        {
+            CrashesInternal.NotifyWithUserConfirmation(answer);
+        }
+
+#if ENABLE_IL2CPP
+        [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
+#endif
+        public delegate bool ShouldProcessErrorReportHandler(ErrorReport errorReport);
+
+        public static ShouldProcessErrorReportHandler ShouldProcessErrorReport 
+        {
+            set
+            {
+                CrashesDelegate.SetShouldProcessErrorReportHandler(value);
+            }
+        }
+
+        public static void StartCrashes()
+        {
+            CrashesInternal.StartCrashes();
         }
 
         private static void SubscribeToUnhandledExceptions()
@@ -232,20 +272,14 @@ namespace Microsoft.AppCenter.Unity.Crashes
             return exceptionWrapper;
         }
 
-        private static WrapperException CreateWrapperException(string logString, string stackTrace)
+        private static WrapperException CreateWrapperException(string logString, string stackTrace, LogType type)
         {
             var exception = new WrapperException();
             exception.SetWrapperSdkName(WrapperSdk.Name);
 
             string sanitizedLogString = logString.Replace("\n", " ");
-            var logStringComponents = sanitizedLogString.Split(new[] { ':' }, 2);
-            if (logStringComponents.Length > 1)
-            {
-                var type = logStringComponents[0].Trim();
-                exception.SetType(type);
-                var message = logStringComponents[1].Trim();
-                exception.SetMessage(message);
-            }
+            exception.SetMessage(sanitizedLogString);
+            exception.SetType(type.ToString());
 
             string[] stacktraceLines = stackTrace.Split('\n');
             string stackTraceString = "";

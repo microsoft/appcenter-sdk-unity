@@ -36,16 +36,22 @@ const char* app_center_unity_crashes_error_report_exception_reason(void* errorRe
   return appcenter_unity_ns_string_to_cstr([report exceptionReason]);
 }
 
-extern "C" char* app_center_unity_crashes_error_report_app_start_time(void* errorReport)
+const char* app_center_unity_crashes_error_report_app_start_time(void* errorReport)
 {
   MSErrorReport *report = (__bridge MSErrorReport*)errorReport;
-  return "";
+  NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
+  [dateFormatter setDateFormat:@"yyyy-MM-dd hh:mm:ss"];
+  NSString *dateStr = [dateFormatter stringFromDate:report.appStartTime];
+  return appcenter_unity_ns_string_to_cstr(dateStr);
 }
 
-extern "C" char* app_center_unity_crashes_error_report_app_error_time(void* errorReport)
+const char* app_center_unity_crashes_error_report_app_error_time(void* errorReport)
 {
   MSErrorReport *report = (__bridge MSErrorReport*)errorReport;
-  return "";
+  NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
+  [dateFormatter setDateFormat:@"yyyy-MM-dd hh:mm:ss"];
+  NSString *dateStr = [dateFormatter stringFromDate:report.appErrorTime];
+  return appcenter_unity_ns_string_to_cstr(dateStr);
 }
 
 extern "C" void* app_center_unity_crashes_error_report_device(void* errorReport)

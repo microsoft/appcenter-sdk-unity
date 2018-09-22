@@ -6,11 +6,36 @@ using System.Collections;
 using Microsoft.AppCenter.Unity;
 using UnityEngine;
 using UnityEngine.UI;
+using Microsoft.AppCenter.Unity.Crashes;
+using AOT;
 
 public class PuppetAppCenter : MonoBehaviour
 {
     public Toggle Enabled;
     public Dropdown LogLevel;
+    public PuppetConfirmationDialog userConfirmationDialog;
+
+    static PuppetAppCenter instance;
+
+    private void Awake()
+    {
+        Crashes.ShouldProcessErrorReport = ShouldProcessErrorReportHandler;
+        Crashes.ShouldAwaitUserConfirmation = UserConfirmationHandler;
+        instance = this;
+    }
+
+    [MonoPInvokeCallback(typeof(Crashes.UserConfirmationHandler))]
+    public static bool UserConfirmationHandler()
+    {
+        instance.userConfirmationDialog.Show();
+        return true;
+    }
+
+    [MonoPInvokeCallback(typeof(Crashes.ShouldProcessErrorReportHandler))]
+    public static bool ShouldProcessErrorReportHandler(ErrorReport errorReport)
+    {
+        return true;
+    }
 
     void OnEnable()
     {
