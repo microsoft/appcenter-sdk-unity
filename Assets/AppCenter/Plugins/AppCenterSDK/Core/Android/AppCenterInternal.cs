@@ -90,19 +90,24 @@ namespace Microsoft.AppCenter.Unity.Internal
             wrapperSdkObject.Call("setLiveUpdatePackageHash", liveUpdatePackageHash);
             _appCenter.CallStatic("setWrapperSdk", wrapperSdkObject);
         }
+        
+        private static AndroidJavaObject GetAndroidContext()
+        {
+            AndroidJavaClass unityPlayer = new AndroidJavaClass("com.unity3d.player.UnityPlayer");
+            AndroidJavaObject activity = unityPlayer.GetStatic<AndroidJavaObject>("currentActivity");
+            return activity.Call<AndroidJavaObject>("getApplicationContext");
+        }
 
-        public static void StartFromLibrary(ServiceType[] services) {
-            AndroidJavaClass context = new AndroidJavaClass("android.content.Context");
-            AndroidJavaClass arrayClass = new AndroidJavaClass( "java.lang.reflect.Array" );
-            AndroidJavaClass classClass = new AndroidJavaClass( "java.lang.Class" );
-            AndroidJavaObject classObject = classClass.CallStatic<AndroidJavaObject>("forName", "com.microsoft.appcenter.analytics.Analytics");
-            AndroidJavaObject arrayObject = arrayClass.CallStatic< AndroidJavaObject >( "newInstance", new AndroidJavaClass( "java.lang.Class" ), 1 );
-            //AndroidJavaObject [] ooo = new AndroidJavaObject[] { classObject };
-            arrayClass.CallStatic( "set", arrayObject, 0, classObject );
-
-
-            _appCenter.CallStatic("startFromLibrary", context, classObject);
-            //_appCenter.CallStatic("startFromLibrary", context, ooo);
+        public static void StartFromLibrary(ServiceType[] servicesArray)
+        {    
+            IntPtr services = servicesArray[0];
+            IntPtr appCenterRawClass = AndroidJNI.FindClass("com/microsoft/appcenter/AppCenter");
+            IntPtr startMethod = AndroidJNI.GetStaticMethodID(appCenterRawClass, "startFromLibrary", "(Landroid/content/Context;[Ljava/lang/Class;)V");
+            AndroidJNI.CallStaticVoidMethod(appCenterRawClass, startMethod, new jvalue[]
+            {
+                new jvalue { l = GetAndroidContext().GetRawObject() }, 
+                new jvalue { l = services } 
+            });
         }
     }
 }
