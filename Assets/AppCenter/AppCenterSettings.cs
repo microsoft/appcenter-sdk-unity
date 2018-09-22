@@ -37,6 +37,8 @@ public class AppCenterSettings : ScriptableObject
     [Tooltip("To enable push for Android apps, you need to set the Sender ID found in the Firebase portal for your application.")]
     public string SenderId;
 
+    public StartupType startupType = StartupType.AppCenter;
+
     public string AppSecret
     {
         get

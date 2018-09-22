@@ -12,6 +12,9 @@ public class AppCenterSettingsEditor : Editor
     {
         serializedObject.Update();
 
+        Header("App Center");
+        EditorGUILayout.PropertyField(serializedObject.FindProperty("startupType"));
+
         // Draw app secrets.
         Header("App Secrets");
         EditorGUILayout.PropertyField(serializedObject.FindProperty("iOSAppSecret"));
