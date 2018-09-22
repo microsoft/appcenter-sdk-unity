@@ -41,6 +41,11 @@ namespace Microsoft.AppCenter.Unity.Analytics.Internal
             return appcenter_unity_transmission_transmission_target_for_token(transmissionTargetParent, transmissionTargetToken);
         }
 
+        public static IntPtr GetPropertyConfigurator(IntPtr transmissionTargetParent)
+        {
+            return default(IntPtr);
+        }
+
 #region External
 
         [DllImport("__Internal")]

@@ -54,5 +54,10 @@ namespace Microsoft.AppCenter.Unity.Analytics
         {
             return new WrapperTransmissionTarget(WrapperTransmissionTargetInternal.GetTransmissionTarget(_rawObject, childTransmissionTargetToken));
         }
+
+        public WrapperPropertyConfigurator GetPropertyConfigurator()
+        {
+            return new WrapperPropertyConfigurator(WrapperTransmissionTargetInternal.GetPropertyConfigurator(_rawObject));
+        }
     }
 }

@@ -41,6 +41,11 @@ namespace Microsoft.AppCenter.Unity.Analytics
         {
             return transmissionTargetParent.Call<AndroidJavaObject>("getTransmissionTarget", transmissionTargetToken);
         }
+
+        public static AndroidJavaObject GetPropertyConfigurator(UnityEngine.AndroidJavaObject transmissionTargetParent) 
+        {
+            return transmissionTargetParent.Call<AndroidJavaObject>("getPropertyConfigurator");
+        }
     }
 }
 #endif

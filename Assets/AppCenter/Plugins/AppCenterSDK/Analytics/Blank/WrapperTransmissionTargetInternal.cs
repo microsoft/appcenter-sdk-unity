@@ -44,6 +44,11 @@ namespace Microsoft.AppCenter.Unity.Analytics
         {
             return default(RawType);
         }
+
+        public static RawType GetPropertyConfigurator(RawType transmissionTargetParent)
+        {
+            return default(RawType);
+        }
     }
 }
 #endif
