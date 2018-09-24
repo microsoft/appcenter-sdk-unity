@@ -14,7 +14,7 @@ namespace Microsoft.AppCenter.Unity.Crashes.Internal
         [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
         delegate bool NativeShouldProcessErrorReportDelegate(IntPtr report);
         static NativeShouldProcessErrorReportDelegate del;
-        static IntPtr ptr;
+        static Crashes.ShouldProcessErrorReportHandler externalHandler = null;
 
         static CrashesDelegate()
         {
@@ -28,9 +28,20 @@ namespace Microsoft.AppCenter.Unity.Crashes.Internal
         }
 
         [MonoPInvokeCallback(typeof(NativeShouldProcessErrorReportDelegate))]
-        static bool ShouldProcessErrorReportNativeFunc(IntPtr report)
+        public static bool ShouldProcessErrorReportNativeFunc(IntPtr report)
         {
-            return false;
+            if (externalHandler != null)
+            {
+                ErrorReport errorReport = CrashesInternal.GetErrorReportFromIntPtr(report); 
+                return externalHandler(errorReport);   
+            }
+            else
+                return true;
+        }
+
+        public static void SetShouldProcessErrorReportHandler(Crashes.ShouldProcessErrorReportHandler handler)
+        {
+            externalHandler = handler;
         }
 
 #region External

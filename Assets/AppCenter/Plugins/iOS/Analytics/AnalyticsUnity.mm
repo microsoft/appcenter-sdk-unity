@@ -4,6 +4,7 @@
 
 #import "AnalyticsUnity.h"
 #import "../Core/Utility/NSStringDictionaryHelper.h"
+#import "AppCenterAnalytics/MSAnalyticsTransmissionTarget.h"
 #import <AppCenterAnalytics/AppCenterAnalytics.h>
 #import <Foundation/Foundation.h>
 
@@ -32,4 +33,8 @@ void appcenter_unity_analytics_set_enabled(bool isEnabled)
 bool appcenter_unity_analytics_is_enabled()
 {
   return [MSAnalytics isEnabled];
+}
+
+MSAnalyticsTransmissionTarget *appcenter_unity_analytics_transmission_target_for_token(char* transmissionTargetToken) {
+  return [MSAnalytics transmissionTargetForToken: [NSString stringWithUTF8String:transmissionTargetToken]];
 }

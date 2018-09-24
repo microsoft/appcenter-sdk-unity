@@ -68,6 +68,11 @@ namespace Microsoft.AppCenter.Unity.Internal
                                                 liveUpdatePackageHash);
         }
 
+        public static void StartFromLibrary(IntPtr[] services) 
+        {
+            appcenter_unity_start_from_library(services, services.Length);
+        }
+
 #region External
 
         [DllImport("__Internal")]
@@ -90,6 +95,9 @@ namespace Microsoft.AppCenter.Unity.Internal
 
         [DllImport("__Internal")]
         private static extern string appcenter_unity_get_install_id();
+
+        [DllImport("__Internal")]
+        private static extern void appcenter_unity_start_from_library(IntPtr[] classes, int count);
 
         [DllImport("__Internal")]
         private static extern void appcenter_unity_set_custom_properties(IntPtr properties);
