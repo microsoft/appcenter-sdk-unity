@@ -45,7 +45,7 @@ namespace Microsoft.AppCenter.Unity.Analytics
             WrapperPropertyConfiguratorInternal.SetAppLocale(_rawObject, appLocale);
         }
 
-        public void SetEventProperty(String key, String value)
+        public void SetEventProperty(string key, string value)
         {
             WrapperPropertyConfiguratorInternal.SetEventProperty(_rawObject, key, value);
         }
@@ -53,11 +53,6 @@ namespace Microsoft.AppCenter.Unity.Analytics
         public void RemoveEventProperty(String key)
         {
             WrapperPropertyConfiguratorInternal.RemoveEventProperty(_rawObject, key);
-        }
-
-        public void CollectDeviceId()
-        {
-            WrapperPropertyConfiguratorInternal.CollectDeviceId(_rawObject);
         }
     }
 }

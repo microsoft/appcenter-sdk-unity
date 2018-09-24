@@ -28,11 +28,6 @@ namespace Microsoft.AppCenter.Unity.Analytics.Internal
             
         }
 
-        public static void CollectDeviceId(IntPtr propertyConfigurator)
-        {
-
-        }
-
         public static void SetEventProperty(IntPtr propertyConfigurator, string key, string value)
         {
 
