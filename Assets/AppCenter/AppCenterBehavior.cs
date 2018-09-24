@@ -77,6 +77,7 @@ public class AppCenterBehavior : MonoBehaviour
         var nativeServiceTypes = AppCenter.ServicesToNativeTypes(services);
         AppCenterInternal.Start(appSecret, nativeServiceTypes, services.Length);
 #endif
+
         InvokeInitializedServices();
     }
 
