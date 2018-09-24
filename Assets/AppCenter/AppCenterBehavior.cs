@@ -8,6 +8,7 @@ using System;
 using System.Reflection;
 using Microsoft.AppCenter.Unity.Internal;
 using System.Linq;
+
 [HelpURL("https://docs.microsoft.com/en-us/appcenter/sdk/crashes/unity")]
 public class AppCenterBehavior : MonoBehaviour
 {
@@ -76,10 +77,6 @@ public class AppCenterBehavior : MonoBehaviour
         var nativeServiceTypes = AppCenter.ServicesToNativeTypes(services);
         AppCenterInternal.Start(appSecret, nativeServiceTypes, services.Length);
 #endif
-        if (settings.startupType == StartupType.OneCollector) {
-            var analyticsService = new Type[1]{ AppCenterSettings.Analytics };
-            AppCenterInternal.StartFromLibrary(AppCenter.ServicesToNativeTypes(analyticsService));
-        }
         InvokeInitializedServices();
     }
 

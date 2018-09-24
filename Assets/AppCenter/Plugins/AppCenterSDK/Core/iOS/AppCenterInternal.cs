@@ -8,7 +8,7 @@ using System.Runtime.InteropServices;
 
 namespace Microsoft.AppCenter.Unity.Internal
 {
-#if UNITY_IOS || UNITY_ANDROID
+#if UNITY_IOS
     using ServiceType = System.IntPtr;
 #else
     using ServiceType = System.Type;

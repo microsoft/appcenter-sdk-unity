@@ -9,12 +9,6 @@ using Microsoft.AppCenter.Unity.Internal.Utils;
 
 namespace Microsoft.AppCenter.Unity.Internal
 {
-#if UNITY_IOS || UNITY_ANDROID
-    using ServiceType = System.IntPtr;
-#else
-    using ServiceType = System.Type;
-#endif
-
     using UWPAppCenter = Microsoft.AppCenter.AppCenter;
 
     class AppCenterInternal
@@ -151,8 +145,7 @@ namespace Microsoft.AppCenter.Unity.Internal
             }
         }
 
-
-        public static void StartFromLibrary(ServiceType[] services) {
+        public static void StartFromLibrary(Type[] services) {
 
         }
 
