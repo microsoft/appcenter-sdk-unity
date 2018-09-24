@@ -8,12 +8,6 @@ using UnityEngine;
 
 namespace Microsoft.AppCenter.Unity.Internal
 {
-#if UNITY_ANDROID
-    using ServiceType = System.IntPtr;
-#else
-    using ServiceType = System.Type;
-#endif
-
     class AppCenterInternal
     {
         private static AndroidJavaClass _appCenter = new AndroidJavaClass("com.microsoft.appcenter.AppCenter");
@@ -103,7 +97,7 @@ namespace Microsoft.AppCenter.Unity.Internal
             return _context;
         }
 
-        public static void StartFromLibrary(ServiceType[] servicesArray)
+        public static void StartFromLibrary(IntPtr[] servicesArray)
         {    
             IntPtr services = servicesArray[0];
             var startMethod = AndroidJNI.GetStaticMethodID(_appCenter.GetRawClass(), "startFromLibrary", "(Landroid/content/Context;[Ljava/lang/Class;)V");
