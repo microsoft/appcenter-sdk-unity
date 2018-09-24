@@ -88,23 +88,23 @@ namespace Microsoft.AppCenter.Unity.Internal
         
         private static AndroidJavaObject GetAndroidContext()
         {
-            if (_context != null) {
+            if (_context != null) 
+            {
                 return _context;
             }
-            AndroidJavaClass unityPlayer = new AndroidJavaClass("com.unity3d.player.UnityPlayer");
-            AndroidJavaObject activity = unityPlayer.GetStatic<AndroidJavaObject>("currentActivity");
+            var unityPlayer = new AndroidJavaClass("com.unity3d.player.UnityPlayer");
+            var activity = unityPlayer.GetStatic<AndroidJavaObject>("currentActivity");
             _context = activity.Call<AndroidJavaObject>("getApplicationContext");
             return _context;
         }
 
         public static void StartFromLibrary(IntPtr[] servicesArray)
-        {    
-            IntPtr services = servicesArray[0];
+        {
             var startMethod = AndroidJNI.GetStaticMethodID(_appCenter.GetRawClass(), "startFromLibrary", "(Landroid/content/Context;[Ljava/lang/Class;)V");
             AndroidJNI.CallStaticVoidMethod(_appCenter.GetRawClass(), startMethod, new jvalue[]
             {
                 new jvalue { l = GetAndroidContext().GetRawObject() }, 
-                new jvalue { l = services } 
+                new jvalue { l = servicesArray[0] } 
             });
         }
     }

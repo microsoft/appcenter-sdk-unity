@@ -145,7 +145,8 @@ namespace Microsoft.AppCenter.Unity.Internal
             }
         }
 
-        public static void StartFromLibrary(Type[] services) {
+        public static void StartFromLibrary(Type[] services) 
+        {
 
         }
 

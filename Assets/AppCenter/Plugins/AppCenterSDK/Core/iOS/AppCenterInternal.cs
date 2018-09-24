@@ -68,7 +68,8 @@ namespace Microsoft.AppCenter.Unity.Internal
                                                 liveUpdatePackageHash);
         }
 
-        public static void StartFromLibrary(IntPtr[] services) {
+        public static void StartFromLibrary(IntPtr[] services) 
+        {
             appcenter_unity_start_from_library(services, services.Length);
         }
 
