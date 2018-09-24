@@ -4,9 +4,9 @@
 
 # Unity tool download URLs.
 # Version 2017.3.0f3
-EDITOR_URL="https://download.unity3d.com/download_unity/a9f86dcd79df/MacEditorInstaller/Unity-2017.3.0f3.pkg?_ga=2.98218143.1053985475.1515441432-1315763065.1501872160"
-ANDROID_URL="https://download.unity3d.com/download_unity/a9f86dcd79df/MacEditorTargetInstaller/UnitySetup-Android-Support-for-Editor-2017.3.0f3.pkg?_ga=2.173568931.1053985475.1515441432-1315763065.1501872160"
-IOS_URL="https://download.unity3d.com/download_unity/a9f86dcd79df/MacEditorTargetInstaller/UnitySetup-iOS-Support-for-Editor-2017.3.0f3.pkg?_ga=2.173568931.1053985475.1515441432-1315763065.1501872160"
+EDITOR_URL="http://download.unity3d.com/download_unity/ae1180820377/MacEditorInstaller/Unity-2018.2.8f1.pkg"
+ANDROID_URL="http://download.unity3d.com/download_unity/ae1180820377/MacEditorTargetInstaller/UnitySetup-Android-Support-for-Editor-2018.2.8f1.pkg"
+IOS_URL="http://download.unity3d.com/download_unity/ae1180820377/MacEditorTargetInstaller/UnitySetup-iOS-Support-for-Editor-2018.2.8f1.pkg"
 
 # Put downloads in a temporary folder
 TEMP_FOLDER="UnityTempDownloads"
