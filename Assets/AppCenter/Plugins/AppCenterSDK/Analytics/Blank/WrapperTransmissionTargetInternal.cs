@@ -19,15 +19,12 @@ namespace Microsoft.AppCenter.Unity.Analytics
 
     public class WrapperTransmissionTargetInternal
     {
-
         public static void TrackEvent(RawType transmissionTarget, string eventName)
         {
-            
         }
 
         public static void TrackEventWithProperties(RawType transmissionTarget, string eventName, IDictionary<string, string> properties)
         {
-            
         }
 
         public static AppCenterTask SetEnabledAsync(RawType transmissionTarget, bool enabled)
