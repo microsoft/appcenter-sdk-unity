@@ -32,6 +32,14 @@ void appcenter_unity_set_enabled(bool isEnabled)
   [MSAppCenter setEnabled:isEnabled];
 }
 
+void appcenter_unity_start_from_library(void** services, int count) {
+    NSMutableArray<Class>* mutableClasses = [NSMutableArray new];
+    for (int i = 0; i < count; i++) {
+        [mutableClasses addObject:(Class)CFBridgingRelease(services[i])];
+    }
+    [MSAppCenter startFromLibraryWithServices:mutableClasses];
+}
+
 bool appcenter_unity_is_enabled()
 {
   return [MSAppCenter isEnabled];
