@@ -8,12 +8,6 @@ using System.Runtime.InteropServices;
 
 namespace Microsoft.AppCenter.Unity.Internal
 {
-#if UNITY_IOS || UNITY_ANDROID
-    using ServiceType = System.IntPtr;
-#else
-    using ServiceType = System.Type;
-#endif
-
     class AppCenterInternal
     {
         public static void SetLogLevel(int logLevel)
@@ -74,7 +68,8 @@ namespace Microsoft.AppCenter.Unity.Internal
                                                 liveUpdatePackageHash);
         }
 
-        public static void StartFromLibrary(ServiceType[] services) {
+        public static void StartFromLibrary(IntPtr[] services) 
+        {
             appcenter_unity_start_from_library(services, services.Length);
         }
 

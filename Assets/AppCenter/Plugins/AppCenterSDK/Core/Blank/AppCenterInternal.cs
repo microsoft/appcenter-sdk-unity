@@ -33,7 +33,6 @@ namespace Microsoft.AppCenter.Unity.Internal
         {
         }
 
-
         public static void StartFromLibrary(ServiceType[] services)
         {
 

@@ -8,15 +8,10 @@ using UnityEngine;
 
 namespace Microsoft.AppCenter.Unity.Internal
 {
-#if UNITY_IOS || UNITY_ANDROID
-    using ServiceType = System.IntPtr;
-#else
-    using ServiceType = System.Type;
-#endif
-
     class AppCenterInternal
     {
         private static AndroidJavaClass _appCenter = new AndroidJavaClass("com.microsoft.appcenter.AppCenter");
+        private static AndroidJavaObject _context;
 
         public static void SetLogLevel(int logLevel)
         {
@@ -93,20 +88,23 @@ namespace Microsoft.AppCenter.Unity.Internal
         
         private static AndroidJavaObject GetAndroidContext()
         {
-            AndroidJavaClass unityPlayer = new AndroidJavaClass("com.unity3d.player.UnityPlayer");
-            AndroidJavaObject activity = unityPlayer.GetStatic<AndroidJavaObject>("currentActivity");
-            return activity.Call<AndroidJavaObject>("getApplicationContext");
+            if (_context != null) 
+            {
+                return _context;
+            }
+            var unityPlayer = new AndroidJavaClass("com.unity3d.player.UnityPlayer");
+            var activity = unityPlayer.GetStatic<AndroidJavaObject>("currentActivity");
+            _context = activity.Call<AndroidJavaObject>("getApplicationContext");
+            return _context;
         }
 
-        public static void StartFromLibrary(ServiceType[] servicesArray)
-        {    
-            IntPtr services = servicesArray[0];
-            IntPtr appCenterRawClass = AndroidJNI.FindClass("com/microsoft/appcenter/AppCenter");
-            IntPtr startMethod = AndroidJNI.GetStaticMethodID(appCenterRawClass, "startFromLibrary", "(Landroid/content/Context;[Ljava/lang/Class;)V");
-            AndroidJNI.CallStaticVoidMethod(appCenterRawClass, startMethod, new jvalue[]
+        public static void StartFromLibrary(IntPtr[] servicesArray)
+        {
+            var startMethod = AndroidJNI.GetStaticMethodID(_appCenter.GetRawClass(), "startFromLibrary", "(Landroid/content/Context;[Ljava/lang/Class;)V");
+            AndroidJNI.CallStaticVoidMethod(_appCenter.GetRawClass(), startMethod, new jvalue[]
             {
                 new jvalue { l = GetAndroidContext().GetRawObject() }, 
-                new jvalue { l = services } 
+                new jvalue { l = servicesArray[0] } 
             });
         }
     }
