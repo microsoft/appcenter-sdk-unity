@@ -15,15 +15,29 @@ public class PuppetAnalytics : MonoBehaviour
     public Toggle TransmissionEnabled;
     public InputField EventName;
     public InputField TransmissionTarget;
+    public InputField ChildTransmissionTarget;
     public GameObject EventProperty;
     public RectTransform EventPropertiesList;
     private string TransmissionTargetToken = "";
+    private string ChildTransmissionTargetToken = "";
 
     private string ResolveToken() {
         if (string.IsNullOrEmpty(TransmissionTarget.text)) {
             return TransmissionTargetToken;
         } else {
             return TransmissionTarget.text;
+        }
+    }
+
+    private string ResolveChildToken()
+    {
+        if (string.IsNullOrEmpty(ChildTransmissionTarget.text))
+        {
+            return ChildTransmissionTargetToken;
+        }
+        else
+        {
+            return ChildTransmissionTarget.text;
         }
     }
 
@@ -77,6 +91,21 @@ public class PuppetAnalytics : MonoBehaviour
     public void TrackEvent()
     {
         Analytics.TrackEvent(EventName.text, GetProperties());
+    }
+
+    public void TrackEventChildTransmission()
+    {
+        WrapperTransmissionTarget transmissionTarget = Analytics.GetTransmissionTarget(ResolveToken());
+        WrapperTransmissionTarget childTransmissionTarget = transmissionTarget.GetTransmissionTarget(ResolveChildToken());
+        Dictionary<string, string> properties = GetProperties();
+        if (properties == null)
+        {
+            childTransmissionTarget.TrackEvent(EventName.text);
+        }
+        else
+        {
+            childTransmissionTarget.TrackEventWithProperties(EventName.text, GetProperties());
+        }
     }
 
     public void TrackEventTransmission() 
