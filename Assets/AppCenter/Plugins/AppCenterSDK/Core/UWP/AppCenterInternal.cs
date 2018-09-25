@@ -145,6 +145,11 @@ namespace Microsoft.AppCenter.Unity.Internal
             }
         }
 
+        public static void StartFromLibrary(Type[] services) 
+        {
+
+        }
+
         private static void Prepare()
         {
             lock (_lockObject)
