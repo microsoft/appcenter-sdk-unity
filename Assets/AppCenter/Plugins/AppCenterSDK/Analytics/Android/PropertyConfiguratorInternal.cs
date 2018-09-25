@@ -10,7 +10,7 @@ using Microsoft.AppCenter.Unity.Internal.Utility;
 
 namespace Microsoft.AppCenter.Unity.Analytics
 {
-    public class WrapperPropertyConfiguratorInternal
+    public class PropertyConfiguratorInternal
     {
         public static void SetAppName(AndroidJavaObject propertyConfigurator, string appName)
         {

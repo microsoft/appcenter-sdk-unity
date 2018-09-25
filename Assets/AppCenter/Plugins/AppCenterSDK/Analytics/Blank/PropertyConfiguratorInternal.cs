@@ -17,7 +17,7 @@ namespace Microsoft.AppCenter.Unity.Analytics
     using RawType = System.Object;
 #endif
 
-    public class WrapperPropertyConfiguratorInternal
+    public class PropertyConfiguratorInternal
     {
         public static void SetAppName(RawType propertyConfigurator, string appName)
         {

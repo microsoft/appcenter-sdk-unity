@@ -9,7 +9,7 @@ using Microsoft.AppCenter.Unity.Analytics.Internal;
 
 namespace Microsoft.AppCenter.Unity.Analytics
 {
-    public class WrapperPropertyConfiguratorInternal
+    public class PropertyConfiguratorInternal
     {
         public static void SetAppName(object propertyConfigurator, string appName)
         {
