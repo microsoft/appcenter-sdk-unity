@@ -12,22 +12,22 @@ namespace Microsoft.AppCenter.Unity.Analytics
 {
     public class WrapperPropertyConfiguratorInternal
     {
-        public static void SetAppName(UnityEngine.AndroidJavaObject propertyConfigurator, string appName)
+        public static void SetAppName(AndroidJavaObject propertyConfigurator, string appName)
         {
             propertyConfigurator.Call("setAppName", appName);
         }
 
-        public static void SetAppVersion(UnityEngine.AndroidJavaObject propertyConfigurator, string appVersion)
+        public static void SetAppVersion(AndroidJavaObject propertyConfigurator, string appVersion)
         {
             propertyConfigurator.Call("setAppVersion", appVersion);
         }
 
-        public static void SetAppLocale(UnityEngine.AndroidJavaObject propertyConfigurator, string appLocale)
+        public static void SetAppLocale(AndroidJavaObject propertyConfigurator, string appLocale)
         {
             propertyConfigurator.Call("setAppLocale", appLocale);
         }
 
-           public static void SetEventProperty(UnityEngine.AndroidJavaObject propertyConfigurator, string key, string value)
+           public static void SetEventProperty(AndroidJavaObject propertyConfigurator, string key, string value)
         {
             var rawClass = propertyConfigurator.GetRawClass();
             var rawObject = propertyConfigurator.GetRawObject();
@@ -39,7 +39,7 @@ namespace Microsoft.AppCenter.Unity.Analytics
             });
         }
 
-        public static void RemoveEventProperty(UnityEngine.AndroidJavaObject propertyConfigurator, string key)
+        public static void RemoveEventProperty(AndroidJavaObject propertyConfigurator, string key)
         {
             var rawClass = propertyConfigurator.GetRawClass();
             var rawObject = propertyConfigurator.GetRawObject();
