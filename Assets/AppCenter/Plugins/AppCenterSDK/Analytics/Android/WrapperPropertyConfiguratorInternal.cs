@@ -27,15 +27,15 @@ namespace Microsoft.AppCenter.Unity.Analytics
             propertyConfigurator.Call("setAppLocale", appLocale);
         }
 
-        public static void SetEventProperty(UnityEngine.AndroidJavaObject propertyConfigurator, string key, string value)
+           public static void SetEventProperty(UnityEngine.AndroidJavaObject propertyConfigurator, string key, string value)
         {
             var rawClass = propertyConfigurator.GetRawClass();
             var rawObject = propertyConfigurator.GetRawObject();
             var method = AndroidJNI.GetMethodID(rawClass, "setEventProperty", "(Ljava/lang/String;Ljava/lang/String;)V");
             AndroidJNI.CallVoidMethod(rawObject, method, new jvalue[]
             {
-                new jvalue { l = new AndroidJavaObject( "java.lang.String", key ).GetRawObject() }, 
-                new jvalue { l = new AndroidJavaObject( "java.lang.String", value ).GetRawObject() } 
+                new jvalue { l = AndroidJNI.NewStringUTF(key) }, 
+                new jvalue { l = AndroidJNI.NewStringUTF(value) } 
             });
         }
 
@@ -46,7 +46,7 @@ namespace Microsoft.AppCenter.Unity.Analytics
             var method = AndroidJNI.GetMethodID(rawClass, "removeEventProperty", "(Ljava/lang/String;)V");
             AndroidJNI.CallVoidMethod(rawObject, method, new jvalue[]
             {
-                new jvalue { l = new AndroidJavaObject( "java.lang.String", key ).GetRawObject() }
+                new jvalue { l = AndroidJNI.NewStringUTF(key) }
             });
         }
     }
