@@ -2,7 +2,7 @@
 //
 // Licensed under the MIT license.
 
-#import "WrapperPropertyConfigurator.h"
+#import "PropertyConfigurator.h"
 #import "AppCenterAnalytics/MSPropertyConfigurator.h"
 #import "../Core/Utility/NSStringDictionaryHelper.h"
 

@@ -2,7 +2,7 @@
 //
 // Licensed under the MIT license.
 
-#import "WrapperTransmissionTarget.h"
+#import "TransmissionTarget.h"
 #import "AppCenterAnalytics/MSAnalyticsTransmissionTarget.h"
 #import "AppCenterAnalytics/MSPropertyConfigurator.h"
 #import "../Core/Utility/NSStringDictionaryHelper.h"
