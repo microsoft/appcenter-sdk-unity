@@ -13,6 +13,7 @@ public class PuppetAnalytics : MonoBehaviour
 {
     public Toggle Enabled;
     public Toggle TransmissionEnabled;
+    public Toggle ChildTransmissionEnabled;
     public InputField EventName;
     public InputField TransmissionTarget;
     public InputField ChildTransmissionTarget;
@@ -65,6 +66,11 @@ public class PuppetAnalytics : MonoBehaviour
         StartCoroutine(SetTransmissionEnabledCoroutine(enabled));
     }
 
+    public void SetChildTransmissionEnabled(bool enabled)
+    {
+        StartCoroutine(SetChildTransmissionEnabledCoroutine(enabled));
+    }
+
     private IEnumerator SetEnabledCoroutine(bool enabled)
     {
         yield return Analytics.SetEnabledAsync(enabled);
@@ -80,6 +86,16 @@ public class PuppetAnalytics : MonoBehaviour
         var isEnabled = transmissionTarget.IsEnabledAsync();
         yield return isEnabled;
         TransmissionEnabled.isOn = isEnabled.Result;
+    }
+
+    private IEnumerator SetChildTransmissionEnabledCoroutine(bool enabled)
+    {
+        TransmissionTarget transmissionTarget = Analytics.GetTransmissionTarget(ResolveToken());
+        TransmissionTarget childTransmissionTarget = transmissionTarget.GetTransmissionTarget(ResolveChildToken());
+        yield return childTransmissionTarget.SetEnabledAsync(enabled);
+        var isEnabled = childTransmissionTarget.IsEnabledAsync();
+        yield return isEnabled;
+        ChildTransmissionEnabled.isOn = isEnabled.Result;
     }
 
     public void AddProperty()
