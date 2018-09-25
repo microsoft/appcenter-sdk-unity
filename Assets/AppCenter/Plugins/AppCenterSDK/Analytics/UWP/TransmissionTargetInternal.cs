@@ -9,7 +9,7 @@ using System.Collections.Generic;
 
 namespace Microsoft.AppCenter.Unity.Analytics
 {
-    public class WrapperTransmissionTargetInternal
+    public class TransmissionTargetInternal
     {
         public static void TrackEvent(object transmissionTarget, string eventName)
         {
@@ -29,7 +29,12 @@ namespace Microsoft.AppCenter.Unity.Analytics
             return AppCenterTask<bool>.FromCompleted(false);
         }
 
-        public static Type GetTransmissionTarget(object transmissionTargetParent, string transmissionTargetToken)
+        public static TransmissionTargetInternal GetTransmissionTarget(object transmissionTargetParent, string transmissionTargetToken)
+        {
+            return null;
+        }
+
+        public static PropertyConfiguratorInternal GetPropertyConfigurator(object transmissionTargetParent)
         {
             return null;
         }

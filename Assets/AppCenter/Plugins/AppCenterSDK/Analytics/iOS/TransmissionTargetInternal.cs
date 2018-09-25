@@ -11,7 +11,7 @@ using System.Runtime.InteropServices;
 
 namespace Microsoft.AppCenter.Unity.Analytics.Internal
 {
-    public class WrapperTransmissionTargetInternal
+    public class TransmissionTargetInternal
     {
         public static void TrackEvent(IntPtr transmissionTarget, string eventName)
         {
@@ -38,6 +38,11 @@ namespace Microsoft.AppCenter.Unity.Analytics.Internal
         public static IntPtr GetTransmissionTarget(IntPtr transmissionTargetParent, string transmissionTargetToken) 
         {
             return appcenter_unity_transmission_transmission_target_for_token(transmissionTargetParent, transmissionTargetToken);
+        }
+
+        public static IntPtr GetPropertyConfigurator(IntPtr transmissionTargetParent)
+        {
+            return default(IntPtr);
         }
 
 #region External
