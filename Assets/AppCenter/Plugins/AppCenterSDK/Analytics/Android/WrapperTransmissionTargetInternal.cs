@@ -10,10 +10,8 @@ using Microsoft.AppCenter.Unity.Internal.Utility;
 
 namespace Microsoft.AppCenter.Unity.Analytics
 {
-
     public class WrapperTransmissionTargetInternal
     {
-
         public static void TrackEvent(UnityEngine.AndroidJavaObject transmissionTarget, string eventName)
         {
             transmissionTarget.Call("trackEvent", eventName);
