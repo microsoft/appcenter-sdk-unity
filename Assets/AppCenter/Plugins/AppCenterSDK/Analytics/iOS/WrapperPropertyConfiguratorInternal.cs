@@ -40,9 +40,6 @@ namespace Microsoft.AppCenter.Unity.Analytics.Internal
 
 #region External
 
-      
-
-
 #endregion
     }
 }

@@ -29,9 +29,9 @@ namespace Microsoft.AppCenter.Unity.Analytics
 
         public static void SetEventProperty(UnityEngine.AndroidJavaObject propertyConfigurator, string key, string value)
         {
-            IntPtr rawClass = propertyConfigurator.GetRawClass();
-            IntPtr rawObject = propertyConfigurator.GetRawObject();
-            IntPtr method = AndroidJNI.GetMethodID(rawClass, "setEventProperty", "(Ljava/lang/String;Ljava/lang/String;)V");
+            var rawClass = propertyConfigurator.GetRawClass();
+            var rawObject = propertyConfigurator.GetRawObject();
+            var method = AndroidJNI.GetMethodID(rawClass, "setEventProperty", "(Ljava/lang/String;Ljava/lang/String;)V");
             AndroidJNI.CallVoidMethod(rawObject, method, new jvalue[]
             {
                 new jvalue { l = new AndroidJavaObject( "java.lang.String", key ).GetRawObject() }, 
