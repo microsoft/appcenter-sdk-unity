@@ -13,7 +13,6 @@ namespace Microsoft.AppCenter.Unity.Analytics.Internal
 {
     public class WrapperTransmissionTargetInternal
     {
-
         public static void TrackEvent(IntPtr transmissionTarget, string eventName)
         {
             appcenter_unity_transmission_target_track_event(transmissionTarget, eventName);
