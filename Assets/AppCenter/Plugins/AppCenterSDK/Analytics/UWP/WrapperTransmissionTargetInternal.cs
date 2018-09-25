@@ -34,7 +34,7 @@ namespace Microsoft.AppCenter.Unity.Analytics
             return null;
         }
 
-        public static Type GetPropertyConfigurator(IntPtr transmissionTargetParent)
+        public static Type GetPropertyConfigurator(object transmissionTargetParent)
         {
             return null;
         }

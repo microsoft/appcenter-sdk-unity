@@ -9,36 +9,29 @@ using Microsoft.AppCenter.Unity.Analytics.Internal;
 
 namespace Microsoft.AppCenter.Unity.Analytics
 {
-#if UNITY_IOS
-    using RawType = System.IntPtr;
-#elif UNITY_ANDROID
-    using RawType = UnityEngine.AndroidJavaObject;
-#else
-    using RawType = System.Object;
-#endif
     public class WrapperPropertyConfiguratorInternal
     {
-        public static void SetAppName(IntPtr propertyConfigurator, string appName)
+        public static void SetAppName(object propertyConfigurator, string appName)
         {
             
         }
 
-        public static void SetAppVersion(IntPtr propertyConfigurator, string appVersion)
+        public static void SetAppVersion(object propertyConfigurator, string appVersion)
         {
             
         }
 
-        public static void SetAppLocale(IntPtr propertyConfigurator, string appLocale)
+        public static void SetAppLocale(object propertyConfigurator, string appLocale)
         {
             
         }
 
-        public static void SetEventProperty(IntPtr propertyConfigurator, string key, string value)
+        public static void SetEventProperty(object propertyConfigurator, string key, string value)
         {
 
         }
 
-        public static void RemoveEventProperty(IntPtr propertyConfigurator, string key)
+        public static void RemoveEventProperty(object propertyConfigurator, string key)
         {
 
         }
