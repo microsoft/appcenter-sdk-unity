@@ -11,7 +11,7 @@ using System.Runtime.InteropServices;
 
 namespace Microsoft.AppCenter.Unity.Analytics.Internal
 {
-    public class WrapperTransmissionTargetInternal
+    public class TransmissionTargetInternal
     {
         public static void TrackEvent(IntPtr transmissionTarget, string eventName)
         {

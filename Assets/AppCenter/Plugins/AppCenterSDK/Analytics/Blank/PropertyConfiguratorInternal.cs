@@ -16,36 +16,31 @@ namespace Microsoft.AppCenter.Unity.Analytics
 #else
     using RawType = System.Object;
 #endif
-    public class WrapperPropertyConfiguratorInternal
+
+    public class PropertyConfiguratorInternal
     {
         public static void SetAppName(RawType propertyConfigurator, string appName)
         {
-
         }
 
         public static void SetAppVersion(RawType propertyConfigurator, string appVersion)
         {
-
         }
 
         public static void SetAppLocale(RawType propertyConfigurator, string appLocale)
         {
-
         }
 
         public static void CollectDeviceId(RawType propertyConfigurator)
         {
-
         }
 
         public static void SetEventProperty(RawType propertyConfigurator, string key, string value)
         {
-
         }
 
         public static void RemoveEventProperty(RawType propertyConfigurator, string key)
         {
-
         }
     }
 }

@@ -16,7 +16,7 @@ namespace Microsoft.AppCenter.Unity.Analytics
     using RawType = System.Object;
 #endif
 
-    public class WrapperTransmissionTarget
+    public class TransmissionTarget
     {
         private readonly RawType _rawObject;
 
@@ -25,39 +25,39 @@ namespace Microsoft.AppCenter.Unity.Analytics
             return _rawObject;
         }
 
-        public WrapperTransmissionTarget(RawType rawObject)
+        public TransmissionTarget(RawType rawObject)
         {
             _rawObject = rawObject;
         }
 
         public void TrackEvent(string eventName)
         {
-            WrapperTransmissionTargetInternal.TrackEvent(_rawObject, eventName);
+            TransmissionTargetInternal.TrackEvent(_rawObject, eventName);
         }
 
         public void TrackEventWithProperties(string eventName, IDictionary<string, string> properties)
         {
-            WrapperTransmissionTargetInternal.TrackEventWithProperties(_rawObject, eventName, properties);
+            TransmissionTargetInternal.TrackEventWithProperties(_rawObject, eventName, properties);
         }
 
         public AppCenterTask<bool> IsEnabledAsync()
         {
-            return WrapperTransmissionTargetInternal.IsEnabledAsync(_rawObject);
+            return TransmissionTargetInternal.IsEnabledAsync(_rawObject);
         }
 
         public AppCenterTask SetEnabledAsync(bool enabled)
         {
-            return WrapperTransmissionTargetInternal.SetEnabledAsync(_rawObject, enabled);
+            return TransmissionTargetInternal.SetEnabledAsync(_rawObject, enabled);
         }
 
-        public WrapperTransmissionTarget GetTransmissionTarget(string childTransmissionTargetToken)
+        public TransmissionTarget GetTransmissionTarget(string childTransmissionTargetToken)
         {
-            return new WrapperTransmissionTarget(WrapperTransmissionTargetInternal.GetTransmissionTarget(_rawObject, childTransmissionTargetToken));
+            return new TransmissionTarget(TransmissionTargetInternal.GetTransmissionTarget(_rawObject, childTransmissionTargetToken));
         }
 
-        public WrapperPropertyConfigurator GetPropertyConfigurator()
+        public PropertyConfigurator GetPropertyConfigurator()
         {
-            return new WrapperPropertyConfigurator(WrapperTransmissionTargetInternal.GetPropertyConfigurator(_rawObject));
+            return new PropertyConfigurator(TransmissionTargetInternal.GetPropertyConfigurator(_rawObject));
         }
     }
 }

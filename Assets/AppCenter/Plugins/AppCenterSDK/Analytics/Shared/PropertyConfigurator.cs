@@ -16,7 +16,7 @@ namespace Microsoft.AppCenter.Unity.Analytics
     using RawType = System.Object;
 #endif
 
-    public class WrapperPropertyConfigurator
+    public class PropertyConfigurator
     {
         private readonly RawType _rawObject;
 
@@ -25,34 +25,34 @@ namespace Microsoft.AppCenter.Unity.Analytics
             return _rawObject;
         }
 
-        public WrapperPropertyConfigurator(RawType rawObject)
+        public PropertyConfigurator(RawType rawObject)
         {
             _rawObject = rawObject;
         }
 
         public void SetAppName(string appName)
         {
-            WrapperPropertyConfiguratorInternal.SetAppName(_rawObject, appName);
+            PropertyConfiguratorInternal.SetAppName(_rawObject, appName);
         }
 
         public void SetAppVersion(string appVersion)
         {
-            WrapperPropertyConfiguratorInternal.SetAppVersion(_rawObject, appVersion);
+            PropertyConfiguratorInternal.SetAppVersion(_rawObject, appVersion);
         }
 
         public void SetAppLocale(string appLocale)
         {
-            WrapperPropertyConfiguratorInternal.SetAppLocale(_rawObject, appLocale);
+            PropertyConfiguratorInternal.SetAppLocale(_rawObject, appLocale);
         }
 
         public void SetEventProperty(string key, string value)
         {
-            WrapperPropertyConfiguratorInternal.SetEventProperty(_rawObject, key, value);
+            PropertyConfiguratorInternal.SetEventProperty(_rawObject, key, value);
         }
 
         public void RemoveEventProperty(String key)
         {
-            WrapperPropertyConfiguratorInternal.RemoveEventProperty(_rawObject, key);
+            PropertyConfiguratorInternal.RemoveEventProperty(_rawObject, key);
         }
     }
 }

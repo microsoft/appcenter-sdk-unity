@@ -2,25 +2,20 @@
 //
 // Licensed under the MIT license.
 
-#if UNITY_WSA_10_0 && !UNITY_EDITOR
+#if UNITY_IOS && !UNITY_EDITOR
+using AOT;
 using System;
+using System.Linq;
 using System.Collections.Generic;
-using Microsoft.AppCenter.Unity.Analytics.Internal;
+using System.Runtime.InteropServices;
 
-namespace Microsoft.AppCenter.Unity.Analytics
+namespace Microsoft.AppCenter.Unity.Analytics.Internal
 {
-#if UNITY_IOS
-    using RawType = System.IntPtr;
-#elif UNITY_ANDROID
-    using RawType = UnityEngine.AndroidJavaObject;
-#else
-    using RawType = System.Object;
-#endif
-    public class WrapperPropertyConfiguratorInternal
+    public class PropertyConfiguratorInternal
     {
         public static void SetAppName(IntPtr propertyConfigurator, string appName)
         {
-            
+             
         }
 
         public static void SetAppVersion(IntPtr propertyConfigurator, string appVersion)
@@ -42,6 +37,10 @@ namespace Microsoft.AppCenter.Unity.Analytics
         {
 
         }
+
+#region External
+
+#endregion
     }
 }
 #endif
