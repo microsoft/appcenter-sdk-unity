@@ -29,7 +29,7 @@ namespace Microsoft.AppCenter.Unity.Analytics
             return AppCenterTask<bool>.FromCompleted(false);
         }
 
-        public static Type GetTransmissionTarget(object transmissionTargetParent, string transmissionTargetToken)
+        public static WrapperTransmissionTargetInternal GetTransmissionTarget(object transmissionTargetParent, string transmissionTargetToken)
         {
             return null;
         }
