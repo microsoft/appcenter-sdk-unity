@@ -17,7 +17,7 @@ namespace Microsoft.AppCenter.Unity.Analytics
     using RawType = System.Object;
 #endif
 
-    public class WrapperTransmissionTargetInternal
+    public class TransmissionTargetInternal
     {
         public static void TrackEvent(RawType transmissionTarget, string eventName)
         {
@@ -38,6 +38,11 @@ namespace Microsoft.AppCenter.Unity.Analytics
         }
 
         public static RawType GetTransmissionTarget(RawType transmissionTargetParent, string transmissionTargetToken)
+        {
+            return default(RawType);
+        }
+
+        public static RawType GetPropertyConfigurator(RawType transmissionTargetParent)
         {
             return default(RawType);
         }

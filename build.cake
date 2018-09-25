@@ -577,7 +577,7 @@ Task("RegisterUnity").Does(()=>
     var serialNumber = Argument<string>("UnitySerialNumber");
     var username = Argument<string>("UnityUsername");
     var password = Argument<string>("UnityPassword");
-    
+
     // This will produce an error, but that's okay because the project "noproject" is used so that the
     // root isn't opened by unity, which could potentially remove important .meta files.
     ExecuteUnityCommand($"-serial {serialNumber} -username {username} -password {password}", "noproject");

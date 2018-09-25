@@ -48,7 +48,7 @@ public class PuppetAnalytics : MonoBehaviour
             Enabled.isOn = task.Result;
         });
 
-        WrapperTransmissionTarget transmissionTarget = Analytics.GetTransmissionTarget(ResolveToken());
+        TransmissionTarget transmissionTarget = Analytics.GetTransmissionTarget(ResolveToken());
         transmissionTarget.IsEnabledAsync().ContinueWith(task => 
         {
             TransmissionEnabled.isOn = task.Result;
@@ -75,7 +75,7 @@ public class PuppetAnalytics : MonoBehaviour
 
     private IEnumerator SetTransmissionEnabledCoroutine(bool enabled)
     {
-        WrapperTransmissionTarget transmissionTarget = Analytics.GetTransmissionTarget(ResolveToken());
+        TransmissionTarget transmissionTarget = Analytics.GetTransmissionTarget(ResolveToken());
         yield return transmissionTarget.SetEnabledAsync(enabled);
         var isEnabled = transmissionTarget.IsEnabledAsync();
         yield return isEnabled;
@@ -95,8 +95,8 @@ public class PuppetAnalytics : MonoBehaviour
 
     public void TrackEventChildTransmission()
     {
-        WrapperTransmissionTarget transmissionTarget = Analytics.GetTransmissionTarget(ResolveToken());
-        WrapperTransmissionTarget childTransmissionTarget = transmissionTarget.GetTransmissionTarget(ResolveChildToken());
+        TransmissionTarget transmissionTarget = Analytics.GetTransmissionTarget(ResolveToken());
+        TransmissionTarget childTransmissionTarget = transmissionTarget.GetTransmissionTarget(ResolveChildToken());
         Dictionary<string, string> properties = GetProperties();
         if (properties == null)
         {
@@ -110,7 +110,7 @@ public class PuppetAnalytics : MonoBehaviour
 
     public void TrackEventTransmission() 
     { 
-        WrapperTransmissionTarget transmissionTarget = Analytics.GetTransmissionTarget(ResolveToken());
+        TransmissionTarget transmissionTarget = Analytics.GetTransmissionTarget(ResolveToken());
         Dictionary<string, string> properties = GetProperties();
         if (properties == null) 
         {

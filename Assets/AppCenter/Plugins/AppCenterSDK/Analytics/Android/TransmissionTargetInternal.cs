@@ -10,34 +10,39 @@ using Microsoft.AppCenter.Unity.Internal.Utility;
 
 namespace Microsoft.AppCenter.Unity.Analytics
 {
-    public class WrapperTransmissionTargetInternal
+    public class TransmissionTargetInternal
     {
-        public static void TrackEvent(UnityEngine.AndroidJavaObject transmissionTarget, string eventName)
+        public static void TrackEvent(AndroidJavaObject transmissionTarget, string eventName)
         {
             transmissionTarget.Call("trackEvent", eventName);
         }
 
-        public static void TrackEventWithProperties(UnityEngine.AndroidJavaObject transmissionTarget, string eventName, IDictionary<string, string> properties)
+        public static void TrackEventWithProperties(AndroidJavaObject transmissionTarget, string eventName, IDictionary<string, string> properties)
         {
             var propertiesMap = JavaStringMapHelper.ConvertToJava(properties);
             transmissionTarget.Call("trackEvent", eventName, properties);
         }
 
-        public static AppCenterTask SetEnabledAsync(UnityEngine.AndroidJavaObject transmissionTarget, bool enabled)
+        public static AppCenterTask SetEnabledAsync(AndroidJavaObject transmissionTarget, bool enabled)
         {
             var future = transmissionTarget.Call<AndroidJavaObject>("setEnabledAsync", enabled);
             return new AppCenterTask(future);
         }
 
-        public static AppCenterTask<bool> IsEnabledAsync(UnityEngine.AndroidJavaObject transmissionTarget)
+        public static AppCenterTask<bool> IsEnabledAsync(AndroidJavaObject transmissionTarget)
         {
             var future = transmissionTarget.Call<AndroidJavaObject>("isEnabledAsync");
             return new AppCenterTask<bool>(future);
         }
 
-        public static AndroidJavaObject GetTransmissionTarget(UnityEngine.AndroidJavaObject transmissionTargetParent, string transmissionTargetToken) 
+        public static AndroidJavaObject GetTransmissionTarget(AndroidJavaObject transmissionTargetParent, string transmissionTargetToken) 
         {
             return transmissionTargetParent.Call<AndroidJavaObject>("getTransmissionTarget", transmissionTargetToken);
+        }
+
+        public static AndroidJavaObject GetPropertyConfigurator(AndroidJavaObject transmissionTargetParent) 
+        {
+            return transmissionTargetParent.Call<AndroidJavaObject>("getPropertyConfigurator");
         }
     }
 }
