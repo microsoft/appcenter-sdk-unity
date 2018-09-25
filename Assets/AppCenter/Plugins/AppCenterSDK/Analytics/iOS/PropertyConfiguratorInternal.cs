@@ -11,7 +11,7 @@ using System.Runtime.InteropServices;
 
 namespace Microsoft.AppCenter.Unity.Analytics.Internal
 {
-    public class WrapperPropertyConfiguratorInternal
+    public class PropertyConfiguratorInternal
     {
         public static void SetAppName(IntPtr propertyConfigurator, string appName)
         {
