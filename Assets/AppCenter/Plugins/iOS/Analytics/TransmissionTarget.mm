@@ -2,8 +2,9 @@
 //
 // Licensed under the MIT license.
 
-#import "WrapperTransmissionTarget.h"
+#import "TransmissionTarget.h"
 #import "AppCenterAnalytics/MSAnalyticsTransmissionTarget.h"
+#import "AppCenterAnalytics/MSPropertyConfigurator.h"
 #import "../Core/Utility/NSStringDictionaryHelper.h"
 
 extern "C" void appcenter_unity_transmission_target_track_event(MSAnalyticsTransmissionTarget *transmission, char* eventName) {
@@ -25,4 +26,8 @@ extern "C" BOOL appcenter_unity_transmission_target_is_enabled(MSAnalyticsTransm
 
 extern "C" MSAnalyticsTransmissionTarget *appcenter_unity_transmission_transmission_target_for_token(MSAnalyticsTransmissionTarget *transmissionParent, char* transmissionTargetToken) {
   return [transmissionParent transmissionTargetForToken: [NSString stringWithUTF8String:transmissionTargetToken]];
+}
+
+extern "C" MSPropertyConfigurator *appcenter_unity_transmission_get_property_configurator(MSAnalyticsTransmissionTarget *transmission) {
+  return [transmission propertyConfigurator];
 }
