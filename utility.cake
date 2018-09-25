@@ -43,11 +43,6 @@ static int ExecuteUnityCommand(string extraArgs, string projectPath = ".")
     if (projectDir != null)
     {
         unityArgs += " -projectPath " + projectDir;
-        Statics.Context.Information("Contents of " + projectDir);
-        foreach (var entity in System.IO.Directory.EnumerateFileSystemEntries(projectDir.FullPath))
-        {
-            Statics.Context.Information(entity);
-        }
     }
 
     unityArgs += " " + extraArgs;
