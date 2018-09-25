@@ -13,27 +13,22 @@ namespace Microsoft.AppCenter.Unity.Analytics
     {
         public static void SetAppName(object propertyConfigurator, string appName)
         {
-            
         }
 
         public static void SetAppVersion(object propertyConfigurator, string appVersion)
         {
-            
         }
 
         public static void SetAppLocale(object propertyConfigurator, string appLocale)
         {
-            
         }
 
         public static void SetEventProperty(object propertyConfigurator, string key, string value)
         {
-
         }
 
         public static void RemoveEventProperty(object propertyConfigurator, string key)
         {
-
         }
     }
 }
