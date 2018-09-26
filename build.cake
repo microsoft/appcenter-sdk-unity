@@ -118,6 +118,7 @@ class UnityPackage
             var specFileDirectory = System.IO.Path.GetDirectoryName(specFilePath);
             AddFilesFromSpec(specFileDirectory + "/AppCenter.unitypackagespec");
         }
+        
         _packageName = Statics.Context.XmlPeek(specFilePath, "package/@name");
         _packageVersion = Statics.Context.XmlPeek(specFilePath, "package/@version");
         if (_packageName == null || _packageVersion == null)
