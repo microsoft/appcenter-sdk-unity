@@ -115,9 +115,9 @@ public class PuppetTransmission : MonoBehaviour
 
     private void OverrideProperties(TransmissionTarget transmissionTarget) 
     {
-        string overridenAppName = AppName.text;
-        string overridenAppVersion = AppVersion.text;
-        string overridenAppLocale = AppLocale.text;
+        var overridenAppName = AppName.text;
+        var overridenAppVersion = AppVersion.text;
+        var overridenAppLocale = AppLocale.text;
         if (!string.IsNullOrEmpty(overridenAppName))
         {
             transmissionTarget.GetPropertyConfigurator().SetAppName(overridenAppName);
