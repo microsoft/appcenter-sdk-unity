@@ -28,7 +28,7 @@ public class PuppetTransmission : MonoBehaviour
 
     private void OnEnable()
     {
-        TransmissionTarget transmissionTarget = Analytics.GetTransmissionTarget(ResolveToken());
+        var transmissionTarget = Analytics.GetTransmissionTarget(ResolveToken());
         transmissionTarget.IsEnabledAsync().ContinueWith(task =>
         {
             TransmissionEnabled.isOn = task.Result;
@@ -74,7 +74,7 @@ public class PuppetTransmission : MonoBehaviour
 
     private IEnumerator SetTransmissionEnabledCoroutine(bool enabled)
     {
-        TransmissionTarget transmissionTarget = Analytics.GetTransmissionTarget(ResolveToken());
+        var transmissionTarget = Analytics.GetTransmissionTarget(ResolveToken());
         yield return transmissionTarget.SetEnabledAsync(enabled);
         var isEnabled = transmissionTarget.IsEnabledAsync();
         yield return isEnabled;
@@ -83,8 +83,8 @@ public class PuppetTransmission : MonoBehaviour
 
     private IEnumerator SetChildTransmissionEnabledCoroutine(bool enabled)
     {
-        TransmissionTarget transmissionTarget = Analytics.GetTransmissionTarget(ResolveToken());
-        TransmissionTarget childTransmissionTarget = transmissionTarget.GetTransmissionTarget(ResolveChildToken());
+        var transmissionTarget = Analytics.GetTransmissionTarget(ResolveToken());
+        var childTransmissionTarget = transmissionTarget.GetTransmissionTarget(ResolveChildToken());
         yield return childTransmissionTarget.SetEnabledAsync(enabled);
         var isEnabled = childTransmissionTarget.IsEnabledAsync();
         yield return isEnabled;
@@ -99,8 +99,8 @@ public class PuppetTransmission : MonoBehaviour
 
     public void TrackEventChildTransmission()
     {
-        TransmissionTarget transmissionTarget = Analytics.GetTransmissionTarget(ResolveToken());
-        TransmissionTarget childTransmissionTarget = transmissionTarget.GetTransmissionTarget(ResolveChildToken());
+        var transmissionTarget = Analytics.GetTransmissionTarget(ResolveToken());
+        var childTransmissionTarget = transmissionTarget.GetTransmissionTarget(ResolveChildToken());
         OverrideProperties(childTransmissionTarget);
         Dictionary<string, string> properties = GetProperties();
         if (properties == null)
@@ -134,7 +134,7 @@ public class PuppetTransmission : MonoBehaviour
 
     public void TrackEventTransmission() 
     { 
-        TransmissionTarget transmissionTarget = Analytics.GetTransmissionTarget(ResolveToken());
+        var transmissionTarget = Analytics.GetTransmissionTarget(ResolveToken());
         OverrideProperties(transmissionTarget);
         Dictionary<string, string> properties = GetProperties();
         if (properties == null) 
