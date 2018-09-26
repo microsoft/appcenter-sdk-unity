@@ -579,20 +579,6 @@ Task("RegisterUnity").Does(()=>
     var username = Argument<string>("UnityUsername");
     var password = Argument<string>("UnityPassword");
 
-    var result = "";
-    foreach (var c in username)
-    {
-        result += c + "|";
-    }
-    Information("user = " + result);
-
-    result = "";
-    foreach (var c in password)
-    {
-        result += c + "|";
-    }
-    Information("pass = " + result);
-
     // This will produce an error, but that's okay because the project "noproject" is used so that the
     // root isn't opened by unity, which could potentially remove important .meta files.
     ExecuteUnityCommand($"-serial {serialNumber} -username {username} -password {password}", "AppCenterDemoApp");
