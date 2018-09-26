@@ -14,12 +14,17 @@ public class PuppetTransmission : MonoBehaviour
     public Toggle TransmissionEnabled;
     public Toggle ChildTransmissionEnabled;
     public InputField EventName;
+    public InputField AppName;
+    public InputField AppVersion;
+    public InputField AppLocale;
     public InputField TransmissionTarget;
     public InputField ChildTransmissionTarget;
     public GameObject EventProperty;
     public RectTransform EventPropertiesList;
-    private string TransmissionTargetToken = "2932e5d1bff54f62935e7352e98a7819-59ba431f-6bf7-44f5-a1d3-a24a6f6dd544-7075";
-    private string ChildTransmissionTargetToken = "1f7bbd10a32c4f8e9d545a7a4b2f4b6a-e6f4d0c5-2fc2-4024-bfb6-56d2d676b5c0-8020";
+    private string TransmissionTargetToken = "";
+    private string ChildTransmissionTargetToken = "";
+    private TransmissionTarget _transmissionTarget;
+    private TransmissionTarget _childTransmissionTarget;
 
     private void OnEnable()
     {
@@ -28,6 +33,13 @@ public class PuppetTransmission : MonoBehaviour
         {
             TransmissionEnabled.isOn = task.Result;
         });
+        TransmissionTarget childTransmissionTarget = transmissionTarget.GetTransmissionTarget(ResolveChildToken());
+        childTransmissionTarget.IsEnabledAsync().ContinueWith(task =>
+        {
+            ChildTransmissionEnabled.isOn = task.Result;
+        });
+        TransmissionTarget.text = TransmissionTargetToken;
+        ChildTransmissionTarget.text = ChildTransmissionTargetToken;
     }
 
     private string ResolveToken() {
@@ -89,6 +101,7 @@ public class PuppetTransmission : MonoBehaviour
     {
         TransmissionTarget transmissionTarget = Analytics.GetTransmissionTarget(ResolveToken());
         TransmissionTarget childTransmissionTarget = transmissionTarget.GetTransmissionTarget(ResolveChildToken());
+        OverrideProperties(childTransmissionTarget);
         Dictionary<string, string> properties = GetProperties();
         if (properties == null)
         {
@@ -100,9 +113,29 @@ public class PuppetTransmission : MonoBehaviour
         }
     }
 
+    private void OverrideProperties(TransmissionTarget transmissionTarget) 
+    {
+        string overridenAppName = AppName.text;
+        string overridenAppVersion = AppVersion.text;
+        string overridenAppLocale = AppLocale.text;
+        if (!string.IsNullOrEmpty(overridenAppName))
+        {
+            transmissionTarget.GetPropertyConfigurator().SetAppName(overridenAppName);
+        }
+        if (!string.IsNullOrEmpty(overridenAppVersion))
+        {
+            transmissionTarget.GetPropertyConfigurator().SetAppVersion(overridenAppVersion);
+        }
+        if (!string.IsNullOrEmpty(overridenAppLocale))
+        {
+            transmissionTarget.GetPropertyConfigurator().SetAppLocale(overridenAppLocale);
+        }
+    }
+
     public void TrackEventTransmission() 
     { 
         TransmissionTarget transmissionTarget = Analytics.GetTransmissionTarget(ResolveToken());
+        OverrideProperties(transmissionTarget);
         Dictionary<string, string> properties = GetProperties();
         if (properties == null) 
         {
