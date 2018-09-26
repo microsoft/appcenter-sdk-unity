@@ -9,9 +9,11 @@ public class AppCenterSettingsMakerIos
     private const string TemplateFilePath = "Assets/AppCenter/Plugins/iOS/Core/AppCenterStarter.original";
     private const string TargetFilePath = "Assets/AppCenter/Plugins/iOS/Core/AppCenterStarter.m";
     private const string AppSecretSearchText = "appcenter-app-secret";
+    private const string TransmissionTargetTokenSearchText = "appcenter-transmission-target-token";
     private const string LogUrlSearchText = "custom-log-url";
     private const string LogUrlToken = "APPCENTER_UNITY_USE_CUSTOM_LOG_URL";
     private const string LogLevelSearchText = "0/*LOG_LEVEL*/";
+    private const string StartupTypeSearchText = "0/*STARTUP_TYPE*/";
     private const string UseCrashesToken = "APPCENTER_UNITY_USE_CRASHES";
     private const string UsePushToken = "APPCENTER_UNITY_USE_PUSH";
     private const string UseAnalyticsToken = "APPCENTER_UNITY_USE_ANALYTICS";
@@ -33,6 +35,11 @@ public class AppCenterSettingsMakerIos
         _loaderFileText = _loaderFileText.Replace(LogLevelSearchText, logLevel.ToString());
     }
 
+    public void SetStartupType(int startupType)
+    {
+        _loaderFileText = _loaderFileText.Replace(StartupTypeSearchText, startupType.ToString());
+    }
+
     public void SetLogUrl(string logUrl)
     {
         AddToken(LogUrlToken);
@@ -42,6 +49,11 @@ public class AppCenterSettingsMakerIos
     public void SetAppSecret(string appSecret)
     {
         _loaderFileText = _loaderFileText.Replace(AppSecretSearchText, appSecret);
+    }
+
+    public void SetTransmissionTargetToken(string transmissionTargetToken)
+    {
+        _loaderFileText = _loaderFileText.Replace(TransmissionTargetTokenSearchText, transmissionTargetToken);
     }
 
     public void StartCrashesClass()
