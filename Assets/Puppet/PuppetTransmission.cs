@@ -1,4 +1,4 @@
-// Copyright (c) Microsoft Corporation. All rights reserved.
+﻿// Copyright (c) Microsoft Corporation. All rights reserved.
 //
 // Licensed under the MIT license.
 
@@ -21,8 +21,8 @@ public class PuppetTransmission : MonoBehaviour
     public InputField ChildTransmissionTarget;
     public GameObject EventProperty;
     public RectTransform EventPropertiesList;
-    private string TransmissionTargetToken = "";
-    private string ChildTransmissionTargetToken = "";
+    private string _transmissionTargetToken = "";
+    private string _childTransmissionTargetToken = "";
     private TransmissionTarget _transmissionTarget;
     private TransmissionTarget _childTransmissionTarget;
 
@@ -38,14 +38,18 @@ public class PuppetTransmission : MonoBehaviour
         {
             ChildTransmissionEnabled.isOn = task.Result;
         });
-        TransmissionTarget.text = TransmissionTargetToken;
-        ChildTransmissionTarget.text = ChildTransmissionTargetToken;
+        TransmissionTarget.text = _transmissionTargetToken;
+        ChildTransmissionTarget.text = _childTransmissionTargetToken;
     }
 
-    private string ResolveToken() {
-        if (string.IsNullOrEmpty(TransmissionTarget.text)) {
-            return TransmissionTargetToken;
-        } else {
+    private string ResolveToken() 
+    {
+        if (string.IsNullOrEmpty(TransmissionTarget.text)) 
+        {
+            return _transmissionTargetToken;
+        } 
+        else 
+        {
             return TransmissionTarget.text;
         }
     }
@@ -54,7 +58,7 @@ public class PuppetTransmission : MonoBehaviour
     {
         if (string.IsNullOrEmpty(ChildTransmissionTarget.text))
         {
-            return ChildTransmissionTargetToken;
+            return _childTransmissionTargetToken;
         }
         else
         {
@@ -109,7 +113,7 @@ public class PuppetTransmission : MonoBehaviour
         }
         else
         {
-            childTransmissionTarget.TrackEventWithProperties(EventName.text, GetProperties());
+            childTransmissionTarget.TrackEventWithProperties(EventName.text, properties);
         }
     }
 
