@@ -43,7 +43,7 @@ public class PuppetTransmission : MonoBehaviour
     }
 
     private string ResolveToken() 
-	{
+    {
         if (string.IsNullOrEmpty(TransmissionTarget.text)) {
             return _transmissionTargetToken;
         } else {
