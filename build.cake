@@ -288,6 +288,31 @@ Task("Test-Unity-Installed").Does(() => {
     }
 }).OnError(HandleError);
 
+Task("Install-Unity-Windows").Does(() => {
+    const string unityDownloadUrl = @"https://netstorage.unity3d.com/unity/2207421190e9/Windows64EditorInstaller/UnitySetup64-2018.2.9f1.exe";
+    const string dotNetSupportDownloadUrl = @"https://netstorage.unity3d.com/unity/2207421190e9/TargetSupportInstaller/UnitySetup-UWP-.NET-Support-for-Editor-2018.2.9f1.exe";
+    const string il2cppSupportDownloadUrl = @"https://netstorage.unity3d.com/unity/2207421190e9/TargetSupportInstaller/UnitySetup-UWP-IL2CPP-Support-for-Editor-2018.2.9f1.exe";
+
+    DownloadFile(unityDownloadUrl, "./UnitySetup64.exe");
+    DownloadFile(dotNetSupportDownloadUrl, "./UnityNetSupport.exe");
+    DownloadFile(il2cppSupportDownloadUrl, "./UnityIl2CppSupport.exe");
+
+    Information("Installing Unity Editor...");
+    var result = StartProcess("./UnitySetup64.exe", " /S");
+    if (result != 0)
+        throw new Exception("Failed to install Unity Editor");
+
+    Information("Installing .Net support...");
+    result = StartProcess("./UnityNetSupport.exe", " /S");
+    if (result != 0)
+        throw new Exception("Failed to install .Net support");
+
+    Information("Installing IL2CPP support...");
+    result = StartProcess("./UnityIl2CppSupport.exe", " /S");
+    if (result != 0)
+        throw new Exception("Failed to install IL2CPP support");
+}).OnError(HandleError);
+
 // Downloading UWP IL2CPP dependencies.
 Task ("Externals-Uwp-IL2CPP-Dependencies")
     .Does (() => {
