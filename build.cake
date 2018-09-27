@@ -277,6 +277,13 @@ Task("BuildAndroidContentProvider").Does(()=>
     MoveFileToDirectory(aarSource, aarDestination);
 }).OnError(HandleError);
 
+Task("Test-Unity-Installed").Does(() => {
+    if (!System.IO.File.Exists(@"C:/Program Files/Unity/Editor/Unity.exe"))
+        throw new System.Exception("File not found: " + @"C:/Program Files/Unity/Editor/Unity.exe");
+    if (!System.IO.File.Exists(@"C:/Program Files/Unity/Editor/Data/Resources/PackageManager/Server/upm-win.exe"))
+        throw new System.Exception("File not found: " + @"C:/Program Files/Unity/Editor/Data/Resources/PackageManager/Server/upm-win.exe");
+}).OnError(HandleError);
+
 // Downloading UWP IL2CPP dependencies.
 Task ("Externals-Uwp-IL2CPP-Dependencies")
     .Does (() => {
