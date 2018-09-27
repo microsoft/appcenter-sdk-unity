@@ -25,6 +25,8 @@ import com.microsoft.appcenter.utils.AppCenterLog;
 import java.util.ArrayList;
 import java.util.List;
 
+import static com.microsoft.appcenter.loader.StartupType.SKIP_START;
+
 public class AppCenterLoader extends ContentProvider {
 
     private static final String CUSTOM_LOG_URL_KEY = "appcenter_custom_log_url";
@@ -41,6 +43,8 @@ public class AppCenterLoader extends ContentProvider {
     private static final String CUSTOM_INSTALL_URL_KEY = "appcenter_custom_install_url";
     private static final String USE_CRASHES_KEY = "appcenter_use_crashes";
     private static final String APP_SECRET_KEY = "appcenter_app_secret";
+    private static final String TRANSMISSION_TARGET_TOKEN_KEY = "appcenter_transmission_target_token";
+    private static final String STARTUP_TYPE_KEY = "appcenter_startup_type";
     private static final String TRUE_VALUE = "True";
     private static final String TAG = "AppCenterLoader";
 
@@ -50,6 +54,9 @@ public class AppCenterLoader extends ContentProvider {
     public boolean onCreate() {
         mContext = getApplicationContext();
         String appSecret = getStringResource(APP_SECRET_KEY);
+        String transmissionTargetToken = getStringResource(TRANSMISSION_TARGET_TOKEN_KEY);
+        int startupTypeInt = Integer.parseInt(getStringResource(STARTUP_TYPE_KEY));
+        StartupType startupType = StartupType.values()[startupTypeInt];
 
         /*
          * If app secret isn't found in resources, return immediately. It's possible that resources
@@ -102,12 +109,35 @@ public class AppCenterLoader extends ContentProvider {
                 AppCenter.setLogUrl(customLogUrl);
             }
         }
+        @SuppressWarnings("unchecked")
+        Class<? extends AppCenterService>[] classesArray = new Class[0];
         if (classes.size() > 0) {
-            @SuppressWarnings("unchecked")
-            Class<? extends AppCenterService>[] classesArray = classes.toArray(new Class[classes.size()]);
-            AppCenter.start((Application) mContext, appSecret, classesArray);
+            classesArray = classes.toArray(new Class[classes.size()]);
+        }
+        if (startupType == SKIP_START) {
+            return true;
+        }
+        String appIdArg = "";
+        switch (startupType) {
+            case APP_SECRET:
+                appIdArg = appSecret;
+                break;
+            case TARGET:
+                appIdArg = String.format("target=%s", transmissionTargetToken);
+                break;
+            case BOTH:
+                appIdArg = String.format("appsecret=%s;target=%s", appSecret, transmissionTargetToken);
+                break;
+            case NO_SECRET:
+                if (classesArray.length > 0) {
+                    AppCenter.start((Application) mContext, classesArray);
+                }
+                return true;
+        }
+        if (classesArray.length > 0) {
+            AppCenter.start((Application) mContext, appIdArg, classesArray);
         } else {
-            AppCenter.configure((Application) mContext, appSecret);
+            AppCenter.configure((Application) mContext, appIdArg);
         }
         return true;
     }

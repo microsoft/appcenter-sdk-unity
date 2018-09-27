@@ -26,14 +26,24 @@
 #import "../Distribute/DistributeDelegate.h"
 #endif
 
+enum StartupMode {
+  APPCENTER,
+  ONECOLLECTOR,
+  BOTH,
+  NONE,
+  SKIP
+};
+
 @implementation AppCenterStarter
 
 static NSString *const kMSAppSecret = @"appcenter-app-secret";
+static NSString *const kMSTargetToken = @"appcenter-transmission-target-token";
 static NSString *const kMSCustomLogUrl = @"custom-log-url";
 static NSString *const kMSCustomApiUrl = @"custom-api-url";
 static NSString *const kMSCustomInstallUrl = @"custom-install-url";
 
 static const int kMSLogLevel = 0/*LOG_LEVEL*/;
+static const int kMSStartupType = 0/*STARTUP_TYPE*/;
 
 + (void)load {
   [[NSNotificationCenter defaultCenter] addObserver:self
@@ -73,8 +83,27 @@ static const int kMSLogLevel = 0/*LOG_LEVEL*/;
 #ifdef APPCENTER_UNITY_USE_CUSTOM_LOG_URL
   [MSAppCenter setLogUrl:kMSCustomLogUrl];
 #endif
-
-  [MSAppCenter start:kMSAppSecret withServices:classes];
+  NSInteger startTarget = [kMSStartupType intValue];
+  switch (startTarget) {
+  case APPCENTER:
+    [MSAppCenter start:[NSString stringWithUTF8String:kMSAppSecret]
+          withServices:classes];
+    break;
+  case ONECOLLECTOR:
+    [MSAppCenter start:[NSString
+                           stringWithFormat:@"target=%@", kMSTargetToken]
+          withServices:classes];
+    break;
+  case BOTH:
+    [MSAppCenter start:[NSString stringWithFormat:@"appsecret=%s;target=%@",
+                                                  kMSAppSecret,
+                                                  kMSTargetToken]
+          withServices:classes];
+    break;
+  case NONE:
+    [MSAppCenter startWithServices:classes];
+    break;
+  }
 }
 
 @end
