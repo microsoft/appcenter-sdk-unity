@@ -288,6 +288,7 @@ Task("Test-Unity-Installed").Does(() => {
     }
 }).OnError(HandleError);
 
+// Install Unity Editor with .Net and IL2CPP support for UWP
 Task("Install-Unity-Windows").Does(() => {
     const string unityDownloadUrl = @"https://netstorage.unity3d.com/unity/2207421190e9/Windows64EditorInstaller/UnitySetup64-2018.2.9f1.exe";
     const string dotNetSupportDownloadUrl = @"https://netstorage.unity3d.com/unity/2207421190e9/TargetSupportInstaller/UnitySetup-UWP-.NET-Support-for-Editor-2018.2.9f1.exe";
