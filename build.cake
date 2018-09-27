@@ -278,10 +278,14 @@ Task("BuildAndroidContentProvider").Does(()=>
 }).OnError(HandleError);
 
 Task("Test-Unity-Installed").Does(() => {
-    if (!System.IO.File.Exists(@"C:/Program Files/Unity/Editor/Unity.exe"))
+    if (!System.IO.File.Exists(@"C:/Program Files/Unity/Editor/Unity.exe")) {
+        Error("File not found: " + @"C:/Program Files/Unity/Editor/Unity.exe");
         throw new System.Exception("File not found: " + @"C:/Program Files/Unity/Editor/Unity.exe");
-    if (!System.IO.File.Exists(@"C:/Program Files/Unity/Editor/Data/Resources/PackageManager/Server/upm-win.exe"))
+    }
+    if (!System.IO.File.Exists(@"C:/Program Files/Unity/Editor/Data/Resources/PackageManager/Server/upm-win.exe")) {
+        Error("File not found: " + @"C:/Program Files/Unity/Editor/Data/Resources/PackageManager/Server/upm-win.exe");
         throw new System.Exception("File not found: " + @"C:/Program Files/Unity/Editor/Data/Resources/PackageManager/Server/upm-win.exe");
+    }
 }).OnError(HandleError);
 
 // Downloading UWP IL2CPP dependencies.
@@ -524,7 +528,8 @@ void VerifyAndroidAppsBuild(string type, string projectPath)
 
 void VerifyWindowsAppsBuild(string type, string projectPath)
 {
-    VerifyAppsBuild(type, "WindowsStoreApps", projectPath,
+    // VerifyAppsBuild(type, "WindowsStoreApps", projectPath,
+    VerifyAppsBuild(type, "wsaplayer", projectPath,
     // new string[] {  "WsaNetXaml", "WsaIl2CPPXaml", "WsaNetD3D", "WsaIl2CPPD3D" },
     new string[] { "WsaIl2CPPD3D" },
     outputDirectory =>
