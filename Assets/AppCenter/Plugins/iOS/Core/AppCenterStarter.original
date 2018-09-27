@@ -95,7 +95,7 @@ static const int kMSStartupType = 0/*STARTUP_TYPE*/;
           withServices:classes];
     break;
   case BOTH:
-    [MSAppCenter start:[NSString stringWithFormat:@"appsecret=%s;target=%@",
+    [MSAppCenter start:[NSString stringWithFormat:@"appsecret=%@;target=%@",
                                                   kMSAppSecret,
                                                   kMSTargetToken]
           withServices:classes];
