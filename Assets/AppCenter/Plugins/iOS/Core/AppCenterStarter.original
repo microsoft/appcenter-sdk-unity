@@ -83,10 +83,10 @@ static const int kMSStartupType = 0/*STARTUP_TYPE*/;
 #ifdef APPCENTER_UNITY_USE_CUSTOM_LOG_URL
   [MSAppCenter setLogUrl:kMSCustomLogUrl];
 #endif
-  NSInteger startTarget = [kMSStartupType intValue];
+  NSInteger startTarget = kMSStartupType;
   switch (startTarget) {
   case APPCENTER:
-    [MSAppCenter start:[NSString stringWithUTF8String:kMSAppSecret]
+    [MSAppCenter start:kMSAppSecret
           withServices:classes];
     break;
   case ONECOLLECTOR:
