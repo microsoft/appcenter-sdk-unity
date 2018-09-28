@@ -56,10 +56,8 @@ static int ExecuteUnityCommand(string extraArgs, string projectPath = ".")
         logArgs = "-f " + unityLogFile;
     }
     int result = 0;
-    Statics.Context.Information("Starting process: " + unityPath + " " + unityArgs);
     using (var unityProcess = Statics.Context.StartAndReturnProcess(unityPath, new ProcessSettings{ Arguments = unityArgs }))
     {
-        Statics.Context.Information("Starting process: " + logExec + " " + logArgs);
         using (var logProcess = Statics.Context.StartAndReturnProcess(logExec, new ProcessSettings{ Arguments = logArgs, RedirectStandardError = true}))
         {
             unityProcess.WaitForExit();
