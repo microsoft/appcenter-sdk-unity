@@ -125,8 +125,8 @@ public class PuppetTransmission : MonoBehaviour
             Debug.Log("Transmission target is null.");
             return;
         }
+        OverrideProperties(transmissionTarget);
         var childTransmissionTarget = transmissionTarget.GetTransmissionTarget(ResolveChildToken());
-        OverrideProperties(childTransmissionTarget);
         Dictionary<string, string> properties = GetProperties();
         if (properties == null)
         {
