@@ -13,15 +13,15 @@ public class AppCenterBehaviorEditorAdvanced : Editor
     {
         // Load or create settings.
         var behaviour = (AppCenterBehaviorAdvanced) target;
-        if (behaviour.settingsAdvanced == null)
+        if (behaviour.SettingsAdvanced == null)
         {
-            behaviour.settingsAdvanced = AppCenterSettingsContext.SettingsInstanceAdvanced;
+            behaviour.SettingsAdvanced = AppCenterSettingsContext.SettingsInstanceAdvanced;
         }
         
         // Draw settings.
         if (settingsEditorAdvanced == null)
         {
-            settingsEditorAdvanced = CreateEditor(behaviour.settingsAdvanced);
+            settingsEditorAdvanced = CreateEditor(behaviour.SettingsAdvanced);
         }
         settingsEditorAdvanced.OnInspectorGUI();
     }

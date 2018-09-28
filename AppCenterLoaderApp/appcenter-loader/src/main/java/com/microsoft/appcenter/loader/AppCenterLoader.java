@@ -109,13 +109,13 @@ public class AppCenterLoader extends ContentProvider {
                 AppCenter.setLogUrl(customLogUrl);
             }
         }
+        if (startupType == SKIP_START) {
+            return true;
+        }
         @SuppressWarnings("unchecked")
         Class<? extends AppCenterService>[] classesArray = new Class[0];
         if (classes.size() > 0) {
             classesArray = classes.toArray(new Class[classes.size()]);
-        }
-        if (startupType == SKIP_START) {
-            return true;
         }
         String appIdArg = "";
         switch (startupType) {

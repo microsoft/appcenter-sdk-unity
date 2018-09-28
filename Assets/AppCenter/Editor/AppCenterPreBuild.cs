@@ -36,10 +36,6 @@ public class AppCenterPreBuild : IPreprocessBuild
     {
         var settings = AppCenterSettingsContext.SettingsInstance;
         var advancedSettings = AppCenterSettingsContext.SettingsInstanceAdvanced;
-        if (settings == null)
-        {
-            return;
-        }
         var settingsMaker = new AppCenterSettingsMakerAndroid();
         settingsMaker.SetAppSecret(settings.AndroidAppSecret);
         if (settings.CustomLogUrl.UseCustomUrl)
@@ -84,10 +80,6 @@ public class AppCenterPreBuild : IPreprocessBuild
     {
         var settings = AppCenterSettingsContext.SettingsInstance;
         var advancedSettings = AppCenterSettingsContext.SettingsInstanceAdvanced;
-        if (settings == null)
-        {
-            return;
-        }
         var settingsMaker = new AppCenterSettingsMakerIos();
         if (settings.CustomLogUrl.UseCustomUrl)
         {

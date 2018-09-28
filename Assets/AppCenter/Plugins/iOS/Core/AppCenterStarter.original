@@ -86,12 +86,11 @@ static const int kMSStartupType = 0/*STARTUP_TYPE*/;
   NSInteger startTarget = kMSStartupType;
   switch (startTarget) {
     case APPCENTER:
-      [MSAppCenter start:kMSAppSecret
-            withServices:classes];
+      [MSAppCenter start:kMSAppSecret withServices:classes];
       break;
     case ONECOLLECTOR:
-      [MSAppCenter start:[NSString
-                             stringWithFormat:@"target=%@", kMSTargetToken]
+      [MSAppCenter start:[NSString stringWithFormat:@"target=%@", 
+                                                    kMSTargetToken]
             withServices:classes];
       break;
     case BOTH:
