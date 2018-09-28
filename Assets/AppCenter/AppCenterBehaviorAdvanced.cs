@@ -41,16 +41,9 @@ public class AppCenterBehaviorAdvanced : MonoBehaviour
             Debug.LogError("App Center advanced instance isn't configured!");
             return;
         }
-        StartAppCenter();
-
         if (Started != null)
         {
             Started.Invoke();
         }
     }
-
-    private void StartAppCenter()
-    {
-    }
-    
 }
