@@ -3,7 +3,9 @@
 // Licensed under the MIT license.
 
 #if UNITY_ANDROID && !UNITY_EDITOR
+using Microsoft.AppCenter.Unity.Internal.Utility;
 using System;
+using System.Collections.Generic;
 using UnityEngine;
 
 namespace Microsoft.AppCenter.Unity.Analytics.Internal
@@ -35,13 +37,9 @@ namespace Microsoft.AppCenter.Unity.Analytics.Internal
             _analytics.CallStatic("trackEvent", eventName);
         }
 
-        public static void TrackEventWithProperties(string eventName, string[] keys, string[] values, int count)
+        public static void TrackEventWithProperties(string eventName, IDictionary<string, string> properties)
         {
-            var properties = new AndroidJavaObject("java.util.HashMap");
-            for (int i = 0; i < count; ++i)
-            {
-                properties.Call<AndroidJavaObject>("put", keys[i], values[i]);
-            }
+            var androidProperties = JavaStringMapHelper.ConvertToJava(properties);
             _analytics.CallStatic("trackEvent", eventName, properties);
         }
 
