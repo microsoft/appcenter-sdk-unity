@@ -23,7 +23,7 @@ namespace Microsoft.AppCenter.Unity
 
         /// <summary>
         /// Events go to OneCollector, crashes go to AppCenter. 
-        /// It maps to AppCenter.start(“target={oneCollectorToken};appsecret={appSecret}“, modules).
+        /// It maps to AppCenter.start(“target={oneCollectorToken};appsecret={appSecret}“, modules).
         /// </summary>
         Both = 2,
 
