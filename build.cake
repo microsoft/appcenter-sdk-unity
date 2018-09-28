@@ -548,7 +548,11 @@ void VerifyWindowsAppsBuild(string type, string projectPath)
     // new string[] { "WsaIl2CPPD3D" },
     outputDirectory =>
     {
-        var solutionFilePath = GetFiles(outputDirectory + "/*/*.sln").Single();
+        Statics.Context.Information("Verifying app build at directory: " + outputDirectory);
+        var slnFiles = GetFiles(outputDirectory + "/*/*.sln");
+        if (slnFiles.Count() == 0)
+            throw new Exception("No .sln files found in the following directory and all it's subdirectories: " + outputDirectory);
+        var solutionFilePath = slnFiles.Single();
         Statics.Context.Information("Attempting to build '" + solutionFilePath.ToString() + "'...");
         Statics.Context.MSBuild(solutionFilePath.ToString(), c => c
         .SetConfiguration("Master")
