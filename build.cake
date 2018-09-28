@@ -544,7 +544,8 @@ void VerifyAndroidAppsBuild(string type, string projectPath)
 void VerifyWindowsAppsBuild(string type, string projectPath)
 {
     VerifyAppsBuild(type, "wsaplayer", projectPath,
-    new string[] { "WsaNetXaml", "WsaIl2CPPXaml", "WsaNetD3D", "WsaIl2CPPD3D" },
+    // new string[] { "WsaNetXaml", "WsaIl2CPPXaml", "WsaNetD3D", "WsaIl2CPPD3D" },
+    new string[] { "WsaIl2CPPXaml", "WsaIl2CPPD3D" },
     // new string[] { "WsaIl2CPPD3D" },
     outputDirectory =>
     {
