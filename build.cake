@@ -277,17 +277,6 @@ Task("BuildAndroidContentProvider").Does(()=>
     MoveFileToDirectory(aarSource, aarDestination);
 }).OnError(HandleError);
 
-Task("Test-Unity-Installed").Does(() => {
-    if (!System.IO.File.Exists(@"C:/Program Files/Unity/Editor/Unity.exe")) {
-        Error("File not found: " + @"C:/Program Files/Unity/Editor/Unity.exe");
-        throw new System.Exception("File not found: " + @"C:/Program Files/Unity/Editor/Unity.exe");
-    }
-    if (!System.IO.File.Exists(@"C:/Program Files/Unity/Editor/Data/Resources/PackageManager/Server/upm-win.exe")) {
-        Error("File not found: " + @"C:/Program Files/Unity/Editor/Data/Resources/PackageManager/Server/upm-win.exe");
-        throw new System.Exception("File not found: " + @"C:/Program Files/Unity/Editor/Data/Resources/PackageManager/Server/upm-win.exe");
-    }
-}).OnError(HandleError);
-
 // Install Unity Editor with .Net and IL2CPP support for UWP
 Task("Install-Unity-Windows").Does(() => {
     const string unityDownloadUrl = @"https://netstorage.unity3d.com/unity/2207421190e9/Windows64EditorInstaller/UnitySetup64-2018.2.9f1.exe";
