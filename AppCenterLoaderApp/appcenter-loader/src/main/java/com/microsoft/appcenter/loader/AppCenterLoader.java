@@ -89,8 +89,7 @@ public class AppCenterLoader extends ContentProvider {
             isModuleAvailable("com.microsoft.appcenter.push.Push", "Push")) {
             Push.setListener(new UnityAppCenterPushDelegate());
             classes.add(Push.class);
-            //noinspection deprecation
-            //Push.setSenderId(getStringResource(SENDER_ID_KEY));
+            //Push.setSenderId(getStringResource(SENDER_ID_KEY)); // deprecated method
             if (isTrueValue(getStringResource(ENABLE_FIREBASE_ANALYTICS_KEY))) {
                 Push.enableFirebaseAnalytics(mContext);
             }
