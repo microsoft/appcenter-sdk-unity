@@ -93,7 +93,7 @@ public class PuppetTransmission : MonoBehaviour
         yield return transmissionTarget.SetEnabledAsync(enabled);
         var isEnabled = transmissionTarget.IsEnabledAsync();
         yield return isEnabled;
-        TransmissionEnabled.isOn = isEnabled.Result;        
+        TransmissionEnabled.isOn = isEnabled.Result;
     }
 
     private IEnumerator SetChildTransmissionEnabledCoroutine(bool enabled)
@@ -108,7 +108,7 @@ public class PuppetTransmission : MonoBehaviour
         yield return childTransmissionTarget.SetEnabledAsync(enabled);
         var isEnabled = childTransmissionTarget.IsEnabledAsync();
         yield return isEnabled;
-        ChildTransmissionEnabled.isOn = isEnabled.Result;        
+        ChildTransmissionEnabled.isOn = isEnabled.Result;
     }
 
     public void AddProperty()
