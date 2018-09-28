@@ -9,7 +9,7 @@ public class AppCenterSettingsContext : ScriptableObject
     {
         get
         {
-            // No need to lock because this can only be accessed from the main thread
+            // No need to lock because this can only be accessed from the main thread.
             var instance = AssetDatabase.LoadAssetAtPath<AppCenterSettings>(SettingsPath);
             if (instance == null)
             {
@@ -25,7 +25,7 @@ public class AppCenterSettingsContext : ScriptableObject
     {
         get
         {
-            // No need to lock because this can only be accessed from the main thread
+            // No need to lock because this can only be accessed from the main thread.
             var instance = AssetDatabase.LoadAssetAtPath<AppCenterSettingsAdvanced>(AdvancedSettingsPath);
             if (instance == null)
             {

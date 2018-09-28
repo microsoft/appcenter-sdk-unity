@@ -88,7 +88,6 @@ public class PuppetTransmission : MonoBehaviour
         if (transmissionTarget == null)
         {
             Debug.Log("Transmission target is null.");
-            yield return null;
         }
         else
         {
@@ -105,7 +104,6 @@ public class PuppetTransmission : MonoBehaviour
         if (transmissionTarget == null)
         {
             Debug.Log("Transmission target is null.");
-            yield return null;
         }
         else
         {

@@ -1,4 +1,4 @@
-﻿// Copyright (c) Microsoft Corporation. All rights reserved.
+// Copyright (c) Microsoft Corporation. All rights reserved.
 //
 // Licensed under the MIT license.
 
@@ -16,20 +16,20 @@ public class AppCenterBehavior : MonoBehaviour
     public static event Action InitializedAppCenterAndServices;
     public static event Action Started;
 
-    private static AppCenterBehavior instance;
+    private static AppCenterBehavior _instance;
 
     public AppCenterSettings settings;
 
     private void Awake()
     {
         // Make sure that App Center have only one instance.
-        if (instance != null)
+        if (_instance != null)
         {
             Debug.LogError("App Center should have only one instance!");
             DestroyImmediate(gameObject);
             return;
         }
-        instance = this;
+        _instance = this;
         DontDestroyOnLoad(gameObject);
     }
 
