@@ -10,7 +10,7 @@ namespace Microsoft.AppCenter.Unity
     public enum StartupType
     {
         /// <summary>
-        /// The app starts with AppCenter.start() SDK call using an appSecret that is targeting AppCenter. 
+        /// The app starts with SDK using an appSecret that is targeting AppCenter. 
         /// If you send events in the app it will thus go to App Center portal. 
         /// </summary>
         AppCenter = 0,
@@ -32,7 +32,7 @@ namespace Microsoft.AppCenter.Unity
         NoSecret = 3,
 
         /// <summary>
-        /// Don’t start the SDK: like None, except the SDK is not even started when launching the application. 
+        /// Don’t start the SDK: like NoSecret, except the SDK is not even started when launching the application. 
         /// All modules will appear disabled.
         /// </summary>
         Skip = 4
