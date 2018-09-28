@@ -57,13 +57,9 @@ static int ExecuteUnityCommand(string extraArgs, string projectPath = ".")
     }
     int result = 0;
     Statics.Context.Information("Starting process: " + unityPath + " " + unityArgs);
-    if (!System.IO.File.Exists(unityPath))
-        Statics.Context.Error("File not found: " + unityPath);
     using (var unityProcess = Statics.Context.StartAndReturnProcess(unityPath, new ProcessSettings{ Arguments = unityArgs }))
     {
         Statics.Context.Information("Starting process: " + logExec + " " + logArgs);
-        if (!System.IO.File.Exists(logExec))
-            Statics.Context.Error("File not found: " + logExec);
         using (var logProcess = Statics.Context.StartAndReturnProcess(logExec, new ProcessSettings{ Arguments = logArgs, RedirectStandardError = true}))
         {
             unityProcess.WaitForExit();
