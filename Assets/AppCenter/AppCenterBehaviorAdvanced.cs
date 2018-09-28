@@ -12,22 +12,10 @@ public class AppCenterBehaviorAdvanced : MonoBehaviour
 
     private void Awake()
     {
-        // Make sure that App Center have only one instance.
+        // Make sure that App Center have the default behavior attached.
         if (gameObject.GetComponent<AppCenterBehavior>() == null)
         {
             Debug.LogError("App Center should have the AppCenterBehavior instance attached to the game object!");
-            return;
-        }
-        DontDestroyOnLoad(gameObject);
-    }
-
-    private void Start()
-    {
-        // Initialize App Center.
-        if (SettingsAdvanced == null)
-        {
-            Debug.LogError("App Center advanced instance isn't configured!");
-            return;
         }
     }
 }

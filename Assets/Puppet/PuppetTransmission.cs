@@ -90,13 +90,10 @@ public class PuppetTransmission : MonoBehaviour
             Debug.Log("Transmission target is null.");
             yield break;
         }
-        else
-        {
-            yield return transmissionTarget.SetEnabledAsync(enabled);
-            var isEnabled = transmissionTarget.IsEnabledAsync();
-            yield return isEnabled;
-            TransmissionEnabled.isOn = isEnabled.Result;
-        }
+        yield return transmissionTarget.SetEnabledAsync(enabled);
+        var isEnabled = transmissionTarget.IsEnabledAsync();
+        yield return isEnabled;
+        TransmissionEnabled.isOn = isEnabled.Result;        
     }
 
     private IEnumerator SetChildTransmissionEnabledCoroutine(bool enabled)
@@ -107,14 +104,11 @@ public class PuppetTransmission : MonoBehaviour
             Debug.Log("Transmission target is null.");
             yield break;
         }
-        else
-        {
-            var childTransmissionTarget = transmissionTarget.GetTransmissionTarget(ResolveChildToken());
-            yield return childTransmissionTarget.SetEnabledAsync(enabled);
-            var isEnabled = childTransmissionTarget.IsEnabledAsync();
-            yield return isEnabled;
-            ChildTransmissionEnabled.isOn = isEnabled.Result;
-        }
+        var childTransmissionTarget = transmissionTarget.GetTransmissionTarget(ResolveChildToken());
+        yield return childTransmissionTarget.SetEnabledAsync(enabled);
+        var isEnabled = childTransmissionTarget.IsEnabledAsync();
+        yield return isEnabled;
+        ChildTransmissionEnabled.isOn = isEnabled.Result;        
     }
 
     public void AddProperty()

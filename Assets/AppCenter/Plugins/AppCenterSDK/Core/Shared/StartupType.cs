@@ -16,26 +16,24 @@ namespace Microsoft.AppCenter.Unity
         AppCenter = 0,
 
         /// <summary>
-        /// Only Analytics is usable, other modules appear disabled. 
-        /// Which maps to calling AppCenter.start(“target={oneCollectorToken}“, modules).
+        /// Only Analytics is usable, other modules appear disabled.
         /// </summary>
         OneCollector = 1,
 
         /// <summary>
         /// Events go to OneCollector, crashes go to AppCenter. 
-        /// It maps to AppCenter.start(“target={oneCollectorToken};appsecret={appSecret}“, modules).
         /// </summary>
         Both = 2,
 
         /// <summary>
         /// Sending an event does nothing and you have to use alternate transmission targets. 
-        /// Only the Analytics module appears enabled. It maps to AppCenter.start(modules).
+        /// Only the Analytics module appears enabled.
         /// </summary>
         NoSecret = 3,
 
         /// <summary>
         /// Don’t start the SDK: like None, except the SDK is not even started when launching the application. 
-        /// All modules will appear disabled. User have to call AppCenter.startFromLibrary(Analytics.class) to start tracking events.
+        /// All modules will appear disabled.
         /// </summary>
         Skip = 4
     }
