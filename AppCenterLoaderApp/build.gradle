@@ -20,6 +20,14 @@ allprojects {
     }
 }
 
+allprojects {
+    gradle.projectsEvaluated {
+        tasks.withType(JavaCompile) {
+            options.compilerArgs << "-Xlint:deprecation"
+        }
+    }
+}
+
 task clean(type: Delete) {
     delete rootProject.buildDir
 }
