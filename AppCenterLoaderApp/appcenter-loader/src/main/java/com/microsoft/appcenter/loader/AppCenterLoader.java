@@ -90,7 +90,7 @@ public class AppCenterLoader extends ContentProvider {
             Push.setListener(new UnityAppCenterPushDelegate());
             classes.add(Push.class);
             //noinspection deprecation
-            Push.setSenderId(getStringResource(SENDER_ID_KEY));
+            //Push.setSenderId(getStringResource(SENDER_ID_KEY));
             if (isTrueValue(getStringResource(ENABLE_FIREBASE_ANALYTICS_KEY))) {
                 Push.enableFirebaseAnalytics(mContext);
             }
