@@ -10,7 +10,7 @@ namespace Microsoft.AppCenter.Unity
     public enum StartupType
     {
         /// <summary>
-        /// The app starts with SDK call using an appSecret that is targeting AppCenter. 
+        /// The app starts with SDK using an appSecret that is targeting AppCenter. 
         /// If you send events in the app it will thus go to App Center portal. 
         /// </summary>
         AppCenter = 0,
