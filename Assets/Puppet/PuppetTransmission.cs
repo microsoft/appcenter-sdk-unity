@@ -1,4 +1,4 @@
-﻿// Copyright (c) Microsoft Corporation. All rights reserved.
+// Copyright (c) Microsoft Corporation. All rights reserved.
 //
 // Licensed under the MIT license.
 
@@ -28,7 +28,15 @@ public class PuppetTransmission : MonoBehaviour
 
     private void OnEnable()
     {
+        TransmissionTarget.text = _transmissionTargetToken;
+        ChildTransmissionTarget.text = _childTransmissionTargetToken;
         var transmissionTarget = Analytics.GetTransmissionTarget(ResolveToken());
+        if (transmissionTarget == null)
+        {
+            TransmissionEnabled.isOn = false;
+            ChildTransmissionEnabled.isOn = false;
+            return;
+        }
         transmissionTarget.IsEnabledAsync().ContinueWith(task =>
         {
             TransmissionEnabled.isOn = task.Result;
@@ -38,8 +46,6 @@ public class PuppetTransmission : MonoBehaviour
         {
             ChildTransmissionEnabled.isOn = task.Result;
         });
-        TransmissionTarget.text = _transmissionTargetToken;
-        ChildTransmissionTarget.text = _childTransmissionTargetToken;
     }
 
     private string ResolveToken() 
@@ -79,6 +85,11 @@ public class PuppetTransmission : MonoBehaviour
     private IEnumerator SetTransmissionEnabledCoroutine(bool enabled)
     {
         var transmissionTarget = Analytics.GetTransmissionTarget(ResolveToken());
+        if (transmissionTarget == null)
+        {
+            Debug.Log("Transmission target is null.");
+            yield break;
+        }
         yield return transmissionTarget.SetEnabledAsync(enabled);
         var isEnabled = transmissionTarget.IsEnabledAsync();
         yield return isEnabled;
@@ -88,6 +99,11 @@ public class PuppetTransmission : MonoBehaviour
     private IEnumerator SetChildTransmissionEnabledCoroutine(bool enabled)
     {
         var transmissionTarget = Analytics.GetTransmissionTarget(ResolveToken());
+        if (transmissionTarget == null)
+        {
+            Debug.Log("Transmission target is null.");
+            yield break;
+        }
         var childTransmissionTarget = transmissionTarget.GetTransmissionTarget(ResolveChildToken());
         yield return childTransmissionTarget.SetEnabledAsync(enabled);
         var isEnabled = childTransmissionTarget.IsEnabledAsync();
@@ -104,6 +120,11 @@ public class PuppetTransmission : MonoBehaviour
     public void TrackEventChildTransmission()
     {
         var transmissionTarget = Analytics.GetTransmissionTarget(ResolveToken());
+        if (transmissionTarget == null)
+        {
+            Debug.Log("Transmission target is null.");
+            return;
+        }
         var childTransmissionTarget = transmissionTarget.GetTransmissionTarget(ResolveChildToken());
         OverrideProperties(childTransmissionTarget);
         Dictionary<string, string> properties = GetProperties();
@@ -139,6 +160,11 @@ public class PuppetTransmission : MonoBehaviour
     public void TrackEventTransmission() 
     { 
         var transmissionTarget = Analytics.GetTransmissionTarget(ResolveToken());
+        if (transmissionTarget == null)
+        {
+            Debug.Log("Transmission target is null.");
+            return;
+        }
         OverrideProperties(transmissionTarget);
         Dictionary<string, string> properties = GetProperties();
         if (properties == null) 

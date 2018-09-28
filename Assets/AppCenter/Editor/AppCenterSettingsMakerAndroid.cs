@@ -10,9 +10,11 @@ public class AppCenterSettingsMakerAndroid
     private const string AppCenterResourcesFolderPath = "Assets/Plugins/Android/res/values/";
     private const string AppCenterResourcesPath = AppCenterResourcesFolderPath + "appcenter-settings.xml";
     private const string AppSecretKey = "appcenter_app_secret";
+    private const string TransmissionTargetTokenKey = "appcenter_transmission_target_token";
     private const string CustomLogUrlKey = "appcenter_custom_log_url";
     private const string UseCustomLogUrlKey = "appcenter_use_custom_log_url";
     private const string InitialLogLevelKey = "appcenter_initial_log_level";
+    private const string StartupTypeKey = "appcenter_startup_type";
     private const string UseCrashesKey = "appcenter_use_crashes";
     private const string UsePushKey = "appcenter_use_push";
     private const string SenderIdKey = "appcenter_sender_id";
@@ -39,6 +41,11 @@ public class AppCenterSettingsMakerAndroid
         _resourceValues[InitialLogLevelKey] = logLevel.ToString();
     }
 
+    public void SetStartupType(int startupType)
+    {
+        _resourceValues[StartupTypeKey] = startupType.ToString();
+    }
+
     public void SetLogUrl(string logUrl)
     {
         _resourceValues[CustomLogUrlKey] = logUrl;
@@ -48,6 +55,11 @@ public class AppCenterSettingsMakerAndroid
     public void SetAppSecret(string appSecret)
     {
         _resourceValues[AppSecretKey] = appSecret;
+    }
+
+    public void SetTransmissionTargetToken(string transmissionTargetToken)
+    {
+        _resourceValues[TransmissionTargetTokenKey] = transmissionTargetToken;
     }
 
     public void SetSenderId(string senderId)
