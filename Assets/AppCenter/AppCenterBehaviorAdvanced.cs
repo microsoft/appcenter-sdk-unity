@@ -19,7 +19,7 @@ public class AppCenterBehaviorAdvanced : MonoBehaviour
         // Make sure that App Center have only one instance.
         if (gameObject.GetComponent("AppCenterBehavior") == null)
         {
-            Debug.LogError("App Center should have the AppCenterBahvior instance attached to the game object!");
+            Debug.LogError("App Center should have the AppCenterBehavior instance attached to the game object!");
             DestroyImmediate(gameObject);
             return;
         }
