@@ -612,7 +612,7 @@ Task("RegisterUnity").Does(()=>
 
     // This will produce an error, but that's okay because the project "noproject" is used so that the
     // root isn't opened by unity, which could potentially remove important .meta files.
-    ExecuteUnityCommand($"-serial {serialNumber} -username {username} -password {password}", "AppCenterDemoApp");
+    ExecuteUnityCommand($"-serial {serialNumber} -username {username} -password {password}", "noproject");
 }).OnError(HandleError);
 
 Task("UnregisterUnity").Does(()=>
