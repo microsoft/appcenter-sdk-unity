@@ -52,7 +52,12 @@ namespace Microsoft.AppCenter.Unity.Analytics
 
         public TransmissionTarget GetTransmissionTarget(string childTransmissionTargetToken)
         {
-            return new TransmissionTarget(TransmissionTargetInternal.GetTransmissionTarget(_rawObject, childTransmissionTargetToken));
+            var internalObject = TransmissionTargetInternal.GetTransmissionTarget(_rawObject, childTransmissionTargetToken);
+            if (internalObject == null)
+            {
+                return null;
+            }
+            return new TransmissionTarget(internalObject);
         }
 
         public PropertyConfigurator GetPropertyConfigurator()

@@ -13,15 +13,15 @@ public class AppCenterBehaviorEditor : Editor
     {
         // Load or create settings.
         var behaviour = (AppCenterBehavior) target;
-        if (behaviour.settings == null)
+        if (behaviour.Settings == null)
         {
-            behaviour.settings = AppCenterSettingsContext.SettingsInstance;
+            behaviour.Settings = AppCenterSettingsContext.SettingsInstance;
         }
         
         // Draw settings.
         if (settingsEditor == null)
         {
-            settingsEditor = CreateEditor(behaviour.settings);
+            settingsEditor = CreateEditor(behaviour.Settings);
         }
         settingsEditor.OnInspectorGUI();
     }

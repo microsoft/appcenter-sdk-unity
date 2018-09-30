@@ -50,7 +50,12 @@ namespace Microsoft.AppCenter.Unity.Analytics
 
         public static TransmissionTarget GetTransmissionTarget(string transmissionTargetToken)
         {
-            return new TransmissionTarget(AnalyticsInternal.GetTransmissionTarget(transmissionTargetToken));
+            var internalObject = AnalyticsInternal.GetTransmissionTarget(transmissionTargetToken);
+            if (internalObject == null)
+            {
+                return null;
+            }
+            return new TransmissionTarget(internalObject);
         }
     }
 }

@@ -1,4 +1,4 @@
-﻿// Copyright (c) Microsoft Corporation. All rights reserved.
+// Copyright (c) Microsoft Corporation. All rights reserved.
 //
 // Licensed under the MIT license.
 
@@ -16,27 +16,27 @@ public class AppCenterBehavior : MonoBehaviour
     public static event Action InitializedAppCenterAndServices;
     public static event Action Started;
 
-    private static AppCenterBehavior instance;
+    private static AppCenterBehavior _instance;
 
-    public AppCenterSettings settings;
+    public AppCenterSettings Settings;
 
     private void Awake()
     {
         // Make sure that App Center have only one instance.
-        if (instance != null)
+        if (_instance != null)
         {
             Debug.LogError("App Center should have only one instance!");
             DestroyImmediate(gameObject);
             return;
         }
-        instance = this;
+        _instance = this;
         DontDestroyOnLoad(gameObject);
     }
 
     private void Start()
     {
         // Initialize App Center.
-        if (settings == null)
+        if (Settings == null)
         {
             Debug.LogError("App Center isn't configured!");
             return;
@@ -51,7 +51,7 @@ public class AppCenterBehavior : MonoBehaviour
 
     private void StartAppCenter()
     {
-        var services = settings.Services;
+        var services = Settings.Services;
         PrepareEventHandlers(services);
         InvokeInitializingServices();
         AppCenter.SetWrapperSdk();
@@ -68,12 +68,12 @@ public class AppCenterBehavior : MonoBehaviour
 
         // On iOS and Android App Center starting automatically.
 #if UNITY_EDITOR || (!UNITY_IOS && !UNITY_ANDROID)
-        AppCenter.LogLevel = settings.InitialLogLevel;
-        if (settings.CustomLogUrl.UseCustomUrl)
+        AppCenter.LogLevel = Settings.InitialLogLevel;
+        if (Settings.CustomLogUrl.UseCustomUrl)
         {
-            AppCenter.SetLogUrl(settings.CustomLogUrl.Url);
+            AppCenter.SetLogUrl(Settings.CustomLogUrl.Url);
         }
-        var appSecret = AppCenter.GetSecretForPlatform(settings.AppSecret);
+        var appSecret = AppCenter.GetSecretForPlatform(Settings.AppSecret);
         var nativeServiceTypes = AppCenter.ServicesToNativeTypes(services);
         AppCenterInternal.Start(appSecret, nativeServiceTypes, services.Length);
 #endif
