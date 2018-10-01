@@ -546,7 +546,7 @@ void VerifyAndroidAppsBuild(string type, string projectPath)
 void VerifyWindowsAppsBuild(string type, string projectPath)
 {
     VerifyAppsBuild(type, "wsaplayer", projectPath,
-    new string[] { "WsaIl2CPPD3D", "WsaIl2CPPXaml" },
+    new string[] { "WsaIl2CPPD3D" },
     outputDirectory =>
     {
         Statics.Context.Information("Verifying app build at directory: " + outputDirectory);
