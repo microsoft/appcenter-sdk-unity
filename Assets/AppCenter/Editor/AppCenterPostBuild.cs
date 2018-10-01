@@ -82,7 +82,7 @@ public class AppCenterPostBuild : IPostprocessBuild
     public static void AddHelperCodeToUWPProject(string pathToBuiltProject)
     {
         var settings = AppCenterSettingsContext.SettingsInstance;
-        if (!settings.UsePush)
+        if (!settings.UsePush || AppCenterSettings.Push == null)
         {
             return;
         }
