@@ -3,6 +3,8 @@
 // Licensed under the MIT license.
 
 #if UNITY_ANDROID
+using System;
+using System.Linq;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -26,10 +28,13 @@ namespace Microsoft.AppCenter.Unity.Internal.Utility
 
         public static AndroidJavaObject ConvertToJava(IDictionary<string, string> properties)
         {
+            string[] keys = properties.Keys.ToArray();
+            string[] values = properties.Values.ToArray();
+            int count = properties.Count;
             var javaMap = new AndroidJavaObject("java.util.HashMap");
-            foreach (var pair in properties)
+            for (int i = 0; i < count; ++i)
             {
-                javaMap.Call<AndroidJavaObject>("put", pair.Key, pair.Value);
+                javaMap.Call<AndroidJavaObject>("put", keys[i], values[i]);
             }
             return javaMap;
         }

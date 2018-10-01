@@ -6,6 +6,8 @@
         <file path="Assets/AppCenter/Properties" />
         <file path="Assets/AppCenter/AppCenterBehavior.cs" />
         <file path="Assets/AppCenter/AppCenterSettings.cs" />
+        <file path="Assets/AppCenter/AppCenterBehaviorAdvanced.cs" />
+        <file path="Assets/AppCenter/AppCenterSettingsAdvanced.cs" />
 
         <!-- Android files -->
         <file path="Assets/AppCenter/Plugins/Android/Utility" />
