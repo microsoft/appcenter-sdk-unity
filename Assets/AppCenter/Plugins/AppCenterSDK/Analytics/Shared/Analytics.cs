@@ -34,7 +34,7 @@ namespace Microsoft.AppCenter.Unity.Analytics
             }
             else
             {
-                AnalyticsInternal.TrackEventWithProperties(eventName, properties.Keys.ToArray(), properties.Values.ToArray(), properties.Count);
+                AnalyticsInternal.TrackEventWithProperties(eventName, properties);
             }
         }
 

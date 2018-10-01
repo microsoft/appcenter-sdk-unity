@@ -4,6 +4,7 @@
 
 #if (!UNITY_IOS && !UNITY_ANDROID && !UNITY_WSA_10_0) || UNITY_EDITOR
 using System;
+using System.Collections.Generic;
 
 namespace Microsoft.AppCenter.Unity.Analytics.Internal
 {
@@ -36,7 +37,7 @@ namespace Microsoft.AppCenter.Unity.Analytics.Internal
         {
         }
 
-        public static void TrackEventWithProperties(string eventName, string[] keys, string[] values, int count)
+        public static void TrackEventWithProperties(string eventName, IDictionary<string, string> properties)
         {
         }
 

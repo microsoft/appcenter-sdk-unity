@@ -4,6 +4,7 @@
 
 #if UNITY_ANDROID && !UNITY_EDITOR
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 using Microsoft.AppCenter.Unity.Analytics.Internal;
 using Microsoft.AppCenter.Unity.Internal.Utility;
@@ -19,8 +20,8 @@ namespace Microsoft.AppCenter.Unity.Analytics
 
         public static void TrackEventWithProperties(AndroidJavaObject transmissionTarget, string eventName, IDictionary<string, string> properties)
         {
-            var propertiesMap = JavaStringMapHelper.ConvertToJava(properties);
-            transmissionTarget.Call("trackEvent", eventName, properties);
+            var androidProperties = JavaStringMapHelper.ConvertToJava(properties);
+            transmissionTarget.Call("trackEvent", eventName, androidProperties);
         }
 
         public static AppCenterTask SetEnabledAsync(AndroidJavaObject transmissionTarget, bool enabled)
