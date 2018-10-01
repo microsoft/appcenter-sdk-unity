@@ -296,13 +296,6 @@ Task("Install-Unity-Windows").Does(() => {
     result = StartProcess("./UnityIl2CppSupport.exe", " /S");
     if (result != 0)
         throw new Exception("Failed to install IL2CPP support");
-
-    // Information("Downloading .Net support...");
-    // DownloadFile(dotNetSupportDownloadUrl, "./UnityNetSupport.exe");
-    // Information("Installing .Net support...");
-    // result = StartProcess("./UnityNetSupport.exe", " /S");
-    // if (result != 0)
-    //     throw new Exception("Failed to install .Net support");
 }).OnError(HandleError);
 
 // Downloading UWP IL2CPP dependencies.
