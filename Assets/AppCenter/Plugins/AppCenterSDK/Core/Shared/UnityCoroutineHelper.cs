@@ -2,14 +2,15 @@
 //
 // Licensed under the MIT license.
 
-#if UNITY_WSA_10_0
 using System;
 using System.Collections;
 using UnityEngine;
 
 namespace Microsoft.AppCenter.Unity.Internal.Utils
 {
+#if UNITY_WSA_10_0
     using WSAApplication = UnityEngine.WSA.Application;
+#endif
 
     public class UnityCoroutineHelper : MonoBehaviour
     {
@@ -31,6 +32,7 @@ namespace Microsoft.AppCenter.Unity.Internal.Utils
             }
         }
 
+#if UNITY_WSA_10_0
         public static void StartCoroutine(Func<IEnumerator> coroutine)
         {
             if (WSAApplication.RunningOnAppThread())
@@ -45,6 +47,11 @@ namespace Microsoft.AppCenter.Unity.Internal.Utils
                 }, false);
             }
         }
+#else
+        public static void StartCoroutine(Func<IEnumerator> coroutine)
+        {
+            Instance.StartCoroutine(coroutine());
+        }
+#endif
     }
 }
-#endif

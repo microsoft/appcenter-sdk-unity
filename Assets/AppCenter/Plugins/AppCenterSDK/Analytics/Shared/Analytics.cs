@@ -34,7 +34,7 @@ namespace Microsoft.AppCenter.Unity.Analytics
             }
             else
             {
-                AnalyticsInternal.TrackEventWithProperties(eventName, properties.Keys.ToArray(), properties.Values.ToArray(), properties.Count);
+                AnalyticsInternal.TrackEventWithProperties(eventName, properties);
             }
         }
 
@@ -46,6 +46,16 @@ namespace Microsoft.AppCenter.Unity.Analytics
         public static AppCenterTask SetEnabledAsync(bool enabled)
         {
             return AnalyticsInternal.SetEnabledAsync(enabled);
+        }
+
+        public static TransmissionTarget GetTransmissionTarget(string transmissionTargetToken)
+        {
+            var internalObject = AnalyticsInternal.GetTransmissionTarget(transmissionTargetToken);
+            if (internalObject == null)
+            {
+                return null;
+            }
+            return new TransmissionTarget(internalObject);
         }
     }
 }

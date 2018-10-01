@@ -35,6 +35,10 @@ namespace Microsoft.AppCenter.Unity.Crashes.Internal
         {
             
         }
+
+        public static void SetShouldProcessErrorReportHandler(Crashes.ShouldProcessErrorReportHandler handler)
+        {
+        }
     }
 }
 #endif

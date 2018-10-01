@@ -1,9 +1,11 @@
-﻿// Copyright (c) Microsoft Corporation. All rights reserved.
+// Copyright (c) Microsoft Corporation. All rights reserved.
 //
 // Licensed under the MIT license.
 
 #if UNITY_ANDROID && !UNITY_EDITOR
 using System;
+using System.Collections.Generic;
+using Microsoft.AppCenter.Unity.Internal.Utility;
 using UnityEngine;
 
 namespace Microsoft.AppCenter.Unity.Analytics.Internal
@@ -35,14 +37,10 @@ namespace Microsoft.AppCenter.Unity.Analytics.Internal
             _analytics.CallStatic("trackEvent", eventName);
         }
 
-        public static void TrackEventWithProperties(string eventName, string[] keys, string[] values, int count)
+        public static void TrackEventWithProperties(string eventName, IDictionary<string, string> properties)
         {
-            var properties = new AndroidJavaObject("java.util.HashMap");
-            for (int i = 0; i < count; ++i)
-            {
-                properties.Call<AndroidJavaObject>("put", keys[i], values[i]);
-            }
-            _analytics.CallStatic("trackEvent", eventName, properties);
+            var androidProperties = JavaStringMapHelper.ConvertToJava(properties);
+            _analytics.CallStatic("trackEvent", eventName, androidProperties);
         }
 
         public static AppCenterTask SetEnabledAsync(bool isEnabled)
@@ -55,6 +53,11 @@ namespace Microsoft.AppCenter.Unity.Analytics.Internal
         {
             var future = _analytics.CallStatic<AndroidJavaObject>("isEnabled");
             return new AppCenterTask<bool>(future);
+        }
+
+        public static AndroidJavaObject GetTransmissionTarget(string transmissionTargetToken) 
+        {
+            return _analytics.CallStatic<AndroidJavaObject>("getTransmissionTarget", transmissionTargetToken);
         }
     }
 }

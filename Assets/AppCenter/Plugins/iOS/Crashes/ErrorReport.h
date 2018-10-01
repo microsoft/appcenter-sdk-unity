@@ -12,9 +12,9 @@ extern "C" const char* app_center_unity_crashes_error_report_exception_name(void
 
 extern "C" const char* app_center_unity_crashes_error_report_exception_reason(void* errorReport);
 
-extern "C" char* app_center_unity_crashes_error_report_app_start_time(void* errorReport);
+extern "C" const char* app_center_unity_crashes_error_report_app_start_time(void* errorReport);
 
-extern "C" char* app_center_unity_crashes_error_report_app_error_time(void* errorReport);
+extern "C" const char* app_center_unity_crashes_error_report_app_error_time(void* errorReport);
 
 extern "C" void* app_center_unity_crashes_error_report_device(void* errorReport);
 

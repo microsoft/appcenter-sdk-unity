@@ -150,7 +150,7 @@ static void CleanDirectory(string directoryName)
 void HandleError(Exception exception)
 {
     RunTarget("clean");
-    throw exception;
+    throw new Exception("Error occurred, see inner exception for details", exception);
 }
 
 // Remove all temporary files and folders

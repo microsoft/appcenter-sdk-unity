@@ -217,66 +217,30 @@ Task("Externals-Ios")
 }).OnError(HandleError);
 
 // Downloading UWP binaries.
-Task("Externals-Uwp")
-    .Does(() =>
-{
-    CleanDirectory("externals/uwp");
-    EnsureDirectoryExists("Assets/AppCenter/Plugins/WSA/");
-    // Download the nugets. We will use these to extract the dlls
-    foreach (var module in AppCenterModules)
-    {
-        if (module.Moniker == "Distribute")
-        {
-            Warning("Skipping 'Distribute' for UWP.");
-            continue;
-        }
-        if (module.Moniker == "Crashes")
-        {
-            Warning("Skipping 'Crashes' for UWP.");
-            continue;
-        }
-        Information("Downloading " + module.DotNetModule + "...");
-        // Download nuget package
-        var nupkgPath = GetNuGetPackage(module.DotNetModule, UwpSdkVersion);
+Task ("Externals-Uwp")
+    .Does (() => {
+        var feedIdNugetEnv = EnvironmentVariable ("NUGET_FEED_ID");
+        var userNugetEnv = EnvironmentVariable ("NUGET_USER");
+        var passwordNugetEnv = EnvironmentVariable ("NUGET_PASSWORD");
+        var usePublicFeed = (string.IsNullOrEmpty (feedIdNugetEnv) || string.IsNullOrEmpty (userNugetEnv) || string.IsNullOrEmpty (passwordNugetEnv));
 
-        var tempContentPath = "externals/uwp/" + module.Moniker + "/";
-        DeleteDirectoryIfExists(tempContentPath);
-        // Unzip into externals/uwp/
-        Unzip(nupkgPath, tempContentPath);
-        // Delete the package
-        DeleteFiles(nupkgPath);
-
-        var contentPathSuffix = "lib/uap10.0/";
-
-        // Prepare destination
-        var destination = "Assets/AppCenter/Plugins/WSA/" + module.Moniker + "/";
-        EnsureDirectoryExists(destination);
-        DeleteFiles(destination + "*.dll");
-        DeleteFiles(destination + "*.winmd");
-
-        // Deal with any native components
-        if (module.UWPHasNativeCode)
-        {
-            foreach (var arch in module.NativeArchitectures)
-            {
-                var dest = "Assets/AppCenter/Plugins/WSA/" + module.Moniker + "/" + arch.ToString().ToUpper() + "/";
-                EnsureDirectoryExists(dest);
-                var nativeFiles = GetFiles(tempContentPath + "runtimes/" + "win10-" + arch + "/native/*");
-                DeleteFiles(dest + "*.dll");
-                MoveFiles(nativeFiles, dest);
+        CleanDirectory ("externals/uwp");
+        EnsureDirectoryExists ("Assets/AppCenter/Plugins/WSA/");
+        foreach (var module in AppCenterModules) {
+            if (module.Moniker == "Distribute") {
+                Warning ("Skipping 'Distribute' for UWP.");
+                continue;
             }
+            if (module.Moniker == "Crashes") {
+                Warning ("Skipping 'Crashes' for UWP.");
+                continue;
+            }
+            Information ("Downloading " + module.DotNetModule + "...");
+            // Download nuget package
 
-            // Use managed runtimes from one of the architecture for all architectures.
-            // Even though they are architecture dependent, Unity converts
-            // them to AnyCPU automatically
-            contentPathSuffix = "runtimes/win10-" + module.NativeArchitectures[0] + "/" + contentPathSuffix;
+            GetUwpPackage (module, usePublicFeed);
         }
-
-        // Move the files to the proper location
-        var files = GetFiles(tempContentPath + contentPathSuffix + "*");
-        MoveFiles(files, destination);
-    }
-}).OnError(HandleError);
+    }).OnError (HandleError);
 
 // Builds the ContentProvider for the Android package and puts it in the
 // proper folder.
@@ -313,43 +277,73 @@ Task("BuildAndroidContentProvider").Does(()=>
     MoveFileToDirectory(aarSource, aarDestination);
 }).OnError(HandleError);
 
-// Downloading UWP IL2CPP dependencies.
-Task("Externals-Uwp-IL2CPP-Dependencies")
-    .Does(() =>
-{
-    var targetPath = "Assets/AppCenter/Plugins/WSA/IL2CPP";
-    EnsureDirectoryExists(targetPath);
-    EnsureDirectoryExists(targetPath + "/ARM");
-    EnsureDirectoryExists(targetPath + "/X86");
-    EnsureDirectoryExists(targetPath + "/X64");
+// Install Unity Editor for Windows
+Task("Install-Unity-Windows").Does(() => {
+    const string unityDownloadUrl = @"https://netstorage.unity3d.com/unity/2207421190e9/Windows64EditorInstaller/UnitySetup64-2018.2.9f1.exe";
+    const string il2cppSupportDownloadUrl = @"https://netstorage.unity3d.com/unity/2207421190e9/TargetSupportInstaller/UnitySetup-UWP-IL2CPP-Support-for-Editor-2018.2.9f1.exe";
+    // const string dotNetSupportDownloadUrl = @"https://netstorage.unity3d.com/unity/2207421190e9/TargetSupportInstaller/UnitySetup-UWP-.NET-Support-for-Editor-2018.2.9f1.exe";
 
-    // NuGet.Core support only v2.
-    var packageSource = "https://www.nuget.org/api/v2/";
-    var repository = PackageRepositoryFactory.Default.CreateRepository(packageSource);
-    foreach (var i in UwpIL2CPPDependencies)
+    Information("Downloading Unity Editor...");
+    DownloadFile(unityDownloadUrl, "./UnitySetup64.exe");
+    Information("Installing Unity Editor...");
+    var result = StartProcess("./UnitySetup64.exe", " /S");
+    if (result != 0)
     {
-        var frameworkName = new FrameworkName(i.Framework);
-        var package = repository.FindPackage(i.Name, SemanticVersion.Parse(i.Version));
-        IEnumerable<IPackage> dependencies;
-        if (i.IncludeDependencies)
-        {
-            dependencies = GetNuGetDependencies(repository, frameworkName, package);
-        }
-        else
-        {
-            dependencies = new [] { package };
-        }
-        ExtractNuGetPackages(dependencies, targetPath, frameworkName);
+        throw new Exception("Failed to install Unity Editor");
     }
 
-    // Download patched Newtonsoft.Json library to avoid Unity issue.
-    // Details: https://forum.unity3d.com/threads/332335/
-    DownloadFile(UwpIL2CPPJsonUrl, targetPath + "/Newtonsoft.Json.dll");
-
-    // Process UWP IL2CPP dependencies.
-    Information("Processing UWP IL2CPP dependencies. This could take a minute.");
-    ExecuteUnityCommand("-executeMethod AppCenterPostBuild.ProcessUwpIl2CppDependencies");
+    Information("Downloading IL2CPP support...");
+    DownloadFile(il2cppSupportDownloadUrl, "./UnityIl2CppSupport.exe");
+    Information("Installing IL2CPP support...");
+    result = StartProcess("./UnityIl2CppSupport.exe", " /S");
+    if (result != 0)
+    {
+        throw new Exception("Failed to install IL2CPP support");
+    }
 }).OnError(HandleError);
+
+// Downloading UWP IL2CPP dependencies.
+Task ("Externals-Uwp-IL2CPP-Dependencies")
+    .Does (() => {
+        var targetPath = "Assets/AppCenter/Plugins/WSA/IL2CPP";
+        EnsureDirectoryExists (targetPath);
+        EnsureDirectoryExists (targetPath + "/ARM");
+        EnsureDirectoryExists (targetPath + "/X86");
+        EnsureDirectoryExists (targetPath + "/X64");
+
+        // NuGet.Core support only v2.
+        var packageSource = "https://www.nuget.org/api/v2/";
+        var repository = PackageRepositoryFactory.Default.CreateRepository (packageSource);
+        foreach (var i in UwpIL2CPPDependencies) {
+            var frameworkName = new FrameworkName (i.Framework);
+            var package = repository.FindPackage (i.Name, SemanticVersion.Parse (i.Version));
+            IEnumerable<IPackage> dependencies;
+            if (i.IncludeDependencies) {
+                dependencies = GetNuGetDependencies (repository, frameworkName, package);
+            } else {
+                dependencies = new [] { package };
+            }
+            var fileSystem = new PhysicalFileSystem (Environment.CurrentDirectory);
+            foreach (var depPackage in dependencies) {
+                Information ("Extract NuGet package: " + depPackage);
+
+                // Extract.
+                var path = "externals/uwp/" + depPackage.Id;
+                depPackage.ExtractContents (fileSystem, path);
+
+                ExtractNuGetPackage (depPackage, frameworkName, path, targetPath);
+            }
+        }
+
+        // Download patched Newtonsoft.Json library to avoid Unity issue.
+        // Details: https://forum.unity3d.com/threads/332335/
+        DownloadFile (UwpIL2CPPJsonUrl, targetPath + "/Newtonsoft.Json.dll");
+
+        // Process UWP IL2CPP dependencies.
+        Information ("Processing UWP IL2CPP dependencies. This could take a minute.");
+        ExecuteUnityCommand ("-executeMethod AppCenterPostBuild.ProcessUwpIl2CppDependencies");
+    }).OnError (HandleError);
+
 
 // Add App Center packages to demo app.
 Task("AddPackagesToDemoApp")
@@ -457,6 +451,43 @@ Task("DownloadNdk")
     }
 }).OnError(HandleError);
 
+void GetUwpPackage (AppCenterModule module, bool usePublicFeed) {
+    // Prepare destination
+    var destination = "Assets/AppCenter/Plugins/WSA/" + module.Moniker + "/";
+    EnsureDirectoryExists (destination);
+    DeleteFiles (destination + "*.dll");
+    DeleteFiles (destination + "*.winmd");
+    var nupkgPath = "externals/uwp/";
+    if (usePublicFeed) {
+        var packageSource = "https://www.nuget.org/api/v2/";
+        var repository = PackageRepositoryFactory.Default.CreateRepository (packageSource);
+
+        var package = repository.FindPackage (module.DotNetModule, SemanticVersion.Parse (UwpSdkVersion));
+        IEnumerable<IPackage> dependencies = new [] { package };
+        var fileSystem = new PhysicalFileSystem (Environment.CurrentDirectory);
+        foreach (var depPackage in dependencies) {
+            Information ("Extract NuGet package: " + depPackage);
+            // Extract.
+            nupkgPath = "externals/uwp/" + depPackage.Id + "/";
+            depPackage.ExtractContents (fileSystem, nupkgPath);
+
+            // Move assemblies.
+            ExtractNuGetPackage (depPackage, new FrameworkName ("UAP, Version=v10.0"), nupkgPath, destination);
+            // Delete the package
+            DeleteFiles (nupkgPath);
+        }
+    } else {
+        nupkgPath = GetNuGetPackage (module.DotNetModule, UwpSdkVersion);
+        var tempContentPath = "externals/uwp/" + module.Moniker + "/";
+        DeleteDirectoryIfExists (tempContentPath);
+        // Unzip into externals/uwp/
+        Unzip (nupkgPath, tempContentPath);
+        ExtractNuGetPackage (null, new FrameworkName ("UAP, Version=v10.0"), tempContentPath, destination);
+        // Delete the package
+        DeleteFiles (nupkgPath);
+    }
+}
+
 void BuildApps(string type, string projectPath = ".")
 {
     if (Statics.Context.IsRunningOnUnix())
@@ -512,10 +543,20 @@ void VerifyAndroidAppsBuild(string type, string projectPath)
 void VerifyWindowsAppsBuild(string type, string projectPath)
 {
     VerifyAppsBuild(type, "wsaplayer", projectPath,
-    new string[] {  "WsaNetXaml", "WsaIl2CPPXaml", "WsaNetD3D", "WsaIl2CPPD3D" },
+    new string[] { "WsaIl2CPPD3D" },
     outputDirectory =>
     {
-        var solutionFilePath = GetFiles(outputDirectory + "/*/*.sln").Single();
+        Statics.Context.Information("Verifying app build in directory: " + outputDirectory);
+        var slnFiles = GetFiles(outputDirectory + "/*/*.sln");
+        if (slnFiles.Count() == 0)
+        {
+            throw new Exception("No .sln files found in the following directory and all it's subdirectories: " + outputDirectory);
+        }
+        if (slnFiles.Count() > 1)
+        {
+            throw new Exception(string.Format("Multiple .sln files found in directory {0}: {1}", outputDirectory, string.Join(", ", slnFiles)));
+        }
+        var solutionFilePath = slnFiles.Single();
         Statics.Context.Information("Attempting to build '" + solutionFilePath.ToString() + "'...");
         Statics.Context.MSBuild(solutionFilePath.ToString(), c => c
         .SetConfiguration("Master")
@@ -571,7 +612,10 @@ Task("RegisterUnity").Does(()=>
     var serialNumber = Argument<string>("UnitySerialNumber");
     var username = Argument<string>("UnityUsername");
     var password = Argument<string>("UnityPassword");
-    ExecuteUnityCommand($"-serial {serialNumber} -username {username} -password {password}", null);
+
+    // This will produce an error, but that's okay because the project "noproject" is used so that the
+    // root isn't opened by unity, which could potentially remove important .meta files.
+    ExecuteUnityCommand($"-serial {serialNumber} -username {username} -password {password}", "noproject");
 }).OnError(HandleError);
 
 Task("UnregisterUnity").Does(()=>
@@ -618,50 +662,42 @@ string GetNuGetPackage(string packageId, string packageVersion)
     return filename;
 }
 
-void ExtractNuGetPackages(IEnumerable<IPackage> packages, string dest, FrameworkName frameworkName)
-{
-    EnsureDirectoryExists(dest);
-    var fileSystem = new PhysicalFileSystem(Environment.CurrentDirectory);
-    foreach (var package in packages)
-    {
-        Information("Extract NuGet package: " + package);
-
-        // Extract.
-        var path = "externals/uwp/" + package.Id;
-        package.ExtractContents(fileSystem, path);
-
-        // Get assemblies list.
+void ExtractNuGetPackage (IPackage package, FrameworkName frameworkName, string tempContentPath, string destination) {
+    if (package != null) {
         IEnumerable<IPackageAssemblyReference> assemblies;
-        VersionUtility.TryGetCompatibleItems(frameworkName, package.AssemblyReferences, out assemblies);
+        VersionUtility.TryGetCompatibleItems (frameworkName, package.AssemblyReferences, out assemblies);
 
         // Move assemblies.
-        foreach (var i in assemblies)
-        {
-            if (!FileExists(dest + "/" + i.Name))
-            {
-                MoveFile(path + "/" + i.Path, dest + "/" + i.Name);
+        foreach (var i in assemblies) {
+            if (!FileExists (destination + "/" + i.Name)) {
+                MoveFile (tempContentPath + "/" + i.Path, destination + "/" + i.Name);
             }
         }
 
-        // Move native binaries.
-        var runtimesPath = path + "/runtimes";
-        if (DirectoryExists(runtimesPath))
-        {
-            foreach (var runtime in GetDirectories(runtimesPath + "/win10-*"))
-            {
-                var arch = runtime.GetDirectoryName().ToString().Replace("win10-", "").ToUpper();
-                var nativeFiles = GetFiles(runtime + "/native/*");
-                var targetArchPath = dest + "/" + arch;
-                EnsureDirectoryExists(targetArchPath);
-                foreach (var nativeFile in nativeFiles)
-                {
-                    if (!FileExists(targetArchPath + "/" + nativeFile.GetFilename()))
-                    {
-                        MoveFileToDirectory(nativeFile, targetArchPath);
-                    }
+    }
+    // Move native binaries.
+    var contentPathSuffix = "lib/uap10.0/";
+    var runtimesPath = tempContentPath + "/runtimes";
+    if (DirectoryExists (runtimesPath)) {
+        var oneArch = "x86";
+        foreach (var runtime in GetDirectories (runtimesPath + "/win10-*")) {
+            var arch = runtime.GetDirectoryName ().ToString ().Replace ("win10-", "").ToUpper ();
+            oneArch = arch;
+            var nativeFiles = GetFiles (runtime + "/native/*");
+            var targetArchPath = destination + "/" + arch;
+            EnsureDirectoryExists (targetArchPath);
+            foreach (var nativeFile in nativeFiles) {
+                if (!FileExists (targetArchPath + "/" + nativeFile.GetFilename ())) {
+                    MoveFileToDirectory (nativeFile, targetArchPath);
                 }
             }
         }
+        contentPathSuffix = "runtimes/win10-" + oneArch + "/" + contentPathSuffix;
+    }
+
+    if (package == null) {
+        var files = GetFiles (tempContentPath + contentPathSuffix + "*");
+        MoveFiles (files, destination);
     }
 }
 

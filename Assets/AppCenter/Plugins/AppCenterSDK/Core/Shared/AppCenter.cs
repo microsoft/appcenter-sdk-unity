@@ -29,6 +29,11 @@ namespace Microsoft.AppCenter.Unity
             return AppCenterInternal.SetEnabledAsync(enabled);
         }
 
+        public static void StartFromLibrary(ServiceType[] servicesArray)
+        {
+            AppCenterInternal.StartFromLibrary(servicesArray);
+        }
+
         public static AppCenterTask<bool> IsEnabledAsync()
         {
             return AppCenterInternal.IsEnabledAsync();

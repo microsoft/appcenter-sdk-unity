@@ -1,4 +1,4 @@
-﻿// Copyright (c) Microsoft Corporation. All rights reserved.
+// Copyright (c) Microsoft Corporation. All rights reserved.
 //
 // Licensed under the MIT license.
 
@@ -7,118 +7,77 @@ using UnityEngine;
 using System;
 using System.Reflection;
 using Microsoft.AppCenter.Unity.Internal;
+using System.Linq;
 
-// TODO Update documentation link
-[HelpURL("https://docs.microsoft.com/en-us/mobile-center/sdk/")]
+[HelpURL("https://docs.microsoft.com/en-us/appcenter/sdk/crashes/unity")]
 public class AppCenterBehavior : MonoBehaviour
 {
     public static event Action InitializingServices;
     public static event Action InitializedAppCenterAndServices;
     public static event Action Started;
 
-    private static AppCenterBehavior instance;
+    private static AppCenterBehavior _instance;
 
-    public AppCenterSettings settings;
+    public AppCenterSettings Settings;
 
     private void Awake()
     {
         // Make sure that App Center have only one instance.
-        if (instance != null)
+        if (_instance != null)
         {
             Debug.LogError("App Center should have only one instance!");
             DestroyImmediate(gameObject);
             return;
         }
-        instance = this;
+        _instance = this;
         DontDestroyOnLoad(gameObject);
+    }
 
+    private void Start()
+    {
         // Initialize App Center.
-        if (settings == null)
+        if (Settings == null)
         {
             Debug.LogError("App Center isn't configured!");
             return;
         }
         StartAppCenter();
-    }
 
-    private void Start()
-    {
         if (Started != null)
         {
             Started.Invoke();
         }
     }
 
-    void OnEnable()
-    {
-#if !UNITY_EDITOR
-        Application.logMessageReceived += OnHandleLogCallback;
-#endif
-
-#if UNITY_IOS && !UNITY_EDITOR
-        System.AppDomain.CurrentDomain.UnhandledException += OnHandleUnresolvedException;
-#endif
-    }
-
-    void OnDisable()
-    {
-#if !UNITY_EDITOR
-        Application.logMessageReceived -= OnHandleLogCallback;
-#endif
-
-#if UNITY_IOS && !UNITY_EDITOR
-        System.AppDomain.CurrentDomain.UnhandledException -= OnHandleUnresolvedException;
-#endif
-    }
-
-    public void OnHandleLogCallback(string logString, string stackTrace, LogType type)
-    {
-#if !UNITY_EDITOR
-        foreach (var service in settings.Services)
-        {
-            var OnHanldeLogMethod = service.GetMethod("OnHandleLog");
-            if (OnHanldeLogMethod != null)
-            {   
-                object[] parametersArray = new object[] { logString, stackTrace, type };
-                OnHanldeLogMethod.Invoke(this, parametersArray);
-            }
-        }
-#endif
-    }
-
-    public void OnHandleUnresolvedException(object sender, UnhandledExceptionEventArgs args)
-    {
-#if !UNITY_EDITOR
-        foreach (var service in settings.Services)
-        {
-            var OnHandleUnresolvedExceptionMethod = service.GetMethod("OnHandleUnresolvedException");
-            if (OnHandleUnresolvedExceptionMethod != null)
-            {
-                object[] parametersArray = new object[] { sender, args };
-                OnHandleUnresolvedExceptionMethod.Invoke(this, parametersArray);
-            }
-        }
-#endif
-    }
-
     private void StartAppCenter()
     {
-        var services = settings.Services;
+        var services = Settings.Services;
         PrepareEventHandlers(services);
         InvokeInitializingServices();
         AppCenter.SetWrapperSdk();
 
-        // On iOS and Android App Center starting automatically.
-        #if UNITY_EDITOR || (!UNITY_IOS && !UNITY_ANDROID)
-        AppCenter.LogLevel = settings.InitialLogLevel;
-        if (settings.CustomLogUrl.UseCustomUrl)
+        // On iOS we start crash service here, to give app an opportunity to assign handlers after crash and restart in Awake method
+#if UNITY_IOS
+        foreach (var service in services)
         {
-            AppCenter.SetLogUrl(settings.CustomLogUrl.Url);
+            var startCrashes = service.GetMethod("StartCrashes");
+            if (startCrashes != null)
+                startCrashes.Invoke(null, null);
         }
-        var appSecret = AppCenter.GetSecretForPlatform(settings.AppSecret);
+#endif
+
+        // On iOS and Android App Center starting automatically.
+#if UNITY_EDITOR || (!UNITY_IOS && !UNITY_ANDROID)
+        AppCenter.LogLevel = Settings.InitialLogLevel;
+        if (Settings.CustomLogUrl.UseCustomUrl)
+        {
+            AppCenter.SetLogUrl(Settings.CustomLogUrl.Url);
+        }
+        var appSecret = AppCenter.GetSecretForPlatform(Settings.AppSecret);
         var nativeServiceTypes = AppCenter.ServicesToNativeTypes(services);
         AppCenterInternal.Start(appSecret, nativeServiceTypes, services.Length);
-        #endif
+#endif
+
         InvokeInitializedServices();
     }
 
