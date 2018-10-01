@@ -119,10 +119,7 @@ public class PuppetAppCenter : MonoBehaviour
             DistributeEnabled.isOn = task.Result;
         });
 
-        Distribute.ReleaseAvailable = (releaseDetails) =>
-        {
-            return true;
-        };
+        Distribute.ReleaseAvailable = (releaseDetails) => true;
     }
 
     public void SetEnabled(bool enabled)
