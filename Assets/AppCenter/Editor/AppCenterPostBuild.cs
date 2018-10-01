@@ -123,7 +123,7 @@ public class AppCenterPostBuild : IPostprocessBuild
 
     public static void InjectCodeToFile(string appFilePath, string searchRegex, string codeToInsertFileName, bool includeSearchText = true)
     {
-        var appAdditionsFolder = "Assets/AppCenter/Plugins/WSA/Push/AppAdditions";
+        var appAdditionsFolder = AppCenterSettingsContext.AppCenterPath + "/AppCenter/Plugins/WSA/Push/AppAdditions";
         var codeToInsert = File.ReadAllText(Path.Combine(appAdditionsFolder, codeToInsertFileName));
         var commentText = "App Center Push code:";
         codeToInsert = "\n            // " + commentText + "\n" + codeToInsert;
@@ -168,7 +168,7 @@ public class AppCenterPostBuild : IPostprocessBuild
 
     public static void ProcessUwpIl2CppDependencies()
     {
-        var binaries = AssetDatabase.FindAssets("*", new[] { "Assets/AppCenter/Plugins/WSA/IL2CPP" });
+        var binaries = AssetDatabase.FindAssets("*", new[] { AppCenterSettingsContext.AppCenterPath + "/AppCenter/Plugins/WSA/IL2CPP" });
         foreach (var guid in binaries)
         {
             var assetPath = AssetDatabase.GUIDToAssetPath(guid);
