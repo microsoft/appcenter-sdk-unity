@@ -7,6 +7,8 @@ using Microsoft.AppCenter.Unity;
 using UnityEngine;
 using UnityEngine.UI;
 using Microsoft.AppCenter.Unity.Crashes;
+using Microsoft.AppCenter.Unity.Distribute;
+using Microsoft.AppCenter.Unity.Push;
 using AOT;
 
 public class PuppetAppCenter : MonoBehaviour
@@ -16,6 +18,63 @@ public class PuppetAppCenter : MonoBehaviour
     public PuppetConfirmationDialog userConfirmationDialog;
 
     static PuppetAppCenter instance;
+
+    public GameObject CustomProperty;
+    public RectTransform PropertiesList;
+    public Toggle DistributeEnabled;
+    public Toggle PushEnabled;
+
+    public void SetPushEnabled(bool enabled)
+    {
+        StartCoroutine(SetPushEnabledCoroutine(enabled));
+    }
+
+    private IEnumerator SetPushEnabledCoroutine(bool enabled)
+    {
+        yield return Push.SetEnabledAsync(enabled);
+        var isEnabled = Push.IsEnabledAsync();
+        yield return isEnabled;
+        PushEnabled.isOn = isEnabled.Result;
+    }
+
+    public void SetDistributeEnabled(bool enabled)
+    {
+        StartCoroutine(SetDistributeEnabledCoroutine(enabled));
+    }
+
+    private IEnumerator SetDistributeEnabledCoroutine(bool enabled)
+    {
+        yield return Distribute.SetEnabledAsync(enabled);
+        var isEnabled = Distribute.IsEnabledAsync();
+        yield return isEnabled;
+        DistributeEnabled.isOn = isEnabled.Result;
+    }
+
+    public void AddProperty()
+    {
+        var property = Instantiate(CustomProperty);
+        property.transform.SetParent(PropertiesList, false);
+    }
+
+    public void Send()
+    {
+        AppCenter.SetCustomProperties(GetProperties());
+    }
+
+    private CustomProperties GetProperties()
+    {
+        var properties = PropertiesList.GetComponentsInChildren<PuppetCustomProperty>();
+        if (properties == null || properties.Length == 0)
+        {
+            return null;
+        }
+        var result = new CustomProperties();
+        foreach (var i in properties)
+        {
+            i.Set(result);
+        }
+        return result;
+    }
 
     private void Awake()
     {
@@ -63,6 +122,16 @@ public class PuppetAppCenter : MonoBehaviour
             }
         });
         LogLevel.value = AppCenter.LogLevel - Microsoft.AppCenter.Unity.LogLevel.Verbose;
+        Push.IsEnabledAsync().ContinueWith(task =>
+        {
+            PushEnabled.isOn = task.Result;
+        });
+        Distribute.IsEnabledAsync().ContinueWith(task =>
+        {
+            DistributeEnabled.isOn = task.Result;
+        });
+
+        Distribute.ReleaseAvailable = (releaseDetails) => true;
     }
 
     public void SetEnabled(bool enabled)

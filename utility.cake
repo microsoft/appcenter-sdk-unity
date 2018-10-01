@@ -121,7 +121,7 @@ static void DeleteDirectoryIfExists(string directoryName)
 {
     if (Statics.Context.DirectoryExists(directoryName))
     {
-        Statics.Context.DeleteDirectory(directoryName, true);
+        Statics.Context.DeleteDirectory(directoryName, new DeleteDirectorySettings() { Recursive = true });
     }
 }
 
@@ -150,7 +150,7 @@ static void CleanDirectory(string directoryName)
 void HandleError(Exception exception)
 {
     RunTarget("clean");
-    throw exception;
+    throw new Exception("Error occurred, see inner exception for details", exception);
 }
 
 // Remove all temporary files and folders
@@ -160,6 +160,6 @@ Task("RemoveTemporaries").Does(()=>
     var dirs = GetDirectories(Statics.TemporaryPrefix + "*");
     foreach (var directory in dirs)
     {
-        DeleteDirectory(directory, true);
+        DeleteDirectory(directory, new DeleteDirectorySettings() { Recursive = true });
     }
 });

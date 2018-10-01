@@ -11,9 +11,8 @@ using System.Runtime.InteropServices;
 
 namespace Microsoft.AppCenter.Unity.Analytics.Internal
 {
-    public class WrapperTransmissionTargetInternal
+    public class TransmissionTargetInternal
     {
-
         public static void TrackEvent(IntPtr transmissionTarget, string eventName)
         {
             appcenter_unity_transmission_target_track_event(transmissionTarget, eventName);
@@ -36,10 +35,17 @@ namespace Microsoft.AppCenter.Unity.Analytics.Internal
             return AppCenterTask<bool>.FromCompleted(isEnabled);
         }
 
-#region External
+        public static IntPtr GetTransmissionTarget(IntPtr transmissionTargetParent, string transmissionTargetToken) 
+        {
+            return appcenter_unity_transmission_transmission_target_for_token(transmissionTargetParent, transmissionTargetToken);
+        }
 
-        [DllImport("__Internal")]
-        private static extern IntPtr appcenter_unity_transmission_target_create();
+        public static IntPtr GetPropertyConfigurator(IntPtr transmissionTarget)
+        {
+            return appcenter_unity_transmission_get_property_configurator(transmissionTarget);
+        }
+
+#region External
 
         [DllImport("__Internal")]
         private static extern void appcenter_unity_transmission_target_track_event(IntPtr transmissionTarget, string eventName);
@@ -52,6 +58,12 @@ namespace Microsoft.AppCenter.Unity.Analytics.Internal
 
         [DllImport("__Internal")]
         private static extern bool appcenter_unity_transmission_target_is_enabled(IntPtr transmissionTarget);
+
+        [DllImport("__Internal")]
+        private static extern IntPtr appcenter_unity_transmission_transmission_target_for_token(IntPtr transmissionTargetParent, string transmissionTargetToken);
+
+        [DllImport("__Internal")]
+        private static extern IntPtr appcenter_unity_transmission_get_property_configurator(IntPtr transmissionTarget);
 
 #endregion
     }

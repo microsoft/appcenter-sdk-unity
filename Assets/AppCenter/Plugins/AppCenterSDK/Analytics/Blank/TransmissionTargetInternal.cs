@@ -17,17 +17,14 @@ namespace Microsoft.AppCenter.Unity.Analytics
     using RawType = System.Object;
 #endif
 
-    public class WrapperTransmissionTargetInternal
+    public class TransmissionTargetInternal
     {
-
         public static void TrackEvent(RawType transmissionTarget, string eventName)
         {
-            
         }
 
         public static void TrackEventWithProperties(RawType transmissionTarget, string eventName, IDictionary<string, string> properties)
         {
-            
         }
 
         public static AppCenterTask SetEnabledAsync(RawType transmissionTarget, bool enabled)
@@ -38,6 +35,16 @@ namespace Microsoft.AppCenter.Unity.Analytics
         public static AppCenterTask<bool> IsEnabledAsync(RawType transmissionTarget)
         {
             return AppCenterTask<bool>.FromCompleted(false);
+        }
+
+        public static RawType GetTransmissionTarget(RawType transmissionTargetParent, string transmissionTargetToken)
+        {
+            return default(RawType);
+        }
+
+        public static RawType GetPropertyConfigurator(RawType transmissionTargetParent)
+        {
+            return default(RawType);
         }
     }
 }

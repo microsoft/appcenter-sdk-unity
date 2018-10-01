@@ -13,7 +13,9 @@ namespace Microsoft.AppCenter.Unity.Crashes.Internal
 {
     public class CrashesDelegate
     {
+#if ENABLE_IL2CPP
         [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
+#endif
         delegate bool NativeShouldProcessErrorReportDelegate(IntPtr report);
         static NativeShouldProcessErrorReportDelegate del;
         static Crashes.ShouldProcessErrorReportHandler externalHandler = null;

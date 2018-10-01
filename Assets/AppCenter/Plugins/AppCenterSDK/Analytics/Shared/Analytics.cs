@@ -34,7 +34,7 @@ namespace Microsoft.AppCenter.Unity.Analytics
             }
             else
             {
-                AnalyticsInternal.TrackEventWithProperties(eventName, properties.Keys.ToArray(), properties.Values.ToArray(), properties.Count);
+                AnalyticsInternal.TrackEventWithProperties(eventName, properties);
             }
         }
 
@@ -48,9 +48,14 @@ namespace Microsoft.AppCenter.Unity.Analytics
             return AnalyticsInternal.SetEnabledAsync(enabled);
         }
 
-        public static WrapperTransmissionTarget GetTransmissionTarget(string transmissionTargetToken)
+        public static TransmissionTarget GetTransmissionTarget(string transmissionTargetToken)
         {
-            return new WrapperTransmissionTarget(AnalyticsInternal.GetTransmissionTarget(transmissionTargetToken));
+            var internalObject = AnalyticsInternal.GetTransmissionTarget(transmissionTargetToken);
+            if (internalObject == null)
+            {
+                return null;
+            }
+            return new TransmissionTarget(internalObject);
         }
     }
 }

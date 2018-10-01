@@ -35,10 +35,7 @@ public class AppCenterPreBuild : IPreprocessBuild
     void AddStartupCodeToAndroid()
     {
         var settings = AppCenterSettingsContext.SettingsInstance;
-        if (settings == null)
-        {
-            return;
-        }
+        var advancedSettings = AppCenterSettingsContext.SettingsInstanceAdvanced;
         var settingsMaker = new AppCenterSettingsMakerAndroid();
         settingsMaker.SetAppSecret(settings.AndroidAppSecret);
         if (settings.CustomLogUrl.UseCustomUrl)
@@ -74,16 +71,15 @@ public class AppCenterPreBuild : IPreprocessBuild
             settingsMaker.StartDistributeClass();
         }
         settingsMaker.SetLogLevel((int)settings.InitialLogLevel);
+        settingsMaker.SetStartupType((int)advancedSettings.AppCenterStartupType);
+        settingsMaker.SetTransmissionTargetToken(advancedSettings.TransmissionTargetToken);
         settingsMaker.CommitSettings();
     }
 
     static void AddStartupCodeToiOS()
     {
         var settings = AppCenterSettingsContext.SettingsInstance;
-        if (settings == null)
-        {
-            return;
-        }
+        var advancedSettings = AppCenterSettingsContext.SettingsInstanceAdvanced;
         var settingsMaker = new AppCenterSettingsMakerIos();
         if (settings.CustomLogUrl.UseCustomUrl)
         {
@@ -115,6 +111,8 @@ public class AppCenterPreBuild : IPreprocessBuild
             }
             settingsMaker.StartDistributeClass();
         }
+        settingsMaker.SetStartupType((int)advancedSettings.AppCenterStartupType);
+        settingsMaker.SetTransmissionTargetToken(advancedSettings.TransmissionTargetToken);
         settingsMaker.CommitSettings();
     }
 

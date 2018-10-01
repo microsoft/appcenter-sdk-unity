@@ -277,6 +277,31 @@ Task("BuildAndroidContentProvider").Does(()=>
     MoveFileToDirectory(aarSource, aarDestination);
 }).OnError(HandleError);
 
+// Install Unity Editor for Windows
+Task("Install-Unity-Windows").Does(() => {
+    const string unityDownloadUrl = @"https://netstorage.unity3d.com/unity/2207421190e9/Windows64EditorInstaller/UnitySetup64-2018.2.9f1.exe";
+    const string il2cppSupportDownloadUrl = @"https://netstorage.unity3d.com/unity/2207421190e9/TargetSupportInstaller/UnitySetup-UWP-IL2CPP-Support-for-Editor-2018.2.9f1.exe";
+    // const string dotNetSupportDownloadUrl = @"https://netstorage.unity3d.com/unity/2207421190e9/TargetSupportInstaller/UnitySetup-UWP-.NET-Support-for-Editor-2018.2.9f1.exe";
+
+    Information("Downloading Unity Editor...");
+    DownloadFile(unityDownloadUrl, "./UnitySetup64.exe");
+    Information("Installing Unity Editor...");
+    var result = StartProcess("./UnitySetup64.exe", " /S");
+    if (result != 0)
+    {
+        throw new Exception("Failed to install Unity Editor");
+    }
+
+    Information("Downloading IL2CPP support...");
+    DownloadFile(il2cppSupportDownloadUrl, "./UnityIl2CppSupport.exe");
+    Information("Installing IL2CPP support...");
+    result = StartProcess("./UnityIl2CppSupport.exe", " /S");
+    if (result != 0)
+    {
+        throw new Exception("Failed to install IL2CPP support");
+    }
+}).OnError(HandleError);
+
 // Downloading UWP IL2CPP dependencies.
 Task ("Externals-Uwp-IL2CPP-Dependencies")
     .Does (() => {
@@ -518,10 +543,20 @@ void VerifyAndroidAppsBuild(string type, string projectPath)
 void VerifyWindowsAppsBuild(string type, string projectPath)
 {
     VerifyAppsBuild(type, "wsaplayer", projectPath,
-    new string[] {  "WsaNetXaml", "WsaIl2CPPXaml", "WsaNetD3D", "WsaIl2CPPD3D" },
+    new string[] { "WsaIl2CPPD3D" },
     outputDirectory =>
     {
-        var solutionFilePath = GetFiles(outputDirectory + "/*/*.sln").Single();
+        Statics.Context.Information("Verifying app build in directory: " + outputDirectory);
+        var slnFiles = GetFiles(outputDirectory + "/*/*.sln");
+        if (slnFiles.Count() == 0)
+        {
+            throw new Exception("No .sln files found in the following directory and all it's subdirectories: " + outputDirectory);
+        }
+        if (slnFiles.Count() > 1)
+        {
+            throw new Exception(string.Format("Multiple .sln files found in directory {0}: {1}", outputDirectory, string.Join(", ", slnFiles)));
+        }
+        var solutionFilePath = slnFiles.Single();
         Statics.Context.Information("Attempting to build '" + solutionFilePath.ToString() + "'...");
         Statics.Context.MSBuild(solutionFilePath.ToString(), c => c
         .SetConfiguration("Master")
@@ -577,7 +612,10 @@ Task("RegisterUnity").Does(()=>
     var serialNumber = Argument<string>("UnitySerialNumber");
     var username = Argument<string>("UnityUsername");
     var password = Argument<string>("UnityPassword");
-    ExecuteUnityCommand($"-serial {serialNumber} -username {username} -password {password}", null);
+
+    // This will produce an error, but that's okay because the project "noproject" is used so that the
+    // root isn't opened by unity, which could potentially remove important .meta files.
+    ExecuteUnityCommand($"-serial {serialNumber} -username {username} -password {password}", "noproject");
 }).OnError(HandleError);
 
 Task("UnregisterUnity").Does(()=>
