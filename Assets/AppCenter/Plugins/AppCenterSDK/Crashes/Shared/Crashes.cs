@@ -184,6 +184,19 @@ namespace Microsoft.AppCenter.Unity.Crashes
             }
         }
 
+#if ENABLE_IL2CPP
+        [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
+#endif
+        public delegate ErrorAttachmentLog[] GetErrorAttachmentstHandler(ErrorReport errorReport);
+
+        public static GetErrorAttachmentstHandler GetErrorAttachments
+        {
+            set
+            {
+                CrashesDelegate.SetGetErrorAttachmentsHandler(value);
+            }
+        }
+
         public static void StartCrashes()
         {
             CrashesInternal.StartCrashes();
