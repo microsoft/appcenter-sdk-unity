@@ -288,14 +288,18 @@ Task("Install-Unity-Windows").Does(() => {
     Information("Installing Unity Editor...");
     var result = StartProcess("./UnitySetup64.exe", " /S");
     if (result != 0)
+    {
         throw new Exception("Failed to install Unity Editor");
+    }
 
     Information("Downloading IL2CPP support...");
     DownloadFile(il2cppSupportDownloadUrl, "./UnityIl2CppSupport.exe");
     Information("Installing IL2CPP support...");
     result = StartProcess("./UnityIl2CppSupport.exe", " /S");
     if (result != 0)
+    {
         throw new Exception("Failed to install IL2CPP support");
+    }
 }).OnError(HandleError);
 
 // Downloading UWP IL2CPP dependencies.
@@ -542,10 +546,16 @@ void VerifyWindowsAppsBuild(string type, string projectPath)
     new string[] { "WsaIl2CPPD3D" },
     outputDirectory =>
     {
-        Statics.Context.Information("Verifying app build at directory: " + outputDirectory);
+        Statics.Context.Information("Verifying app build in directory: " + outputDirectory);
         var slnFiles = GetFiles(outputDirectory + "/*/*.sln");
         if (slnFiles.Count() == 0)
+        {
             throw new Exception("No .sln files found in the following directory and all it's subdirectories: " + outputDirectory);
+        }
+        if (slnFiles.Count() > 1)
+        {
+            throw new Exception(string.Format("Multiple .sln files found in directory {0}: {1}", outputDirectory, string.Join(", ", slnFiles)));
+        }
         var solutionFilePath = slnFiles.Single();
         Statics.Context.Information("Attempting to build '" + solutionFilePath.ToString() + "'...");
         Statics.Context.MSBuild(solutionFilePath.ToString(), c => c
