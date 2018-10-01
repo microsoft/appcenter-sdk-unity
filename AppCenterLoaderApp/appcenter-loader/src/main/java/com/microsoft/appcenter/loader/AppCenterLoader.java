@@ -96,7 +96,7 @@ public class AppCenterLoader extends ContentProvider {
             isModuleAvailable("com.microsoft.appcenter.push.Push", "Push")) {
             Push.setListener(new UnityAppCenterPushDelegate());
             classes.add(Push.class);
-            Push.setSenderId(getStringResource(SENDER_ID_KEY));
+            SetSenderId();
             if (isTrueValue(getStringResource(ENABLE_FIREBASE_ANALYTICS_KEY))) {
                 Push.enableFirebaseAnalytics(mContext);
             }
@@ -112,11 +112,6 @@ public class AppCenterLoader extends ContentProvider {
         if (startupType == SKIP_START) {
             return true;
         }
-        @SuppressWarnings("unchecked")
-        Class<? extends AppCenterService>[] classesArray = new Class[0];
-        if (classes.size() > 0) {
-            classesArray = classes.toArray(new Class[classes.size()]);
-        }
         String appIdArg = "";
         switch (startupType) {
             case APP_SECRET:
@@ -129,12 +124,14 @@ public class AppCenterLoader extends ContentProvider {
                 appIdArg = String.format("appsecret=%s;target=%s", appSecret, transmissionTargetToken);
                 break;
             case NO_SECRET:
-                if (classesArray.length > 0) {
+                if (classes.size() > 0) {
+                    Class<? extends AppCenterService>[] classesArray = GetClassesArray(classes);
                     AppCenter.start((Application) mContext, classesArray);
                 }
                 return true;
         }
-        if (classesArray.length > 0) {
+        if (classes.size() > 0) {
+            Class<? extends AppCenterService>[] classesArray = GetClassesArray(classes);
             AppCenter.start((Application) mContext, appIdArg, classesArray);
         } else {
             AppCenter.configure((Application) mContext, appIdArg);
@@ -196,5 +193,16 @@ public class AppCenterLoader extends ContentProvider {
             Log.i(TAG, moduleName + " is not available: " + e.getMessage());
             return false;
         }
+    }
+
+    private Class<? extends AppCenterService>[] GetClassesArray(List<Class<? extends AppCenterService>> classes) {
+        @SuppressWarnings("unchecked")
+        Class<? extends AppCenterService>[] classesArray = classes.toArray(new Class[classes.size()]);
+        return classesArray;
+    }
+
+    @SuppressWarnings("deprecation")
+    private void SetSenderId() {
+        Push.setSenderId(getStringResource(SENDER_ID_KEY));
     }
 }
