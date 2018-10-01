@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<package name="AppCenterAnalytics" version="0.0.2" needsCore="true">
+<package name="AppCenterAnalytics" version="0.1.0" needsCore="true">
     <include>
         <!-- Shared files -->
         <file path="Assets/AppCenter/Plugins/AppCenterSDK/Analytics/Shared" />
