@@ -18,6 +18,7 @@ namespace Microsoft.AppCenter.Unity
 
     public class AppCenter
     {
+        private static AppCenterTask<string> secretTask;
         public static LogLevel LogLevel
         {
             get { return (LogLevel)AppCenterInternal.GetLogLevel(); }
@@ -144,6 +145,13 @@ namespace Microsoft.AppCenter.Unity
                                                WrapperSdk.WrapperRuntimeVersion, null, null, null);
         }
 
+        // Gets cached secret.
+        public static AppCenterTask<string> GetSecretForPlatform()
+        {
+            secretTask = new AppCenterTask<string>();
+            return secretTask;
+        }
+
         // Gets the first instance of an app secret corresponding to the given platform name, or returns the string
         // as-is if no identifier can be found.
         public static string GetSecretForPlatform(string secrets)
@@ -188,7 +196,7 @@ namespace Microsoft.AppCenter.Unity
 
                 platformSecret += nextChar;
             }
-
+            secretTask.SetResult(platformSecret);
             return platformSecret;
         }
 

@@ -111,7 +111,10 @@ public class PuppetAppCenter : MonoBehaviour
                 InstallIdLabel.text = task.Result.ToString();
             }
         });
-        AppSecretLabel.text = AppCenter.GetSecretForPlatform();
+        AppCenter.GetSecretForPlatform().ContinueWith(task =>
+        {
+            AppSecretLabel.text = task.Result;
+        });
 
         LogLevel.value = AppCenter.LogLevel - Microsoft.AppCenter.Unity.LogLevel.Verbose;
         Push.IsEnabledAsync().ContinueWith(task =>

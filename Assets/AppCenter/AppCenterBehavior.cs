@@ -66,6 +66,7 @@ public class AppCenterBehavior : MonoBehaviour
         }
 #endif
 
+        var appSecret = AppCenter.GetSecretForPlatform(Settings.AppSecret);
         // On iOS and Android App Center starting automatically.
 #if UNITY_EDITOR || (!UNITY_IOS && !UNITY_ANDROID)
         AppCenter.LogLevel = Settings.InitialLogLevel;
@@ -73,7 +74,6 @@ public class AppCenterBehavior : MonoBehaviour
         {
             AppCenter.SetLogUrl(Settings.CustomLogUrl.Url);
         }
-        var appSecret = AppCenter.GetSecretForPlatform(Settings.AppSecret);
         var nativeServiceTypes = AppCenter.ServicesToNativeTypes(services);
         AppCenterInternal.Start(appSecret, nativeServiceTypes, services.Length);
 #endif
