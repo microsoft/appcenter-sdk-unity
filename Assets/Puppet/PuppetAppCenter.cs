@@ -14,6 +14,8 @@ using AOT;
 public class PuppetAppCenter : MonoBehaviour
 {
     public Toggle Enabled;
+    public Text InstallIdLabel;
+    public Text AppSecretLabel;
     public Dropdown LogLevel;
     public PuppetConfirmationDialog userConfirmationDialog;
 
@@ -106,9 +108,11 @@ public class PuppetAppCenter : MonoBehaviour
         {
             if (task.Result.HasValue)
             {
-                print("Install ID = " + task.Result.ToString());
+                InstallIdLabel.text = task.Result.ToString();
             }
         });
+        AppSecretLabel.text = AppCenter.GetSecretForPlatform();
+
         LogLevel.value = AppCenter.LogLevel - Microsoft.AppCenter.Unity.LogLevel.Verbose;
         Push.IsEnabledAsync().ContinueWith(task =>
         {
