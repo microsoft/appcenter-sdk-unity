@@ -10,6 +10,7 @@ using System.Linq;
 using System.Threading;
 using UnityEngine;
 using UnityEngine.UI;
+using AOT;
 
 public class PuppetCrashes : MonoBehaviour
 {
@@ -18,6 +19,8 @@ public class PuppetCrashes : MonoBehaviour
     public Text LastSessionCrashReport;
     public InputField TextAttachment;
     public InputField BinaryAttachment;
+    public static string TextAttachmentStatic;
+    public static string BinaryAttachmentStatic;
 
     void OnEnable()
     {
@@ -26,6 +29,27 @@ public class PuppetCrashes : MonoBehaviour
             CrashesEnabled.isOn = task.Result;
         });
         ReportUnhandledExceptions.isOn = Crashes.IsReportingUnhandledExceptions();
+        Crashes.GetErrorAttachments = GetErrorAttachmentstHandler;
+    }
+
+    [MonoPInvokeCallback(typeof(Crashes.GetErrorAttachmentstHandler))]
+    public static ErrorAttachmentLog[] GetErrorAttachmentstHandler(ErrorReport errorReport)
+    {
+        return new ErrorAttachmentLog[]
+        {
+            ErrorAttachmentLog.AttachmentWithText(TextAttachmentStatic, "hello.txt"),
+            ErrorAttachmentLog.AttachmentWithBinary(ParseBytes(BinaryAttachmentStatic), "fake_image.jpeg", "image/jpeg")
+        };
+    }
+
+    public void OnValueChanged()
+    {
+        TextAttachmentStatic = TextAttachment.text;
+    }
+
+    public void OnBinaryValueChanged()
+    {
+        BinaryAttachmentStatic = BinaryAttachment.text;
     }
 
     public void SetCrashesEnabled(bool enabled)
@@ -109,7 +133,7 @@ public class PuppetCrashes : MonoBehaviour
         LastSessionCrashReport.text = string.Join("\n", info.Select(i => i.Key + " : " + i.Value).ToArray());
     }
 
-    private byte[] ParseBytes(string bytesString) 
+    private static byte[] ParseBytes(string bytesString) 
     {
         string[] bytesArray = bytesString.Split(' ');
         if (bytesArray.Length == 0) 
