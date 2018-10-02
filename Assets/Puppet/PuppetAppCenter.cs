@@ -16,6 +16,8 @@ public class PuppetAppCenter : MonoBehaviour
     public Toggle Enabled;
     public Text InstallIdLabel;
     public Text AppSecretLabel;
+    public Text LogUrlLabel;
+    public Text DeviceIdLabel;
     public Dropdown LogLevel;
     public PuppetConfirmationDialog userConfirmationDialog;
 
@@ -115,7 +117,11 @@ public class PuppetAppCenter : MonoBehaviour
         {
             AppSecretLabel.text = task.Result;
         });
-
+        AppCenter.GetLogUrl().ContinueWith(task =>
+        {
+            LogUrlLabel.text = task.Result;
+        });
+        DeviceIdLabel.text = SystemInfo.deviceUniqueIdentifier;
         LogLevel.value = AppCenter.LogLevel - Microsoft.AppCenter.Unity.LogLevel.Verbose;
         Push.IsEnabledAsync().ContinueWith(task =>
         {

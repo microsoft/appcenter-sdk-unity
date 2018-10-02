@@ -19,6 +19,8 @@ namespace Microsoft.AppCenter.Unity
     public class AppCenter
     {
         private static AppCenterTask<string> secretTask;
+        private static AppCenterTask<string> logUrlTask;
+
         public static LogLevel LogLevel
         {
             get { return (LogLevel)AppCenterInternal.GetLogLevel(); }
@@ -58,6 +60,19 @@ namespace Microsoft.AppCenter.Unity
             return guidTask;
         }
 
+        public static AppCenterTask<string> GetLogUrl() 
+        {
+            if (logUrlTask != null)
+            {
+                logUrlTask = new AppCenterTask<string>();
+                return logUrlTask;
+            }
+            else 
+            {
+                return AppCenterTask<string>.FromCompleted("https://in.appcenter.ms/");
+            }
+        }
+
         /// <summary>
         /// Change the base URL (scheme + authority + port only) used to communicate with the backend.
         /// </summary>
@@ -65,6 +80,11 @@ namespace Microsoft.AppCenter.Unity
         public static void SetLogUrl(string logUrl)
         {
             AppCenterInternal.SetLogUrl(logUrl);
+        }
+
+        public static void CacheLogUrl(string logUrl)
+        {
+            logUrlTask.SetResult(logUrl);
         }
 
         /// <summary>
@@ -148,8 +168,15 @@ namespace Microsoft.AppCenter.Unity
         // Gets cached secret.
         public static AppCenterTask<string> GetSecretForPlatform()
         {
-            secretTask = new AppCenterTask<string>();
-            return secretTask;
+            if (secretTask != null)
+            {
+                secretTask = new AppCenterTask<string>();
+                return secretTask;
+            }
+            else
+            {
+                return AppCenterTask<string>.FromCompleted("");
+            }
         }
 
         // Gets the first instance of an app secret corresponding to the given platform name, or returns the string
