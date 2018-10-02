@@ -60,17 +60,15 @@ namespace Microsoft.AppCenter.Unity
             return guidTask;
         }
 
+        public static string GetSdkVersion()
+        {
+            return AppCenterInternal.GetSdkVersion();
+        }
+
         public static AppCenterTask<string> GetLogUrl() 
         {
-            if (logUrlTask != null)
-            {
-                logUrlTask = new AppCenterTask<string>();
-                return logUrlTask;
-            }
-            else 
-            {
-                return AppCenterTask<string>.FromCompleted("https://in.appcenter.ms/");
-            }
+            logUrlTask = new AppCenterTask<string>();
+            return logUrlTask;
         }
 
         /// <summary>
@@ -84,7 +82,10 @@ namespace Microsoft.AppCenter.Unity
 
         public static void CacheLogUrl(string logUrl)
         {
-            logUrlTask.SetResult(logUrl);
+            if (logUrlTask != null)
+            {
+                logUrlTask.SetResult(logUrl);
+            }
         }
 
         /// <summary>
@@ -168,15 +169,8 @@ namespace Microsoft.AppCenter.Unity
         // Gets cached secret.
         public static AppCenterTask<string> GetSecretForPlatform()
         {
-            if (secretTask != null)
-            {
-                secretTask = new AppCenterTask<string>();
-                return secretTask;
-            }
-            else
-            {
-                return AppCenterTask<string>.FromCompleted("");
-            }
+            secretTask = new AppCenterTask<string>();
+            return secretTask;
         }
 
         // Gets the first instance of an app secret corresponding to the given platform name, or returns the string
@@ -223,7 +217,10 @@ namespace Microsoft.AppCenter.Unity
 
                 platformSecret += nextChar;
             }
-            secretTask.SetResult(platformSecret);
+            if (secretTask != null)
+            {
+                secretTask.SetResult(platformSecret);
+            }
             return platformSecret;
         }
 

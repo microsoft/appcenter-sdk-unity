@@ -18,6 +18,7 @@ public class PuppetAppCenter : MonoBehaviour
     public Text AppSecretLabel;
     public Text LogUrlLabel;
     public Text DeviceIdLabel;
+    public Text SdkVersionLabel;
     public Dropdown LogLevel;
     public PuppetConfirmationDialog userConfirmationDialog;
 
@@ -122,6 +123,7 @@ public class PuppetAppCenter : MonoBehaviour
             LogUrlLabel.text = task.Result;
         });
         DeviceIdLabel.text = SystemInfo.deviceUniqueIdentifier;
+        SdkVersionLabel.text = AppCenter.GetSdkVersion();
         LogLevel.value = AppCenter.LogLevel - Microsoft.AppCenter.Unity.LogLevel.Verbose;
         Push.IsEnabledAsync().ContinueWith(task =>
         {
