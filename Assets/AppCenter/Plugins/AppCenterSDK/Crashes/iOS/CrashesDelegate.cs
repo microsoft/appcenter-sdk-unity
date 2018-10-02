@@ -62,10 +62,10 @@ namespace Microsoft.AppCenter.Unity.Crashes.Internal
         {
             if (externalHandler != null)
             {
-                ErrorReport errorReport = CrashesInternal.GetErrorReportFromIntPtr(report); 
-                ErrorAttachmentLog[] logs = getErrorAttachmentsHandler(errorReport);
-                List<IntPtr> nativeLogs = new List<IntPtr>();
-                foreach (ErrorAttachmentLog errorAttachmetLog in logs)
+                var errorReport = CrashesInternal.GetErrorReportFromIntPtr(report); 
+                var logs = getErrorAttachmentsHandler(errorReport);
+                var nativeLogs = new List<IntPtr>();
+                foreach (var errorAttachmetLog in logs)
                 {
                     IntPtr nativeLog = IntPtr.Zero;
                     if (errorAttachmetLog.Type == ErrorAttachmentLog.AttachmentType.Text)

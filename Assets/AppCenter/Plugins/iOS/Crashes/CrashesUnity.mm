@@ -80,7 +80,7 @@ void* app_center_unity_crashes_get_error_attachment_log_text(char* text, char* f
                                     [[MSErrorAttachmentLog alloc] initWithFilename:appcenter_unity_cstr_to_ns_string(fileName) attachmentText:appcenter_unity_cstr_to_ns_string(text)]);
 }
 
-void* app_center_unity_crashes_get_error_attachment_log_binary(unsigned char* data, int size, char* fileName, char* contentType)
+void* app_center_unity_crashes_get_error_attachment_log_binary(const void* data, int size, char* fileName, char* contentType)
 {
     return (void *)CFBridgingRetain(
                                     [[MSErrorAttachmentLog alloc] initWithFilename:appcenter_unity_cstr_to_ns_string(fileName) attachmentBinary:[[NSData alloc] initWithBytes:data length:size] contentType:appcenter_unity_cstr_to_ns_string(contentType)]);
