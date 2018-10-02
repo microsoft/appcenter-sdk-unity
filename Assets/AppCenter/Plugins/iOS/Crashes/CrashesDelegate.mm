@@ -17,12 +17,12 @@ void app_center_unity_crashes_set_delegate()
     [MSCrashes setDelegate:unityCrashesDelegate];
 }
 
-void app_center_unity_crashes_crashes_delegate_set_should_process_error_report_delegate(bool(*handler)(MSErrorReport *))
+void app_center_unity_crashes_delegate_set_should_process_error_report_delegate(bool(*handler)(MSErrorReport *))
 {
     shouldProcessErrorReport = handler;
 }
 
-void app_center_unity_crashes_crashes_delegate_set_get_error_attachments_delegate(NSArray<MSErrorAttachmentLog *> *(*handler)(MSErrorReport *))
+void app_center_unity_crashes_delegate_set_get_error_attachments_delegate(NSArray<MSErrorAttachmentLog *> *(*handler)(MSErrorReport *))
 {
     getErrorAttachments = handler;
 }
@@ -42,7 +42,7 @@ void app_center_unity_crashes_crashes_delegate_set_get_error_attachments_delegat
     if (getErrorAttachments)
         return (*getErrorAttachments)(errorReport);
     else
-        return NULL;
+        return nil;
 }
 
 @end

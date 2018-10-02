@@ -12,7 +12,7 @@ namespace Microsoft.AppCenter.Unity.Crashes.Internal
         {
         }
 
-        public static void SetGetErrorAttachmentsHandler(Crashes.GetErrorAttachmentstHandler handler)
+        public static void SetGetErrorAttachmentsHandler(Crashes.GetErrorAttachmentsHandler handler)
         {
         }
     }

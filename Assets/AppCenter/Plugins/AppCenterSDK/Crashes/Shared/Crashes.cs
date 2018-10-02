@@ -187,9 +187,9 @@ namespace Microsoft.AppCenter.Unity.Crashes
 #if ENABLE_IL2CPP
         [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
 #endif
-        public delegate ErrorAttachmentLog[] GetErrorAttachmentstHandler(ErrorReport errorReport);
+        public delegate ErrorAttachmentLog[] GetErrorAttachmentsHandler(ErrorReport errorReport);
 
-        public static GetErrorAttachmentstHandler GetErrorAttachments
+        public static GetErrorAttachmentsHandler GetErrorAttachments
         {
             set
             {
