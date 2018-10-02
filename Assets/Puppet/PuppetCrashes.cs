@@ -2,7 +2,6 @@
 //
 // Licensed under the MIT license.
 
-using Microsoft.AppCenter.Unity.Crashes;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -10,7 +9,7 @@ using System.Linq;
 using System.Threading;
 using UnityEngine;
 using UnityEngine.UI;
-using AOT;
+using Microsoft.AppCenter.Unity.Crashes;
 
 public class PuppetCrashes : MonoBehaviour
 {
@@ -19,8 +18,6 @@ public class PuppetCrashes : MonoBehaviour
     public Text LastSessionCrashReport;
     public InputField TextAttachment;
     public InputField BinaryAttachment;
-    public static string TextAttachmentStatic;
-    public static string BinaryAttachmentStatic;
 
     void OnEnable()
     {
@@ -29,27 +26,16 @@ public class PuppetCrashes : MonoBehaviour
             CrashesEnabled.isOn = task.Result;
         });
         ReportUnhandledExceptions.isOn = Crashes.IsReportingUnhandledExceptions();
-        Crashes.GetErrorAttachments = GetErrorAttachmentstHandler;
-    }
-
-    [MonoPInvokeCallback(typeof(Crashes.GetErrorAttachmentstHandler))]
-    public static ErrorAttachmentLog[] GetErrorAttachmentstHandler(ErrorReport errorReport)
-    {
-        return new ErrorAttachmentLog[]
-        {
-            ErrorAttachmentLog.AttachmentWithText(TextAttachmentStatic, "hello.txt"),
-            ErrorAttachmentLog.AttachmentWithBinary(ParseBytes(BinaryAttachmentStatic), "fake_image.jpeg", "image/jpeg")
-        };
     }
 
     public void OnValueChanged()
     {
-        TextAttachmentStatic = TextAttachment.text;
+        PlayerPrefs.SetString(PuppetAppCenter.TextAttachmentKey, TextAttachment.text);
     }
 
     public void OnBinaryValueChanged()
     {
-        BinaryAttachmentStatic = BinaryAttachment.text;
+        PlayerPrefs.SetString(PuppetAppCenter.BinaryAttachmentKey, BinaryAttachment.text);
     }
 
     public void SetCrashesEnabled(bool enabled)
@@ -131,30 +117,5 @@ public class PuppetCrashes : MonoBehaviour
             info.Add("Result", "No crash in last session");
         }
         LastSessionCrashReport.text = string.Join("\n", info.Select(i => i.Key + " : " + i.Value).ToArray());
-    }
-
-    private static byte[] ParseBytes(string bytesString) 
-    {
-        string[] bytesArray = bytesString.Split(' ');
-        if (bytesArray.Length == 0) 
-        {
-            return new byte[] { 100, 101, 102, 103 };
-        }
-        byte[] result = new byte[bytesArray.Length];
-        int i = 0;
-        foreach (string byteString in bytesArray) 
-        {
-            byte parsed;
-            bool isParsed = Byte.TryParse(bytesString, out parsed);
-            if (isParsed) 
-            {
-                result[i] = parsed;
-            }
-            else 
-            {
-                result[i] = 0;
-            }
-        }
-        return result;
     }
 }

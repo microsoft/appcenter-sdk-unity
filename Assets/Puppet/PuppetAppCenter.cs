@@ -2,6 +2,7 @@
 //
 // Licensed under the MIT license.
 
+using System;
 using System.Collections;
 using Microsoft.AppCenter.Unity;
 using UnityEngine;
@@ -21,6 +22,8 @@ public class PuppetAppCenter : MonoBehaviour
     public Text SdkVersionLabel;
     public Dropdown LogLevel;
     public PuppetConfirmationDialog userConfirmationDialog;
+    public static string TextAttachmentKey = "text_attachment";
+    public static string BinaryAttachmentKey = "binary_attachment";
 
     static PuppetAppCenter instance;
 
@@ -85,7 +88,43 @@ public class PuppetAppCenter : MonoBehaviour
     {
         Crashes.ShouldProcessErrorReport = ShouldProcessErrorReportHandler;
         Crashes.ShouldAwaitUserConfirmation = UserConfirmationHandler;
+        Crashes.GetErrorAttachments = GetErrorAttachmentstHandler;
         instance = this;
+    }
+
+    [MonoPInvokeCallback(typeof(Crashes.GetErrorAttachmentstHandler))]
+    public static ErrorAttachmentLog[] GetErrorAttachmentstHandler(ErrorReport errorReport)
+    {
+        return new ErrorAttachmentLog[]
+        {
+            ErrorAttachmentLog.AttachmentWithText(PlayerPrefs.GetString(TextAttachmentKey), "hello.txt"),
+            ErrorAttachmentLog.AttachmentWithBinary(ParseBytes(PlayerPrefs.GetString(BinaryAttachmentKey)), "fake_image.jpeg", "image/jpeg")
+        };
+    }
+
+    private static byte[] ParseBytes(string bytesString)
+    {
+        string[] bytesArray = bytesString.Split(' ');
+        if (bytesArray.Length == 0)
+        {
+            return new byte[] { 100, 101, 102, 103 };
+        }
+        byte[] result = new byte[bytesArray.Length];
+        int i = 0;
+        foreach (string byteString in bytesArray)
+        {
+            byte parsed;
+            bool isParsed = Byte.TryParse(bytesString, out parsed);
+            if (isParsed)
+            {
+                result[i] = parsed;
+            }
+            else
+            {
+                result[i] = 0;
+            }
+        }
+        return result;
     }
 
     [MonoPInvokeCallback(typeof(Crashes.UserConfirmationHandler))]
