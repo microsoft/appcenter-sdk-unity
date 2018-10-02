@@ -35,7 +35,7 @@ namespace Microsoft.AppCenter.Unity.Internal
 
         public static string GetSdkVersion()
         {
-            return _appCenter.CallStatic("getSdkVersion");
+            return _appCenter.CallStatic<string>("getSdkVersion");
         }
 
         public static AppCenterTask SetEnabledAsync(bool enabled)
