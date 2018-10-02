@@ -121,7 +121,7 @@ static void DeleteDirectoryIfExists(string directoryName)
 {
     if (Statics.Context.DirectoryExists(directoryName))
     {
-        Statics.Context.DeleteDirectory(directoryName, true);
+        Statics.Context.DeleteDirectory(directoryName, new DeleteDirectorySettings() { Recursive = true });
     }
 }
 
@@ -160,6 +160,6 @@ Task("RemoveTemporaries").Does(()=>
     var dirs = GetDirectories(Statics.TemporaryPrefix + "*");
     foreach (var directory in dirs)
     {
-        DeleteDirectory(directory, true);
+        DeleteDirectory(directory, new DeleteDirectorySettings() { Recursive = true });
     }
 });
