@@ -32,17 +32,25 @@ void app_center_unity_crashes_delegate_set_get_error_attachments_delegate(NSArra
 -(BOOL)crashes:(MSCrashes *)crashes shouldProcessErrorReport:(MSErrorReport *)errorReport
 {
     if (shouldProcessErrorReport)
+    {
         return (*shouldProcessErrorReport)(errorReport);
+    }
     else
+    {
         return true;
+    }
 }
 
 - (NSArray<MSErrorAttachmentLog *> *)attachmentsWithCrashes:(MSCrashes *)crashes forErrorReport:(MSErrorReport *)errorReport
 {
     if (getErrorAttachments)
+    {
         return (*getErrorAttachments)(errorReport);
+    }
     else
+    {
         return nil;
+    }
 }
 
 @end
