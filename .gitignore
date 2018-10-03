@@ -30,6 +30,7 @@ output/
 AppCenterStarter.m
 AppCenterStarter.m.meta
 Assets/Plugins/Android/res/values/appcenter-settings.xml
+Assets/Plugins/Android/res/values/appcenter-settings.xml.meta
 
 # .NET Core
 project.lock.json
