@@ -197,6 +197,45 @@ namespace Microsoft.AppCenter.Unity.Crashes
             }
         }
 
+#if ENABLE_IL2CPP
+        [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
+#endif
+        public delegate void SendingErrorReportHandler(ErrorReport errorReport);
+
+        public static SendingErrorReportHandler SendingErrorReport
+        {
+            set
+            {
+                CrashesDelegate.SetSendingErrorReportHandler(value);
+            }
+        }
+
+#if ENABLE_IL2CPP
+        [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
+#endif
+        public delegate void SentErrorReportHandler(ErrorReport errorReport);
+
+        public static SentErrorReportHandler SentErrorReport
+        {
+            set
+            {
+                CrashesDelegate.SetSentErrorReportHandler(value);
+            }
+        }
+
+#if ENABLE_IL2CPP
+        [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
+#endif
+        public delegate void FailedToSendErrorReportHandler(ErrorReport errorReport);
+
+        public static FailedToSendErrorReportHandler FailedToSendErrorReport
+        {
+            set
+            {
+                CrashesDelegate.SetFailedToSendErrorReportHandler(value);
+            }
+        }
+
         public static void StartCrashes()
         {
             CrashesInternal.StartCrashes();

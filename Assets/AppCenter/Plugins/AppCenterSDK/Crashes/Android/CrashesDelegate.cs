@@ -43,6 +43,10 @@ namespace Microsoft.AppCenter.Unity.Crashes.Internal
         public static void SetGetErrorAttachmentsHandler(Crashes.GetErrorAttachmentsHandler handler)
         {
         }
+
+        public static void SetSendingErrorReportHandler(Crashes.SendingErrorReportHandler handler)
+        {
+        }
     }
 }
 #endif
