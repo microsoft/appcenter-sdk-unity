@@ -18,8 +18,8 @@ namespace Microsoft.AppCenter.Unity
 
     public class AppCenter
     {
-        private static AppCenterTask<string> secretTask;
-        private static AppCenterTask<string> logUrlTask;
+        private static AppCenterTask<string> _secretTask;
+        private static AppCenterTask<string> _logUrlTask;
 
         public static LogLevel LogLevel
         {
@@ -67,8 +67,8 @@ namespace Microsoft.AppCenter.Unity
 
         public static AppCenterTask<string> GetLogUrl() 
         {
-            logUrlTask = new AppCenterTask<string>();
-            return logUrlTask;
+            _logUrlTask = new AppCenterTask<string>();
+            return _logUrlTask;
         }
 
         /// <summary>
@@ -82,9 +82,9 @@ namespace Microsoft.AppCenter.Unity
 
         public static void CacheLogUrl(string logUrl)
         {
-            if (logUrlTask != null)
+            if (_logUrlTask != null)
             {
-                logUrlTask.SetResult(logUrl);
+                _logUrlTask.SetResult(logUrl);
             }
         }
 
@@ -166,11 +166,13 @@ namespace Microsoft.AppCenter.Unity
                                                WrapperSdk.WrapperRuntimeVersion, null, null, null);
         }
 
+        /// <summary>
         // Gets cached secret.
+        /// </summary>
         public static AppCenterTask<string> GetSecretForPlatform()
         {
-            secretTask = new AppCenterTask<string>();
-            return secretTask;
+            _secretTask = new AppCenterTask<string>();
+            return _secretTask;
         }
 
         // Gets the first instance of an app secret corresponding to the given platform name, or returns the string
@@ -217,9 +219,9 @@ namespace Microsoft.AppCenter.Unity
 
                 platformSecret += nextChar;
             }
-            if (secretTask != null)
+            if (_secretTask != null)
             {
-                secretTask.SetResult(platformSecret);
+                _secretTask.SetResult(platformSecret);
             }
             return platformSecret;
         }
