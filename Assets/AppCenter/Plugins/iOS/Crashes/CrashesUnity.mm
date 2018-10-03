@@ -8,6 +8,8 @@
 #import "CrashesDelegate.h"
 #import <Foundation/Foundation.h>
 #import <AppCenter/MSAppCenter.h>
+#import "AppCenterCrashes/MSErrorAttachmentLog.h"
+#import "NSStringHelper.h"
 
 void* appcenter_unity_crashes_get_type()
 {
@@ -70,4 +72,22 @@ void* appcenter_unity_crashes_last_session_crash_report()
 void appcenter_unity_start_crashes()
 {
     [MSAppCenter startService:MSCrashes.class];
+}
+
+void* app_center_unity_crashes_get_error_attachment_log_text(char* text, char* fileName)
+{
+    return (void *)CFBridgingRetain(
+                                    [[MSErrorAttachmentLog alloc] initWithFilename:appcenter_unity_cstr_to_ns_string(fileName) attachmentText:appcenter_unity_cstr_to_ns_string(text)]);
+}
+
+void* app_center_unity_crashes_get_error_attachment_log_binary(const void* data, int size, char* fileName, char* contentType)
+{
+    return (void *)CFBridgingRetain(
+                                    [[MSErrorAttachmentLog alloc] initWithFilename:appcenter_unity_cstr_to_ns_string(fileName) attachmentBinary:[[NSData alloc] initWithBytes:data length:size] contentType:appcenter_unity_cstr_to_ns_string(contentType)]);
+}
+
+void* app_center_unity_create_error_attachments_array(MSErrorAttachmentLog* errorAttachment0, MSErrorAttachmentLog* errorAttachment1)
+{
+    NSArray<MSErrorAttachmentLog *>* errorAttachments = [NSArray arrayWithObjects:errorAttachment0, errorAttachment1, nil];
+    return (void *)CFBridgingRetain(errorAttachments);
 }
