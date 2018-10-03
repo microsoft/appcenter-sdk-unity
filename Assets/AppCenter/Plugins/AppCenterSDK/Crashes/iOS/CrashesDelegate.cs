@@ -13,26 +13,18 @@ namespace Microsoft.AppCenter.Unity.Crashes.Internal
 {
     public class CrashesDelegate
     {
-#if ENABLE_IL2CPP
-        [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
-#endif
-        public delegate bool NativeShouldProcessErrorReportDelegate(IntPtr report);
-        public static NativeShouldProcessErrorReportDelegate delegateShouldProcess;
-        private static Crashes.ShouldProcessErrorReportHandler externalHandler = null;
-
-#if ENABLE_IL2CPP
-        [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
-#endif
-        public delegate IntPtr NativeGetErrorAttachmentsDelegate(IntPtr report);
-        public static NativeGetErrorAttachmentsDelegate delegatelGetAttachments;
-        private static Crashes.GetErrorAttachmentsHandler getErrorAttachmentsHandler = null;
-
         static CrashesDelegate()
         {
-            delegateShouldProcess = ShouldProcessErrorReportNativeFunc;
-            app_center_unity_crashes_delegate_set_should_process_error_report_delegate(delegateShouldProcess);
-            delegatelGetAttachments = GetErrorAttachmentsNativeFunc;
-            app_center_unity_crashes_delegate_set_get_error_attachments_delegate(delegatelGetAttachments);
+            delegateShouldProcesReport = ShouldProcessErrorReportNativeFunc;
+            app_center_unity_crashes_delegate_set_should_process_error_report_delegate(delegateShouldProcesReport);
+            delegateGetAttachments = GetErrorAttachmentsNativeFunc;
+            app_center_unity_crashes_delegate_set_get_error_attachments_delegate(delegateGetAttachments);
+            delegateSendingErrorReport = SendingErrorReportNativeFunc;
+            app_center_unity_crashes_delegate_set_sending_error_report_delegate(delegateSendingErrorReport);
+            delegateSentErrorReport = SentErrorReportNativeFunc;
+            app_center_unity_crashes_delegate_set_sent_error_report_delegate(delegateSentErrorReport);
+            delegateFailedToSendErrorReport = FailedToSendErrorReportNativeFunc;
+            app_center_unity_crashes_delegate_set_failed_to_send_error_report_delegate(delegateFailedToSendErrorReport);
         }
 
         public static void SetDelegate()
@@ -40,13 +32,20 @@ namespace Microsoft.AppCenter.Unity.Crashes.Internal
             app_center_unity_crashes_set_delegate();
         }
 
+#if ENABLE_IL2CPP
+        [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
+#endif
+        public delegate bool NativeShouldProcessErrorReportDelegate(IntPtr report);
+        public static NativeShouldProcessErrorReportDelegate delegateShouldProcesReport;
+        private static Crashes.ShouldProcessErrorReportHandler shouldProcessReportHandler = null;
+
         [MonoPInvokeCallback(typeof(NativeShouldProcessErrorReportDelegate))]
         public static bool ShouldProcessErrorReportNativeFunc(IntPtr report)
         {
-            if (externalHandler != null)
+            if (shouldProcessReportHandler != null)
             {
                 ErrorReport errorReport = CrashesInternal.GetErrorReportFromIntPtr(report); 
-                return externalHandler(errorReport);   
+                return shouldProcessReportHandler(errorReport);   
             }
             else
             {
@@ -56,13 +55,20 @@ namespace Microsoft.AppCenter.Unity.Crashes.Internal
 
         public static void SetShouldProcessErrorReportHandler(Crashes.ShouldProcessErrorReportHandler handler)
         {
-            externalHandler = handler;
+            shouldProcessReportHandler = handler;
         }
+
+#if ENABLE_IL2CPP
+        [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
+#endif
+        public delegate IntPtr NativeGetErrorAttachmentsDelegate(IntPtr report);
+        public static NativeGetErrorAttachmentsDelegate delegateGetAttachments;
+        private static Crashes.GetErrorAttachmentsHandler getErrorAttachmentsHandler = null;
 
         [MonoPInvokeCallback(typeof(NativeGetErrorAttachmentsDelegate))]
         public static IntPtr GetErrorAttachmentsNativeFunc(IntPtr report)
         {
-            if (externalHandler != null)
+            if (getErrorAttachmentsHandler != null)
             {
                 var errorReport = CrashesInternal.GetErrorReportFromIntPtr(report); 
                 var logs = getErrorAttachmentsHandler(errorReport);
@@ -104,6 +110,72 @@ namespace Microsoft.AppCenter.Unity.Crashes.Internal
             getErrorAttachmentsHandler = handler;
         }
 
+#if ENABLE_IL2CPP
+        [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
+#endif
+        public delegate void NativeSendingErrorReportDelegate(IntPtr report);
+        public static NativeSendingErrorReportDelegate delegateSendingErrorReport;
+        private static Crashes.SendingErrorReportHandler sendingErrorReportHandler = null;
+
+        [MonoPInvokeCallback(typeof(NativeSendingErrorReportDelegate))]
+        public static void SendingErrorReportNativeFunc(IntPtr report)
+        {
+            if (sendingErrorReportHandler != null)
+            {
+                ErrorReport errorReport = CrashesInternal.GetErrorReportFromIntPtr(report);
+                sendingErrorReportHandler(errorReport);   
+            }
+        }
+
+        public static void SetSendingErrorReportHandler(Crashes.SendingErrorReportHandler handler)
+        {
+            sendingErrorReportHandler = handler;
+        }
+
+#if ENABLE_IL2CPP
+        [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
+#endif
+        public delegate void NativeSentErrorReportDelegate(IntPtr report);
+        public static NativeSentErrorReportDelegate delegateSentErrorReport;
+        private static Crashes.SentErrorReportHandler sentErrorReportHandler = null;
+
+        [MonoPInvokeCallback(typeof(NativeSentErrorReportDelegate))]
+        public static void SentErrorReportNativeFunc(IntPtr report)
+        {
+            if (sentErrorReportHandler != null)
+            {
+                ErrorReport errorReport = CrashesInternal.GetErrorReportFromIntPtr(report);
+                sentErrorReportHandler(errorReport);
+            }
+        }
+
+        public static void SetSentErrorReportHandler(Crashes.SentErrorReportHandler handler)
+        {
+            sentErrorReportHandler = handler;
+        }
+
+#if ENABLE_IL2CPP
+        [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
+#endif
+        public delegate void NativeFailedToSendErrorReportDelegate(IntPtr report);
+        public static NativeFailedToSendErrorReportDelegate delegateFailedToSendErrorReport;
+        private static Crashes.FailedToSendErrorReportHandler failedToSendErrorReportHandler = null;
+
+        [MonoPInvokeCallback(typeof(NativeFailedToSendErrorReportDelegate))]
+        public static void FailedToSendErrorReportNativeFunc(IntPtr report)
+        {
+            if (failedToSendErrorReportHandler != null)
+            {
+                ErrorReport errorReport = CrashesInternal.GetErrorReportFromIntPtr(report);
+                failedToSendErrorReportHandler(errorReport);
+            }
+        }
+
+        public static void SetFailedToSendErrorReportHandler(Crashes.FailedToSendErrorReportHandler handler)
+        {
+            failedToSendErrorReportHandler = handler;
+        }
+
 #region External
 
         [DllImport("__Internal")]
@@ -123,7 +195,18 @@ namespace Microsoft.AppCenter.Unity.Crashes.Internal
 
         [DllImport("__Internal")]
         private static extern IntPtr app_center_unity_create_error_attachments_array(IntPtr errorAttachment0, IntPtr errorAttachment1);
+
+        [DllImport("__Internal")]
+        private static extern void app_center_unity_crashes_delegate_set_sending_error_report_delegate(NativeSendingErrorReportDelegate functionPtr);
+
+        [DllImport("__Internal")]
+        private static extern void app_center_unity_crashes_delegate_set_sent_error_report_delegate(NativeSentErrorReportDelegate functionPtr);
+
+        [DllImport("__Internal")]
+        private static extern void app_center_unity_crashes_delegate_set_failed_to_send_error_report_delegate(NativeFailedToSendErrorReportDelegate functionPtr);
+
 #endregion
+    
     }
 }
 #endif

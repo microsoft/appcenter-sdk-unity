@@ -81,6 +81,9 @@ public class PuppetAppCenter : MonoBehaviour
         Crashes.ShouldProcessErrorReport = ShouldProcessErrorReportHandler;
         Crashes.ShouldAwaitUserConfirmation = UserConfirmationHandler;
         Crashes.GetErrorAttachments = GetErrorAttachmentstHandler;
+        Crashes.SendingErrorReport = SendingErrorReportHandler;
+        Crashes.SentErrorReport = SentErrorReportHandler;
+        Crashes.FailedToSendErrorReport = FailedToSendErrorReportHandler;
         instance = this;
     }
 
@@ -97,7 +100,7 @@ public class PuppetAppCenter : MonoBehaviour
         return true;
     }
 
-    [MonoPInvokeCallback(typeof(Crashes.GetErrorAttachmentsHandler))]
+//    [MonoPInvokeCallback(typeof(Crashes.GetErrorAttachmentsHandler))]
     public static ErrorAttachmentLog[] GetErrorAttachmentstHandler(ErrorReport errorReport)
     {
         byte[] bytes = new byte[] { 100, 101, 102, 103 };
@@ -106,6 +109,24 @@ public class PuppetAppCenter : MonoBehaviour
              ErrorAttachmentLog.AttachmentWithText("Hello world!", "hello.txt"),
              ErrorAttachmentLog.AttachmentWithBinary(bytes, "fake_image.jpeg", "image/jpeg")
         };
+    }
+
+    [MonoPInvokeCallback(typeof(Crashes.SendingErrorReportHandler))]
+    public static void SendingErrorReportHandler(ErrorReport errorReport)
+    {
+        Debug.Log("Puppet SendingErrorReportHandler");
+    }
+
+    [MonoPInvokeCallback(typeof(Crashes.SentErrorReportHandler))]
+    public static void SentErrorReportHandler(ErrorReport errorReport)
+    {
+        Debug.Log("Puppet SentErrorReportHandler");
+    }
+
+    [MonoPInvokeCallback(typeof(Crashes.FailedToSendErrorReportHandler))]
+    public static void FailedToSendErrorReportHandler(ErrorReport errorReport)
+    {
+        Debug.Log("Puppet FailedToSendErrorReportHandler");
     }
 
     void OnEnable()

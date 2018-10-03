@@ -47,6 +47,14 @@ namespace Microsoft.AppCenter.Unity.Crashes.Internal
         public static void SetSendingErrorReportHandler(Crashes.SendingErrorReportHandler handler)
         {
         }
+
+        public static void SetSentErrorReportHandler(Crashes.SentErrorReportHandler handler)
+        {
+        }
+
+        public static void SetFailedToSendErrorReportHandler(Crashes.FailedToSendErrorReportHandler handler)
+        {
+        }
     }
 }
 #endif
