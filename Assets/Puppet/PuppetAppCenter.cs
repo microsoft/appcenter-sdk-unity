@@ -80,7 +80,7 @@ public class PuppetAppCenter : MonoBehaviour
     {
         Crashes.ShouldProcessErrorReport = ShouldProcessErrorReportHandler;
         Crashes.ShouldAwaitUserConfirmation = UserConfirmationHandler;
-        Crashes.GetErrorAttachments = GetErrorAttachmentstHandler;
+//        Crashes.GetErrorAttachments = GetErrorAttachmentstHandler;
         instance = this;
     }
 
@@ -97,16 +97,16 @@ public class PuppetAppCenter : MonoBehaviour
         return true;
     }
 
-    [MonoPInvokeCallback(typeof(Crashes.GetErrorAttachmentsHandler))]
-    public static ErrorAttachmentLog[] GetErrorAttachmentstHandler(ErrorReport errorReport)
-    {
-        byte[] bytes = new byte[] { 100, 101, 102, 103 };
-        return new ErrorAttachmentLog[]
-        {
-             ErrorAttachmentLog.AttachmentWithText("Hello world!", "hello.txt"),
-             ErrorAttachmentLog.AttachmentWithBinary(bytes, "fake_image.jpeg", "image/jpeg")
-        };
-    }
+//    [MonoPInvokeCallback(typeof(Crashes.GetErrorAttachmentsHandler))]
+//    public static ErrorAttachmentLog[] GetErrorAttachmentstHandler(ErrorReport errorReport)
+//    {
+//        byte[] bytes = new byte[] { 100, 101, 102, 103 };
+//        return new ErrorAttachmentLog[]
+//        {
+//             ErrorAttachmentLog.AttachmentWithText("Hello world!", "hello.txt"),
+//             ErrorAttachmentLog.AttachmentWithBinary(bytes, "fake_image.jpeg", "image/jpeg")
+//        };
+//    }
 
     void OnEnable()
     {

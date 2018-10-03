@@ -166,7 +166,7 @@ namespace Microsoft.AppCenter.Unity.Crashes
 
         public enum ConfirmationResult { DontSend, Send, AlwaysSend };
         
-        public static void NotifyWithUserConfirmation(ConfirmationResult answer)
+        public static void NotifyUserConfirmation(ConfirmationResult answer)
         {
             CrashesInternal.NotifyWithUserConfirmation(answer);
         }
