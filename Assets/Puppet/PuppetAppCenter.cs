@@ -88,7 +88,7 @@ public class PuppetAppCenter : MonoBehaviour
     {
         Crashes.ShouldProcessErrorReport = ShouldProcessErrorReportHandler;
         Crashes.ShouldAwaitUserConfirmation = UserConfirmationHandler;
-        Crashes.GetErrorAttachments = GetErrorAttachmentstHandler;
+//        Crashes.GetErrorAttachments = GetErrorAttachmentstHandler;
         instance = this;
     }
 

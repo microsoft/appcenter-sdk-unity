@@ -12,21 +12,23 @@ namespace Microsoft.AppCenter.Unity.Crashes
 
         public static ErrorAttachmentLog AttachmentWithText(string text, string fileName)
         {
-            var attachment = new ErrorAttachmentLog();
-            attachment.Text = text;
-            attachment.FileName = fileName;
-            attachment.Type = AttachmentType.Text;
-            return attachment;
+            return new ErrorAttachmentLog
+            {
+                Text = text,
+                FileName = fileName,
+                Type = AttachmentType.Text
+            }; 
         }
 
         public static ErrorAttachmentLog AttachmentWithBinary(byte[] data, string fileName, string contentType)
         {
-            var attachment = new ErrorAttachmentLog();
-            attachment.Data = data;
-            attachment.FileName = fileName;
-            attachment.ContentType = contentType;
-            attachment.Type = AttachmentType.Binary;
-            return attachment;
+            return new ErrorAttachmentLog
+            {
+                Data = data,
+                FileName = fileName,
+                ContentType = contentType,
+                Type = AttachmentType.Binary
+            }; 
         }
 
         public enum AttachmentType { Text, Binary }
