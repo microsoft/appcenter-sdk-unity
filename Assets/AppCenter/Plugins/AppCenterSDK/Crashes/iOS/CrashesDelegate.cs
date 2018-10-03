@@ -16,14 +16,14 @@ namespace Microsoft.AppCenter.Unity.Crashes.Internal
 #if ENABLE_IL2CPP
         [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
 #endif
-        delegate bool NativeShouldProcessErrorReportDelegate(IntPtr report);
-        static NativeShouldProcessErrorReportDelegate delegateShouldProcess;
-        static Crashes.ShouldProcessErrorReportHandler externalHandler = null;
+        public delegate bool NativeShouldProcessErrorReportDelegate(IntPtr report);
+        public static NativeShouldProcessErrorReportDelegate delegateShouldProcess;
+        private static Crashes.ShouldProcessErrorReportHandler externalHandler = null;
 
         [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
-        delegate IntPtr NativeGetErrorAttachmentsDelegate(IntPtr report);
-        static NativeGetErrorAttachmentsDelegate delegatelGetAttachments;
-        static Crashes.GetErrorAttachmentsHandler getErrorAttachmentsHandler = null;
+        public delegate IntPtr NativeGetErrorAttachmentsDelegate(IntPtr report);
+        public static NativeGetErrorAttachmentsDelegate delegatelGetAttachments;
+        private static Crashes.GetErrorAttachmentsHandler getErrorAttachmentsHandler = null;
 
         static CrashesDelegate()
         {

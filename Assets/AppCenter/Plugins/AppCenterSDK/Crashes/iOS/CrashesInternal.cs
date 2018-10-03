@@ -92,10 +92,16 @@ namespace Microsoft.AppCenter.Unity.Crashes.Internal
             var exceptionReason = app_center_unity_crashes_error_report_exception_reason(errorReportPtr);
             var startTime = app_center_unity_crashes_error_report_app_start_time(errorReportPtr);
             DateTimeOffset dtoStart;
-            if (startTime != null) dtoStart = DateTimeOffset.Parse(startTime);
+            if (startTime != null) 
+            {
+                dtoStart = DateTimeOffset.Parse(startTime);
+            }
             var errorTime = app_center_unity_crashes_error_report_app_error_time(errorReportPtr);
             DateTimeOffset dtoError;
-            if (errorTime != null) dtoError = DateTimeOffset.Parse(errorTime);
+            if (errorTime != null) 
+            {
+                dtoError = DateTimeOffset.Parse(errorTime);
+            }
             var isAppKill = app_center_unity_crashes_error_report_is_app_kill(errorReportPtr);
             var condition = exceptionName + " : " + exceptionReason;
             var exception = new Models.Exception(condition, "");
