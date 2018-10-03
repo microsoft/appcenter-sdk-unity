@@ -28,6 +28,11 @@ namespace Microsoft.AppCenter.Unity.Internal
             UWPAppCenter.Start(appSecret, services);
         }
 
+        public static string GetSdkVersion()
+        {
+            return "";
+        }
+
         public static void StartServices(Type[] services, int numServices)
         {
             Prepare();

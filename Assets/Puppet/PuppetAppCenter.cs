@@ -2,6 +2,7 @@
 //
 // Licensed under the MIT license.
 
+using System;
 using System.Collections;
 using Microsoft.AppCenter.Unity;
 using UnityEngine;
@@ -14,8 +15,15 @@ using AOT;
 public class PuppetAppCenter : MonoBehaviour
 {
     public Toggle Enabled;
+    public Text InstallIdLabel;
+    public Text AppSecretLabel;
+    public Text LogUrlLabel;
+    public Text DeviceIdLabel;
+    public Text SdkVersionLabel;
     public Dropdown LogLevel;
     public PuppetConfirmationDialog userConfirmationDialog;
+    public const string TextAttachmentKey = "text_attachment";
+    public const string BinaryAttachmentKey = "binary_attachment";
 
     static PuppetAppCenter instance;
 
@@ -80,8 +88,43 @@ public class PuppetAppCenter : MonoBehaviour
     {
         Crashes.ShouldProcessErrorReport = ShouldProcessErrorReportHandler;
         Crashes.ShouldAwaitUserConfirmation = UserConfirmationHandler;
-//        Crashes.GetErrorAttachments = GetErrorAttachmentstHandler;
+        Crashes.GetErrorAttachments = GetErrorAttachmentstHandler;
         instance = this;
+    }
+
+    [MonoPInvokeCallback(typeof(Crashes.GetErrorAttachmentsHandler))]
+    public static ErrorAttachmentLog[] GetErrorAttachmentstHandler(ErrorReport errorReport)
+    {
+        return new ErrorAttachmentLog[]
+        {
+            ErrorAttachmentLog.AttachmentWithText(PlayerPrefs.GetString(TextAttachmentKey), "hello.txt"),
+            ErrorAttachmentLog.AttachmentWithBinary(ParseBytes(PlayerPrefs.GetString(BinaryAttachmentKey)), "fake_image.jpeg", "image/jpeg")
+        };
+    }
+
+    private static byte[] ParseBytes(string bytesString)
+    {
+        string[] bytesArray = bytesString.Split(' ');
+        if (bytesArray.Length == 0)
+        {
+            return new byte[] { 100, 101, 102, 103 };
+        }
+        byte[] result = new byte[bytesArray.Length];
+        int i = 0;
+        foreach (string byteString in bytesArray)
+        {
+            byte parsed;
+            bool isParsed = Byte.TryParse(bytesString, out parsed);
+            if (isParsed)
+            {
+                result[i] = parsed;
+            }
+            else
+            {
+                result[i] = 0;
+            }
+        }
+        return result;
     }
 
     [MonoPInvokeCallback(typeof(Crashes.UserConfirmationHandler))]
@@ -97,17 +140,6 @@ public class PuppetAppCenter : MonoBehaviour
         return true;
     }
 
-//    [MonoPInvokeCallback(typeof(Crashes.GetErrorAttachmentsHandler))]
-//    public static ErrorAttachmentLog[] GetErrorAttachmentstHandler(ErrorReport errorReport)
-//    {
-//        byte[] bytes = new byte[] { 100, 101, 102, 103 };
-//        return new ErrorAttachmentLog[]
-//        {
-//             ErrorAttachmentLog.AttachmentWithText("Hello world!", "hello.txt"),
-//             ErrorAttachmentLog.AttachmentWithBinary(bytes, "fake_image.jpeg", "image/jpeg")
-//        };
-//    }
-
     void OnEnable()
     {
         AppCenter.IsEnabledAsync().ContinueWith(task =>
@@ -118,9 +150,19 @@ public class PuppetAppCenter : MonoBehaviour
         {
             if (task.Result.HasValue)
             {
-                print("Install ID = " + task.Result.ToString());
+                InstallIdLabel.text = task.Result.ToString();
             }
         });
+        AppCenter.GetSecretForPlatform().ContinueWith(task =>
+        {
+            AppSecretLabel.text = task.Result;
+        });
+        AppCenter.GetLogUrl().ContinueWith(task =>
+        {
+            LogUrlLabel.text = task.Result;
+        });
+        DeviceIdLabel.text = SystemInfo.deviceUniqueIdentifier;
+        SdkVersionLabel.text = AppCenter.GetSdkVersion();
         LogLevel.value = AppCenter.LogLevel - Microsoft.AppCenter.Unity.LogLevel.Verbose;
         Push.IsEnabledAsync().ContinueWith(task =>
         {
