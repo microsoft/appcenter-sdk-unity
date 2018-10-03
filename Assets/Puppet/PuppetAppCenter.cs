@@ -22,8 +22,8 @@ public class PuppetAppCenter : MonoBehaviour
     public Text SdkVersionLabel;
     public Dropdown LogLevel;
     public PuppetConfirmationDialog userConfirmationDialog;
-    public static string TextAttachmentKey = "text_attachment";
-    public static string BinaryAttachmentKey = "binary_attachment";
+    public const string TextAttachmentKey = "text_attachment";
+    public const string BinaryAttachmentKey = "binary_attachment";
 
     static PuppetAppCenter instance;
 
@@ -88,11 +88,11 @@ public class PuppetAppCenter : MonoBehaviour
     {
         Crashes.ShouldProcessErrorReport = ShouldProcessErrorReportHandler;
         Crashes.ShouldAwaitUserConfirmation = UserConfirmationHandler;
-//        Crashes.GetErrorAttachments = GetErrorAttachmentstHandler;
+        Crashes.GetErrorAttachments = GetErrorAttachmentstHandler;
         instance = this;
     }
 
-    [MonoPInvokeCallback(typeof(Crashes.GetErrorAttachmentstHandler))]
+    [MonoPInvokeCallback(typeof(Crashes.GetErrorAttachmentsHandler))]
     public static ErrorAttachmentLog[] GetErrorAttachmentstHandler(ErrorReport errorReport)
     {
         return new ErrorAttachmentLog[]
