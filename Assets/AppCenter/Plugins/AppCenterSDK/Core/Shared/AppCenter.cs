@@ -67,7 +67,10 @@ namespace Microsoft.AppCenter.Unity
 
         public static AppCenterTask<string> GetLogUrl() 
         {
-            _logUrlTask = new AppCenterTask<string>();
+            if (_logUrlTask == null)
+            {
+                _logUrlTask = new AppCenterTask<string>();
+            }
             return _logUrlTask;
         }
 
@@ -171,7 +174,10 @@ namespace Microsoft.AppCenter.Unity
         /// </summary>
         public static AppCenterTask<string> GetSecretForPlatform()
         {
-            _secretTask = new AppCenterTask<string>();
+            if (_secretTask == null)
+            {
+                _secretTask = new AppCenterTask<string>();
+            }
             return _secretTask;
         }
 
