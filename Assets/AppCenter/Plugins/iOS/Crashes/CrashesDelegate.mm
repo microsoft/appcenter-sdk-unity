@@ -12,7 +12,7 @@ static void (*sendingErrorReport)(MSErrorReport *);
 static void (*sentErrorReport)(MSErrorReport *);
 static void (*failedToSendErrorReport)(MSErrorReport *);
 
-static UnityCrashesDelegate *unityCrashesDelegate = NULL;
+static UnityCrashesDelegate *unityCrashesDelegate;
 
 void app_center_unity_crashes_set_delegate()
 {

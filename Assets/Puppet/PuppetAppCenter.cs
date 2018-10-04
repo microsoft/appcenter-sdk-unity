@@ -95,7 +95,7 @@ public class PuppetAppCenter : MonoBehaviour
         instance = this;
     }
 
-    [MonoPInvokeCallback(typeof(Crashes.GetErrorAttachmentsHandler))]
+//    [MonoPInvokeCallback(typeof(Crashes.GetErrorAttachmentsHandler))]
     public static ErrorAttachmentLog[] GetErrorAttachmentstHandler(ErrorReport errorReport)
     {
         return new ErrorAttachmentLog[]
