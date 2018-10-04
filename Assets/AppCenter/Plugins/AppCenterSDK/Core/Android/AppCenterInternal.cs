@@ -33,6 +33,11 @@ namespace Microsoft.AppCenter.Unity.Internal
             _appCenter.CallStatic("setLogUrl", logUrl);
         }
 
+        public static string GetSdkVersion()
+        {
+            return _appCenter.CallStatic<string>("getSdkVersion");
+        }
+
         public static AppCenterTask SetEnabledAsync(bool enabled)
         {
             var future = _appCenter.CallStatic<AndroidJavaObject>("setEnabled", enabled);

@@ -11,10 +11,10 @@ using UnityEngine;
 public class AppCenterSettingsAdvanced : ScriptableObject
 {
     [AppSecret("Transmission target token")]
-    public string TransmissionTargetToken = "transmission-target-token";
+    public string TransmissionTargetToken = "";
 
     [Tooltip("Configure the way App Center is started. For more info on startup types refer to the documentation.")]
-    public StartupType AppCenterStartupType = StartupType.AppCenter;
+    public StartupType AppCenterStartupType = StartupType.Both;
 
     [Tooltip("Start Android and iOS native SDKs from AppCenterBehavior script instead of the native plugins. This option does not affect UWP apps.")]
     public bool StartFromAppCenterBehavior = false;

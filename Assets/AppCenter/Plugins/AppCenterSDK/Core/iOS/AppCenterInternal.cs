@@ -19,6 +19,11 @@ namespace Microsoft.AppCenter.Unity.Internal
         {
             return appcenter_unity_get_log_level();
         }
+        
+        public static string GetSdkVersion()
+        {
+            return appcenter_unity_get_sdk_version();
+        }
 
         public static bool IsConfigured()
         {
@@ -98,6 +103,9 @@ namespace Microsoft.AppCenter.Unity.Internal
 
         [DllImport("__Internal")]
         private static extern int appcenter_unity_get_log_level();
+
+        [DllImport("__Internal")]
+        private static extern string appcenter_unity_get_sdk_version();
 
         [DllImport("__Internal")]
         private static extern bool appcenter_unity_is_configured();

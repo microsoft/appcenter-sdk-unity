@@ -18,6 +18,9 @@ namespace Microsoft.AppCenter.Unity
 
     public class AppCenter
     {
+        private static AppCenterTask<string> _secretTask;
+        private static AppCenterTask<string> _logUrlTask;
+
         public static LogLevel LogLevel
         {
             get { return (LogLevel)AppCenterInternal.GetLogLevel(); }
@@ -57,6 +60,20 @@ namespace Microsoft.AppCenter.Unity
             return guidTask;
         }
 
+        public static string GetSdkVersion()
+        {
+            return AppCenterInternal.GetSdkVersion();
+        }
+
+        public static AppCenterTask<string> GetLogUrl() 
+        {
+            if (_logUrlTask == null)
+            {
+                _logUrlTask = new AppCenterTask<string>();
+            }
+            return _logUrlTask;
+        }
+
         /// <summary>
         /// Change the base URL (scheme + authority + port only) used to communicate with the backend.
         /// </summary>
@@ -64,6 +81,14 @@ namespace Microsoft.AppCenter.Unity
         public static void SetLogUrl(string logUrl)
         {
             AppCenterInternal.SetLogUrl(logUrl);
+        }
+
+        public static void CacheLogUrl(string logUrl)
+        {
+            if (_logUrlTask != null)
+            {
+                _logUrlTask.SetResult(logUrl);
+            }
         }
 
         /// <summary>
@@ -87,6 +112,18 @@ namespace Microsoft.AppCenter.Unity
         public static void SetWrapperSdk()
         {
             AppCenterInternal.SetWrapperSdk(WrapperSdk.WrapperSdkVersion, WrapperSdk.Name, WrapperSdk.WrapperRuntimeVersion, null, null, null);
+        }
+
+        /// <summary>
+        // Gets cached secret.
+        /// </summary>
+        public static AppCenterTask<string> GetSecretForPlatform()
+        {
+            if (_secretTask == null)
+            {
+                _secretTask = new AppCenterTask<string>();
+            }
+            return _secretTask;
         }
 
         // Gets the first instance of an app secret corresponding to the given platform name, or returns the string
@@ -133,7 +170,10 @@ namespace Microsoft.AppCenter.Unity
 
                 platformSecret += nextChar;
             }
-
+            if (_secretTask != null)
+            {
+                _secretTask.SetResult(platformSecret);
+            }
             return platformSecret;
         }
 

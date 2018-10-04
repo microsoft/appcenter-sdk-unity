@@ -6,8 +6,8 @@ using System.IO;
 
 public class AppCenterSettingsMakerIos
 {
-    private const string TemplateFilePath = "Assets/AppCenter/Plugins/iOS/Core/AppCenterStarter.original";
-    private const string TargetFilePath = "Assets/AppCenter/Plugins/iOS/Core/AppCenterStarter.m";
+    private const string TemplateFilePath = AppCenterSettingsContext.AppCenterPath + "/AppCenter/Plugins/iOS/Core/AppCenterStarter.original";
+    private const string TargetFilePath = AppCenterSettingsContext.AppCenterPath + "/AppCenter/Plugins/iOS/Core/AppCenterStarter.m";
     private const string AppSecretSearchText = "appcenter-app-secret";
     private const string TransmissionTargetTokenSearchText = "appcenter-transmission-target-token";
     private const string LogUrlSearchText = "custom-log-url";
