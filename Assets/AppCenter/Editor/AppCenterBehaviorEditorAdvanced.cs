@@ -15,7 +15,7 @@ public class AppCenterBehaviorEditorAdvanced : Editor
         var behaviour = (AppCenterBehaviorAdvanced) target;
         if (behaviour.SettingsAdvanced == null)
         {
-            behaviour.SettingsAdvanced = AppCenterSettingsContext.SettingsInstanceAdvanced;
+            behaviour.SettingsAdvanced = AppCenterSettingsContext.CreateSettingsInstanceAdvanced();
         }
         
         // Draw settings.
