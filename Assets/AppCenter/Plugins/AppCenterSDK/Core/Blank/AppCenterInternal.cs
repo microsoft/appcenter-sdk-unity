@@ -33,9 +33,12 @@ namespace Microsoft.AppCenter.Unity.Internal
         {
         }
 
+        public static void Start(string appSecret, Type[] services)
+        {
+        }
+
         public static void StartFromLibrary(ServiceType[] services)
         {
-
         }
 
         public static void SetLogLevel(int logLevel)

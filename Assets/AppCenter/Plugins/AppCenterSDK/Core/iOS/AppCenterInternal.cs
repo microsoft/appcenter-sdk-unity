@@ -61,16 +61,34 @@ namespace Microsoft.AppCenter.Unity.Internal
                                          string liveUpdatePackageHash)
         {
             appcenter_unity_set_wrapper_sdk(wrapperSdkVersion,
-                                                wrapperSdkName,
-                                                wrapperRuntimeVersion,
-                                                liveUpdateReleaseLabel,
-                                                liveUpdateDeploymentKey,
-                                                liveUpdatePackageHash);
+                                            wrapperSdkName,
+                                            wrapperRuntimeVersion,
+                                            liveUpdateReleaseLabel,
+                                            liveUpdateDeploymentKey,
+                                            liveUpdatePackageHash);
         }
 
-        public static void StartFromLibrary(IntPtr[] services) 
+        public static void Start(string appSecret, Type[] services)
+        {
+            var nativeServiceTypes = ServicesToNativeTypes(services);
+            appcenter_unity_start(appSecret, nativeServiceTypes, nativeServiceTypes.Length);
+        }
+
+        public static void StartFromLibrary(IntPtr[] services)
         {
             appcenter_unity_start_from_library(services, services.Length);
+        }
+
+        private static IntPtr[] ServicesToNativeTypes(Type[] services)
+        {
+            var classPointers = new IntPtr[services.Length];
+            int currentIdx = 0;
+            foreach (var serviceType in services)
+            {
+                IntPtr nativeType = (IntPtr)serviceType.GetMethod("GetNativeType").Invoke(null, null);
+                classPointers[currentIdx++] = nativeType;
+            }
+            return classPointers;
         }
 
 #region External
@@ -97,6 +115,9 @@ namespace Microsoft.AppCenter.Unity.Internal
         private static extern string appcenter_unity_get_install_id();
 
         [DllImport("__Internal")]
+        private static extern void appcenter_unity_start(string appSecret, IntPtr[] classes, int count);
+
+        [DllImport("__Internal")]
         private static extern void appcenter_unity_start_from_library(IntPtr[] classes, int count);
 
         [DllImport("__Internal")]
@@ -104,11 +125,11 @@ namespace Microsoft.AppCenter.Unity.Internal
 
         [DllImport("__Internal")]
         private static extern void appcenter_unity_set_wrapper_sdk(string wrapperSdkVersion,
-                                                                       string wrapperSdkName,
-                                                                       string wrapperRuntimeVersion,
-                                                                       string liveUpdateReleaseLabel,
-                                                                       string liveUpdateDeploymentKey,
-                                                                       string liveUpdatePackageHash);
+                                                                   string wrapperSdkName,
+                                                                   string wrapperRuntimeVersion,
+                                                                   string liveUpdateReleaseLabel,
+                                                                   string liveUpdateDeploymentKey,
+                                                                   string liveUpdatePackageHash);
 
 #endregion
     }

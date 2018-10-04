@@ -1,8 +1,10 @@
+using Microsoft.AppCenter.Unity;
 using System.IO;
 using UnityEditor;
 using UnityEditor.Build;
 #if UNITY_2018_1_OR_NEWER
 using UnityEditor.Build.Reporting;
+using UnityEngine;
 #endif
 
 #if UNITY_2018_1_OR_NEWER
@@ -71,7 +73,14 @@ public class AppCenterPreBuild : IPreprocessBuild
             settingsMaker.StartDistributeClass();
         }
         settingsMaker.SetLogLevel((int)settings.InitialLogLevel);
-        settingsMaker.SetStartupType((int)advancedSettings.AppCenterStartupType);
+        if (advancedSettings.StartFromAppCenterBehavior)
+        {
+            settingsMaker.SetStartupType((int)StartupType.Skip);
+        }
+        else
+        {
+            settingsMaker.SetStartupType((int)advancedSettings.AppCenterStartupType);
+        }
         settingsMaker.SetTransmissionTargetToken(advancedSettings.TransmissionTargetToken);
         settingsMaker.CommitSettings();
     }
@@ -111,7 +120,14 @@ public class AppCenterPreBuild : IPreprocessBuild
             }
             settingsMaker.StartDistributeClass();
         }
-        settingsMaker.SetStartupType((int)advancedSettings.AppCenterStartupType);
+        if (advancedSettings.StartFromAppCenterBehavior)
+        {
+            settingsMaker.SetStartupType((int)StartupType.Skip);
+        }
+        else
+        {
+            settingsMaker.SetStartupType((int)advancedSettings.AppCenterStartupType);
+        }
         settingsMaker.SetTransmissionTargetToken(advancedSettings.TransmissionTargetToken);
         settingsMaker.CommitSettings();
     }

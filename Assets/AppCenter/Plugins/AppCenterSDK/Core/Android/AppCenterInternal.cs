@@ -85,7 +85,20 @@ namespace Microsoft.AppCenter.Unity.Internal
             wrapperSdkObject.Call("setLiveUpdatePackageHash", liveUpdatePackageHash);
             _appCenter.CallStatic("setWrapperSdk", wrapperSdkObject);
         }
-        
+
+        public static void Start(string appSecret, Type[] services)
+        {
+            var nativeServiceTypes = ServicesToNativeTypes(services);
+            var rawAppSecretString = AndroidJNI.NewStringUTF(appSecret);
+            var startMethod = AndroidJNI.GetStaticMethodID(_appCenter.GetRawClass(), "start", "(Landroid/app/Application;Ljava/lang/String;[Ljava/lang/Class;)V");
+            AndroidJNI.CallStaticVoidMethod(_appCenter.GetRawClass(), startMethod, new jvalue[]
+            {
+                new jvalue { l = GetAndroidApplication().GetRawObject() },
+                new jvalue { l = rawAppSecretString },
+                new jvalue { l = nativeServiceTypes }
+            });
+        }
+
         private static AndroidJavaObject GetAndroidContext()
         {
             if (_context != null) 
@@ -106,6 +119,19 @@ namespace Microsoft.AppCenter.Unity.Internal
                 new jvalue { l = GetAndroidContext().GetRawObject() }, 
                 new jvalue { l = servicesArray[0] } 
             });
+        }
+
+        public static IntPtr ServicesToNativeTypes(Type[] services)
+        {
+            var classClass = AndroidJNI.FindClass("java/lang/Class");
+            var array = AndroidJNI.NewObjectArray(services.Length, classClass, classClass);
+            int currentIdx = 0;
+            foreach (var serviceType in services)
+            {
+                var nativeType = (IntPtr)serviceType.GetMethod("GetNativeType").Invoke(null, null);
+                AndroidJNI.SetObjectArrayElement(array, currentIdx++, nativeType);
+            }
+            return array;
         }
     }
 }

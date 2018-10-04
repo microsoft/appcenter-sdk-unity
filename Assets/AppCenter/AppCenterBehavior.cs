@@ -74,8 +74,7 @@ public class AppCenterBehavior : MonoBehaviour
             AppCenter.SetLogUrl(Settings.CustomLogUrl.Url);
         }
         var appSecret = AppCenter.GetSecretForPlatform(Settings.AppSecret);
-        var nativeServiceTypes = AppCenter.ServicesToNativeTypes(services);
-        AppCenterInternal.Start(appSecret, nativeServiceTypes, services.Length);
+        AppCenterInternal.Start(appSecret, services);
 #endif
 
         InvokeInitializedServices();

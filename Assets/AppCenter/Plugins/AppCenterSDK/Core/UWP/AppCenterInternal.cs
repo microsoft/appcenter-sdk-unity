@@ -22,10 +22,11 @@ namespace Microsoft.AppCenter.Unity.Internal
             UWPAppCenter.Configure(appSecret);
         }
 
-        public static void Start(string appSecret, Type[] services, int numServices)
+        public static void Start(string appSecret, Type[] services)
         {
+            var nativeServiceTypes = ServicesToNativeTypes(services);
             Prepare();
-            UWPAppCenter.Start(appSecret, services);
+            UWPAppCenter.Start(appSecret, nativeServiceTypes);
         }
 
         public static void StartServices(Type[] services, int numServices)
@@ -75,7 +76,8 @@ namespace Microsoft.AppCenter.Unity.Internal
             Prepare();
             var installIdTask = UWPAppCenter.GetInstallIdAsync();
             var stringTask = new AppCenterTask<string>();
-            installIdTask.ContinueWith(t => {
+            installIdTask.ContinueWith(t =>
+            {
                 var installId = t.Result?.ToString();
                 stringTask.SetResult(installId);
             });
@@ -145,9 +147,28 @@ namespace Microsoft.AppCenter.Unity.Internal
             }
         }
 
-        public static void StartFromLibrary(Type[] services) 
+        public static void StartFromLibrary(Type[] services)
         {
+        }
 
+        public static Type[] ServicesToNativeTypes(Type[] services)
+        {
+            //TODO after all namespaces are changed to be in Microsoft.AppCenter.Unity,
+            //TODO remove case where 'method == null'
+            var nativeTypes = new Type[services.Length];
+            for (var i = 0; i < services.Length; ++i)
+            {
+                var method = services[i].GetMethod("GetNativeType");
+                if (method == null)
+                {
+                    nativeTypes[i] = services[i];
+                }
+                else
+                {
+                    nativeTypes[i] = (Type)method.Invoke(null, null);
+                }
+            }
+            return nativeTypes;
         }
 
         private static void Prepare()

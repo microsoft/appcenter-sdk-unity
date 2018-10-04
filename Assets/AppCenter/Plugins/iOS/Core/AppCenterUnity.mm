@@ -32,12 +32,14 @@ void appcenter_unity_set_enabled(bool isEnabled)
   [MSAppCenter setEnabled:isEnabled];
 }
 
+void appcenter_unity_start(const char* appSecret, void** services, int count) {
+  NSMutableArray<Class>* servicesArray = get_services_array(services, count);
+  [MSAppCenter start:appcenter_unity_cstr_to_ns_string(appSecret) withServices:servicesArray];
+}
+
 void appcenter_unity_start_from_library(void** services, int count) {
-    NSMutableArray<Class>* mutableClasses = [NSMutableArray new];
-    for (int i = 0; i < count; i++) {
-        [mutableClasses addObject:(Class)CFBridgingRelease(services[i])];
-    }
-    [MSAppCenter startFromLibraryWithServices:mutableClasses];
+  NSMutableArray<Class>* servicesArray = get_services_array(services, count);
+  [MSAppCenter startFromLibraryWithServices:servicesArray];
 }
 
 bool appcenter_unity_is_enabled()
@@ -47,7 +49,7 @@ bool appcenter_unity_is_enabled()
 
 const char* appcenter_unity_get_install_id()
 {
-  NSString *uuidString =  [[MSAppCenter installId] UUIDString];
+  NSString *uuidString = [[MSAppCenter installId] UUIDString];
   return appcenter_unity_ns_string_to_cstr(uuidString);
 }
 
@@ -57,11 +59,11 @@ void appcenter_unity_set_custom_properties(MSCustomProperties* properties)
 }
 
 void appcenter_unity_set_wrapper_sdk(const char* wrapperSdkVersion,
-                                         const char* wrapperSdkName,
-                                         const char* wrapperRuntimeVersion,
-                                         const char* liveUpdateReleaseLabel,
-                                         const char* liveUpdateDeploymentKey,
-                                         const char* liveUpdatePackageHash)
+                                     const char* wrapperSdkName,
+                                     const char* wrapperRuntimeVersion,
+                                     const char* liveUpdateReleaseLabel,
+                                     const char* liveUpdateDeploymentKey,
+                                     const char* liveUpdatePackageHash)
 {
   MSWrapperSdk *wrapperSdk = [[MSWrapperSdk alloc]
                               initWithWrapperSdkVersion:appcenter_unity_cstr_to_ns_string(wrapperSdkVersion)
@@ -71,4 +73,12 @@ void appcenter_unity_set_wrapper_sdk(const char* wrapperSdkVersion,
                                 liveUpdateDeploymentKey:appcenter_unity_cstr_to_ns_string(liveUpdateDeploymentKey)
                                   liveUpdatePackageHash:appcenter_unity_cstr_to_ns_string(liveUpdatePackageHash)];
   [MSAppCenter setWrapperSdk:wrapperSdk];
+}
+
+NSMutableArray<Class>* get_services_array(void** services, int count) {
+  NSMutableArray<Class>* servicesArray = [NSMutableArray new];
+  for (int i = 0; i < count; i++) {
+    [servicesArray addObject:(Class)CFBridgingRelease(services[i])];
+  }
+  return servicesArray;
 }
