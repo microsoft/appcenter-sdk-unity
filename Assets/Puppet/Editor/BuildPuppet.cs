@@ -113,7 +113,7 @@ public class BuildPuppet
     private static void BuildPuppetScene(BuildTarget target, BuildTargetGroup targetGroup, ScriptingImplementation scriptingImplementation, string outputPath)
     {
         PlayerSettings.SetScriptingBackend(targetGroup, scriptingImplementation);
-        string[] puppetScene = { "Assets/Puppet/PuppetScene.unity" };
+        string[] puppetScene = { AppCenterSettingsContext.AppCenterPath + "/Puppet/PuppetScene.unity" };
         var options = new BuildPlayerOptions
         {
             scenes = puppetScene,

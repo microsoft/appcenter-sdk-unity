@@ -91,13 +91,13 @@ namespace Microsoft.AppCenter.Unity.Crashes.Internal
             var reporterSignal = app_center_unity_crashes_error_report_signal(errorReportPtr);
             var exceptionReason = app_center_unity_crashes_error_report_exception_reason(errorReportPtr);
             var startTime = app_center_unity_crashes_error_report_app_start_time(errorReportPtr);
-            DateTimeOffset dtoStart;
+            DateTimeOffset dtoStart = DateTimeOffset.UtcNow;
             if (startTime != null) 
             {
                 dtoStart = DateTimeOffset.Parse(startTime);
             }
             var errorTime = app_center_unity_crashes_error_report_app_error_time(errorReportPtr);
-            DateTimeOffset dtoError;
+            DateTimeOffset dtoError = DateTimeOffset.UtcNow;
             if (errorTime != null) 
             {
                 dtoError = DateTimeOffset.Parse(errorTime);

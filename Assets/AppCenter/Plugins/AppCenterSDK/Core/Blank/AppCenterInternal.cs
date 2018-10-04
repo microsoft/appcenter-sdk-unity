@@ -25,6 +25,11 @@ namespace Microsoft.AppCenter.Unity.Internal
         {
         }
 
+        public static string GetSdkVersion()
+        {
+            return "";
+        }
+
         public static void Start(string appSecret, ServiceType[] services, int numServices)
         {
         }

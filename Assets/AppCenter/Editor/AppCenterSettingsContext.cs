@@ -3,8 +3,9 @@ using UnityEditor;
 
 public class AppCenterSettingsContext : ScriptableObject
 {
-    private const string SettingsPath = "Assets/AppCenter/AppCenterSettings.asset";
-    private const string AdvancedSettingsPath = "Assets/AppCenter/AppCenterSettingsAdvanced.asset";
+    public const string AppCenterPath = "Assets";
+    private const string SettingsPath = AppCenterPath + "/AppCenter/AppCenterSettings.asset";
+    private const string AdvancedSettingsPath = AppCenterPath + "/AppCenter/AppCenterSettingsAdvanced.asset";
     public static AppCenterSettings SettingsInstance
     {
         get

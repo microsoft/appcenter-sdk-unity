@@ -2,7 +2,6 @@
 //
 // Licensed under the MIT license.
 
-using Microsoft.AppCenter.Unity.Crashes;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -10,12 +9,15 @@ using System.Linq;
 using System.Threading;
 using UnityEngine;
 using UnityEngine.UI;
+using Microsoft.AppCenter.Unity.Crashes;
 
 public class PuppetCrashes : MonoBehaviour
 {
     public Toggle CrashesEnabled;
     public Toggle ReportUnhandledExceptions;
     public Text LastSessionCrashReport;
+    public InputField TextAttachment;
+    public InputField BinaryAttachment;
 
     void OnEnable()
     {
@@ -24,6 +26,16 @@ public class PuppetCrashes : MonoBehaviour
             CrashesEnabled.isOn = task.Result;
         });
         ReportUnhandledExceptions.isOn = Crashes.IsReportingUnhandledExceptions();
+    }
+
+    public void OnValueChanged()
+    {
+        PlayerPrefs.SetString(PuppetAppCenter.TextAttachmentKey, TextAttachment.text);
+    }
+
+    public void OnBinaryValueChanged()
+    {
+        PlayerPrefs.SetString(PuppetAppCenter.BinaryAttachmentKey, BinaryAttachment.text);
     }
 
     public void SetCrashesEnabled(bool enabled)
