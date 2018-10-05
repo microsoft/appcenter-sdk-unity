@@ -13,6 +13,7 @@ public class PuppetTransmission : MonoBehaviour
 {
     public Toggle TransmissionEnabled;
     public Toggle ChildTransmissionEnabled;
+    public Toggle CollectDeviceId;
     public InputField EventName;
     public InputField AppName;
     public InputField AppVersion;
@@ -127,6 +128,10 @@ public class PuppetTransmission : MonoBehaviour
         }
         OverrideProperties(transmissionTarget);
         var childTransmissionTarget = transmissionTarget.GetTransmissionTarget(ResolveChildToken());
+        if (CollectDeviceId.isOn)
+        {
+            childTransmissionTarget.GetPropertyConfigurator().CollectDeviceId();
+        }
         Dictionary<string, string> properties = GetProperties();
         if (properties == null)
         {
@@ -166,6 +171,10 @@ public class PuppetTransmission : MonoBehaviour
             return;
         }
         OverrideProperties(transmissionTarget);
+        if (CollectDeviceId.isOn) 
+        {
+            transmissionTarget.GetPropertyConfigurator().CollectDeviceId();
+        }
         Dictionary<string, string> properties = GetProperties();
         if (properties == null) 
         {
