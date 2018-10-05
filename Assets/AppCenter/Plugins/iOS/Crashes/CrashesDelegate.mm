@@ -12,9 +12,12 @@ static void (*sendingErrorReport)(MSErrorReport *);
 static void (*sentErrorReport)(MSErrorReport *);
 static void (*failedToSendErrorReport)(MSErrorReport *);
 
+static UnityCrashesDelegate *unityCrashesDelegate = NULL;
+
 void app_center_unity_crashes_set_delegate()
 {
-    [MSCrashes setDelegate:[[UnityCrashesDelegate alloc] init]];
+    unityCrashesDelegate = [[UnityCrashesDelegate alloc] init];
+    [MSCrashes setDelegate:unityCrashesDelegate];
 }
 
 void app_center_unity_crashes_delegate_set_should_process_error_report_delegate(bool(*handler)(MSErrorReport *))
