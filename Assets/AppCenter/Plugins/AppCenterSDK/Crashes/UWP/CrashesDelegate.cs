@@ -1,9 +1,15 @@
-﻿#if UNITY_WSA_10_0 && !UNITY_EDITOR
+﻿// Copyright (c) Microsoft Corporation. All rights reserved.
+//
+// Licensed under the MIT license.
+
+#if UNITY_WSA_10_0 && !UNITY_EDITOR
 
 namespace Microsoft.AppCenter.Unity.Crashes.Internal
 {
     public class CrashesDelegate
     {
+        public static event Crashes.SendingErrorReportHandler SendingErrorReport;
+
         public static void SetDelegate()
         {
         }
@@ -13,10 +19,6 @@ namespace Microsoft.AppCenter.Unity.Crashes.Internal
         }
 
         public static void SetGetErrorAttachmentsHandler(Crashes.GetErrorAttachmentsHandler handler)
-        {
-        }
-
-        public static void SetSendingErrorReportHandler(Crashes.SendingErrorReportHandler handler)
         {
         }
 
