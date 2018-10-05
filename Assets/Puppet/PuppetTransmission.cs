@@ -78,6 +78,11 @@ public class PuppetTransmission : MonoBehaviour
         StartCoroutine(SetTransmissionEnabledCoroutine(enabled));
     }
 
+    public void SetCollectDeviceID(bool enabled)
+    {
+        CollectDeviceId.enabled = false;
+    }
+
     public void SetChildTransmissionEnabled(bool enabled)
     {
         StartCoroutine(SetChildTransmissionEnabledCoroutine(enabled));

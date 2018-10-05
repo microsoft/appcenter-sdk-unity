@@ -30,6 +30,11 @@ namespace Microsoft.AppCenter.Unity.Analytics
         public static void RemoveEventProperty(object propertyConfigurator, string key)
         {
         }
+
+        public static void CollectDeviceId(object propertyConfigurator)
+        {
+        }
+
     }
 }
 #endif
