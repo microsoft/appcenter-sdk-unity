@@ -8,6 +8,8 @@ namespace Microsoft.AppCenter.Unity.Crashes.Internal
 {
     class CrashesDelegate
     {
+        public static event Crashes.SendingErrorReportHandler SendingErrorReport;
+
         public static void SetDelegate()
         {
         }
@@ -17,10 +19,6 @@ namespace Microsoft.AppCenter.Unity.Crashes.Internal
         }
 
         public static void SetGetErrorAttachmentsHandler(Crashes.GetErrorAttachmentsHandler handler)
-        {
-        }
-
-        public static void SetSendingErrorReportHandler(Crashes.SendingErrorReportHandler handler)
         {
         }
 

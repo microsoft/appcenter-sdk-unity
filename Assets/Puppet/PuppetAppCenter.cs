@@ -89,13 +89,13 @@ public class PuppetAppCenter : MonoBehaviour
         Crashes.ShouldProcessErrorReport = ShouldProcessErrorReportHandler;
         Crashes.ShouldAwaitUserConfirmation = UserConfirmationHandler;
         Crashes.GetErrorAttachments = GetErrorAttachmentstHandler;
-        Crashes.SendingErrorReport = SendingErrorReportHandler;
+        Crashes.SendingErrorReport += SendingErrorReportHandler;
         Crashes.SentErrorReport = SentErrorReportHandler;
         Crashes.FailedToSendErrorReport = FailedToSendErrorReportHandler;
         instance = this;
     }
 
-//    [MonoPInvokeCallback(typeof(Crashes.GetErrorAttachmentsHandler))]
+    //[MonoPInvokeCallback(typeof(Crashes.GetErrorAttachmentsHandler))]
     public static ErrorAttachmentLog[] GetErrorAttachmentstHandler(ErrorReport errorReport)
     {
         return new ErrorAttachmentLog[]

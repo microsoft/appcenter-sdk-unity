@@ -3,13 +3,14 @@
 // Licensed under the MIT license.
 
 #if UNITY_ANDROID && !UNITY_EDITOR
-using System;
 using UnityEngine;
 
 namespace Microsoft.AppCenter.Unity.Crashes.Internal
 {
     public class CrashesDelegate : AndroidJavaProxy
     {
+        public static event Crashes.SendingErrorReportHandler SendingErrorReport;
+
         private CrashesDelegate() : base("com.microsoft.appcenter.crashes.CrashesListener")
         {
         }
@@ -23,17 +24,14 @@ namespace Microsoft.AppCenter.Unity.Crashes.Internal
         //TODO bind error report; implement these
         void onBeforeSending(AndroidJavaObject report)
         {
-            
         }
- 
+
         void onSendingFailed(AndroidJavaObject report, AndroidJavaObject exception)
         {
-            
         }
-    
+
         void onSendingSucceeded(AndroidJavaObject report)
         {
-            
         }
 
         public static void SetShouldProcessErrorReportHandler(Crashes.ShouldProcessErrorReportHandler handler)
