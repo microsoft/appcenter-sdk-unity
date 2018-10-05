@@ -27,14 +27,20 @@ public class AppCenterSettingsContext : ScriptableObject
         get
         {
             // No need to lock because this can only be accessed from the main thread.
-            var instance = AssetDatabase.LoadAssetAtPath<AppCenterSettingsAdvanced>(AdvancedSettingsPath);
-            if (instance == null)
-            {
-                instance = CreateInstance<AppCenterSettingsAdvanced>();
-                AssetDatabase.CreateAsset(instance, AdvancedSettingsPath);
-                AssetDatabase.SaveAssets();
-            }
-            return instance;
+            return AssetDatabase.LoadAssetAtPath<AppCenterSettingsAdvanced>(AdvancedSettingsPath);      
         }
     }
+
+    public static AppCenterSettingsAdvanced CreateSettingsInstanceAdvanced()
+    {
+        var instance = AssetDatabase.LoadAssetAtPath<AppCenterSettingsAdvanced>(AdvancedSettingsPath);
+        if (instance == null)
+        {
+            instance = CreateInstance<AppCenterSettingsAdvanced>();
+            AssetDatabase.CreateAsset(instance, AdvancedSettingsPath);
+            AssetDatabase.SaveAssets();
+        }
+        return instance;
+    }
+   
 }
