@@ -55,32 +55,35 @@ public class AppCenterBehavior : MonoBehaviour
         PrepareEventHandlers(services);
         InvokeInitializingServices();
         AppCenter.SetWrapperSdk();
-
-        // On iOS we start crash service here, to give app an opportunity to assign handlers after crash and restart in Awake method
-#if UNITY_IOS
-        foreach (var service in services)
-        {
-            var startCrashes = service.GetMethod("StartCrashes");
-            if (startCrashes != null)
-                startCrashes.Invoke(null, null);
-        }
-#endif
-
-        var appSecret = AppCenter.GetSecretForPlatform(Settings.AppSecret);
         if (Settings.CustomLogUrl.UseCustomUrl)
         {
             AppCenter.CacheLogUrl(Settings.CustomLogUrl.Url);
         }
-        // On iOS and Android App Center starting automatically.
-#if UNITY_EDITOR || (!UNITY_IOS && !UNITY_ANDROID)
-        AppCenter.LogLevel = Settings.InitialLogLevel;
-        if (Settings.CustomLogUrl.UseCustomUrl)
-        {
-            AppCenter.SetLogUrl(Settings.CustomLogUrl.Url);
-        }
-        AppCenterInternal.Start(appSecret, services);
+#if UNITY_IOS || UNITY_ANDROID
+        var advancedSettings = GetComponent<AppCenterBehaviorAdvanced>();
+        if (advancedSettings != null && advancedSettings.SettingsAdvanced != null && advancedSettings.SettingsAdvanced.StartFromAppCenterBehavior)
 #endif
-
+        {
+            AppCenter.LogLevel = Settings.InitialLogLevel;
+            if (Settings.CustomLogUrl.UseCustomUrl)
+            {
+                AppCenter.SetLogUrl(Settings.CustomLogUrl.Url);
+            }
+            var appSecret = AppCenter.GetSecretForPlatform(Settings.AppSecret);
+            AppCenterInternal.Start(appSecret, services);
+        }
+        // On iOS we start crash service here, to give app an opportunity to assign handlers after crash and restart in Awake method
+#if UNITY_IOS
+        else
+        {
+            foreach (var service in services)
+            {
+                var startCrashes = service.GetMethod("StartCrashes");
+                if (startCrashes != null)
+                    startCrashes.Invoke(null, null);
+            }
+        }
+#endif
         InvokeInitializedServices();
     }
 

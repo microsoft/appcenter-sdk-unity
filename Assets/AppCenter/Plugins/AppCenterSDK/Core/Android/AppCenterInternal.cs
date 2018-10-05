@@ -55,8 +55,9 @@ namespace Microsoft.AppCenter.Unity.Internal
             AndroidJavaObject future = _appCenter.CallStatic<AndroidJavaObject>("getInstallId");
             var javaUUIDtask = new AppCenterTask<AndroidJavaObject>(future);
             var stringTask = new AppCenterTask<string>();
-            javaUUIDtask.ContinueWith(t => {
-                var installId = t.Result.Call<string>("toString");
+            javaUUIDtask.ContinueWith(t =>
+            {
+                var installId = t.Result == null ? null : t.Result.Call<string>("toString");
                 stringTask.SetResult(installId);
             });
             return stringTask;
@@ -106,7 +107,7 @@ namespace Microsoft.AppCenter.Unity.Internal
 
         private static AndroidJavaObject GetAndroidContext()
         {
-            if (_context != null) 
+            if (_context != null)
             {
                 return _context;
             }
@@ -121,8 +122,8 @@ namespace Microsoft.AppCenter.Unity.Internal
             var startMethod = AndroidJNI.GetStaticMethodID(_appCenter.GetRawClass(), "startFromLibrary", "(Landroid/content/Context;[Ljava/lang/Class;)V");
             AndroidJNI.CallStaticVoidMethod(_appCenter.GetRawClass(), startMethod, new jvalue[]
             {
-                new jvalue { l = GetAndroidContext().GetRawObject() }, 
-                new jvalue { l = servicesArray[0] } 
+                new jvalue { l = GetAndroidContext().GetRawObject() },
+                new jvalue { l = servicesArray[0] }
             });
         }
 

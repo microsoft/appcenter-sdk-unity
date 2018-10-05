@@ -2,7 +2,6 @@
 //
 // Licensed under the MIT license.
 
-using System;
 using UnityEngine;
 
 [HelpURL("https://docs.microsoft.com/en-us/appcenter/sdk/crashes/unity")]
