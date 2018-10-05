@@ -14,6 +14,7 @@ public class PuppetTransmission : MonoBehaviour
     public Toggle TransmissionEnabled;
     public Toggle ChildTransmissionEnabled;
     public Toggle CollectDeviceId;
+    public Toggle CollectDeviceIdChild;
     public InputField EventName;
     public InputField AppName;
     public InputField AppVersion;
@@ -47,6 +48,8 @@ public class PuppetTransmission : MonoBehaviour
         {
             ChildTransmissionEnabled.isOn = task.Result;
         });
+        CollectDeviceId.isOn = false;
+        CollectDeviceIdChild.isOn = false;
     }
 
     private string ResolveToken() 
@@ -80,7 +83,32 @@ public class PuppetTransmission : MonoBehaviour
 
     public void SetCollectDeviceID(bool enabled)
     {
-        CollectDeviceId.enabled = false;
+        var transmissionTarget = Analytics.GetTransmissionTarget(ResolveToken());
+        if (transmissionTarget == null)
+        {
+            Debug.Log("Transmission target is null.");
+            return;
+        }
+        if (enabled)
+        {
+            transmissionTarget.GetPropertyConfigurator().CollectDeviceId();
+            CollectDeviceId.enabled = false;
+        }
+    }
+    public void SetCollectDeviceIDChild(bool enabled)
+    {
+        var transmissionTarget = Analytics.GetTransmissionTarget(ResolveToken());
+        if (transmissionTarget == null)
+        {
+            Debug.Log("Transmission target is null.");
+            return;
+        }
+        var childTransmissionTarget = transmissionTarget.GetTransmissionTarget(ResolveChildToken());
+        if (enabled)
+        {
+            childTransmissionTarget.GetPropertyConfigurator().CollectDeviceId();
+            CollectDeviceIdChild.enabled = false;
+        }
     }
 
     public void SetChildTransmissionEnabled(bool enabled)
@@ -133,10 +161,6 @@ public class PuppetTransmission : MonoBehaviour
         }
         OverrideProperties(transmissionTarget);
         var childTransmissionTarget = transmissionTarget.GetTransmissionTarget(ResolveChildToken());
-        if (CollectDeviceId.isOn)
-        {
-            childTransmissionTarget.GetPropertyConfigurator().CollectDeviceId();
-        }
         Dictionary<string, string> properties = GetProperties();
         if (properties == null)
         {
@@ -176,10 +200,6 @@ public class PuppetTransmission : MonoBehaviour
             return;
         }
         OverrideProperties(transmissionTarget);
-        if (CollectDeviceId.isOn) 
-        {
-            transmissionTarget.GetPropertyConfigurator().CollectDeviceId();
-        }
         Dictionary<string, string> properties = GetProperties();
         if (properties == null) 
         {
