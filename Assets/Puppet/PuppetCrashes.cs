@@ -120,7 +120,6 @@ public class PuppetCrashes : MonoBehaviour
         LastSessionCrashReport.text = string.Join("\n", info.Select(i => i.Key + " : " + i.Value).ToArray());
     }
 
-    //[MonoPInvokeCallback(typeof(Crashes.GetErrorAttachmentsHandler))]
     public static ErrorAttachmentLog[] GetErrorAttachmentstHandler(ErrorReport errorReport)
     {
         return new ErrorAttachmentLog[]
