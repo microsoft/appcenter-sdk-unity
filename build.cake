@@ -504,7 +504,7 @@ void BuildApps(string type, string projectPath = ".")
 void VerifyIosAppsBuild(string type, string projectPath)
 {
     VerifyAppsBuild(type, "ios", projectPath,
-    new string[] { "IosIl2CPP" }, //new string[] { "IosMono", "IosIl2CPP" },
+    new string[] { "IosMono", "IosIl2CPP" },
     outputDirectory =>
     {
         var directories = GetDirectories(outputDirectory + "/*/*.xcodeproj");
