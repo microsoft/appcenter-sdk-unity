@@ -18,6 +18,10 @@ extern "C" void appcenter_unity_property_configurator_set_app_locale(MSPropertyC
   return [configurator setAppLocale: [NSString stringWithUTF8String:appLocale]];
 }
 
+extern "C" void appcenter_unity_property_configurator_collect_device_id(MSPropertyConfigurator *configurator) {
+  return [configurator collectDeviceId];
+}
+
 extern "C" void appcenter_unity_property_configurator_set_event_property(MSPropertyConfigurator *configurator, char* key, char* value) {
   return [configurator setEventPropertyString: [NSString stringWithUTF8String:value] forKey: [NSString stringWithUTF8String:key]];
 }

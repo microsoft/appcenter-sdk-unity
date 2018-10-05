@@ -27,6 +27,11 @@ namespace Microsoft.AppCenter.Unity.Analytics
             propertyConfigurator.Call("setAppLocale", appLocale);
         }
 
+        public void CollectDeviceId(AndroidJavaObject propertyConfigurator)
+        {
+            propertyConfigurator.Call("collectDeviceId");
+        }
+
         public static void SetEventProperty(AndroidJavaObject propertyConfigurator, string key, string value)
         {
             var rawClass = propertyConfigurator.GetRawClass();
