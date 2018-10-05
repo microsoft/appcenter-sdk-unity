@@ -11,7 +11,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 07ef30b23b2586041aedf18c9486176d, type: 3}
   m_Name: AppCenterSettings
   m_EditorClassIdentifier: 
-  iOSAppSecret: dcf0de16-000e-477a-a55f-232380938aa8
+  iOSAppSecret: 0ac902a4-01b2-4499-a43c-e1d8ad0dc401
   AndroidAppSecret: 56638f03-9802-4b53-95d4-e08ba9c9ac24
   UWPAppSecret: 630db31d-f6b3-480e-925f-cbc1c5b12cdc
   UseAnalytics: 1
@@ -30,6 +30,6 @@ MonoBehaviour:
   InitialLogLevel: 2
   CustomLogUrl:
     UrlName: Log
-    UseCustomUrl: 1
+    UseCustomUrl: 0
     Url: https://in-integration.dev.avalanch.es
   SenderId: 177539951155
