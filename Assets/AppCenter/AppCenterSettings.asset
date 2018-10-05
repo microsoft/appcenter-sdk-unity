@@ -25,7 +25,7 @@ MonoBehaviour:
     UrlName: Install
     UseCustomUrl: 1
     Url: http://install.asgard-int.trafficmanager.net
-  UsePush: 1
+  UsePush: 0
   EnableFirebaseAnalytics: 0
   InitialLogLevel: 2
   CustomLogUrl:
