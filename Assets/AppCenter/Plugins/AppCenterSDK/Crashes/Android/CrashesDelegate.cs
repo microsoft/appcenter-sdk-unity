@@ -11,6 +11,10 @@ namespace Microsoft.AppCenter.Unity.Crashes.Internal
     {
         public static event Crashes.SendingErrorReportHandler SendingErrorReport;
 
+        public static event Crashes.SentErrorReportHandler SentErrorReport;
+
+        public static event Crashes.FailedToSendErrorReportHandler FailedToSendErrorReport;
+
         private CrashesDelegate() : base("com.microsoft.appcenter.crashes.CrashesListener")
         {
         }
@@ -39,18 +43,6 @@ namespace Microsoft.AppCenter.Unity.Crashes.Internal
         }
 
         public static void SetGetErrorAttachmentsHandler(Crashes.GetErrorAttachmentsHandler handler)
-        {
-        }
-
-        public static void SetSendingErrorReportHandler(Crashes.SendingErrorReportHandler handler)
-        {
-        }
-
-        public static void SetSentErrorReportHandler(Crashes.SentErrorReportHandler handler)
-        {
-        }
-
-        public static void SetFailedToSendErrorReportHandler(Crashes.FailedToSendErrorReportHandler handler)
         {
         }
     }

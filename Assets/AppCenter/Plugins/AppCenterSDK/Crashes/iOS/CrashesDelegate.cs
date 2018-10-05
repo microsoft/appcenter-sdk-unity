@@ -123,42 +123,32 @@ namespace Microsoft.AppCenter.Unity.Crashes.Internal
         [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
 #endif
         public delegate void NativeSentErrorReportDelegate(IntPtr report);
-        private static Crashes.SentErrorReportHandler sentErrorReportHandler;
+        public static event Crashes.SentErrorReportHandler SentErrorReport;
 
         [MonoPInvokeCallback(typeof(NativeSentErrorReportDelegate))]
         public static void SentErrorReportNativeFunc(IntPtr report)
         {
-            if (sentErrorReportHandler != null)
+            if (SentErrorReport != null)
             {
                 ErrorReport errorReport = CrashesInternal.GetErrorReportFromIntPtr(report);
-                sentErrorReportHandler(errorReport);
+                SentErrorReport(errorReport);
             }
-        }
-
-        public static void SetSentErrorReportHandler(Crashes.SentErrorReportHandler handler)
-        {
-            sentErrorReportHandler = handler;
         }
 
 #if ENABLE_IL2CPP
         [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
 #endif
         public delegate void NativeFailedToSendErrorReportDelegate(IntPtr report);
-        private static Crashes.FailedToSendErrorReportHandler failedToSendErrorReportHandler;
+        public static event Crashes.FailedToSendErrorReportHandler FailedToSendErrorReport;
 
         [MonoPInvokeCallback(typeof(NativeFailedToSendErrorReportDelegate))]
         public static void FailedToSendErrorReportNativeFunc(IntPtr report)
         {
-            if (failedToSendErrorReportHandler != null)
+            if (FailedToSendErrorReport != null)
             {
                 ErrorReport errorReport = CrashesInternal.GetErrorReportFromIntPtr(report);
-                failedToSendErrorReportHandler(errorReport);
+                FailedToSendErrorReport(errorReport);
             }
-        }
-
-        public static void SetFailedToSendErrorReportHandler(Crashes.FailedToSendErrorReportHandler handler)
-        {
-            failedToSendErrorReportHandler = handler;
         }
 
 #region External

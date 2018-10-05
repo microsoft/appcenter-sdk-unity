@@ -226,11 +226,21 @@ namespace Microsoft.AppCenter.Unity.Crashes
 #endif
         public delegate void SentErrorReportHandler(ErrorReport errorReport);
 
-        public static SentErrorReportHandler SentErrorReport
+        public static event SentErrorReportHandler SentErrorReport
         {
-            set
+            add
             {
-                CrashesDelegate.SetSentErrorReportHandler(value);
+                lock (_objectLock)
+                {
+                    CrashesDelegate.SentErrorReport += value;
+                }
+            }
+            remove
+            {
+                lock (_objectLock)
+                {
+                    CrashesDelegate.SentErrorReport -= value;
+                }
             }
         }
 
@@ -239,11 +249,21 @@ namespace Microsoft.AppCenter.Unity.Crashes
 #endif
         public delegate void FailedToSendErrorReportHandler(ErrorReport errorReport);
 
-        public static FailedToSendErrorReportHandler FailedToSendErrorReport
+        public static event FailedToSendErrorReportHandler FailedToSendErrorReport
         {
-            set
+            add
             {
-                CrashesDelegate.SetFailedToSendErrorReportHandler(value);
+                lock (_objectLock)
+                {
+                    CrashesDelegate.FailedToSendErrorReport += value;
+                }
+            }
+            remove
+            {
+                lock (_objectLock)
+                {
+                    CrashesDelegate.FailedToSendErrorReport -= value;
+                }
             }
         }
 

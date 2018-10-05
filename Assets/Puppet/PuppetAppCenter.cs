@@ -90,8 +90,8 @@ public class PuppetAppCenter : MonoBehaviour
         Crashes.ShouldAwaitUserConfirmation = UserConfirmationHandler;
         Crashes.GetErrorAttachments = GetErrorAttachmentstHandler;
         Crashes.SendingErrorReport += SendingErrorReportHandler;
-        Crashes.SentErrorReport = SentErrorReportHandler;
-        Crashes.FailedToSendErrorReport = FailedToSendErrorReportHandler;
+        Crashes.SentErrorReport += SentErrorReportHandler;
+        Crashes.FailedToSendErrorReport += FailedToSendErrorReportHandler;
         instance = this;
     }
 

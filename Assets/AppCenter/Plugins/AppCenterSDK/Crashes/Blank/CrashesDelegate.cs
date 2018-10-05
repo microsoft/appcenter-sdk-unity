@@ -10,6 +10,10 @@ namespace Microsoft.AppCenter.Unity.Crashes.Internal
     {
         public static event Crashes.SendingErrorReportHandler SendingErrorReport;
 
+        public static event Crashes.SentErrorReportHandler SentErrorReport;
+
+        public static event Crashes.FailedToSendErrorReportHandler FailedToSendErrorReport;
+
         public static void SetDelegate()
         {
         }
