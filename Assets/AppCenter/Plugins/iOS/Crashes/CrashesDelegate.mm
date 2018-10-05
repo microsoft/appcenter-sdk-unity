@@ -12,6 +12,7 @@ static void (*sendingErrorReport)(MSErrorReport *);
 static void (*sentErrorReport)(MSErrorReport *);
 static void (*failedToSendErrorReport)(MSErrorReport *);
 
+// we need static instance var because we have weak reaf in native part
 static UnityCrashesDelegate *unityCrashesDelegate = NULL;
 
 void app_center_unity_crashes_set_delegate()
