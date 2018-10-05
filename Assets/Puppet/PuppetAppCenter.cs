@@ -86,57 +86,19 @@ public class PuppetAppCenter : MonoBehaviour
 
     private void Awake()
     {
-        Crashes.ShouldProcessErrorReport = ShouldProcessErrorReportHandler;
+        Crashes.ShouldProcessErrorReport = PuppetCrashes.ShouldProcessErrorReportHandler;
         Crashes.ShouldAwaitUserConfirmation = UserConfirmationHandler;
-        Crashes.GetErrorAttachments = GetErrorAttachmentstHandler;
+        Crashes.GetErrorAttachments = PuppetCrashes.GetErrorAttachmentstHandler;
+        Crashes.SendingErrorReport += PuppetCrashes.SendingErrorReportHandler;
+        Crashes.SentErrorReport += PuppetCrashes.SentErrorReportHandler;
+        Crashes.FailedToSendErrorReport += PuppetCrashes.FailedToSendErrorReportHandler;
         instance = this;
-    }
-
-    [MonoPInvokeCallback(typeof(Crashes.GetErrorAttachmentsHandler))]
-    public static ErrorAttachmentLog[] GetErrorAttachmentstHandler(ErrorReport errorReport)
-    {
-        return new ErrorAttachmentLog[]
-        {
-            ErrorAttachmentLog.AttachmentWithText(PlayerPrefs.GetString(TextAttachmentKey), "hello.txt"),
-            ErrorAttachmentLog.AttachmentWithBinary(ParseBytes(PlayerPrefs.GetString(BinaryAttachmentKey)), "fake_image.jpeg", "image/jpeg")
-        };
-    }
-
-    private static byte[] ParseBytes(string bytesString)
-    {
-        string[] bytesArray = bytesString.Split(' ');
-        if (bytesArray.Length == 0)
-        {
-            return new byte[] { 100, 101, 102, 103 };
-        }
-        byte[] result = new byte[bytesArray.Length];
-        int i = 0;
-        foreach (string byteString in bytesArray)
-        {
-            byte parsed;
-            bool isParsed = Byte.TryParse(bytesString, out parsed);
-            if (isParsed)
-            {
-                result[i] = parsed;
-            }
-            else
-            {
-                result[i] = 0;
-            }
-        }
-        return result;
     }
 
     [MonoPInvokeCallback(typeof(Crashes.UserConfirmationHandler))]
     public static bool UserConfirmationHandler()
     {
         instance.userConfirmationDialog.Show();
-        return true;
-    }
-
-    [MonoPInvokeCallback(typeof(Crashes.ShouldProcessErrorReportHandler))]
-    public static bool ShouldProcessErrorReportHandler(ErrorReport errorReport)
-    {
         return true;
     }
 
