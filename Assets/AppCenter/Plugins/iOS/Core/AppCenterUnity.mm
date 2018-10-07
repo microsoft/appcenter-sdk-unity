@@ -7,6 +7,14 @@
 #import <AppCenter/AppCenter.h>
 #import <Foundation/Foundation.h>
 
+NSMutableArray<Class>* get_services_array(void** services, int count) {
+  NSMutableArray<Class>* servicesArray = [NSMutableArray new];
+  for (int i = 0; i < count; i++) {
+    [servicesArray addObject:(Class)CFBridgingRelease(services[i])];
+  }
+  return servicesArray;
+}
+
 void appcenter_unity_set_log_level(int logLevel)
 {
   [MSAppCenter setLogLevel:(MSLogLevel)logLevel];
@@ -83,12 +91,4 @@ void appcenter_unity_set_wrapper_sdk(const char* wrapperSdkVersion,
                                 liveUpdateDeploymentKey:appcenter_unity_cstr_to_ns_string(liveUpdateDeploymentKey)
                                   liveUpdatePackageHash:appcenter_unity_cstr_to_ns_string(liveUpdatePackageHash)];
   [MSAppCenter setWrapperSdk:wrapperSdk];
-}
-
-NSMutableArray<Class>* get_services_array(void** services, int count) {
-  NSMutableArray<Class>* servicesArray = [NSMutableArray new];
-  for (int i = 0; i < count; i++) {
-    [servicesArray addObject:(Class)CFBridgingRelease(services[i])];
-  }
-  return servicesArray;
 }
