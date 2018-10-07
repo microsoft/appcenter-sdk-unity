@@ -19,7 +19,7 @@ namespace Microsoft.AppCenter.Unity.Internal
         {
             return appcenter_unity_get_log_level();
         }
-        
+
         public static string GetSdkVersion()
         {
             return appcenter_unity_get_sdk_version();
@@ -79,6 +79,12 @@ namespace Microsoft.AppCenter.Unity.Internal
             appcenter_unity_start(appSecret, nativeServiceTypes, nativeServiceTypes.Length);
         }
 
+        public static void Start(Type[] services)
+        {
+            var nativeServiceTypes = ServicesToNativeTypes(services);
+            appcenter_unity_start_no_secret(nativeServiceTypes, nativeServiceTypes.Length);
+        }
+
         public static void StartFromLibrary(IntPtr[] services)
         {
             appcenter_unity_start_from_library(services, services.Length);
@@ -124,6 +130,9 @@ namespace Microsoft.AppCenter.Unity.Internal
 
         [DllImport("__Internal")]
         private static extern void appcenter_unity_start(string appSecret, IntPtr[] classes, int count);
+
+        [DllImport("__Internal")]
+        private static extern void appcenter_unity_start_no_secret(IntPtr[] classes, int count);
 
         [DllImport("__Internal")]
         private static extern void appcenter_unity_start_from_library(IntPtr[] classes, int count);

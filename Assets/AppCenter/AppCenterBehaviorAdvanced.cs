@@ -14,7 +14,7 @@ public class AppCenterBehaviorAdvanced : MonoBehaviour
         // Make sure that App Center have the default behavior attached.
         if (gameObject.GetComponent<AppCenterBehavior>() == null)
         {
-            Debug.LogError("App Center should have the AppCenterBehavior instance attached to the game object!");
+            Debug.LogError("App Center Behavior Advanced should have the App Center Behavior instance attached to the same game object.");
         }
     }
 }

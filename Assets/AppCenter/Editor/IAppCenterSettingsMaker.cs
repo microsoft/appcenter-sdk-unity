@@ -15,6 +15,7 @@ public interface IAppCenterSettingsMaker
     void SetAppSecret(AppCenterSettings settings);
     void SetTransmissionTargetToken(string transmissionTargetToken);
     void SetLogLevel(int logLevel);
+    bool IsStartFromAppCenterBehavior(AppCenterSettingsAdvanced advancedSettings);
     void SetStartupType(int startupType);
     void SetSenderId(string senderId);
     void SetLogUrl(string logUrl);

@@ -107,6 +107,11 @@ public class AppCenterSettingsMakerIos : IAppCenterSettingsMaker
         _loaderFileText = tokenText + _loaderFileText;
     }
 
+    public bool IsStartFromAppCenterBehavior(AppCenterSettingsAdvanced advancedSettings)
+    {
+        return advancedSettings.StartIOSNativeSDKFromAppCenterBehavior;
+    }
+
     public bool IsAnalyticsAvailable()
     {
         return Directory.Exists(AppCenterSettingsContext.AppCenterPath + "/AppCenter/Plugins/iOS/Analytics");

@@ -45,3 +45,8 @@ void appcenter_unity_distribute_replay_release_available()
 {
   [[UnityDistributeDelegate sharedInstance] replayReleaseAvailable];
 }
+
+void appcenter_unity_distribute_set_delegate()
+{
+  [MSDistribute setDelegate:[UnityDistributeDelegate sharedInstance]];
+}

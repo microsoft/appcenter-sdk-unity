@@ -73,7 +73,7 @@ public class AppCenterPreBuild : IPreprocessBuild
         }
         if (advancedSettings != null)
         {
-            var startupType = advancedSettings.StartFromAppCenterBehavior ? StartupType.Skip : advancedSettings.AppCenterStartupType;
+            var startupType = settingsMaker.IsStartFromAppCenterBehavior(advancedSettings) ? StartupType.Skip : advancedSettings.GetStartupType();
             settingsMaker.SetStartupType((int)startupType);
             settingsMaker.SetTransmissionTargetToken(advancedSettings.TransmissionTargetToken);
         }

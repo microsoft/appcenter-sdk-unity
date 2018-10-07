@@ -25,7 +25,7 @@ public class AppCenterBehavior : MonoBehaviour
         // Make sure that App Center have only one instance.
         if (_instance != null)
         {
-            Debug.LogError("App Center should have only one instance!");
+            Debug.LogError("App Center Behavior should have only one instance!");
             DestroyImmediate(gameObject);
             return;
         }
@@ -59,18 +59,29 @@ public class AppCenterBehavior : MonoBehaviour
         {
             AppCenter.CacheLogUrl(Settings.CustomLogUrl.Url);
         }
-#if UNITY_IOS || UNITY_ANDROID
         var advancedSettings = GetComponent<AppCenterBehaviorAdvanced>();
-        if (advancedSettings != null && advancedSettings.SettingsAdvanced != null && advancedSettings.SettingsAdvanced.StartFromAppCenterBehavior)
-#endif
+        if (IsStartFromAppCenterBehavior(advancedSettings))
         {
             AppCenter.LogLevel = Settings.InitialLogLevel;
             if (Settings.CustomLogUrl.UseCustomUrl)
             {
                 AppCenter.SetLogUrl(Settings.CustomLogUrl.Url);
             }
-            var appSecret = AppCenter.GetSecretForPlatform(Settings.AppSecret);
-            AppCenterInternal.Start(appSecret, services);
+            var startupType = GetStartupType(advancedSettings);
+            if (startupType != StartupType.Skip)
+            {
+                var appSecret = AppCenter.GetSecretForPlatform(Settings.AppSecret);
+                var transmissionTargetToken = GetTransmissionTargetToken(advancedSettings);
+                var appSecretString = GetAppSecretString(appSecret, transmissionTargetToken, startupType);
+                if (string.IsNullOrEmpty(appSecretString))
+                {
+                    AppCenterInternal.Start(services);
+                }
+                else
+                {
+                    AppCenterInternal.Start(appSecretString, services);
+                }
+            }
         }
         // On iOS we start crash service here, to give app an opportunity to assign handlers after crash and restart in Awake method
 #if UNITY_IOS
@@ -85,6 +96,51 @@ public class AppCenterBehavior : MonoBehaviour
         }
 #endif
         InvokeInitializedServices();
+    }
+
+    private bool IsStartFromAppCenterBehavior(AppCenterBehaviorAdvanced advancedSettings)
+    {
+#if UNITY_IOS
+        return advancedSettings != null && advancedSettings.SettingsAdvanced != null && advancedSettings.SettingsAdvanced.StartIOSNativeSDKFromAppCenterBehavior;
+#elif UNITY_ANDROID
+        return advancedSettings != null && advancedSettings.SettingsAdvanced != null && advancedSettings.SettingsAdvanced.StartAndroidNativeSDKFromAppCenterBehavior;
+#else
+        return true;
+#endif
+    }
+
+    private StartupType GetStartupType(AppCenterBehaviorAdvanced advancedSettings)
+    {
+        return advancedSettings != null && advancedSettings.SettingsAdvanced != null ?
+            advancedSettings.SettingsAdvanced.GetStartupType() :
+            StartupType.AppCenter;
+    }
+
+    private string GetTransmissionTargetToken(AppCenterBehaviorAdvanced advancedSettings)
+    {
+        return advancedSettings != null && advancedSettings.SettingsAdvanced != null ?
+            advancedSettings.SettingsAdvanced.TransmissionTargetToken :
+            string.Empty;
+    }
+
+    private string GetAppSecretString(string appSecret, string transmissionTargetToken, StartupType startupType)
+    {
+#if UNITY_WSA_10_0
+        return appSecret;
+#else
+        switch (startupType)
+        {
+            default:
+            case StartupType.AppCenter:
+                return appSecret;
+            case StartupType.NoSecret:
+                return string.Empty;
+            case StartupType.OneCollector:
+                return string.Format("target={0}", transmissionTargetToken);
+            case StartupType.Both:
+                return string.Format("appsecret={0};target={1}", appSecret, transmissionTargetToken);
+        }
+#endif
     }
 
     private static void PrepareEventHandlers(Type[] services)

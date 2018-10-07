@@ -105,6 +105,17 @@ namespace Microsoft.AppCenter.Unity.Internal
             });
         }
 
+        public static void Start(Type[] services)
+        {
+            var nativeServiceTypes = ServicesToNativeTypes(services);
+            var startMethod = AndroidJNI.GetStaticMethodID(_appCenter.GetRawClass(), "start", "(Landroid/app/Application;[Ljava/lang/Class;)V");
+            AndroidJNI.CallStaticVoidMethod(_appCenter.GetRawClass(), startMethod, new jvalue[]
+            {
+                new jvalue { l = GetAndroidApplication().GetRawObject() },
+                new jvalue { l = nativeServiceTypes }
+            });
+        }
+
         private static AndroidJavaObject GetAndroidContext()
         {
             if (_context != null)

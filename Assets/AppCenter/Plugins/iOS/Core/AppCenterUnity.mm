@@ -37,6 +37,11 @@ void appcenter_unity_start(const char* appSecret, void** services, int count) {
   [MSAppCenter start:appcenter_unity_cstr_to_ns_string(appSecret) withServices:servicesArray];
 }
 
+void appcenter_unity_start_no_secret(void** services, int count) {
+  NSMutableArray<Class>* servicesArray = get_services_array(services, count);
+  [MSAppCenter startWithServices:servicesArray];
+}
+
 void appcenter_unity_start_from_library(void** services, int count) {
   NSMutableArray<Class>* servicesArray = get_services_array(services, count);
   [MSAppCenter startFromLibraryWithServices:servicesArray];

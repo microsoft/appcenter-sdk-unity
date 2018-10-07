@@ -53,13 +53,10 @@ public class AppCenterLoader extends ContentProvider {
     @Override
     public boolean onCreate() {
         mContext = getApplicationContext();
-        int startupTypeInt = Integer.parseInt(getStringResource(STARTUP_TYPE_KEY));
-        StartupType startupType = StartupType.values()[startupTypeInt];
-        if (startupType == SKIP_START) {
-            return true;
-        }
         String appSecret = getStringResource(APP_SECRET_KEY);
         String transmissionTargetToken = getStringResource(TRANSMISSION_TARGET_TOKEN_KEY);
+        int startupTypeInt = Integer.parseInt(getStringResource(STARTUP_TYPE_KEY));
+        StartupType startupType = StartupType.values()[startupTypeInt];
 
         /*
          * If app secret isn't found in resources, return immediately. It's possible that resources
@@ -111,6 +108,9 @@ public class AppCenterLoader extends ContentProvider {
             if (customLogUrl != null) {
                 AppCenter.setLogUrl(customLogUrl);
             }
+        }
+        if (startupType == SKIP_START) {
+            return true;
         }
         String appIdArg = "";
         switch (startupType) {

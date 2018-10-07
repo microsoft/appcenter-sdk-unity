@@ -113,6 +113,11 @@ public class AppCenterSettingsMakerAndroid : IAppCenterSettingsMaker
         XmlResourceHelper.WriteXmlResource(AppCenterResourcesPath, _resourceValues);
     }
 
+    public bool IsStartFromAppCenterBehavior(AppCenterSettingsAdvanced advancedSettings)
+    {
+        return advancedSettings.StartAndroidNativeSDKFromAppCenterBehavior;
+    }
+
     public bool IsAnalyticsAvailable()
     {
         return File.Exists(AppCenterSettingsContext.AppCenterPath + "/AppCenter/Plugins/Android/appcenter-analytics-release.aar");
