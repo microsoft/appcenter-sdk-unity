@@ -4,6 +4,7 @@
 
 using UnityEngine;
 using UnityEditor;
+using Microsoft.AppCenter.Unity;
 
 [CustomEditor(typeof(AppCenterSettings))]
 public class AppCenterSettingsEditor : Editor
@@ -19,17 +20,17 @@ public class AppCenterSettingsEditor : Editor
         EditorGUILayout.PropertyField(serializedObject.FindProperty("UWPAppSecret"));
 
         // Draw modules.
-        if (AppCenterSettings.Analytics != null)
+        if (AppCenter.Analytics != null)
         {
             Header("Analytics");
             EditorGUILayout.PropertyField(serializedObject.FindProperty("UseAnalytics"));
         }
-        if (AppCenterSettings.Crashes != null)
+        if (AppCenter.Crashes != null)
         {
             Header("Crashes");
             EditorGUILayout.PropertyField(serializedObject.FindProperty("UseCrashes"));
         }
-        if (AppCenterSettings.Distribute != null)
+        if (AppCenter.Distribute != null)
         {
             Header("Distribute");
             var serializedProperty = serializedObject.FindProperty("UseDistribute");
@@ -37,7 +38,7 @@ public class AppCenterSettingsEditor : Editor
             EditorGUILayout.PropertyField(serializedObject.FindProperty("CustomApiUrl"));
             EditorGUILayout.PropertyField(serializedObject.FindProperty("CustomInstallUrl"));
         }
-        if (AppCenterSettings.Push != null)
+        if (AppCenter.Push != null)
         {
             Header("Push");
             var serializedProperty = serializedObject.FindProperty("UsePush");

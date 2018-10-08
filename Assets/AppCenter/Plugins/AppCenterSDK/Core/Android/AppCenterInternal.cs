@@ -128,13 +128,13 @@ namespace Microsoft.AppCenter.Unity.Internal
             return _context;
         }
 
-        public static void StartFromLibrary(IntPtr[] servicesArray)
+        public static void StartFromLibrary(IntPtr servicesArray)
         {
             var startMethod = AndroidJNI.GetStaticMethodID(_appCenter.GetRawClass(), "startFromLibrary", "(Landroid/content/Context;[Ljava/lang/Class;)V");
             AndroidJNI.CallStaticVoidMethod(_appCenter.GetRawClass(), startMethod, new jvalue[]
             {
                 new jvalue { l = GetAndroidContext().GetRawObject() },
-                new jvalue { l = servicesArray[0] }
+                new jvalue { l = servicesArray }
             });
         }
 
