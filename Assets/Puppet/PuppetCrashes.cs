@@ -2,7 +2,6 @@
 //
 // Licensed under the MIT license.
 
-using Microsoft.AppCenter.Unity.Crashes;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -10,12 +9,16 @@ using System.Linq;
 using System.Threading;
 using UnityEngine;
 using UnityEngine.UI;
+using Microsoft.AppCenter.Unity.Crashes;
+using AOT;
 
 public class PuppetCrashes : MonoBehaviour
 {
     public Toggle CrashesEnabled;
     public Toggle ReportUnhandledExceptions;
     public Text LastSessionCrashReport;
+    public InputField TextAttachment;
+    public InputField BinaryAttachment;
 
     void OnEnable()
     {
@@ -24,6 +27,16 @@ public class PuppetCrashes : MonoBehaviour
             CrashesEnabled.isOn = task.Result;
         });
         ReportUnhandledExceptions.isOn = Crashes.IsReportingUnhandledExceptions();
+    }
+
+    public void OnValueChanged()
+    {
+        PlayerPrefs.SetString(PuppetAppCenter.TextAttachmentKey, TextAttachment.text);
+    }
+
+    public void OnBinaryValueChanged()
+    {
+        PlayerPrefs.SetString(PuppetAppCenter.BinaryAttachmentKey, BinaryAttachment.text);
     }
 
     public void SetCrashesEnabled(bool enabled)
@@ -105,5 +118,63 @@ public class PuppetCrashes : MonoBehaviour
             info.Add("Result", "No crash in last session");
         }
         LastSessionCrashReport.text = string.Join("\n", info.Select(i => i.Key + " : " + i.Value).ToArray());
+    }
+
+    public static ErrorAttachmentLog[] GetErrorAttachmentstHandler(ErrorReport errorReport)
+    {
+        return new ErrorAttachmentLog[]
+        {
+            ErrorAttachmentLog.AttachmentWithText(PlayerPrefs.GetString(PuppetAppCenter.TextAttachmentKey), "hello.txt"),
+            ErrorAttachmentLog.AttachmentWithBinary(ParseBytes(PlayerPrefs.GetString(PuppetAppCenter.BinaryAttachmentKey)), "fake_image.jpeg", "image/jpeg")
+        };
+    }
+
+    private static byte[] ParseBytes(string bytesString)
+    {
+        string[] bytesArray = bytesString.Split(' ');
+        if (bytesArray.Length == 0)
+        {
+            return new byte[] { 100, 101, 102, 103 };
+        }
+        byte[] result = new byte[bytesArray.Length];
+        int i = 0;
+        foreach (string byteString in bytesArray)
+        {
+            byte parsed;
+            bool isParsed = Byte.TryParse(bytesString, out parsed);
+            if (isParsed)
+            {
+                result[i] = parsed;
+            }
+            else
+            {
+                result[i] = 0;
+            }
+        }
+        return result;
+    }
+
+    [MonoPInvokeCallback(typeof(Crashes.ShouldProcessErrorReportHandler))]
+    public static bool ShouldProcessErrorReportHandler(ErrorReport errorReport)
+    {
+        return true;
+    }
+
+    [MonoPInvokeCallback(typeof(Crashes.SendingErrorReportHandler))]
+    public static void SendingErrorReportHandler(ErrorReport errorReport)
+    {
+        Debug.Log("Puppet SendingErrorReportHandler");
+    }
+
+    [MonoPInvokeCallback(typeof(Crashes.SentErrorReportHandler))]
+    public static void SentErrorReportHandler(ErrorReport errorReport)
+    {
+        Debug.Log("Puppet SentErrorReportHandler");
+    }
+
+    [MonoPInvokeCallback(typeof(Crashes.FailedToSendErrorReportHandler))]
+    public static void FailedToSendErrorReportHandler(ErrorReport errorReport)
+    {
+        Debug.Log("Puppet FailedToSendErrorReportHandler");
     }
 }

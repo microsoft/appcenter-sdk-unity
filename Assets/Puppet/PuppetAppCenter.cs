@@ -2,6 +2,7 @@
 //
 // Licensed under the MIT license.
 
+using System;
 using System.Collections;
 using Microsoft.AppCenter.Unity;
 using UnityEngine;
@@ -14,8 +15,15 @@ using AOT;
 public class PuppetAppCenter : MonoBehaviour
 {
     public Toggle Enabled;
+    public Text InstallIdLabel;
+    public Text AppSecretLabel;
+    public Text LogUrlLabel;
+    public Text DeviceIdLabel;
+    public Text SdkVersionLabel;
     public Dropdown LogLevel;
     public PuppetConfirmationDialog userConfirmationDialog;
+    public const string TextAttachmentKey = "text_attachment";
+    public const string BinaryAttachmentKey = "binary_attachment";
 
     static PuppetAppCenter instance;
 
@@ -78,8 +86,12 @@ public class PuppetAppCenter : MonoBehaviour
 
     private void Awake()
     {
-        Crashes.ShouldProcessErrorReport = ShouldProcessErrorReportHandler;
+        Crashes.ShouldProcessErrorReport = PuppetCrashes.ShouldProcessErrorReportHandler;
         Crashes.ShouldAwaitUserConfirmation = UserConfirmationHandler;
+        Crashes.GetErrorAttachments = PuppetCrashes.GetErrorAttachmentstHandler;
+        Crashes.SendingErrorReport += PuppetCrashes.SendingErrorReportHandler;
+        Crashes.SentErrorReport += PuppetCrashes.SentErrorReportHandler;
+        Crashes.FailedToSendErrorReport += PuppetCrashes.FailedToSendErrorReportHandler;
         instance = this;
     }
 
@@ -87,12 +99,6 @@ public class PuppetAppCenter : MonoBehaviour
     public static bool UserConfirmationHandler()
     {
         instance.userConfirmationDialog.Show();
-        return true;
-    }
-
-    [MonoPInvokeCallback(typeof(Crashes.ShouldProcessErrorReportHandler))]
-    public static bool ShouldProcessErrorReportHandler(ErrorReport errorReport)
-    {
         return true;
     }
 
@@ -106,9 +112,19 @@ public class PuppetAppCenter : MonoBehaviour
         {
             if (task.Result.HasValue)
             {
-                print("Install ID = " + task.Result.ToString());
+                InstallIdLabel.text = task.Result.ToString();
             }
         });
+        AppCenter.GetSecretForPlatform().ContinueWith(task =>
+        {
+            AppSecretLabel.text = task.Result;
+        });
+        AppCenter.GetLogUrl().ContinueWith(task =>
+        {
+            LogUrlLabel.text = task.Result;
+        });
+        DeviceIdLabel.text = SystemInfo.deviceUniqueIdentifier;
+        SdkVersionLabel.text = AppCenter.GetSdkVersion();
         LogLevel.value = AppCenter.LogLevel - Microsoft.AppCenter.Unity.LogLevel.Verbose;
         Push.IsEnabledAsync().ContinueWith(task =>
         {

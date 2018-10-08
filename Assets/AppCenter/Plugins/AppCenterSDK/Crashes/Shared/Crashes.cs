@@ -21,6 +21,7 @@ namespace Microsoft.AppCenter.Unity.Crashes
     public class Crashes
     {
         private static bool _reportUnhandledExceptions = false;
+        private static readonly object _objectLock = new object();
 
 #if UNITY_ANDROID
         private static Queue<Exception> _unhandledExceptions = new Queue<Exception>();
@@ -165,8 +166,8 @@ namespace Microsoft.AppCenter.Unity.Crashes
         }
 
         public enum ConfirmationResult { DontSend, Send, AlwaysSend };
-        
-        public static void NotifyWithUserConfirmation(ConfirmationResult answer)
+
+        public static void NotifyUserConfirmation(ConfirmationResult answer)
         {
             CrashesInternal.NotifyWithUserConfirmation(answer);
         }
@@ -176,11 +177,93 @@ namespace Microsoft.AppCenter.Unity.Crashes
 #endif
         public delegate bool ShouldProcessErrorReportHandler(ErrorReport errorReport);
 
-        public static ShouldProcessErrorReportHandler ShouldProcessErrorReport 
+        public static ShouldProcessErrorReportHandler ShouldProcessErrorReport
         {
             set
             {
                 CrashesDelegate.SetShouldProcessErrorReportHandler(value);
+            }
+        }
+
+#if ENABLE_IL2CPP
+        [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
+#endif
+        public delegate ErrorAttachmentLog[] GetErrorAttachmentsHandler(ErrorReport errorReport);
+
+        public static GetErrorAttachmentsHandler GetErrorAttachments
+        {
+            set
+            {
+                CrashesDelegate.SetGetErrorAttachmentsHandler(value);
+            }
+        }
+
+#if ENABLE_IL2CPP
+        [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
+#endif
+        public delegate void SendingErrorReportHandler(ErrorReport errorReport);
+
+        public static event SendingErrorReportHandler SendingErrorReport
+        {
+            add
+            {
+                lock (_objectLock)
+                {
+                    CrashesDelegate.SendingErrorReport += value;
+                }
+            }
+            remove
+            {
+                lock (_objectLock)
+                {
+                    CrashesDelegate.SendingErrorReport -= value;
+                }
+            }
+        }
+
+#if ENABLE_IL2CPP
+        [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
+#endif
+        public delegate void SentErrorReportHandler(ErrorReport errorReport);
+
+        public static event SentErrorReportHandler SentErrorReport
+        {
+            add
+            {
+                lock (_objectLock)
+                {
+                    CrashesDelegate.SentErrorReport += value;
+                }
+            }
+            remove
+            {
+                lock (_objectLock)
+                {
+                    CrashesDelegate.SentErrorReport -= value;
+                }
+            }
+        }
+
+#if ENABLE_IL2CPP
+        [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
+#endif
+        public delegate void FailedToSendErrorReportHandler(ErrorReport errorReport);
+
+        public static event FailedToSendErrorReportHandler FailedToSendErrorReport
+        {
+            add
+            {
+                lock (_objectLock)
+                {
+                    CrashesDelegate.FailedToSendErrorReport += value;
+                }
+            }
+            remove
+            {
+                lock (_objectLock)
+                {
+                    CrashesDelegate.FailedToSendErrorReport -= value;
+                }
             }
         }
 

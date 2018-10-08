@@ -13,7 +13,8 @@ public class AppCenterSettingsEditorAdvanced : Editor
         serializedObject.Update();
 
         EditorGUILayout.PropertyField(serializedObject.FindProperty("TransmissionTargetToken"));
-        EditorGUILayout.PropertyField(serializedObject.FindProperty("AppCenterStartupType"));
+        //The following line can be useful if you want to be able to configure StartupType from AppCenter Behaviour Advanced.
+        //EditorGUILayout.PropertyField(serializedObject.FindProperty("AppCenterStartupType"));
         serializedObject.ApplyModifiedProperties();
     }
 }

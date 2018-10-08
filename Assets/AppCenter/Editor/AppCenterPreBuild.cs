@@ -4,6 +4,7 @@ using UnityEditor.Build;
 #if UNITY_2018_1_OR_NEWER
 using UnityEditor.Build.Reporting;
 #endif
+using Microsoft.AppCenter.Unity;
 
 #if UNITY_2018_1_OR_NEWER
 public class AppCenterPreBuild : IPreprocessBuildWithReport
@@ -71,8 +72,15 @@ public class AppCenterPreBuild : IPreprocessBuild
             settingsMaker.StartDistributeClass();
         }
         settingsMaker.SetLogLevel((int)settings.InitialLogLevel);
-        settingsMaker.SetStartupType((int)advancedSettings.AppCenterStartupType);
-        settingsMaker.SetTransmissionTargetToken(advancedSettings.TransmissionTargetToken);
+        if (advancedSettings != null)
+        {
+            settingsMaker.SetStartupType((int)advancedSettings.AppCenterStartupType);
+            settingsMaker.SetTransmissionTargetToken(advancedSettings.TransmissionTargetToken);
+        }
+        else
+        {
+            settingsMaker.SetStartupType((int)StartupType.AppCenter);
+        }
         settingsMaker.CommitSettings();
     }
 
@@ -111,48 +119,55 @@ public class AppCenterPreBuild : IPreprocessBuild
             }
             settingsMaker.StartDistributeClass();
         }
-        settingsMaker.SetStartupType((int)advancedSettings.AppCenterStartupType);
-        settingsMaker.SetTransmissionTargetToken(advancedSettings.TransmissionTargetToken);
+        if (advancedSettings != null)
+        {
+            settingsMaker.SetStartupType((int)advancedSettings.AppCenterStartupType);
+            settingsMaker.SetTransmissionTargetToken(advancedSettings.TransmissionTargetToken);
+        }
+        else
+        {
+            settingsMaker.SetStartupType((int)StartupType.AppCenter);
+        }
         settingsMaker.CommitSettings();
     }
 
     static bool IsAndroidDistributeAvailable()
     {
-        return File.Exists("Assets/AppCenter/Plugins/Android/appcenter-distribute-release.aar");
+        return File.Exists(AppCenterSettingsContext.AppCenterPath + "/AppCenter/Plugins/Android/appcenter-distribute-release.aar");
     }
 
     static bool IsAndroidPushAvailable()
     {
-        return File.Exists("Assets/AppCenter/Plugins/Android/appcenter-push-release.aar");
+        return File.Exists(AppCenterSettingsContext.AppCenterPath + "/AppCenter/Plugins/Android/appcenter-push-release.aar");
     }
 
     static bool IsAndroidAnalyticsAvailable()
     {
-        return File.Exists("Assets/AppCenter/Plugins/Android/appcenter-analytics-release.aar");
+        return File.Exists(AppCenterSettingsContext.AppCenterPath + "/AppCenter/Plugins/Android/appcenter-analytics-release.aar");
     }
 
     static bool IsAndroidCrashesAvailable()
     {
-        return File.Exists("Assets/AppCenter/Plugins/Android/appcenter-crashes-release.aar");
+        return File.Exists(AppCenterSettingsContext.AppCenterPath + "/AppCenter/Plugins/Android/appcenter-crashes-release.aar");
     }
 
     static bool IsIOSDistributeAvailable()
     {
-        return Directory.Exists("Assets/AppCenter/Plugins/iOS/Distribute");
+        return Directory.Exists(AppCenterSettingsContext.AppCenterPath + "/AppCenter/Plugins/iOS/Distribute");
     }
 
     static bool IsIOSPushAvailable()
     {
-        return Directory.Exists("Assets/AppCenter/Plugins/iOS/Push");
+        return Directory.Exists(AppCenterSettingsContext.AppCenterPath + "/AppCenter/Plugins/iOS/Push");
     }
 
     static bool IsIOSAnalyticsAvailable()
     {
-        return Directory.Exists("Assets/AppCenter/Plugins/iOS/Analytics");
+        return Directory.Exists(AppCenterSettingsContext.AppCenterPath + "/AppCenter/Plugins/iOS/Analytics");
     }
 
     static bool IsIOSCrashesAvailable()
     {
-        return Directory.Exists("Assets/AppCenter/Plugins/iOS/Crashes");
+        return Directory.Exists(AppCenterSettingsContext.AppCenterPath + "/AppCenter/Plugins/iOS/Crashes");
     }
 }

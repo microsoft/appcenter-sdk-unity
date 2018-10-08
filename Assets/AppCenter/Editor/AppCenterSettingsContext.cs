@@ -3,8 +3,9 @@ using UnityEditor;
 
 public class AppCenterSettingsContext : ScriptableObject
 {
-    private const string SettingsPath = "Assets/AppCenter/AppCenterSettings.asset";
-    private const string AdvancedSettingsPath = "Assets/AppCenter/AppCenterSettingsAdvanced.asset";
+    public const string AppCenterPath = "Assets";
+    private const string SettingsPath = AppCenterPath + "/AppCenter/AppCenterSettings.asset";
+    private const string AdvancedSettingsPath = AppCenterPath + "/AppCenter/AppCenterSettingsAdvanced.asset";
     public static AppCenterSettings SettingsInstance
     {
         get
@@ -26,14 +27,20 @@ public class AppCenterSettingsContext : ScriptableObject
         get
         {
             // No need to lock because this can only be accessed from the main thread.
-            var instance = AssetDatabase.LoadAssetAtPath<AppCenterSettingsAdvanced>(AdvancedSettingsPath);
-            if (instance == null)
-            {
-                instance = CreateInstance<AppCenterSettingsAdvanced>();
-                AssetDatabase.CreateAsset(instance, AdvancedSettingsPath);
-                AssetDatabase.SaveAssets();
-            }
-            return instance;
+            return AssetDatabase.LoadAssetAtPath<AppCenterSettingsAdvanced>(AdvancedSettingsPath);      
         }
     }
+
+    public static AppCenterSettingsAdvanced CreateSettingsInstanceAdvanced()
+    {
+        var instance = AssetDatabase.LoadAssetAtPath<AppCenterSettingsAdvanced>(AdvancedSettingsPath);
+        if (instance == null)
+        {
+            instance = CreateInstance<AppCenterSettingsAdvanced>();
+            AssetDatabase.CreateAsset(instance, AdvancedSettingsPath);
+            AssetDatabase.SaveAssets();
+        }
+        return instance;
+    }
+   
 }

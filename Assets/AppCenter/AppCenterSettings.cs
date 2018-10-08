@@ -13,11 +13,11 @@ using UnityEngine;
 public class AppCenterSettings : ScriptableObject
 {
     [AppSecret("iOS App Secret")]
-    public string iOSAppSecret = "ios-app-secret";
+    public string iOSAppSecret = "";
     [AppSecret]
-    public string AndroidAppSecret = "android-app-secret";
+    public string AndroidAppSecret = "";
     [AppSecret]
-    public string UWPAppSecret = "uwp-app-secret";
+    public string UWPAppSecret = "";
 
     [Tooltip("App Center Analytics helps you understand user behavior and customer engagement to improve your app.")]
     public bool UseAnalytics = true;

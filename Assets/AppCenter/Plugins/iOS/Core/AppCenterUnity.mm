@@ -51,6 +51,11 @@ const char* appcenter_unity_get_install_id()
   return appcenter_unity_ns_string_to_cstr(uuidString);
 }
 
+const char* appcenter_unity_get_sdk_version()
+{
+  return appcenter_unity_ns_string_to_cstr([MSAppCenter sdkVersion]);
+}
+
 void appcenter_unity_set_custom_properties(MSCustomProperties* properties)
 {
   [MSAppCenter setCustomProperties:properties];

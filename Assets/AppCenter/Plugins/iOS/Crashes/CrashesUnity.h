@@ -20,5 +20,8 @@ extern "C" void* appcenter_unity_crashes_last_session_crash_report();
 extern "C" void appcenter_unity_crashes_set_user_confirmation_handler(bool(* userConfirmationHandler)());
 extern "C" void appcenter_unity_crashes_notify_with_user_confirmation(int userConfirmation);
 extern "C" void appcenter_unity_start_crashes();
+extern "C" void* app_center_unity_crashes_get_error_attachment_log_text(char* text, char* fileName);
+extern "C" void* app_center_unity_crashes_get_error_attachment_log_binary(const void* data, int size, char* fileName, char* contentType);
+extern "C" void* app_center_unity_create_error_attachments_array(MSErrorAttachmentLog* errorAttachment0, MSErrorAttachmentLog* errorAttachment1);
 
 #endif
