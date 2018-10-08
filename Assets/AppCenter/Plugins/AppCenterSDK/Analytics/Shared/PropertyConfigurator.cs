@@ -54,5 +54,10 @@ namespace Microsoft.AppCenter.Unity.Analytics
         {
             PropertyConfiguratorInternal.RemoveEventProperty(_rawObject, key);
         }
+
+        public void CollectDeviceId()
+        {
+            PropertyConfiguratorInternal.CollectDeviceId(_rawObject);
+        }
     }
 }
