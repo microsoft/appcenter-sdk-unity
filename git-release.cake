@@ -28,11 +28,13 @@ Task("GitRelease")
     // Build a string containing paths to NuGet packages
     var files = GetFiles("output/*.unitypackage");
     var assets = new List<string>();
+    Information("Releasing packages:");
     foreach (var file in files)
     {
         if (!file.FullPath.EndsWith("AppCenter-v" + publishVersion + ".unitypackage") &&
             !file.FullPath.EndsWith("AppCenterPush-v" + publishVersion + ".unitypackage"))
         {
+            Information(file.FullPath);
             assets.Add(file.FullPath);
         }
     }
