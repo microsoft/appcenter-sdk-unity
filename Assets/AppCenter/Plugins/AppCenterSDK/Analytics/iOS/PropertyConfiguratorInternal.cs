@@ -33,6 +33,11 @@ namespace Microsoft.AppCenter.Unity.Analytics.Internal
             appcenter_unity_property_configurator_set_event_property(propertyConfigurator, key, value);
         }
 
+        public static void CollectDeviceId(IntPtr propertyConfigurator)
+        {
+            appcenter_unity_property_configurator_collect_device_id(propertyConfigurator);
+        }
+
         public static void RemoveEventProperty(IntPtr propertyConfigurator, string key)
         {
             appcenter_unity_property_configurator_remove_event_property(propertyConfigurator, key);
@@ -51,6 +56,9 @@ namespace Microsoft.AppCenter.Unity.Analytics.Internal
 
         [DllImport("__Internal")]
         private static extern void appcenter_unity_property_configurator_set_event_property(IntPtr propertyConfigurator, string key, string value);
+        
+        [DllImport("__Internal")]
+        private static extern void appcenter_unity_property_configurator_collect_device_id(IntPtr propertyConfigurator);
 
         [DllImport("__Internal")]
         private static extern void appcenter_unity_property_configurator_remove_event_property(IntPtr propertyConfigurator, string key);
