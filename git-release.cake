@@ -17,30 +17,34 @@ Task("GitRelease")
 
     var username = "user";
     var password = Argument<string>("GithubToken");
-    var owner = "Microsoft";
-    var repo = "mobile-center-sdk-unity";
+    var owner = "evgeny-pol";
+    var repo = "AppCenter-SDK-Unity";
 
     // Create temp release file.
     System.IO.File.Create("tempRelease.md").Dispose();
     var releaseFile = File("tempRelease.md");
-    FileWriteText(releaseFile,"Please update description. It will be pulled out automatically from release.md next time.");
+    FileWriteText(releaseFile, "Please update description. It will be pulled out automatically from release.md next time.");
 
     // Build a string containing paths to NuGet packages
     var files = GetFiles("output/*.unitypackage");
-    var assets = string.Empty;
+    var assets = new List<string>();
     foreach (var file in files)
     {
-      assets += file.FullPath + ",";
+        if (!file.FullPath.EndsWith("AppCenter-v" + publishVersion + ".unitypackage") &&
+            !file.FullPath.EndsWith("AppCenterPush-v" + publishVersion + ".unitypackage"))
+        {
+            assets.Add(file.FullPath);
+        }
     }
-    assets = assets.Substring(0,assets.Length-1);
-    GitReleaseManagerCreate(username, password, owner, repo, new GitReleaseManagerCreateSettings {
-        Prerelease        = true,
-        Assets            = assets,
-        TargetCommitish   = "master",
+    GitReleaseManagerCreate(username, password, owner, repo, new GitReleaseManagerCreateSettings
+    {
+        Prerelease = false,
+        Assets = string.Join(",", assets),
+        TargetCommitish = "master",
         InputFilePath = releaseFile.Path.FullPath,
         Name = publishVersion
     });
-    GitReleaseManagerPublish(username, password, owner, repo,  publishVersion);
+    GitReleaseManagerPublish(username, password, owner, repo, publishVersion);
     DeleteFile(releaseFile);
 });
 
