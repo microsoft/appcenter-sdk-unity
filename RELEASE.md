@@ -1,2 +1,1 @@
-# Release 0.0.3
-test release
+New release description, automatically pulled from RELEASE.md file
