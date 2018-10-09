@@ -3,8 +3,6 @@
 // Licensed under the MIT license.
 
 using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Reflection;
 using Microsoft.AppCenter.Unity;
 using UnityEngine;
@@ -17,6 +15,19 @@ public class AppCenterSettingsAdvanced : ScriptableObject
 
     [Tooltip("Configure the way App Center is started. For more info on startup types refer to the documentation.")]
     public StartupType AppCenterStartupType = StartupType.Both;
+
+    [Tooltip("Start Android native SDK from the App Center Behavior script instead of the native plugin")]
+    public bool StartAndroidNativeSDKFromAppCenterBehavior = false;
+
+    [Tooltip("Start iOS native SDK from the App Center Behavior script instead of the native plugin")]
+    public bool StartIOSNativeSDKFromAppCenterBehavior = false;
+
+    public StartupType GetStartupType()
+    {
+        return AppCenterStartupType == StartupType.Both && string.IsNullOrEmpty(TransmissionTargetToken) ?
+            StartupType.AppCenter :
+            AppCenterStartupType;
+    }
 
     private static Assembly AppCenterAssembly
     {
