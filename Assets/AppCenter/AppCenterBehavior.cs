@@ -25,7 +25,7 @@ public class AppCenterBehavior : MonoBehaviour
         // Make sure that App Center have only one instance.
         if (_instance != null)
         {
-            Debug.LogError("App Center should have only one instance!");
+            Debug.LogError("App Center Behavior should have only one instance!");
             DestroyImmediate(gameObject);
             return;
         }
@@ -55,34 +55,92 @@ public class AppCenterBehavior : MonoBehaviour
         PrepareEventHandlers(services);
         InvokeInitializingServices();
         AppCenter.SetWrapperSdk();
-
-        // On iOS we start crash service here, to give app an opportunity to assign handlers after crash and restart in Awake method
-#if UNITY_IOS
-        foreach (var service in services)
-        {
-            var startCrashes = service.GetMethod("StartCrashes");
-            if (startCrashes != null)
-                startCrashes.Invoke(null, null);
-        }
-#endif
-
-        var appSecret = AppCenter.GetSecretForPlatform(Settings.AppSecret);
         if (Settings.CustomLogUrl.UseCustomUrl)
         {
             AppCenter.CacheLogUrl(Settings.CustomLogUrl.Url);
         }
-        // On iOS and Android App Center starting automatically.
-#if UNITY_EDITOR || (!UNITY_IOS && !UNITY_ANDROID)
-        AppCenter.LogLevel = Settings.InitialLogLevel;
-        if (Settings.CustomLogUrl.UseCustomUrl)
+        var advancedSettings = GetComponent<AppCenterBehaviorAdvanced>();
+        if (IsStartFromAppCenterBehavior(advancedSettings))
         {
-            AppCenter.SetLogUrl(Settings.CustomLogUrl.Url);
+            AppCenter.LogLevel = Settings.InitialLogLevel;
+            if (Settings.CustomLogUrl.UseCustomUrl)
+            {
+                AppCenter.SetLogUrl(Settings.CustomLogUrl.Url);
+            }
+            var startupType = GetStartupType(advancedSettings);
+            if (startupType != StartupType.Skip)
+            {
+                var appSecret = AppCenter.GetSecretForPlatform(Settings.AppSecret);
+                var transmissionTargetToken = GetTransmissionTargetToken(advancedSettings);
+                var appSecretString = GetAppSecretString(appSecret, transmissionTargetToken, startupType);
+                if (string.IsNullOrEmpty(appSecretString))
+                {
+                    AppCenterInternal.Start(services);
+                }
+                else
+                {
+                    AppCenterInternal.Start(appSecretString, services);
+                }
+            }
         }
-        var nativeServiceTypes = AppCenter.ServicesToNativeTypes(services);
-        AppCenterInternal.Start(appSecret, nativeServiceTypes, services.Length);
+        // On iOS we start crash service here, to give app an opportunity to assign handlers after crash and restart in Awake method
+#if UNITY_IOS
+        else
+        {
+            foreach (var service in services)
+            {
+                var startCrashes = service.GetMethod("StartCrashes");
+                if (startCrashes != null)
+                    startCrashes.Invoke(null, null);
+            }
+        }
 #endif
-
         InvokeInitializedServices();
+    }
+
+    private bool IsStartFromAppCenterBehavior(AppCenterBehaviorAdvanced advancedSettings)
+    {
+#if UNITY_IOS
+        return advancedSettings != null && advancedSettings.SettingsAdvanced != null && advancedSettings.SettingsAdvanced.StartIOSNativeSDKFromAppCenterBehavior;
+#elif UNITY_ANDROID
+        return advancedSettings != null && advancedSettings.SettingsAdvanced != null && advancedSettings.SettingsAdvanced.StartAndroidNativeSDKFromAppCenterBehavior;
+#else
+        return true;
+#endif
+    }
+
+    private StartupType GetStartupType(AppCenterBehaviorAdvanced advancedSettings)
+    {
+        return advancedSettings != null && advancedSettings.SettingsAdvanced != null ?
+            advancedSettings.SettingsAdvanced.GetStartupType() :
+            StartupType.AppCenter;
+    }
+
+    private string GetTransmissionTargetToken(AppCenterBehaviorAdvanced advancedSettings)
+    {
+        return advancedSettings != null && advancedSettings.SettingsAdvanced != null ?
+            advancedSettings.SettingsAdvanced.TransmissionTargetToken :
+            string.Empty;
+    }
+
+    private string GetAppSecretString(string appSecret, string transmissionTargetToken, StartupType startupType)
+    {
+#if UNITY_WSA_10_0
+        return appSecret;
+#else
+        switch (startupType)
+        {
+            default:
+            case StartupType.AppCenter:
+                return appSecret;
+            case StartupType.NoSecret:
+                return string.Empty;
+            case StartupType.OneCollector:
+                return string.Format("target={0}", transmissionTargetToken);
+            case StartupType.Both:
+                return string.Format("appsecret={0};target={1}", appSecret, transmissionTargetToken);
+        }
+#endif
     }
 
     private static void PrepareEventHandlers(Type[] services)

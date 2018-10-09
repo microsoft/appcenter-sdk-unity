@@ -45,6 +45,7 @@ namespace Microsoft.AppCenter.Unity.Distribute.Internal
 
         private static void Initialize()
         {
+            appcenter_unity_distribute_set_delegate();
             del = ReleaseAvailableFunc;
             appcenter_unity_distribute_set_release_available_impl(del);
         }
@@ -106,6 +107,9 @@ namespace Microsoft.AppCenter.Unity.Distribute.Internal
 
         [DllImport("__Internal")]
         private static extern void appcenter_unity_distribute_replay_release_available();
+
+        [DllImport("__Internal")]
+        private static extern void appcenter_unity_distribute_set_delegate();
 
 #endregion
     }

@@ -5,7 +5,7 @@
 using System.Collections.Generic;
 using System.IO;
 
-public class AppCenterSettingsMakerAndroid
+public class AppCenterSettingsMakerAndroid : IAppCenterSettingsMaker
 {
     private const string AppCenterResourcesFolderPath = "Assets/Plugins/Android/res/values/";
     private const string AppCenterResourcesPath = AppCenterResourcesFolderPath + "appcenter-settings.xml";
@@ -52,9 +52,9 @@ public class AppCenterSettingsMakerAndroid
         _resourceValues[UseCustomLogUrlKey] = true.ToString();
     }
 
-    public void SetAppSecret(string appSecret)
+    public void SetAppSecret(AppCenterSettings settings)
     {
-        _resourceValues[AppSecretKey] = appSecret;
+        _resourceValues[AppSecretKey] = settings.AndroidAppSecret;
     }
 
     public void SetTransmissionTargetToken(string transmissionTargetToken)
@@ -111,5 +111,30 @@ public class AppCenterSettingsMakerAndroid
             File.Delete(AppCenterResourcesPath);
         }
         XmlResourceHelper.WriteXmlResource(AppCenterResourcesPath, _resourceValues);
+    }
+
+    public bool IsStartFromAppCenterBehavior(AppCenterSettingsAdvanced advancedSettings)
+    {
+        return advancedSettings.StartAndroidNativeSDKFromAppCenterBehavior;
+    }
+
+    public bool IsAnalyticsAvailable()
+    {
+        return File.Exists(AppCenterSettingsContext.AppCenterPath + "/AppCenter/Plugins/Android/appcenter-analytics-release.aar");
+    }
+
+    public bool IsCrashesAvailable()
+    {
+        return File.Exists(AppCenterSettingsContext.AppCenterPath + "/AppCenter/Plugins/Android/appcenter-crashes-release.aar");
+    }
+
+    public bool IsDistributeAvailable()
+    {
+        return File.Exists(AppCenterSettingsContext.AppCenterPath + "/AppCenter/Plugins/Android/appcenter-distribute-release.aar");
+    }
+
+    public bool IsPushAvailable()
+    {
+        return File.Exists(AppCenterSettingsContext.AppCenterPath + "/AppCenter/Plugins/Android/appcenter-push-release.aar");
     }
 }

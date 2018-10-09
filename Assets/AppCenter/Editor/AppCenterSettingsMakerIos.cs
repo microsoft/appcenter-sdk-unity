@@ -4,7 +4,7 @@
 
 using System.IO;
 
-public class AppCenterSettingsMakerIos
+public class AppCenterSettingsMakerIos : IAppCenterSettingsMaker
 {
     private const string TemplateFilePath = AppCenterSettingsContext.AppCenterPath + "/AppCenter/Plugins/iOS/Core/AppCenterStarter.original";
     private const string TargetFilePath = AppCenterSettingsContext.AppCenterPath + "/AppCenter/Plugins/iOS/Core/AppCenterStarter.m";
@@ -46,9 +46,9 @@ public class AppCenterSettingsMakerIos
         _loaderFileText = _loaderFileText.Replace(LogUrlSearchText, logUrl);
     }
 
-    public void SetAppSecret(string appSecret)
+    public void SetAppSecret(AppCenterSettings settings)
     {
-        _loaderFileText = _loaderFileText.Replace(AppSecretSearchText, appSecret);
+        _loaderFileText = _loaderFileText.Replace(AppSecretSearchText, settings.iOSAppSecret);
     }
 
     public void SetTransmissionTargetToken(string transmissionTargetToken)
@@ -88,6 +88,14 @@ public class AppCenterSettingsMakerIos
         AddToken(UsePushToken);
     }
 
+    public void SetSenderId(string senderId)
+    {
+    }
+
+    public void EnableFirebaseAnalytics()
+    {
+    }
+
     public void CommitSettings()
     {
         File.WriteAllText(TargetFilePath, _loaderFileText);
@@ -97,5 +105,30 @@ public class AppCenterSettingsMakerIos
     {
         var tokenText = "#define " + token + "\n";
         _loaderFileText = tokenText + _loaderFileText;
+    }
+
+    public bool IsStartFromAppCenterBehavior(AppCenterSettingsAdvanced advancedSettings)
+    {
+        return advancedSettings.StartIOSNativeSDKFromAppCenterBehavior;
+    }
+
+    public bool IsAnalyticsAvailable()
+    {
+        return Directory.Exists(AppCenterSettingsContext.AppCenterPath + "/AppCenter/Plugins/iOS/Analytics");
+    }
+
+    public bool IsCrashesAvailable()
+    {
+        return Directory.Exists(AppCenterSettingsContext.AppCenterPath + "/AppCenter/Plugins/iOS/Crashes");
+    }
+
+    public bool IsDistributeAvailable()
+    {
+        return Directory.Exists(AppCenterSettingsContext.AppCenterPath + "/AppCenter/Plugins/iOS/Distribute");
+    }
+
+    public bool IsPushAvailable()
+    {
+        return Directory.Exists(AppCenterSettingsContext.AppCenterPath + "/AppCenter/Plugins/iOS/Push");
     }
 }
