@@ -61,53 +61,21 @@ public class AppCenterSettings : ScriptableObject
             var services = new List<Type>();
             if (UseAnalytics)
             {
-                services.Add(Analytics);
+                services.Add(AppCenter.Analytics);
             }
             if (UseCrashes)
             {
-                services.Add(Crashes);
+                services.Add(AppCenter.Crashes);
             }
             if (UseDistribute)
             {
-                services.Add(Distribute);
+                services.Add(AppCenter.Distribute);
             }
             if (UsePush)
             {
-                services.Add(Push);
+                services.Add(AppCenter.Push);
             }
             return services.Where(i => i != null).ToArray();
         }
-    }
-
-    public static Type Analytics
-    {
-        get { return AppCenterAssembly.GetType("Microsoft.AppCenter.Unity.Analytics.Analytics"); }
-    }
-
-    public static Type Crashes
-    {
-        get { return AppCenterAssembly.GetType("Microsoft.AppCenter.Unity.Crashes.Crashes"); }
-    }
-
-    public static Type Distribute
-    {
-        get { return AppCenterAssembly.GetType("Microsoft.AppCenter.Unity.Distribute.Distribute"); }
-    }
-
-    public static Type Push
-    {
-        get { return AppCenterAssembly.GetType("Microsoft.AppCenter.Unity.Push.Push"); }
-    }
-
-    private static Assembly AppCenterAssembly
-    {
-        get
-        {
-#if !UNITY_EDITOR && UNITY_WSA_10_0
-            return typeof(AppCenterSettings).GetTypeInfo().Assembly;
-#else
-            return Assembly.GetExecutingAssembly();
-#endif
-        }
-    }
+    }   
 }

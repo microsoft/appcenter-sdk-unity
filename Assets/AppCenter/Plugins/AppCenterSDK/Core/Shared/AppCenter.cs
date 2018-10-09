@@ -32,9 +32,9 @@ namespace Microsoft.AppCenter.Unity
             return AppCenterInternal.SetEnabledAsync(enabled);
         }
 
-        public static void StartFromLibrary(ServiceType[] servicesArray)
+        public static void StartFromLibrary(Type[] servicesArray)
         {
-            AppCenterInternal.StartFromLibrary(servicesArray);
+            AppCenterInternal.StartFromLibrary(AppCenterInternal.ServicesToNativeTypes(servicesArray));
         }
 
         public static AppCenterTask<bool> IsEnabledAsync()
@@ -188,6 +188,38 @@ namespace Microsoft.AppCenter.Unity
 #else
             return null;
 #endif
+        }
+
+        public static Type Analytics
+        {
+            get { return AppCenterAssembly.GetType("Microsoft.AppCenter.Unity.Analytics.Analytics"); }
+        }
+
+        public static Type Crashes
+        {
+            get { return AppCenterAssembly.GetType("Microsoft.AppCenter.Unity.Crashes.Crashes"); }
+        }
+
+        public static Type Distribute
+        {
+            get { return AppCenterAssembly.GetType("Microsoft.AppCenter.Unity.Distribute.Distribute"); }
+        }
+
+        public static Type Push
+        {
+            get { return AppCenterAssembly.GetType("Microsoft.AppCenter.Unity.Push.Push"); }
+        }
+
+        private static Assembly AppCenterAssembly
+        {
+            get
+            {
+#if !UNITY_EDITOR && UNITY_WSA_10_0
+            return typeof(AppCenterSettings).GetTypeInfo().Assembly;
+#else
+                return Assembly.GetExecutingAssembly();
+#endif
+            }
         }
     }
 }

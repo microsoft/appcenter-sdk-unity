@@ -8,10 +8,10 @@ using Microsoft.AppCenter.Unity;
 
 namespace Microsoft.AppCenter.Unity.Internal
 {
-#if UNITY_IOS
+#if UNITY_IOS && !UNITY_EDITOR
     using RawType = System.IntPtr;
     using ServiceType = System.IntPtr;
-#elif UNITY_ANDROID
+#elif UNITY_ANDROID && !UNITY_EDITOR
     using RawType = UnityEngine.AndroidJavaObject;
     using ServiceType = System.IntPtr;
 #else
@@ -94,6 +94,11 @@ namespace Microsoft.AppCenter.Unity.Internal
                                          string liveUpdateDeploymentKey,
                                          string liveUpdatePackageHash)
         {
+        }
+
+        public static Type[] ServicesToNativeTypes(Type[] services)
+        {
+            return services;
         }
     }
 }

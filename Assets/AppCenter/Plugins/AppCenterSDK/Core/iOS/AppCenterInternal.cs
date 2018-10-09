@@ -90,7 +90,7 @@ namespace Microsoft.AppCenter.Unity.Internal
             appcenter_unity_start_from_library(services, services.Length);
         }
 
-        private static IntPtr[] ServicesToNativeTypes(Type[] services)
+        public static IntPtr[] ServicesToNativeTypes(Type[] services)
         {
             var classPointers = new IntPtr[services.Length];
             int currentIdx = 0;

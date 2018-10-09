@@ -11,6 +11,7 @@ using UnityEditor.Build;
 #if UNITY_2018_1_OR_NEWER
 using UnityEditor.Build.Reporting;
 #endif
+using Microsoft.AppCenter.Unity;
 
 // Warning: Don't use #if #endif for conditional compilation here as Unity
 // doesn't always set the flags early enough.
@@ -82,7 +83,7 @@ public class AppCenterPostBuild : IPostprocessBuild
     public static void AddHelperCodeToUWPProject(string pathToBuiltProject)
     {
         var settings = AppCenterSettingsContext.SettingsInstance;
-        if (!settings.UsePush || AppCenterSettings.Push == null)
+        if (!settings.UsePush || AppCenter.Push == null)
         {
             return;
         }
@@ -249,7 +250,7 @@ public class AppCenterPostBuild : IPostprocessBuild
 
     private static void OnPostprocessInfo(PlistDocumentWrapper info, AppCenterSettings settings)
     {
-        if (settings.UseDistribute && AppCenterSettings.Distribute != null)
+        if (settings.UseDistribute && AppCenter.Distribute != null)
         {
             // Add App Center URL sceme.
             var root = info.GetRoot();
@@ -265,7 +266,7 @@ public class AppCenterPostBuild : IPostprocessBuild
 
     private static void OnPostprocessCapabilities(ProjectCapabilityManagerWrapper capabilityManager, AppCenterSettings settings)
     {
-        if (settings.UsePush && AppCenterSettings.Push != null)
+        if (settings.UsePush && AppCenter.Push != null)
         {
             capabilityManager.AddPushNotifications();
             capabilityManager.AddRemoteNotificationsToBackgroundModes();
