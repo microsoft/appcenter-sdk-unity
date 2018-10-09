@@ -18,6 +18,18 @@ extern "C" void appcenter_unity_property_configurator_set_app_locale(MSPropertyC
   return [configurator setAppLocale: [NSString stringWithUTF8String:appLocale]];
 }
 
+extern "C" void appcenter_unity_property_configurator_clear_app_name(MSPropertyConfigurator *configurator) {
+  return [configurator setAppName: nil];
+}
+
+extern "C" void appcenter_unity_property_configurator_clear_app_version(MSPropertyConfigurator *configurator) {
+  return [configurator setAppVersion: nil];
+}
+
+extern "C" void appcenter_unity_property_configurator_clear_app_locale(MSPropertyConfigurator *configurator) {
+  return [configurator setAppLocale: nil];
+}
+
 extern "C" void appcenter_unity_property_configurator_collect_device_id(MSPropertyConfigurator *configurator) {
   // [configurator collectDeviceId];
   // Will be uncommented after the release.
