@@ -50,6 +50,9 @@ tools/**
 *.bundle
 *.apk
 *.ipa
+!Microsoft.AppCenter.dll
+!Microsoft.AppCenter.Analytics.dll
+!Microsoft.AppCenter.Push.dll
 
 # Secrets
 google-services.json*

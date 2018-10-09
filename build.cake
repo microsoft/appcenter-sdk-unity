@@ -219,27 +219,27 @@ Task("Externals-Ios")
 // Downloading UWP binaries.
 Task ("Externals-Uwp")
     .Does (() => {
-        var feedIdNugetEnv = EnvironmentVariable ("NUGET_FEED_ID");
-        var userNugetEnv = EnvironmentVariable ("NUGET_USER");
-        var passwordNugetEnv = EnvironmentVariable ("NUGET_PASSWORD");
-        var usePublicFeed = (string.IsNullOrEmpty (feedIdNugetEnv) || string.IsNullOrEmpty (userNugetEnv) || string.IsNullOrEmpty (passwordNugetEnv));
+        // var feedIdNugetEnv = EnvironmentVariable ("NUGET_FEED_ID");
+        // var userNugetEnv = EnvironmentVariable ("NUGET_USER");
+        // var passwordNugetEnv = EnvironmentVariable ("NUGET_PASSWORD");
+        // var usePublicFeed = (string.IsNullOrEmpty (feedIdNugetEnv) || string.IsNullOrEmpty (userNugetEnv) || string.IsNullOrEmpty (passwordNugetEnv));
 
-        CleanDirectory ("externals/uwp");
-        EnsureDirectoryExists ("Assets/AppCenter/Plugins/WSA/");
-        foreach (var module in AppCenterModules) {
-            if (module.Moniker == "Distribute") {
-                Warning ("Skipping 'Distribute' for UWP.");
-                continue;
-            }
-            if (module.Moniker == "Crashes") {
-                Warning ("Skipping 'Crashes' for UWP.");
-                continue;
-            }
-            Information ("Downloading " + module.DotNetModule + "...");
-            // Download nuget package
+        // CleanDirectory ("externals/uwp");
+        // EnsureDirectoryExists ("Assets/AppCenter/Plugins/WSA/");
+        // foreach (var module in AppCenterModules) {
+        //     if (module.Moniker == "Distribute") {
+        //         Warning ("Skipping 'Distribute' for UWP.");
+        //         continue;
+        //     }
+        //     if (module.Moniker == "Crashes") {
+        //         Warning ("Skipping 'Crashes' for UWP.");
+        //         continue;
+        //     }
+        //     Information ("Downloading " + module.DotNetModule + "...");
+        //     // Download nuget package
 
-            GetUwpPackage (module, usePublicFeed);
-        }
+        //     GetUwpPackage (module, usePublicFeed);
+        // }
     }).OnError (HandleError);
 
 // Builds the ContentProvider for the Android package and puts it in the
