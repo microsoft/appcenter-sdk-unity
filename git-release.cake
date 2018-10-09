@@ -42,7 +42,7 @@ Task("GitRelease")
     {
         Prerelease = false,
         Assets = string.Join(",", assets),
-        TargetCommitish = "master",
+        TargetCommitish = "develop",
         InputFilePath = releaseFile.Path.FullPath,
         Name = publishVersion
     });
