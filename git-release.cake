@@ -17,7 +17,7 @@ Task("GitRelease")
 
     var username = "user";
     var password = Argument<string>("GithubToken");
-    var owner = "evgeny-pol";
+    var owner = "Microsoft";
     var repo = "AppCenter-SDK-Unity";
 
     // Create temp release file.
