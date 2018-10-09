@@ -20,11 +20,6 @@ Task("GitRelease")
     var owner = "Microsoft";
     var repo = "AppCenter-SDK-Unity";
 
-    // Create temp release file.
-    System.IO.File.Create("tempRelease.md").Dispose();
-    var releaseFile = File("tempRelease.md");
-    FileWriteText(releaseFile, "Please update description. It will be pulled out automatically from release.md next time.");
-
     // Build a string containing paths to NuGet packages
     var files = GetFiles("output/*.unitypackage");
     var assets = new List<string>();
@@ -43,11 +38,10 @@ Task("GitRelease")
         Prerelease = false,
         Assets = string.Join(",", assets),
         TargetCommitish = "develop",
-        InputFilePath = releaseFile.Path.FullPath,
+        InputFilePath = new FilePath("RELEASE.md"),
         Name = publishVersion
     });
     GitReleaseManagerPublish(username, password, owner, repo, publishVersion);
-    DeleteFile(releaseFile);
 });
 
 RunTarget(TARGET);
