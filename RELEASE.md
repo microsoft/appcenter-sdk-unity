@@ -1,1 +1,1 @@
-New release description, automatically pulled from RELEASE.md file
+* **[Feature]** Added support for events `Crashes.SendingErrorReport`, `Crashes.SentErrorReport` and `Crashes.FailedToSendErrorReport` on iOS
