@@ -128,7 +128,7 @@ namespace Microsoft.AppCenter.Unity
 
         // Gets the first instance of an app secret corresponding to the given platform name, or returns the string
         // as-is if no identifier can be found.
-        public static string GetSecretForPlatform(string secrets)
+        public static string ParseAndSaveSecretForPlatform(string secrets)
         {
             var platformIdentifier = GetPlatformIdentifier();
             if (platformIdentifier == null)

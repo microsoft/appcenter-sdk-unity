@@ -59,7 +59,7 @@ public class AppCenterBehavior : MonoBehaviour
         {
             AppCenter.CacheLogUrl(Settings.CustomLogUrl.Url);
         }
-        var appSecret = AppCenter.GetSecretForPlatform(Settings.AppSecret);
+        var appSecret = AppCenter.ParseAndSaveSecretForPlatform(Settings.AppSecret);
         var advancedSettings = GetComponent<AppCenterBehaviorAdvanced>();
         if (IsStartFromAppCenterBehavior(advancedSettings))
         {
