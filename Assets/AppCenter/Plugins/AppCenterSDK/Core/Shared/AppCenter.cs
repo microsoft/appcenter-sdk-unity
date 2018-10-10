@@ -32,9 +32,9 @@ namespace Microsoft.AppCenter.Unity
             return AppCenterInternal.SetEnabledAsync(enabled);
         }
 
-        public static void StartFromLibrary(ServiceType[] servicesArray)
+        public static void StartFromLibrary(Type[] servicesArray)
         {
-            AppCenterInternal.StartFromLibrary(servicesArray);
+            AppCenterInternal.StartFromLibrary(AppCenterInternal.ServicesToNativeTypes(servicesArray));
         }
 
         public static AppCenterTask<bool> IsEnabledAsync()
@@ -99,59 +99,6 @@ namespace Microsoft.AppCenter.Unity
             get { return AppCenterInternal.IsConfigured(); }
         }
 
-#if UNITY_IOS
-        public static ServiceType[] ServicesToNativeTypes(Type[] services)
-        {
-            IntPtr[] classPointers = new IntPtr[services.Length];
-            int currentIdx = 0;
-            foreach (var serviceType in services)
-            {
-                IntPtr nativeType = (IntPtr)serviceType.GetMethod("GetNativeType").Invoke(null, null);
-                classPointers[currentIdx++] = nativeType;
-            }
-            return classPointers;
-        }
-#elif UNITY_ANDROID
-        public static ServiceType[] ServicesToNativeTypes(Type[] services)
-        {
-            var classClass = AndroidJNI.FindClass("java/lang/Class");
-            var array = AndroidJNI.NewObjectArray(services.Length, classClass, classClass);
-            int currentIdx = 0;
-            foreach (var serviceType in services)
-            {
-                ServiceType nativeType = (ServiceType)serviceType.GetMethod("GetNativeType").Invoke(null, null);
-                AndroidJNI.SetObjectArrayElement(array, currentIdx++, nativeType);
-            }
-            return new ServiceType[] { array };
-        }
-#elif UNITY_WSA_10_0
-        public static ServiceType[] ServicesToNativeTypes(Type[] services)
-        {
-            //TODO after all namespaces are changed to be in Microsoft.AppCenter.Unity,
-            //TODO remove case where 'method == null'
-            var nativeTypes = new ServiceType[services.Length];
-            for (var i = 0; i < services.Length; ++i)
-            {
-                var method = services[i].GetMethod("GetNativeType");
-                if (method == null)
-                {
-                    nativeTypes[i] = services[i];
-                }
-                else
-                {
-                    nativeTypes[i] = (ServiceType)method.Invoke(null, null);
-                }
-            }
-
-            return nativeTypes;
-        }
-#else
-        public static ServiceType[] ServicesToNativeTypes(Type[] services)
-        {
-            return null;
-        }
-#endif
-
         /// <summary>
         /// Set the custom properties.
         /// </summary>
@@ -164,9 +111,7 @@ namespace Microsoft.AppCenter.Unity
 
         public static void SetWrapperSdk()
         {
-            AppCenterInternal.SetWrapperSdk(WrapperSdk.WrapperSdkVersion,
-                                               WrapperSdk.Name,
-                                               WrapperSdk.WrapperRuntimeVersion, null, null, null);
+            AppCenterInternal.SetWrapperSdk(WrapperSdk.WrapperSdkVersion, WrapperSdk.Name, WrapperSdk.WrapperRuntimeVersion, null, null, null);
         }
 
         /// <summary>
@@ -243,6 +188,38 @@ namespace Microsoft.AppCenter.Unity
 #else
             return null;
 #endif
+        }
+
+        public static Type Analytics
+        {
+            get { return AppCenterAssembly.GetType("Microsoft.AppCenter.Unity.Analytics.Analytics"); }
+        }
+
+        public static Type Crashes
+        {
+            get { return AppCenterAssembly.GetType("Microsoft.AppCenter.Unity.Crashes.Crashes"); }
+        }
+
+        public static Type Distribute
+        {
+            get { return AppCenterAssembly.GetType("Microsoft.AppCenter.Unity.Distribute.Distribute"); }
+        }
+
+        public static Type Push
+        {
+            get { return AppCenterAssembly.GetType("Microsoft.AppCenter.Unity.Push.Push"); }
+        }
+
+        private static Assembly AppCenterAssembly
+        {
+            get
+            {
+#if !UNITY_EDITOR && UNITY_WSA_10_0
+            return typeof(AppCenterSettings).GetTypeInfo().Assembly;
+#else
+                return Assembly.GetExecutingAssembly();
+#endif
+            }
         }
     }
 }

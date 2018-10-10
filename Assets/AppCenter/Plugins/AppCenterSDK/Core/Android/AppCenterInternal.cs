@@ -55,8 +55,9 @@ namespace Microsoft.AppCenter.Unity.Internal
             AndroidJavaObject future = _appCenter.CallStatic<AndroidJavaObject>("getInstallId");
             var javaUUIDtask = new AppCenterTask<AndroidJavaObject>(future);
             var stringTask = new AppCenterTask<string>();
-            javaUUIDtask.ContinueWith(t => {
-                var installId = t.Result.Call<string>("toString");
+            javaUUIDtask.ContinueWith(t =>
+            {
+                var installId = t.Result == null ? null : t.Result.Call<string>("toString");
                 stringTask.SetResult(installId);
             });
             return stringTask;
@@ -90,10 +91,34 @@ namespace Microsoft.AppCenter.Unity.Internal
             wrapperSdkObject.Call("setLiveUpdatePackageHash", liveUpdatePackageHash);
             _appCenter.CallStatic("setWrapperSdk", wrapperSdkObject);
         }
-        
+
+        public static void Start(string appSecret, Type[] services)
+        {
+            var nativeServiceTypes = ServicesToNativeTypes(services);
+            var rawAppSecretString = AndroidJNI.NewStringUTF(appSecret);
+            var startMethod = AndroidJNI.GetStaticMethodID(_appCenter.GetRawClass(), "start", "(Landroid/app/Application;Ljava/lang/String;[Ljava/lang/Class;)V");
+            AndroidJNI.CallStaticVoidMethod(_appCenter.GetRawClass(), startMethod, new jvalue[]
+            {
+                new jvalue { l = GetAndroidApplication().GetRawObject() },
+                new jvalue { l = rawAppSecretString },
+                new jvalue { l = nativeServiceTypes }
+            });
+        }
+
+        public static void Start(Type[] services)
+        {
+            var nativeServiceTypes = ServicesToNativeTypes(services);
+            var startMethod = AndroidJNI.GetStaticMethodID(_appCenter.GetRawClass(), "start", "(Landroid/app/Application;[Ljava/lang/Class;)V");
+            AndroidJNI.CallStaticVoidMethod(_appCenter.GetRawClass(), startMethod, new jvalue[]
+            {
+                new jvalue { l = GetAndroidApplication().GetRawObject() },
+                new jvalue { l = nativeServiceTypes }
+            });
+        }
+
         private static AndroidJavaObject GetAndroidContext()
         {
-            if (_context != null) 
+            if (_context != null)
             {
                 return _context;
             }
@@ -103,14 +128,27 @@ namespace Microsoft.AppCenter.Unity.Internal
             return _context;
         }
 
-        public static void StartFromLibrary(IntPtr[] servicesArray)
+        public static void StartFromLibrary(IntPtr servicesArray)
         {
             var startMethod = AndroidJNI.GetStaticMethodID(_appCenter.GetRawClass(), "startFromLibrary", "(Landroid/content/Context;[Ljava/lang/Class;)V");
             AndroidJNI.CallStaticVoidMethod(_appCenter.GetRawClass(), startMethod, new jvalue[]
             {
-                new jvalue { l = GetAndroidContext().GetRawObject() }, 
-                new jvalue { l = servicesArray[0] } 
+                new jvalue { l = GetAndroidContext().GetRawObject() },
+                new jvalue { l = servicesArray }
             });
+        }
+
+        public static IntPtr ServicesToNativeTypes(Type[] services)
+        {
+            var classClass = AndroidJNI.FindClass("java/lang/Class");
+            var array = AndroidJNI.NewObjectArray(services.Length, classClass, classClass);
+            int currentIdx = 0;
+            foreach (var serviceType in services)
+            {
+                var nativeType = (IntPtr)serviceType.GetMethod("GetNativeType").Invoke(null, null);
+                AndroidJNI.SetObjectArrayElement(array, currentIdx++, nativeType);
+            }
+            return array;
         }
     }
 }

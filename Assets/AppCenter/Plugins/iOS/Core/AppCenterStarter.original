@@ -73,7 +73,6 @@ static const int kMSStartupType = 0/*STARTUP_TYPE*/;
 #ifdef APPCENTER_UNITY_USE_CUSTOM_INSTALL_URL
   [MSDistribute setInstallUrl:kMSCustomInstallUrl];
 #endif // APPCENTER_UNITY_USE_CUSTOM_INSTALL_URL
-  [MSDistribute setDelegate:[UnityDistributeDelegate sharedInstance]];
   [classes addObject:MSDistribute.class];
 
 #endif // APPCENTER_UNITY_USE_DISTRIBUTE
@@ -89,15 +88,12 @@ static const int kMSStartupType = 0/*STARTUP_TYPE*/;
       [MSAppCenter start:kMSAppSecret withServices:classes];
       break;
     case ONECOLLECTOR:
-      [MSAppCenter start:[NSString stringWithFormat:@"target=%@", 
-                                                    kMSTargetToken]
+      [MSAppCenter start:[NSString stringWithFormat:@"target=%@", kMSTargetToken]
             withServices:classes];
       break;
     case BOTH:
-      [MSAppCenter start:[NSString stringWithFormat:@"appsecret=%@;target=%@",
-                                                    kMSAppSecret,
-                                                    kMSTargetToken]
-           withServices:classes];
+      [MSAppCenter start:[NSString stringWithFormat:@"appsecret=%@;target=%@", kMSAppSecret, kMSTargetToken]
+            withServices:classes];
       break;
     case NONE:
       [MSAppCenter startWithServices:classes];

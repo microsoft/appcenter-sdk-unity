@@ -6,6 +6,7 @@ public class AppCenterSettingsContext : ScriptableObject
     public const string AppCenterPath = "Assets";
     private const string SettingsPath = AppCenterPath + "/AppCenter/AppCenterSettings.asset";
     private const string AdvancedSettingsPath = AppCenterPath + "/AppCenter/AppCenterSettingsAdvanced.asset";
+
     public static AppCenterSettings SettingsInstance
     {
         get
@@ -42,5 +43,4 @@ public class AppCenterSettingsContext : ScriptableObject
         }
         return instance;
     }
-   
 }
