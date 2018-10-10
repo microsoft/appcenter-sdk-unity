@@ -198,22 +198,22 @@ Task("Externals-Android")
 Task("Externals-Ios")
     .Does(() =>
 {
-    CleanDirectory("./externals/ios");
+    // CleanDirectory("./externals/ios");
 
-    // Download zip file containing AppCenter frameworks
-    DownloadFile(IosUrl, "./externals/ios/ios.zip");
-    Unzip("./externals/ios/ios.zip", "./externals/ios/");
+    // // Download zip file containing AppCenter frameworks
+    // DownloadFile(IosUrl, "./externals/ios/ios.zip");
+    // Unzip("./externals/ios/ios.zip", "./externals/ios/");
 
-    // Copy files
-    foreach (var module in AppCenterModules)
-    {
-        foreach (var iosModule in module.IosModules)
-        {
-            var destinationFolder = "Assets/AppCenter/Plugins/iOS/" + module.Moniker + "/" + iosModule;
-            DeleteDirectoryIfExists(destinationFolder);
-            MoveDirectory("./externals/ios/AppCenter-SDK-Apple/iOS/" + iosModule, destinationFolder);
-        }
-    }
+    // // Copy files
+    // foreach (var module in AppCenterModules)
+    // {
+    //     foreach (var iosModule in module.IosModules)
+    //     {
+    //         var destinationFolder = "Assets/AppCenter/Plugins/iOS/" + module.Moniker + "/" + iosModule;
+    //         DeleteDirectoryIfExists(destinationFolder);
+    //         MoveDirectory("./externals/ios/AppCenter-SDK-Apple/iOS/" + iosModule, destinationFolder);
+    //     }
+    // }
 }).OnError(HandleError);
 
 // Downloading UWP binaries.
