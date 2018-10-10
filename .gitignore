@@ -58,6 +58,7 @@ tools/**
 !AppCenterCrashes.framework
 !AppCenterDistribute.framework
 !AppCenterPush.framework
+!AppCenterDistributeResources.bundle
 
 # Secrets
 google-services.json*
