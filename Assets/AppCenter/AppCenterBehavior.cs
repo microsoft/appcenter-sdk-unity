@@ -59,6 +59,7 @@ public class AppCenterBehavior : MonoBehaviour
         {
             AppCenter.CacheLogUrl(Settings.CustomLogUrl.Url);
         }
+        var appSecret = AppCenter.ParseAndSaveSecretForPlatform(Settings.AppSecret);
         var advancedSettings = GetComponent<AppCenterBehaviorAdvanced>();
         if (IsStartFromAppCenterBehavior(advancedSettings))
         {
@@ -70,7 +71,6 @@ public class AppCenterBehavior : MonoBehaviour
             var startupType = GetStartupType(advancedSettings);
             if (startupType != StartupType.Skip)
             {
-                var appSecret = AppCenter.GetSecretForPlatform(Settings.AppSecret);
                 var transmissionTargetToken = GetTransmissionTargetToken(advancedSettings);
                 var appSecretString = GetAppSecretString(appSecret, transmissionTargetToken, startupType);
                 if (string.IsNullOrEmpty(appSecretString))
