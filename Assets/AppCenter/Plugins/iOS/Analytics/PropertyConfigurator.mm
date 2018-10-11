@@ -31,8 +31,7 @@ extern "C" void appcenter_unity_property_configurator_clear_app_locale(MSPropert
 }
 
 extern "C" void appcenter_unity_property_configurator_collect_device_id(MSPropertyConfigurator *configurator) {
-  // [configurator collectDeviceId];
-  // Will be uncommented after the release.
+  [configurator collectDeviceId];
 }
 
 extern "C" void appcenter_unity_property_configurator_set_event_property(MSPropertyConfigurator *configurator, char* key, char* value) {
