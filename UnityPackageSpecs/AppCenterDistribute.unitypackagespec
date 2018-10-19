@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<package name="AppCenterDistribute" version="0.1.2" needsCore="true">
+<package name="AppCenterDistribute" version="0.1.3" needsCore="true">
     <include>
         <!-- Shared files -->
         <file path="Assets/AppCenter/Plugins/AppCenterSDK/Distribute/Shared" />
