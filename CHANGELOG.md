@@ -1,4 +1,4 @@
-# App Center SDK for Android Change Log
+# App Center SDK for Unity Change Log
 
 ## Release 0.1.3
 
