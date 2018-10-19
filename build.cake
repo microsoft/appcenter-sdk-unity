@@ -198,48 +198,48 @@ Task("Externals-Android")
 Task("Externals-Ios")
     .Does(() =>
 {
-    // CleanDirectory("./externals/ios");
+    CleanDirectory("./externals/ios");
 
-    // // Download zip file containing AppCenter frameworks
-    // DownloadFile(IosUrl, "./externals/ios/ios.zip");
-    // Unzip("./externals/ios/ios.zip", "./externals/ios/");
+    // Download zip file containing AppCenter frameworks
+    DownloadFile(IosUrl, "./externals/ios/ios.zip");
+    Unzip("./externals/ios/ios.zip", "./externals/ios/");
 
-    // // Copy files
-    // foreach (var module in AppCenterModules)
-    // {
-    //     foreach (var iosModule in module.IosModules)
-    //     {
-    //         var destinationFolder = "Assets/AppCenter/Plugins/iOS/" + module.Moniker + "/" + iosModule;
-    //         DeleteDirectoryIfExists(destinationFolder);
-    //         MoveDirectory("./externals/ios/AppCenter-SDK-Apple/iOS/" + iosModule, destinationFolder);
-    //     }
-    // }
+    // Copy files
+    foreach (var module in AppCenterModules)
+    {
+        foreach (var iosModule in module.IosModules)
+        {
+            var destinationFolder = "Assets/AppCenter/Plugins/iOS/" + module.Moniker + "/" + iosModule;
+            DeleteDirectoryIfExists(destinationFolder);
+            MoveDirectory("./externals/ios/AppCenter-SDK-Apple/iOS/" + iosModule, destinationFolder);
+        }
+    }
 }).OnError(HandleError);
 
 // Downloading UWP binaries.
 Task ("Externals-Uwp")
     .Does (() => {
-        // var feedIdNugetEnv = EnvironmentVariable ("NUGET_FEED_ID");
-        // var userNugetEnv = EnvironmentVariable ("NUGET_USER");
-        // var passwordNugetEnv = EnvironmentVariable ("NUGET_PASSWORD");
-        // var usePublicFeed = (string.IsNullOrEmpty (feedIdNugetEnv) || string.IsNullOrEmpty (userNugetEnv) || string.IsNullOrEmpty (passwordNugetEnv));
+        var feedIdNugetEnv = EnvironmentVariable ("NUGET_FEED_ID");
+        var userNugetEnv = EnvironmentVariable ("NUGET_USER");
+        var passwordNugetEnv = EnvironmentVariable ("NUGET_PASSWORD");
+        var usePublicFeed = (string.IsNullOrEmpty (feedIdNugetEnv) || string.IsNullOrEmpty (userNugetEnv) || string.IsNullOrEmpty (passwordNugetEnv));
 
-        // CleanDirectory ("externals/uwp");
-        // EnsureDirectoryExists ("Assets/AppCenter/Plugins/WSA/");
-        // foreach (var module in AppCenterModules) {
-        //     if (module.Moniker == "Distribute") {
-        //         Warning ("Skipping 'Distribute' for UWP.");
-        //         continue;
-        //     }
-        //     if (module.Moniker == "Crashes") {
-        //         Warning ("Skipping 'Crashes' for UWP.");
-        //         continue;
-        //     }
-        //     Information ("Downloading " + module.DotNetModule + "...");
-        //     // Download nuget package
+        CleanDirectory ("externals/uwp");
+        EnsureDirectoryExists ("Assets/AppCenter/Plugins/WSA/");
+        foreach (var module in AppCenterModules) {
+            if (module.Moniker == "Distribute") {
+                Warning ("Skipping 'Distribute' for UWP.");
+                continue;
+            }
+            if (module.Moniker == "Crashes") {
+                Warning ("Skipping 'Crashes' for UWP.");
+                continue;
+            }
+            Information ("Downloading " + module.DotNetModule + "...");
+            // Download nuget package
 
-        //     GetUwpPackage (module, usePublicFeed);
-        // }
+            GetUwpPackage (module, usePublicFeed);
+        }
     }).OnError (HandleError);
 
 // Builds the ContentProvider for the Android package and puts it in the
