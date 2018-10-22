@@ -48,6 +48,14 @@ namespace Microsoft.AppCenter.Unity.Analytics.Internal
             return appcenter_unity_analytics_transmission_target_for_token(transmissionTargetToken);
         }
 
+        public static void Pause()
+        {
+        }
+
+        public static void Resume()
+        {
+        }
+
 #region External
 
         [DllImport("__Internal")]
