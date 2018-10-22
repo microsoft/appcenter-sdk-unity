@@ -45,6 +45,16 @@ namespace Microsoft.AppCenter.Unity.Analytics.Internal
             return appcenter_unity_transmission_get_property_configurator(transmissionTarget);
         }
 
+        public static void Pause(IntPtr transmissionTarget)
+        {
+            appcenter_unity_transmission_pause(transmissionTarget);
+        }
+
+        public static void Resume(IntPtr transmissionTarget)
+        {
+            appcenter_unity_transmission_resume(transmissionTarget);
+        }
+
 #region External
 
         [DllImport("__Internal")]
@@ -65,6 +75,11 @@ namespace Microsoft.AppCenter.Unity.Analytics.Internal
         [DllImport("__Internal")]
         private static extern IntPtr appcenter_unity_transmission_get_property_configurator(IntPtr transmissionTarget);
 
+        [DllImport("__Internal")]
+        private static extern void appcenter_unity_transmission_pause(IntPtr transmissionTarget);
+
+        [DllImport("__Internal")]
+        private static extern void appcenter_unity_transmission_resume(IntPtr transmissionTarget);
 #endregion
     }
 }

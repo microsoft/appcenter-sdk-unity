@@ -64,5 +64,15 @@ namespace Microsoft.AppCenter.Unity.Analytics
         {
             return new PropertyConfigurator(TransmissionTargetInternal.GetPropertyConfigurator(_rawObject));
         }
+
+        public void Pause()
+        {
+            TransmissionTargetInternal.Pause(_rawObject);
+        }
+
+        public void Resume()
+        {
+            TransmissionTargetInternal.Resume(_rawObject);
+        }
     }
 }

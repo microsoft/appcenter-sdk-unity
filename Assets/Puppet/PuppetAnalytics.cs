@@ -12,6 +12,7 @@ using UnityEngine.UI;
 public class PuppetAnalytics : MonoBehaviour
 {
     public Toggle Enabled;
+    public Toggle Paused;
     public InputField EventName;
     public GameObject EventProperty;
     public RectTransform EventPropertiesList;
@@ -27,6 +28,18 @@ public class PuppetAnalytics : MonoBehaviour
     public void SetEnabled(bool enabled)
     {
         StartCoroutine(SetEnabledCoroutine(enabled));
+    }
+
+    public void SetPaused(bool paused)
+    {
+        if (paused)
+        {
+            Analytics.Pause();
+        }
+        else
+        {
+            Analytics.Resume();
+        }
     }
 
     private IEnumerator SetEnabledCoroutine(bool enabled)

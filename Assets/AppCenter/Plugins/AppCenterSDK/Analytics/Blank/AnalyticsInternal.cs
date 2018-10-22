@@ -55,6 +55,14 @@ namespace Microsoft.AppCenter.Unity.Analytics.Internal
         {
             return default(TransmissionTargetType);
         }
+
+        public static void Pause()
+        {
+        }
+
+        public static void Resume()
+        {
+        }
     }
 }
 #endif
