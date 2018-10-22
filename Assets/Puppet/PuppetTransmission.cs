@@ -2,6 +2,7 @@
 //
 // Licensed under the MIT license.
 
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
@@ -52,13 +53,13 @@ public class PuppetTransmission : MonoBehaviour
         CollectDeviceIdChild.isOn = false;
     }
 
-    private string ResolveToken() 
+    private string ResolveToken()
     {
-        if (string.IsNullOrEmpty(TransmissionTarget.text)) 
+        if (string.IsNullOrEmpty(TransmissionTarget.text))
         {
             return _transmissionTargetToken;
-        } 
-        else 
+        }
+        else
         {
             return TransmissionTarget.text;
         }
@@ -95,6 +96,7 @@ public class PuppetTransmission : MonoBehaviour
             CollectDeviceId.enabled = false;
         }
     }
+
     public void SetCollectDeviceIDChild(bool enabled)
     {
         var transmissionTarget = Analytics.GetTransmissionTarget(ResolveToken());
@@ -172,7 +174,7 @@ public class PuppetTransmission : MonoBehaviour
         }
     }
 
-    private void OverrideProperties(TransmissionTarget transmissionTarget) 
+    private void OverrideProperties(TransmissionTarget transmissionTarget)
     {
         var overridenAppName = AppName.text;
         var overridenAppVersion = AppVersion.text;
@@ -191,8 +193,8 @@ public class PuppetTransmission : MonoBehaviour
         }
     }
 
-    public void TrackEventTransmission() 
-    { 
+    public void TrackEventTransmission()
+    {
         var transmissionTarget = Analytics.GetTransmissionTarget(ResolveToken());
         if (transmissionTarget == null)
         {
@@ -201,7 +203,7 @@ public class PuppetTransmission : MonoBehaviour
         }
         OverrideProperties(transmissionTarget);
         Dictionary<string, string> properties = GetProperties();
-        if (properties == null) 
+        if (properties == null)
         {
             transmissionTarget.TrackEvent(EventName.text);
         }
@@ -209,6 +211,42 @@ public class PuppetTransmission : MonoBehaviour
         {
             transmissionTarget.TrackEventWithProperties(EventName.text, properties);
         }
+    }
+
+    public void PauseParentTransmission()
+    {
+        GetTransmissionTarget(transmissionTarget =>
+        {
+            Debug.Log("Pausing the parent transmission...");
+            transmissionTarget.Pause();
+        });
+    }
+
+    public void ResumeParentTransmission()
+    {
+        GetTransmissionTarget(transmissionTarget =>
+        {
+            Debug.Log("Resuming the parent transmission...");
+            transmissionTarget.Resume();
+        });
+    }
+
+    public void PauseChildTransmission()
+    {
+        GetChildTransmissionTarget(transmissionTarget =>
+        {
+            Debug.Log("Pausing the child transmission...");
+            transmissionTarget.Pause();
+        });
+    }
+
+    public void ResumeChildTransmission()
+    {
+        GetChildTransmissionTarget(transmissionTarget =>
+        {
+            Debug.Log("Resuming the child transmission...");
+            transmissionTarget.Resume();
+        });
     }
 
     private Dictionary<string, string> GetProperties()
@@ -219,5 +257,34 @@ public class PuppetTransmission : MonoBehaviour
             return null;
         }
         return properties.ToDictionary(i => i.Key.text, i => i.Value.text);
+    }
+
+    private void GetTransmissionTarget(Action<TransmissionTarget> action)
+    {
+        var transmissionTarget = Analytics.GetTransmissionTarget(ResolveToken());
+        if (transmissionTarget == null)
+        {
+            Debug.Log("Transmission target is null.");
+        }
+        else
+        {
+            action(transmissionTarget);
+        }
+    }
+
+    private void GetChildTransmissionTarget(Action<TransmissionTarget> action)
+    {
+        GetTransmissionTarget(transmissionTarget =>
+        {
+            var childTransmissionTarget = transmissionTarget.GetTransmissionTarget(ResolveChildToken());
+            if (childTransmissionTarget == null)
+            {
+                Debug.Log("Child transmission target is null.");
+            }
+            else
+            {
+                action(childTransmissionTarget);
+            }
+        });
     }
 }

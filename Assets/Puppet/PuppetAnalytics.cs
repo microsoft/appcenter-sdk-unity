@@ -29,16 +29,16 @@ public class PuppetAnalytics : MonoBehaviour
         StartCoroutine(SetEnabledCoroutine(enabled));
     }
 
-    public void SetPaused(bool paused)
+    public void Pause()
     {
-        if (paused)
-        {
-            Analytics.Pause();
-        }
-        else
-        {
-            Analytics.Resume();
-        }
+        Debug.Log("Pausing the app analytics...");
+        Analytics.Pause();
+    }
+
+    public void Resume()
+    {
+        Debug.Log("Resuming the app analytics...");
+        Analytics.Resume();
     }
 
     private IEnumerator SetEnabledCoroutine(bool enabled)
