@@ -52,13 +52,13 @@ public class PuppetTransmission : MonoBehaviour
         CollectDeviceIdChild.isOn = false;
     }
 
-    private string ResolveToken() 
+    private string ResolveToken()
     {
-        if (string.IsNullOrEmpty(TransmissionTarget.text)) 
+        if (string.IsNullOrEmpty(TransmissionTarget.text))
         {
             return _transmissionTargetToken;
-        } 
-        else 
+        }
+        else
         {
             return TransmissionTarget.text;
         }
@@ -95,6 +95,7 @@ public class PuppetTransmission : MonoBehaviour
             CollectDeviceId.enabled = false;
         }
     }
+
     public void SetCollectDeviceIDChild(bool enabled)
     {
         var transmissionTarget = Analytics.GetTransmissionTarget(ResolveToken());
@@ -172,7 +173,7 @@ public class PuppetTransmission : MonoBehaviour
         }
     }
 
-    private void OverrideProperties(TransmissionTarget transmissionTarget) 
+    private void OverrideProperties(TransmissionTarget transmissionTarget)
     {
         var overridenAppName = AppName.text;
         var overridenAppVersion = AppVersion.text;
@@ -191,8 +192,8 @@ public class PuppetTransmission : MonoBehaviour
         }
     }
 
-    public void TrackEventTransmission() 
-    { 
+    public void TrackEventTransmission()
+    {
         var transmissionTarget = Analytics.GetTransmissionTarget(ResolveToken());
         if (transmissionTarget == null)
         {
@@ -201,7 +202,7 @@ public class PuppetTransmission : MonoBehaviour
         }
         OverrideProperties(transmissionTarget);
         Dictionary<string, string> properties = GetProperties();
-        if (properties == null) 
+        if (properties == null)
         {
             transmissionTarget.TrackEvent(EventName.text);
         }
@@ -209,6 +210,26 @@ public class PuppetTransmission : MonoBehaviour
         {
             transmissionTarget.TrackEventWithProperties(EventName.text, properties);
         }
+    }
+
+    public void PauseParentTransmission()
+    {
+
+    }
+
+    public void ResumeParentTransmission()
+    {
+
+    }
+
+    public void PauseChildTransmission()
+    {
+
+    }
+
+    public void ResumeChildTransmission()
+    {
+
     }
 
     private Dictionary<string, string> GetProperties()
