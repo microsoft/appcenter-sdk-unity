@@ -32,6 +32,10 @@ Once you have created an app, you can obtain its **App Secret** on the **Getting
 
 The App Center SDK is integrated by importing Unity Packages into your project.
 
+__The easist way to get started is to use our [Editor Extensions plugin](https://github.com/Microsoft/AppCenter-SDK-Unity-Extension).__ This plugin provides a clean UI for automatically downloading, installing and upgrading the App Center SDK.
+
+Alternatively you can install the latest Asset Packages directly. Please follow instructions below if you would like to install packages manually:
+
 ### 3.1 Download the package(s)
 
 The App Center Unity packages are downloaded from the [releases tab](https://github.com/Microsoft/AppCenter-SDK-Unity/releases). Download the package(s) that you want to use, from the latest release.
