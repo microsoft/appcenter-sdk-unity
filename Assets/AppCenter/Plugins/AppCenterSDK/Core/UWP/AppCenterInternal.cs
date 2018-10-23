@@ -183,6 +183,10 @@ namespace Microsoft.AppCenter.Unity.Internal
             return nativeTypes;
         }
 
+        public static void SetStorageSize(long size, AppCenter.SetStorageSizeCompletionHandler handler)
+        {
+        }
+
         private static void Prepare()
         {
             lock (_lockObject)

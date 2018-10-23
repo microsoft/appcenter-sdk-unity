@@ -150,6 +150,10 @@ namespace Microsoft.AppCenter.Unity.Internal
             }
             return array;
         }
+
+        public static void SetStorageSize(long size, AppCenter.SetStorageSizeCompletionHandler handler)
+        {
+        }
     }
 }
 #endif
