@@ -57,5 +57,15 @@ namespace Microsoft.AppCenter.Unity.Analytics
             }
             return new TransmissionTarget(internalObject);
         }
+
+        public static void Pause()
+        {
+            AnalyticsInternal.Pause();
+        }
+
+        public static void Resume()
+        {
+            AnalyticsInternal.Resume();
+        }
     }
 }
