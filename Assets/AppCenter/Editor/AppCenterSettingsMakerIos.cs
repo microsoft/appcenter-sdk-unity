@@ -22,6 +22,8 @@ public class AppCenterSettingsMakerIos : IAppCenterSettingsMaker
     private const string ApiUrlToken = "APPCENTER_UNITY_USE_CUSTOM_API_URL";
     private const string InstallUrlSearchText = "custom-install-url";
     private const string InstallUrlToken = "APPCENTER_UNITY_USE_CUSTOM_INSTALL_URL";
+    private const string UseStorageMaxSize = "APPCENTER_USE_CUSTOM_MAX_STORAGE_SIZE";
+    private const string StorageMaxSize = "APPCENTER_MAX_STORAGE_SIZE";
 
     private string _loaderFileText;
 
@@ -103,6 +105,8 @@ public class AppCenterSettingsMakerIos : IAppCenterSettingsMaker
 
     public void SetMaxStorageSize(long size)
     {
+        AddToken(UseStorageMaxSize);
+        _loaderFileText = _loaderFileText.Replace(StorageMaxSize, size.ToString());
     }
 
     private void AddToken(string token)

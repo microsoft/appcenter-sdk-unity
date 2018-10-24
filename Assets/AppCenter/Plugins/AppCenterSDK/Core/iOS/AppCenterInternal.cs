@@ -154,7 +154,7 @@ namespace Microsoft.AppCenter.Unity.Internal
                                                                    string liveUpdatePackageHash);
 
         [DllImport("__Internal")]
-        private static extern void appcenter_unity_set_storage_size(long size, AppCenter.SetStorageSizeCompletionHandler handler);
+        private static extern void appcenter_unity_set_storage_size(long size, AppCenter.SetMaxStorageSizeCompletionHandler handler);
 #endregion
     }
 }
