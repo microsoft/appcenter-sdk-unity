@@ -92,3 +92,10 @@ void appcenter_unity_set_wrapper_sdk(const char* wrapperSdkVersion,
                                   liveUpdatePackageHash:appcenter_unity_cstr_to_ns_string(liveUpdatePackageHash)];
   [MSAppCenter setWrapperSdk:wrapperSdk];
 }
+
+void appcenter_unity_set_storage_size(long size, void(* completionHandler)(bool))
+{
+    [MSAppCenter setMaxStorageSize:size completionHandler:^void(bool result){
+        completionHandler(result);
+    }];
+}
