@@ -182,12 +182,7 @@ namespace Microsoft.AppCenter.Unity
 #if ENABLE_IL2CPP
         [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
 #endif
-        public delegate void SetStorageSizeCompletionHandler(bool result);
-
-        public static void SetStorageSize(long size, SetStorageSizeCompletionHandler handler)
-        {
-            AppCenterInternal.SetStorageSize(size, handler);
-        }
+        public delegate void SetMaxStorageSizeCompletionHandler(bool result);
 
         private static string GetPlatformIdentifier()
         {

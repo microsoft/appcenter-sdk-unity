@@ -103,7 +103,7 @@ namespace Microsoft.AppCenter.Unity.Internal
             return classPointers;
         }
 
-        public static void SetStorageSize(long size, AppCenter.SetStorageSizeCompletionHandler handler)
+        public static void SetStorageSize(long size, AppCenter.SetMaxStorageSizeCompletionHandler handler)
         {
             appcenter_unity_set_storage_size(size, handler);
         }
