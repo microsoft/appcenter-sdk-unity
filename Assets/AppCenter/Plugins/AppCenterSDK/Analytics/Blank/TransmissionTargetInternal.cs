@@ -47,11 +47,11 @@ namespace Microsoft.AppCenter.Unity.Analytics
             return default(RawType);
         }
 
-        public static void Pause(RawType transmissionTarget)
+        public static void Pause(RawType transmissionTargetParent)
         {
         }
 
-        public static void Resume(RawType transmissionTarget)
+        public static void Resume(RawType transmissionTargetParent)
         {
         }
     }
