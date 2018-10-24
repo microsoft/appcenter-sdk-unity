@@ -55,6 +55,8 @@ public class AppCenterBehavior : MonoBehaviour
         PrepareEventHandlers(services);
         InvokeInitializingServices();
         AppCenter.SetWrapperSdk();
+        AppCenter.CacheStorageSize(Settings.MaxStorageSize.MaxStorageSize);
+       
         if (Settings.CustomLogUrl.UseCustomUrl)
         {
             AppCenter.CacheLogUrl(Settings.CustomLogUrl.Url);
