@@ -24,6 +24,8 @@ public class PuppetTransmission : MonoBehaviour
     public InputField ChildTransmissionTarget;
     public GameObject EventProperty;
     public RectTransform EventPropertiesList;
+    public Text TransmissionStatus;
+    public Text ChildTransmissionStatus;
     private string _transmissionTargetToken = "";
     private string _childTransmissionTargetToken = "";
     private TransmissionTarget _transmissionTarget;
@@ -219,6 +221,7 @@ public class PuppetTransmission : MonoBehaviour
         {
             Debug.Log("Pausing the parent transmission...");
             transmissionTarget.Pause();
+            TransmissionStatus.text = "Transmission paused.";
         });
     }
 
@@ -228,6 +231,7 @@ public class PuppetTransmission : MonoBehaviour
         {
             Debug.Log("Resuming the parent transmission...");
             transmissionTarget.Resume();
+            TransmissionStatus.text = "Transmission resumed.";
         });
     }
 
@@ -237,6 +241,7 @@ public class PuppetTransmission : MonoBehaviour
         {
             Debug.Log("Pausing the child transmission...");
             transmissionTarget.Pause();
+            ChildTransmissionStatus.text = "Child transmission paused.";
         });
     }
 
@@ -246,6 +251,7 @@ public class PuppetTransmission : MonoBehaviour
         {
             Debug.Log("Resuming the child transmission...");
             transmissionTarget.Resume();
+            ChildTransmissionStatus.text = "Child transmission resumed.";
         });
     }
 
