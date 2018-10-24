@@ -110,10 +110,10 @@ public class AppCenterLoader extends ContentProvider {
                 AppCenter.setLogUrl(customLogUrl);
             }
         }
-        SetMaxStorageSize();
         if (startupType == SKIP_START) {
             return true;
         }
+        SetMaxStorageSize();
         String appIdArg = "";
         switch (startupType) {
             case APP_SECRET:

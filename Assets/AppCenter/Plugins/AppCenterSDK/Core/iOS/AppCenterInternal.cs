@@ -103,10 +103,19 @@ namespace Microsoft.AppCenter.Unity.Internal
             return classPointers;
         }
 
-        public static void SetStorageSize(long size, AppCenter.SetMaxStorageSizeCompletionHandler handler)
+        public static void SetMaxStorageSize(long size)
         {
-            appcenter_unity_set_storage_size(size, handler);
+            appcenter_unity_set_storage_size(size, SetStorageSizeCompletionHandler);
         }
+
+        private static void SetStorageSizeCompletionHandler(bool result)
+        {
+            if (!result)
+            {
+                Debug.Log("Failed to set maximum storage size");
+            }
+        }
+
 #region External
 
         [DllImport("__Internal")]
@@ -154,7 +163,8 @@ namespace Microsoft.AppCenter.Unity.Internal
                                                                    string liveUpdatePackageHash);
 
         [DllImport("__Internal")]
-        private static extern void appcenter_unity_set_storage_size(long size, AppCenter.SetStorageSizeCompletionHandler handler);
+        private static extern void appcenter_unity_set_storage_size(long size, AppCenter.SetMaxStorageSizeCompletionHandler handler);
+
 #endregion
     }
 }
