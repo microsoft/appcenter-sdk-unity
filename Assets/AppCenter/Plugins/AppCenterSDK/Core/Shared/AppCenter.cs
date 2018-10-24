@@ -22,6 +22,7 @@ namespace Microsoft.AppCenter.Unity
     {
         private static AppCenterTask<string> _secretTask;
         private static AppCenterTask<string> _logUrlTask;
+        private static AppCenterTask<long> _storageSizeTask;
 
         public static LogLevel LogLevel
         {
@@ -76,6 +77,15 @@ namespace Microsoft.AppCenter.Unity
             return _logUrlTask;
         }
 
+        public static AppCenterTask<long> GetStorageSize()
+        {
+            if (_storageSizeTask == null)
+            {
+                _storageSizeTask = new AppCenterTask<long>();
+            }
+            return _storageSizeTask;
+        }
+
         /// <summary>
         /// Change the base URL (scheme + authority + port only) used to communicate with the backend.
         /// </summary>
@@ -83,6 +93,14 @@ namespace Microsoft.AppCenter.Unity
         public static void SetLogUrl(string logUrl)
         {
             AppCenterInternal.SetLogUrl(logUrl);
+        }
+
+        public static void CacheStorageSize(long storageSize)
+        {
+            if (_storageSizeTask != null)
+            {
+                _storageSizeTask.SetResult(storageSize);
+            }
         }
 
         public static void CacheLogUrl(string logUrl)

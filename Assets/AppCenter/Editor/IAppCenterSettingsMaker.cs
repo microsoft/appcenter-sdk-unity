@@ -21,6 +21,7 @@ public interface IAppCenterSettingsMaker
     void SetLogUrl(string logUrl);
     void SetApiUrl(string apiUrl);
     void SetInstallUrl(string installUrl);
+    void SetMaxStorageSize(long size);
     void EnableFirebaseAnalytics();
     void CommitSettings();
 }

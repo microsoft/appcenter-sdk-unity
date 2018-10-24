@@ -104,6 +104,10 @@ public class AppCenterSettingsMakerAndroid : IAppCenterSettingsMaker
         _resourceValues[UseCustomInstallUrlKey] = true.ToString();
     }
 
+    public void SetMaxStorageSize(long size)
+    {
+    }
+
     public void CommitSettings()
     {
         if (File.Exists(AppCenterResourcesPath))
