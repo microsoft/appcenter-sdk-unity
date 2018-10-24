@@ -31,6 +31,7 @@ public class AppCenterLoader extends ContentProvider {
 
     private static final String CUSTOM_LOG_URL_KEY = "appcenter_custom_log_url";
     private static final String USE_CUSTOM_LOG_URL_KEY = "appcenter_use_custom_log_url";
+    private static final String MAX_STORAGE_SIZE = "appcenter_max_storage_size";
     private static final String INITIAL_LOG_LEVEL_KEY = "appcenter_initial_log_level";
     private static final String USE_PUSH_KEY = "appcenter_use_push";
     private static final String SENDER_ID_KEY = "appcenter_sender_id";
@@ -109,6 +110,7 @@ public class AppCenterLoader extends ContentProvider {
                 AppCenter.setLogUrl(customLogUrl);
             }
         }
+        SetMaxStorageSize();
         if (startupType == SKIP_START) {
             return true;
         }
@@ -137,6 +139,16 @@ public class AppCenterLoader extends ContentProvider {
             AppCenter.configure((Application) mContext, appIdArg);
         }
         return true;
+    }
+
+    private void SetMaxStorageSize() {
+        String maxStorageSizeString = getStringResource(MAX_STORAGE_SIZE);
+        if (maxStorageSizeString != null) {
+            long maxStorageSize = Long.parseLong(maxStorageSizeString);
+            if (maxStorageSize > 0) {
+                AppCenter.setMaxStorageSize(maxStorageSize);
+            }
+        }
     }
 
     @Nullable

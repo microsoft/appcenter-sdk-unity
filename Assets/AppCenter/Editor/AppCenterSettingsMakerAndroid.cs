@@ -25,6 +25,7 @@ public class AppCenterSettingsMakerAndroid : IAppCenterSettingsMaker
     private const string CustomInstallUrlKey = "appcenter_custom_install_url";
     private const string UseCustomInstallUrlKey = "appcenter_use_custom_install_url";
     private const string EnableFirebaseAnalyticsKey = "appcenter_enable_firebase_analytics";
+    private const string MaxStorageSizeKey = "appcenter_max_storage_size";
 
     private readonly IDictionary<string, string> _resourceValues = new Dictionary<string, string>();
 
@@ -106,6 +107,7 @@ public class AppCenterSettingsMakerAndroid : IAppCenterSettingsMaker
 
     public void SetMaxStorageSize(long size)
     {
+        _resourceValues[MaxStorageSizeKey] = size.ToString();
     }
 
     public void CommitSettings()
