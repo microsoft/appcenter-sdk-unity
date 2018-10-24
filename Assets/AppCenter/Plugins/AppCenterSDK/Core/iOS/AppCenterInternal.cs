@@ -5,6 +5,7 @@
 #if UNITY_IOS && !UNITY_EDITOR
 using System;
 using System.Runtime.InteropServices;
+using UnityEngine;
 
 namespace Microsoft.AppCenter.Unity.Internal
 {
@@ -102,6 +103,10 @@ namespace Microsoft.AppCenter.Unity.Internal
             return classPointers;
         }
 
+        public static void SetStorageSize(long size, AppCenter.SetMaxStorageSizeCompletionHandler handler)
+        {
+            appcenter_unity_set_storage_size(size, handler);
+        }
 #region External
 
         [DllImport("__Internal")]
@@ -148,6 +153,8 @@ namespace Microsoft.AppCenter.Unity.Internal
                                                                    string liveUpdateDeploymentKey,
                                                                    string liveUpdatePackageHash);
 
+        [DllImport("__Internal")]
+        private static extern void appcenter_unity_set_storage_size(long size, AppCenter.SetStorageSizeCompletionHandler handler);
 #endregion
     }
 }

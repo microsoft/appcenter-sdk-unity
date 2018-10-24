@@ -7,6 +7,8 @@ using System.Collections;
 using System.Reflection;
 using Microsoft.AppCenter.Unity.Internal;
 using UnityEngine;
+using System.Runtime.InteropServices;
+
 
 namespace Microsoft.AppCenter.Unity
 {
@@ -194,6 +196,11 @@ namespace Microsoft.AppCenter.Unity
             }
             return platformSecret;
         }
+
+#if ENABLE_IL2CPP
+        [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
+#endif
+        public delegate void SetMaxStorageSizeCompletionHandler(bool result);
 
         private static string GetPlatformIdentifier()
         {

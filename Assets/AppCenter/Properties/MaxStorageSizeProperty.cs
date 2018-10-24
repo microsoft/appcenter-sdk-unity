@@ -8,5 +8,5 @@ using System;
 public class MaxStorageSizeProperty
 {
     public bool UseCustomMaxStorageSize;
-    public long MaxStorageSize = 0;
+    public long Size = 0;
 }

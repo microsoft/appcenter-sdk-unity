@@ -11,7 +11,7 @@ public class MaxStorageSizePropertyDrawer : PropertyDrawer
     public override void OnGUI(Rect position, SerializedProperty property, GUIContent label)
     {
         var useLabel = new GUIContent("Use Custom Max Storage Size");
-        var urlLabel = new GUIContent("Max Storage Size");
+        var urlLabel = new GUIContent("Max Storage Size Bytes");
         position.height = EditorGUIUtility.singleLineHeight; // Though the property may have double height, each child should have half that height.
         property.Next(true);
         EditorGUI.PropertyField(position, property, useLabel);

@@ -101,6 +101,10 @@ public class AppCenterSettingsMakerIos : IAppCenterSettingsMaker
         File.WriteAllText(TargetFilePath, _loaderFileText);
     }
 
+    public void SetMaxStorageSize(long size)
+    {
+    }
+
     private void AddToken(string token)
     {
         var tokenText = "#define " + token + "\n";
