@@ -3,6 +3,7 @@
 // Licensed under the MIT license.
 
 #if UNITY_IOS && !UNITY_EDITOR
+using AOT;
 using System;
 using System.Runtime.InteropServices;
 using UnityEngine;
@@ -108,6 +109,7 @@ namespace Microsoft.AppCenter.Unity.Internal
             appcenter_unity_set_storage_size(size, SetStorageSizeCompletionHandler);
         }
 
+        [MonoPInvokeCallback(typeof(AppCenter.SetMaxStorageSizeCompletionHandler))]
         private static void SetStorageSizeCompletionHandler(bool result)
         {
             if (!result)
