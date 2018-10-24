@@ -12,7 +12,6 @@ using UnityEngine.UI;
 public class PuppetAnalytics : MonoBehaviour
 {
     public Toggle Enabled;
-    public Toggle Paused;
     public InputField EventName;
     public GameObject EventProperty;
     public RectTransform EventPropertiesList;
