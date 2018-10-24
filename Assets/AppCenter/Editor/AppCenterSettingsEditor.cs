@@ -24,6 +24,7 @@ public class AppCenterSettingsEditor : Editor
         {
             Header("Analytics");
             EditorGUILayout.PropertyField(serializedObject.FindProperty("UseAnalytics"));
+            EditorGUILayout.PropertyField(serializedObject.FindProperty("MaxStorageSize"));
         }
         if (AppCenter.Crashes != null)
         {
