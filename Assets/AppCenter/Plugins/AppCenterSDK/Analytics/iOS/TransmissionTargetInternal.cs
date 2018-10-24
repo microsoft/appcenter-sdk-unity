@@ -35,7 +35,7 @@ namespace Microsoft.AppCenter.Unity.Analytics.Internal
             return AppCenterTask<bool>.FromCompleted(isEnabled);
         }
 
-        public static IntPtr GetTransmissionTarget(IntPtr transmissionTargetParent, string transmissionTargetToken) 
+        public static IntPtr GetTransmissionTarget(IntPtr transmissionTargetParent, string transmissionTargetToken)
         {
             return appcenter_unity_transmission_transmission_target_for_token(transmissionTargetParent, transmissionTargetToken);
         }
@@ -62,7 +62,7 @@ namespace Microsoft.AppCenter.Unity.Analytics.Internal
 
         [DllImport("__Internal")]
         private static extern void appcenter_unity_transmission_target_track_event_with_props(IntPtr transmissionTarget, string eventName, string[] keys, string[] values, int count);
-        
+
         [DllImport("__Internal")]
         private static extern void appcenter_unity_transmission_target_set_enabled(IntPtr transmissionTarget, bool enabled);
 

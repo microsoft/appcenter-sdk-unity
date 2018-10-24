@@ -15,6 +15,7 @@ public class PuppetAnalytics : MonoBehaviour
     public InputField EventName;
     public GameObject EventProperty;
     public RectTransform EventPropertiesList;
+    public Text StatusText;
 
     void OnEnable()
     {
@@ -29,16 +30,18 @@ public class PuppetAnalytics : MonoBehaviour
         StartCoroutine(SetEnabledCoroutine(enabled));
     }
 
-    public void SetPaused(bool paused)
+    public void Pause()
     {
-        if (paused)
-        {
-            Analytics.Pause();
-        }
-        else
-        {
-            Analytics.Resume();
-        }
+        Debug.Log("Pausing the app analytics...");
+        Analytics.Pause();
+        StatusText.text = "Analytics paused.";
+    }
+
+    public void Resume()
+    {
+        Debug.Log("Resuming the app analytics...");
+        Analytics.Resume();
+        StatusText.text = "Analytics resumed.";
     }
 
     private IEnumerator SetEnabledCoroutine(bool enabled)
