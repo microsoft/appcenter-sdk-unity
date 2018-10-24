@@ -4,6 +4,7 @@
 
 #if UNITY_WSA_10_0 && !UNITY_EDITOR
 using System;
+using System.Reflection;
 using Microsoft.AppCenter.Utils;
 using Microsoft.AppCenter.Unity.Internal.Utils;
 
