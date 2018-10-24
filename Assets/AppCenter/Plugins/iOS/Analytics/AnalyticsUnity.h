@@ -9,3 +9,5 @@ extern "C" void appcenter_unity_analytics_track_event_with_properties(char* even
 extern "C" void appcenter_unity_analytics_set_enabled(bool isEnabled);
 extern "C" bool appcenter_unity_analytics_is_enabled();
 extern "C" MSAnalyticsTransmissionTarget *appcenter_unity_analytics_transmission_target_for_token(char* transmissionTargetToken);
+extern "C" void appcenter_unity_analytics_pause();
+extern "C" void appcenter_unity_analytics_resume();

@@ -38,3 +38,14 @@ bool appcenter_unity_analytics_is_enabled()
 MSAnalyticsTransmissionTarget *appcenter_unity_analytics_transmission_target_for_token(char* transmissionTargetToken) {
   return [MSAnalytics transmissionTargetForToken: [NSString stringWithUTF8String:transmissionTargetToken]];
 }
+
+void appcenter_unity_analytics_pause()
+{
+    [MSAnalytics pause];
+}
+
+void appcenter_unity_analytics_resume()
+{
+    [MSAnalytics resume];
+}
+
