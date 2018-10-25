@@ -52,6 +52,10 @@ namespace Microsoft.AppCenter.Unity.Analytics
 
         public TransmissionTarget GetTransmissionTarget(string childTransmissionTargetToken)
         {
+            if (string.IsNullOrEmpty(childTransmissionTargetToken))
+            {
+                return null;
+            }
             var internalObject = TransmissionTargetInternal.GetTransmissionTarget(_rawObject, childTransmissionTargetToken);
             if (internalObject == null)
             {
