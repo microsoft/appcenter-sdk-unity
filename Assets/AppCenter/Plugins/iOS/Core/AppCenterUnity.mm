@@ -93,9 +93,9 @@ void appcenter_unity_set_wrapper_sdk(const char* wrapperSdkVersion,
   [MSAppCenter setWrapperSdk:wrapperSdk];
 }
 
-void appcenter_unity_set_storage_size(long size, void(* completionHandler)(bool))
+void appcenter_unity_set_storage_size(long size, void(* completionHandler)(BOOL))
 {
-    [MSAppCenter setMaxStorageSize:size completionHandler:^void(bool result){
+    [MSAppCenter setMaxStorageSize:size completionHandler:^void(BOOL result){
         completionHandler(result);
     }];
 }

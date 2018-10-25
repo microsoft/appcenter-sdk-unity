@@ -22,4 +22,4 @@ extern "C" void appcenter_unity_set_wrapper_sdk(const char* wrapperSdkVersion,
                                                 const char* liveUpdateReleaseLabel,
                                                 const char* liveUpdateDeploymentKey,
                                                 const char* liveUpdatePackageHash);
-extern "C" void appcenter_unity_set_storage_size(long size, void(* completionHandler)(bool));
+extern "C" void appcenter_unity_set_storage_size(long size, void(* completionHandler)(BOOL));
