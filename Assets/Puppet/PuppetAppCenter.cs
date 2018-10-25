@@ -126,7 +126,7 @@ public class PuppetAppCenter : MonoBehaviour
         });
         AppCenter.GetStorageSize().ContinueWith(task =>
         {
-            StorageSizeLabel.text = task.Result > 0 ? "Unchanged" : task.Result.ToString() + " bytes";
+            StorageSizeLabel.text = task.Result <= 0 ? "Unchanged" : task.Result.ToString() + " bytes";
         });
         DeviceIdLabel.text = SystemInfo.deviceUniqueIdentifier;
         SdkVersionLabel.text = AppCenter.GetSdkVersion();
