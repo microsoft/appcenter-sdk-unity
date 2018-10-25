@@ -184,7 +184,7 @@ namespace Microsoft.AppCenter.Unity.Internal
             return nativeTypes;
         }
 
-        public static void SetStorageSize(long size, AppCenter.SetMaxStorageSizeCompletionHandler handler)
+        public static void SetMaxStorageSize(long size)
         {
         }
 

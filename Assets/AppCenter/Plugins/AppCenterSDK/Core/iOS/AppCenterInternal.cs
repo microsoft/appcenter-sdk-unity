@@ -3,6 +3,7 @@
 // Licensed under the MIT license.
 
 #if UNITY_IOS && !UNITY_EDITOR
+using AOT;
 using System;
 using System.Runtime.InteropServices;
 using UnityEngine;
@@ -103,10 +104,20 @@ namespace Microsoft.AppCenter.Unity.Internal
             return classPointers;
         }
 
-        public static void SetStorageSize(long size, AppCenter.SetMaxStorageSizeCompletionHandler handler)
+        public static void SetMaxStorageSize(long size)
         {
-            appcenter_unity_set_storage_size(size, handler);
+            appcenter_unity_set_storage_size(size, SetStorageSizeCompletionHandler);
         }
+
+        [MonoPInvokeCallback(typeof(AppCenter.SetMaxStorageSizeCompletionHandler))]
+        private static void SetStorageSizeCompletionHandler(bool result)
+        {
+            if (!result)
+            {
+                Debug.Log("Failed to set maximum storage size");
+            }
+        }
+
 #region External
 
         [DllImport("__Internal")]
@@ -155,6 +166,7 @@ namespace Microsoft.AppCenter.Unity.Internal
 
         [DllImport("__Internal")]
         private static extern void appcenter_unity_set_storage_size(long size, AppCenter.SetMaxStorageSizeCompletionHandler handler);
+
 #endregion
     }
 }

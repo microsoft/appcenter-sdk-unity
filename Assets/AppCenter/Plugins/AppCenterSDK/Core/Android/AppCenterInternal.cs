@@ -151,8 +151,16 @@ namespace Microsoft.AppCenter.Unity.Internal
             return array;
         }
 
-        public static void SetStorageSize(long size, AppCenter.SetMaxStorageSizeCompletionHandler handler)
+        public static void SetMaxStorageSize(long size)
         {
+            var future = _appCenter.CallStatic<AndroidJavaObject>("setMaxStorageSize", size);
+            new AppCenterTask<bool>(future).ContinueWith(task =>
+            {
+                if (!task.Result)
+                {
+                    Debug.Log("Failed to set maximum storage size");
+                }
+            });
         }
     }
 }
