@@ -1,11 +1,11 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 using Microsoft.AppCenter.Unity.Crashes;
 
-public class DemoConfirmationDialog : MonoBehaviour {
-
-
+public class DemoConfirmationDialog : MonoBehaviour
+{
     public void Send()
     {
         Crashes.NotifyUserConfirmation(Crashes.ConfirmationResult.Send);
@@ -34,3 +34,4 @@ public class DemoConfirmationDialog : MonoBehaviour {
         gameObject.SetActive(false);
     }
 }
+
