@@ -15,6 +15,7 @@ public class DemoAnalytics : MonoBehaviour
     public InputField EventName;
     public GameObject EventProperty;
     public RectTransform EventPropertiesList;
+    public Text StatusText;
 
     void OnEnable()
     {
@@ -27,6 +28,20 @@ public class DemoAnalytics : MonoBehaviour
     public void SetEnabled(bool enabled)
     {
         StartCoroutine(SetEnabledCoroutine(enabled));
+    }
+
+    public void Pause()
+    {
+        Debug.Log("Pausing the app analytics...");
+        Analytics.Pause();
+        StatusText.text = "Analytics paused.";
+    }
+
+    public void Resume()
+    {
+        Debug.Log("Resuming the app analytics...");
+        Analytics.Resume();
+        StatusText.text = "Analytics resumed.";
     }
 
     private IEnumerator SetEnabledCoroutine(bool enabled)
