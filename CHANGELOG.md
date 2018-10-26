@@ -1,5 +1,12 @@
 # App Center SDK for Unity Change Log
 
+## Release 0.1.4
+
+* **[Feature]** Add pause/resume APIs which pause/resume sending Analytics logs to App Center.
+* **[Feature]** Add ability to specify maximum size limit on the local SQLite storage. Previously, up to 300 logs were stored of any size. The default value is 10MB.
+
+___
+
 ## Release 0.1.3
 
 App Center SDK for Unity now uses the latest native SDKs:
