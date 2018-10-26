@@ -53,12 +53,17 @@ static const int kMSStartupType = 0/*STARTUP_TYPE*/;
 }
 
 + (void)startAppCenter {
+  NSInteger startTarget = kMSStartupType;
+  if (startTarget == SKIP) {
+    return;
+  }
+
   NSMutableArray<Class>* classes = [[NSMutableArray alloc] init];
 
 #ifdef APPCENTER_USE_CUSTOM_MAX_STORAGE_SIZE
   [MSAppCenter setMaxStorageSize:APPCENTER_MAX_STORAGE_SIZE completionHandler:^void(bool result){
     if (!result)
-          MSLogWarning(@"MSAppCenter", @"setMaxStorageSize failed");
+      MSLogWarning(@"MSAppCenter", @"setMaxStorageSize failed");
   }];
 #endif 
 
@@ -89,7 +94,6 @@ static const int kMSStartupType = 0/*STARTUP_TYPE*/;
 #ifdef APPCENTER_UNITY_USE_CUSTOM_LOG_URL
   [MSAppCenter setLogUrl:kMSCustomLogUrl];
 #endif
-  NSInteger startTarget = kMSStartupType;
   switch (startTarget) {
     case APPCENTER:
       [MSAppCenter start:kMSAppSecret withServices:classes];
