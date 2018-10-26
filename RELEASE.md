@@ -1,9 +1,7 @@
-# Release 0.1.3
+# Release 0.1.4
 
-App Center SDK for Unity now uses the latest native SDKs:
-* App Center SDK for Android version 1.9.0
-* App Center SDK for iOS version 1.10.0
-* App Center SDK for .NET version 1.10.0
+* **[Feature]** Add pause/resume APIs which pause/resume sending Analytics logs to App Center.
+* **[Feature]** Add ability to specify maximum size limit on the local SQLite storage. Previously, up to 300 logs were stored of any size. The default value is 10MB.
 
-**iOS**
-* **[Fix]** Add missing network request error logging.
+**UWP**
+* **[Bug fix]** Fixed missing namespace import when building with `.Net` scripting backend.
