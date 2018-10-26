@@ -36,14 +36,24 @@ namespace Microsoft.AppCenter.Unity.Analytics
             return new AppCenterTask<bool>(future);
         }
 
-        public static AndroidJavaObject GetTransmissionTarget(AndroidJavaObject transmissionTargetParent, string transmissionTargetToken) 
+        public static AndroidJavaObject GetTransmissionTarget(AndroidJavaObject transmissionTargetParent, string transmissionTargetToken)
         {
             return transmissionTargetParent.Call<AndroidJavaObject>("getTransmissionTarget", transmissionTargetToken);
         }
 
-        public static AndroidJavaObject GetPropertyConfigurator(AndroidJavaObject transmissionTargetParent) 
+        public static AndroidJavaObject GetPropertyConfigurator(AndroidJavaObject transmissionTarget)
         {
-            return transmissionTargetParent.Call<AndroidJavaObject>("getPropertyConfigurator");
+            return transmissionTarget.Call<AndroidJavaObject>("getPropertyConfigurator");
+        }
+
+        public static void Pause(AndroidJavaObject transmissionTarget)
+        {
+            transmissionTarget.Call("pause");
+        }
+
+        public static void Resume(AndroidJavaObject transmissionTarget)
+        {
+            transmissionTarget.Call("resume");
         }
     }
 }

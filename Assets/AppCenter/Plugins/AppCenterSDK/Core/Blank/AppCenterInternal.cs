@@ -100,6 +100,10 @@ namespace Microsoft.AppCenter.Unity.Internal
         {
             return services;
         }
+
+        public static void SetMaxStorageSize(long size)
+        {
+        }
     }
 }
 #endif

@@ -15,6 +15,7 @@ using AOT;
 public class PuppetAppCenter : MonoBehaviour
 {
     public Toggle Enabled;
+    public Text StorageSizeLabel;
     public Text InstallIdLabel;
     public Text AppSecretLabel;
     public Text LogUrlLabel;
@@ -122,6 +123,10 @@ public class PuppetAppCenter : MonoBehaviour
         AppCenter.GetLogUrl().ContinueWith(task =>
         {
             LogUrlLabel.text = task.Result;
+        });
+        AppCenter.GetStorageSize().ContinueWith(task =>
+        {
+            StorageSizeLabel.text = task.Result <= 0 ? "Unchanged" : task.Result.ToString() + " bytes";
         });
         DeviceIdLabel.text = SystemInfo.deviceUniqueIdentifier;
         SdkVersionLabel.text = AppCenter.GetSdkVersion();

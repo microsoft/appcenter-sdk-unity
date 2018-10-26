@@ -55,6 +55,7 @@ public class AppCenterBehavior : MonoBehaviour
         PrepareEventHandlers(services);
         InvokeInitializingServices();
         AppCenter.SetWrapperSdk();
+        AppCenter.CacheStorageSize(Settings.MaxStorageSize.Size);
         if (Settings.CustomLogUrl.UseCustomUrl)
         {
             AppCenter.CacheLogUrl(Settings.CustomLogUrl.Url);
@@ -67,6 +68,10 @@ public class AppCenterBehavior : MonoBehaviour
             if (Settings.CustomLogUrl.UseCustomUrl)
             {
                 AppCenter.SetLogUrl(Settings.CustomLogUrl.Url);
+            }
+            if (Settings.MaxStorageSize.UseCustomMaxStorageSize && Settings.MaxStorageSize.Size > 0)
+            {
+                AppCenterInternal.SetMaxStorageSize(Settings.MaxStorageSize.Size);
             }
             var startupType = GetStartupType(advancedSettings);
             if (startupType != StartupType.Skip)

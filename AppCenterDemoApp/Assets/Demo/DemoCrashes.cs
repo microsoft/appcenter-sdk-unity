@@ -1,4 +1,8 @@
-﻿using System;
+﻿// Copyright (c) Microsoft Corporation. All rights reserved.
+//
+// Licensed under the MIT license.
+
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
@@ -8,8 +12,8 @@ using UnityEngine.UI;
 using Microsoft.AppCenter.Unity.Crashes;
 using AOT;
 
-public class DemoCrashes : MonoBehaviour {
-
+public class DemoCrashes : MonoBehaviour
+{
     public Toggle CrashesEnabled;
     public Toggle ReportUnhandledExceptions;
     public Text LastSessionCrashReport;
@@ -27,12 +31,12 @@ public class DemoCrashes : MonoBehaviour {
 
     public void OnValueChanged()
     {
-        PlayerPrefs.SetString(PuppetAppCenter.TextAttachmentKey, TextAttachment.text);
+        PlayerPrefs.SetString(DemoAppCenter.TextAttachmentKey, TextAttachment.text);
     }
 
     public void OnBinaryValueChanged()
     {
-        PlayerPrefs.SetString(PuppetAppCenter.BinaryAttachmentKey, BinaryAttachment.text);
+        PlayerPrefs.SetString(DemoAppCenter.BinaryAttachmentKey, BinaryAttachment.text);
     }
 
     public void SetCrashesEnabled(bool enabled)
@@ -120,8 +124,8 @@ public class DemoCrashes : MonoBehaviour {
     {
         return new ErrorAttachmentLog[]
         {
-            ErrorAttachmentLog.AttachmentWithText(PlayerPrefs.GetString(PuppetAppCenter.TextAttachmentKey), "hello.txt"),
-            ErrorAttachmentLog.AttachmentWithBinary(ParseBytes(PlayerPrefs.GetString(PuppetAppCenter.BinaryAttachmentKey)), "fake_image.jpeg", "image/jpeg")
+            ErrorAttachmentLog.AttachmentWithText(PlayerPrefs.GetString(DemoAppCenter.TextAttachmentKey), "hello.txt"),
+            ErrorAttachmentLog.AttachmentWithBinary(ParseBytes(PlayerPrefs.GetString(DemoAppCenter.BinaryAttachmentKey)), "fake_image.jpeg", "image/jpeg")
         };
     }
 
@@ -159,18 +163,18 @@ public class DemoCrashes : MonoBehaviour {
     [MonoPInvokeCallback(typeof(Crashes.SendingErrorReportHandler))]
     public static void SendingErrorReportHandler(ErrorReport errorReport)
     {
-        Debug.Log("Puppet SendingErrorReportHandler");
+        Debug.Log("Demo SendingErrorReportHandler");
     }
 
     [MonoPInvokeCallback(typeof(Crashes.SentErrorReportHandler))]
     public static void SentErrorReportHandler(ErrorReport errorReport)
     {
-        Debug.Log("Puppet SentErrorReportHandler");
+        Debug.Log("Demo SentErrorReportHandler");
     }
 
     [MonoPInvokeCallback(typeof(Crashes.FailedToSendErrorReportHandler))]
     public static void FailedToSendErrorReportHandler(ErrorReport errorReport)
     {
-        Debug.Log("Puppet FailedToSendErrorReportHandler");
+        Debug.Log("Demo FailedToSendErrorReportHandler");
     }
 }

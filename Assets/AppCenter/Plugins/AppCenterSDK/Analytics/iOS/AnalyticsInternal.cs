@@ -48,6 +48,16 @@ namespace Microsoft.AppCenter.Unity.Analytics.Internal
             return appcenter_unity_analytics_transmission_target_for_token(transmissionTargetToken);
         }
 
+        public static void Pause()
+        {
+            appcenter_unity_analytics_pause();
+        }
+
+        public static void Resume()
+        {
+            appcenter_unity_analytics_resume();
+        }
+
 #region External
 
         [DllImport("__Internal")]
@@ -68,6 +78,11 @@ namespace Microsoft.AppCenter.Unity.Analytics.Internal
         [DllImport("__Internal")]
         private static extern IntPtr appcenter_unity_analytics_transmission_target_for_token(string transmissionTargetToken);
 
+        [DllImport("__Internal")]
+        private static extern void appcenter_unity_analytics_pause();
+
+        [DllImport("__Internal")]
+        private static extern void appcenter_unity_analytics_resume();
 #endregion
     }
 }

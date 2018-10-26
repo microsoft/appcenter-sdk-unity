@@ -52,6 +52,10 @@ namespace Microsoft.AppCenter.Unity.Analytics
 
         public TransmissionTarget GetTransmissionTarget(string childTransmissionTargetToken)
         {
+            if (string.IsNullOrEmpty(childTransmissionTargetToken))
+            {
+                return null;
+            }
             var internalObject = TransmissionTargetInternal.GetTransmissionTarget(_rawObject, childTransmissionTargetToken);
             if (internalObject == null)
             {
@@ -63,6 +67,16 @@ namespace Microsoft.AppCenter.Unity.Analytics
         public PropertyConfigurator GetPropertyConfigurator()
         {
             return new PropertyConfigurator(TransmissionTargetInternal.GetPropertyConfigurator(_rawObject));
+        }
+
+        public void Pause()
+        {
+            TransmissionTargetInternal.Pause(_rawObject);
+        }
+
+        public void Resume()
+        {
+            TransmissionTargetInternal.Resume(_rawObject);
         }
     }
 }

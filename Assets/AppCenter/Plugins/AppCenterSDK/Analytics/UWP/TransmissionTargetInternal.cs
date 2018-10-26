@@ -38,6 +38,14 @@ namespace Microsoft.AppCenter.Unity.Analytics
         {
             return null;
         }
+
+        public static void Pause(object transmissionTarget)
+        {
+        }
+
+        public static void Resume(object transmissionTarget)
+        {
+        }
     }
 }
 #endif

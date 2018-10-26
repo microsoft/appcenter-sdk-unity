@@ -37,6 +37,8 @@ public class AppCenterSettings : ScriptableObject
     [Tooltip("To enable push for Android apps, you need to set the Sender ID found in the Firebase portal for your application.")]
     public string SenderId;
 
+    public MaxStorageSizeProperty MaxStorageSize = new MaxStorageSizeProperty();
+
     public string AppSecret
     {
         get
@@ -77,5 +79,5 @@ public class AppCenterSettings : ScriptableObject
             }
             return services.Where(i => i != null).ToArray();
         }
-    }   
+    }
 }

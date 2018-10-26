@@ -42,6 +42,10 @@ public class AppCenterPreBuild : IPreprocessBuild
         {
             settingsMaker.SetLogUrl(settings.CustomLogUrl.Url);
         }
+        if (settings.MaxStorageSize.UseCustomMaxStorageSize && settings.MaxStorageSize.Size > 0)
+        {
+            settingsMaker.SetMaxStorageSize(settings.MaxStorageSize.Size);
+        }
         if (settings.UsePush && settingsMaker.IsPushAvailable())
         {
             settingsMaker.StartPushClass();

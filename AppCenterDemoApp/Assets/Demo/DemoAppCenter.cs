@@ -2,6 +2,7 @@
 //
 // Licensed under the MIT license.
 
+using System;
 using System.Collections;
 using Microsoft.AppCenter.Unity;
 using UnityEngine;
@@ -14,13 +15,14 @@ using AOT;
 public class DemoAppCenter : MonoBehaviour
 {
     public Toggle Enabled;
+    public Text StorageSizeLabel;
     public Text InstallIdLabel;
     public Text AppSecretLabel;
     public Text LogUrlLabel;
     public Text DeviceIdLabel;
     public Text SdkVersionLabel;
     public Dropdown LogLevel;
-    public PuppetConfirmationDialog userConfirmationDialog;
+    public DemoConfirmationDialog userConfirmationDialog;
     public const string TextAttachmentKey = "text_attachment";
     public const string BinaryAttachmentKey = "binary_attachment";
 
@@ -70,7 +72,7 @@ public class DemoAppCenter : MonoBehaviour
 
     private CustomProperties GetProperties()
     {
-        var properties = PropertiesList.GetComponentsInChildren<PuppetCustomProperty>();
+        var properties = PropertiesList.GetComponentsInChildren<DemoCustomProperty>();
         if (properties == null || properties.Length == 0)
         {
             return null;
@@ -85,12 +87,12 @@ public class DemoAppCenter : MonoBehaviour
 
     private void Awake()
     {
-        Crashes.ShouldProcessErrorReport = PuppetCrashes.ShouldProcessErrorReportHandler;
+        Crashes.ShouldProcessErrorReport = DemoCrashes.ShouldProcessErrorReportHandler;
         Crashes.ShouldAwaitUserConfirmation = UserConfirmationHandler;
-        Crashes.GetErrorAttachments = PuppetCrashes.GetErrorAttachmentstHandler;
-        Crashes.SendingErrorReport += PuppetCrashes.SendingErrorReportHandler;
-        Crashes.SentErrorReport += PuppetCrashes.SentErrorReportHandler;
-        Crashes.FailedToSendErrorReport += PuppetCrashes.FailedToSendErrorReportHandler;
+        Crashes.GetErrorAttachments = DemoCrashes.GetErrorAttachmentstHandler;
+        Crashes.SendingErrorReport += DemoCrashes.SendingErrorReportHandler;
+        Crashes.SentErrorReport += DemoCrashes.SentErrorReportHandler;
+        Crashes.FailedToSendErrorReport += DemoCrashes.FailedToSendErrorReportHandler;
         instance = this;
     }
 
@@ -121,6 +123,10 @@ public class DemoAppCenter : MonoBehaviour
         AppCenter.GetLogUrl().ContinueWith(task =>
         {
             LogUrlLabel.text = task.Result;
+        });
+        AppCenter.GetStorageSize().ContinueWith(task =>
+        {
+            StorageSizeLabel.text = task.Result <= 0 ? "Unchanged" : task.Result.ToString() + " bytes";
         });
         DeviceIdLabel.text = SystemInfo.deviceUniqueIdentifier;
         SdkVersionLabel.text = AppCenter.GetSdkVersion();
