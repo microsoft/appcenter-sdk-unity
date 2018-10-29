@@ -16,6 +16,10 @@ void appcenter_unity_transmission_target_track_event_with_props(MSAnalyticsTrans
   [transmission trackEvent:[NSString stringWithUTF8String:eventName] withProperties: properties];
 }
 
+void appcenter_unity_transmission_target_track_event_with_typed_props(MSAnalyticsTransmissionTarget *transmission, char* eventName, MSEventProperties* properties) {
+    [transmission trackEvent: [NSString stringWithUTF8String:eventName] withTypedProperties:properties];
+}
+
 void appcenter_unity_transmission_target_set_enabled(MSAnalyticsTransmissionTarget *transmission, BOOL enabled) {
   [transmission setEnabled: enabled];
 }
