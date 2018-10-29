@@ -17,7 +17,7 @@ void appcenter_unity_transmission_target_track_event_with_props(MSAnalyticsTrans
 }
 
 void appcenter_unity_transmission_target_track_event_with_typed_props(MSAnalyticsTransmissionTarget *transmission, char* eventName, MSEventProperties* properties) {
-    [transmission trackEvent: [NSString stringWithUTF8String:eventName] withTypedProperties:properties];
+  //[transmission trackEvent: [NSString stringWithUTF8String:eventName] withTypedProperties:properties];
 }
 
 void appcenter_unity_transmission_target_set_enabled(MSAnalyticsTransmissionTarget *transmission, BOOL enabled) {
@@ -38,10 +38,10 @@ MSPropertyConfigurator *appcenter_unity_transmission_get_property_configurator(M
 
 void appcenter_unity_transmission_pause(MSAnalyticsTransmissionTarget *transmission)
 {
-    [transmission pause];
+  [transmission pause];
 }
 
 void appcenter_unity_transmission_resume(MSAnalyticsTransmissionTarget *transmission)
 {
-    [transmission resume];
+  [transmission resume];
 }
