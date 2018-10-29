@@ -19,6 +19,11 @@ namespace Microsoft.AppCenter.Unity.Analytics
         {
         }
 
+        public static void TrackEventWithProperties(object transmissionTarget, string eventName, EventProperties properties)
+        {
+        }
+
+
         public static AppCenterTask SetEnabledAsync(object transmissionTarget, bool enabled)
         {
             return AppCenterTask.FromCompleted();

@@ -24,6 +24,11 @@ namespace Microsoft.AppCenter.Unity.Analytics
             transmissionTarget.Call("trackEvent", eventName, androidProperties);
         }
 
+        public static void TrackEventWithProperties(AndroidJavaObject transmissionTarget, string eventName, EventProperties properties)
+        {
+            transmissionTarget.Call("trackEvent", eventName, properties.GetRawObject());
+        }
+
         public static AppCenterTask SetEnabledAsync(AndroidJavaObject transmissionTarget, bool enabled)
         {
             var future = transmissionTarget.Call<AndroidJavaObject>("setEnabledAsync", enabled);
