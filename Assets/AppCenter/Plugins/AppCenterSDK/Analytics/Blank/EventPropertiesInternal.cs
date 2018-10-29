@@ -37,10 +37,6 @@ namespace Microsoft.AppCenter.Unity.Analytics.Internal
         public static void SetDate(RawType properties, string key, DateTime val)
         {
         }
-
-        public static void Clear(RawType properties, string key)
-        {
-        }
     }
 }
 #endif
