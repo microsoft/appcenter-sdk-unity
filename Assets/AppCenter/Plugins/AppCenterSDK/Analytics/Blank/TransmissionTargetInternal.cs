@@ -27,7 +27,7 @@ namespace Microsoft.AppCenter.Unity.Analytics
         {
         }
 
-        public static void TrackEventWithProperties(IntPtr transmissionTarget, string eventName, EventProperties properties)
+        public static void TrackEventWithProperties(RawType transmissionTarget, string eventName, EventProperties properties)
         {
         }
 
