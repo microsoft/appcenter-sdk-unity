@@ -1,7 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
+﻿// Copyright (c) Microsoft Corporation. All rights reserved.
+//
+// Licensed under the MIT license.
+
+using System;
 using Microsoft.AppCenter.Unity.Analytics.Internal;
 
 namespace Microsoft.AppCenter.Unity.Analytics
@@ -39,19 +40,19 @@ namespace Microsoft.AppCenter.Unity.Analytics
             EventPropertiesInternal.SetDate(_rawObject, key, val);
             return this;
         }
-        
+
         public EventProperties Set(string key, long val)
         {
             EventPropertiesInternal.SetNumber(_rawObject, key, val);
             return this;
         }
-        
+
         public EventProperties Set(string key, double val)
         {
             EventPropertiesInternal.SetNumber(_rawObject, key, val);
             return this;
         }
-        
+
         public EventProperties Set(string key, bool val)
         {
             EventPropertiesInternal.SetBool(_rawObject, key, val);
