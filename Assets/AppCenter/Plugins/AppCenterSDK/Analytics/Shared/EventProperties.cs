@@ -11,7 +11,7 @@ namespace Microsoft.AppCenter.Unity.Analytics
 #elif UNITY_ANDROID
     using RawType = UnityEngine.AndroidJavaObject;
 #else
-    using RawType = System.Object;
+    using RawType = Dictionary<string, string>;
 #endif
 
     public class EventProperties
