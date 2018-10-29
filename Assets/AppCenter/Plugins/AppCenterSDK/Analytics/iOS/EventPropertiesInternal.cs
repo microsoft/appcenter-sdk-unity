@@ -38,7 +38,7 @@ namespace Microsoft.AppCenter.Unity.Analytics.Internal
 
         public static void SetDate(IntPtr properties, string key, DateTime val)
         {
-            appcenter_unity_analytics_event_properties_set_date(properties, key, NSDateHelper.DateTimeConvert(va));
+            appcenter_unity_analytics_event_properties_set_date(properties, key, NSDateHelper.DateTimeConvert(val));
         }
 
 #region External
