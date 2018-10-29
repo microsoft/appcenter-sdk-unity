@@ -10,8 +10,10 @@ namespace Microsoft.AppCenter.Unity.Analytics
     using RawType = System.IntPtr;
 #elif UNITY_ANDROID
     using RawType = UnityEngine.AndroidJavaObject;
-#else
+#elif UNITY_WSA_10_0 && !UNITY_EDITOR
     using RawType = Dictionary<string, string>;
+#else 
+    using RawType = System.Object;
 #endif
 
     public class EventProperties
