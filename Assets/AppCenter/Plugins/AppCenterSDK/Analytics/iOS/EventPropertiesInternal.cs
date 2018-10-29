@@ -38,7 +38,7 @@ namespace Microsoft.AppCenter.Unity.Analytics.Internal
 
         public static void SetDate(IntPtr properties, string key, DateTime val)
         {
-            appcenter_unity_analytics_event_properties_set_date(properties, key, NSDateHelper.DateTimeConvert(va));
+            appcenter_unity_analytics_event_properties_set_date(properties, key, NSDateHelper.DateTimeConvert(val));
         }
 
 #region External
@@ -59,7 +59,7 @@ namespace Microsoft.AppCenter.Unity.Analytics.Internal
         private static extern void appcenter_unity_analytics_event_properties_set_bool(IntPtr properties, string key, bool val);
 
         [DllImport("__Internal")]
-        private static extern void appcenter_unity_analytics_event_properties_set_date(IntPtr properties, string key, long val);
+        private static extern void appcenter_unity_analytics_event_properties_set_date(IntPtr properties, string key, IntPtr val);
 #endregion
     }
 }
