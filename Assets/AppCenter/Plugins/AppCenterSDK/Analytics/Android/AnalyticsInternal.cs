@@ -43,6 +43,11 @@ namespace Microsoft.AppCenter.Unity.Analytics.Internal
             _analytics.CallStatic("trackEvent", eventName, androidProperties);
         }
 
+        public static void TrackEventWithProperties(string eventName, EventProperties properties)
+        {
+            _analytics.CallStatic("trackEvent", eventName, properties.GetRawObject());
+        }
+
         public static AppCenterTask SetEnabledAsync(bool isEnabled)
         {
             var future = _analytics.CallStatic<AndroidJavaObject>("setEnabled", isEnabled);
