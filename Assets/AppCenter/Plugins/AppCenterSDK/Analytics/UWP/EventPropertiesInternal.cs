@@ -43,7 +43,9 @@ namespace Microsoft.AppCenter.Unity.Analytics.Internal
 
         public static void SetDate(Dictionary<string, string> properties, string key, DateTime val)
         {
-            properties[key] = val.ToLongDateString();
+            var format = "yyyy-MM-dd'T'HH:mm:ss.fffK";
+            var dateString = val.ToString(format);
+            properties[key] = dateString;
         }
     }
 }
