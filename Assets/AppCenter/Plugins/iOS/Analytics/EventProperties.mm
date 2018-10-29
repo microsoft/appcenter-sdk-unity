@@ -26,6 +26,6 @@ void appcenter_unity_analytics_event_properties_set_bool(MSEventProperties *prop
     [properties setBool:val forKey:[NSString stringWithUTF8String:key]];
 }
 
-void appcenter_unity_analytics_event_properties_set_long(MSEventProperties *properties, char* key, NSDate* val) {
+void appcenter_unity_analytics_event_properties_set_date(MSEventProperties *properties, char* key, NSDate* val) {
     [properties setDate:val forKey:[NSString stringWithUTF8String:key]];
 }
