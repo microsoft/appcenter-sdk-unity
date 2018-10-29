@@ -4,6 +4,7 @@
 
 using Microsoft.AppCenter.Unity.Analytics;
 using System;
+using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -32,6 +33,22 @@ public class PuppetEventProperty : MonoBehaviour
                 break;
             case 4: // DateTime
                 properties.Set(Key.text, DateTime.Parse(Value.text));
+                break;
+        }
+    }
+
+    public void Set(Dictionary<string, string> properties)
+    {
+        switch (Type.value)
+        {
+            case 0: // String
+            case 1: // Long
+            case 2: // Double
+            case 4: // DateTime
+                properties[Key.text] = Value.text;
+                break;
+            case 3: // Boolean
+                properties[Key.text] = Boolean.isOn.ToString();
                 break;
         }
     }

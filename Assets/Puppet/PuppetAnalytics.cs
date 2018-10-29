@@ -60,26 +60,20 @@ public class PuppetAnalytics : MonoBehaviour
 
     public void TrackEventStringProperties()
     {
-        Analytics.TrackEvent(EventName.text, GetProperties());
+        var properties = PropertiesHelper.GetStringProperties(EventPropertiesList);
+        Analytics.TrackEvent(EventName.text, properties);
     }
 
     public void TrackEventTypedProperties()
     {
-        Analytics.TrackEvent(EventName.text, GetProperties());
-    }
-
-    private EventProperties GetProperties()
-    {
-        var properties = EventPropertiesList.GetComponentsInChildren<PuppetEventProperty>();
-        if (properties == null || properties.Length == 0)
+        var properties = PropertiesHelper.GetTypedProperties(EventPropertiesList);
+        if (properties == null)
         {
-            return null;
+            Analytics.TrackEvent(EventName.text);
         }
-        var eventProperties = new EventProperties();
-        foreach (var prop in properties)
+        else
         {
-            prop.Set(eventProperties);
+            Analytics.TrackEvent(EventName.text, properties);
         }
-        return eventProperties;
     }
 }

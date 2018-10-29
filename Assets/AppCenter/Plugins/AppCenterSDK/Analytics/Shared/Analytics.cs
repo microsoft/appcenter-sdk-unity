@@ -38,6 +38,10 @@ namespace Microsoft.AppCenter.Unity.Analytics
             }
         }
 
+        public static void TrackEvent(string eventName, EventProperties properties)
+        {
+        }
+
         public static AppCenterTask<bool> IsEnabledAsync()
         {
             return AnalyticsInternal.IsEnabledAsync();
