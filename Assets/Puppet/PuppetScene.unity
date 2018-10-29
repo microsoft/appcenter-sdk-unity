@@ -2300,7 +2300,7 @@ MonoBehaviour:
     m_PersistentCalls:
       m_Calls:
       - m_Target: {fileID: 886347191}
-        m_MethodName: TrackEventTransmission
+        m_MethodName: TrackEventStringPropertiesTransmission
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -3993,7 +3993,7 @@ MonoBehaviour:
     m_PersistentCalls:
       m_Calls:
       - m_Target: {fileID: 886347191}
-        m_MethodName: TrackEventChildTransmission
+        m_MethodName: TrackEventStringPropertiesChildTransmission
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -17994,7 +17994,7 @@ MonoBehaviour:
     m_PersistentCalls:
       m_Calls:
       - m_Target: {fileID: 886347191}
-        m_MethodName: TrackEventChildTransmission
+        m_MethodName: TrackEventTypedPropertiesChildTransmission
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -20719,7 +20719,7 @@ MonoBehaviour:
     m_PersistentCalls:
       m_Calls:
       - m_Target: {fileID: 886347191}
-        m_MethodName: TrackEventTransmission
+        m_MethodName: TrackEventTypedPropertiesTransmission
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
