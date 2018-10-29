@@ -1,8 +1,8 @@
 ﻿using System;
 using UnityEngine;
-using Microsoft.AppCenter.Unity.Internal.Utility;
 
 #if UNITY_ANDROID && !UNITY_EDITOR
+using Microsoft.AppCenter.Unity.Internal.Utility;
 namespace Microsoft.AppCenter.Unity.Analytics.Internal
 {
     class EventPropertiesInternal
