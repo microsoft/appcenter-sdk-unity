@@ -26,14 +26,14 @@ namespace Microsoft.AppCenter.Unity.Analytics.Internal
             appcenter_unity_analytics_track_event(eventName);
         }
 
-        public static void TrackEventWithProperties(string eventName, IDictionary<string, string> properties)
-        {
-            appcenter_unity_analytics_track_event_with_properties(eventName, properties.Keys.ToArray(), properties.Values.ToArray(), properties.Count);
-        }
-
         public static void TrackEventWithProperties(string eventName, EventProperties properties)
         {
             appcenter_unity_analytics_track_event_with_typed_properties(eventName, properties.GetRawObject());
+        }
+
+        public static void TrackEventWithProperties(string eventName, IDictionary<string, string> properties)
+        {
+            appcenter_unity_analytics_track_event_with_properties(eventName, properties.Keys.ToArray(), properties.Values.ToArray(), properties.Count);
         }
 
         public static AppCenterTask SetEnabledAsync(bool isEnabled)
