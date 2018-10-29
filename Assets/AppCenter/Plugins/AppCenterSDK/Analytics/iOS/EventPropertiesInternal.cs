@@ -12,7 +12,8 @@ namespace Microsoft.AppCenter.Unity.Analytics.Internal
     class EventPropertiesInternal
     {
         public static IntPtr Create()
-        {
+        { 
+            return default(IntPtr);
         }
 
         public static void SetString(IntPtr properties, string key, string val)

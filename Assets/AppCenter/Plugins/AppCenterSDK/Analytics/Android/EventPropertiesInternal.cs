@@ -1,8 +1,8 @@
 ﻿using System;
 using UnityEngine;
-using Microsoft.AppCenter.Unity.Internal.Utility;
 
 #if UNITY_ANDROID && !UNITY_EDITOR
+using Microsoft.AppCenter.Unity.Internal.Utility;
 namespace Microsoft.AppCenter.Unity.Analytics.Internal
 {
     class EventPropertiesInternal
@@ -19,12 +19,12 @@ namespace Microsoft.AppCenter.Unity.Analytics.Internal
 
         public static void SetNumber(AndroidJavaObject properties, string key, long val)
         {
-            properties.Call<AndroidJavaObject>("set", key, JavaNumberHelper.Convert(val));
+            properties.Call<AndroidJavaObject>("set", key, val);
         }
 
         public static void SetNumber(AndroidJavaObject properties, string key, double val)
         {
-            properties.Call<AndroidJavaObject>("set", key, JavaNumberHelper.Convert(val));
+            properties.Call<AndroidJavaObject>("set", key, val);
         }
 
         public static void SetBool(AndroidJavaObject properties, string key, bool val)

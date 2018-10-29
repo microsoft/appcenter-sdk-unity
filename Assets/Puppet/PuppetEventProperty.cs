@@ -2,13 +2,70 @@
 //
 // Licensed under the MIT license.
 
+using Microsoft.AppCenter.Unity.Analytics;
+using System;
 using UnityEngine;
 using UnityEngine.UI;
 
 public class PuppetEventProperty : MonoBehaviour
 {
     public InputField Key;
+    public Dropdown Type;
     public InputField Value;
+    public Toggle Boolean;
+
+    public void Set(EventProperties properties)
+    {
+        switch (Type.value)
+        {
+            case 0: // String
+                properties.Set(Key.text, Value.text);
+                break;
+            case 1: // Long
+                properties.Set(Key.text, long.Parse(Value.text));
+                break;
+            case 2: // Double
+                properties.Set(Key.text, double.Parse(Value.text));
+                break;
+            case 3: // Boolean
+                properties.Set(Key.text, Boolean.isOn);
+                break;
+            case 4: // DateTime
+                properties.Set(Key.text, DateTime.Parse(Value.text));
+                break;
+        }
+    }
+
+    public void SetType(int type)
+    {
+        switch (type)
+        {
+            case 0: // String
+                Boolean.gameObject.SetActive(false);
+                Value.gameObject.SetActive(true);
+                Value.contentType = InputField.ContentType.Alphanumeric;
+                break;
+            case 1: // Long
+                Boolean.gameObject.SetActive(false);
+                Value.gameObject.SetActive(true);
+                Value.contentType = InputField.ContentType.IntegerNumber;
+                break;
+            case 2: // Double
+                Boolean.gameObject.SetActive(false);
+                Value.gameObject.SetActive(true);
+                Value.contentType = InputField.ContentType.DecimalNumber;
+                break;
+            case 3: // Boolean
+                Boolean.gameObject.SetActive(true);
+                Value.gameObject.SetActive(false);
+                break;
+            case 4: // DateTime
+                Boolean.gameObject.SetActive(false);
+                Value.gameObject.SetActive(true);
+                Value.contentType = InputField.ContentType.Standard;
+                break;
+        }
+    }
 
     public void Remove()
     {
