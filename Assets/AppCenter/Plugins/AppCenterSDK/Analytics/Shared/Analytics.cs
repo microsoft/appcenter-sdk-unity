@@ -38,7 +38,7 @@ namespace Microsoft.AppCenter.Unity.Analytics
             }
         }
 
-        public static void TrackEvent(string eventName, EventProperties properties = null)
+        public static void TrackEvent(string eventName, EventProperties properties)
         {
             if (properties == null)
             {
