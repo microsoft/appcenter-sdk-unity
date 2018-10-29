@@ -40,6 +40,11 @@ namespace Microsoft.AppCenter.Unity.Analytics
             TransmissionTargetInternal.TrackEventWithProperties(_rawObject, eventName, properties);
         }
 
+        public void TrackEventWithProperties(string eventName, EventProperties properties)
+        {
+            TransmissionTargetInternal.TrackEventWithProperties(_rawObject, eventName, properties);
+        }
+
         public AppCenterTask<bool> IsEnabledAsync()
         {
             return TransmissionTargetInternal.IsEnabledAsync(_rawObject);
