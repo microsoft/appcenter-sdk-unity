@@ -5,11 +5,7 @@
 #import "NSDateHelper.h"
 #import <Foundation/Foundation.h>
 
-NSDate* appcenter_unity_ns_date_convert(char* format, char* dateString)
+void* appcenter_unity_ns_date_convert(long interval)
 {
-  NSString *formatNSStr = [NSString stringWithUTF8String:format];
-  NSString *dateNSStr = [NSString stringWithUTF8String:dateString];
-  NSDateFormatter *formatter = [[NSDateFormatter alloc] init];
-  [formatter setDateFormat:formatNSStr];
-  return [formatter dateFromString:dateNSStr];
+    return (void *)CFBridgingRetain([[NSDate alloc] initWithTimeIntervalSince1970:interval);
 }

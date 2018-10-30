@@ -6,6 +6,7 @@
 
 using System;
 using System.Runtime.InteropServices;
+using UnityEngine;
 
 namespace Microsoft.AppCenter.Unity.Internal.Utility
 {
@@ -13,14 +14,14 @@ namespace Microsoft.AppCenter.Unity.Internal.Utility
     {
         public static IntPtr DateTimeConvert(DateTime date)
         {
-            var format = "yyyy-MM-dd'T'HH:mm:ss.fffK";
-            var nsdateformat = "yyyy-MM-dd'T'HH:mm:ss.SSS";
-            var dateString = date.ToString(format);
-            return appcenter_unity_ns_date_convert(nsdateformat, dateString);
+            DateTime unixStartTime = new DateTime(1970, 1, 1, 0, 0, 0, 0);
+            TimeSpan timeSpan = date - unixStartTime;
+            long interval = (long)(timeSpan.TotalSeconds);
+            return appcenter_unity_ns_date_convert(interval);
         }
 
         [DllImport("__Internal")]
-        private static extern IntPtr appcenter_unity_ns_date_convert(string format, string dateString);
+        private static extern IntPtr appcenter_unity_ns_date_convert(long interval);
     }
 }
 #endif
