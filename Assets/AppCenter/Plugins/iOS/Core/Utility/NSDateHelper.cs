@@ -14,9 +14,9 @@ namespace Microsoft.AppCenter.Unity.Internal.Utility
     {
         public static IntPtr DateTimeConvert(DateTime date)
         {
-            DateTime unixStartTime = new DateTime(1970, 1, 1, 0, 0, 0, 0);
-            TimeSpan timeSpan = date - unixStartTime;
-            long interval = (long)(timeSpan.TotalSeconds);
+            var unixStartTime = new DateTime(1970, 1, 1, 0, 0, 0, 0);
+            var timeSpan = date - unixStartTime;
+            var interval = (long)(timeSpan.TotalSeconds);
             return appcenter_unity_ns_date_convert(interval);
         }
 
