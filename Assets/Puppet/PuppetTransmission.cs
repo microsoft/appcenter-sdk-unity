@@ -155,24 +155,37 @@ public class PuppetTransmission : MonoBehaviour
         property.transform.SetParent(EventPropertiesList, false);
     }
 
-    public void TrackEventChildTransmission()
+    public void TrackEventStringPropertiesChildTransmission()
     {
-        var transmissionTarget = Analytics.GetTransmissionTarget(ResolveToken());
-        if (transmissionTarget == null)
+        var transmissionTarget = GetChildTransmissionTarget();
+        if (transmissionTarget != null)
         {
-            Debug.Log("Transmission target is null.");
-            return;
+            var properties = PropertiesHelper.GetStringProperties(EventPropertiesList);
+            if (properties == null)
+            {
+                transmissionTarget.TrackEvent(EventName.text);
+            }
+            else
+            {
+                transmissionTarget.TrackEventWithProperties(EventName.text, properties);
+            }
         }
-        OverrideProperties(transmissionTarget);
-        var childTransmissionTarget = transmissionTarget.GetTransmissionTarget(ResolveChildToken());
-        Dictionary<string, string> properties = GetProperties();
-        if (properties == null)
+    }
+
+    public void TrackEventTypedPropertiesChildTransmission()
+    {
+        var transmissionTarget = GetChildTransmissionTarget();
+        if (transmissionTarget != null)
         {
-            childTransmissionTarget.TrackEvent(EventName.text);
-        }
-        else
-        {
-            childTransmissionTarget.TrackEventWithProperties(EventName.text, properties);
+            var properties = PropertiesHelper.GetTypedProperties(EventPropertiesList);
+            if (properties == null)
+            {
+                transmissionTarget.TrackEvent(EventName.text);
+            }
+            else
+            {
+                transmissionTarget.TrackEventWithProperties(EventName.text, properties);
+            }
         }
     }
 
@@ -195,102 +208,110 @@ public class PuppetTransmission : MonoBehaviour
         }
     }
 
-    public void TrackEventTransmission()
+    public void TrackEventStringPropertiesTransmission()
     {
-        var transmissionTarget = Analytics.GetTransmissionTarget(ResolveToken());
-        if (transmissionTarget == null)
+        var transmissionTarget = GetTransmissionTarget();
+        if (transmissionTarget != null)
         {
-            Debug.Log("Transmission target is null.");
-            return;
+            OverrideProperties(transmissionTarget);
+            var properties = PropertiesHelper.GetStringProperties(EventPropertiesList);
+            if (properties == null)
+            {
+                transmissionTarget.TrackEvent(EventName.text);
+            }
+            else
+            {
+                transmissionTarget.TrackEventWithProperties(EventName.text, properties);
+            }
         }
-        OverrideProperties(transmissionTarget);
-        Dictionary<string, string> properties = GetProperties();
-        if (properties == null)
+    }
+
+    public void TrackEventTypedPropertiesTransmission()
+    {
+        var transmissionTarget = GetTransmissionTarget();
+        if (transmissionTarget != null)
         {
-            transmissionTarget.TrackEvent(EventName.text);
-        }
-        else
-        {
-            transmissionTarget.TrackEventWithProperties(EventName.text, properties);
+            OverrideProperties(transmissionTarget);
+            var properties = PropertiesHelper.GetTypedProperties(EventPropertiesList);
+            if (properties == null)
+            {
+                transmissionTarget.TrackEvent(EventName.text);
+            }
+            else
+            {
+                transmissionTarget.TrackEventWithProperties(EventName.text, properties);
+            }
         }
     }
 
     public void PauseParentTransmission()
     {
-        GetTransmissionTarget(transmissionTarget =>
+        var transmissionTarget = GetTransmissionTarget();
+        if (transmissionTarget != null)
         {
             Debug.Log("Pausing the parent transmission...");
             transmissionTarget.Pause();
             TransmissionStatus.text = "Transmission paused.";
-        });
+        }
     }
 
     public void ResumeParentTransmission()
     {
-        GetTransmissionTarget(transmissionTarget =>
+        var transmissionTarget = GetTransmissionTarget();
+        if (transmissionTarget != null)
         {
             Debug.Log("Resuming the parent transmission...");
             transmissionTarget.Resume();
             TransmissionStatus.text = "Transmission resumed.";
-        });
+        }
     }
 
     public void PauseChildTransmission()
     {
-        GetChildTransmissionTarget(transmissionTarget =>
+        var transmissionTarget = GetChildTransmissionTarget();
+        if (transmissionTarget != null)
         {
             Debug.Log("Pausing the child transmission...");
             transmissionTarget.Pause();
             ChildTransmissionStatus.text = "Child transmission paused.";
-        });
+        }
     }
 
     public void ResumeChildTransmission()
     {
-        GetChildTransmissionTarget(transmissionTarget =>
+        var transmissionTarget = GetChildTransmissionTarget();
+        if (transmissionTarget != null)
         {
             Debug.Log("Resuming the child transmission...");
             transmissionTarget.Resume();
             ChildTransmissionStatus.text = "Child transmission resumed.";
-        });
-    }
-
-    private Dictionary<string, string> GetProperties()
-    {
-        var properties = EventPropertiesList.GetComponentsInChildren<PuppetEventProperty>();
-        if (properties == null || properties.Length == 0)
-        {
-            return null;
         }
-        return properties.ToDictionary(i => i.Key.text, i => i.Value.text);
     }
 
-    private void GetTransmissionTarget(Action<TransmissionTarget> action)
+    private TransmissionTarget GetTransmissionTarget()
     {
         var transmissionTarget = Analytics.GetTransmissionTarget(ResolveToken());
-        if (transmissionTarget == null)
+        if (transmissionTarget != null)
         {
-            Debug.Log("Transmission target is null.");
+            OverrideProperties(transmissionTarget);
+            return transmissionTarget;
         }
-        else
-        {
-            action(transmissionTarget);
-        }
+        Debug.Log("Transmission target is null.");
+        return null;
     }
 
-    private void GetChildTransmissionTarget(Action<TransmissionTarget> action)
+    private TransmissionTarget GetChildTransmissionTarget()
     {
-        GetTransmissionTarget(transmissionTarget =>
+        var transmissionTarget = GetTransmissionTarget();
+        if (transmissionTarget != null)
         {
             var childTransmissionTarget = transmissionTarget.GetTransmissionTarget(ResolveChildToken());
-            if (childTransmissionTarget == null)
+            if (childTransmissionTarget != null)
             {
-                Debug.Log("Child transmission target is null.");
+                return childTransmissionTarget;
             }
-            else
-            {
-                action(childTransmissionTarget);
-            }
-        });
+            Debug.Log("Child transmission target is null.");
+        }
+        return null;
     }
 }
