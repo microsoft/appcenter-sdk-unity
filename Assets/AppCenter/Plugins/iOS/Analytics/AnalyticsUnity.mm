@@ -25,6 +25,11 @@ void appcenter_unity_analytics_track_event_with_properties(char* eventName, char
   [MSAnalytics trackEvent:eventNameString withProperties:properties];
 }
 
+void appcenter_unity_analytics_track_event_with_typed_properties(char* eventName, MSEventProperties* properties)
+{
+    [MSAnalytics trackEvent:[NSString stringWithUTF8String:eventName] withTypedProperties:properties];
+}
+
 void appcenter_unity_analytics_set_enabled(bool isEnabled)
 {
   [MSAnalytics setEnabled:isEnabled];
