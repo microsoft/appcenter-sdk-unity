@@ -26,6 +26,11 @@ namespace Microsoft.AppCenter.Unity.Analytics.Internal
             appcenter_unity_analytics_track_event(eventName);
         }
 
+        public static void TrackEventWithProperties(string eventName, EventProperties properties)
+        {
+            appcenter_unity_analytics_track_event_with_typed_properties(eventName, properties.GetRawObject());
+        }
+
         public static void TrackEventWithProperties(string eventName, IDictionary<string, string> properties)
         {
             appcenter_unity_analytics_track_event_with_properties(eventName, properties.Keys.ToArray(), properties.Values.ToArray(), properties.Count);
@@ -72,6 +77,9 @@ namespace Microsoft.AppCenter.Unity.Analytics.Internal
 
         [DllImport("__Internal")]
         private static extern void appcenter_unity_analytics_track_event_with_properties(string eventName, string[] keys, string[] values, int count);
+
+        [DllImport("__Internal")]
+        private static extern void appcenter_unity_analytics_track_event_with_typed_properties(string eventName, IntPtr properties);
 
         [DllImport("__Internal")]
         private static extern void appcenter_unity_analytics_set_enabled(bool isEnabled);

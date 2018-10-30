@@ -26,6 +26,11 @@ namespace Microsoft.AppCenter.Unity.Analytics
             return AnalyticsInternal.GetNativeType();
         }
 
+        public static void TrackEventWithProperties(string eventName, EventProperties properties)
+        {
+            AnalyticsInternal.TrackEventWithProperties(eventName, properties);
+        }
+
         public static void TrackEvent(string eventName, IDictionary<string, string> properties = null)
         {
             if (properties == null)
