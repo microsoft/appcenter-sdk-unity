@@ -5,6 +5,7 @@
 using Microsoft.AppCenter.Unity.Analytics;
 using System;
 using System.Collections.Generic;
+using System.Globalization;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -26,7 +27,7 @@ public class PuppetEventProperty : MonoBehaviour
                 properties.Set(Key.text, long.Parse(Value.text));
                 break;
             case 2: // Double
-                properties.Set(Key.text, double.Parse(Value.text));
+                properties.Set(Key.text, double.Parse(Value.text, NumberStyles.AllowDecimalPoint, CultureInfo.InvariantCulture));
                 break;
             case 3: // Boolean
                 properties.Set(Key.text, Boolean.isOn);
