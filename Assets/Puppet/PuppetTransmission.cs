@@ -196,7 +196,7 @@ public class PuppetTransmission : MonoBehaviour
         var transmissionTarget = GetChildTransmissionTarget();
         if (transmissionTarget != null)
         {
-            var properties = PropertiesHelper.GetTypedProperties(EventPropertiesList);            
+            var properties = PropertiesHelper.GetTypedProperties(EventPropertiesList);
             if (properties == null)
             {
                 transmissionTarget.TrackEvent(EventName.text);
