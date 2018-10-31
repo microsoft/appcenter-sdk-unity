@@ -39,19 +39,19 @@ void appcenter_unity_property_configurator_set_event_property(MSPropertyConfigur
 }
 
 void appcenter_unity_property_configurator_set_event_long_property(MSPropertyConfigurator *configurator, char* key, long value) {
-  [configurator setEventPropertyInt64:value forKey: [NSString stringWithUTF8String:key]];
+  //[configurator setEventPropertyInt64:value forKey: [NSString stringWithUTF8String:key]];
 }
 
 void appcenter_unity_property_configurator_set_event_double_property(MSPropertyConfigurator *configurator, char* key, double value) {
-  [configurator setEventPropertyDouble:value forKey: [NSString stringWithUTF8String:key]];
+  //[configurator setEventPropertyDouble:value forKey: [NSString stringWithUTF8String:key]];
 }
 
 void appcenter_unity_property_configurator_set_event_bool_property(MSPropertyConfigurator *configurator, char* key, bool value) {
-  [configurator setEventPropertyBool:value forKey: [NSString stringWithUTF8String:key]];
+  //[configurator setEventPropertyBool:value forKey: [NSString stringWithUTF8String:key]];
 }
 
 void appcenter_unity_property_configurator_set_event_datetime_property(MSPropertyConfigurator *configurator, char* key, NSDate* value) {
-  [configurator setEventPropertyDate:value forKey: [NSString stringWithUTF8String:key]];
+  //[configurator setEventPropertyDate:value forKey: [NSString stringWithUTF8String:key]];
 }
 
 void appcenter_unity_property_configurator_remove_event_property(MSPropertyConfigurator *configurator, char* key) {
