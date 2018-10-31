@@ -62,7 +62,7 @@ namespace Microsoft.AppCenter.Unity.Analytics
                 return null;
             }
             var internalObject = TransmissionTargetInternal.GetTransmissionTarget(_rawObject, childTransmissionTargetToken);
-            if (internalObject == IntPtr.Zero)
+            if (internalObject == null)
             {
                 return null;
             }
