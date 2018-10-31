@@ -36,10 +36,6 @@ namespace Microsoft.AppCenter.Unity.Analytics.Internal
             appcenter_unity_analytics_track_event_with_properties(eventName, properties.Keys.ToArray(), properties.Values.ToArray(), properties.Count);
         }
 
-        public static void TrackEventWithProperties(string eventName, EventProperties properties)
-        {
-        }
-
         public static AppCenterTask SetEnabledAsync(bool isEnabled)
         {
             appcenter_unity_analytics_set_enabled(isEnabled);
@@ -52,7 +48,7 @@ namespace Microsoft.AppCenter.Unity.Analytics.Internal
             return AppCenterTask<bool>.FromCompleted(isEnabled);
         }
 
-        public static IntPtr GetTransmissionTarget(string transmissionTargetToken) 
+        public static IntPtr GetTransmissionTarget(string transmissionTargetToken)
         {
             return appcenter_unity_analytics_transmission_target_for_token(transmissionTargetToken);
         }
