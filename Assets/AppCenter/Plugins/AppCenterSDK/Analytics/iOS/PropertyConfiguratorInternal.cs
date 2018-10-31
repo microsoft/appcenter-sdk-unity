@@ -56,18 +56,22 @@ namespace Microsoft.AppCenter.Unity.Analytics.Internal
 
         public static void SetEventProperty(IntPtr propertyConfigurator, string key, DateTime value)
         {
+            appcenter_unity_property_configurator_set_event_datetime_property(propertyConfigurator, key, NSDateHelper.DateTimeConvert(value));
         }
 
         public static void SetEventProperty(IntPtr propertyConfigurator, string key, long value)
         {
+            appcenter_unity_property_configurator_set_event_long_property(propertyConfigurator, key, value);
         }
 
         public static void SetEventProperty(IntPtr propertyConfigurator, string key, double value)
         {
+            appcenter_unity_property_configurator_set_event_double_property(propertyConfigurator, key, value);
         }
 
         public static void SetEventProperty(IntPtr propertyConfigurator, string key, bool value)
-        {
+        {            
+            appcenter_unity_property_configurator_set_event_bool_property(propertyConfigurator, key, value);
         }
 
         public static void CollectDeviceId(IntPtr propertyConfigurator)
@@ -102,6 +106,18 @@ namespace Microsoft.AppCenter.Unity.Analytics.Internal
 
         [DllImport("__Internal")]
         private static extern void appcenter_unity_property_configurator_set_event_property(IntPtr propertyConfigurator, string key, string value);
+
+        [DllImport("__Internal")]
+        private static extern void appcenter_unity_property_configurator_set_event_datetime_property(IntPtr propertyConfigurator, string key, IntPtr value);
+
+        [DllImport("__Internal")]
+        private static extern void appcenter_unity_property_configurator_set_event_long_property(IntPtr propertyConfigurator, string key, long value);
+
+        [DllImport("__Internal")]
+        private static extern void appcenter_unity_property_configurator_set_event_double_property(IntPtr propertyConfigurator, string key, double value);
+
+        [DllImport("__Internal")]
+        private static extern void appcenter_unity_property_configurator_set_event_bool_property(IntPtr propertyConfigurator, string key, bool value);
 
         [DllImport("__Internal")]
         private static extern void appcenter_unity_property_configurator_collect_device_id(IntPtr propertyConfigurator);

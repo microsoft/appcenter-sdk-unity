@@ -6,38 +6,54 @@
 #import "AppCenterAnalytics/MSPropertyConfigurator.h"
 #import "../Core/Utility/NSStringDictionaryHelper.h"
 
-extern "C" void appcenter_unity_property_configurator_set_app_name(MSPropertyConfigurator *configurator, char* appName) {
-  return [configurator setAppName: [NSString stringWithUTF8String:appName]];
+void appcenter_unity_property_configurator_set_app_name(MSPropertyConfigurator *configurator, char* appName) {
+  [configurator setAppName: [NSString stringWithUTF8String:appName]];
 }
 
-extern "C" void appcenter_unity_property_configurator_set_app_version(MSPropertyConfigurator *configurator, char* appVersion) {
-  return [configurator setAppVersion: [NSString stringWithUTF8String:appVersion]];
+void appcenter_unity_property_configurator_set_app_version(MSPropertyConfigurator *configurator, char* appVersion) {
+  [configurator setAppVersion: [NSString stringWithUTF8String:appVersion]];
 }
 
-extern "C" void appcenter_unity_property_configurator_set_app_locale(MSPropertyConfigurator *configurator, char* appLocale) {
-  return [configurator setAppLocale: [NSString stringWithUTF8String:appLocale]];
+void appcenter_unity_property_configurator_set_app_locale(MSPropertyConfigurator *configurator, char* appLocale) {
+  [configurator setAppLocale: [NSString stringWithUTF8String:appLocale]];
 }
 
-extern "C" void appcenter_unity_property_configurator_clear_app_name(MSPropertyConfigurator *configurator) {
-  return [configurator setAppName: nil];
+void appcenter_unity_property_configurator_clear_app_name(MSPropertyConfigurator *configurator) {
+  [configurator setAppName: nil];
 }
 
-extern "C" void appcenter_unity_property_configurator_clear_app_version(MSPropertyConfigurator *configurator) {
-  return [configurator setAppVersion: nil];
+void appcenter_unity_property_configurator_clear_app_version(MSPropertyConfigurator *configurator) {
+  [configurator setAppVersion: nil];
 }
 
-extern "C" void appcenter_unity_property_configurator_clear_app_locale(MSPropertyConfigurator *configurator) {
-  return [configurator setAppLocale: nil];
+void appcenter_unity_property_configurator_clear_app_locale(MSPropertyConfigurator *configurator) {
+  [configurator setAppLocale: nil];
 }
 
-extern "C" void appcenter_unity_property_configurator_collect_device_id(MSPropertyConfigurator *configurator) {
+void appcenter_unity_property_configurator_collect_device_id(MSPropertyConfigurator *configurator) {
   [configurator collectDeviceId];
 }
 
-extern "C" void appcenter_unity_property_configurator_set_event_property(MSPropertyConfigurator *configurator, char* key, char* value) {
-  return [configurator setEventPropertyString: [NSString stringWithUTF8String:value] forKey: [NSString stringWithUTF8String:key]];
+void appcenter_unity_property_configurator_set_event_property(MSPropertyConfigurator *configurator, char* key, char* value) {
+  [configurator setEventPropertyString: [NSString stringWithUTF8String:value] forKey: [NSString stringWithUTF8String:key]];
 }
 
-extern "C" void appcenter_unity_property_configurator_remove_event_property(MSPropertyConfigurator *configurator, char* key) {
-  return [configurator removeEventPropertyForKey: [NSString stringWithUTF8String:key]];
+void appcenter_unity_property_configurator_set_event_long_property(MSPropertyConfigurator *configurator, char* key, long value) {
+  [configurator setEventPropertyInt64:value forKey: [NSString stringWithUTF8String:key]];
+}
+
+void appcenter_unity_property_configurator_set_event_double_property(MSPropertyConfigurator *configurator, char* key, double value) {
+  [configurator setEventPropertyDouble:value forKey: [NSString stringWithUTF8String:key]];
+}
+
+void appcenter_unity_property_configurator_set_event_bool_property(MSPropertyConfigurator *configurator, char* key, bool value) {
+  [configurator setEventPropertyBool:value forKey: [NSString stringWithUTF8String:key]];
+}
+
+void appcenter_unity_property_configurator_set_event_datetime_property(MSPropertyConfigurator *configurator, char* key, NSDate* value) {
+  [configurator setEventPropertyDate:value forKey: [NSString stringWithUTF8String:key]];
+}
+
+void appcenter_unity_property_configurator_remove_event_property(MSPropertyConfigurator *configurator, char* key) {
+  [configurator removeEventPropertyForKey: [NSString stringWithUTF8String:key]];
 }
