@@ -39,6 +39,22 @@ namespace Microsoft.AppCenter.Unity.Analytics
         {
         }
 
+        public static void SetEventProperty(RawType propertyConfigurator, string key, DateTime value)
+        {
+        }
+
+        public static void SetEventProperty(RawType propertyConfigurator, string key, long value)
+        {
+        }
+
+        public static void SetEventProperty(RawType propertyConfigurator, string key, double value)
+        {
+        }
+
+        public static void SetEventProperty(RawType propertyConfigurator, string key, bool value)
+        {
+        }
+
         public static void RemoveEventProperty(RawType propertyConfigurator, string key)
         {
         }

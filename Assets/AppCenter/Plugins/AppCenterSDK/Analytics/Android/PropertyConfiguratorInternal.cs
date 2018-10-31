@@ -7,6 +7,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using Microsoft.AppCenter.Unity.Analytics.Internal;
 using Microsoft.AppCenter.Unity.Internal.Utility;
+using System;
 
 namespace Microsoft.AppCenter.Unity.Analytics
 {
@@ -39,9 +40,25 @@ namespace Microsoft.AppCenter.Unity.Analytics
             var method = AndroidJNI.GetMethodID(rawClass, "setEventProperty", "(Ljava/lang/String;Ljava/lang/String;)V");
             AndroidJNI.CallVoidMethod(rawObject, method, new jvalue[]
             {
-                new jvalue { l = AndroidJNI.NewStringUTF(key) }, 
-                new jvalue { l = AndroidJNI.NewStringUTF(value) } 
+                new jvalue { l = AndroidJNI.NewStringUTF(key) },
+                new jvalue { l = AndroidJNI.NewStringUTF(value) }
             });
+        }
+
+        public static void SetEventProperty(AndroidJavaObject propertyConfigurator, string key, DateTime value)
+        {
+        }
+
+        public static void SetEventProperty(AndroidJavaObject propertyConfigurator, string key, long value)
+        {
+        }
+
+        public static void SetEventProperty(AndroidJavaObject propertyConfigurator, string key, double value)
+        {
+        }
+
+        public static void SetEventProperty(AndroidJavaObject propertyConfigurator, string key, bool value)
+        {
         }
 
         public static void RemoveEventProperty(AndroidJavaObject propertyConfigurator, string key)
