@@ -37,4 +37,17 @@ public class PropertiesHelper
         }
         return eventProperties;
     }
+
+    public static void AddPropertiesToPropertyConfigurator(RectTransform propertiesContainer, PropertyConfigurator configurator)
+    {
+        var properties = propertiesContainer.GetComponentsInChildren<PuppetEventProperty>();
+        if (properties == null || properties.Length == 0)
+        {
+            return;
+        }
+        foreach (var prop in properties)
+        {
+            prop.Set(configurator);
+        }
+    }
 }
