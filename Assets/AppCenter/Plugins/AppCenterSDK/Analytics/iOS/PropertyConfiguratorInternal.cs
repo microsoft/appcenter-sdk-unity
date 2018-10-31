@@ -15,11 +15,11 @@ namespace Microsoft.AppCenter.Unity.Analytics.Internal
     {
         public static void SetAppName(IntPtr propertyConfigurator, string appName)
         {
-            if (appName == null) 
+            if (appName == null)
             {
                 appcenter_unity_property_configurator_clear_app_name(propertyConfigurator);
-            } 
-            else 
+            }
+            else
             {
                 appcenter_unity_property_configurator_set_app_name(propertyConfigurator, appName);
             }
@@ -27,11 +27,11 @@ namespace Microsoft.AppCenter.Unity.Analytics.Internal
 
         public static void SetAppVersion(IntPtr propertyConfigurator, string appVersion)
         {
-            if (appVersion == null) 
+            if (appVersion == null)
             {
                 appcenter_unity_property_configurator_clear_app_version(propertyConfigurator);
-            } 
-            else 
+            }
+            else
             {
                 appcenter_unity_property_configurator_set_app_version(propertyConfigurator, appVersion);
             }
@@ -39,11 +39,11 @@ namespace Microsoft.AppCenter.Unity.Analytics.Internal
 
         public static void SetAppLocale(IntPtr propertyConfigurator, string appLocale)
         {
-            if (appLocale == null) 
+            if (appLocale == null)
             {
                 appcenter_unity_property_configurator_clear_app_locale(propertyConfigurator);
-            } 
-            else 
+            }
+            else
             {
                 appcenter_unity_property_configurator_set_app_locale(propertyConfigurator, appLocale);
             }
@@ -52,6 +52,22 @@ namespace Microsoft.AppCenter.Unity.Analytics.Internal
         public static void SetEventProperty(IntPtr propertyConfigurator, string key, string value)
         {
             appcenter_unity_property_configurator_set_event_property(propertyConfigurator, key, value);
+        }
+
+        public static void SetEventProperty(IntPtr propertyConfigurator, string key, DateTime value)
+        {
+        }
+
+        public static void SetEventProperty(IntPtr propertyConfigurator, string key, long value)
+        {
+        }
+
+        public static void SetEventProperty(IntPtr propertyConfigurator, string key, double value)
+        {
+        }
+
+        public static void SetEventProperty(IntPtr propertyConfigurator, string key, bool value)
+        {
         }
 
         public static void CollectDeviceId(IntPtr propertyConfigurator)
@@ -86,7 +102,7 @@ namespace Microsoft.AppCenter.Unity.Analytics.Internal
 
         [DllImport("__Internal")]
         private static extern void appcenter_unity_property_configurator_set_event_property(IntPtr propertyConfigurator, string key, string value);
-        
+
         [DllImport("__Internal")]
         private static extern void appcenter_unity_property_configurator_collect_device_id(IntPtr propertyConfigurator);
 
