@@ -2,8 +2,8 @@
 //
 // Licensed under the MIT license.
 
+using System;
 using System.Collections.Generic;
-using System.Linq;
 using Microsoft.AppCenter.Unity.Analytics.Internal;
 
 namespace Microsoft.AppCenter.Unity.Analytics
@@ -67,7 +67,7 @@ namespace Microsoft.AppCenter.Unity.Analytics
                 return null;
             }
             var internalObject = AnalyticsInternal.GetTransmissionTarget(transmissionTargetToken);
-            if (internalObject == null)
+            if (internalObject == IntPtr.Zero)
             {
                 return null;
             }
