@@ -2,8 +2,8 @@
 //
 // Licensed under the MIT license.
 
+using System;
 using System.Collections.Generic;
-using System.Linq;
 using Microsoft.AppCenter.Unity.Analytics.Internal;
 
 namespace Microsoft.AppCenter.Unity.Analytics
