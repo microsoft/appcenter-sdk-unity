@@ -33,7 +33,7 @@ namespace Microsoft.AppCenter.Unity.Analytics.Internal
 
         public static void SetBool(Dictionary<string, string> properties, string key, bool val)
         {
-            properties[key] = val.ToString(CultureInfo.InvariantCulture);
+            properties[key] = val.ToString();
         }
 
         public static void SetDate(Dictionary<string, string> properties, string key, DateTime val)

@@ -69,6 +69,7 @@ namespace Microsoft.AppCenter.Unity.Crashes
             }
         }
 
+#if !UNITY_WSA_10_0
         public static void OnHandleUnresolvedException(object sender, UnhandledExceptionEventArgs args)
         {
             if (args == null || args.ExceptionObject == null)
@@ -93,6 +94,7 @@ namespace Microsoft.AppCenter.Unity.Crashes
 #endif
             }
         }
+#endif
 
         public static AppCenterTask<bool> IsEnabledAsync()
         {
@@ -274,7 +276,7 @@ namespace Microsoft.AppCenter.Unity.Crashes
 
         private static void SubscribeToUnhandledExceptions()
         {
-#if !UNITY_EDITOR
+#if !UNITY_EDITOR && !UNITY_WSA_10_0
             Application.logMessageReceived += OnHandleLog;
             System.AppDomain.CurrentDomain.UnhandledException += OnHandleUnresolvedException;
 #endif
@@ -286,7 +288,7 @@ namespace Microsoft.AppCenter.Unity.Crashes
 
         private static void UnsubscribeFromUnhandledExceptions()
         {
-#if !UNITY_EDITOR
+#if !UNITY_EDITOR && !UNITY_WSA_10_0
             Application.logMessageReceived -= OnHandleLog;
             System.AppDomain.CurrentDomain.UnhandledException -= OnHandleUnresolvedException;
 #endif
