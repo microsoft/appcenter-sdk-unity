@@ -27,6 +27,22 @@ namespace Microsoft.AppCenter.Unity.Analytics
         {
         }
 
+        public static void SetEventProperty(object propertyConfigurator, string key, DateTime value)
+        {
+        }
+
+        public static void SetEventProperty(object propertyConfigurator, string key, long value)
+        {
+        }
+
+        public static void SetEventProperty(object propertyConfigurator, string key, double value)
+        {
+        }
+
+        public static void SetEventProperty(object propertyConfigurator, string key, bool value)
+        {
+        }
+
         public static void RemoveEventProperty(object propertyConfigurator, string key)
         {
         }
@@ -34,7 +50,6 @@ namespace Microsoft.AppCenter.Unity.Analytics
         public static void CollectDeviceId(object propertyConfigurator)
         {
         }
-
     }
 }
 #endif

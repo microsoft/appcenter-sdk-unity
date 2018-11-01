@@ -50,6 +50,26 @@ namespace Microsoft.AppCenter.Unity.Analytics
             PropertyConfiguratorInternal.SetEventProperty(_rawObject, key, value);
         }
 
+        public void SetEventProperty(string key, DateTime value)
+        {
+            PropertyConfiguratorInternal.SetEventProperty(_rawObject, key, value);
+        }
+
+        public void SetEventProperty(string key, long value)
+        {
+            PropertyConfiguratorInternal.SetEventProperty(_rawObject, key, value);
+        }
+
+        public void SetEventProperty(string key, double value)
+        {
+            PropertyConfiguratorInternal.SetEventProperty(_rawObject, key, value);
+        }
+
+        public void SetEventProperty(string key, bool value)
+        {
+            PropertyConfiguratorInternal.SetEventProperty(_rawObject, key, value);
+        }
+
         public void RemoveEventProperty(String key)
         {
             PropertyConfiguratorInternal.RemoveEventProperty(_rawObject, key);

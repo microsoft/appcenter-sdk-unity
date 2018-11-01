@@ -3,10 +3,9 @@
 // Licensed under the MIT license.
 
 #if UNITY_ANDROID && !UNITY_EDITOR
-using System.Collections.Generic;
 using UnityEngine;
-using Microsoft.AppCenter.Unity.Analytics.Internal;
 using Microsoft.AppCenter.Unity.Internal.Utility;
+using System;
 
 namespace Microsoft.AppCenter.Unity.Analytics
 {
@@ -34,25 +33,33 @@ namespace Microsoft.AppCenter.Unity.Analytics
 
         public static void SetEventProperty(AndroidJavaObject propertyConfigurator, string key, string value)
         {
-            var rawClass = propertyConfigurator.GetRawClass();
-            var rawObject = propertyConfigurator.GetRawObject();
-            var method = AndroidJNI.GetMethodID(rawClass, "setEventProperty", "(Ljava/lang/String;Ljava/lang/String;)V");
-            AndroidJNI.CallVoidMethod(rawObject, method, new jvalue[]
-            {
-                new jvalue { l = AndroidJNI.NewStringUTF(key) }, 
-                new jvalue { l = AndroidJNI.NewStringUTF(value) } 
-            });
+            propertyConfigurator.Call("setEventProperty", key, value);
+        }
+
+        public static void SetEventProperty(AndroidJavaObject propertyConfigurator, string key, DateTime value)
+        {
+            var javaDate = JavaDateHelper.DateTimeConvert(value);
+            propertyConfigurator.Call("setEventProperty", key, javaDate);
+        }
+
+        public static void SetEventProperty(AndroidJavaObject propertyConfigurator, string key, long value)
+        {
+            propertyConfigurator.Call("setEventProperty", key, value);
+        }
+
+        public static void SetEventProperty(AndroidJavaObject propertyConfigurator, string key, double value)
+        {
+            propertyConfigurator.Call("setEventProperty", key, value);
+        }
+
+        public static void SetEventProperty(AndroidJavaObject propertyConfigurator, string key, bool value)
+        {
+            propertyConfigurator.Call("setEventProperty", key, value);
         }
 
         public static void RemoveEventProperty(AndroidJavaObject propertyConfigurator, string key)
         {
-            var rawClass = propertyConfigurator.GetRawClass();
-            var rawObject = propertyConfigurator.GetRawObject();
-            var method = AndroidJNI.GetMethodID(rawClass, "removeEventProperty", "(Ljava/lang/String;)V");
-            AndroidJNI.CallVoidMethod(rawObject, method, new jvalue[]
-            {
-                new jvalue { l = AndroidJNI.NewStringUTF(key) }
-            });
+            propertyConfigurator.Call("removeEventProperty", key);
         }
     }
 }

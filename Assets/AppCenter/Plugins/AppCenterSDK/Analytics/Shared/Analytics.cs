@@ -2,8 +2,8 @@
 //
 // Licensed under the MIT license.
 
+using System;
 using System.Collections.Generic;
-using System.Linq;
 using Microsoft.AppCenter.Unity.Analytics.Internal;
 
 namespace Microsoft.AppCenter.Unity.Analytics
@@ -27,6 +27,18 @@ namespace Microsoft.AppCenter.Unity.Analytics
         }
 
         public static void TrackEvent(string eventName, IDictionary<string, string> properties = null)
+        {
+            if (properties == null)
+            {
+                AnalyticsInternal.TrackEvent(eventName);
+            }
+            else
+            {
+                AnalyticsInternal.TrackEventWithProperties(eventName, properties);
+            }
+        }
+
+        public static void TrackEvent(string eventName, EventProperties properties)
         {
             if (properties == null)
             {
