@@ -285,7 +285,6 @@ public class PuppetTransmission : MonoBehaviour
             {
                 if (UseParentPropertyConfigurator.isOn)
                 {
-                    Debug.Log("fdasds");
                     var propertyConfigurator = transmissionTarget.GetPropertyConfigurator();
                     PropertiesHelper.AddPropertiesToPropertyConfigurator(EventPropertiesList, propertyConfigurator);
                     propertyConfigurator.SetEventProperty("extraEventProperty", "should be removed!");
