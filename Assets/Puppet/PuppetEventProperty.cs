@@ -38,6 +38,28 @@ public class PuppetEventProperty : MonoBehaviour
         }
     }
 
+    public void Set(PropertyConfigurator propertyConfigurator)
+    {
+        switch (Type.value)
+        {
+            case 0: // String
+                propertyConfigurator.SetEventProperty(Key.text, Value.text);
+                break;
+            case 1: // Long
+                propertyConfigurator.SetEventProperty(Key.text, long.Parse(Value.text));
+                break;
+            case 2: // Double
+                propertyConfigurator.SetEventProperty(Key.text, double.Parse(Value.text, NumberStyles.AllowDecimalPoint, CultureInfo.InvariantCulture));
+                break;
+            case 3: // Boolean
+                propertyConfigurator.SetEventProperty(Key.text, Boolean.isOn);
+                break;
+            case 4: // DateTime
+                propertyConfigurator.SetEventProperty(Key.text, DateTime.Parse(Value.text));
+                break;
+        }
+    }
+
     public void Set(Dictionary<string, string> properties)
     {
         switch (Type.value)
