@@ -88,12 +88,14 @@ public class PuppetCrashes : MonoBehaviour
 
     public void ExceptionInNewThread()
     {
+#if !UNITY_WSA_10_0
         new Thread(() =>
         {
             Thread.Sleep(3000);
             object obj = null;
             obj.ToString();
         }).Start();
+#endif
     }
 
     public void LastCrashReport()
