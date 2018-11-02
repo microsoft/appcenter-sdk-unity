@@ -3,6 +3,7 @@
 #addin nuget:?package=Cake.FileHelpers
 #addin nuget:?package=Cake.Git
 #tool "nuget:?package=gitreleasemanager"
+#load "utility.cake"
 
 // Task TARGET for build
 var TARGET = Argument("target", Argument("t", "Default"));
@@ -21,17 +22,12 @@ Task("GitRelease")
     var repo = "AppCenter-SDK-Unity";
 
     // Build a string containing paths to NuGet packages
-    var files = GetFiles("output/*.unitypackage");
     var assets = new List<string>();
     Information("Releasing packages:");
-    foreach (var file in files)
+    foreach (var file in GetBuiltPackages())
     {
-        if (!file.FullPath.EndsWith("AppCenter-v" + publishVersion + ".unitypackage") &&
-            !file.FullPath.EndsWith("AppCenterPush-v" + publishVersion + ".unitypackage"))
-        {
-            Information(file.FullPath);
-            assets.Add(file.FullPath);
-        }
+        Information(file);
+        assets.Add(file);
     }
     GitReleaseManagerCreate(username, password, owner, repo, new GitReleaseManagerCreateSettings
     {
