@@ -140,11 +140,23 @@ static void DeleteFileIfExists(string fileName)
     }
 }
 
-
 static void CleanDirectory(string directoryName)
 {
     DeleteDirectoryIfExists(directoryName);
     Statics.Context.CreateDirectory(directoryName);
+}
+
+static IEnumerable<string> GetBuiltPackages()
+{
+    var files = Statics.Context.GetFiles("output/*.unitypackage");
+    foreach (var file in files)
+    {
+        if (!file.FullPath.Contains("AppCenter-v") &&
+            !file.FullPath.Contains("AppCenterPush-v"))
+        {
+            yield return file.FullPath;
+        }
+    }
 }
 
 void HandleError(Exception exception)

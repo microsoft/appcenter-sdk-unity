@@ -593,9 +593,9 @@ Task("PublishPackagesToStorage").Does(()=>
     var accountName = EnvironmentVariable("AZURE_STORAGE_ACCOUNT");
     var corePackageVersion = XmlPeek(File("UnityPackageSpecs/AppCenter.unitypackagespec"), "package/@version");
     var zippedPackages = "AppCenter-SDK-Unity-" + corePackageVersion + ".zip";
-    Information("Publishing packages to blob " + zippedPackages);
     var files = GetFiles("output/*.unitypackage");
     Zip("./", zippedPackages, files);
+    Information("Publishing packages to blob storage: " + zippedPackages);
     AzureStorage.UploadFileToBlob(new AzureStorageSettings
     {
         AccountName = accountName,
@@ -605,6 +605,21 @@ Task("PublishPackagesToStorage").Does(()=>
         UseHttps = true
     }, zippedPackages);
     DeleteFiles(zippedPackages);
+    foreach (var package in GetBuiltPackages())
+    {
+        Information("Publishing packages to blob storage: " + package);
+        var fileName = System.IO.Path.GetFileNameWithoutExtension(package); // AppCenterAnalytics-v1.0.0
+        var index = fileName.IndexOf('-'); // 18
+        var fileNameLatest = fileName.Substring(0, index) + "Latest.unitypackage"; // AppCenterAnalyticsLatest.unitypackage
+        AzureStorage.UploadFileToBlob(new AzureStorageSettings
+        {
+            AccountName = accountName,
+            ContainerName = "sdk",
+            BlobName = fileNameLatest,
+            Key = apiKey,
+            UseHttps = true
+        }, package);
+    }
 }).OnError(HandleError);
 
 Task("RegisterUnity").Does(()=>
