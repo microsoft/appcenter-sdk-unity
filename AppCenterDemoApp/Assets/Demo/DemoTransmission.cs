@@ -172,7 +172,7 @@ public class DemoTransmission : MonoBehaviour
         }
         else
         {
-            childTransmissionTarget.TrackEventWithProperties(EventName.text, properties);
+            childTransmissionTarget.TrackEvent(EventName.text, properties);
         }
     }
 
@@ -211,7 +211,7 @@ public class DemoTransmission : MonoBehaviour
         }
         else
         {
-            transmissionTarget.TrackEventWithProperties(EventName.text, properties);
+            transmissionTarget.TrackEvent(EventName.text, properties);
         }
     }
 
