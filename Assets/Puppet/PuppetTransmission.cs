@@ -185,7 +185,7 @@ public class PuppetTransmission : MonoBehaviour
                 }
                 else
                 {
-                    transmissionTarget.TrackEventWithProperties(EventName.text, properties);
+                    transmissionTarget.TrackEvent(EventName.text, properties);
                 }
             }
         }
@@ -213,7 +213,7 @@ public class PuppetTransmission : MonoBehaviour
                 }
                 else
                 {
-                    transmissionTarget.TrackEventWithProperties(EventName.text, properties);
+                    transmissionTarget.TrackEvent(EventName.text, properties);
                 }
             }
         }
@@ -264,7 +264,7 @@ public class PuppetTransmission : MonoBehaviour
                 }
                 else
                 {
-                    transmissionTarget.TrackEventWithProperties(EventName.text, properties);
+                    transmissionTarget.TrackEvent(EventName.text, properties);
                 }
             }
         }
@@ -294,7 +294,7 @@ public class PuppetTransmission : MonoBehaviour
                 }
                 else
                 {
-                    transmissionTarget.TrackEventWithProperties(EventName.text, properties);
+                    transmissionTarget.TrackEvent(EventName.text, properties);
                 }
             }
         }
