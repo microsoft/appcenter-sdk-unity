@@ -31,10 +31,7 @@ public class AppCenterBehavior : MonoBehaviour
         }
         _instance = this;
         DontDestroyOnLoad(gameObject);
-    }
 
-    private void Start()
-    {
         // Initialize App Center.
         if (Settings == null)
         {
@@ -42,7 +39,6 @@ public class AppCenterBehavior : MonoBehaviour
             return;
         }
         StartAppCenter();
-
         if (Started != null)
         {
             Started.Invoke();
