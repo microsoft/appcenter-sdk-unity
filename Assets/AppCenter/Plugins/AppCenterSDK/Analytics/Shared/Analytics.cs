@@ -21,9 +21,9 @@ namespace Microsoft.AppCenter.Unity.Analytics
             AnalyticsInternal.PrepareEventHandlers();
         }
 
-        public static RawType GetNativeType()
+        public static void AddNativeType(List<RawType> nativeTypes)
         {
-            return AnalyticsInternal.GetNativeType();
+            AnalyticsInternal.AddNativeType(nativeTypes);
         }
 
         public static void TrackEvent(string eventName, IDictionary<string, string> properties = null)

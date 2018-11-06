@@ -5,6 +5,7 @@
 #if UNITY_WSA_10_0 && !UNITY_EDITOR
 
 using System;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 
 namespace Microsoft.AppCenter.Unity.Distribute.Internal
@@ -15,9 +16,8 @@ namespace Microsoft.AppCenter.Unity.Distribute.Internal
         {
         }
 
-        public static Type GetNativeType()
+        public static void AddNativeType(List<Type> nativeTypes)
         {
-            return typeof(DistributeInternal.Distribute);
         }
 
         public static AppCenterTask SetEnabledAsync(bool isEnabled)

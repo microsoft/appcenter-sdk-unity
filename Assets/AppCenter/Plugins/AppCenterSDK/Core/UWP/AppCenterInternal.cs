@@ -3,10 +3,12 @@
 // Licensed under the MIT license.
 
 #if UNITY_WSA_10_0 && !UNITY_EDITOR
-using System;
-using System.Reflection;
-using Microsoft.AppCenter.Utils;
 using Microsoft.AppCenter.Unity.Internal.Utils;
+using Microsoft.AppCenter.Utils;
+using System.Collections.Generic;
+using System.Linq;
+using System.Reflection;
+using System;
 
 namespace Microsoft.AppCenter.Unity.Internal
 {
@@ -166,22 +168,12 @@ namespace Microsoft.AppCenter.Unity.Internal
 
         public static Type[] ServicesToNativeTypes(Type[] services)
         {
-            //TODO after all namespaces are changed to be in Microsoft.AppCenter.Unity,
-            //TODO remove case where 'method == null'
-            var nativeTypes = new Type[services.Length];
-            for (var i = 0; i < services.Length; ++i)
+            var nativeTypes = new List<Type>();
+            foreach (var service in services)
             {
-                var method = services[i].GetMethod("GetNativeType");
-                if (method == null)
-                {
-                    nativeTypes[i] = services[i];
-                }
-                else
-                {
-                    nativeTypes[i] = (Type)method.Invoke(null, null);
-                }
+                service.GetMethod("AddNativeType").Invoke(null, new object[] { nativeTypes });
             }
-            return nativeTypes;
+            return nativeTypes.ToArray();
         }
 
         public static void SetMaxStorageSize(long size)

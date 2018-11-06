@@ -4,6 +4,7 @@
 
 #if UNITY_ANDROID && !UNITY_EDITOR
 using System;
+using System.Collections.Generic;
 using UnityEngine;
 
 namespace Microsoft.AppCenter.Unity.Internal
@@ -140,13 +141,16 @@ namespace Microsoft.AppCenter.Unity.Internal
 
         public static IntPtr ServicesToNativeTypes(Type[] services)
         {
-            var classClass = AndroidJNI.FindClass("java/lang/Class");
-            var array = AndroidJNI.NewObjectArray(services.Length, classClass, classClass);
-            int currentIdx = 0;
+            var nativeTypes = new List<IntPtr>();
             foreach (var serviceType in services)
             {
-                var nativeType = (IntPtr)serviceType.GetMethod("GetNativeType").Invoke(null, null);
-                AndroidJNI.SetObjectArrayElement(array, currentIdx++, nativeType);
+                serviceType.GetMethod("AddNativeType").Invoke(null, new object[] { nativeTypes });
+            }
+            var classClass = AndroidJNI.FindClass("java/lang/Class");
+            var array = AndroidJNI.NewObjectArray(nativeTypes.Count, classClass, classClass);
+            for (var i = 0; i < nativeTypes.Count; i++)
+            {
+                AndroidJNI.SetObjectArrayElement(array, i, nativeTypes[i]);
             }
             return array;
         }
