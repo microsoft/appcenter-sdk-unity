@@ -39,9 +39,9 @@ namespace Microsoft.AppCenter.Unity.Crashes
             CrashesDelegate.SetDelegate();
         }
 
-        public static RawType GetNativeType()
+        public static void AddNativeType(List<RawType> nativeTypes)
         {
-            return CrashesInternal.GetNativeType();
+            CrashesInternal.AddNativeType(nativeTypes);
         }
 
         public static void TrackError(Exception exception, IDictionary<string, string> properties = null)

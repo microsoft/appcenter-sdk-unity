@@ -38,11 +38,11 @@ namespace Microsoft.AppCenter.Unity.Internal
         {
         }
 
-        public static void Start(string appSecret, Type[] services)
+        public static void Start(string appSecret, ServiceType[] services)
         {
         }
 
-        public static void Start(Type[] services)
+        public static void Start(ServiceType[] services)
         {
         }
 
@@ -96,9 +96,9 @@ namespace Microsoft.AppCenter.Unity.Internal
         {
         }
 
-        public static Type[] ServicesToNativeTypes(Type[] services)
+        public static ServiceType[] ServicesToNativeTypes(ServiceType[] services)
         {
-            return services;
+            return null;
         }
 
         public static void SetMaxStorageSize(long size)

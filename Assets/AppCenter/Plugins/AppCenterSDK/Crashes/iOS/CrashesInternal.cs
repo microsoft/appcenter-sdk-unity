@@ -14,9 +14,9 @@ namespace Microsoft.AppCenter.Unity.Crashes.Internal
 {
     class CrashesInternal
     {
-        public static IntPtr GetNativeType()
+        public static void AddNativeType(List<IntPtr> nativeTypes)
         {
-            return appcenter_unity_crashes_get_type();
+            nativeTypes.Add(appcenter_unity_crashes_get_type());
         }
 
         public static void TrackException(IntPtr exception)
@@ -92,13 +92,13 @@ namespace Microsoft.AppCenter.Unity.Crashes.Internal
             var exceptionReason = app_center_unity_crashes_error_report_exception_reason(errorReportPtr);
             var startTime = app_center_unity_crashes_error_report_app_start_time(errorReportPtr);
             DateTimeOffset dtoStart = DateTimeOffset.UtcNow;
-            if (startTime != null) 
+            if (startTime != null)
             {
                 dtoStart = DateTimeOffset.Parse(startTime);
             }
             var errorTime = app_center_unity_crashes_error_report_app_error_time(errorReportPtr);
             DateTimeOffset dtoError = DateTimeOffset.UtcNow;
-            if (errorTime != null) 
+            if (errorTime != null)
             {
                 dtoError = DateTimeOffset.Parse(errorTime);
             }

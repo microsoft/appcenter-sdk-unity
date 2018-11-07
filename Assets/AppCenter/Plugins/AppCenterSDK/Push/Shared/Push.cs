@@ -3,6 +3,7 @@
 // Licensed under the MIT license.
 
 using System;
+using System.Collections.Generic;
 using Microsoft.AppCenter.Unity.Push.Internal;
 
 namespace Microsoft.AppCenter.Unity.Push
@@ -57,9 +58,9 @@ namespace Microsoft.AppCenter.Unity.Push
             PushInternal.PrepareEventHandlers();
         }
 
-        public static RawType GetNativeType()
+        public static void AddNativeType(List<RawType> nativeTypes)
         {
-            return PushInternal.GetNativeType();
+            PushInternal.AddNativeType(nativeTypes);
         }
 
         public static AppCenterTask<bool> IsEnabledAsync()

@@ -3,6 +3,7 @@
 // Licensed under the MIT license.
 
 using System;
+using System.Collections.Generic;
 using Microsoft.AppCenter.Unity.Distribute.Internal;
 
 namespace Microsoft.AppCenter.Unity.Distribute
@@ -20,9 +21,9 @@ namespace Microsoft.AppCenter.Unity.Distribute
             DistributeInternal.PrepareEventHandlers();
         }
 
-        public static RawType GetNativeType()
+        public static void AddNativeType(List<RawType> nativeTypes)
         {
-            return DistributeInternal.GetNativeType();
+            DistributeInternal.AddNativeType(nativeTypes);
         }
 
         public static AppCenterTask<bool> IsEnabledAsync()

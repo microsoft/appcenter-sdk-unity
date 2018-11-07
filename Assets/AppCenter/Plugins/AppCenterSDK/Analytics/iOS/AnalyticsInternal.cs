@@ -16,9 +16,9 @@ namespace Microsoft.AppCenter.Unity.Analytics.Internal
         {
         }
 
-        public static IntPtr GetNativeType()
+        public static void AddNativeType(List<IntPtr> nativeTypes)
         {
-            return appcenter_unity_analytics_get_type();
+            nativeTypes.Add(appcenter_unity_analytics_get_type());
         }
 
         public static void TrackEvent(string eventName)
