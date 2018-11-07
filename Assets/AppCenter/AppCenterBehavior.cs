@@ -31,22 +31,25 @@ public class AppCenterBehavior : MonoBehaviour
         }
         _instance = this;
         DontDestroyOnLoad(gameObject);
+#if UNITY_WSA_10_0
+        StartAppCenter();
+#endif
+    }
 
-        // Initialize App Center.
+    private void Start()
+    {
+#if !UNITY_WSA_10_0
+        StartAppCenter();
+#endif
+    }
+
+    private void StartAppCenter()
+    {
         if (Settings == null)
         {
             Debug.LogError("App Center isn't configured!");
             return;
         }
-        StartAppCenter();
-        if (Started != null)
-        {
-            Started.Invoke();
-        }
-    }
-
-    private void StartAppCenter()
-    {
         var services = Settings.Services;
         PrepareEventHandlers(services);
         InvokeInitializingServices();
@@ -97,6 +100,10 @@ public class AppCenterBehavior : MonoBehaviour
         }
 #endif
         InvokeInitializedServices();
+        if (Started != null)
+        {
+            Started.Invoke();
+        }
     }
 
     private bool IsStartFromAppCenterBehavior(AppCenterBehaviorAdvanced advancedSettings)
