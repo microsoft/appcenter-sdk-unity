@@ -14,9 +14,8 @@ namespace Microsoft.AppCenter.Unity.Crashes.Internal
 {
     class CrashesInternal
     {
-        public static Type GetNativeType()
+        public static void AddNativeType(List<Type> nativeTypes)
         {
-            return typeof(CrashesInternal.Crashes);
         }
 
         public static void TrackException(object exception)

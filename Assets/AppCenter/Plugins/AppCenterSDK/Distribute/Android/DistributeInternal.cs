@@ -4,6 +4,7 @@
 
 #if UNITY_ANDROID && !UNITY_EDITOR
 using System;
+using System.Collections.Generic;
 using UnityEngine;
 
 namespace Microsoft.AppCenter.Unity.Distribute.Internal
@@ -43,9 +44,9 @@ namespace Microsoft.AppCenter.Unity.Distribute.Internal
             return new AppCenterTask<bool>(future);
         }
 
-        public static IntPtr GetNativeType()
+        public static void AddNativeType(List<IntPtr> nativeTypes)
         {
-            return AndroidJNI.FindClass("com/microsoft/appcenter/distribute/Distribute");
+            nativeTypes.Add(AndroidJNI.FindClass("com/microsoft/appcenter/distribute/Distribute"));
         }
 
         public static void SetInstallUrl(string installUrl)

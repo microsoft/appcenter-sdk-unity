@@ -5,6 +5,8 @@
 #if UNITY_IOS && !UNITY_EDITOR
 using AOT;
 using System;
+using System.Collections.Generic;
+using System.Linq;
 using System.Runtime.InteropServices;
 using UnityEngine;
 
@@ -94,14 +96,12 @@ namespace Microsoft.AppCenter.Unity.Internal
 
         public static IntPtr[] ServicesToNativeTypes(Type[] services)
         {
-            var classPointers = new IntPtr[services.Length];
-            int currentIdx = 0;
+            var nativeTypes = new List<IntPtr>();
             foreach (var serviceType in services)
             {
-                IntPtr nativeType = (IntPtr)serviceType.GetMethod("GetNativeType").Invoke(null, null);
-                classPointers[currentIdx++] = nativeType;
+                serviceType.GetMethod("AddNativeType").Invoke(null, new object[] { nativeTypes });
             }
-            return classPointers;
+            return nativeTypes.ToArray();
         }
 
         public static void SetMaxStorageSize(long size)

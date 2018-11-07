@@ -5,6 +5,7 @@
 #if UNITY_ANDROID && !UNITY_EDITOR
 using UnityEngine;
 using System;
+using System.Collections.Generic;
 
 namespace Microsoft.AppCenter.Unity.Push.Internal
 {
@@ -44,14 +45,14 @@ namespace Microsoft.AppCenter.Unity.Push.Internal
             return new AppCenterTask<bool>(future);
         }
 
-        public static IntPtr GetNativeType()
+        public static void AddNativeType(List<IntPtr> nativeTypes)
         {
-            return AndroidJNI.FindClass("com/microsoftappcenter/push/Push");
+            nativeTypes.Add(AndroidJNI.FindClass("com/microsoftappcenter/push/Push"));
         }
 
         public static void EnableFirebaseAnalytics()
         {
-           _push.CallStatic("enableFirebaseAnalytics");
+            _push.CallStatic("enableFirebaseAnalytics");
         }
 
         internal static void ReplayUnprocessedPushNotifications()

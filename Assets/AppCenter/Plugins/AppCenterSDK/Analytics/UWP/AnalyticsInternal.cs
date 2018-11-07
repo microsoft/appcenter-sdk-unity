@@ -19,9 +19,9 @@ namespace Microsoft.AppCenter.Unity.Analytics.Internal
         {
         }
 
-        public static Type GetNativeType()
+        public static void AddNativeType(List<Type> nativeTypes)
         {
-            return typeof(UWPAnalytics);
+            nativeTypes.Add(typeof(UWPAnalytics));
         }
 
         public static void TrackEvent(string eventName)
