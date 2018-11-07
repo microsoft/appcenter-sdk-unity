@@ -16,6 +16,8 @@ namespace Microsoft.AppCenter.Unity.Distribute
 
     public class Distribute
     {
+        public const string DistributeSDKVersion = "0.1.4";
+
         public static void PrepareEventHandlers()
         {
             DistributeInternal.PrepareEventHandlers();
