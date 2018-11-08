@@ -16,6 +16,7 @@ namespace Microsoft.AppCenter.Unity.Distribute
 
     public class Distribute
     {
+        // Used by App Center Unity Editor Extensions: https://github.com/Microsoft/AppCenter-SDK-Unity-Extension
         public const string DistributeSDKVersion = "0.1.4";
 
         public static void PrepareEventHandlers()
