@@ -27,7 +27,6 @@ namespace Microsoft.AppCenter.Unity.Crashes
 
 #if UNITY_ANDROID
         private static Queue<Exception> _unhandledExceptions = new Queue<Exception>();
-        private static bool _unhandledExceptionsExists = false;
 #endif
 
         public static void PrepareEventHandlers()
@@ -78,18 +77,16 @@ namespace Microsoft.AppCenter.Unity.Crashes
             {
                 return;
             }
-
             var exception = args.ExceptionObject as Exception;
             if (exception != null)
             {
                 Debug.Log("Unhandled exception: " + exception.ToString());
-
 #if UNITY_ANDROID
                 lock (_unhandledExceptions)
                 {
                     _unhandledExceptions.Enqueue(exception);
-                    _unhandledExceptionsExists = true;
                 }
+                UnityCoroutineHelper.StartCoroutine(SendUnhandledExceptionReports);
 #else
                 var exceptionWrapper = CreateWrapperException(exception);
                 CrashesInternal.TrackException(exceptionWrapper.GetRawObject());
@@ -138,9 +135,7 @@ namespace Microsoft.AppCenter.Unity.Crashes
             {
                 return;
             }
-
             _reportUnhandledExceptions = enabled;
-
             if (enabled)
             {
                 SubscribeToUnhandledExceptions();
@@ -282,10 +277,6 @@ namespace Microsoft.AppCenter.Unity.Crashes
             Application.logMessageReceived += OnHandleLog;
             System.AppDomain.CurrentDomain.UnhandledException += OnHandleUnresolvedException;
 #endif
-
-#if !UNITY_EDITOR && UNITY_ANDROID
-            UnityCoroutineHelper.StartCoroutine(SendUnhandledExceptionReports);
-#endif
         }
 
         private static void UnsubscribeFromUnhandledExceptions()
@@ -307,37 +298,27 @@ namespace Microsoft.AppCenter.Unity.Crashes
 #if UNITY_ANDROID
         private static IEnumerator SendUnhandledExceptionReports()
         {
+            yield return null; // ensure that code is executed in main thread
             while (true)
             {
-                if (!_reportUnhandledExceptions)
+                Exception exception = null;
+                lock (_unhandledExceptions)
                 {
-                    yield break;
-                }
-
-                if (_unhandledExceptionsExists)
-                {
-                    Exception exception = null;
-                    lock (_unhandledExceptions)
+                    if (_unhandledExceptions.Count > 0)
                     {
-                        if (_unhandledExceptions.Count > 0)
-                        {
-                            exception = _unhandledExceptions.Dequeue();
-                        }
-
-                        if (_unhandledExceptions.Count == 0)
-                        {
-                            _unhandledExceptionsExists = false;
-                        }
+                        exception = _unhandledExceptions.Dequeue();
                     }
-
-                    if (exception != null)
+                    else
                     {
-                        var exceptionWrapper = CreateWrapperException(exception);
-                        CrashesInternal.TrackException(exceptionWrapper.GetRawObject());
+                        yield break;
                     }
                 }
-
-                yield return null;
+                if (exception != null)
+                {
+                    var exceptionWrapper = CreateWrapperException(exception);
+                    CrashesInternal.TrackException(exceptionWrapper.GetRawObject());
+                }
+                yield return null; // report remaining exceptions on next frames
             }
         }
 #endif
