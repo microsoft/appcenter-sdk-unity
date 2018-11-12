@@ -1,7 +1,16 @@
-# Release 0.1.4
+# Release 1.0.0
 
-* **[Feature]** Add pause/resume APIs which pause/resume sending Analytics logs to App Center.
-* **[Feature]** Add ability to specify maximum size limit on the local SQLite storage. Previously, up to 300 logs were stored of any size. The default value is 10MB.
+**Analytics**
+
+* [Feature] Preparation work for a future change in transmission protocol and endpoint for Analytics data. There is no impact on your current workflow when using App Center.
 
 **UWP**
-* **[Bug fix]** Fixed missing namespace import when building with `.Net` scripting backend.
+
+* **[Bug fix]** Fix build errors when building the `UWP` app with `.Net` scripting backend
+* **[Bug fix]** Fix issue with reporting analytics events from `Start` method
+* **[Bug fix]** Automatically add the `InternetAccess` capability when building `UWP` apps in order for analytics to work properly
+
+**Android**
+
+* **[Bug fix]** Fix error occuring when trying to send crash report
+* **[Bug fix]** Fix performance issue caused by exceptions reporting logic
