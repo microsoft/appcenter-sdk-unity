@@ -16,6 +16,12 @@ namespace Microsoft.AppCenter.Unity.Analytics
 
     public class Analytics
     {
+        // An event can be lost due to low bandwidth or disk space constraints.     
+        public const int PERSISTENCE_NORMAL = 0x01;
+        
+        // Used for events that should be prioritized over non-critical events.        
+        public const int PERSISTENCE_CRITICAL = 0x02;
+
         // Used by App Center Unity Editor Extensions: https://github.com/Microsoft/AppCenter-SDK-Unity-Extension
         public const string AnalyticsSDKVersion = "1.0.0";
 
@@ -41,6 +47,11 @@ namespace Microsoft.AppCenter.Unity.Analytics
             }
         }
 
+        public static void TrackEvent(string eventName, IDictionary<string, string> properties, int flags)
+        {
+            AnalyticsInternal.TrackEventWithProperties(eventName, properties, flags);            
+        }
+
         public static void TrackEvent(string eventName, EventProperties properties)
         {
             if (properties == null)
@@ -50,6 +61,18 @@ namespace Microsoft.AppCenter.Unity.Analytics
             else
             {
                 AnalyticsInternal.TrackEventWithProperties(eventName, properties);
+            }
+        }
+
+        public static void TrackEvent(string eventName, EventProperties properties, int flags)
+        {
+            if (properties == null)
+            {
+                AnalyticsInternal.TrackEvent(eventName);
+            }
+            else
+            {
+                AnalyticsInternal.TrackEventWithProperties(eventName, properties, flags);
             }
         }
 
