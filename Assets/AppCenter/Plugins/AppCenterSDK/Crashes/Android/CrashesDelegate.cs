@@ -10,9 +10,7 @@ namespace Microsoft.AppCenter.Unity.Crashes.Internal
     public class CrashesDelegate : AndroidJavaProxy
     {
         public static event Crashes.SendingErrorReportHandler SendingErrorReport;
-
         public static event Crashes.SentErrorReportHandler SentErrorReport;
-
         public static event Crashes.FailedToSendErrorReportHandler FailedToSendErrorReport;
 
         private CrashesDelegate() : base("com.microsoft.appcenter.crashes.CrashesListener")
@@ -21,21 +19,36 @@ namespace Microsoft.AppCenter.Unity.Crashes.Internal
 
         public static void SetDelegate()
         {
-            var crashes = new AndroidJavaClass("com.microsoft.appcenter.crashes.Crashes");
-            crashes.CallStatic("setListener", new CrashesDelegate());
+            //var crashes = new AndroidJavaClass("com.microsoft.appcenter.crashes.Crashes");
+            //crashes.CallStatic("setListener", new CrashesDelegate());
         }
 
         //TODO bind error report; implement these
-        void onBeforeSending(AndroidJavaObject report)
+        public void onBeforeSending(AndroidJavaObject report)
         {
         }
 
-        void onSendingFailed(AndroidJavaObject report, AndroidJavaObject exception)
+        public void onSendingFailed(AndroidJavaObject report, AndroidJavaObject exception)
         {
         }
 
-        void onSendingSucceeded(AndroidJavaObject report)
+        public void onSendingSucceeded(AndroidJavaObject report)
         {
+        }
+
+        public bool shouldProcess(AndroidJavaObject report)
+        {
+            return true;
+        }
+
+        public bool shouldAwaitUserConfirmation()
+        {
+            return false;
+        }
+
+        public AndroidJavaObject getErrorAttachments(AndroidJavaObject report)
+        {
+            return null;
         }
 
         public static void SetShouldProcessErrorReportHandler(Crashes.ShouldProcessErrorReportHandler handler)
