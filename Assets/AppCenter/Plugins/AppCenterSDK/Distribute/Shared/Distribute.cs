@@ -3,6 +3,7 @@
 // Licensed under the MIT license.
 
 using System;
+using System.Collections.Generic;
 using Microsoft.AppCenter.Unity.Distribute.Internal;
 
 namespace Microsoft.AppCenter.Unity.Distribute
@@ -15,14 +16,17 @@ namespace Microsoft.AppCenter.Unity.Distribute
 
     public class Distribute
     {
+        // Used by App Center Unity Editor Extensions: https://github.com/Microsoft/AppCenter-SDK-Unity-Extension
+        public const string DistributeSDKVersion = "0.1.4";
+
         public static void PrepareEventHandlers()
         {
             DistributeInternal.PrepareEventHandlers();
         }
 
-        public static RawType GetNativeType()
+        public static void AddNativeType(List<RawType> nativeTypes)
         {
-            return DistributeInternal.GetNativeType();
+            DistributeInternal.AddNativeType(nativeTypes);
         }
 
         public static AppCenterTask<bool> IsEnabledAsync()

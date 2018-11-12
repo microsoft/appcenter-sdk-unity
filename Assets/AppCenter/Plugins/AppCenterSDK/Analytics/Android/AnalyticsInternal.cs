@@ -27,9 +27,9 @@ namespace Microsoft.AppCenter.Unity.Analytics.Internal
             instance.Call("onActivityResumed", activity);
         }
 
-        public static IntPtr GetNativeType()
+        public static void AddNativeType(List<IntPtr> nativeTypes)
         {
-            return AndroidJNI.FindClass("com/microsoft/appcenter/analytics/Analytics");
+            nativeTypes.Add(AndroidJNI.FindClass("com/microsoft/appcenter/analytics/Analytics"));
         }
 
         public static void TrackEvent(string eventName)

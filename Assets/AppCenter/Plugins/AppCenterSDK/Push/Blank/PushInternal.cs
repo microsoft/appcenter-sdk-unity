@@ -1,4 +1,4 @@
-﻿﻿// Copyright (c) Microsoft Corporation. All rights reserved.
+﻿// Copyright (c) Microsoft Corporation. All rights reserved.
 //
 // Licensed under the MIT license.
 
@@ -6,6 +6,7 @@
 
 namespace Microsoft.AppCenter.Unity.Push.Internal
 {
+    using System.Collections.Generic;
 #if UNITY_IOS || UNITY_ANDROID
     using RawType = System.IntPtr;
 #else
@@ -18,9 +19,8 @@ namespace Microsoft.AppCenter.Unity.Push.Internal
         {
         }
 
-        public static RawType GetNativeType()
+        public static void AddNativeType(List<RawType> nativeTypes)
         {
-            return default(RawType);
         }
 
         public static AppCenterTask SetEnabledAsync(bool enabled)

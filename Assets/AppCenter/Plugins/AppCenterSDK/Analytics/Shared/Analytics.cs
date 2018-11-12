@@ -16,14 +16,17 @@ namespace Microsoft.AppCenter.Unity.Analytics
 
     public class Analytics
     {
+        // Used by App Center Unity Editor Extensions: https://github.com/Microsoft/AppCenter-SDK-Unity-Extension
+        public const string AnalyticsSDKVersion = "0.1.4";
+
         public static void PrepareEventHandlers()
         {
             AnalyticsInternal.PrepareEventHandlers();
         }
 
-        public static RawType GetNativeType()
+        public static void AddNativeType(List<RawType> nativeTypes)
         {
-            return AnalyticsInternal.GetNativeType();
+            AnalyticsInternal.AddNativeType(nativeTypes);
         }
 
         public static void TrackEvent(string eventName, IDictionary<string, string> properties = null)

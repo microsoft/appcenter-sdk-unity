@@ -17,9 +17,9 @@ namespace Microsoft.AppCenter.Unity.Crashes.Internal
         private static AndroidJavaClass _crashes = new AndroidJavaClass("com.microsoft.appcenter.crashes.Crashes");
         private static AndroidJavaClass _wrapperSdkExceptionManager = new AndroidJavaClass("com.microsoft.appcenter.crashes.WrapperSdkExceptionManager");
 
-        public static IntPtr GetNativeType()
+        public static void AddNativeType(List<IntPtr> nativeTypes)
         {
-            return AndroidJNI.FindClass("com/microsoft/appcenter/crashes/Crashes");
+            nativeTypes.Add(AndroidJNI.FindClass("com/microsoft/appcenter/crashes/Crashes"));
         }
 
         public static void TrackException(AndroidJavaObject exception)

@@ -4,6 +4,7 @@
 
 #if UNITY_IOS && !UNITY_EDITOR
 using System;
+using System.Collections.Generic;
 using System.Runtime.InteropServices;
 using AOT;
 
@@ -50,9 +51,9 @@ namespace Microsoft.AppCenter.Unity.Distribute.Internal
             appcenter_unity_distribute_set_release_available_impl(del);
         }
 
-        public static IntPtr GetNativeType()
+        public static void AddNativeType(List<IntPtr> nativeTypes)
         {
-            return appcenter_unity_distribute_get_type();
+            nativeTypes.Add(appcenter_unity_distribute_get_type());
         }
 
         public static AppCenterTask SetEnabledAsync(bool isEnabled)

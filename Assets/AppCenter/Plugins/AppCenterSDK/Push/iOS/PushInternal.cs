@@ -4,6 +4,7 @@
 
 #if UNITY_IOS && !UNITY_EDITOR
 using System;
+using System.Collections.Generic;
 using System.Runtime.InteropServices;
 using AOT;
 
@@ -37,9 +38,9 @@ namespace Microsoft.AppCenter.Unity.Push.Internal
             appcenter_unity_push_set_received_push_impl(_receivedPushDel);
         }
 
-        public static IntPtr GetNativeType()
+        public static void AddNativeType(List<IntPtr> nativeTypes)
         {
-            return appcenter_unity_push_get_type();
+            nativeTypes.Add(appcenter_unity_push_get_type());
         }
 
         public static AppCenterTask SetEnabledAsync(bool isEnabled)

@@ -38,7 +38,7 @@ namespace Microsoft.AppCenter.Unity.Push.Internal
                        var idString = arguments.Substring(idStartIdx, _idLength);
                        if (idString != _prevIdString)
                        {
-                            _prevIdString = idString;
+                           _prevIdString = idString;
                            UWPPush.Instance.InstanceCheckLaunchedFromNotification(WSAApplication.arguments);
                        }
                    }
@@ -56,9 +56,9 @@ namespace Microsoft.AppCenter.Unity.Push.Internal
             };
         }
 
-        public static Type GetNativeType()
+        public static void AddNativeType(List<Type> nativeTypes)
         {
-            return typeof(UWPPush);
+            nativeTypes.Add(typeof(UWPPush));
         }
 
         public static AppCenterTask SetEnabledAsync(bool isEnabled)

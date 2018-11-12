@@ -2,16 +2,18 @@
 //
 // Licensed under the MIT license.
 
-using System;
+using Microsoft.AppCenter.Unity;
 using System.IO;
+using System.Linq;
 using System.Text.RegularExpressions;
-using UnityEngine;
-using UnityEditor;
-using UnityEditor.Build;
+using System.Xml.Linq;
+using System;
 #if UNITY_2018_1_OR_NEWER
 using UnityEditor.Build.Reporting;
 #endif
-using Microsoft.AppCenter.Unity;
+using UnityEditor.Build;
+using UnityEditor;
+using UnityEngine;
 
 // Warning: Don't use #if #endif for conditional compilation here as Unity
 // doesn't always set the flags early enough.
@@ -24,6 +26,12 @@ public class AppCenterPostBuild : IPostprocessBuild
 {
     public int callbackOrder { get { return 0; } }
 
+    private const string AppManifestFileName = "Package.appxmanifest";
+    private const string CapabilitiesElement = "Capabilities";
+    private const string CapabilityElement = "Capability";
+    private const string CapabilityNameAttribute = "Name";
+    private const string CapabilityNameAttributeValue = "internetClient";
+
 #if UNITY_2018_1_OR_NEWER
     public void OnPostprocessBuild(BuildReport report)
     {
@@ -35,6 +43,7 @@ public class AppCenterPostBuild : IPostprocessBuild
     {
         if (target == BuildTarget.WSAPlayer)
         {
+            AddInternetClientCapability(pathToBuiltProject);
             AddHelperCodeToUWPProject(pathToBuiltProject);
             if (PlayerSettings.GetScriptingBackend(BuildTargetGroup.WSA) != ScriptingImplementation.IL2CPP)
             {
@@ -235,6 +244,68 @@ public class AppCenterPostBuild : IPostprocessBuild
         {
             Debug.LogException(exception);
         }
+    }
+
+    private static void AddInternetClientCapability(string pathToBuiltProject)
+    {
+        /* Package.appxmanifest file example:
+           <Package>
+             <Capabilities>
+               <Capability Name="internetClient" />
+             </Capabilities>
+           </Package> */
+
+        var appManifests = Directory.GetFiles(pathToBuiltProject, AppManifestFileName, SearchOption.AllDirectories);
+        if (appManifests.Length == 0)
+        {
+            Debug.LogWarning("Failed to add the `InternetClient` capability, file `" + AppManifestFileName + "` is not found");
+            return;
+        }
+        else if (appManifests.Length > 1)
+        {
+            Debug.LogWarning("Failed to add the `InternetClient` capability, multiple `" + AppManifestFileName + "` files found");
+            return;
+        }
+
+        var appManifestFilePath = appManifests[0];
+        var xmlFile = XDocument.Load(appManifestFilePath);
+        var defaultNamespace = xmlFile.Root.GetDefaultNamespace().NamespaceName;
+        var capabilitiesElements = xmlFile.Root.Elements().Where(element => element.Name.LocalName == CapabilitiesElement).ToList();
+        if (capabilitiesElements.Count > 1)
+        {
+            Debug.LogWarning("Failed to add the `InternetClient` capability, multiple `Capabilities` elements found inside `" + appManifestFilePath + "` file");
+            return;
+        }
+        else if (capabilitiesElements.Count == 0)
+        {
+            xmlFile.Root.Add(new XElement(XName.Get(CapabilitiesElement, defaultNamespace), GetInternetClientCapabilityElement(defaultNamespace)));
+        }
+        else // capabilitiesElements.Count == 1
+        {
+            var capabilitiesElement = capabilitiesElements[0];
+            foreach (var element in capabilitiesElement.Elements())
+            {
+                if (element.Name.LocalName == CapabilityElement &&
+                    GetAttributeValue(element, CapabilityNameAttribute) == CapabilityNameAttributeValue)
+                {
+                    return;
+                }
+            }
+            capabilitiesElement.Add(GetInternetClientCapabilityElement(defaultNamespace));
+        }
+        xmlFile.Save(appManifestFilePath);
+    }
+
+    private static XElement GetInternetClientCapabilityElement(string defaultNamespace)
+    {
+        return new XElement(XName.Get(CapabilityElement, defaultNamespace),
+            new XAttribute(CapabilityNameAttribute, CapabilityNameAttributeValue));
+    }
+
+    internal static string GetAttributeValue(XElement element, string attributeName)
+    {
+        var attribute = element.Attribute(attributeName);
+        return attribute == null ? null : attribute.Value;
     }
     #endregion
 
