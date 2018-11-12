@@ -37,7 +37,7 @@ Task("GitRelease")
         InputFilePath = new FilePath("RELEASE.md"),
         Name = publishVersion
     });
-    GitReleaseManagerPublish(username, password, owner, repo, publishVersion);
+    // GitReleaseManagerPublish(username, password, owner, repo, publishVersion);
 });
 
 RunTarget(TARGET);
