@@ -29,6 +29,10 @@ namespace Microsoft.AppCenter.Unity.Analytics.Internal
             UWPAnalytics.TrackEvent(eventName);
         }
 
+        public static void TrackEvent(string eventName, int flags)
+        {
+        }
+
         public static void TrackEventWithProperties(string eventName, IDictionary<string, string> properties)
         {
             UWPAnalytics.TrackEvent(eventName, properties);

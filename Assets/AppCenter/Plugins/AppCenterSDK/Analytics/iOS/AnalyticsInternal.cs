@@ -7,6 +7,7 @@ using System;
 using System.Linq;
 using System.Collections.Generic;
 using System.Runtime.InteropServices;
+using Microsoft.AppCenter.Unity.Analytics;
 
 namespace Microsoft.AppCenter.Unity.Analytics.Internal
 {
@@ -23,25 +24,32 @@ namespace Microsoft.AppCenter.Unity.Analytics.Internal
 
         public static void TrackEvent(string eventName)
         {
-            appcenter_unity_analytics_track_event(eventName);
+            appcenter_unity_analytics_track_event(eventName, Flags.PERSISTENCE_NORMAL);
+        }
+
+        public static void TrackEvent(string eventName, int flags)
+        {
+            appcenter_unity_analytics_track_event(eventName, flags);
         }
 
         public static void TrackEventWithProperties(string eventName, EventProperties properties)
         {
-            appcenter_unity_analytics_track_event_with_typed_properties(eventName, properties.GetRawObject());
+            appcenter_unity_analytics_track_event_with_typed_properties(eventName, properties.GetRawObject(), Flags.PERSISTENCE_NORMAL);
         }
 
         public static void TrackEventWithProperties(string eventName, IDictionary<string, string> properties)
         {
-            appcenter_unity_analytics_track_event_with_properties(eventName, properties.Keys.ToArray(), properties.Values.ToArray(), properties.Count);
+            appcenter_unity_analytics_track_event_with_properties(eventName, properties.Keys.ToArray(), properties.Values.ToArray(), properties.Count, Flags.PERSISTENCE_NORMAL);
         }
 
         public static void TrackEventWithProperties(string eventName, EventProperties properties, int flags)
         {
+            appcenter_unity_analytics_track_event_with_typed_properties(eventName, properties.GetRawObject(), flags);
         }
 
         public static void TrackEventWithProperties(string eventName, IDictionary<string, string> properties, int flags)
         {
+            appcenter_unity_analytics_track_event_with_properties(eventName, properties.Keys.ToArray(), properties.Values.ToArray(), properties.Count, flags);
         }
 
         public static AppCenterTask SetEnabledAsync(bool isEnabled)
@@ -77,13 +85,13 @@ namespace Microsoft.AppCenter.Unity.Analytics.Internal
         private static extern IntPtr appcenter_unity_analytics_get_type();
 
         [DllImport("__Internal")]
-        private static extern void appcenter_unity_analytics_track_event(string eventName);
+        private static extern void appcenter_unity_analytics_track_event(string eventName, int flags);
 
         [DllImport("__Internal")]
-        private static extern void appcenter_unity_analytics_track_event_with_properties(string eventName, string[] keys, string[] values, int count);
+        private static extern void appcenter_unity_analytics_track_event_with_properties(string eventName, string[] keys, string[] values, int count, int flags);
 
         [DllImport("__Internal")]
-        private static extern void appcenter_unity_analytics_track_event_with_typed_properties(string eventName, IntPtr properties);
+        private static extern void appcenter_unity_analytics_track_event_with_typed_properties(string eventName, IntPtr properties, int flags);
 
         [DllImport("__Internal")]
         private static extern void appcenter_unity_analytics_set_enabled(bool isEnabled);

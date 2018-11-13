@@ -37,6 +37,10 @@ namespace Microsoft.AppCenter.Unity.Analytics.Internal
             _analytics.CallStatic("trackEvent", eventName);
         }
 
+        public static void TrackEvent(string eventName, int flags)
+        {
+        }
+
         public static void TrackEventWithProperties(string eventName, IDictionary<string, string> properties)
         {
             var androidProperties = JavaStringMapHelper.ConvertToJava(properties);

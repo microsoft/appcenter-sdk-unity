@@ -18,6 +18,10 @@ namespace Microsoft.AppCenter.Unity.Analytics
             transmissionTarget.Call("trackEvent", eventName);
         }
 
+        public static void TrackEvent(RawType transmissionTarget, string eventName, int flags)
+        {
+        }
+
         public static void TrackEventWithProperties(AndroidJavaObject transmissionTarget, string eventName, IDictionary<string, string> properties)
         {
             var androidProperties = JavaStringMapHelper.ConvertToJava(properties);

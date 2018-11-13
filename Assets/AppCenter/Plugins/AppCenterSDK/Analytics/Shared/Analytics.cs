@@ -29,6 +29,16 @@ namespace Microsoft.AppCenter.Unity.Analytics
             AnalyticsInternal.AddNativeType(nativeTypes);
         }
 
+        public static void TrackEvent(string eventName)
+        {
+            AnalyticsInternal.TrackEvent(eventName);
+        }
+
+        public static void TrackEvent(string eventName, int flags)
+        {
+            AnalyticsInternal.TrackEvent(eventName, flags);
+        }
+
         public static void TrackEvent(string eventName, IDictionary<string, string> properties = null)
         {
             if (properties == null)
