@@ -178,8 +178,8 @@ public class PuppetTransmission : MonoBehaviour
                 if (_isCritical)
                 {
                     IDictionary<string, string> nullProps = null;
-                    transmissionTarget.TrackEvent(EventName.text, nullProps, Flags.PERSISTENCE_CRITICAL);
-                } 
+                    transmissionTarget.TrackEvent(EventName.text, nullProps, Flags.PersistenceCritical);
+                }
                 else
                 {
                     transmissionTarget.TrackEvent(EventName.text);
@@ -199,7 +199,7 @@ public class PuppetTransmission : MonoBehaviour
                     if (_isCritical)
                     {
                         IDictionary<string, string> nullProps = null;
-                        transmissionTarget.TrackEvent(EventName.text, nullProps, Flags.PERSISTENCE_CRITICAL);
+                        transmissionTarget.TrackEvent(EventName.text, nullProps, Flags.PersistenceCritical);
                     }
                     else
                     {
@@ -210,7 +210,7 @@ public class PuppetTransmission : MonoBehaviour
                 {
                     if (_isCritical)
                     {
-                        transmissionTarget.TrackEvent(EventName.text, properties, Flags.PERSISTENCE_CRITICAL);
+                        transmissionTarget.TrackEvent(EventName.text, properties, Flags.PersistenceCritical);
                     }
                     else
                     {
@@ -232,7 +232,7 @@ public class PuppetTransmission : MonoBehaviour
                 if (_isCritical)
                 {
                     EventProperties nullProps = null;
-                    transmissionTarget.TrackEvent(EventName.text, nullProps, Flags.PERSISTENCE_CRITICAL);
+                    transmissionTarget.TrackEvent(EventName.text, nullProps, Flags.PersistenceCritical);
                 }
                 else
                 {
@@ -250,7 +250,7 @@ public class PuppetTransmission : MonoBehaviour
                     if (_isCritical)
                     {
                         EventProperties nullProps = null;
-                        transmissionTarget.TrackEvent(EventName.text, nullProps, Flags.PERSISTENCE_CRITICAL);
+                        transmissionTarget.TrackEvent(EventName.text, nullProps, Flags.PersistenceCritical);
                     }
                     else
                     {
@@ -261,7 +261,7 @@ public class PuppetTransmission : MonoBehaviour
                 {
                     if (_isCritical)
                     {
-                        transmissionTarget.TrackEvent(EventName.text, properties, Flags.PERSISTENCE_CRITICAL);
+                        transmissionTarget.TrackEvent(EventName.text, properties, Flags.PersistenceCritical);
                     }
                     else
                     {
@@ -303,7 +303,7 @@ public class PuppetTransmission : MonoBehaviour
                 if (_isCritical)
                 {
                     IDictionary<string, string> nullProps = null;
-                    transmissionTarget.TrackEvent(EventName.text, nullProps, Flags.PERSISTENCE_CRITICAL);
+                    transmissionTarget.TrackEvent(EventName.text, nullProps, Flags.PersistenceCritical);
                 }
                 else
                 {
@@ -324,7 +324,7 @@ public class PuppetTransmission : MonoBehaviour
                     if (_isCritical)
                     {
                         IDictionary<string, string> nullProps = null;
-                        transmissionTarget.TrackEvent(EventName.text, nullProps, Flags.PERSISTENCE_CRITICAL);
+                        transmissionTarget.TrackEvent(EventName.text, nullProps, Flags.PersistenceCritical);
                     }
                     else
                     {
@@ -335,7 +335,7 @@ public class PuppetTransmission : MonoBehaviour
                 {
                     if (_isCritical)
                     {
-                        transmissionTarget.TrackEvent(EventName.text, properties, Flags.PERSISTENCE_CRITICAL);
+                        transmissionTarget.TrackEvent(EventName.text, properties, Flags.PersistenceCritical);
                     }
                     else
                     {
@@ -358,7 +358,7 @@ public class PuppetTransmission : MonoBehaviour
                 if (_isCritical)
                 {
                     EventProperties nullProps = null;
-                    transmissionTarget.TrackEvent(EventName.text, nullProps, Flags.PERSISTENCE_CRITICAL);
+                    transmissionTarget.TrackEvent(EventName.text, nullProps, Flags.PersistenceCritical);
                 }
                 else
                 {
@@ -376,7 +376,7 @@ public class PuppetTransmission : MonoBehaviour
                     if (_isCritical)
                     {
                         EventProperties nullProps = null;
-                        transmissionTarget.TrackEvent(EventName.text, nullProps, Flags.PERSISTENCE_CRITICAL);
+                        transmissionTarget.TrackEvent(EventName.text, nullProps, Flags.PersistenceCritical);
                     }
                     else
                     {
@@ -387,7 +387,7 @@ public class PuppetTransmission : MonoBehaviour
                 {
                     if (_isCritical)
                     {
-                        transmissionTarget.TrackEvent(EventName.text, properties, Flags.PERSISTENCE_CRITICAL);
+                        transmissionTarget.TrackEvent(EventName.text, properties, Flags.PersistenceCritical);
                     }
                     else
                     {

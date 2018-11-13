@@ -18,6 +18,10 @@ namespace Microsoft.AppCenter.Unity.Analytics.Internal
             appcenter_unity_transmission_target_track_event(transmissionTarget, eventName);
         }
 
+        public static void TrackEvent(IntPtr transmissionTarget, string eventName, int flags)
+        {
+        }
+
         public static void TrackEventWithProperties(IntPtr transmissionTarget, string eventName, IDictionary<string, string> properties)
         {
             appcenter_unity_transmission_target_track_event_with_props(transmissionTarget, eventName, properties.Keys.ToArray(), properties.Values.ToArray(), properties.Count);
