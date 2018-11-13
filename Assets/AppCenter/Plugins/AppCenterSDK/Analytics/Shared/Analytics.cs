@@ -105,3 +105,4 @@ namespace Microsoft.AppCenter.Unity.Analytics
         }
     }
 }
+
