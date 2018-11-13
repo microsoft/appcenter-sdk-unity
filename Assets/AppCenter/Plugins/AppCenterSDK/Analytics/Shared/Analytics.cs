@@ -34,10 +34,10 @@ namespace Microsoft.AppCenter.Unity.Analytics
             AnalyticsInternal.TrackEvent(eventName);
         }
 
-        public static void TrackEvent(string eventName, int flags)
-        {
-            AnalyticsInternal.TrackEvent(eventName, flags);
-        }
+//        public static void TrackEvent(string eventName, int flags)
+//        {
+//            AnalyticsInternal.TrackEvent(eventName, flags);
+//        }
 
         public static void TrackEvent(string eventName, IDictionary<string, string> properties = null)
         {

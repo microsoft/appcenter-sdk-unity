@@ -35,10 +35,10 @@ namespace Microsoft.AppCenter.Unity.Analytics
             TransmissionTargetInternal.TrackEvent(_rawObject, eventName);
         }
 
-        public void TrackEvent(string eventName, int flags)
-        {
-            TransmissionTargetInternal.TrackEvent(_rawObject, eventName, flags);
-        }
+//        public void TrackEvent(string eventName, int flags)
+//        {
+//            TransmissionTargetInternal.TrackEvent(_rawObject, eventName, flags);
+//        }
 
         public void TrackEvent(string eventName, IDictionary<string, string> properties)
         {
