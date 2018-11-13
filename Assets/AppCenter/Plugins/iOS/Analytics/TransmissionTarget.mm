@@ -16,7 +16,7 @@ void appcenter_unity_transmission_target_track_event_with_props(MSAnalyticsTrans
   [transmission trackEvent:[NSString stringWithUTF8String:eventName] withProperties: properties flags:flags];
 }
 
-void appcenter_unity_transmission_target_track_event_with_typed_props(MSAnalyticsTransmissionTarget *transmission, char* eventName, MSEventProperties* properties) {
+void appcenter_unity_transmission_target_track_event_with_typed_props(MSAnalyticsTransmissionTarget *transmission, char* eventName, MSEventProperties* properties, int flags) {
   [transmission trackEvent: [NSString stringWithUTF8String:eventName] withTypedProperties:properties flags:flags];
 }
 
