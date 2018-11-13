@@ -28,6 +28,14 @@ namespace Microsoft.AppCenter.Unity.Analytics.Internal
             appcenter_unity_transmission_target_track_event_with_typed_props(transmissionTarget, eventName, properties.GetRawObject());
         }
 
+        public static void TrackEventWithProperties(IntPtr transmissionTarget, string eventName, IDictionary<string, string> properties, int flags)
+        {
+        }
+
+        public static void TrackEventWithProperties(IntPtr transmissionTarget, string eventName, EventProperties properties, int flags)
+        {
+        }
+
         public static AppCenterTask SetEnabledAsync(IntPtr transmissionTarget, bool enabled)
         {
             appcenter_unity_transmission_target_set_enabled(transmissionTarget, enabled);
