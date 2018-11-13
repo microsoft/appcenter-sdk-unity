@@ -29,6 +29,7 @@ public class PuppetTransmission : MonoBehaviour
     public Text TransmissionStatus;
     public Text ChildTransmissionStatus;
     public Toggle IsCritical;
+    private string _transmissionTargetToken = "";
     private string _childTransmissionTargetToken = "";
     private TransmissionTarget _transmissionTarget;
     private TransmissionTarget _childTransmissionTarget;
