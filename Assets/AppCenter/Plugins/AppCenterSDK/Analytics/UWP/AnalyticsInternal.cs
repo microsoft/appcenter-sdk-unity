@@ -45,6 +45,14 @@ namespace Microsoft.AppCenter.Unity.Analytics.Internal
             UWPAnalytics.TrackEvent(eventName, properties.GetRawObject());
         }
 
+        public static void TrackEventWithProperties(string eventName, IDictionary<string, string> properties, int flags)
+        {
+        }
+
+        public static void TrackEventWithProperties(string eventName, EventProperties properties, int flags)
+        {
+        }
+
         public static AppCenterTask SetEnabledAsync(bool isEnabled)
         {
             return new AppCenterTask(UWPAnalytics.SetEnabledAsync(isEnabled));
