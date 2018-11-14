@@ -28,10 +28,12 @@ public class PuppetTransmission : MonoBehaviour
     public RectTransform EventPropertiesList;
     public Text TransmissionStatus;
     public Text ChildTransmissionStatus;
+    public Toggle IsCritical;
     private string _transmissionTargetToken = "";
     private string _childTransmissionTargetToken = "";
     private TransmissionTarget _transmissionTarget;
     private TransmissionTarget _childTransmissionTarget;
+    private bool _isCritical;
 
     private void OnEnable()
     {
@@ -58,6 +60,11 @@ public class PuppetTransmission : MonoBehaviour
         }
         CollectDeviceId.isOn = false;
         CollectDeviceIdChild.isOn = false;
+    }
+
+    public void SetIsCritical(bool critical)
+    {
+        _isCritical = IsCritical.isOn;
     }
 
     private string ResolveToken()
@@ -168,7 +175,15 @@ public class PuppetTransmission : MonoBehaviour
             var properties = PropertiesHelper.GetStringProperties(EventPropertiesList);
             if (properties == null)
             {
-                transmissionTarget.TrackEvent(EventName.text);
+                if (_isCritical)
+                {
+                    IDictionary<string, string> nullProps = null;
+                    transmissionTarget.TrackEvent(EventName.text, nullProps, Flags.PersistenceCritical);
+                }
+                else
+                {
+                    transmissionTarget.TrackEvent(EventName.text);
+                }
             }
             else
             {
@@ -181,11 +196,26 @@ public class PuppetTransmission : MonoBehaviour
                     }
                     propertyConfigurator.SetEventProperty("extraEventProperty", "should be removed!");
                     propertyConfigurator.RemoveEventProperty("extraEventProperty");
-                    transmissionTarget.TrackEvent(EventName.text);
+                    if (_isCritical)
+                    {
+                        IDictionary<string, string> nullProps = null;
+                        transmissionTarget.TrackEvent(EventName.text, nullProps, Flags.PersistenceCritical);
+                    }
+                    else
+                    {
+                        transmissionTarget.TrackEvent(EventName.text);
+                    }
                 }
                 else
                 {
-                    transmissionTarget.TrackEvent(EventName.text, properties);
+                    if (_isCritical)
+                    {
+                        transmissionTarget.TrackEvent(EventName.text, properties, Flags.PersistenceCritical);
+                    }
+                    else
+                    {
+                        transmissionTarget.TrackEvent(EventName.text, properties);
+                    }
                 }
             }
         }
@@ -199,7 +229,15 @@ public class PuppetTransmission : MonoBehaviour
             var properties = PropertiesHelper.GetTypedProperties(EventPropertiesList);
             if (properties == null)
             {
-                transmissionTarget.TrackEvent(EventName.text);
+                if (_isCritical)
+                {
+                    EventProperties nullProps = null;
+                    transmissionTarget.TrackEvent(EventName.text, nullProps, Flags.PersistenceCritical);
+                }
+                else
+                {
+                    transmissionTarget.TrackEvent(EventName.text);
+                }
             }
             else
             {
@@ -209,11 +247,26 @@ public class PuppetTransmission : MonoBehaviour
                     PropertiesHelper.AddPropertiesToPropertyConfigurator(EventPropertiesList, propertyConfigurator);
                     propertyConfigurator.SetEventProperty("extraEventProperty", "should be removed!");
                     propertyConfigurator.RemoveEventProperty("extraEventProperty");
-                    transmissionTarget.TrackEvent(EventName.text);
+                    if (_isCritical)
+                    {
+                        EventProperties nullProps = null;
+                        transmissionTarget.TrackEvent(EventName.text, nullProps, Flags.PersistenceCritical);
+                    }
+                    else
+                    {
+                        transmissionTarget.TrackEvent(EventName.text);
+                    }
                 }
                 else
                 {
-                    transmissionTarget.TrackEvent(EventName.text, properties);
+                    if (_isCritical)
+                    {
+                        transmissionTarget.TrackEvent(EventName.text, properties, Flags.PersistenceCritical);
+                    }
+                    else
+                    {
+                        transmissionTarget.TrackEvent(EventName.text, properties);
+                    }
                 }
             }
         }
@@ -247,7 +300,15 @@ public class PuppetTransmission : MonoBehaviour
             var properties = PropertiesHelper.GetStringProperties(EventPropertiesList);
             if (properties == null)
             {
-                transmissionTarget.TrackEvent(EventName.text);
+                if (_isCritical)
+                {
+                    IDictionary<string, string> nullProps = null;
+                    transmissionTarget.TrackEvent(EventName.text, nullProps, Flags.PersistenceCritical);
+                }
+                else
+                {
+                    transmissionTarget.TrackEvent(EventName.text);
+                }
             }
             else
             {
@@ -260,11 +321,26 @@ public class PuppetTransmission : MonoBehaviour
                     }
                     propertyConfigurator.SetEventProperty("extraEventProperty", "should be removed!");
                     propertyConfigurator.RemoveEventProperty("extraEventProperty");
-                    transmissionTarget.TrackEvent(EventName.text);
+                    if (_isCritical)
+                    {
+                        IDictionary<string, string> nullProps = null;
+                        transmissionTarget.TrackEvent(EventName.text, nullProps, Flags.PersistenceCritical);
+                    }
+                    else
+                    {
+                        transmissionTarget.TrackEvent(EventName.text);
+                    }
                 }
                 else
                 {
-                    transmissionTarget.TrackEvent(EventName.text, properties);
+                    if (_isCritical)
+                    {
+                        transmissionTarget.TrackEvent(EventName.text, properties, Flags.PersistenceCritical);
+                    }
+                    else
+                    {
+                        transmissionTarget.TrackEvent(EventName.text, properties);
+                    }
                 }
             }
         }
@@ -279,7 +355,15 @@ public class PuppetTransmission : MonoBehaviour
             var properties = PropertiesHelper.GetTypedProperties(EventPropertiesList);
             if (properties == null)
             {
-                transmissionTarget.TrackEvent(EventName.text);
+                if (_isCritical)
+                {
+                    EventProperties nullProps = null;
+                    transmissionTarget.TrackEvent(EventName.text, nullProps, Flags.PersistenceCritical);
+                }
+                else
+                {
+                    transmissionTarget.TrackEvent(EventName.text);
+                }
             }
             else
             {
@@ -289,12 +373,26 @@ public class PuppetTransmission : MonoBehaviour
                     PropertiesHelper.AddPropertiesToPropertyConfigurator(EventPropertiesList, propertyConfigurator);
                     propertyConfigurator.SetEventProperty("extraEventProperty", "should be removed!");
                     propertyConfigurator.RemoveEventProperty("extraEventProperty");
-                    Debug.Log("fdasfsdfdsds");
-                    transmissionTarget.TrackEvent(EventName.text);
+                    if (_isCritical)
+                    {
+                        EventProperties nullProps = null;
+                        transmissionTarget.TrackEvent(EventName.text, nullProps, Flags.PersistenceCritical);
+                    }
+                    else
+                    {
+                        transmissionTarget.TrackEvent(EventName.text);
+                    }
                 }
                 else
                 {
-                    transmissionTarget.TrackEvent(EventName.text, properties);
+                    if (_isCritical)
+                    {
+                        transmissionTarget.TrackEvent(EventName.text, properties, Flags.PersistenceCritical);
+                    }
+                    else
+                    {
+                        transmissionTarget.TrackEvent(EventName.text, properties);
+                    }
                 }
             }
         }

@@ -32,6 +32,10 @@ namespace Microsoft.AppCenter.Unity.Analytics.Internal
             appcenter_unity_analytics_track_event(eventName, flags);
         }
 
+        public static void TrackEvent(string eventName, int flags)
+        {
+        }
+
         public static void TrackEventWithProperties(string eventName, EventProperties properties)
         {
             appcenter_unity_analytics_track_event_with_typed_properties(eventName, properties.GetRawObject(), Flags.PERSISTENCE_NORMAL);

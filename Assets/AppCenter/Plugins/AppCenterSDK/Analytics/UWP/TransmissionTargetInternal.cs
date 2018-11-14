@@ -15,7 +15,7 @@ namespace Microsoft.AppCenter.Unity.Analytics
         {
         }
 
-        public static void TrackEvent(RawType transmissionTarget, string eventName, int flags)
+        public static void TrackEvent(object transmissionTarget, string eventName, int flags)
         {
         }
 

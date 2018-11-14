@@ -34,16 +34,16 @@ namespace Microsoft.AppCenter.Unity.Analytics
             AnalyticsInternal.TrackEvent(eventName);
         }
 
-//        public static void TrackEvent(string eventName, int flags)
-//        {
-//            AnalyticsInternal.TrackEvent(eventName, flags);
-//        }
+        public static void TrackEvent(string eventName, Flags flags)
+        {
+            AnalyticsInternal.TrackEvent(eventName, (int)flags);
+        }
 
-        public static void TrackEvent(string eventName, IDictionary<string, string> properties = null)
+        public static void TrackEvent(string eventName, IDictionary<string, string> properties)
         {
             if (properties == null)
             {
-                AnalyticsInternal.TrackEvent(eventName);
+                TrackEvent(eventName);
             }
             else
             {
@@ -51,16 +51,23 @@ namespace Microsoft.AppCenter.Unity.Analytics
             }
         }
 
-        public static void TrackEvent(string eventName, IDictionary<string, string> properties, int flags)
+        public static void TrackEvent(string eventName, IDictionary<string, string> properties, Flags flags)
         {
-            AnalyticsInternal.TrackEventWithProperties(eventName, properties, flags);            
+            if (properties == null)
+            {
+                TrackEvent(eventName, flags);
+            }
+            else
+            {
+                AnalyticsInternal.TrackEventWithProperties(eventName, properties, (int)flags);
+            }
         }
 
         public static void TrackEvent(string eventName, EventProperties properties)
         {
             if (properties == null)
             {
-                AnalyticsInternal.TrackEvent(eventName);
+                TrackEvent(eventName);
             }
             else
             {
@@ -68,15 +75,15 @@ namespace Microsoft.AppCenter.Unity.Analytics
             }
         }
 
-        public static void TrackEvent(string eventName, EventProperties properties, int flags)
+        public static void TrackEvent(string eventName, EventProperties properties, Flags flags)
         {
             if (properties == null)
             {
-                AnalyticsInternal.TrackEvent(eventName);
+                TrackEvent(eventName, flags);
             }
             else
             {
-                AnalyticsInternal.TrackEventWithProperties(eventName, properties, flags);
+                AnalyticsInternal.TrackEventWithProperties(eventName, properties, (int)flags);
             }
         }
 
@@ -115,4 +122,3 @@ namespace Microsoft.AppCenter.Unity.Analytics
         }
     }
 }
-
