@@ -39,7 +39,7 @@ namespace Microsoft.AppCenter.Unity.Analytics
             AnalyticsInternal.TrackEvent(eventName, (int)flags);
         }
 
-        public static void TrackEvent(string eventName, IDictionary<string, string> properties = null)
+        public static void TrackEvent(string eventName, IDictionary<string, string> properties)
         {
             if (properties == null)
             {
