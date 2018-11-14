@@ -15,7 +15,7 @@ void* appcenter_unity_analytics_get_type()
 
 void appcenter_unity_analytics_track_event(char* eventName, int flags)
 {
-  [MSAnalytics trackEvent:[NSString stringWithUTF8String:eventName];
+  [MSAnalytics trackEvent:[NSString stringWithUTF8String:eventName]];
   // Native SKD method with flags is not ready yet
   //[MSAnalytics trackEvent:[NSString stringWithUTF8String:eventName] withProperties:NULL flags:flags];
 }
