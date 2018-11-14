@@ -15,7 +15,7 @@ namespace Microsoft.AppCenter.Unity.Analytics.Internal
     {
         public static void TrackEvent(IntPtr transmissionTarget, string eventName)
         {
-            appcenter_unity_transmission_target_track_event(transmissionTarget, eventName, Flags.PERSISTENCE_NORMAL);
+            appcenter_unity_transmission_target_track_event(transmissionTarget, eventName, (int)Flags.PersistenceNormal);
         }
 
         public static void TrackEvent(IntPtr transmissionTarget, string eventName, int flags)
@@ -25,12 +25,12 @@ namespace Microsoft.AppCenter.Unity.Analytics.Internal
 
         public static void TrackEventWithProperties(IntPtr transmissionTarget, string eventName, IDictionary<string, string> properties)
         {
-            appcenter_unity_transmission_target_track_event_with_props(transmissionTarget, eventName, properties.Keys.ToArray(), properties.Values.ToArray(), properties.Count, Flags.PERSISTENCE_NORMAL);
+            appcenter_unity_transmission_target_track_event_with_props(transmissionTarget, eventName, properties.Keys.ToArray(), properties.Values.ToArray(), properties.Count, (int)Flags.PersistenceNormal);
         }
 
         public static void TrackEventWithProperties(IntPtr transmissionTarget, string eventName, EventProperties properties)
         {
-            appcenter_unity_transmission_target_track_event_with_typed_props(transmissionTarget, eventName, properties.GetRawObject(), Flags.PERSISTENCE_NORMAL);
+            appcenter_unity_transmission_target_track_event_with_typed_props(transmissionTarget, eventName, properties.GetRawObject(), (int)Flags.PersistenceNormal);
         }
 
         public static void TrackEventWithProperties(IntPtr transmissionTarget, string eventName, IDictionary<string, string> properties, int flags)

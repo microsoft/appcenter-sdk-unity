@@ -3,8 +3,6 @@
 // Licensed under the MIT license.
 
 using System.Collections;
-using System.Collections.Generic;
-using System.Linq;
 using Microsoft.AppCenter.Unity.Analytics;
 using UnityEngine;
 using UnityEngine.UI;
@@ -12,10 +10,12 @@ using UnityEngine.UI;
 public class PuppetAnalytics : MonoBehaviour
 {
     public Toggle Enabled;
+    public Toggle IsCritical;
     public InputField EventName;
     public GameObject EventProperty;
     public RectTransform EventPropertiesList;
     public Text StatusText;
+    private bool _isCritical;
 
     void OnEnable()
     {
@@ -28,6 +28,11 @@ public class PuppetAnalytics : MonoBehaviour
     public void SetEnabled(bool enabled)
     {
         StartCoroutine(SetEnabledCoroutine(enabled));
+    }
+
+    public void SetIsCritical(bool critical)
+    {
+        _isCritical = IsCritical.isOn;
     }
 
     public void Pause()
@@ -61,15 +66,26 @@ public class PuppetAnalytics : MonoBehaviour
     public void TrackEventStringProperties()
     {
         var properties = PropertiesHelper.GetStringProperties(EventPropertiesList);
-        Analytics.TrackEvent(EventName.text, properties);
+
+        // We need to verify all the TrackEvent overloads, hence the full condition here instead of a ternary operator.
+        if (_isCritical)
+        {
+            Analytics.TrackEvent(EventName.text, properties, Flags.PersistenceCritical);
+        }
+        else
+        {
+            Analytics.TrackEvent(EventName.text, properties);
+        }
     }
 
     public void TrackEventTypedProperties()
     {
         var properties = PropertiesHelper.GetTypedProperties(EventPropertiesList);
-        if (properties == null)
+
+        // We need to verify all the TrackEvent overloads, hence the full condition here instead of a ternary operator.
+        if (_isCritical)
         {
-            Analytics.TrackEvent(EventName.text);
+            Analytics.TrackEvent(EventName.text, properties, Flags.PersistenceCritical);
         }
         else
         {

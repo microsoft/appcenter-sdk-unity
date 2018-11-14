@@ -34,10 +34,10 @@ namespace Microsoft.AppCenter.Unity.Analytics
             AnalyticsInternal.TrackEvent(eventName);
         }
 
-//        public static void TrackEvent(string eventName, int flags)
-//        {
-//            AnalyticsInternal.TrackEvent(eventName, flags);
-//        }
+        public static void TrackEvent(string eventName, Flags flags)
+        {
+            AnalyticsInternal.TrackEvent(eventName, (int)flags);
+        }
 
         public static void TrackEvent(string eventName, IDictionary<string, string> properties = null)
         {
@@ -51,9 +51,9 @@ namespace Microsoft.AppCenter.Unity.Analytics
             }
         }
 
-        public static void TrackEvent(string eventName, IDictionary<string, string> properties, int flags)
+        public static void TrackEvent(string eventName, IDictionary<string, string> properties, Flags flags)
         {
-            AnalyticsInternal.TrackEventWithProperties(eventName, properties, flags);            
+            AnalyticsInternal.TrackEventWithProperties(eventName, properties, (int)flags);            
         }
 
         public static void TrackEvent(string eventName, EventProperties properties)
@@ -68,7 +68,7 @@ namespace Microsoft.AppCenter.Unity.Analytics
             }
         }
 
-        public static void TrackEvent(string eventName, EventProperties properties, int flags)
+        public static void TrackEvent(string eventName, EventProperties properties, Flags flags)
         {
             if (properties == null)
             {
@@ -76,7 +76,7 @@ namespace Microsoft.AppCenter.Unity.Analytics
             }
             else
             {
-                AnalyticsInternal.TrackEventWithProperties(eventName, properties, flags);
+                AnalyticsInternal.TrackEventWithProperties(eventName, properties, (int)flags);
             }
         }
 

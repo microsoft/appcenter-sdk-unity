@@ -39,6 +39,7 @@ namespace Microsoft.AppCenter.Unity.Analytics.Internal
 
         public static void TrackEvent(string eventName, int flags)
         {
+            _analytics.CallStatic("trackEvent", eventName, null, flags);
         }
 
         public static void TrackEventWithProperties(string eventName, IDictionary<string, string> properties)

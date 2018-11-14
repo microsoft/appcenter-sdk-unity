@@ -24,7 +24,7 @@ namespace Microsoft.AppCenter.Unity.Analytics.Internal
 
         public static void TrackEvent(string eventName)
         {
-            appcenter_unity_analytics_track_event(eventName, Flags.PERSISTENCE_NORMAL);
+            appcenter_unity_analytics_track_event(eventName, (int)Flags.PersistenceNormal);
         }
 
         public static void TrackEvent(string eventName, int flags)
@@ -34,12 +34,12 @@ namespace Microsoft.AppCenter.Unity.Analytics.Internal
 
         public static void TrackEventWithProperties(string eventName, EventProperties properties)
         {
-            appcenter_unity_analytics_track_event_with_typed_properties(eventName, properties.GetRawObject(), Flags.PERSISTENCE_NORMAL);
+            appcenter_unity_analytics_track_event_with_typed_properties(eventName, properties.GetRawObject(), (int)Flags.PersistenceNormal);
         }
 
         public static void TrackEventWithProperties(string eventName, IDictionary<string, string> properties)
         {
-            appcenter_unity_analytics_track_event_with_properties(eventName, properties.Keys.ToArray(), properties.Values.ToArray(), properties.Count, Flags.PERSISTENCE_NORMAL);
+            appcenter_unity_analytics_track_event_with_properties(eventName, properties.Keys.ToArray(), properties.Values.ToArray(), properties.Count, (int)Flags.PersistenceNormal);
         }
 
         public static void TrackEventWithProperties(string eventName, EventProperties properties, int flags)

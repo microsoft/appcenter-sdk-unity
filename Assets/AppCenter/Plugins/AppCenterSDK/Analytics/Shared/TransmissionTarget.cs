@@ -35,10 +35,10 @@ namespace Microsoft.AppCenter.Unity.Analytics
             TransmissionTargetInternal.TrackEvent(_rawObject, eventName);
         }
 
-//        public void TrackEvent(string eventName, int flags)
-//        {
-//            TransmissionTargetInternal.TrackEvent(_rawObject, eventName, flags);
-//        }
+        public void TrackEvent(string eventName, Flags flags)
+        {
+            TransmissionTargetInternal.TrackEvent(_rawObject, eventName, (int)flags);
+        }
 
         public void TrackEvent(string eventName, IDictionary<string, string> properties)
         {
@@ -50,14 +50,14 @@ namespace Microsoft.AppCenter.Unity.Analytics
             TransmissionTargetInternal.TrackEventWithProperties(_rawObject, eventName, properties);
         }
 
-        public void TrackEvent(string eventName, IDictionary<string, string> properties, int flags)
+        public void TrackEvent(string eventName, IDictionary<string, string> properties, Flags flags)
         {
-            TransmissionTargetInternal.TrackEventWithProperties(_rawObject, eventName, properties, flags);
+            TransmissionTargetInternal.TrackEventWithProperties(_rawObject, eventName, properties, (int)flags);
         }
 
-        public void TrackEvent(string eventName, EventProperties properties, int flags)
+        public void TrackEvent(string eventName, EventProperties properties, Flags flags)
         {
-            TransmissionTargetInternal.TrackEventWithProperties(_rawObject, eventName, properties, flags);
+            TransmissionTargetInternal.TrackEventWithProperties(_rawObject, eventName, properties, (int)flags);
         }
 
         public AppCenterTask<bool> IsEnabledAsync()
