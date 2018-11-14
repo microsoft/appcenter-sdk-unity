@@ -7,17 +7,23 @@
 #import "AppCenterAnalytics/MSPropertyConfigurator.h"
 #import "../Core/Utility/NSStringDictionaryHelper.h"
 
-void appcenter_unity_transmission_target_track_event(MSAnalyticsTransmissionTarget *transmission, char* eventName) {
+void appcenter_unity_transmission_target_track_event(MSAnalyticsTransmissionTarget *transmission, char* eventName, int flags) {
+  // flags parameter is not supported in native SDK yet
+  // [transmission trackEvent:[NSString stringWithUTF8String:eventName] withProperties:NULL flags:flags];
   [transmission trackEvent:[NSString stringWithUTF8String:eventName]];
 }
 
-void appcenter_unity_transmission_target_track_event_with_props(MSAnalyticsTransmissionTarget *transmission, char* eventName, char** keys, char** values, int count) {
+void appcenter_unity_transmission_target_track_event_with_props(MSAnalyticsTransmissionTarget *transmission, char* eventName, char** keys, char** values, int count, int flags) {
   NSDictionary<NSString*, NSString*> *properties = appcenter_unity_create_ns_string_dictionary(keys, values, count); 
+  // flags parameter is not supported in native SDK yet
+  //[transmission trackEvent:[NSString stringWithUTF8String:eventName] withProperties: properties flags:flags];
   [transmission trackEvent:[NSString stringWithUTF8String:eventName] withProperties: properties];
 }
 
-void appcenter_unity_transmission_target_track_event_with_typed_props(MSAnalyticsTransmissionTarget *transmission, char* eventName, MSEventProperties* properties) {
-  //[transmission trackEvent: [NSString stringWithUTF8String:eventName] withTypedProperties:properties];
+void appcenter_unity_transmission_target_track_event_with_typed_props(MSAnalyticsTransmissionTarget *transmission, char* eventName, MSEventProperties* properties, int flags) {
+    // flags parameter is not supported in native SDK yet
+    //[transmission trackEvent: [NSString stringWithUTF8String:eventName] withTypedProperties:properties flags:flags];
+    [transmission trackEvent: [NSString stringWithUTF8String:eventName] withTypedProperties:properties];
 }
 
 void appcenter_unity_transmission_target_set_enabled(MSAnalyticsTransmissionTarget *transmission, BOOL enabled) {
