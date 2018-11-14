@@ -28,6 +28,10 @@ namespace Microsoft.AppCenter.Unity.Internal.Utility
 
         public static AndroidJavaObject ConvertToJava(IDictionary<string, string> properties)
         {
+            if (properties == null)
+            {
+                return null;
+            }
             string[] keys = properties.Keys.ToArray();
             string[] values = properties.Values.ToArray();
             int count = properties.Count;

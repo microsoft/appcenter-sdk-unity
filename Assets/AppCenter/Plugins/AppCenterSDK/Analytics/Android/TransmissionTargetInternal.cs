@@ -18,26 +18,31 @@ namespace Microsoft.AppCenter.Unity.Analytics
             transmissionTarget.Call("trackEvent", eventName);
         }
 
+        public static void TrackEvent(AndroidJavaObject transmissionTarget, string eventName, int flags)
+        {
+            transmissionTarget.Call("trackEvent", eventName, null, flags);
+        }
+
         public static void TrackEventWithProperties(AndroidJavaObject transmissionTarget, string eventName, IDictionary<string, string> properties)
         {
-            var androidProperties = properties == null ? null : JavaStringMapHelper.ConvertToJava(properties);
+            var androidProperties = JavaStringMapHelper.ConvertToJava(properties);
             transmissionTarget.Call("trackEvent", eventName, androidProperties);
         }
 
         public static void TrackEventWithProperties(AndroidJavaObject transmissionTarget, string eventName, EventProperties properties)
         {
-            transmissionTarget.Call("trackEvent", eventName, properties == null ? null : properties.GetRawObject());
+            transmissionTarget.Call("trackEvent", eventName, properties.GetRawObject());
         }
 
         public static void TrackEventWithProperties(AndroidJavaObject transmissionTarget, string eventName, IDictionary<string, string> properties, int flags)
         {
-            var androidProperties = properties == null ? null : JavaStringMapHelper.ConvertToJava(properties);
+            var androidProperties = JavaStringMapHelper.ConvertToJava(properties);
             transmissionTarget.Call("trackEvent", eventName, androidProperties, flags);
         }
 
         public static void TrackEventWithProperties(AndroidJavaObject transmissionTarget, string eventName, EventProperties properties, int flags)
         {
-            transmissionTarget.Call("trackEvent", eventName, properties == null ? null : properties.GetRawObject(), flags);
+            transmissionTarget.Call("trackEvent", eventName, properties.GetRawObject(), flags);
         }
 
         public static AppCenterTask SetEnabledAsync(AndroidJavaObject transmissionTarget, bool enabled)

@@ -70,7 +70,7 @@ public class PuppetAnalytics : MonoBehaviour
         // We need to verify all the TrackEvent overloads, hence the full condition here instead of a ternary operator.
         if (_isCritical)
         {
-            Analytics.TrackEvent(EventName.text, properties, Flags.PERSISTENCE_CRITICAL);
+            Analytics.TrackEvent(EventName.text, properties, Flags.PersistenceCritical);
         }
         else
         {
@@ -81,30 +81,15 @@ public class PuppetAnalytics : MonoBehaviour
     public void TrackEventTypedProperties()
     {
         var properties = PropertiesHelper.GetTypedProperties(EventPropertiesList);
-        if (properties == null)
+
+        // We need to verify all the TrackEvent overloads, hence the full condition here instead of a ternary operator.
+        if (_isCritical)
         {
-            // We need to verify all the TrackEvent overloads, hence the full condition here instead of a ternary operator.
-            if (_isCritical)
-            {
-                EventProperties nullProps = null;
-                Analytics.TrackEvent(EventName.text, nullProps, Flags.PERSISTENCE_CRITICAL);
-            }
-            else
-            {
-                Analytics.TrackEvent(EventName.text);
-            }
+            Analytics.TrackEvent(EventName.text, properties, Flags.PersistenceCritical);
         }
         else
         {
-            // We need to verify all the TrackEvent overloads, hence the full condition here instead of a ternary operator.
-            if (_isCritical)
-            {
-                Analytics.TrackEvent(EventName.text, properties, Flags.PERSISTENCE_CRITICAL);
-            }
-            else
-            {
-                Analytics.TrackEvent(EventName.text, properties);
-            }
+            Analytics.TrackEvent(EventName.text, properties);
         }
     }
 }

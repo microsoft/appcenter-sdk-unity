@@ -37,26 +37,31 @@ namespace Microsoft.AppCenter.Unity.Analytics.Internal
             _analytics.CallStatic("trackEvent", eventName);
         }
 
+        public static void TrackEvent(string eventName, int flags)
+        {
+            _analytics.CallStatic("trackEvent", eventName, null, flags);
+        }
+
         public static void TrackEventWithProperties(string eventName, IDictionary<string, string> properties)
         {
-            var androidProperties = properties == null ? null : JavaStringMapHelper.ConvertToJava(properties);
+            var androidProperties = JavaStringMapHelper.ConvertToJava(properties);
             _analytics.CallStatic("trackEvent", eventName, androidProperties);
         }
 
         public static void TrackEventWithProperties(string eventName, EventProperties properties)
         {
-            _analytics.CallStatic("trackEvent", eventName, properties == null ? null : properties.GetRawObject());
+            _analytics.CallStatic("trackEvent", eventName, properties.GetRawObject());
         }
 
         public static void TrackEventWithProperties(string eventName, IDictionary<string, string> properties, int flags)
         {
-            var androidProperties = properties == null ? null : JavaStringMapHelper.ConvertToJava(properties);
+            var androidProperties = JavaStringMapHelper.ConvertToJava(properties);
             _analytics.CallStatic("trackEvent", eventName, androidProperties, flags);
         }
 
         public static void TrackEventWithProperties(string eventName, EventProperties properties, int flags)
         {
-            _analytics.CallStatic("trackEvent", eventName, properties == null ? null : properties.GetRawObject(), flags);
+            _analytics.CallStatic("trackEvent", eventName, properties.GetRawObject(), flags);
         }
 
         public static AppCenterTask SetEnabledAsync(bool isEnabled)
