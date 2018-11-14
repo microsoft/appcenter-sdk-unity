@@ -23,7 +23,6 @@ void appcenter_unity_transmission_target_track_event_with_props(MSAnalyticsTrans
 void appcenter_unity_transmission_target_track_event_with_typed_props(MSAnalyticsTransmissionTarget *transmission, char* eventName, MSEventProperties* properties, int flags) {
     // flags parameter is not supported in native SDK yet
     //[transmission trackEvent: [NSString stringWithUTF8String:eventName] withTypedProperties:properties flags:flags];
-    [transmission trackEvent: [NSString stringWithUTF8String:eventName] withTypedProperties:properties];
 }
 
 void appcenter_unity_transmission_target_set_enabled(MSAnalyticsTransmissionTarget *transmission, BOOL enabled) {
