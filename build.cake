@@ -12,9 +12,9 @@ using System.Runtime.Versioning;
 using NuGet;
 
 // Native SDK versions
-var AndroidSdkVersion = "1.9.0";
-var IosSdkVersion = "1.10.0";
-var UwpSdkVersion = "1.10.0";
+var AndroidSdkVersion = "1.10.0";
+var IosSdkVersion = "1.11.0";
+var UwpSdkVersion = "1.11.0";
 
 // URLs for downloading binaries.
 /*
@@ -219,9 +219,9 @@ Task("Externals-Ios")
 // Downloading UWP binaries.
 Task ("Externals-Uwp")
     .Does (() => {
-        var feedIdNugetEnv = EnvironmentVariable ("NUGET_FEED_ID");
-        var userNugetEnv = EnvironmentVariable ("NUGET_USER");
-        var passwordNugetEnv = EnvironmentVariable ("NUGET_PASSWORD");
+        var feedIdNugetEnv = Argument("NuGetFeedId", EnvironmentVariable("NUGET_FEED_ID"));
+        var userNugetEnv = EnvironmentVariable("NUGET_USER");
+        var passwordNugetEnv = Argument("NuGetPassword", EnvironmentVariable("NUGET_PASSWORD"));
         var usePublicFeed = (string.IsNullOrEmpty (feedIdNugetEnv) || string.IsNullOrEmpty (userNugetEnv) || string.IsNullOrEmpty (passwordNugetEnv));
 
         CleanDirectory ("externals/uwp");

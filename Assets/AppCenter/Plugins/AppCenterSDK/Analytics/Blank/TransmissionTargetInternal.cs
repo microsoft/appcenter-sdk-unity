@@ -53,8 +53,9 @@ namespace Microsoft.AppCenter.Unity.Analytics
             return AppCenterTask<bool>.FromCompleted(false);
         }
 
-        public static RawType GetTransmissionTarget(RawType transmissionTargetParent, string transmissionTargetToken)
+        public static RawType GetTransmissionTarget(RawType transmissionTargetParent, string transmissionTargetToken, out bool success)
         {
+            success = false;
             return default(RawType);
         }
 

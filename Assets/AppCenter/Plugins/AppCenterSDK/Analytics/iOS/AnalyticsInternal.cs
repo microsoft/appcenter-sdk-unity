@@ -63,9 +63,11 @@ namespace Microsoft.AppCenter.Unity.Analytics.Internal
             return AppCenterTask<bool>.FromCompleted(isEnabled);
         }
 
-        public static IntPtr GetTransmissionTarget(string transmissionTargetToken)
+        public static IntPtr GetTransmissionTarget(string transmissionTargetToken, out bool success)
         {
-            return appcenter_unity_analytics_transmission_target_for_token(transmissionTargetToken);
+            var target = appcenter_unity_analytics_transmission_target_for_token(transmissionTargetToken);
+            success = target != IntPtr.Zero;
+            return target;
         }
 
         public static void Pause()
@@ -106,6 +108,7 @@ namespace Microsoft.AppCenter.Unity.Analytics.Internal
 
         [DllImport("__Internal")]
         private static extern void appcenter_unity_analytics_resume();
+
 #endregion
     }
 }

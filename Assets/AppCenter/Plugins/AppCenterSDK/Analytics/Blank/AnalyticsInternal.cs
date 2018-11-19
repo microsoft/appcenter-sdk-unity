@@ -66,8 +66,9 @@ namespace Microsoft.AppCenter.Unity.Analytics.Internal
             return AppCenterTask<bool>.FromCompleted(false);
         }
 
-        public static TransmissionTargetType GetTransmissionTarget(string transmissionTargetToken)
+        public static TransmissionTargetType GetTransmissionTarget(string transmissionTargetToken, out bool success)
         {
+            success = false;
             return default(TransmissionTargetType);
         }
 
