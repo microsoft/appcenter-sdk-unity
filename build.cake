@@ -219,18 +219,10 @@ Task("Externals-Ios")
 // Downloading UWP binaries.
 Task ("Externals-Uwp")
     .Does (() => {
-        var feedIdNugetEnv = EnvironmentVariable ("NUGET_FEED_ID");
-        var userNugetEnv = EnvironmentVariable ("NUGET_USER");
-        var passwordNugetEnv = EnvironmentVariable ("NUGET_PASSWORD");
-        if (string.IsNullOrEmpty(passwordNugetEnv))
-        {
-            passwordNugetEnv = Argument<string>("NuGetPassword");
-        }
+        var feedIdNugetEnv = Argument("NuGetFeedId", EnvironmentVariable("NUGET_FEED_ID"));
+        var userNugetEnv = EnvironmentVariable("NUGET_USER");
+        var passwordNugetEnv = Argument("NuGetPassword", EnvironmentVariable("NUGET_PASSWORD"));
         var usePublicFeed = (string.IsNullOrEmpty (feedIdNugetEnv) || string.IsNullOrEmpty (userNugetEnv) || string.IsNullOrEmpty (passwordNugetEnv));
-
-        if (string.IsNullOrEmpty(feedIdNugetEnv)) Information("[DEBUG] string.IsNullOrEmpty(feedIdNugetEnv)");
-        if (string.IsNullOrEmpty(userNugetEnv)) Information("[DEBUG] string.IsNullOrEmpty(userNugetEnv)");
-        if (string.IsNullOrEmpty(passwordNugetEnv)) Information("[DEBUG] string.IsNullOrEmpty(passwordNugetEnv)");
 
         CleanDirectory ("externals/uwp");
         EnsureDirectoryExists ("Assets/AppCenter/Plugins/WSA/");
@@ -460,10 +452,8 @@ Task("DownloadNdk")
 }).OnError(HandleError);
 
 void GetUwpPackage (AppCenterModule module, bool usePublicFeed) {
-    Information("[DEBUG] GetUwpPackage, usePublicFeed = " + usePublicFeed);
     // Prepare destination
     var destination = "Assets/AppCenter/Plugins/WSA/" + module.Moniker + "/";
-    Information("[DEBUG] destination = " + destination);
     EnsureDirectoryExists (destination);
     DeleteFiles (destination + "*.dll");
     DeleteFiles (destination + "*.winmd");
