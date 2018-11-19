@@ -222,6 +222,10 @@ Task ("Externals-Uwp")
         var feedIdNugetEnv = EnvironmentVariable ("NUGET_FEED_ID");
         var userNugetEnv = EnvironmentVariable ("NUGET_USER");
         var passwordNugetEnv = EnvironmentVariable ("NUGET_PASSWORD");
+        if (string.IsNullOrEmpty(passwordNugetEnv)))
+        {
+            passwordNugetEnv = Argument<string>("NuGetPassword");
+        }
         var usePublicFeed = (string.IsNullOrEmpty (feedIdNugetEnv) || string.IsNullOrEmpty (userNugetEnv) || string.IsNullOrEmpty (passwordNugetEnv));
 
         if (string.IsNullOrEmpty(feedIdNugetEnv)) Information("[DEBUG] string.IsNullOrEmpty(feedIdNugetEnv)");
