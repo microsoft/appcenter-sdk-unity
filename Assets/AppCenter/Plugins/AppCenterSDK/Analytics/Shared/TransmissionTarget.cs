@@ -104,12 +104,9 @@ namespace Microsoft.AppCenter.Unity.Analytics
             {
                 return null;
             }
-            var internalObject = TransmissionTargetInternal.GetTransmissionTarget(_rawObject, childTransmissionTargetToken);
-            if (internalObject == IntPtr.Zero)
-            {
-                return null;
-            }
-            return new TransmissionTarget(internalObject);
+            bool success;
+            var internalObject = TransmissionTargetInternal.GetTransmissionTarget(_rawObject, childTransmissionTargetToken, out success);
+            return success ? new TransmissionTarget(internalObject) : null;
         }
 
         public PropertyConfigurator GetPropertyConfigurator()

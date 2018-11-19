@@ -76,9 +76,11 @@ namespace Microsoft.AppCenter.Unity.Analytics.Internal
             return new AppCenterTask<bool>(future);
         }
 
-        public static AndroidJavaObject GetTransmissionTarget(string transmissionTargetToken)
+        public static AndroidJavaObject GetTransmissionTarget(string transmissionTargetToken, out bool success)
         {
-            return _analytics.CallStatic<AndroidJavaObject>("getTransmissionTarget", transmissionTargetToken);
+            var target = _analytics.CallStatic<AndroidJavaObject>("getTransmissionTarget", transmissionTargetToken);
+            success = target != null;
+            return target;
         }
 
         public static void Pause()
