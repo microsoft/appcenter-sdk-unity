@@ -226,7 +226,7 @@ Task ("Externals-Uwp")
 
         if (string.IsNullOrEmpty(feedIdNugetEnv)) Information("[DEBUG] string.IsNullOrEmpty(feedIdNugetEnv)");
         if (string.IsNullOrEmpty(userNugetEnv)) Information("[DEBUG] string.IsNullOrEmpty(userNugetEnv)");
-        if (string.IsNullOrEmpty(passwordNugetEnv))) Information("[DEBUG] string.IsNullOrEmpty(passwordNugetEnv))");
+        if (string.IsNullOrEmpty(passwordNugetEnv)) Information("[DEBUG] string.IsNullOrEmpty(passwordNugetEnv))");
 
         CleanDirectory ("externals/uwp");
         EnsureDirectoryExists ("Assets/AppCenter/Plugins/WSA/");
