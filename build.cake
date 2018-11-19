@@ -224,6 +224,10 @@ Task ("Externals-Uwp")
         var passwordNugetEnv = EnvironmentVariable ("NUGET_PASSWORD");
         var usePublicFeed = (string.IsNullOrEmpty (feedIdNugetEnv) || string.IsNullOrEmpty (userNugetEnv) || string.IsNullOrEmpty (passwordNugetEnv));
 
+        if (string.IsNullOrEmpty(feedIdNugetEnv)) Information("[DEBUG] string.IsNullOrEmpty(feedIdNugetEnv)");
+        if (string.IsNullOrEmpty(userNugetEnv)) Information("[DEBUG] string.IsNullOrEmpty(userNugetEnv)");
+        if (string.IsNullOrEmpty(passwordNugetEnv))) Information("[DEBUG] string.IsNullOrEmpty(passwordNugetEnv))");
+
         CleanDirectory ("externals/uwp");
         EnsureDirectoryExists ("Assets/AppCenter/Plugins/WSA/");
         foreach (var module in AppCenterModules) {
@@ -452,8 +456,10 @@ Task("DownloadNdk")
 }).OnError(HandleError);
 
 void GetUwpPackage (AppCenterModule module, bool usePublicFeed) {
+    Information("[DEBUG] GetUwpPackage, usePublicFeed = " + usePublicFeed);
     // Prepare destination
     var destination = "Assets/AppCenter/Plugins/WSA/" + module.Moniker + "/";
+    Information("[DEBUG] destination = " + destination);
     EnsureDirectoryExists (destination);
     DeleteFiles (destination + "*.dll");
     DeleteFiles (destination + "*.winmd");
