@@ -222,7 +222,7 @@ Task ("Externals-Uwp")
         var feedIdNugetEnv = EnvironmentVariable ("NUGET_FEED_ID");
         var userNugetEnv = EnvironmentVariable ("NUGET_USER");
         var passwordNugetEnv = EnvironmentVariable ("NUGET_PASSWORD");
-        if (string.IsNullOrEmpty(passwordNugetEnv)))
+        if (string.IsNullOrEmpty(passwordNugetEnv))
         {
             passwordNugetEnv = Argument<string>("NuGetPassword");
         }
@@ -230,7 +230,7 @@ Task ("Externals-Uwp")
 
         if (string.IsNullOrEmpty(feedIdNugetEnv)) Information("[DEBUG] string.IsNullOrEmpty(feedIdNugetEnv)");
         if (string.IsNullOrEmpty(userNugetEnv)) Information("[DEBUG] string.IsNullOrEmpty(userNugetEnv)");
-        if (string.IsNullOrEmpty(passwordNugetEnv)) Information("[DEBUG] string.IsNullOrEmpty(passwordNugetEnv))");
+        if (string.IsNullOrEmpty(passwordNugetEnv)) Information("[DEBUG] string.IsNullOrEmpty(passwordNugetEnv)");
 
         CleanDirectory ("externals/uwp");
         EnsureDirectoryExists ("Assets/AppCenter/Plugins/WSA/");
