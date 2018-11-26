@@ -279,9 +279,9 @@ Task("BuildAndroidContentProvider").Does(()=>
 
 // Install Unity Editor for Windows
 Task("Install-Unity-Windows").Does(() => {
-    const string unityDownloadUrl = @"https://netstorage.unity3d.com/unity/2207421190e9/Windows64EditorInstaller/UnitySetup64-2018.2.9f1.exe";
-    const string il2cppSupportDownloadUrl = @"https://netstorage.unity3d.com/unity/2207421190e9/TargetSupportInstaller/UnitySetup-UWP-IL2CPP-Support-for-Editor-2018.2.9f1.exe";
-    // const string dotNetSupportDownloadUrl = @"https://netstorage.unity3d.com/unity/2207421190e9/TargetSupportInstaller/UnitySetup-UWP-.NET-Support-for-Editor-2018.2.9f1.exe";
+    const string unityDownloadUrl = @"https://netstorage.unity3d.com/unity/88933597c842/Windows64EditorInstaller/UnitySetup64-2018.2.17f1.exe";
+    const string il2cppSupportDownloadUrl = @"https://netstorage.unity3d.com/unity/88933597c842/TargetSupportInstaller/UnitySetup-UWP-IL2CPP-Support-for-Editor-2018.2.17f1.exe";
+    // const string dotNetSupportDownloadUrl = @"https://netstorage.unity3d.com/unity/88933597c842/TargetSupportInstaller/UnitySetup-UWP-.NET-Support-for-Editor-2018.2.17f1.exe";
 
     Information("Downloading Unity Editor...");
     DownloadFile(unityDownloadUrl, "./UnitySetup64.exe");

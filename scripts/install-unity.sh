@@ -3,9 +3,9 @@
 # Note: Registering and unregistering is handled by build.cake.
 
 # Unity tool download URLs.
-EDITOR_URL="https://download.unity3d.com/download_unity/ae1180820377/MacEditorInstaller/Unity-2018.2.8f1.pkg"
-ANDROID_URL="https://download.unity3d.com/download_unity/ae1180820377/MacEditorTargetInstaller/UnitySetup-Android-Support-for-Editor-2018.2.8f1.pkg"
-IOS_URL="https://download.unity3d.com/download_unity/ae1180820377/MacEditorTargetInstaller/UnitySetup-iOS-Support-for-Editor-2018.2.8f1.pkg"
+EDITOR_URL="https://download.unity3d.com/download_unity/88933597c842/MacEditorInstaller/Unity-2018.2.17f1.pkg"
+ANDROID_URL="https://download.unity3d.com/download_unity/88933597c842/MacEditorTargetInstaller/UnitySetup-Android-Support-for-Editor-2018.2.17f1.pkg"
+IOS_URL="https://download.unity3d.com/download_unity/88933597c842/MacEditorTargetInstaller/UnitySetup-iOS-Support-for-Editor-2018.2.17f1.pkg"
 
 # Put downloads in a temporary folder
 TEMP_FOLDER="UnityTempDownloads"
