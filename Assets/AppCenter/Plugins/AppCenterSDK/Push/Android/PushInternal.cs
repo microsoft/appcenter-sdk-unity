@@ -25,6 +25,10 @@ namespace Microsoft.AppCenter.Unity.Push.Internal
             _unityListener.CallStatic("setListener", new PushDelegate());
         }
 
+        public static void StartPush()
+        {
+        }
+
         private static void PostInitialize()
         {
             var instance = _push.CallStatic<AndroidJavaObject>("getInstance");

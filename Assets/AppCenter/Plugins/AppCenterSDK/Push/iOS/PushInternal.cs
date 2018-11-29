@@ -59,6 +59,11 @@ namespace Microsoft.AppCenter.Unity.Push.Internal
         {
         }
 
+        public static void StartPush()
+        {
+            appcenter_unity_start_push();
+        }
+
         internal static void ReplayUnprocessedPushNotifications()
         {
             appcenter_unity_push_replay_unprocessed_notifications();
@@ -74,6 +79,9 @@ namespace Microsoft.AppCenter.Unity.Push.Internal
 
         [DllImport("__Internal")]
         private static extern bool appcenter_unity_push_is_enabled();
+
+        [DllImport("__Internal")]
+        private static extern void appcenter_unity_start_push();
 
         [DllImport("__Internal")]
         private static extern void appcenter_unity_push_set_received_push_impl(ReceivedPushNotificationDelegate functionPtr);

@@ -17,6 +17,11 @@ void appcenter_unity_push_replay_unprocessed_notifications()
   [[UnityPushDelegate sharedInstance] replayUnprocessedNotifications];
 }
 
+void appcenter_unity_start_push()
+{
+    [MSAppCenter startService:MSPush.class];
+}
+
 void* appcenter_unity_push_get_type()
 {
   return (void *)CFBridgingRetain([MSPush class]);
