@@ -21,6 +21,7 @@ void appcenter_unity_push_replay_unprocessed_notifications()
 void appcenter_unity_start_push()
 {
     [MSAppCenter startService:MSPush.class];
+    [MSPush setDelegate:[UnityPushDelegate sharedInstance]];
 }
 
 void* appcenter_unity_push_get_type()
