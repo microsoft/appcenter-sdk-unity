@@ -5,6 +5,7 @@
 #import "PushUnity.h"
 #import "PushDelegate.h"
 #import <AppCenterPush/AppCenterPush.h>
+#import <AppCenter/MSAppCenter.h>
 #import <Foundation/Foundation.h>
 
 void appcenter_unity_push_set_received_push_impl(ReceivedPushNotificationFunction functionPtr)
