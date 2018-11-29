@@ -71,6 +71,10 @@ static const int kMSStartupType = 0/*STARTUP_TYPE*/;
   [classes addObject:MSAnalytics.class];
 #endif
 
+#ifdef APPCENTER_UNITY_USE_PUSH
+    [MSPush setDelegate:[UnityPushDelegate sharedInstance]];
+#endif
+
 #ifdef APPCENTER_UNITY_USE_DISTRIBUTE
   
 #ifdef APPCENTER_UNITY_USE_CUSTOM_API_URL
