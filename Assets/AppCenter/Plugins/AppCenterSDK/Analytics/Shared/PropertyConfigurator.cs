@@ -75,7 +75,7 @@ namespace Microsoft.AppCenter.Unity.Analytics
             PropertyConfiguratorInternal.SetUserId(_rawObject, userId);
         }
 
-        public void RemoveEventProperty(String key)
+        public void RemoveEventProperty(string key)
         {
             PropertyConfiguratorInternal.RemoveEventProperty(_rawObject, key);
         }

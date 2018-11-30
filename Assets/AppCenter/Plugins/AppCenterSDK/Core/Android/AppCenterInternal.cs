@@ -36,6 +36,7 @@ namespace Microsoft.AppCenter.Unity.Internal
 
         public static void SetUserId(string userId)
         {
+            _appCenter.CallStatic("setUserId", userId);
         }
 
         public static string GetSdkVersion()

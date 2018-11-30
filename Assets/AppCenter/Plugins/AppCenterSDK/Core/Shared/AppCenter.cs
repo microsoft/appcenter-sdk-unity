@@ -68,7 +68,7 @@ namespace Microsoft.AppCenter.Unity
             return AppCenterInternal.GetSdkVersion();
         }
 
-        public static AppCenterTask<string> GetLogUrl() 
+        public static AppCenterTask<string> GetLogUrl()
         {
             if (_logUrlTask == null)
             {
