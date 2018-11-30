@@ -21,10 +21,12 @@ public class PuppetAppCenter : MonoBehaviour
     public Text LogUrlLabel;
     public Text DeviceIdLabel;
     public Text SdkVersionLabel;
+    public InputField UserId;
     public Dropdown LogLevel;
     public PuppetConfirmationDialog userConfirmationDialog;
     public const string TextAttachmentKey = "text_attachment";
     public const string BinaryAttachmentKey = "binary_attachment";
+    public const string UserIdKey = "user_id";
 
     static PuppetAppCenter instance;
 
@@ -32,6 +34,8 @@ public class PuppetAppCenter : MonoBehaviour
     public RectTransform PropertiesList;
     public Toggle DistributeEnabled;
     public Toggle PushEnabled;
+
+    private string _customUserId;
 
     public void SetPushEnabled(bool enabled)
     {
@@ -87,6 +91,12 @@ public class PuppetAppCenter : MonoBehaviour
 
     private void Awake()
     {
+        var customUserId = PlayerPrefs.GetString(UserIdKey);
+        if (customUserId != null && customUserId.Length > 0) 
+        {
+            _customUserId = customUserId;
+            AppCenter.SetUserId(customUserId);
+        }
         Crashes.ShouldProcessErrorReport = PuppetCrashes.ShouldProcessErrorReportHandler;
         Crashes.ShouldAwaitUserConfirmation = UserConfirmationHandler;
         Crashes.GetErrorAttachments = PuppetCrashes.GetErrorAttachmentstHandler;
@@ -141,6 +151,7 @@ public class PuppetAppCenter : MonoBehaviour
         });
 
         Distribute.ReleaseAvailable = (releaseDetails) => true;
+        UserId.text = _customUserId;
     }
 
     public void SetEnabled(bool enabled)
@@ -159,5 +170,18 @@ public class PuppetAppCenter : MonoBehaviour
     public void SetLogLevel(int logLevel)
     {
         AppCenter.LogLevel = Microsoft.AppCenter.Unity.LogLevel.Verbose + logLevel;
+    }
+
+    public void OnUserIdChanged(string newUserId)
+    {
+        PlayerPrefs.SetString(UserIdKey, newUserId);
+        AppCenter.SetUserId(newUserId);
+    }
+
+    public void ClearUserId()
+    {
+        PlayerPrefs.DeleteKey(UserIdKey);
+        UserId.text = "";
+        AppCenter.SetUserId(null);
     }
 }
