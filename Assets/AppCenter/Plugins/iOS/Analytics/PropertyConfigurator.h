@@ -5,6 +5,7 @@
 @class MSPropertyConfigurator;
 
 extern "C" void appcenter_unity_property_configurator_set_app_name(MSPropertyConfigurator *configurator, char* appName);
+extern "C" void appcenter_unity_property_configurator_set_user_id(MSPropertyConfigurator *configurator, char* userId);
 extern "C" void appcenter_unity_property_configurator_set_app_version(MSPropertyConfigurator *configurator, char* appVersion);
 extern "C" void appcenter_unity_property_configurator_set_app_locale(MSPropertyConfigurator *configurator, char* appLocale);
 extern "C" void appcenter_unity_property_configurator_clear_app_name(MSPropertyConfigurator *configurator);

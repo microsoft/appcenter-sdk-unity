@@ -54,6 +54,10 @@ namespace Microsoft.AppCenter.Unity.Internal
         {
         }
 
+        public static void SetUserId(string userId)
+        {
+        }
+
         public static int GetLogLevel()
         {
             return 0;

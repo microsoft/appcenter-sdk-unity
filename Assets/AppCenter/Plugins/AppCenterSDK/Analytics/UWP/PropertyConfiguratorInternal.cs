@@ -15,6 +15,10 @@ namespace Microsoft.AppCenter.Unity.Analytics
         {
         }
 
+        public static void SetUserId(object propertyConfigurator, string userId)
+        {
+        }
+
         public static void SetAppVersion(object propertyConfigurator, string appVersion)
         {
         }
