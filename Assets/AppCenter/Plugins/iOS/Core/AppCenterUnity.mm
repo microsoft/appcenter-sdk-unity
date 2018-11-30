@@ -42,7 +42,7 @@ void appcenter_unity_set_user_id(char* userId)
 
 void appcenter_unity_clear_user_id()
 {
-  [MSAppCenter setUserId:nil];
+  //[MSAppCenter setUserId:nil];
 }
 
 void appcenter_unity_set_enabled(bool isEnabled)
