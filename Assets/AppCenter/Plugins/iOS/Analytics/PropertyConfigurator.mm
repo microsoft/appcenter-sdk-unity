@@ -11,7 +11,7 @@ void appcenter_unity_property_configurator_set_app_name(MSPropertyConfigurator *
 }
 
 void appcenter_unity_property_configurator_set_user_id(MSPropertyConfigurator *configurator, char* userId) {
-  [configurator setUserId: [NSString stringWithUTF8String:userId]];
+  //[configurator setUserId: [NSString stringWithUTF8String:userId]];
 }
 
 void appcenter_unity_property_configurator_set_app_version(MSPropertyConfigurator *configurator, char* appVersion) {
