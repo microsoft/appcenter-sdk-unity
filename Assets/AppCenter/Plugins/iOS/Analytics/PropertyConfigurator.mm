@@ -34,6 +34,10 @@ void appcenter_unity_property_configurator_clear_app_locale(MSPropertyConfigurat
   [configurator setAppLocale: nil];
 }
 
+void appcenter_unity_property_configurator_clear_user_id(MSPropertyConfigurator *configurator) {
+  [configurator setUserId: nil];
+}
+
 void appcenter_unity_property_configurator_collect_device_id(MSPropertyConfigurator *configurator) {
   [configurator collectDeviceId];
 }

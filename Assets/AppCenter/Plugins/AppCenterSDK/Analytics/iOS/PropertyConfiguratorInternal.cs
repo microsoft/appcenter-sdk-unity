@@ -28,7 +28,14 @@ namespace Microsoft.AppCenter.Unity.Analytics.Internal
 
         public static void SetUserId(IntPtr propertyConfigurator, string userId)
         {
-            appcenter_unity_property_configurator_set_user_id(propertyConfigurator, userId);
+            if (userId == null)
+            {
+                appcenter_unity_property_configurator_clear_user_id(propertyConfigurator);
+            }
+            else 
+            {
+                appcenter_unity_property_configurator_set_user_id(propertyConfigurator, userId);
+            }
         }
 
         public static void SetAppVersion(IntPtr propertyConfigurator, string appVersion)
@@ -112,6 +119,9 @@ namespace Microsoft.AppCenter.Unity.Analytics.Internal
 
         [DllImport("__Internal")]
         private static extern void appcenter_unity_property_configurator_clear_app_locale(IntPtr propertyConfigurator);
+
+        [DllImport("__Internal")]
+        private static extern void appcenter_unity_property_configurator_clear_user_id(IntPtr propertyConfigurator);
 
         [DllImport("__Internal")]
         private static extern void appcenter_unity_property_configurator_set_event_property(IntPtr propertyConfigurator, string key, string value);

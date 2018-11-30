@@ -40,6 +40,11 @@ void appcenter_unity_set_user_id(char* userId)
   [MSAppCenter setUserId:[NSString stringWithUTF8String:userId]];
 }
 
+void appcenter_unity_clear_user_id()
+{
+  [MSAppCenter setUserId:nil];
+}
+
 void appcenter_unity_set_enabled(bool isEnabled)
 {
   [MSAppCenter setEnabled:isEnabled];
