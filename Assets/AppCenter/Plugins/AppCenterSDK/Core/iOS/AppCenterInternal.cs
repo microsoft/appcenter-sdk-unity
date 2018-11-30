@@ -19,6 +19,11 @@ namespace Microsoft.AppCenter.Unity.Internal
             appcenter_unity_set_log_level(logLevel);
         }
 
+        public static void SetUserId(string userId)
+        {
+            appcenter_unity_set_user_id(userId);
+        }
+
         public static int GetLogLevel()
         {
             return appcenter_unity_get_log_level();
@@ -122,6 +127,9 @@ namespace Microsoft.AppCenter.Unity.Internal
 
         [DllImport("__Internal")]
         private static extern void appcenter_unity_set_log_level(int logLevel);
+
+        [DllImport("__Internal")]
+        private static extern void appcenter_unity_set_user_id(string userId);
 
         [DllImport("__Internal")]
         private static extern int appcenter_unity_get_log_level();

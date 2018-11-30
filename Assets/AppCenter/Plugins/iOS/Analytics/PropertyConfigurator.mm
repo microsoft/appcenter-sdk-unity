@@ -10,6 +10,10 @@ void appcenter_unity_property_configurator_set_app_name(MSPropertyConfigurator *
   [configurator setAppName: [NSString stringWithUTF8String:appName]];
 }
 
+void appcenter_unity_property_configurator_set_user_id(MSPropertyConfigurator *configurator, char* userId) {
+  [configurator setUserId: [NSString stringWithUTF8String:userId]];
+}
+
 void appcenter_unity_property_configurator_set_app_version(MSPropertyConfigurator *configurator, char* appVersion) {
   [configurator setAppVersion: [NSString stringWithUTF8String:appVersion]];
 }

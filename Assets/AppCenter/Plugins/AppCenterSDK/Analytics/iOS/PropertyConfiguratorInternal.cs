@@ -26,6 +26,11 @@ namespace Microsoft.AppCenter.Unity.Analytics.Internal
             }
         }
 
+        public static void SetUserId(IntPtr propertyConfigurator, string userId)
+        {
+            appcenter_unity_property_configurator_set_user_id(propertyConfigurator, userId);
+        }
+
         public static void SetAppVersion(IntPtr propertyConfigurator, string appVersion)
         {
             if (appVersion == null)
@@ -89,6 +94,9 @@ namespace Microsoft.AppCenter.Unity.Analytics.Internal
 
         [DllImport("__Internal")]
         private static extern void appcenter_unity_property_configurator_set_app_name(IntPtr propertyConfigurator, string appName);
+
+        [DllImport("__Internal")]
+        private static extern void appcenter_unity_property_configurator_set_user_id(IntPtr propertyConfigurator, string userId);
 
         [DllImport("__Internal")]
         private static extern void appcenter_unity_property_configurator_set_app_version(IntPtr propertyConfigurator, string appVersion);
