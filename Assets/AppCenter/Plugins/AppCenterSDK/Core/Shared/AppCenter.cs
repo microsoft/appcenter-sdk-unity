@@ -68,7 +68,7 @@ namespace Microsoft.AppCenter.Unity
             return AppCenterInternal.GetSdkVersion();
         }
 
-        public static AppCenterTask<string> GetLogUrl() 
+        public static AppCenterTask<string> GetLogUrl()
         {
             if (_logUrlTask == null)
             {
@@ -195,6 +195,11 @@ namespace Microsoft.AppCenter.Unity
                 _secretTask.SetResult(platformSecret);
             }
             return platformSecret;
+        }
+
+        public static void SetUserId(string userId)
+        {
+            AppCenterInternal.SetUserId(userId);
         }
 
 #if ENABLE_IL2CPP
