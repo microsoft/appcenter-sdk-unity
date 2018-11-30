@@ -10,6 +10,10 @@ void appcenter_unity_property_configurator_set_app_name(MSPropertyConfigurator *
   [configurator setAppName: [NSString stringWithUTF8String:appName]];
 }
 
+void appcenter_unity_property_configurator_set_user_id(MSPropertyConfigurator *configurator, char* userId) {
+  //[configurator setUserId: [NSString stringWithUTF8String:userId]];
+}
+
 void appcenter_unity_property_configurator_set_app_version(MSPropertyConfigurator *configurator, char* appVersion) {
   [configurator setAppVersion: [NSString stringWithUTF8String:appVersion]];
 }
@@ -28,6 +32,10 @@ void appcenter_unity_property_configurator_clear_app_version(MSPropertyConfigura
 
 void appcenter_unity_property_configurator_clear_app_locale(MSPropertyConfigurator *configurator) {
   [configurator setAppLocale: nil];
+}
+
+void appcenter_unity_property_configurator_clear_user_id(MSPropertyConfigurator *configurator) {
+  //[configurator setUserId: nil];
 }
 
 void appcenter_unity_property_configurator_collect_device_id(MSPropertyConfigurator *configurator) {

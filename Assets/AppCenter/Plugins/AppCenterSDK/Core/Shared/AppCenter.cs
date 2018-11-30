@@ -197,6 +197,11 @@ namespace Microsoft.AppCenter.Unity
             return platformSecret;
         }
 
+        public static void SetUserId(string userId)
+        {
+            AppCenterInternal.SetUserId(userId);
+        }
+
 #if ENABLE_IL2CPP
         [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
 #endif

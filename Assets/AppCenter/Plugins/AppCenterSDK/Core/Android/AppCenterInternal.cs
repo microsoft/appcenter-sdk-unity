@@ -34,6 +34,10 @@ namespace Microsoft.AppCenter.Unity.Internal
             _appCenter.CallStatic("setLogUrl", logUrl);
         }
 
+        public static void SetUserId(string userId)
+        {
+        }
+
         public static string GetSdkVersion()
         {
             return _appCenter.CallStatic<string>("getSdkVersion");
