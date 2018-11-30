@@ -18,6 +18,7 @@ namespace Microsoft.AppCenter.Unity.Analytics
 
         public static void SetUserId(AndroidJavaObject propertyConfigurator, string userId)
         {
+            propertyConfigurator.Call("setUserId", userId);
         }
 
         public static void SetAppVersion(AndroidJavaObject propertyConfigurator, string appVersion)
