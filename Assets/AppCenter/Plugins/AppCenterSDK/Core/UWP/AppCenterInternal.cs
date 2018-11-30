@@ -56,6 +56,10 @@ namespace Microsoft.AppCenter.Unity.Internal
             UWPAppCenter.LogLevel = (Microsoft.AppCenter.LogLevel)LogLevelFromUnity(logLevel);
         }
 
+        public static void SetUserId(string userId)
+        {
+        }
+
         public static int GetLogLevel()
         {
             Prepare();
