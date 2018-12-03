@@ -21,14 +21,7 @@ namespace Microsoft.AppCenter.Unity.Internal
 
         public static void SetUserId(string userId)
         {
-            if (userId == null)
-            {
-                appcenter_unity_clear_user_id();
-            }
-            else
-            {
-                appcenter_unity_set_user_id(userId);
-            }
+            appcenter_unity_set_user_id(userId);
         }
 
         public static int GetLogLevel()
@@ -137,9 +130,6 @@ namespace Microsoft.AppCenter.Unity.Internal
 
         [DllImport("__Internal")]
         private static extern void appcenter_unity_set_user_id(string userId);
-
-        [DllImport("__Internal")]
-        private static extern void appcenter_unity_clear_user_id();
 
         [DllImport("__Internal")]
         private static extern int appcenter_unity_get_log_level();
