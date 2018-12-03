@@ -9,6 +9,7 @@ using System;
 using System.Collections.Generic;
 using UnityEngine;
 using Microsoft.AppCenter.Unity.Crashes;
+using Microsoft.AppCenter.Unity.Internal;
 
 namespace Microsoft.AppCenter.Unity.Crashes.Internal
 {
@@ -75,6 +76,7 @@ namespace Microsoft.AppCenter.Unity.Crashes.Internal
 
         public static void StartCrashes()
         {
+            AppCenterInternal.Start(AppCenter.Crashes);
         }
     }
 }
