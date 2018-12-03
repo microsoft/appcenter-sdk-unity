@@ -8,10 +8,6 @@ extern "C" void appcenter_unity_property_configurator_set_app_name(MSPropertyCon
 extern "C" void appcenter_unity_property_configurator_set_user_id(MSPropertyConfigurator *configurator, char* userId);
 extern "C" void appcenter_unity_property_configurator_set_app_version(MSPropertyConfigurator *configurator, char* appVersion);
 extern "C" void appcenter_unity_property_configurator_set_app_locale(MSPropertyConfigurator *configurator, char* appLocale);
-extern "C" void appcenter_unity_property_configurator_clear_app_name(MSPropertyConfigurator *configurator);
-extern "C" void appcenter_unity_property_configurator_clear_app_version(MSPropertyConfigurator *configurator);
-extern "C" void appcenter_unity_property_configurator_clear_app_locale(MSPropertyConfigurator *configurator);
-extern "C" void appcenter_unity_property_configurator_clear_user_id(MSPropertyConfigurator *configurator);
 extern "C" void appcenter_unity_property_configurator_collect_device_id(MSPropertyConfigurator *configurator);
 extern "C" void appcenter_unity_property_configurator_set_event_property(MSPropertyConfigurator *configurator, char* key, char* value);
 extern "C" void appcenter_unity_property_configurator_set_event_datetime_property(MSPropertyConfigurator *configurator, char* key, NSDate* value);
