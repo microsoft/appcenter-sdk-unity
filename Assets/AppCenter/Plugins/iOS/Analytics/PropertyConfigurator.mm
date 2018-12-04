@@ -4,38 +4,23 @@
 
 #import "PropertyConfigurator.h"
 #import "AppCenterAnalytics/MSPropertyConfigurator.h"
+#import "../Core/Utility/NSStringHelper.h"
 #import "../Core/Utility/NSStringDictionaryHelper.h"
 
 void appcenter_unity_property_configurator_set_app_name(MSPropertyConfigurator *configurator, char* appName) {
-  [configurator setAppName: [NSString stringWithUTF8String:appName]];
+  [configurator setAppName: appcenter_unity_cstr_to_ns_string(appName)];
 }
 
 void appcenter_unity_property_configurator_set_user_id(MSPropertyConfigurator *configurator, char* userId) {
-  //[configurator setUserId: [NSString stringWithUTF8String:userId]];
+  //[configurator setUserId: appcenter_unity_cstr_to_ns_string(userId)];
 }
 
 void appcenter_unity_property_configurator_set_app_version(MSPropertyConfigurator *configurator, char* appVersion) {
-  [configurator setAppVersion: [NSString stringWithUTF8String:appVersion]];
+  [configurator setAppVersion: appcenter_unity_cstr_to_ns_string(appVersion)];
 }
 
 void appcenter_unity_property_configurator_set_app_locale(MSPropertyConfigurator *configurator, char* appLocale) {
-  [configurator setAppLocale: [NSString stringWithUTF8String:appLocale]];
-}
-
-void appcenter_unity_property_configurator_clear_app_name(MSPropertyConfigurator *configurator) {
-  [configurator setAppName: nil];
-}
-
-void appcenter_unity_property_configurator_clear_app_version(MSPropertyConfigurator *configurator) {
-  [configurator setAppVersion: nil];
-}
-
-void appcenter_unity_property_configurator_clear_app_locale(MSPropertyConfigurator *configurator) {
-  [configurator setAppLocale: nil];
-}
-
-void appcenter_unity_property_configurator_clear_user_id(MSPropertyConfigurator *configurator) {
-  //[configurator setUserId: nil];
+  [configurator setAppLocale: appcenter_unity_cstr_to_ns_string(appLocale)];
 }
 
 void appcenter_unity_property_configurator_collect_device_id(MSPropertyConfigurator *configurator) {
