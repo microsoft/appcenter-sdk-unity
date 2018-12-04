@@ -26,8 +26,12 @@ public class AppCenterBehaviorEditorAdvanced : Editor
         settingsEditorAdvanced.OnInspectorGUI();
     }
 
-    public void OnDisable()
+    public void OnDestroy()
     {
-        AppCenterSettingsContext.DeleteSettingsInstanceAdvanced();
+        // If the component is removed from GO then remove the related asset.
+        if (!this.target)
+        {
+            AppCenterSettingsContext.DeleteSettingsInstanceAdvanced();
+        }
     }
 }
