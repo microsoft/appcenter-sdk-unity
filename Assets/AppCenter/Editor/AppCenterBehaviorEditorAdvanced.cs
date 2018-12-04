@@ -25,4 +25,9 @@ public class AppCenterBehaviorEditorAdvanced : Editor
         }
         settingsEditorAdvanced.OnInspectorGUI();
     }
+
+    public void OnDisable()
+    {
+        AppCenterSettingsContext.DeleteSettingsInstanceAdvanced();
+    }
 }
