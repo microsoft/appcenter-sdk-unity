@@ -2,7 +2,6 @@
 //
 // Licensed under the MIT license.
 
-using System.Linq;
 using UnityEngine;
 
 [HelpURL("https://docs.microsoft.com/en-us/appcenter/sdk/crashes/unity")]
@@ -19,20 +18,14 @@ public class AppCenterBehaviorAdvanced : MonoBehaviour
         }
     }
 
+#if UNITY_EDITOR
     public void Reset()
     {
-        if (GetComponentInstances().Length > 1)
+        if (FindObjectsOfType<AppCenterBehaviorAdvanced>().Length > 1)
         {
             Debug.LogError("Only one game object with App Center Behaviour Advanced should exist.");
             DestroyImmediate(this);
         }
     }
-
-    public static AppCenterBehaviorAdvanced[] GetComponentInstances()
-    {
-        var rootObjects = UnityEngine.SceneManagement.SceneManager.GetActiveScene().GetRootGameObjects();
-
-        return rootObjects.Select(obj => obj.GetComponentsInChildren<AppCenterBehaviorAdvanced>())
-            .Aggregate((first, next) => first.Concat(next).ToArray());
-    }
+#endif
 }

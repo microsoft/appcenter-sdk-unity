@@ -29,7 +29,7 @@ public class AppCenterBehaviorEditorAdvanced : Editor
     public void OnDestroy()
     {
         // If the component is removed from GameObject then remove the related asset.
-        if (!target && AppCenterBehaviorAdvanced.GetComponentInstances().Length == 0)
+        if (!target && FindObjectsOfType<AppCenterBehaviorAdvanced>().Length == 0)
         {
             AppCenterSettingsContext.DeleteSettingsInstanceAdvanced();
         }

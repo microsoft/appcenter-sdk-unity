@@ -43,22 +43,16 @@ public class AppCenterBehavior : MonoBehaviour
 #endif
     }
 
+#if UNITY_EDITOR
     public void Reset()
     {
-        if (GetComponentInstances().Length > 1)
+        if (FindObjectsOfType<AppCenterBehavior>().Length > 1)
         {
             Debug.LogError("Only one game object with App Center Behaviour should exist.");
             DestroyImmediate(this);
         }
     }
-
-    public static AppCenterBehavior[] GetComponentInstances()
-    {
-        var rootObjects = UnityEngine.SceneManagement.SceneManager.GetActiveScene().GetRootGameObjects();
-
-        return rootObjects.Select(obj => obj.GetComponentsInChildren<AppCenterBehavior>())
-            .Aggregate((first, next) => first.Concat(next).ToArray());
-    }
+#endif
 
     private void StartAppCenter()
     {
