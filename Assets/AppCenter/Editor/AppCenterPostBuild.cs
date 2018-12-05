@@ -86,6 +86,110 @@ public class AppCenterPostBuild : IPostprocessBuild
                 capabilityManager.WriteToFile();
             }
         }
+        if (target == BuildTarget.Android)
+        {
+            var dir = new DirectoryInfo(pathToBuiltProject);
+            DirectoryInfo[] dirs = dir.GetDirectories();
+            if (dirs.Length > 0)
+            {
+                MoveGoogleJsonFile(dirs[0].FullName);
+                InjectFirebaseDependencies(dirs[0].FullName);
+            }
+            else
+            {
+                Debug.LogWarning("Pay attention that if you want Pushes to work, choose to Export the project.");
+            }
+        }
+    }
+
+    public static void MoveGoogleJsonFile(string pathToBuiltProject)
+    {
+        var sourcePath = "Assets\\google-services.json";
+        if (!File.Exists(sourcePath))
+        {
+            Debug.LogError("Please add google-services.json file to Assets folder in order for Push service to work!");
+        }
+        else
+        {
+            var destPath = Path.Combine(pathToBuiltProject,
+                "google-services.json");
+            File.Copy(sourcePath, destPath, true);
+        }
+    }
+    public static void InjectFirebaseDependencies(string pathToBuiltProject)
+    {
+        var regexPattern = "com.android.tools.build:gradle:[0-9.]*'";
+        var regexPattern2 = "flatDir";
+        var regexPattern3 = "unity-android-resources'\\)";
+        var regexPattern4 = "com.android.application'";
+
+        var codeToInsert = "\nclasspath 'com.google.gms:google-services:4.0.1'\n";
+        var codeToInsert2 = "\ngoogle()\njcenter()\n";
+        var codeToInsert3 = "\napi 'com.google.firebase:firebase-core:16.0.1'\napi 'com.google.firebase:firebase-messaging:17.0.0'\n";
+        var codeToInsert4 = "\napply plugin: 'com.google.gms.google-services'";
+        var appFilePath = Path.Combine(pathToBuiltProject, "build.gradle");
+        var fileText = File.ReadAllText(appFilePath);
+        var regex = new Regex(regexPattern);
+        var matches = regex.Match(fileText);
+        if (matches.Success)
+        {
+            var codeToReplace = matches.ToString();
+            codeToInsert = codeToReplace + codeToInsert;
+            fileText = fileText.Replace(codeToReplace, codeToInsert);
+        }
+        else
+        {
+            // TODO Update documentation link
+            Debug.LogError("Unable to automatically modify file '" + appFilePath + "'. For App Center Push to work properly, " +
+                           "please follow troubleshooting instructions at https://docs.microsoft.com/en-us/mobile-center/sdk/troubleshooting/unity");
+            return;
+        }
+        regex = new Regex(regexPattern2);
+        matches = regex.Match(fileText);
+        if (matches.Success)
+        {
+            var codeToReplace = matches.ToString();
+            codeToInsert2 = codeToInsert2 + codeToReplace;
+            fileText = fileText.Replace(codeToReplace, codeToInsert2);
+        }
+        else
+        {
+            // TODO Update documentation link
+            Debug.LogError("Unable to automatically modify file '" + appFilePath + "'. For App Center Push to work properly, " +
+                           "please follow troubleshooting instructions at https://docs.microsoft.com/en-us/mobile-center/sdk/troubleshooting/unity");
+            return;
+        }
+        regex = new Regex(regexPattern3);
+        matches = regex.Match(fileText);
+        if (matches.Success)
+        {
+            var codeToReplace = matches.ToString();
+            codeToInsert3 = codeToReplace + codeToInsert3;
+            fileText = fileText.Replace(codeToReplace, codeToInsert3);
+        }
+        else
+        {
+            // TODO Update documentation link
+            Debug.LogError("Unable to automatically modify file '" + appFilePath + "'. For App Center Push to work properly, " +
+                           "please follow troubleshooting instructions at https://docs.microsoft.com/en-us/mobile-center/sdk/troubleshooting/unity");
+            return;
+        }
+        regex = new Regex(regexPattern4);
+        matches = regex.Match(fileText);
+        if (matches.Success)
+        {
+            var codeToReplace = matches.ToString();
+            codeToInsert4 = codeToReplace + codeToInsert4;
+            fileText = fileText.Replace(codeToReplace, codeToInsert4);
+        }
+        else
+        {
+            // TODO Update documentation link
+            Debug.LogError("Unable to automatically modify file '" + appFilePath + "'. For App Center Push to work properly, " +
+                           "please follow troubleshooting instructions at https://docs.microsoft.com/en-us/mobile-center/sdk/troubleshooting/unity");
+            return;
+        }
+        File.WriteAllText(appFilePath, fileText);
     }
 
     #region UWP Methods
