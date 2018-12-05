@@ -21,14 +21,14 @@ public class AppCenterBehaviorAdvanced : MonoBehaviour
 
     public void Reset()
     {
-        if (GetAllInstances().Length > 1)
+        if (GetComponentInstances().Length > 1)
         {
             Debug.LogError("Only one game object with App Center Behaviour Advanced should exist.");
             DestroyImmediate(this);
         }
     }
 
-    public static AppCenterBehaviorAdvanced[] GetAllInstances()
+    public static AppCenterBehaviorAdvanced[] GetComponentInstances()
     {
         var rootObjects = UnityEngine.SceneManagement.SceneManager.GetActiveScene().GetRootGameObjects();
 
