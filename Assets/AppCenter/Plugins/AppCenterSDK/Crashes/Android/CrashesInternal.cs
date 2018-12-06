@@ -9,6 +9,7 @@ using System;
 using System.Collections.Generic;
 using UnityEngine;
 using Microsoft.AppCenter.Unity.Crashes;
+using System.Threading;
 
 namespace Microsoft.AppCenter.Unity.Crashes.Internal
 {
@@ -47,7 +48,10 @@ namespace Microsoft.AppCenter.Unity.Crashes.Internal
 
         public static void GenerateTestCrash()
         {
-            _crashes.CallStatic("generateTestCrash");
+            new Thread(() =>
+            {
+                AndroidJNI.FindClass("non/existent/class/name");
+            }).Start();
         }
 
         public static AppCenterTask<bool> HasCrashedInLastSession()
