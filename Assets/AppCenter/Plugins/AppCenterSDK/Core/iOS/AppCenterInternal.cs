@@ -94,6 +94,10 @@ namespace Microsoft.AppCenter.Unity.Internal
             appcenter_unity_start_no_secret(nativeServiceTypes, nativeServiceTypes.Length);
         }
 
+        public static void Start(Type service)
+        {
+        }
+
         public static void StartFromLibrary(IntPtr[] services)
         {
             appcenter_unity_start_from_library(services, services.Length);

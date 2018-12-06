@@ -46,6 +46,10 @@ namespace Microsoft.AppCenter.Unity.Internal
         {
         }
 
+        public static void Start(ServiceType service)
+        {
+        }
+
         public static void StartFromLibrary(ServiceType[] services)
         {
         }

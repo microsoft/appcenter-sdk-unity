@@ -39,6 +39,10 @@ namespace Microsoft.AppCenter.Unity.Internal
             UWPAppCenter.Start(nativeServiceTypes);
         }
 
+        public static void Start(Type service)
+        {
+        }
+
         public static string GetSdkVersion()
         {
             return "";
