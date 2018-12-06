@@ -65,15 +65,14 @@ static const int kMSStartupType = 0/*STARTUP_TYPE*/;
     if (!result)
       MSLogWarning(@"MSAppCenter", @"setMaxStorageSize failed");
   }];
-#endif 
-
-#ifdef APPCENTER_UNITY_USE_PUSH
-  [MSPush setDelegate:[UnityPushDelegate sharedInstance]];
-  [classes addObject:MSPush.class];
 #endif
 
 #ifdef APPCENTER_UNITY_USE_ANALYTICS
   [classes addObject:MSAnalytics.class];
+#endif
+
+#ifdef APPCENTER_UNITY_USE_PUSH
+    [MSPush setDelegate:[UnityPushDelegate sharedInstance]];
 #endif
 
 #ifdef APPCENTER_UNITY_USE_DISTRIBUTE

@@ -55,6 +55,11 @@ namespace Microsoft.AppCenter.Unity.Push
             }
         }
 
+        public static void StartPush()
+        {
+            PushInternal.StartPush();
+        }
+
         public static void PrepareEventHandlers()
         {
             PushInternal.PrepareEventHandlers();
