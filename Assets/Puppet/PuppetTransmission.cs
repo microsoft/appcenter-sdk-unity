@@ -24,6 +24,8 @@ public class PuppetTransmission : MonoBehaviour
     public InputField AppLocale;
     public InputField TransmissionTarget;
     public InputField ChildTransmissionTarget;
+    public InputField ParentUserId;
+    public InputField ChildUserId;
     public GameObject EventProperty;
     public RectTransform EventPropertiesList;
     public Text TransmissionStatus;
@@ -398,6 +400,26 @@ public class PuppetTransmission : MonoBehaviour
         }
     }
 
+    public void OnParentUserIdChanged(string newUserId)
+    {
+        var transmissionTarget = GetTransmissionTarget();
+        if (transmissionTarget != null)
+        {
+            var propertyConfigurator = transmissionTarget.GetPropertyConfigurator();
+            propertyConfigurator.SetUserId(newUserId);
+        }
+    }
+
+    public void OnChildUserIdChanged(string newUserId)
+    {
+        var transmissionTarget = GetChildTransmissionTarget();
+        if (transmissionTarget != null)
+        {
+            var propertyConfigurator = transmissionTarget.GetPropertyConfigurator();
+            propertyConfigurator.SetUserId(newUserId);
+        }
+    }
+
     public void PauseParentTransmission()
     {
         var transmissionTarget = GetTransmissionTarget();
@@ -467,5 +489,17 @@ public class PuppetTransmission : MonoBehaviour
             Debug.Log("Child transmission target is null.");
         }
         return null;
+    }
+
+    public void ClearParentUserId()
+    {
+        ParentUserId.text = "";
+        OnParentUserIdChanged(null);
+    }
+
+    public void ClearChildUserId()
+    {
+        ChildUserId.text = "";
+        OnChildUserIdChanged(null);
     }
 }

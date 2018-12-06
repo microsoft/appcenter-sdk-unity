@@ -39,6 +39,10 @@ namespace Microsoft.AppCenter.Unity.Internal
             UWPAppCenter.Start(nativeServiceTypes);
         }
 
+        public static void Start(Type service)
+        {
+        }
+
         public static string GetSdkVersion()
         {
             return "";
@@ -54,6 +58,10 @@ namespace Microsoft.AppCenter.Unity.Internal
         {
             Prepare();
             UWPAppCenter.LogLevel = (Microsoft.AppCenter.LogLevel)LogLevelFromUnity(logLevel);
+        }
+
+        public static void SetUserId(string userId)
+        {
         }
 
         public static int GetLogLevel()

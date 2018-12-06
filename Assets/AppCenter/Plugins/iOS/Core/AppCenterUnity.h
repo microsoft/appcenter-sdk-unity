@@ -8,6 +8,7 @@ extern "C" void appcenter_unity_set_log_level(int logLevel);
 extern "C" int appcenter_unity_get_log_level();
 extern "C" bool appcenter_unity_is_configured();
 extern "C" void appcenter_unity_set_log_url(const char* logUrl);
+extern "C" void appcenter_unity_set_user_id(char* userId);
 extern "C" void appcenter_unity_set_enabled(bool isEnabled);
 extern "C" bool appcenter_unity_is_enabled();
 extern "C" const char* appcenter_unity_get_sdk_version();

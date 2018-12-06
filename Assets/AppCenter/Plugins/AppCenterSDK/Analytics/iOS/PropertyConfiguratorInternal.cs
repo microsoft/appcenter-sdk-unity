@@ -16,38 +16,22 @@ namespace Microsoft.AppCenter.Unity.Analytics.Internal
     {
         public static void SetAppName(IntPtr propertyConfigurator, string appName)
         {
-            if (appName == null)
-            {
-                appcenter_unity_property_configurator_clear_app_name(propertyConfigurator);
-            }
-            else
-            {
-                appcenter_unity_property_configurator_set_app_name(propertyConfigurator, appName);
-            }
+            appcenter_unity_property_configurator_set_app_name(propertyConfigurator, appName);
+        }
+
+        public static void SetUserId(IntPtr propertyConfigurator, string userId)
+        {
+            appcenter_unity_property_configurator_set_user_id(propertyConfigurator, userId);
         }
 
         public static void SetAppVersion(IntPtr propertyConfigurator, string appVersion)
         {
-            if (appVersion == null)
-            {
-                appcenter_unity_property_configurator_clear_app_version(propertyConfigurator);
-            }
-            else
-            {
-                appcenter_unity_property_configurator_set_app_version(propertyConfigurator, appVersion);
-            }
+            appcenter_unity_property_configurator_set_app_version(propertyConfigurator, appVersion);
         }
 
         public static void SetAppLocale(IntPtr propertyConfigurator, string appLocale)
         {
-            if (appLocale == null)
-            {
-                appcenter_unity_property_configurator_clear_app_locale(propertyConfigurator);
-            }
-            else
-            {
-                appcenter_unity_property_configurator_set_app_locale(propertyConfigurator, appLocale);
-            }
+            appcenter_unity_property_configurator_set_app_locale(propertyConfigurator, appLocale);
         }
 
         public static void SetEventProperty(IntPtr propertyConfigurator, string key, string value)
@@ -91,19 +75,13 @@ namespace Microsoft.AppCenter.Unity.Analytics.Internal
         private static extern void appcenter_unity_property_configurator_set_app_name(IntPtr propertyConfigurator, string appName);
 
         [DllImport("__Internal")]
+        private static extern void appcenter_unity_property_configurator_set_user_id(IntPtr propertyConfigurator, string userId);
+
+        [DllImport("__Internal")]
         private static extern void appcenter_unity_property_configurator_set_app_version(IntPtr propertyConfigurator, string appVersion);
 
         [DllImport("__Internal")]
         private static extern void appcenter_unity_property_configurator_set_app_locale(IntPtr propertyConfigurator, string appLocale);
-
-        [DllImport("__Internal")]
-        private static extern void appcenter_unity_property_configurator_clear_app_name(IntPtr propertyConfigurator);
-
-        [DllImport("__Internal")]
-        private static extern void appcenter_unity_property_configurator_clear_app_version(IntPtr propertyConfigurator);
-
-        [DllImport("__Internal")]
-        private static extern void appcenter_unity_property_configurator_clear_app_locale(IntPtr propertyConfigurator);
 
         [DllImport("__Internal")]
         private static extern void appcenter_unity_property_configurator_set_event_property(IntPtr propertyConfigurator, string key, string value);
