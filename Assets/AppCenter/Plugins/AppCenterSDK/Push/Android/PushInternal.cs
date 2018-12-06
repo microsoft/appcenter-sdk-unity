@@ -25,6 +25,10 @@ namespace Microsoft.AppCenter.Unity.Push.Internal
             _unityListener.CallStatic("setListener", new PushDelegate());
         }
 
+        public static void StartPush()
+        {
+        }
+
         private static void PostInitialize()
         {
             var instance = _push.CallStatic<AndroidJavaObject>("getInstance");
@@ -47,7 +51,7 @@ namespace Microsoft.AppCenter.Unity.Push.Internal
 
         public static void AddNativeType(List<IntPtr> nativeTypes)
         {
-            nativeTypes.Add(AndroidJNI.FindClass("com/microsoftappcenter/push/Push"));
+            nativeTypes.Add(AndroidJNI.FindClass("com/microsoft/appcenter/push/Push"));
         }
 
         public static void EnableFirebaseAnalytics()

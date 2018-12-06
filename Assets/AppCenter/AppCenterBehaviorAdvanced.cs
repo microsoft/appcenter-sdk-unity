@@ -17,4 +17,15 @@ public class AppCenterBehaviorAdvanced : MonoBehaviour
             Debug.LogError("App Center Behavior Advanced should have the App Center Behavior instance attached to the same game object.");
         }
     }
+
+#if UNITY_EDITOR
+    public void Reset()
+    {
+        if (FindObjectsOfType<AppCenterBehaviorAdvanced>().Length > 1)
+        {
+            Debug.LogError("Only one game object with App Center Behaviour Advanced should exist.");
+            DestroyImmediate(this);
+        }
+    }
+#endif
 }

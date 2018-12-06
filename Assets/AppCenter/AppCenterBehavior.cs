@@ -43,6 +43,17 @@ public class AppCenterBehavior : MonoBehaviour
 #endif
     }
 
+#if UNITY_EDITOR
+    public void Reset()
+    {
+        if (FindObjectsOfType<AppCenterBehavior>().Length > 1)
+        {
+            Debug.LogError("Only one game object with App Center Behaviour should exist.");
+            DestroyImmediate(this);
+        }
+    }
+#endif
+
     private void StartAppCenter()
     {
         if (Settings == null)
@@ -94,8 +105,12 @@ public class AppCenterBehavior : MonoBehaviour
             foreach (var service in services)
             {
                 var startCrashes = service.GetMethod("StartCrashes");
+                var startPush = service.GetMethod("StartPush");
                 if (startCrashes != null)
                     startCrashes.Invoke(null, null);
+
+                if (startPush != null)
+                    startPush.Invoke(null, null);
             }
         }
 #endif

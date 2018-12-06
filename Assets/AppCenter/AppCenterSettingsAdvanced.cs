@@ -10,7 +10,7 @@ using UnityEngine;
 [Serializable]
 public class AppCenterSettingsAdvanced : ScriptableObject
 {
-    [AppSecret("Transmission target token")]
+    [AppSecret("Transmission Target Token")]
     public string TransmissionTargetToken = "";
 
     [Tooltip("Configure the way App Center is started. For more info on startup types refer to the documentation.")]

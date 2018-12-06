@@ -24,6 +24,10 @@ namespace Microsoft.AppCenter.Unity.Push.Internal
             AppCenterBehavior.InitializingServices += Initialize;
         }
 
+        public static void StartPush()
+        {
+        }
+
         private static void Initialize()
         {
             Microsoft.AppCenter.Utils.ApplicationLifecycleHelper.Instance.ApplicationResuming += (s, e) =>

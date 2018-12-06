@@ -19,6 +19,10 @@ namespace Microsoft.AppCenter.Unity.Push.Internal
         {
         }
 
+        public static void StartPush()
+        {
+        }
+
         public static void AddNativeType(List<RawType> nativeTypes)
         {
         }
