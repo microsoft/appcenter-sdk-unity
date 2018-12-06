@@ -4,12 +4,13 @@
 
 #if UNITY_ANDROID && !UNITY_EDITOR
 using Microsoft.AppCenter.Unity.Crashes.Models;
-using Microsoft.AppCenter.Unity.Internal.Utility;
-using System;
-using System.Collections.Generic;
-using UnityEngine;
 using Microsoft.AppCenter.Unity.Crashes;
+using Microsoft.AppCenter.Unity.Internal.Utility;
+using Microsoft.AppCenter.Unity.Internal;
+using System.Collections.Generic;
 using System.Threading;
+using System;
+using UnityEngine;
 
 namespace Microsoft.AppCenter.Unity.Crashes.Internal
 {
@@ -79,6 +80,7 @@ namespace Microsoft.AppCenter.Unity.Crashes.Internal
 
         public static void StartCrashes()
         {
+            AppCenterInternal.Start(AppCenter.Crashes);
         }
     }
 }
