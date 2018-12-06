@@ -43,4 +43,9 @@ public class AppCenterSettingsContext : ScriptableObject
         }
         return instance;
     }
+
+    public static void DeleteSettingsInstanceAdvanced()
+    {
+        AssetDatabase.DeleteAsset(AdvancedSettingsPath);
+    }
 }

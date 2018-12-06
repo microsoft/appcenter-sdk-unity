@@ -51,7 +51,7 @@ namespace Microsoft.AppCenter.Unity.Push.Internal
 
         public static void AddNativeType(List<IntPtr> nativeTypes)
         {
-            nativeTypes.Add(AndroidJNI.FindClass("com/microsoftappcenter/push/Push"));
+            nativeTypes.Add(AndroidJNI.FindClass("com/microsoft/appcenter/push/Push"));
         }
 
         public static void EnableFirebaseAnalytics()

@@ -34,6 +34,11 @@ namespace Microsoft.AppCenter.Unity.Internal
             _appCenter.CallStatic("setLogUrl", logUrl);
         }
 
+        public static void SetUserId(string userId)
+        {
+            _appCenter.CallStatic("setUserId", userId);
+        }
+
         public static string GetSdkVersion()
         {
             return _appCenter.CallStatic<string>("getSdkVersion");
@@ -113,6 +118,16 @@ namespace Microsoft.AppCenter.Unity.Internal
             AndroidJNI.CallStaticVoidMethod(_appCenter.GetRawClass(), startMethod, new jvalue[]
             {
                 new jvalue { l = GetAndroidApplication().GetRawObject() },
+                new jvalue { l = nativeServiceTypes }
+            });
+        }
+
+        public static void Start(Type service)
+        {
+            var nativeServiceTypes = ServicesToNativeTypes(new[] { service });
+            var startMethod = AndroidJNI.GetStaticMethodID(_appCenter.GetRawClass(), "start", "([Ljava/lang/Class;)V");
+            AndroidJNI.CallStaticVoidMethod(_appCenter.GetRawClass(), startMethod, new jvalue[]
+            {
                 new jvalue { l = nativeServiceTypes }
             });
         }

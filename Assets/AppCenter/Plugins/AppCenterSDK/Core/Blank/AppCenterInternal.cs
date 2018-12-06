@@ -46,11 +46,19 @@ namespace Microsoft.AppCenter.Unity.Internal
         {
         }
 
+        public static void Start(ServiceType service)
+        {
+        }
+
         public static void StartFromLibrary(ServiceType[] services)
         {
         }
 
         public static void SetLogLevel(int logLevel)
+        {
+        }
+
+        public static void SetUserId(string userId)
         {
         }
 
