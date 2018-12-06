@@ -12,7 +12,6 @@ namespace Assets.AppCenter.Editor
 
         public void OnPostGenerateGradleAndroidProject(string path)
         {
-            Debug.Log("fdsfs");
             MoveGoogleJsonFile(path);
             SwapGoogleAndJcenter(path);
             InjectFirebaseDependencies(path);
