@@ -8,6 +8,10 @@ namespace Assets.AppCenter.Editor
 {
     class AndroidPostBuild : IPostGenerateGradleAndroidProject
     {
+        private const string GOOGLE_SERVICES_VERSION = "4.0.1";
+        private const string FIREBASE_CORE_VERSION = "16.0.1";
+        private const string FIREBASE_MESSAGING_VERSION = "17.0.0";
+
         public int callbackOrder { get { return 0; } }
 
         public void OnPostGenerateGradleAndroidProject(string path)
@@ -47,9 +51,13 @@ namespace Assets.AppCenter.Editor
                 {
                 "",
                 "\njcenter()",
-                "\nclasspath 'com.google.gms:google-services:4.0.1'\n",
+                string.Format("\nclasspath 'com.google.gms:google-services:{0}'\n", GOOGLE_SERVICES_VERSION),
                 "\ngoogle()\njcenter()\n",
-                "\napi 'com.google.firebase:firebase-core:16.0.1'\napi 'com.google.firebase:firebase-messaging:17.0.0'\n",
+                string.Format(
+                    "\napi 'com.google.firebase:firebase-core:{0}'\napi 'com.google.firebase:firebase-messaging:{1}'\n", 
+                    FIREBASE_CORE_VERSION, 
+                    FIREBASE_MESSAGING_VERSION
+                ),
                 "\napply plugin: 'com.google.gms.google-services'"
             };
 
