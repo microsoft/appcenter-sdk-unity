@@ -43,6 +43,17 @@ public class AppCenterBehavior : MonoBehaviour
 #endif
     }
 
+#if UNITY_EDITOR
+    public void Reset()
+    {
+        if (FindObjectsOfType<AppCenterBehavior>().Length > 1)
+        {
+            Debug.LogError("Only one game object with App Center Behaviour should exist.");
+            DestroyImmediate(this);
+        }
+    }
+#endif
+
     private void StartAppCenter()
     {
         if (Settings == null)
