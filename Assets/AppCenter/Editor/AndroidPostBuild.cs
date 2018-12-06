@@ -16,9 +16,13 @@ namespace Assets.AppCenter.Editor
 
         public void OnPostGenerateGradleAndroidProject(string path)
         {
-            MoveGoogleJsonFile(path);
-            SwapGoogleAndJcenter(path);
-            InjectFirebaseDependencies(path);
+            var settings = AppCenterSettingsContext.SettingsInstance;
+            if (settings.UsePush)
+            {
+                MoveGoogleJsonFile(path);
+                SwapGoogleAndJcenter(path);
+                InjectFirebaseDependencies(path);
+            }
         }        
 
         public static void MoveGoogleJsonFile(string pathToBuiltProject)
