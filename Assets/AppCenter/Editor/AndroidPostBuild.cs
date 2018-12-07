@@ -1,5 +1,4 @@
 ﻿using System.IO;
-using System.Linq;
 using System.Text.RegularExpressions;
 using UnityEditor.Android;
 using UnityEngine;
@@ -19,9 +18,15 @@ namespace Assets.AppCenter.Editor
             var settings = AppCenterSettingsContext.SettingsInstance;
             if (settings.UsePush)
             {
-                MoveGoogleJsonFile(path);
+                if (!MoveGoogleJsonFile(path))
+                {
+                    return;
+                }
                 MoveCustomGradleScript(path);
-                InjectFirebaseDependencies(path);
+                if (!InjectFirebaseDependencies(path))
+                {
+                    return;
+                }
                 var appFilePath = Path.Combine(path, "unity-android-resources/build.gradle");
                 SwapGoogleAndJcenter(appFilePath);
                 appFilePath = Path.Combine(path, "build.gradle");
@@ -37,21 +42,23 @@ namespace Assets.AppCenter.Editor
             File.Copy(sourcePath, destPath, true);
         }
 
-        public static void MoveGoogleJsonFile(string pathToBuiltProject)
+        public static bool MoveGoogleJsonFile(string pathToBuiltProject)
         {
             var sourcePath = "Assets\\google-services.json";
             if (!File.Exists(sourcePath))
             {
                 Debug.LogError("Please add google-services.json file to Assets folder in order for Push service to work!");
+                return false;
             }
             else
             {
                 var destPath = Path.Combine(pathToBuiltProject, "google-services.json");
                 File.Copy(sourcePath, destPath, true);
             }
+            return true;
         }
 
-        public static void InjectFirebaseDependencies(string pathToBuiltProject)
+        public static bool InjectFirebaseDependencies(string pathToBuiltProject)
         {
             string[] regexPatterns = new string[] 
             {
@@ -66,7 +73,7 @@ namespace Assets.AppCenter.Editor
             };
 
             var appFilePath = Path.Combine(pathToBuiltProject, "build.gradle");
-            ReplaceCodeParts(
+            return ReplaceCodeParts(
                 appFilePath,
                 regexPatterns,
                 codePartsToInsert,
@@ -85,7 +92,7 @@ namespace Assets.AppCenter.Editor
             string[] codePartsToInsert = new string[]
             {
                 "",
-                "\njcenter()"
+                "google()\njcenter()"
             };
 
             ReplaceCodeParts(
@@ -96,7 +103,7 @@ namespace Assets.AppCenter.Editor
             );
         }
 
-        private static void ReplaceCodeParts(string appFilePath, string[] regexPatterns, string[] codePartsToInsert, bool replaceFully)
+        private static bool ReplaceCodeParts(string appFilePath, string[] regexPatterns, string[] codePartsToInsert, bool replaceFully)
         {
             var fileText = File.ReadAllText(appFilePath);
             for (var i = 0; i < regexPatterns.Length; i++)
@@ -114,10 +121,11 @@ namespace Assets.AppCenter.Editor
                     // TODO Update documentation link
                     Debug.LogError("Unable to automatically modify file '" + appFilePath + "'. For App Center Push to work properly, " +
                         "please follow troubleshooting instructions at https://docs.microsoft.com/en-us/mobile-center/sdk/troubleshooting/unity");
-                    return;
+                    return false;
                 }
             }
             File.WriteAllText(appFilePath, fileText);
+            return true;
         }
     }
 }
