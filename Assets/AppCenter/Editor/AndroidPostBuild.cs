@@ -1,6 +1,7 @@
 ﻿using System.IO;
 using System.Text.RegularExpressions;
 using UnityEditor.Android;
+using UnityEditor;
 using UnityEngine;
 
 namespace Assets.AppCenter.Editor
@@ -15,6 +16,16 @@ namespace Assets.AppCenter.Editor
 
         public void OnPostGenerateGradleAndroidProject(string path)
         {
+            if (EditorUserBuildSettings.exportAsGoogleAndroidProject)
+            {
+                // Fix for exported projects where path to project is determined wrong.
+                var dirInfo = new DirectoryInfo(path);
+                var dirs = dirInfo.GetDirectories();
+                if (dirs.Length > 0)
+                {
+                    path = dirs[0].FullName;
+                }
+            }
             var settings = AppCenterSettingsContext.SettingsInstance;
             if (settings.UsePush)
             {
