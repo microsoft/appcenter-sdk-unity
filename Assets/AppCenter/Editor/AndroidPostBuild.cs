@@ -88,15 +88,15 @@ public class AndroidPostBuild
     {
         string[] regexPatterns = new string[]
         {
-                "com.android.tools.build:gradle:[0-9.]*'",
-                "com.android.application'"
+            "com.android.tools.build:gradle:[0-9.]*'",
+            "com.android.application'"
         };
 
         string[] codePartsToInsert =
         {
-                string.Format("\nclasspath 'com.google.gms:google-services:{0}'\n", GOOGLE_SERVICES_VERSION),
-                "\napply from: 'appcenterpush.gradle'"
-            };
+            string.Format("\nclasspath 'com.google.gms:google-services:{0}'\n", GOOGLE_SERVICES_VERSION),
+            "\napply from: 'appcenterpush.gradle'"
+        };
 
         var appFilePath = Path.Combine(pathToBuiltProject, "build.gradle");
         return ReplaceCodeParts(
