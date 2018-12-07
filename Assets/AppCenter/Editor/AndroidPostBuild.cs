@@ -13,8 +13,6 @@ public class AndroidPostBuild
 #endif
 {
     private const string GOOGLE_SERVICES_VERSION = "4.0.1";
-    private const string FIREBASE_CORE_VERSION = "16.0.1";
-    private const string FIREBASE_MESSAGING_VERSION = "17.0.0";
 
     public int callbackOrder { get { return 0; } }
 
