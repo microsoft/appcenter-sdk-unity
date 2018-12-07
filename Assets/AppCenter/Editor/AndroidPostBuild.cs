@@ -1,20 +1,33 @@
 ﻿using System.IO;
 using System.Text.RegularExpressions;
+#if UNITY_2018_1_OR_NEWER
 using UnityEditor.Android;
+#endif
 using UnityEditor;
 using UnityEngine;
 
-namespace Assets.AppCenter.Editor
+#if UNITY_2018_1_OR_NEWER
+public class AndroidPostBuild : IPostGenerateGradleAndroidProject
+#else
+public class AndroidPostBuild
+#endif
 {
-    class AndroidPostBuild : IPostGenerateGradleAndroidProject
-    {
-        private const string GOOGLE_SERVICES_VERSION = "4.0.1";
-        private const string FIREBASE_CORE_VERSION = "16.0.1";
-        private const string FIREBASE_MESSAGING_VERSION = "17.0.0";
+    private const string GOOGLE_SERVICES_VERSION = "4.0.1";
+    private const string FIREBASE_CORE_VERSION = "16.0.1";
+    private const string FIREBASE_MESSAGING_VERSION = "17.0.0";
 
         public int callbackOrder { get { return 0; } }
 
         public void OnPostGenerateGradleAndroidProject(string path)
+        {
+            var settings = AppCenterSettingsContext.SettingsInstance;
+            if (settings.UsePush)
+            {
+                OnAndroidPostBuild(path);
+            }
+        }
+
+        public static void OnAndroidPostBuild(string path)
         {
             if (EditorUserBuildSettings.exportAsGoogleAndroidProject)
             {
@@ -26,23 +39,20 @@ namespace Assets.AppCenter.Editor
                     path = dirs[0].FullName;
                 }
             }
-            var settings = AppCenterSettingsContext.SettingsInstance;
-            if (settings.UsePush)
+
+            if (!MoveGoogleJsonFile(path))
             {
-                if (!MoveGoogleJsonFile(path))
-                {
-                    return;
-                }
-                MoveCustomGradleScript(path);
-                if (!InjectFirebaseDependencies(path))
-                {
-                    return;
-                }
-                var appFilePath = Path.Combine(path, "unity-android-resources/build.gradle");
-                SwapGoogleAndJcenter(appFilePath);
-                appFilePath = Path.Combine(path, "build.gradle");
-                SwapGoogleAndJcenter(appFilePath);
+                return;
             }
+            MoveCustomGradleScript(path);
+            if (!InjectFirebaseDependencies(path))
+            {
+                return;
+            }
+            var appFilePath = Path.Combine(path, "unity-android-resources/build.gradle");
+            SwapGoogleAndJcenter(appFilePath);
+            appFilePath = Path.Combine(path, "build.gradle");
+            SwapGoogleAndJcenter(appFilePath);
         }
 
         public static void MoveCustomGradleScript(string pathToBuiltProject)
@@ -137,4 +147,4 @@ namespace Assets.AppCenter.Editor
             return true;
         }
     }
-}
+
