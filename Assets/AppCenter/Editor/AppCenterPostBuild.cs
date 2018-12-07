@@ -87,7 +87,7 @@ public class AppCenterPostBuild : IPostprocessBuild
             }
         }
 
-#if UNITY_2018_2_OR_NEWER        
+#if !UNITY_2018_2_OR_NEWER        
         if (target == BuildTarget.Android)
         {
             var settings = AppCenterSettingsContext.SettingsInstance;
