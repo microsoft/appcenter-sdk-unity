@@ -58,12 +58,18 @@ public class AndroidPostBuild
         SwapGoogleAndJcenter(appFilePath);
     }
 
-    public static void MoveCustomGradleScript(string pathToBuiltProject)
+    public static bool MoveCustomGradleScript(string pathToBuiltProject)
     {
         var appAdditionsFolder = AppCenterSettingsContext.AppCenterPath + "/AppCenter/Plugins/Android/Push/AppAdditions";
         var sourcePath = Path.Combine(appAdditionsFolder, "appcenterpush.gradle");
+        if (!File.Exists(sourcePath))
+        {
+            Debug.LogError(sourcePath + " could not be found. It needs to exist in order for Push Push service to work!");
+            return false;
+        }
         var destPath = Path.Combine(pathToBuiltProject, "appcenterpush.gradle");
         File.Copy(sourcePath, destPath, true);
+        return true;
     }
 
     public static bool MoveGoogleJsonFile(string pathToBuiltProject)
