@@ -29,7 +29,8 @@ public class AndroidPostBuild
 
         public static void OnAndroidPostBuild(string path)
         {
-            if (EditorUserBuildSettings.exportAsGoogleAndroidProject)
+#if !UNITY_2018_3_OR_NEWER
+        if (EditorUserBuildSettings.exportAsGoogleAndroidProject)
             {
                 // Fix for exported projects where path to project is determined wrong.
                 var dirInfo = new DirectoryInfo(path);
@@ -39,6 +40,7 @@ public class AndroidPostBuild
                     path = dirs[0].FullName;
                 }
             }
+#endif
 
             if (!MoveGoogleJsonFile(path))
             {
