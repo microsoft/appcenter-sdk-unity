@@ -20,10 +20,22 @@ namespace Assets.AppCenter.Editor
             if (settings.UsePush)
             {
                 MoveGoogleJsonFile(path);
-                SwapGoogleAndJcenter(path);
+                MoveCustomGradleScript(path);
                 InjectFirebaseDependencies(path);
+                var appFilePath = Path.Combine(path, "unity-android-resources/build.gradle");
+                SwapGoogleAndJcenter(appFilePath);
+                appFilePath = Path.Combine(path, "build.gradle");
+                SwapGoogleAndJcenter(appFilePath);
             }
-        }        
+        }
+
+        public static void MoveCustomGradleScript(string pathToBuiltProject)
+        {
+            var appAdditionsFolder = AppCenterSettingsContext.AppCenterPath + "/AppCenter/Plugins/Android/Push/AppAdditions";
+            var sourcePath = Path.Combine(appAdditionsFolder, "appcenterpush.gradle");
+            var destPath = Path.Combine(pathToBuiltProject, "appcenterpush.gradle");
+            File.Copy(sourcePath, destPath, true);
+        }
 
         public static void MoveGoogleJsonFile(string pathToBuiltProject)
         {
@@ -43,77 +55,28 @@ namespace Assets.AppCenter.Editor
         {
             string[] regexPatterns = new string[] 
             {
-                "jcenter\\(\\)",
-                "google\\(\\)",
                 "com.android.tools.build:gradle:[0-9.]*'",
-                "flatDir",
-                "unity-android-resources'\\)",
                 "com.android.application'"
             };
 
             string[] codePartsToInsert = 
-                {
-                "",
-                "\njcenter()",
-                string.Format("\nclasspath 'com.google.gms:google-services:{0}'\n", GOOGLE_SERVICES_VERSION),
-                "\ngoogle()\njcenter()\n",
-                string.Format(
-                    "\napi 'com.google.firebase:firebase-core:{0}'\napi 'com.google.firebase:firebase-messaging:{1}'\n", 
-                    FIREBASE_CORE_VERSION, 
-                    FIREBASE_MESSAGING_VERSION
-                ),
-                "\napply plugin: 'com.google.gms.google-services'"
+            {
+                string.Format("\nclasspath 'com.google.gms:google-services:{0}'\n", GOOGLE_SERVICES_VERSION),                
+                "\napply from: 'appcenterpush.gradle'"
             };
-
-            int[] indexesOfItemsToBeInsertedAtStart = { 3 };
-            int[] indexesOfItemsToBeReplacedFully = { 0 };
 
             var appFilePath = Path.Combine(pathToBuiltProject, "build.gradle");
             ReplaceCodeParts(
                 appFilePath,
                 regexPatterns,
                 codePartsToInsert,
-                indexesOfItemsToBeReplacedFully,
-                indexesOfItemsToBeInsertedAtStart
+                false
             );
         }
 
-        private static void ReplaceCodeParts(string appFilePath, string[] regexPatterns, string[] codePartsToInsert,
-        int[] indexesOfItemsToBeReplacedFully, int[] indexesOfItemsToBeInsertedAtStart)
+        public static void SwapGoogleAndJcenter(string appFilePath)
         {
-            var fileText = File.ReadAllText(appFilePath);
-            for (var i = 0; i < regexPatterns.Length; i++)
-            {
-                var regex = new Regex(regexPatterns[i]);
-                var matches = regex.Match(fileText);
-                if (matches.Success)
-                {
-                    var codeToReplace = matches.ToString();
-                    var codeToInsert = "";
-                    if (indexesOfItemsToBeReplacedFully.Contains(i))
-                    {
-                        codeToInsert = codePartsToInsert[i];
-                    }
-                    else
-                    {
-                        codeToInsert = indexesOfItemsToBeInsertedAtStart.Contains(i) ? (codePartsToInsert[i] + codeToReplace) : (codeToReplace + codePartsToInsert[i]);
-                    }
-                    fileText = fileText.Replace(codeToReplace, codeToInsert);
-                }
-                else
-                {
-                    // TODO Update documentation link
-                    Debug.LogError("Unable to automatically modify file '" + appFilePath + "'. For App Center Push to work properly, " +
-                        "please follow troubleshooting instructions at https://docs.microsoft.com/en-us/mobile-center/sdk/troubleshooting/unity");
-                    return;
-                }
-            }
-            File.WriteAllText(appFilePath, fileText);
-        }
-
-        public static void SwapGoogleAndJcenter(string pathToBuiltProject)
-        {
-            string[] regexPatterns = new string[] 
+            string[] regexPatterns = new string[]
             {
                 "jcenter\\(\\)",
                 "google\\(\\)"
@@ -125,17 +88,36 @@ namespace Assets.AppCenter.Editor
                 "\njcenter()"
             };
 
-            int[] indexesOfItemsToBeInsertedAtStart = { };
-            int[] indexesOfItemsToBeReplacedFully = { 0 };
-
-            var appFilePath = Path.Combine(pathToBuiltProject, "unity-android-resources/build.gradle");
             ReplaceCodeParts(
-                appFilePath, 
-                regexPatterns, 
-                codePartsToInsert, 
-                indexesOfItemsToBeReplacedFully, 
-                indexesOfItemsToBeInsertedAtStart
+                appFilePath,
+                regexPatterns,
+                codePartsToInsert,
+                true
             );
+        }
+
+        private static void ReplaceCodeParts(string appFilePath, string[] regexPatterns, string[] codePartsToInsert, bool replaceFully)
+        {
+            var fileText = File.ReadAllText(appFilePath);
+            for (var i = 0; i < regexPatterns.Length; i++)
+            {
+                var regex = new Regex(regexPatterns[i]);
+                var matches = regex.Match(fileText);
+                if (matches.Success)
+                {
+                    var codeToReplace = matches.ToString();
+                    var codeToInsert = replaceFully ? codePartsToInsert[i] : (codeToReplace + codePartsToInsert[i]);                    
+                    fileText = fileText.Replace(codeToReplace, codeToInsert);
+                }
+                else
+                {
+                    // TODO Update documentation link
+                    Debug.LogError("Unable to automatically modify file '" + appFilePath + "'. For App Center Push to work properly, " +
+                        "please follow troubleshooting instructions at https://docs.microsoft.com/en-us/mobile-center/sdk/troubleshooting/unity");
+                    return;
+                }
+            }
+            File.WriteAllText(appFilePath, fileText);
         }
     }
 }
