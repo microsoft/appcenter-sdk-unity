@@ -154,8 +154,8 @@ public class AndroidPostBuild
                 {
                     // TODO Update documentation link
                     Debug.LogError(errorString);
+                    return false;
                 }
-                return false;
             }
         }
         File.WriteAllText(appFilePath, fileText);
