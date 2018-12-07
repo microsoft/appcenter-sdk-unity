@@ -1,4 +1,5 @@
-﻿using System.IO;
+﻿using Microsoft.AppCenter.Unity;
+using System.IO;
 using System.Text.RegularExpressions;
 #if UNITY_2018_2_OR_NEWER
 using UnityEditor.Android;
@@ -19,7 +20,7 @@ public class AndroidPostBuild
     public void OnPostGenerateGradleAndroidProject(string path)
     {
         var settings = AppCenterSettingsContext.SettingsInstance;
-        if (settings.UsePush)
+        if (settings.UsePush && AppCenter.Push != null)
         {
             OnAndroidPostBuild(path);
         }

@@ -90,8 +90,7 @@ public class AppCenterPostBuild : IPostprocessBuild
 #if !UNITY_2018_2_OR_NEWER        
         if (target == BuildTarget.Android)
         {
-            var settings = AppCenterSettingsContext.SettingsInstance;
-            if (settings.UsePush)
+            if (settings.UsePush && AppCenter.Push != null)
             {
                 if (!EditorUserBuildSettings.exportAsGoogleAndroidProject)
                 {
