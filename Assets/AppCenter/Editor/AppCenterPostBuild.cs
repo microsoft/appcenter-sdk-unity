@@ -95,7 +95,7 @@ public class AppCenterPostBuild : IPostprocessBuild
             {
                 if (!EditorUserBuildSettings.exportAsGoogleAndroidProject)
                 {
-                     Debug.LogWarning("On Unity versions lower than 2018.1, you need to export the project in order for Push to work.");
+                    Debug.LogWarning("On Unity versions lower than 2018.1, you need to export the project in order for Push to work.");
                     return;
                 }
                 AndroidPostBuild.OnAndroidPostBuild(pathToBuiltProject);
@@ -323,9 +323,9 @@ public class AppCenterPostBuild : IPostprocessBuild
         var attribute = element.Attribute(attributeName);
         return attribute == null ? null : attribute.Value;
     }
-#endregion
+    #endregion
 
-#region iOS Methods
+    #region iOS Methods
 
     private static void OnPostprocessProject(PBXProjectWrapper project)
     {
@@ -359,5 +359,5 @@ public class AppCenterPostBuild : IPostprocessBuild
             capabilityManager.AddRemoteNotificationsToBackgroundModes();
         }
     }
-#endregion
+    #endregion
 }
