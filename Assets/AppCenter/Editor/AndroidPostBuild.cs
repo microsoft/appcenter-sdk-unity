@@ -1,4 +1,4 @@
-using System.IO;
+﻿using System.IO;
 using System.Text.RegularExpressions;
 #if UNITY_2018_2_OR_NEWER
 using UnityEditor.Android;
@@ -54,7 +54,7 @@ public class AndroidPostBuild
         {
             return;
         }
-        var appFilePath = Path.Combine(path, "unity-android-resources/build.gradle");
+        var appFilePath = Path.Combine(path, "unity-android-resources\\build.gradle");
         SwapGoogleAndJcenter(appFilePath);
         appFilePath = Path.Combine(path, "build.gradle");
         SwapGoogleAndJcenter(appFilePath);
@@ -103,7 +103,8 @@ public class AndroidPostBuild
             appFilePath,
             regexPatterns,
             codePartsToInsert,
-            false
+            false,
+            true
         );
     }
 
@@ -111,8 +112,8 @@ public class AndroidPostBuild
     {
         string[] regexPatterns = new string[]
         {
-            "jcenter\\(\\)",
-            "google\\(\\)"
+            "google\\(\\)",
+            "jcenter\\(\\)"
         };
 
         string[] codePartsToInsert = new string[]
@@ -121,15 +122,18 @@ public class AndroidPostBuild
             "google()\njcenter()"
         };
 
+        // On lower Unity versions, generated gradle doesn't contain google() repository.
+        // That's why we do the replace in a silent way.
         ReplaceCodeParts(
             appFilePath,
             regexPatterns,
             codePartsToInsert,
-            true
+            true,
+            false
         );
     }
 
-    private static bool ReplaceCodeParts(string appFilePath, string[] regexPatterns, string[] codePartsToInsert, bool replaceFully)
+    private static bool ReplaceCodeParts(string appFilePath, string[] regexPatterns, string[] codePartsToInsert, bool replaceFully, bool forceCrash)
     {
         var fileText = File.ReadAllText(appFilePath);
         for (var i = 0; i < regexPatterns.Length; i++)
@@ -144,9 +148,13 @@ public class AndroidPostBuild
             }
             else
             {
-                // TODO Update documentation link
-                Debug.LogError("Unable to automatically modify file '" + appFilePath + "'. For App Center Push to work properly, " +
-                    "please follow troubleshooting instructions at https://docs.microsoft.com/en-us/mobile-center/sdk/troubleshooting/unity");
+                var errorString = "Unable to automatically modify file '" + appFilePath + "'. For App Center Push to work properly, " +
+                        "please follow troubleshooting instructions at https://docs.microsoft.com/en-us/mobile-center/sdk/troubleshooting/unity";
+                if (forceCrash)
+                {
+                    // TODO Update documentation link
+                    Debug.LogError(errorString);
+                }
                 return false;
             }
         }
