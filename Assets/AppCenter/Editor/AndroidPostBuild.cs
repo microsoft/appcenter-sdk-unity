@@ -85,13 +85,11 @@ namespace Assets.AppCenter.Editor
         {
             string[] regexPatterns = new string[]
             {
-                "jcenter\\(\\)",
-                "google\\(\\)"
+                "jcenter\\(\\)[\\r\\n][\\s]*google\\(\\)"
             };
 
             string[] codePartsToInsert = new string[]
             {
-                "",
                 "google()\njcenter()"
             };
 
