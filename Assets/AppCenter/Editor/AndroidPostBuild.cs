@@ -1,4 +1,4 @@
-﻿using System.IO;
+using System.IO;
 using System.Text.RegularExpressions;
 #if UNITY_2018_2_OR_NEWER
 using UnityEditor.Android;
@@ -29,18 +29,21 @@ public class AndroidPostBuild
 
     public static void OnAndroidPostBuild(string path)
     {
-#if !UNITY_2018_3_OR_NEWER
         if (EditorUserBuildSettings.exportAsGoogleAndroidProject)
         {
-            // Fix for exported projects where path to project is determined wrong.
-            var dirInfo = new DirectoryInfo(path);
-            var dirs = dirInfo.GetDirectories();
-            if (dirs.Length > 0)
+            var gradleFilePath = Path.Combine(path, "build.gradle");
+            // On older versions of Unity, there's a bug where path to project is determined wrong.
+            // Reference: https://issuetracker.unity3d.com/issues/android-ipostgenerategradleandroidproject-dot-onpostgenerategradleandroidproject-returns-incorrect-path-when-exporting-a-project
+            if (!File.Exists(gradleFilePath))
             {
-                path = dirs[0].FullName;
+                var dirInfo = new DirectoryInfo(path);
+                var dirs = dirInfo.GetDirectories();
+                if (dirs.Length > 0)
+                {
+                    path = dirs[0].FullName;
+                }
             }
         }
-#endif
 
         if (!MoveGoogleJsonFile(path))
         {
@@ -108,12 +111,14 @@ public class AndroidPostBuild
     {
         string[] regexPatterns = new string[]
         {
-                "jcenter\\(\\)[\\r\\n][\\s]*google\\(\\)"
+            "jcenter\\(\\)",
+            "google\\(\\)"
         };
 
         string[] codePartsToInsert = new string[]
         {
-                "google()\njcenter()"
+            "",
+            "google()\njcenter()"
         };
 
         ReplaceCodeParts(
