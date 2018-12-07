@@ -1,12 +1,12 @@
 ﻿using System.IO;
 using System.Text.RegularExpressions;
-#if UNITY_2018_1_OR_NEWER
+#if UNITY_2018_2_OR_NEWER
 using UnityEditor.Android;
 #endif
 using UnityEditor;
 using UnityEngine;
 
-#if UNITY_2018_1_OR_NEWER
+#if UNITY_2018_2_OR_NEWER
 public class AndroidPostBuild : IPostGenerateGradleAndroidProject
 #else
 public class AndroidPostBuild

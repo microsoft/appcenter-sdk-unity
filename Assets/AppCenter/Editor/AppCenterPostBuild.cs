@@ -87,7 +87,7 @@ public class AppCenterPostBuild : IPostprocessBuild
             }
         }
 
-#if !UNITY_2018_1_OR_NEWER
+#if UNITY_2018_2_OR_NEWER        
         if (target == BuildTarget.Android)
         {
             var settings = AppCenterSettingsContext.SettingsInstance;
@@ -95,7 +95,7 @@ public class AppCenterPostBuild : IPostprocessBuild
             {
                 if (!EditorUserBuildSettings.exportAsGoogleAndroidProject)
                 {
-                    Debug.LogWarning("On Unity versions lower than 2018.1, you need to export the project in order for Push to work.");
+                     Debug.LogWarning("On Unity versions lower than 2018.1, you need to export the project in order for Push to work.");
                     return;
                 }
                 AndroidPostBuild.OnAndroidPostBuild(pathToBuiltProject);
