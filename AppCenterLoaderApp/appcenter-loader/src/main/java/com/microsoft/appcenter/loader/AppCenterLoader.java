@@ -97,7 +97,6 @@ public class AppCenterLoader extends ContentProvider {
             isModuleAvailable("com.microsoft.appcenter.push.Push", "Push")) {
             Push.setListener(new UnityAppCenterPushDelegate());
             classes.add(Push.class);
-            SetSenderId();
             if (isTrueValue(getStringResource(ENABLE_FIREBASE_ANALYTICS_KEY))) {
                 Push.enableFirebaseAnalytics(mContext);
             }
@@ -212,9 +211,5 @@ public class AppCenterLoader extends ContentProvider {
         Class<? extends AppCenterService>[] classesArray = classes.toArray(new Class[classes.size()]);
         return classesArray;
     }
-
-    @SuppressWarnings("deprecation")
-    private void SetSenderId() {
-        Push.setSenderId(getStringResource(SENDER_ID_KEY));
-    }
+    
 }

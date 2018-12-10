@@ -17,7 +17,6 @@ public class AppCenterSettingsMakerAndroid : IAppCenterSettingsMaker
     private const string StartupTypeKey = "appcenter_startup_type";
     private const string UseCrashesKey = "appcenter_use_crashes";
     private const string UsePushKey = "appcenter_use_push";
-    private const string SenderIdKey = "appcenter_sender_id";
     private const string UseAnalyticsKey = "appcenter_use_analytics";
     private const string UseDistributeKey = "appcenter_use_distribute";
     private const string CustomApiUrlKey = "appcenter_custom_api_url";
@@ -61,11 +60,6 @@ public class AppCenterSettingsMakerAndroid : IAppCenterSettingsMaker
     public void SetTransmissionTargetToken(string transmissionTargetToken)
     {
         _resourceValues[TransmissionTargetTokenKey] = transmissionTargetToken;
-    }
-
-    public void SetSenderId(string senderId)
-    {
-        _resourceValues[SenderIdKey] = senderId;
     }
 
     public void EnableFirebaseAnalytics()

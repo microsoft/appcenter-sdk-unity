@@ -17,7 +17,6 @@ public interface IAppCenterSettingsMaker
     void SetLogLevel(int logLevel);
     bool IsStartFromAppCenterBehavior(AppCenterSettingsAdvanced advancedSettings);
     void SetStartupType(int startupType);
-    void SetSenderId(string senderId);
     void SetLogUrl(string logUrl);
     void SetApiUrl(string apiUrl);
     void SetInstallUrl(string installUrl);
