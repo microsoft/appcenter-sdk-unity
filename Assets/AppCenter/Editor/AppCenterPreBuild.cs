@@ -49,7 +49,6 @@ public class AppCenterPreBuild : IPreprocessBuild
         if (settings.UsePush && settingsMaker.IsPushAvailable())
         {
             settingsMaker.StartPushClass();
-            settingsMaker.SetSenderId(settings.SenderId);
             if (settings.EnableFirebaseAnalytics)
             {
                 settingsMaker.EnableFirebaseAnalytics();
