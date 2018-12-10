@@ -105,8 +105,12 @@ public class AppCenterBehavior : MonoBehaviour
             foreach (var service in services)
             {
                 var startCrashes = service.GetMethod("StartCrashes");
+                var startPush = service.GetMethod("StartPush");
                 if (startCrashes != null)
                     startCrashes.Invoke(null, null);
+
+                if (startPush != null)
+                    startPush.Invoke(null, null);
             }
         }
 #endif

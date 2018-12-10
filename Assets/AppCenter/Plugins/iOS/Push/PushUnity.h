@@ -10,6 +10,7 @@
 extern "C" void* appcenter_unity_push_get_type();
 extern "C" void appcenter_unity_push_set_enabled(bool isEnabled);
 extern "C" bool appcenter_unity_push_is_enabled();
+extern "C" void appcenter_unity_start_push();
 extern "C" void appcenter_unity_push_set_received_push_impl(ReceivedPushNotificationFunction functionPtr);
 extern "C" void appcenter_unity_push_replay_unprocessed_notifications();
 
