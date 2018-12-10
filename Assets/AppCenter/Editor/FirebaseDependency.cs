@@ -1,4 +1,4 @@
-﻿// Copyright (c) Microsoft Corporation. All rights reserved.
+// Copyright (c) Microsoft Corporation. All rights reserved.
 //
 // Licensed under the MIT license.
 using System;
@@ -18,7 +18,7 @@ public class FirebaseDependency : AssetPostprocessor
     private const string GoogleServicesFileBasename = "google-services";
     private const string GoogleServicesInputFile = GoogleServicesFileBasename + ".json";
     private const string GoogleServicesOutputFile = GoogleServicesFileBasename + ".xml";
-    private const string GoogleServicesOutputDirectory = "Assets/Plugins/Android/appcenter/res/values";
+    private const string GoogleServicesOutputDirectory = "Assets/Plugins/Android/res/values";
     private const string GoogleServicesOutputPath = GoogleServicesOutputDirectory + "/" + GoogleServicesOutputFile;
     /// <summary>
     /// This is the entry point for "InitializeOnLoad". It will register the
