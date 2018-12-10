@@ -37,6 +37,14 @@ var AppCenterModules = new [] {
     new AppCenterModule("appcenter-crashes-release.aar", "AppCenterCrashes.framework", "Microsoft.AppCenter.Crashes", "Crashes")
 };
 
+// External Unity Packages
+var JarResolverPackageName =  "play-services-resolver-" + ExternalUnityPackage.VersionPlaceholder + ".unitypackage";
+var JarResolverVersion = "1.2.35.0";
+var JarResolverUrl = SdkStorageUrl + ExternalUnityPackage.NamePlaceholder;
+ var ExternalUnityPackages = new [] {
+    new ExternalUnityPackage(JarResolverPackageName, JarResolverVersion, JarResolverUrl)
+};
+
 // UWP IL2CPP dependencies.
 var UwpIL2CPPDependencies = new [] {
     new NugetDependency("sqlite-net-pcl", "1.3.1", "UAP, Version=v10.0")
@@ -79,6 +87,21 @@ class AppCenterModule
         {
             NativeArchitectures = new string[] {"x86", "x64", "arm"};
         }
+    }
+}
+
+class ExternalUnityPackage
+{
+    public static string VersionPlaceholder = "<version>";
+    public static string NamePlaceholder = "<name>";
+    public string Name { get; private set; }
+    public string Version { get; private set; }
+    public string Url { get; private set; }
+     public ExternalUnityPackage(string name, string version, string url)
+    {
+        Version = version;
+        Name = name.Replace(VersionPlaceholder, Version);
+        Url = url.Replace(NamePlaceholder, Name).Replace(VersionPlaceholder, Version);
     }
 }
 
@@ -344,6 +367,20 @@ Task ("Externals-Uwp-IL2CPP-Dependencies")
         ExecuteUnityCommand ("-executeMethod AppCenterPostBuild.ProcessUwpIl2CppDependencies");
     }).OnError (HandleError);
 
+// Download and install all external Unity packages required.
+Task("Externals-Unity-Packages").Does(()=>
+{
+    var directoryName = "externals/unity-packages";
+    CleanDirectory(directoryName);
+    foreach (var package in ExternalUnityPackages)
+    {
+        var destination = directoryName + "/" + package.Name;
+        DownloadFile(package.Url, destination);
+        var command = "-importPackage " + destination;
+        Information("Importing package " + package.Name + ". This could take a minute.");
+        ExecuteUnityCommand(command);
+    }
+}).OnError(HandleError);
 
 // Add App Center packages to demo app.
 Task("AddPackagesToDemoApp")
@@ -375,7 +412,8 @@ Task("Externals")
     .IsDependentOn("Externals-Ios")
     .IsDependentOn("Externals-Android")
     .IsDependentOn("BuildAndroidContentProvider")
-    .IsDependentOn("Externals-Uwp-IL2CPP-Dependencies")
+    .IsDependentOn("Externals-Uwp-IL2CPP-Dependencies")    
+    .IsDependentOn("Externals-Unity-Packages")
     .Does(()=>
 {
     DeleteDirectoryIfExists("externals");
