@@ -39,7 +39,7 @@ var AppCenterModules = new [] {
 
 // External Unity Packages
 var JarResolverPackageName =  "play-services-resolver-" + ExternalUnityPackage.VersionPlaceholder + ".unitypackage";
-var JarResolverVersion = "1.2.35.0";
+var JarResolverVersion = "1.2.95.0";
 var JarResolverUrl = SdkStorageUrl + ExternalUnityPackage.NamePlaceholder;
  var ExternalUnityPackages = new [] {
     new ExternalUnityPackage(JarResolverPackageName, JarResolverVersion, JarResolverUrl)
