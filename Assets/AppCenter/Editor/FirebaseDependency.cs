@@ -1,18 +1,17 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 //
 // Licensed under the MIT license.
+
 using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using UnityEditor;
-
 using UnityEngine;
+
 /// <summary>
-/// This file is used to define dependencies, and pass them along to a system
-/// which can resolve dependencies.
+/// This file is used to define dependencies, and pass them along to a system which can resolve dependencies.
 /// </summary>
-/// 
 public class FirebaseDependency
 {
     private const string GoogleServicesFileBasename = "google-services";
@@ -24,56 +23,28 @@ public class FirebaseDependency
     static void SetupDependencies()
     {
 #if UNITY_ANDROID
-        // Setup the resolver using reflection as the module may not be
-        // available at compile time.
-        Type playServicesSupport = Google.VersionHandler.FindClass(
-            "Google.JarResolver", "Google.JarResolver.PlayServicesSupport");
+        // Setup the resolver using reflection as the module may not be available at compile time.
+        Type playServicesSupport = Google.VersionHandler.FindClass("Google.JarResolver", "Google.JarResolver.PlayServicesSupport");
         if (playServicesSupport == null)
         {
             return;
         }
         object svcSupport = Google.VersionHandler.InvokeStaticMethod(
-           playServicesSupport, "CreateInstance",
-           new object[] {
-                "FirebaseMessaging",
-                EditorPrefs.GetString("AndroidSdkRoot"),
-                "ProjectSettings"
-           });
-        Google.VersionHandler.InvokeInstanceMethod(
-           svcSupport, "DependOn",
-           new object[] {
-                "com.google.firebase",
-                "firebase-messaging",
-                "11.0.0"
-           },
-           namedArgs: new Dictionary<string, object>() {
-                { "packageIds",
-                    new string[] {
-                        "extra-google-m2repository",
-                        "extra-android-m2repository"
-                    }
-                },
-                { "repositories",
-                    null
-                }
-           });
+            playServicesSupport, "CreateInstance",
+            new object[] { "FirebaseMessaging", EditorPrefs.GetString("AndroidSdkRoot"), "ProjectSettings" });
         Google.VersionHandler.InvokeInstanceMethod(
             svcSupport, "DependOn",
-            new object[] {
-                "com.google.firebase",
-                "firebase-core",
-                "11.0.0"
-            },
+            new object[] { "com.google.firebase", "firebase-messaging", "11.0.0" },
             namedArgs: new Dictionary<string, object>() {
-                { "packageIds",
-                    new string[] {
-                        "extra-google-m2repository",
-                        "extra-android-m2repository"
-                    }
-                },
-                { "repositories",
-                    null
-                }
+                { "packageIds", new string[] { "extra-google-m2repository", "extra-android-m2repository" } },
+                { "repositories", null }
+            });
+        Google.VersionHandler.InvokeInstanceMethod(
+            svcSupport, "DependOn",
+            new object[] { "com.google.firebase", "firebase-core", "11.0.0" },
+            namedArgs: new Dictionary<string, object>() {
+                { "packageIds", new string[] { "extra-google-m2repository", "extra-android-m2repository" } },
+                { "repositories", null }
             });
         // Update editor project view.
         AssetDatabase.Refresh();
@@ -172,6 +143,7 @@ public class FirebaseDependency
     }
 
     #region Models
+
     [Serializable]
     public class ProjectInfo
     {
@@ -181,12 +153,14 @@ public class FirebaseDependency
         public string firebase_url;
         public string storage_bucket;
     }
+
     [Serializable]
     public class AndroidClientInfo
     {
         public string package_name;
         public string[] certificate_hash;
     }
+
     [Serializable]
     public class ClientInfo
     {
@@ -195,12 +169,14 @@ public class FirebaseDependency
         public int client_type;
         public AndroidClientInfo android_client_info;
     }
+
     [Serializable]
     public class AndroidInfo
     {
         public string package_name;
         public string certificate_hash;
     }
+
     [Serializable]
     public class OauthClient
     {
@@ -208,22 +184,26 @@ public class FirebaseDependency
         public int client_type;
         public AndroidInfo android_info;
     }
+
     [Serializable]
     public class AnalyticsProperty
     {
         public string tracking_id;
     }
+
     [Serializable]
     public class AnalyticsService
     {
         public int status;
         public AnalyticsProperty analytics_property;
     }
+
     [Serializable]
     public class Services
     {
         public AnalyticsService analytics_service;
     }
+
     [Serializable]
     public class Client
     {
@@ -232,11 +212,13 @@ public class FirebaseDependency
         public ApiKey[] api_key;
         public Services services;
     }
+
     [Serializable]
     public class ApiKey
     {
         public string current_key;
     }
+
     [Serializable]
     public class GoogleServices
     {
@@ -244,12 +226,14 @@ public class FirebaseDependency
         public Client[] client;
         public object[] client_info;
         public string ARTIFACT_VERSION;
+
         public Client GetClient(string packageName)
         {
             if (client == null || !client.Any())
                 return null;
             return client.FirstOrDefault(c => c.client_info.android_client_info.package_name == packageName);
         }
+
         public string GetGATrackingId(string packageName)
         {
             // {YOUR_CLIENT}/services/analytics-service/analytics_property/tracking_id
@@ -257,11 +241,12 @@ public class FirebaseDependency
             if (client == null)
                 return null;
             if (client.services != null &&
-               client.services.analytics_service != null &&
-               client.services.analytics_service.analytics_property != null)
+                client.services.analytics_service != null &&
+                client.services.analytics_service.analytics_property != null)
                 return client.services.analytics_service.analytics_property.tracking_id;
             return null;
         }
+
         public string GetProjectId()
         {
             // project_info/project_id
@@ -269,6 +254,7 @@ public class FirebaseDependency
                 return project_info.project_id;
             return null;
         }
+
         public string GetDefaultGcmSenderId()
         {
             // project_info/project_number
@@ -276,6 +262,7 @@ public class FirebaseDependency
                 return project_info.project_number;
             return null;
         }
+
         public string GetGoogleAppId(string packageName)
         {
             // {YOUR_CLIENT}/client_info/mobilesdk_app_id
@@ -286,6 +273,7 @@ public class FirebaseDependency
                 return client.client_info.mobilesdk_app_id;
             return null;
         }
+
         public string GetDefaultWebClientId(string packageName)
         {
             // default_web_client_id:
@@ -301,6 +289,7 @@ public class FirebaseDependency
             }
             return null;
         }
+
         public string GetGoogleApiKey(string packageName)
         {
             // google_api_key:
@@ -312,6 +301,7 @@ public class FirebaseDependency
                 return client.api_key.FirstOrDefault().current_key;
             return null;
         }
+
         public string GetFirebaseDatabaseUrl()
         {
             // firebase_database_url:
@@ -320,6 +310,7 @@ public class FirebaseDependency
                 return project_info.firebase_url;
             return null;
         }
+
         public string GetCrashReportingApiKey(string packageName)
         {
             // google_crash_reporting_api_key:
@@ -331,6 +322,7 @@ public class FirebaseDependency
                 return client.api_key.FirstOrDefault().current_key;
             return null;
         }
+
         public string GetStorageBucket(string packageName)
         {
             // google_storage_bucket:
@@ -340,5 +332,6 @@ public class FirebaseDependency
             return null;
         }
     }
+
     #endregion
 }

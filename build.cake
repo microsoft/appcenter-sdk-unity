@@ -38,12 +38,7 @@ var AppCenterModules = new [] {
 };
 
 // External Unity Packages
-var JarResolverPackageName =  "play-services-resolver-" + ExternalUnityPackage.VersionPlaceholder + ".unitypackage";
-var JarResolverVersion = "1.2.95.0";
-var JarResolverUrl = SdkStorageUrl + ExternalUnityPackage.NamePlaceholder;
- var ExternalUnityPackages = new [] {
-    new ExternalUnityPackage(JarResolverPackageName, JarResolverVersion, JarResolverUrl)
-};
+var JarResolverUrl = "https://github.com/googlesamples/unity-jar-resolver/raw/v1.2.95/play-services-resolver-1.2.95.0.unitypackage";
 
 // UWP IL2CPP dependencies.
 var UwpIL2CPPDependencies = new [] {
@@ -87,21 +82,6 @@ class AppCenterModule
         {
             NativeArchitectures = new string[] {"x86", "x64", "arm"};
         }
-    }
-}
-
-class ExternalUnityPackage
-{
-    public static string VersionPlaceholder = "<version>";
-    public static string NamePlaceholder = "<name>";
-    public string Name { get; private set; }
-    public string Version { get; private set; }
-    public string Url { get; private set; }
-     public ExternalUnityPackage(string name, string version, string url)
-    {
-        Version = version;
-        Name = name.Replace(VersionPlaceholder, Version);
-        Url = url.Replace(NamePlaceholder, Name).Replace(VersionPlaceholder, Version);
     }
 }
 
@@ -169,7 +149,7 @@ class UnityPackage
 
     public void CreatePackage(string targetDirectory)
     {
-        var args = "-exportPackage ";
+        var args = "-gvh_disable -exportPackage "; // https://github.com/googlesamples/unity-jar-resolver#getting-started
         foreach (var path in _includePaths)
         {
             args += " " + path;
@@ -372,14 +352,11 @@ Task("Externals-Unity-Packages").Does(()=>
 {
     var directoryName = "externals/unity-packages";
     CleanDirectory(directoryName);
-    foreach (var package in ExternalUnityPackages)
-    {
-        var destination = directoryName + "/" + package.Name;
-        DownloadFile(package.Url, destination);
-        var command = "-importPackage " + destination;
-        Information("Importing package " + package.Name + ". This could take a minute.");
-        ExecuteUnityCommand(command);
-    }
+    var destination = System.IO.Path.Combine(directoryName, "play-services-resolver.unitypackage");
+    DownloadFile(JarResolverUrl, destination);
+    Information("Importing package " + destination + ". This could take a minute.");
+    var command = "-gvh_disable -importPackage " + destination; // https://github.com/googlesamples/unity-jar-resolver#getting-started
+    ExecuteUnityCommand(command);
 }).OnError(HandleError);
 
 // Add App Center packages to demo app.
@@ -412,7 +389,7 @@ Task("Externals")
     .IsDependentOn("Externals-Ios")
     .IsDependentOn("Externals-Android")
     .IsDependentOn("BuildAndroidContentProvider")
-    .IsDependentOn("Externals-Uwp-IL2CPP-Dependencies")    
+    .IsDependentOn("Externals-Uwp-IL2CPP-Dependencies")
     .IsDependentOn("Externals-Unity-Packages")
     .Does(()=>
 {
