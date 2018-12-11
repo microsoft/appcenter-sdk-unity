@@ -20,14 +20,7 @@ public class FirebaseDependency
     private const string GoogleServicesOutputFile = GoogleServicesFileBasename + ".xml";
     private const string GoogleServicesOutputDirectory = "Assets/Plugins/Android/res/values";
     private const string GoogleServicesOutputPath = GoogleServicesOutputDirectory + "/" + GoogleServicesOutputFile;
-    /// <summary>
-    /// This is the entry point for "InitializeOnLoad". It will register the
-    /// dependencies with the dependency tracking system.
-    /// </summary>
-    static FirebaseDependency()
-    {
-        //SetupDependencies();
-    }
+
     static void SetupDependencies()
     {
 #if UNITY_ANDROID
@@ -86,6 +79,7 @@ public class FirebaseDependency
         AssetDatabase.Refresh();
 #endif
     }
+
     static string[] FindGoogleServicesFiles()
     {
         var googleServicesFiles = new List<string>();
@@ -99,6 +93,7 @@ public class FirebaseDependency
         }
         return googleServicesFiles.Count > 0 ? googleServicesFiles.ToArray() : null;
     }
+
     static void UpdateJson()
     {
 #if UNITY_ANDROID
@@ -156,6 +151,7 @@ public class FirebaseDependency
         AssetDatabase.Refresh();
 #endif
     }
+
     /// <summary>
     /// Handle delayed loading of the dependency resolvers.
     /// </summary>
@@ -174,6 +170,7 @@ public class FirebaseDependency
             }
         }
     }
+
     #region Models
     [Serializable]
     public class ProjectInfo
