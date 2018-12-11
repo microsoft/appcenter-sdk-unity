@@ -12,8 +12,8 @@ using UnityEngine;
 /// This file is used to define dependencies, and pass them along to a system
 /// which can resolve dependencies.
 /// </summary>
-[InitializeOnLoad]
-public class FirebaseDependency : AssetPostprocessor
+/// 
+public class FirebaseDependency
 {
     private const string GoogleServicesFileBasename = "google-services";
     private const string GoogleServicesInputFile = GoogleServicesFileBasename + ".json";
@@ -26,7 +26,7 @@ public class FirebaseDependency : AssetPostprocessor
     /// </summary>
     static FirebaseDependency()
     {
-        SetupDependencies();
+        //SetupDependencies();
     }
     static void SetupDependencies()
     {
@@ -159,11 +159,9 @@ public class FirebaseDependency : AssetPostprocessor
     /// <summary>
     /// Handle delayed loading of the dependency resolvers.
     /// </summary>
-    static void OnPostprocessAllAssets(
-        string[] importedAssets, string[] deletedAssets,
-        string[] movedAssets, string[] movedFromPath)
+    public static void SetupPush()
     {
-        Debug.Log("fsfdsgsdgsdfgds");
+        string[] importedAssets = AssetDatabase.GetAllAssetPaths();
         foreach (string asset in importedAssets)
         {
             if (asset.Contains("JarResolver"))
