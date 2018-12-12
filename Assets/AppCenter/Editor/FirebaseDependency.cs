@@ -20,6 +20,19 @@ public class FirebaseDependency
     private const string GoogleServicesOutputDirectory = "Assets/Plugins/Android/res/values";
     private const string GoogleServicesOutputPath = GoogleServicesOutputDirectory + "/" + GoogleServicesOutputFile;
 
+    private const string DefaultWebClientIdKey = "default_web_client_id";
+    private const string FirebaseDatabaseUrlKey = "firebase_database_url";
+    private const string GATrackingIdKey = "ga_trackingId";
+    private const string GSMDefaultSenderIdKey = "gcm_defaultSenderId";
+    private const string GoogleAPIKey = "google_api_key";
+    private const string GoogleAppIdKey = "google_app_id";
+    private const string CrashReportingApiKey = "google_crash_reporting_api_key";
+    private const string GoogleStorageBucketKey = "google_storage_bucket";
+    private const string ProjectIdKey = "project_id";
+
+    private const string FirebaseMessagingVersion = "17.0.0";
+    private const string FirebaseCoreVersion = "16.0.1";
+
     static void SetupDependencies()
     {
 #if UNITY_ANDROID
@@ -34,14 +47,14 @@ public class FirebaseDependency
             new object[] { "FirebaseMessaging", EditorPrefs.GetString("AndroidSdkRoot"), "ProjectSettings" });
         Google.VersionHandler.InvokeInstanceMethod(
             svcSupport, "DependOn",
-            new object[] { "com.google.firebase", "firebase-messaging", "11.0.0" },
+            new object[] { "com.google.firebase", "firebase-messaging", FirebaseMessagingVersion },
             namedArgs: new Dictionary<string, object>() {
                 { "packageIds", new string[] { "extra-google-m2repository", "extra-android-m2repository" } },
                 { "repositories", null }
             });
         Google.VersionHandler.InvokeInstanceMethod(
             svcSupport, "DependOn",
-            new object[] { "com.google.firebase", "firebase-core", "11.0.0" },
+            new object[] { "com.google.firebase", "firebase-core", FirebaseCoreVersion },
             namedArgs: new Dictionary<string, object>() {
                 { "packageIds", new string[] { "extra-google-m2repository", "extra-android-m2repository" } },
                 { "repositories", null }
@@ -107,15 +120,15 @@ public class FirebaseDependency
             Debug.LogWarning("Failed to find client_info in " + GoogleServicesInputFile + " matching package name: " + bundleId);
         }
         var valuesItems = new Dictionary<string, string> {
-            { "default_web_client_id", googleServices.GetDefaultWebClientId(bundleId) },
-            { "firebase_database_url", googleServices.GetFirebaseDatabaseUrl() },
-            { "ga_trackingId", googleServices.GetGATrackingId(bundleId) },
-            { "gcm_defaultSenderId", googleServices.GetDefaultGcmSenderId() },
-            { "google_api_key", googleServices.GetGoogleApiKey(bundleId) },
-            { "google_app_id", googleServices.GetGoogleAppId(bundleId) },
-            { "google_crash_reporting_api_key", googleServices.GetCrashReportingApiKey(bundleId) },
-            { "google_storage_bucket", googleServices.GetStorageBucket(bundleId) },
-            { "project_id", googleServices.GetProjectId() },
+            { DefaultWebClientIdKey, googleServices.GetDefaultWebClientId(bundleId) },
+            { FirebaseDatabaseUrlKey, googleServices.GetFirebaseDatabaseUrl() },
+            { GATrackingIdKey, googleServices.GetGATrackingId(bundleId) },
+            { GSMDefaultSenderIdKey, googleServices.GetDefaultGcmSenderId() },
+            { GoogleAPIKey, googleServices.GetGoogleApiKey(bundleId) },
+            { GoogleAppIdKey, googleServices.GetGoogleAppId(bundleId) },
+            { CrashReportingApiKey, googleServices.GetCrashReportingApiKey(bundleId) },
+            { GoogleStorageBucketKey, googleServices.GetStorageBucket(bundleId) },
+            { ProjectIdKey, googleServices.GetProjectId() },
         };
         XmlResourceHelper.WriteXmlResource(outputPath, valuesItems);
         // Update editor project view.

@@ -1,9 +1,9 @@
 ﻿{
   "project_info": {
     "project_number": "1",
-    "firebase_url": "https://mobile-center-sdk-android.firebaseio.com",
-    "project_id": "mobile-center-sdk-android",
-    "storage_bucket": "mobile-center-sdk-android.appspot.com"
+    "firebase_url": "https://appcenter-sdk-android.firebaseio.com",
+    "project_id": "appcenter-sdk-android",
+    "storage_bucket": "appcenter-sdk-android.appspot.com"
   },
   "client": [
     {

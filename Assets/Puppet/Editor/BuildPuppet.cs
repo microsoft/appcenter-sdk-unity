@@ -1,4 +1,4 @@
-﻿// Copyright (c) Microsoft Corporation. All rights reserved.
+// Copyright (c) Microsoft Corporation. All rights reserved.
 //
 // Licensed under the MIT license.
 
@@ -132,12 +132,12 @@ public class BuildPuppet
     // placeholders for keys, not actual keys.
     private static void CreateGoogleServicesJsonIfNotPresent()
     {
-        var actualFile = "Assets/google-services.json";
+        var actualFile = "./google-services.json";
         if (File.Exists(actualFile))
         {
             return;
         }
-        var placeholderFile = "Assets/google-services-placeholder.json";
+        var placeholderFile = "./google-services-placeholder.json";
         if (!File.Exists(placeholderFile))
         {
             Debug.Log("Could not find google services placeholder.");
