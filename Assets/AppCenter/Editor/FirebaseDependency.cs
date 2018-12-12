@@ -29,7 +29,11 @@ public class FirebaseDependency
     private const string CrashReportingApiKey = "google_crash_reporting_api_key";
     private const string GoogleStorageBucketKey = "google_storage_bucket";
     private const string ProjectIdKey = "project_id";
-    
+
+    private const string FirebaseMessagingVersion = "17.0.0";
+    private const string FirebaseCoreVersion = "16.0.1";
+
+
     static void SetupDependencies()
     {
 #if UNITY_ANDROID
@@ -44,14 +48,14 @@ public class FirebaseDependency
             new object[] { "FirebaseMessaging", EditorPrefs.GetString("AndroidSdkRoot"), "ProjectSettings" });
         Google.VersionHandler.InvokeInstanceMethod(
             svcSupport, "DependOn",
-            new object[] { "com.google.firebase", "firebase-messaging", "11.0.0" },
+            new object[] { "com.google.firebase", "firebase-messaging", FirebaseMessagingVersion },
             namedArgs: new Dictionary<string, object>() {
                 { "packageIds", new string[] { "extra-google-m2repository", "extra-android-m2repository" } },
                 { "repositories", null }
             });
         Google.VersionHandler.InvokeInstanceMethod(
             svcSupport, "DependOn",
-            new object[] { "com.google.firebase", "firebase-core", "11.0.0" },
+            new object[] { "com.google.firebase", "firebase-core", FirebaseCoreVersion },
             namedArgs: new Dictionary<string, object>() {
                 { "packageIds", new string[] { "extra-google-m2repository", "extra-android-m2repository" } },
                 { "repositories", null }
