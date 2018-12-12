@@ -80,7 +80,7 @@ public class FirebaseDependency
 
     static void UpdateJson()
     {
-#if! UNITY_ANDROID
+#if UNITY_ANDROID
         var bundleId = ApplicationIdHelper.GetApplicationId();
         var projectDir = Path.Combine(Application.dataPath, "..");
         var googleServicesFiles = FindGoogleServicesFiles();
