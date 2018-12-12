@@ -149,7 +149,10 @@ class UnityPackage
 
     public void CreatePackage(string targetDirectory)
     {
-        var args = "-gvh_disable -exportPackage "; // https://github.com/googlesamples/unity-jar-resolver#getting-started
+        // From https://github.com/googlesamples/unity-jar-resolver#getting-started
+        // Export your plugin <...> ensuring that you <...> Add the -gvh_disable option.
+        // You must specify the -gvh_disable option in order for the Version Handler to work correctly!
+        var args = "-gvh_disable -exportPackage ";
         foreach (var path in _includePaths)
         {
             args += " " + path;
@@ -350,12 +353,15 @@ Task ("Externals-Uwp-IL2CPP-Dependencies")
 // Download and install all external Unity packages required.
 Task("Externals-Unity-Packages").Does(()=>
 {
-    var directoryName = "externals/unity-packages";
-    CleanDirectory(directoryName);
-    var destination = System.IO.Path.Combine(directoryName, "play-services-resolver.unitypackage");
+    var directoryPath = new DirectoryPath("externals/unity-packages");
+    CleanDirectory(directoryPath);
+    var destination = directoryPath.CombineWithFilePath("play-services-resolver.unitypackage");
     DownloadFile(JarResolverUrl, destination);
     Information("Importing package " + destination + ". This could take a minute.");
-    var command = "-gvh_disable -importPackage " + destination; // https://github.com/googlesamples/unity-jar-resolver#getting-started
+    // From https://github.com/googlesamples/unity-jar-resolver#getting-started
+    // Import the play-services-resolver-*.unitypackage into your plugin project <...> ensuring that you add the -gvh_disable option.
+    // You must specify the -gvh_disable option in order for the Version Handler to work correctly!
+    var command = "-gvh_disable -importPackage " + destination.FullPath;
     ExecuteUnityCommand(command);
 }).OnError(HandleError);
 
