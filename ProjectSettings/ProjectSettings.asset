@@ -654,7 +654,7 @@ PlayerSettings:
   platformArchitecture:
     iOS: 0
   scriptingBackend:
-    Android: 1
+    Android: 0
     Metro: 1
     iOS: 1
   il2cppCompilerConfiguration: {}

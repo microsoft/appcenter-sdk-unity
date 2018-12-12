@@ -73,6 +73,7 @@ Assets/Plugins/Android/appcenter/res.meta
 Assets/Firebase/
 Assets/PlayServicesResolver/
 Assets/PlayServicesResolver.meta
+ProjectSettings/AndroidResolverDependencies.xml
 
 # Cake
 CAKE_SCRIPT_TEMP*
