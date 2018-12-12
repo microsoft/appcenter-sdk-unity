@@ -33,7 +33,6 @@ public class FirebaseDependency
     private const string FirebaseMessagingVersion = "17.0.0";
     private const string FirebaseCoreVersion = "16.0.1";
 
-
     static void SetupDependencies()
     {
 #if UNITY_ANDROID
@@ -81,7 +80,7 @@ public class FirebaseDependency
 
     static void UpdateJson()
     {
-#if UNITY_ANDROID
+#if! UNITY_ANDROID
         var bundleId = ApplicationIdHelper.GetApplicationId();
         var projectDir = Path.Combine(Application.dataPath, "..");
         var googleServicesFiles = FindGoogleServicesFiles();
