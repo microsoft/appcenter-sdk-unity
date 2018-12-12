@@ -6,6 +6,7 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Reflection;
 using UnityEditor;
 using UnityEngine;
 
@@ -37,28 +38,40 @@ public class FirebaseDependency
     {
 #if UNITY_ANDROID
         // Setup the resolver using reflection as the module may not be available at compile time.
-        Type playServicesSupport = Google.VersionHandler.FindClass("Google.JarResolver", "Google.JarResolver.PlayServicesSupport");
+        Type versionHandler = Type.GetType("Google.VersionHandler, Google.VersionHandler, Version=1.2.0.0, Culture=neutral, PublicKeyToken=null");
+        if (versionHandler == null)
+        {
+            return;
+        }
+        Type playServicesSupport = (Type)versionHandler.InvokeMember("FindClass", BindingFlags.Public | BindingFlags.Static | BindingFlags.InvokeMethod, null, null, new object[]
+        {
+            "Google.JarResolver", "Google.JarResolver.PlayServicesSupport"
+        });
         if (playServicesSupport == null)
         {
             return;
         }
-        object svcSupport = Google.VersionHandler.InvokeStaticMethod(
-            playServicesSupport, "CreateInstance",
-            new object[] { "FirebaseMessaging", EditorPrefs.GetString("AndroidSdkRoot"), "ProjectSettings" });
-        Google.VersionHandler.InvokeInstanceMethod(
-            svcSupport, "DependOn",
-            new object[] { "com.google.firebase", "firebase-messaging", FirebaseMessagingVersion },
-            namedArgs: new Dictionary<string, object>() {
+        object svcSupport = versionHandler.InvokeMember("InvokeStaticMethod", BindingFlags.Public | BindingFlags.Static | BindingFlags.InvokeMethod, null, null, new object[]
+        {
+            playServicesSupport, "CreateInstance", new object[] { "FirebaseMessaging", EditorPrefs.GetString("AndroidSdkRoot"), "ProjectSettings" }, null
+        });
+        versionHandler.InvokeMember("InvokeInstanceMethod", BindingFlags.Public | BindingFlags.Static | BindingFlags.InvokeMethod, null, null, new object[]
+        {
+            svcSupport, "DependOn", new object[] { "com.google.firebase", "firebase-messaging", FirebaseMessagingVersion },
+            new Dictionary<string, object>() {
                 { "packageIds", new string[] { "extra-google-m2repository", "extra-android-m2repository" } },
                 { "repositories", null }
-            });
-        Google.VersionHandler.InvokeInstanceMethod(
+            }
+        });
+        versionHandler.InvokeMember("InvokeInstanceMethod", BindingFlags.Public | BindingFlags.Static | BindingFlags.InvokeMethod, null, null, new object[]
+        {
             svcSupport, "DependOn",
             new object[] { "com.google.firebase", "firebase-core", FirebaseCoreVersion },
-            namedArgs: new Dictionary<string, object>() {
+            new Dictionary<string, object>() {
                 { "packageIds", new string[] { "extra-google-m2repository", "extra-android-m2repository" } },
                 { "repositories", null }
-            });
+            }
+        });
         // Update editor project view.
         AssetDatabase.Refresh();
 #endif
