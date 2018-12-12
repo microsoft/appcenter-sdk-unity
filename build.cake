@@ -37,8 +37,15 @@ var AppCenterModules = new [] {
     new AppCenterModule("appcenter-crashes-release.aar", "AppCenterCrashes.framework", "Microsoft.AppCenter.Crashes", "Crashes")
 };
 
-// External Unity Packages
-var JarResolverUrl = "https://github.com/googlesamples/unity-jar-resolver/raw/v1.2.95/play-services-resolver-1.2.95.0.unitypackage";
+var ExternalUnityPackages = new [] {
+    // From https://github.com/googlesamples/unity-jar-resolver#getting-started
+    // Import the play-services-resolver-*.unitypackage into your plugin project <...> ensuring that you add the -gvh_disable option.
+    // You must specify the -gvh_disable option in order for the Version Handler to work correctly!
+    new ExternalUnityPackage("play-services-resolver-" + ExternalUnityPackage.VersionPlaceholder + ".unitypackage",
+                             "1.2.95.0",
+                             SdkStorageUrl + ExternalUnityPackage.NamePlaceholder,
+                             "-gvh_disable")
+};
 
 // UWP IL2CPP dependencies.
 var UwpIL2CPPDependencies = new [] {
@@ -82,6 +89,25 @@ class AppCenterModule
         {
             NativeArchitectures = new string[] {"x86", "x64", "arm"};
         }
+    }
+}
+
+class ExternalUnityPackage
+{
+    public static string NamePlaceholder = "<name>";
+    public static string VersionPlaceholder = "<version>";
+
+    public string Name { get; private set; }
+    public string Version { get; private set; }
+    public string Url { get; private set; }
+    public string AdditionalImportArgs { get; private set; }
+
+    public ExternalUnityPackage(string name, string version, string url, string additionalImportArgs = "")
+    {
+        AdditionalImportArgs = additionalImportArgs;
+        Version = version;
+        Name = name.Replace(VersionPlaceholder, Version);
+        Url = url.Replace(NamePlaceholder, Name).Replace(VersionPlaceholder, Version);
     }
 }
 
@@ -355,14 +381,14 @@ Task("Externals-Unity-Packages").Does(()=>
 {
     var directoryPath = new DirectoryPath("externals/unity-packages");
     CleanDirectory(directoryPath);
-    var destination = directoryPath.CombineWithFilePath("play-services-resolver.unitypackage");
-    DownloadFile(JarResolverUrl, destination);
-    Information("Importing package " + destination + ". This could take a minute.");
-    // From https://github.com/googlesamples/unity-jar-resolver#getting-started
-    // Import the play-services-resolver-*.unitypackage into your plugin project <...> ensuring that you add the -gvh_disable option.
-    // You must specify the -gvh_disable option in order for the Version Handler to work correctly!
-    var command = "-gvh_disable -importPackage " + destination.FullPath;
-    ExecuteUnityCommand(command);
+    foreach (var package in ExternalUnityPackages)
+    {
+        var destination = directoryPath.CombineWithFilePath(package.Name);
+        DownloadFile(package.Url, destination);
+        Information("Importing package " + package.Name + ". This could take a minute.");
+        var command = package.AdditionalImportArgs + " -importPackage " + destination.FullPath;
+        ExecuteUnityCommand(command);
+    }
 }).OnError(HandleError);
 
 // Add App Center packages to demo app.
