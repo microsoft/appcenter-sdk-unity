@@ -148,7 +148,7 @@ public class FirebaseDependency
             {
                 SetupDependencies();
             }
-            else if (Path.GetFileName(asset) == GoogleServicesInputFile)
+            else if (asset.Contains(GoogleServicesInputFile))
             {
                 UpdateJson();
             }
