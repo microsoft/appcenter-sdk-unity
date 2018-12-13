@@ -132,12 +132,12 @@ public class BuildPuppet
     // placeholders for keys, not actual keys.
     private static void CreateGoogleServicesJsonIfNotPresent()
     {
-        var actualFile = "./google-services.json";
+        var actualFile = "Assets/Puppet/Editor/google-services.json";
         if (File.Exists(actualFile))
         {
             return;
         }
-        var placeholderFile = "./google-services-placeholder.json";
+        var placeholderFile = "Assets/Puppet/Editor/google-services-placeholder.json";
         if (!File.Exists(placeholderFile))
         {
             Debug.Log("Could not find google services placeholder.");
