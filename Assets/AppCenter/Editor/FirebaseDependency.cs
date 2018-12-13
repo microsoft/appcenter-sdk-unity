@@ -41,6 +41,7 @@ public class FirebaseDependency
         Type versionHandler = Type.GetType("Google.VersionHandler, Google.VersionHandler, Version=1.2.0.0, Culture=neutral, PublicKeyToken=null");
         if (versionHandler == null)
         {
+            Debug.LogError("Unable to set up Android dependencies, class `Google.VersionHandler` is not found");
             return;
         }
         Type playServicesSupport = (Type)versionHandler.InvokeMember("FindClass", BindingFlags.Public | BindingFlags.Static | BindingFlags.InvokeMethod, null, null, new object[]
@@ -49,6 +50,7 @@ public class FirebaseDependency
         });
         if (playServicesSupport == null)
         {
+            Debug.LogError("Unable to set up Android dependencies, class `Google.JarResolver.PlayServicesSupport` is not found");
             return;
         }
         object svcSupport = versionHandler.InvokeMember("InvokeStaticMethod", BindingFlags.Public | BindingFlags.Static | BindingFlags.InvokeMethod, null, null, new object[]
