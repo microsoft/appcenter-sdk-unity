@@ -24,6 +24,11 @@ public class AppCenterPreBuild : IPreprocessBuild
     {
         if (target == BuildTarget.Android)
         {
+            var settings = AppCenterSettingsContext.SettingsInstance;
+            if (settings.UsePush && AppCenter.Push != null)
+            {
+                FirebaseDependency.SetupPush();
+            }
             AddStartupCode(new AppCenterSettingsMakerAndroid());
         }
         else if (target == BuildTarget.iOS)

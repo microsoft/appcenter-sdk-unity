@@ -37,6 +37,16 @@ var AppCenterModules = new [] {
     new AppCenterModule("appcenter-crashes-release.aar", "AppCenterCrashes.framework", "Microsoft.AppCenter.Crashes", "Crashes")
 };
 
+var ExternalUnityPackages = new [] {
+    // From https://github.com/googlesamples/unity-jar-resolver#getting-started
+    // Import the play-services-resolver-*.unitypackage into your plugin project <...> ensuring that you add the -gvh_disable option.
+    // You must specify the -gvh_disable option in order for the Version Handler to work correctly!
+    new ExternalUnityPackage("play-services-resolver-" + ExternalUnityPackage.VersionPlaceholder + ".unitypackage",
+                             "1.2.95.0",
+                             SdkStorageUrl + ExternalUnityPackage.NamePlaceholder,
+                             "-gvh_disable")
+};
+
 // UWP IL2CPP dependencies.
 var UwpIL2CPPDependencies = new [] {
     new NugetDependency("sqlite-net-pcl", "1.3.1", "UAP, Version=v10.0")
@@ -79,6 +89,25 @@ class AppCenterModule
         {
             NativeArchitectures = new string[] {"x86", "x64", "arm"};
         }
+    }
+}
+
+class ExternalUnityPackage
+{
+    public static string NamePlaceholder = "<name>";
+    public static string VersionPlaceholder = "<version>";
+
+    public string Name { get; private set; }
+    public string Version { get; private set; }
+    public string Url { get; private set; }
+    public string AdditionalImportArgs { get; private set; }
+
+    public ExternalUnityPackage(string name, string version, string url, string additionalImportArgs = "")
+    {
+        AdditionalImportArgs = additionalImportArgs;
+        Version = version;
+        Name = name.Replace(VersionPlaceholder, Version);
+        Url = url.Replace(NamePlaceholder, Name).Replace(VersionPlaceholder, Version);
     }
 }
 
@@ -146,7 +175,10 @@ class UnityPackage
 
     public void CreatePackage(string targetDirectory)
     {
-        var args = "-exportPackage ";
+        // From https://github.com/googlesamples/unity-jar-resolver#getting-started
+        // Export your plugin <...> ensuring that you <...> Add the -gvh_disable option.
+        // You must specify the -gvh_disable option in order for the Version Handler to work correctly!
+        var args = "-gvh_disable -exportPackage ";
         foreach (var path in _includePaths)
         {
             args += " " + path;
@@ -344,6 +376,20 @@ Task ("Externals-Uwp-IL2CPP-Dependencies")
         ExecuteUnityCommand ("-executeMethod AppCenterPostBuild.ProcessUwpIl2CppDependencies");
     }).OnError (HandleError);
 
+// Download and install all external Unity packages required.
+Task("Externals-Unity-Packages").Does(()=>
+{
+    var directoryPath = new DirectoryPath("externals/unity-packages");
+    CleanDirectory(directoryPath);
+    foreach (var package in ExternalUnityPackages)
+    {
+        var destination = directoryPath.CombineWithFilePath(package.Name);
+        DownloadFile(package.Url, destination);
+        Information("Importing package " + package.Name + ". This could take a minute.");
+        var command = package.AdditionalImportArgs + " -importPackage " + destination.FullPath;
+        ExecuteUnityCommand(command);
+    }
+}).OnError(HandleError);
 
 // Add App Center packages to demo app.
 Task("AddPackagesToDemoApp")
@@ -376,6 +422,7 @@ Task("Externals")
     .IsDependentOn("Externals-Android")
     .IsDependentOn("BuildAndroidContentProvider")
     .IsDependentOn("Externals-Uwp-IL2CPP-Dependencies")
+    .IsDependentOn("Externals-Unity-Packages")
     .Does(()=>
 {
     DeleteDirectoryIfExists("externals");

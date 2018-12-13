@@ -18,5 +18,7 @@
         <!-- UWP files -->
         <file path="Assets/AppCenter/Plugins/WSA/Push" />
         <file path="Assets/AppCenter/Plugins/AppCenterSDK/Push/UWP" />
+
+        <file path="Assets/PlayServicesResolver" />
     </include>
 </package>
