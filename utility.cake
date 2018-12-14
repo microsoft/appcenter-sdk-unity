@@ -151,8 +151,7 @@ static IEnumerable<string> GetBuiltPackages()
     var files = Statics.Context.GetFiles("output/*.unitypackage");
     foreach (var file in files)
     {
-        if (!file.FullPath.Contains("AppCenter-v") &&
-            !file.FullPath.Contains("AppCenterPush-v"))
+        if (!file.FullPath.Contains("AppCenter-v"))
         {
             yield return file.FullPath;
         }

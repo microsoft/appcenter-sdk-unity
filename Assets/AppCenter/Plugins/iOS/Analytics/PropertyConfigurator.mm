@@ -12,7 +12,7 @@ void appcenter_unity_property_configurator_set_app_name(MSPropertyConfigurator *
 }
 
 void appcenter_unity_property_configurator_set_user_id(MSPropertyConfigurator *configurator, char* userId) {
-  //[configurator setUserId: appcenter_unity_cstr_to_ns_string(userId)];
+  [configurator setUserId: appcenter_unity_cstr_to_ns_string(userId)];
 }
 
 void appcenter_unity_property_configurator_set_app_version(MSPropertyConfigurator *configurator, char* appVersion) {
