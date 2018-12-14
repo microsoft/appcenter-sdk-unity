@@ -37,7 +37,7 @@ void appcenter_unity_set_log_url(const char* logUrl)
 
 void appcenter_unity_set_user_id(char* userId)
 {
-  //[MSAppCenter setUserId: appcenter_unity_cstr_to_ns_string(userId)];
+  [MSAppCenter setUserId: appcenter_unity_cstr_to_ns_string(userId)];
 }
 
 void appcenter_unity_set_enabled(bool isEnabled)
