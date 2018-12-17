@@ -90,10 +90,6 @@ public class AppCenterSettingsMakerIos : IAppCenterSettingsMaker
         AddToken(UsePushToken);
     }
 
-    public void SetSenderId(string senderId)
-    {
-    }
-
     public void EnableFirebaseAnalytics()
     {
     }
