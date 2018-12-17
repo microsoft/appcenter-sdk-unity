@@ -49,10 +49,13 @@ namespace Microsoft.AppCenter.Unity.Crashes.Internal
 
         public static void GenerateTestCrash()
         {
-            new Thread(() =>
+            if (Debug.isDebugBuild)
             {
-                AndroidJNI.FindClass("non/existent/class/name");
-            }).Start();
+                new Thread(() =>
+                {
+                    AndroidJNI.FindClass("Test/crash/generated/by/SDK");
+                }).Start();
+            }
         }
 
         public static AppCenterTask<bool> HasCrashedInLastSession()
