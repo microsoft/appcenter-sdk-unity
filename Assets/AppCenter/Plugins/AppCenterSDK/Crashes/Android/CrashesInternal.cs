@@ -4,12 +4,13 @@
 
 #if UNITY_ANDROID && !UNITY_EDITOR
 using Microsoft.AppCenter.Unity.Crashes.Models;
-using Microsoft.AppCenter.Unity.Internal.Utility;
-using System;
-using System.Collections.Generic;
-using UnityEngine;
 using Microsoft.AppCenter.Unity.Crashes;
+using Microsoft.AppCenter.Unity.Internal.Utility;
 using Microsoft.AppCenter.Unity.Internal;
+using System.Collections.Generic;
+using System.Threading;
+using System;
+using UnityEngine;
 
 namespace Microsoft.AppCenter.Unity.Crashes.Internal
 {
@@ -48,7 +49,18 @@ namespace Microsoft.AppCenter.Unity.Crashes.Internal
 
         public static void GenerateTestCrash()
         {
-            _crashes.CallStatic("generateTestCrash");
+            // The call to the "generateTestCrash" method from native SDK wouldn't work in this
+            // case because it just throws an exception which Unity automatically catches and logs,
+            // without crashing the application
+            // _crashes.CallStatic("generateTestCrash");
+
+            if (Debug.isDebugBuild)
+            {
+                new Thread(() =>
+                {
+                    AndroidJNI.FindClass("Test/crash/generated/by/SDK");
+                }).Start();
+            }
         }
 
         public static AppCenterTask<bool> HasCrashedInLastSession()
