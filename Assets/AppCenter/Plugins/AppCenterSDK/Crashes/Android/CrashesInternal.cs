@@ -49,6 +49,11 @@ namespace Microsoft.AppCenter.Unity.Crashes.Internal
 
         public static void GenerateTestCrash()
         {
+            // The call to the "generateTestCrash" method from native SDK wouldn't work in this
+            // case because it just throws an exception which Unity automatically catches and logs,
+            // without crashing the application
+            // _crashes.CallStatic("generateTestCrash");
+
             if (Debug.isDebugBuild)
             {
                 new Thread(() =>
