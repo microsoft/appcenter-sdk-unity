@@ -3,7 +3,6 @@
 // Licensed under the MIT license.
 
 #if UNITY_WSA_10_0 && !UNITY_EDITOR
-
 using Microsoft.AppCenter.Unity.Crashes.Models;
 using System;
 using System.Collections.Generic;
@@ -45,9 +44,9 @@ namespace Microsoft.AppCenter.Unity.Crashes.Internal
             return AppCenterTask<bool>.FromCompleted(false);
         }
 
-        public static ErrorReport LastSessionCrashReport()
+        public static AppCenterTask<ErrorReport> GetLastSessionCrashReportAsync()
         {
-            return null;
+            return AppCenterTask<ErrorReport>.FromCompleted(null);
         }
 
         public static void DisableMachExceptionHandler()

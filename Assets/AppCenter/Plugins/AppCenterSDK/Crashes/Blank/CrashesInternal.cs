@@ -57,9 +57,9 @@ namespace Microsoft.AppCenter.Unity.Crashes.Internal
         {
         }
 
-        public static ErrorReport LastSessionCrashReport()
+        public static AppCenterTask<ErrorReport> GetLastSessionCrashReportAsync()
         {
-            return null;
+            return AppCenterTask<ErrorReport>.FromCompleted(null);
         }
 
         public static void SetUserConfirmationHandler(Crashes.UserConfirmationHandler handler)

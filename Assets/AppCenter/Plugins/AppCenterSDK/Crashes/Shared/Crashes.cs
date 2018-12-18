@@ -120,9 +120,9 @@ namespace Microsoft.AppCenter.Unity.Crashes
             CrashesInternal.DisableMachExceptionHandler();
         }
 
-        public static ErrorReport LastSessionCrashReport()
+        public static AppCenterTask<ErrorReport> GetLastSessionCrashReportAsync()
         {
-            return CrashesInternal.LastSessionCrashReport();
+            return CrashesInternal.GetLastSessionCrashReportAsync();
         }
 
         /// <summary>

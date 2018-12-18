@@ -100,26 +100,28 @@ public class PuppetCrashes : MonoBehaviour
 
     public void LastCrashReport()
     {
-        var errorReport = Crashes.LastSessionCrashReport();
-        var info = new Dictionary<string, string>();
-        if (errorReport != null)
+        Crashes.GetLastSessionCrashReportAsync().ContinueWith(task =>
         {
-            info.Add("Type", errorReport.Exception.Type);
-            info.Add("Message", errorReport.Exception.Message);
-            info.Add("App Start Time", errorReport.AppStartTime.ToString());
-            info.Add("App Error Time", errorReport.AppErrorTime.ToString());
-            info.Add("Report Id", errorReport.Id);
-            info.Add("Process Id", errorReport.ProcessId.ToString());
-            info.Add("Reporter Key", errorReport.ReporterKey);
-            info.Add("Reporter Signal", errorReport.ReporterSignal);
-            info.Add("Is App Killed", errorReport.IsAppKill.ToString());
-            info.Add("Stack Trace", errorReport.Exception.StackTrace);
-        }
-        else
-        {
-            info.Add("Result", "No crash in last session");
-        }
-        LastSessionCrashReport.text = string.Join("\n", info.Select(i => i.Key + " : " + i.Value).ToArray());
+            var errorReport = task.Result;
+            var info = new Dictionary<string, string>();
+            if (errorReport != null)
+            {
+                info.Add("Message", errorReport.Exception.Message);
+                info.Add("App Start Time", errorReport.AppStartTime.ToString());
+                info.Add("App Error Time", errorReport.AppErrorTime.ToString());
+                info.Add("Report Id", errorReport.Id);
+                info.Add("Process Id", errorReport.ProcessId.ToString());
+                info.Add("Reporter Key", errorReport.ReporterKey);
+                info.Add("Reporter Signal", errorReport.ReporterSignal);
+                info.Add("Is App Killed", errorReport.IsAppKill.ToString());
+                info.Add("Stack Trace", errorReport.Exception.StackTrace);
+            }
+            else
+            {
+                info.Add("Result", "No crash in last session");
+            }
+            LastSessionCrashReport.text = string.Join("\n", info.Select(i => i.Key + " : " + i.Value).ToArray());
+        });
     }
 
     public static ErrorAttachmentLog[] GetErrorAttachmentstHandler(ErrorReport errorReport)

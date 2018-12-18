@@ -57,10 +57,11 @@ namespace Microsoft.AppCenter.Unity.Crashes.Internal
             appcenter_unity_crashes_disable_mach_exception_handler();
         }
 
-        public static ErrorReport LastSessionCrashReport()
+        public static AppCenterTask<ErrorReport> GetLastSessionCrashReportAsync()
         {
             var errorReportPtr = appcenter_unity_crashes_last_session_crash_report();
-            return GetErrorReportFromIntPtr(errorReportPtr);
+            var errorReport = GetErrorReportFromIntPtr(errorReportPtr);
+            return AppCenterTask<ErrorReport>.FromCompleted(errorReport);
         }
 
         public static void SetUserConfirmationHandler(Crashes.UserConfirmationHandler handler)
@@ -105,7 +106,7 @@ namespace Microsoft.AppCenter.Unity.Crashes.Internal
             var isAppKill = app_center_unity_crashes_error_report_is_app_kill(errorReportPtr);
             var condition = exceptionName + " : " + exceptionReason;
             var exception = new Models.Exception(condition, "");
-            return new ErrorReport(identifier, dtoStart, dtoError, exception, procId, reporterKey, reporterSignal, isAppKill);
+            return new ErrorReport(identifier, dtoStart, dtoError, exception, null, "", procId, reporterKey, reporterSignal, isAppKill);
         }
 
 #region External

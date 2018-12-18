@@ -8,12 +8,15 @@ namespace Microsoft.AppCenter.Unity.Crashes
 {
     public class ErrorReport
     {
-        public ErrorReport(string id, DateTimeOffset appStartTime, DateTimeOffset appErrorTime, Models.Exception exception, int processId, string reporterKey, string reporterSignal, bool isAppKill)
+        public ErrorReport(string id, DateTimeOffset appStartTime, DateTimeOffset appErrorTime, Models.Exception exception, Device device,
+            string threadName, int processId, string reporterKey, string reporterSignal, bool isAppKill)
         {
             Id = id;
             AppStartTime = appStartTime;
             AppErrorTime = appErrorTime;
             Exception = exception;
+            Device = device;
+            ThreadName = threadName;
             ProcessId = processId;
             ReporterKey = reporterKey;
             ReporterSignal = reporterSignal;
@@ -42,13 +45,19 @@ namespace Microsoft.AppCenter.Unity.Crashes
         /// Gets the device that the crashed app was being run on.
         /// </summary>
         /// <value>Device information at the crash time.</value>
-        //public Device Device { get; private set; }
+        public Device Device { get; private set; }
 
         /// <summary>
         /// Gets the model exception associated with the error.
         /// </summary>
         /// <value>The exception.</value>
         public Models.Exception Exception { get; private set; }
+
+        /// <summary>
+        /// Gets the thread name.
+        /// </summary>
+        /// <value>The thread name.</value>
+        public string ThreadName { get; private set; }
 
         /// <summary>
         /// Gets the process identifier.
