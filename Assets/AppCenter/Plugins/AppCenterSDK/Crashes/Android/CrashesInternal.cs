@@ -19,6 +19,8 @@ namespace Microsoft.AppCenter.Unity.Crashes.Internal
         private static AndroidJavaClass _crashes = new AndroidJavaClass("com.microsoft.appcenter.crashes.Crashes");
         private static AndroidJavaClass _wrapperSdkExceptionManager = new AndroidJavaClass("com.microsoft.appcenter.crashes.WrapperSdkExceptionManager");
 
+        private static Crashes.UserConfirmationHandler userConfirmationHandler;
+
         public static void AddNativeType(List<IntPtr> nativeTypes)
         {
             nativeTypes.Add(AndroidJNI.FindClass("com/microsoft/appcenter/crashes/Crashes"));
@@ -88,6 +90,7 @@ namespace Microsoft.AppCenter.Unity.Crashes.Internal
 
         public static void SetUserConfirmationHandler(Crashes.UserConfirmationHandler handler)
         {
+            CrashesDelegate.SetShouldAwaitUserConfirmationHandler(handler);
         }
 
         public static void NotifyWithUserConfirmation(Crashes.ConfirmationResult answer)
