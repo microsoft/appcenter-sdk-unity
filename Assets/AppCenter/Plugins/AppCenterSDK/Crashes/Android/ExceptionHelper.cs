@@ -1,4 +1,5 @@
-﻿#if UNITY_ANDROID && !UNITY_EDITOR
+﻿/*
+#if UNITY_ANDROID && !UNITY_EDITOR
 
 using UnityEngine;
 
@@ -22,3 +23,4 @@ namespace Microsoft.AppCenter.Unity.Crashes.Models
     }
 }
 #endif
+*/
