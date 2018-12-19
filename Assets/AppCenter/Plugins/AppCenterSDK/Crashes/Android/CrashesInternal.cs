@@ -73,7 +73,13 @@ namespace Microsoft.AppCenter.Unity.Crashes.Internal
         {
             var future = _crashes.CallStatic<AndroidJavaObject>("getLastSessionCrashReport");
             var task = new AppCenterTask<AndroidJavaObject>(future);
-            return null; // todo: implement
+            var errorReportTask = new AppCenterTask<ErrorReport>();
+            task.ContinueWith(t =>
+            {
+                var errorReport = ErrorReportConverter.Convert(t.Result);
+                errorReportTask.SetResult(errorReport);
+            });
+            return errorReportTask;
         }
 
         public static void DisableMachExceptionHandler()

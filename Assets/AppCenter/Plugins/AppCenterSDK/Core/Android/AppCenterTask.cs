@@ -10,10 +10,6 @@ namespace Microsoft.AppCenter.Unity
 {
     public partial class AppCenterTask
     {
-        protected AppCenterTask()
-        {
-        }
-
         public AppCenterTask(AndroidJavaObject javaFuture)
         {
             var consumer = new UnityAppCenterConsumer<AndroidJavaObject>();

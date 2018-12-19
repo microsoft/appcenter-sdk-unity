@@ -26,10 +26,6 @@ namespace Microsoft.AppCenter.Unity
             }
         }
 
-        public AppCenterTask()
-        {
-        }
-
         public AppCenterTask(AndroidJavaObject javaFuture)
         {
             _consumer.CompletionCallback = SetResult;

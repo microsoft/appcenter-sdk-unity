@@ -9,6 +9,10 @@ public class ErrorReportConverter
 {
     public static ErrorReport Convert(AndroidJavaObject errorReport)
     {
+        if (errorReport == null)
+        {
+            return null;
+        }
         var id = errorReport.Call<string>("getId");
         var threadName = errorReport.Call<string>("getThreadName");
         var startTime = JavaDateHelper.DateTimeConvert(errorReport.Call<AndroidJavaObject>("getAppStartTime"));
@@ -40,14 +44,20 @@ public class ErrorReportConverter
             device.Call<string>("getOsName"),
             device.Call<string>("getOsVersion"),
             device.Call<string>("getOsBuild"),
-            device.Call<int>("getOsApiLevel"),
+            GetIntValue(device, "getOsApiLevel"),
             device.Call<string>("getLocale"),
-            device.Call<int>("getTimeZoneOffset"),
+            GetIntValue(device, "getTimeZoneOffset"),
             device.Call<string>("getScreenSize"),
             device.Call<string>("getAppVersion"),
             device.Call<string>("getCarrierName"),
             device.Call<string>("getCarrierCountry"),
             device.Call<string>("getAppBuild"),
             device.Call<string>("getAppNamespace"));
+    }
+
+    private static int GetIntValue(AndroidJavaObject javaObject, string getterName)
+    {
+        var integer = javaObject.Call<AndroidJavaObject>(getterName);
+        return integer.Call<int>("intValue");
     }
 }

@@ -14,6 +14,10 @@ namespace Microsoft.AppCenter.Unity
     /// <seealso cref="AppCenterTask"/>
     public partial class AppCenterTask<TResult> : AppCenterTask
     {
+        public AppCenterTask() : base()
+        {
+        }
+
         /// <summary>
         /// Adds a callback that will be invoked once the task is complete. If
         /// the task is already complete, it is invoked immediately after being set.
