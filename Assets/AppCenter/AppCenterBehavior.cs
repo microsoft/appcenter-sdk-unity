@@ -98,19 +98,22 @@ public class AppCenterBehavior : MonoBehaviour
                 }
             }
         }
-        // On iOS we start crash service here, to give app an opportunity to assign handlers after crash and restart in Awake method
-#if UNITY_IOS
+#if UNITY_IOS || UNITY_ANDROID
         else
         {
             foreach (var service in services)
             {
+#if UNITY_IOS || UNITY_ANDROID
+                // On iOS and Android we start crash service here, to give app an opportunity to assign handlers after crash and restart in Awake method
                 var startCrashes = service.GetMethod("StartCrashes");
-                var startPush = service.GetMethod("StartPush");
                 if (startCrashes != null)
                     startCrashes.Invoke(null, null);
-
+#endif
+#if UNITY_IOS
+                var startPush = service.GetMethod("StartPush");
                 if (startPush != null)
                     startPush.Invoke(null, null);
+#endif
             }
         }
 #endif
