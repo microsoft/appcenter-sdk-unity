@@ -30,14 +30,32 @@ namespace Microsoft.AppCenter.Unity.Crashes.Internal
         //TODO bind error report; implement these
         public void onBeforeSending(AndroidJavaObject report)
         {
+            var handlers = SendingErrorReport;
+            if (handlers != null)
+            {
+                var errorReport = ErrorReportConverter.Convert(report);
+                handlers.Invoke(errorReport);
+            }
         }
 
         public void onSendingFailed(AndroidJavaObject report, AndroidJavaObject exception)
         {
+            var handlers = FailedToSendErrorReport;
+            if (handlers != null)
+            {
+                var errorReport = ErrorReportConverter.Convert(report);
+                handlers.Invoke(errorReport);
+            }
         }
 
         public void onSendingSucceeded(AndroidJavaObject report)
         {
+            var handlers = SentErrorReport;
+            if (handlers != null)
+            {
+                var errorReport = ErrorReportConverter.Convert(report);
+                handlers.Invoke(errorReport);
+            }
         }
 
         public bool shouldProcess(AndroidJavaObject report)

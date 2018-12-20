@@ -78,16 +78,8 @@ namespace Microsoft.AppCenter.Unity.Crashes.Internal
             var errorReportTask = new AppCenterTask<ErrorReport>();
             javaTask.ContinueWith(t =>
             {
-                try
-                {
-                    var errorReport = ErrorReportConverter.Convert(t.Result);
-                    errorReportTask.SetResult(errorReport);
-                }
-                catch (System.Exception e)
-                {
-                    Debug.LogErrorFormat("Failed to convert error report Java object to .Net object: {0}", e.ToString());
-                    errorReportTask.SetResult(null);
-                }
+                var errorReport = ErrorReportConverter.Convert(t.Result);
+                errorReportTask.SetResult(errorReport);
             });
             return errorReportTask;
         }

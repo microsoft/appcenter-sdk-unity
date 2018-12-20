@@ -13,13 +13,21 @@ public class ErrorReportConverter
         {
             return null;
         }
-        var id = errorReport.Call<string>("getId");
-        var threadName = errorReport.Call<string>("getThreadName");
-        var startTime = JavaDateHelper.DateTimeConvert(errorReport.Call<AndroidJavaObject>("getAppStartTime"));
-        var errorTime = JavaDateHelper.DateTimeConvert(errorReport.Call<AndroidJavaObject>("getAppErrorTime"));
-        var exception = ConvertException(errorReport.Call<AndroidJavaObject>("getThrowable"));
-        var device = ConvertDevice(errorReport.Call<AndroidJavaObject>("getDevice"));
-        return new ErrorReport(id, startTime, errorTime, exception, device, threadName, 0, string.Empty, string.Empty, false);
+        try
+        {
+            var id = errorReport.Call<string>("getId");
+            var threadName = errorReport.Call<string>("getThreadName");
+            var startTime = JavaDateHelper.DateTimeConvert(errorReport.Call<AndroidJavaObject>("getAppStartTime"));
+            var errorTime = JavaDateHelper.DateTimeConvert(errorReport.Call<AndroidJavaObject>("getAppErrorTime"));
+            var exception = ConvertException(errorReport.Call<AndroidJavaObject>("getThrowable"));
+            var device = ConvertDevice(errorReport.Call<AndroidJavaObject>("getDevice"));
+            return new ErrorReport(id, startTime, errorTime, exception, device, threadName, 0, string.Empty, string.Empty, false);
+        }
+        catch (System.Exception e)
+        {
+            Debug.LogErrorFormat("Failed to convert error report Java object to .Net object: {0}", e.ToString());
+            return null;
+        }
     }
 
     private static Exception ConvertException(AndroidJavaObject throwable)
