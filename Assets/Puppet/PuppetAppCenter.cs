@@ -97,20 +97,8 @@ public class PuppetAppCenter : MonoBehaviour
             _customUserId = customUserId;
             AppCenter.SetUserId(customUserId);
         }
-        Crashes.ShouldProcessErrorReport = PuppetCrashes.ShouldProcessErrorReportHandler;
-        Crashes.ShouldAwaitUserConfirmation = UserConfirmationHandler;
-        Crashes.GetErrorAttachments = PuppetCrashes.GetErrorAttachmentstHandler;
-        Crashes.SendingErrorReport += PuppetCrashes.SendingErrorReportHandler;
-        Crashes.SentErrorReport += PuppetCrashes.SentErrorReportHandler;
-        Crashes.FailedToSendErrorReport += PuppetCrashes.FailedToSendErrorReportHandler;
-        instance = this;
-    }
 
-    [MonoPInvokeCallback(typeof(Crashes.UserConfirmationHandler))]
-    public static bool UserConfirmationHandler()
-    {
-        instance.userConfirmationDialog.Show();
-        return true;
+        instance = this;
     }
 
     void OnEnable()
