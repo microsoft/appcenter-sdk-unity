@@ -19,7 +19,7 @@ public class ErrorReportConverter
         var errorTime = JavaDateHelper.DateTimeConvert(errorReport.Call<AndroidJavaObject>("getAppErrorTime"));
         var exception = ConvertException(errorReport.Call<AndroidJavaObject>("getThrowable"));
         var device = ConvertDevice(errorReport.Call<AndroidJavaObject>("getDevice"));
-        return new ErrorReport(id, startTime, errorTime, exception, device, threadName, 0, "", "", false);
+        return new ErrorReport(id, startTime, errorTime, exception, device, threadName, 0, string.Empty, string.Empty, false);
     }
 
     private static Exception ConvertException(AndroidJavaObject throwable)

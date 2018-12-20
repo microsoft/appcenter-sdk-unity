@@ -74,12 +74,20 @@ namespace Microsoft.AppCenter.Unity.Crashes.Internal
         public static AppCenterTask<ErrorReport> GetLastSessionCrashReportAsync()
         {
             var future = _crashes.CallStatic<AndroidJavaObject>("getLastSessionCrashReport");
-            var task = new AppCenterTask<AndroidJavaObject>(future);
+            var javaTask = new AppCenterTask<AndroidJavaObject>(future);
             var errorReportTask = new AppCenterTask<ErrorReport>();
-            task.ContinueWith(t =>
+            javaTask.ContinueWith(t =>
             {
-                var errorReport = ErrorReportConverter.Convert(t.Result);
-                errorReportTask.SetResult(errorReport);
+                try
+                {
+                    var errorReport = ErrorReportConverter.Convert(t.Result);
+                    errorReportTask.SetResult(errorReport);
+                }
+                catch (System.Exception e)
+                {
+                    Debug.LogErrorFormat("Failed to convert error report Java object to .Net object: {0}", e.ToString());
+                    errorReportTask.SetResult(null);
+                }
             });
             return errorReportTask;
         }
