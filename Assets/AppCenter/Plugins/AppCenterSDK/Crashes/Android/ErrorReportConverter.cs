@@ -24,12 +24,12 @@ public class ErrorReportConverter
 
     private static Exception ConvertException(AndroidJavaObject throwable)
     {
-        var message = throwable.Call<string>("getMessage");
+        var message = throwable.Call<string>("toString");
         var stackTrace = throwable.Call<AndroidJavaObject[]>("getStackTrace");
         var stackTraceString = new StringBuilder();
         foreach (var element in stackTrace)
         {
-            stackTraceString.AppendLine("\tat " + element.Call<string>("toString"));
+            stackTraceString.AppendLine("at " + element.Call<string>("toString"));
         }
         return new Exception(message, stackTraceString.ToString().TrimEnd());
     }
