@@ -13,14 +13,18 @@ namespace Microsoft.AppCenter.Unity.Crashes.Internal
         public static event Crashes.SentErrorReportHandler SentErrorReport;
         public static event Crashes.FailedToSendErrorReportHandler FailedToSendErrorReport;
 
+        private static readonly CrashesDelegate instance = new CrashesDelegate();
+
+        private Crashes.UserConfirmationHandler shouldAwaitUserConfirmationHandler = null;
+
         private CrashesDelegate() : base("com.microsoft.appcenter.crashes.CrashesListener")
         {
         }
 
         public static void SetDelegate()
         {
-            //var crashes = new AndroidJavaClass("com.microsoft.appcenter.crashes.Crashes");
-            //crashes.CallStatic("setListener", new CrashesDelegate());
+            var crashes = new AndroidJavaClass("com.microsoft.appcenter.crashes.Crashes");
+            crashes.CallStatic("setListener", instance);
         }
 
         //TODO bind error report; implement these
@@ -43,12 +47,22 @@ namespace Microsoft.AppCenter.Unity.Crashes.Internal
 
         public bool shouldAwaitUserConfirmation()
         {
+            if (instance.shouldAwaitUserConfirmationHandler != null)
+            {
+                return instance.shouldAwaitUserConfirmationHandler.Invoke();
+            }
+
             return false;
         }
 
         public AndroidJavaObject getErrorAttachments(AndroidJavaObject report)
         {
             return null;
+        }
+
+        public static void SetShouldAwaitUserConfirmationHandler(Crashes.UserConfirmationHandler handler)
+        {
+            instance.shouldAwaitUserConfirmationHandler = handler;
         }
 
         public static void SetShouldProcessErrorReportHandler(Crashes.ShouldProcessErrorReportHandler handler)

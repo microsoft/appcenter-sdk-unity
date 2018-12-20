@@ -19,6 +19,8 @@ namespace Microsoft.AppCenter.Unity.Crashes.Internal
         private static AndroidJavaClass _crashes = new AndroidJavaClass("com.microsoft.appcenter.crashes.Crashes");
         private static AndroidJavaClass _wrapperSdkExceptionManager = new AndroidJavaClass("com.microsoft.appcenter.crashes.WrapperSdkExceptionManager");
 
+        private static Crashes.UserConfirmationHandler userConfirmationHandler;
+
         public static void AddNativeType(List<IntPtr> nativeTypes)
         {
             nativeTypes.Add(AndroidJNI.FindClass("com/microsoft/appcenter/crashes/Crashes"));
@@ -88,15 +90,35 @@ namespace Microsoft.AppCenter.Unity.Crashes.Internal
 
         public static void SetUserConfirmationHandler(Crashes.UserConfirmationHandler handler)
         {
+            CrashesDelegate.SetShouldAwaitUserConfirmationHandler(handler);
         }
 
         public static void NotifyWithUserConfirmation(Crashes.ConfirmationResult answer)
         {
+            _crashes.CallStatic("notifyUserConfirmation", ToJavaConfirmationResult(answer));
         }
 
         public static void StartCrashes()
         {
             AppCenterInternal.Start(AppCenter.Crashes);
+        }
+
+        private static int ToJavaConfirmationResult(Crashes.ConfirmationResult answer)
+        {
+            // Java values: SEND=0, DONT_SEND=1, ALWAYS_SEND=2
+            // Crashes.ConfirmationResult values: SEND=1, DONT_SEND=0, ALWAYS_SEND=2
+            switch (answer)
+            {
+                case Crashes.ConfirmationResult.Send:
+                    return _crashes.GetStatic<int>("SEND");
+
+                case Crashes.ConfirmationResult.AlwaysSend:
+                    return _crashes.GetStatic<int>("ALWAYS_SEND");
+
+                default:
+                case Crashes.ConfirmationResult.DontSend:
+                    return _crashes.GetStatic<int>("DONT_SEND");
+            }
         }
     }
 }
