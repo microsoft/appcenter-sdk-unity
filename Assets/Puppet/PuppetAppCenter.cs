@@ -14,6 +14,8 @@ using AOT;
 
 public class PuppetAppCenter : MonoBehaviour
 {
+    public static string _textAttachmentCached = "";
+    public static string _binaryAttachmentCached = "";
     public Toggle Enabled;
     public Text StorageSizeLabel;
     public Text InstallIdLabel;
@@ -97,6 +99,9 @@ public class PuppetAppCenter : MonoBehaviour
             _customUserId = customUserId;
             AppCenter.SetUserId(customUserId);
         }
+
+        _textAttachmentCached = PlayerPrefs.GetString(PuppetAppCenter.TextAttachmentKey);
+        _binaryAttachmentCached = PlayerPrefs.GetString(PuppetAppCenter.BinaryAttachmentKey);
 
         instance = this;
     }
