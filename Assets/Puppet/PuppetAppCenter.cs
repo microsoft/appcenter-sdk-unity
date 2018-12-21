@@ -100,8 +100,9 @@ public class PuppetAppCenter : MonoBehaviour
             AppCenter.SetUserId(customUserId);
         }
 
-        _textAttachmentCached = PlayerPrefs.GetString(PuppetAppCenter.TextAttachmentKey);
-        _binaryAttachmentCached = PlayerPrefs.GetString(PuppetAppCenter.BinaryAttachmentKey);
+        // Caching this in Awake method because PlayerPrefs.GetString() can't be called from a background thread.
+        _textAttachmentCached = PlayerPrefs.GetString(TextAttachmentKey);
+        _binaryAttachmentCached = PlayerPrefs.GetString(BinaryAttachmentKey);
 
         instance = this;
     }

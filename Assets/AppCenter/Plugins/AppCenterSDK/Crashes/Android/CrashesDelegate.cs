@@ -19,6 +19,7 @@ namespace Microsoft.AppCenter.Unity.Crashes.Internal
         private static readonly CrashesDelegate instance = new CrashesDelegate();
 
         private Crashes.UserConfirmationHandler shouldAwaitUserConfirmationHandler = null;
+        private Crashes.ShouldProcessErrorReportHandler shouldProcessErrorReportHandler = null;
 
         private CrashesDelegate() : base("com.microsoft.appcenter.crashes.CrashesListener")
         {
@@ -63,6 +64,11 @@ namespace Microsoft.AppCenter.Unity.Crashes.Internal
 
         public bool shouldProcess(AndroidJavaObject report)
         {
+            if (instance.shouldProcessErrorReportHandler != null)
+            {
+                return instance.shouldProcessErrorReportHandler.Invoke(ErrorReportConverter.Convert(report));
+            }
+
             return true;
         }
 
@@ -130,6 +136,7 @@ namespace Microsoft.AppCenter.Unity.Crashes.Internal
 
         public static void SetShouldProcessErrorReportHandler(Crashes.ShouldProcessErrorReportHandler handler)
         {
+            instance.shouldProcessErrorReportHandler = handler;
         }
 
         public static void SetGetErrorAttachmentsHandler(Crashes.GetErrorAttachmentsHandler handler)
