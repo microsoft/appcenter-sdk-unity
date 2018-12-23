@@ -31,13 +31,12 @@ namespace Microsoft.AppCenter.Unity.Crashes.Internal
             crashes.CallStatic("setListener", instance);
         }
 
-        //TODO bind error report; implement these
         public void onBeforeSending(AndroidJavaObject report)
         {
             var handlers = SendingErrorReport;
             if (handlers != null)
             {
-                var errorReport = ErrorReportConverter.Convert(report);
+                var errorReport = JavaObjectsConverter.ConvertErrorReport(report);
                 handlers.Invoke(errorReport);
             }
         }
@@ -47,8 +46,9 @@ namespace Microsoft.AppCenter.Unity.Crashes.Internal
             var handlers = FailedToSendErrorReport;
             if (handlers != null)
             {
-                var errorReport = ErrorReportConverter.Convert(report);
-                handlers.Invoke(errorReport);
+                var errorReport = JavaObjectsConverter.ConvertErrorReport(report);
+                var failCause = JavaObjectsConverter.ConvertException(exception);
+                handlers.Invoke(errorReport, failCause);
             }
         }
 
@@ -57,7 +57,7 @@ namespace Microsoft.AppCenter.Unity.Crashes.Internal
             var handlers = SentErrorReport;
             if (handlers != null)
             {
-                var errorReport = ErrorReportConverter.Convert(report);
+                var errorReport = JavaObjectsConverter.ConvertErrorReport(report);
                 handlers.Invoke(errorReport);
             }
         }
@@ -66,7 +66,7 @@ namespace Microsoft.AppCenter.Unity.Crashes.Internal
         {
             if (instance.shouldProcessErrorReportHandler != null)
             {
-                return instance.shouldProcessErrorReportHandler.Invoke(ErrorReportConverter.Convert(report));
+                return instance.shouldProcessErrorReportHandler.Invoke(JavaObjectsConverter.ConvertErrorReport(report));
             }
 
             return true;
@@ -96,28 +96,28 @@ namespace Microsoft.AppCenter.Unity.Crashes.Internal
         {
             if (GetErrorAttachments != null)
             {
-                 var logs = GetErrorAttachments(ErrorReportConverter.Convert(report));
-                 var nativeLogs = new List<AndroidJavaObject>();
-                 foreach (var errorAttachmetLog in logs)
-                 {
-                     AndroidJavaObject nativeLog = null;
-                     if (errorAttachmetLog.Type == ErrorAttachmentLog.AttachmentType.Text)
-                     {
-                         nativeLog = AttachmentWithText(errorAttachmetLog.Text, errorAttachmetLog.FileName);
-                     }
-                     else
-                     {
-                         nativeLog = AttachmentWithBinary(errorAttachmetLog.Data, errorAttachmetLog.FileName, errorAttachmetLog.ContentType);
-                     }
-                     nativeLogs.Add(nativeLog);
-                 }
+                var logs = GetErrorAttachments(JavaObjectsConverter.ConvertErrorReport(report));
+                var nativeLogs = new List<AndroidJavaObject>();
+                foreach (var errorAttachmetLog in logs)
+                {
+                    AndroidJavaObject nativeLog = null;
+                    if (errorAttachmetLog.Type == ErrorAttachmentLog.AttachmentType.Text)
+                    {
+                        nativeLog = AttachmentWithText(errorAttachmetLog.Text, errorAttachmetLog.FileName);
+                    }
+                    else
+                    {
+                        nativeLog = AttachmentWithBinary(errorAttachmetLog.Data, errorAttachmetLog.FileName, errorAttachmetLog.ContentType);
+                    }
+                    nativeLogs.Add(nativeLog);
+                }
 
                 var javaList = new AndroidJavaObject("java.util.LinkedList");
-                 if (nativeLogs.Count > 0)
+                if (nativeLogs.Count > 0)
                 {
                     javaList.Call("addLast", nativeLogs[0]);
                 }
-                 if (nativeLogs.Count > 1)
+                if (nativeLogs.Count > 1)
                 {
                     javaList.Call("addLast", nativeLogs[1]);
                 }

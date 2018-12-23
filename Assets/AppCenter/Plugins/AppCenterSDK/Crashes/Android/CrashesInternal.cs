@@ -78,7 +78,7 @@ namespace Microsoft.AppCenter.Unity.Crashes.Internal
             var errorReportTask = new AppCenterTask<ErrorReport>();
             javaTask.ContinueWith(t =>
             {
-                var errorReport = ErrorReportConverter.Convert(t.Result);
+                var errorReport = JavaObjectsConverter.ConvertErrorReport(t.Result);
                 errorReportTask.SetResult(errorReport);
             });
             return errorReportTask;

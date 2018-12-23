@@ -1,13 +1,18 @@
-﻿using Microsoft.AppCenter.Unity;
+﻿// Copyright (c) Microsoft Corporation. All rights reserved.
+//
+// Licensed under the MIT license.
+
+#if UNITY_ANDROID
+using Microsoft.AppCenter.Unity;
 using Microsoft.AppCenter.Unity.Crashes;
 using Microsoft.AppCenter.Unity.Crashes.Models;
 using Microsoft.AppCenter.Unity.Internal.Utility;
 using System.Text;
 using UnityEngine;
 
-public class ErrorReportConverter
+public class JavaObjectsConverter
 {
-    public static ErrorReport Convert(AndroidJavaObject errorReport)
+    public static ErrorReport ConvertErrorReport(AndroidJavaObject errorReport)
     {
         if (errorReport == null)
         {
@@ -30,7 +35,7 @@ public class ErrorReportConverter
         }
     }
 
-    private static Exception ConvertException(AndroidJavaObject throwable)
+    public static Exception ConvertException(AndroidJavaObject throwable)
     {
         var message = throwable.Call<string>("toString");
         var stackTrace = throwable.Call<AndroidJavaObject[]>("getStackTrace");
@@ -69,3 +74,4 @@ public class ErrorReportConverter
         return integer.Call<int>("intValue");
     }
 }
+#endif

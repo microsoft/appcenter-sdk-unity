@@ -2,6 +2,8 @@
 //
 // Licensed under the MIT license.
 
+using AOT;
+using Microsoft.AppCenter.Unity.Crashes;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -9,8 +11,7 @@ using System.Linq;
 using System.Threading;
 using UnityEngine;
 using UnityEngine.UI;
-using Microsoft.AppCenter.Unity.Crashes;
-using AOT;
+using Exception = Microsoft.AppCenter.Unity.Crashes.Models.Exception;
 
 public class PuppetCrashes : MonoBehaviour
 {
@@ -63,9 +64,9 @@ public class PuppetCrashes : MonoBehaviour
     {
         try
         {
-            throw new Exception("Test error");
+            throw new System.Exception("Test error");
         }
-        catch (Exception ex)
+        catch (System.Exception ex)
         {
             var properties = new Dictionary<string, string> { { "Category", "Music" }, { "Wifi", "On" } };
             Crashes.TrackError(ex, properties);
@@ -179,7 +180,7 @@ public class PuppetCrashes : MonoBehaviour
     }
 
     [MonoPInvokeCallback(typeof(Crashes.FailedToSendErrorReportHandler))]
-    public static void FailedToSendErrorReportHandler(ErrorReport errorReport)
+    public static void FailedToSendErrorReportHandler(ErrorReport errorReport, Exception exception)
     {
         Debug.Log("Puppet FailedToSendErrorReportHandler");
     }

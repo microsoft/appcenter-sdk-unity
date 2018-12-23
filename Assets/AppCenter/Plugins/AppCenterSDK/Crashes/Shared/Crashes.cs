@@ -246,7 +246,7 @@ namespace Microsoft.AppCenter.Unity.Crashes
 #if ENABLE_IL2CPP
         [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
 #endif
-        public delegate void FailedToSendErrorReportHandler(ErrorReport errorReport);
+        public delegate void FailedToSendErrorReportHandler(ErrorReport errorReport, Models.Exception exception);
 
         public static event FailedToSendErrorReportHandler FailedToSendErrorReport
         {

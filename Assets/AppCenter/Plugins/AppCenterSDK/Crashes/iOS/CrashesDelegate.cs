@@ -147,7 +147,7 @@ namespace Microsoft.AppCenter.Unity.Crashes.Internal
             if (FailedToSendErrorReport != null)
             {
                 ErrorReport errorReport = CrashesInternal.GetErrorReportFromIntPtr(report);
-                FailedToSendErrorReport(errorReport);
+                FailedToSendErrorReport(errorReport, null);
             }
         }
 
