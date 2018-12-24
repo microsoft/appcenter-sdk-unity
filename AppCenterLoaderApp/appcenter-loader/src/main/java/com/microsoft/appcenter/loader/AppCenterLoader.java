@@ -103,7 +103,7 @@ public class AppCenterLoader extends ContentProvider {
             }
         }
         int logLevel = Integer.parseInt(getStringResource(INITIAL_LOG_LEVEL_KEY));
-        AppCenterLog.setLogLevel(logLevel);
+        AppCenter.setLogLevel(logLevel);
         if (isTrueValue(getStringResource(USE_CUSTOM_LOG_URL_KEY))) {
             String customLogUrl = getStringResource(CUSTOM_LOG_URL_KEY);
             if (customLogUrl != null) {
