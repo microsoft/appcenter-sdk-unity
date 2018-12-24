@@ -110,9 +110,9 @@ namespace Microsoft.AppCenter.Unity.Crashes
             CrashesInternal.GenerateTestCrash();
         }
 
-        public static AppCenterTask<bool> HasCrashedInLastSession()
+        public static AppCenterTask<bool> HasCrashedInLastSessionAsync()
         {
-            return CrashesInternal.HasCrashedInLastSession();
+            return CrashesInternal.HasCrashedInLastSessionAsync();
         }
 
         public static void DisableMachExceptionHandler()

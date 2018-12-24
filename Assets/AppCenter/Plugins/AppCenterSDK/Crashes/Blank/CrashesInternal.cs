@@ -48,7 +48,7 @@ namespace Microsoft.AppCenter.Unity.Crashes.Internal
         {
         }
 
-        public static AppCenterTask<bool> HasCrashedInLastSession()
+        public static AppCenterTask<bool> HasCrashedInLastSessionAsync()
         {
             return AppCenterTask<bool>.FromCompleted(false);
         }

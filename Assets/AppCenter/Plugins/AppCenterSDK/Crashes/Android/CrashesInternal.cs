@@ -65,7 +65,7 @@ namespace Microsoft.AppCenter.Unity.Crashes.Internal
             }
         }
 
-        public static AppCenterTask<bool> HasCrashedInLastSession()
+        public static AppCenterTask<bool> HasCrashedInLastSessionAsync()
         {
             var future = _crashes.CallStatic<AndroidJavaObject>("hasCrashedInLastSession");
             return new AppCenterTask<bool>(future);

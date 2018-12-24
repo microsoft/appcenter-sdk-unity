@@ -8,6 +8,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using System.Text;
 using System.Threading;
 using UnityEngine;
 using UnityEngine.UI;
@@ -103,28 +104,7 @@ public class PuppetCrashes : MonoBehaviour
 
     public void LastCrashReport()
     {
-        Crashes.GetLastSessionCrashReportAsync().ContinueWith(task =>
-        {
-            var errorReport = task.Result;
-            var info = new Dictionary<string, string>();
-            if (errorReport != null)
-            {
-                info.Add("Message", errorReport.Exception.Message);
-                info.Add("App Start Time", errorReport.AppStartTime.ToString());
-                info.Add("App Error Time", errorReport.AppErrorTime.ToString());
-                info.Add("Report Id", errorReport.Id);
-                info.Add("Process Id", errorReport.ProcessId.ToString());
-                info.Add("Reporter Key", errorReport.ReporterKey);
-                info.Add("Reporter Signal", errorReport.ReporterSignal);
-                info.Add("Is App Killed", errorReport.IsAppKill.ToString());
-                info.Add("Stack Trace", errorReport.Exception.StackTrace);
-            }
-            else
-            {
-                info.Add("Result", "No crash in last session");
-            }
-            LastSessionCrashReport.text = string.Join("\n", info.Select(i => i.Key + " : " + i.Value).ToArray());
-        });
+        StartCoroutine(LastCrashReportCoroutine());
     }
 
     public static ErrorAttachmentLog[] GetErrorAttachmentstHandler(ErrorReport errorReport)
@@ -183,5 +163,59 @@ public class PuppetCrashes : MonoBehaviour
     public static void FailedToSendErrorReportHandler(ErrorReport errorReport, Exception exception)
     {
         Debug.LogFormat("Puppet FailedToSendErrorReportHandler, exception message: {0}", exception.Message);
+    }
+
+    private IEnumerator LastCrashReportCoroutine()
+    {
+        var hasCrashed = Crashes.HasCrashedInLastSessionAsync();
+        yield return hasCrashed;
+        if (hasCrashed.Result)
+        {
+            var lastSessionReport = Crashes.GetLastSessionCrashReportAsync();
+            yield return lastSessionReport;
+            var errorReport = lastSessionReport.Result;
+            if (errorReport != null)
+            {
+                var status = new StringBuilder();
+                status.AppendLine("Message: " + errorReport.Exception.Message);
+                status.AppendLine("App Start Time: " + errorReport.AppStartTime);
+                status.AppendLine("App Error Time: " + errorReport.AppErrorTime);
+                status.AppendLine("Report Id: " + errorReport.Id);
+                status.AppendLine("Process Id: " + errorReport.ProcessId);
+                status.AppendLine("Reporter Key: " + errorReport.ReporterKey);
+                status.AppendLine("Reporter Signal: " + errorReport.ReporterSignal);
+                status.AppendLine("Is App Killed: " + errorReport.IsAppKill);
+                status.AppendLine("Thread Name: " + errorReport.ThreadName);
+                status.AppendLine("Stack Trace: " + errorReport.Exception.StackTrace);
+                if (errorReport.Device != null)
+                {
+                    status.AppendLine("Device.SdkName: " + errorReport.Device.SdkName);
+                    status.AppendLine("Device.SdkVersion: " + errorReport.Device.SdkVersion);
+                    status.AppendLine("Device.Model: " + errorReport.Device.Model);
+                    status.AppendLine("Device.OemName: " + errorReport.Device.OemName);
+                    status.AppendLine("Device.OsName: " + errorReport.Device.OsName);
+                    status.AppendLine("Device.OsVersion: " + errorReport.Device.OsVersion);
+                    status.AppendLine("Device.OsBuild: " + errorReport.Device.OsBuild);
+                    status.AppendLine("Device.OsApiLevel: " + errorReport.Device.OsApiLevel);
+                    status.AppendLine("Device.Locale: " + errorReport.Device.Locale);
+                    status.AppendLine("Device.TimeZoneOffset: " + errorReport.Device.TimeZoneOffset);
+                    status.AppendLine("Device.ScreenSize: " + errorReport.Device.ScreenSize);
+                    status.AppendLine("Device.AppVersion: " + errorReport.Device.AppVersion);
+                    status.AppendLine("Device.CarrierName: " + errorReport.Device.CarrierName);
+                    status.AppendLine("Device.CarrierCountry: " + errorReport.Device.CarrierCountry);
+                    status.AppendLine("Device.AppBuild: " + errorReport.Device.AppBuild);
+                    status.AppendLine("Device.AppNamespace: " + errorReport.Device.AppNamespace);
+                }
+                LastSessionCrashReport.text = status.ToString();
+            }
+            else
+            {
+                LastSessionCrashReport.text = "App has crashed during the last session but no error report has been found";
+            }
+        }
+        else
+        {
+            LastSessionCrashReport.text = "App has not crashed during the last session";
+        }
     }
 }
