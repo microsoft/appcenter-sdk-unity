@@ -31,6 +31,10 @@ public class AppCenterPostBuild : IPostprocessBuild
     private const string CapabilityElement = "Capability";
     private const string CapabilityNameAttribute = "Name";
     private const string CapabilityNameAttributeValue = "internetClient";
+    private const string App_NET_D3D = "App.cs";
+    private const string App_NET_XAML = "App.xaml.cs";
+    private const string App_IL2CPP_XAML = "App.xaml.cpp";
+    private const string App_IL2CPP_D3D = "App.cpp";
 
 #if UNITY_2018_1_OR_NEWER
     public void OnPostprocessBuild(BuildReport report)
@@ -101,38 +105,43 @@ public class AppCenterPostBuild : IPostprocessBuild
         if (EditorUserBuildSettings.wsaUWPBuildType == WSAUWPBuildType.D3D &&
             PlayerSettings.GetScriptingBackend(BuildTargetGroup.WSA) == ScriptingImplementation.WinRTDotNET)
         {
-            var appFilePath = GetAppFilePath(pathToBuiltProject, "App.cs");
+            var appFilePath = GetAppFilePath(pathToBuiltProject, App_NET_D3D);
             var regexPattern = "private void ApplicationView_Activated \\( CoreApplicationView [a-zA-Z0-9_]*, IActivatedEventArgs args \\) {".Replace(" ", "[\\s]*");
-            InjectCodeToFile(appFilePath, regexPattern, "d3ddotnet.txt");
+            InjectCodeToFile(appFilePath, App_NET_D3D, regexPattern, "d3ddotnet.txt");
         }
         // .NET, XAML
         else if (EditorUserBuildSettings.wsaUWPBuildType == WSAUWPBuildType.XAML &&
-                PlayerSettings.GetScriptingBackend(BuildTargetGroup.WSA) == ScriptingImplementation.WinRTDotNET)
+                 PlayerSettings.GetScriptingBackend(BuildTargetGroup.WSA) == ScriptingImplementation.WinRTDotNET)
         {
-            var appFilePath = GetAppFilePath(pathToBuiltProject, "App.xaml.cs");
+            var appFilePath = GetAppFilePath(pathToBuiltProject, App_NET_XAML);
             var regexPattern = "InitializeUnity\\(args.Arguments\\);";
-            InjectCodeToFile(appFilePath, regexPattern, "xamldotnet.txt", false);
+            InjectCodeToFile(appFilePath, App_NET_XAML, regexPattern, "xamldotnet.txt", false);
         }
         // IL2CPP, XAML
         else if (EditorUserBuildSettings.wsaUWPBuildType == WSAUWPBuildType.XAML &&
-                PlayerSettings.GetScriptingBackend(BuildTargetGroup.WSA) == ScriptingImplementation.IL2CPP)
+                 PlayerSettings.GetScriptingBackend(BuildTargetGroup.WSA) == ScriptingImplementation.IL2CPP)
         {
-            var appFilePath = GetAppFilePath(pathToBuiltProject, "App.xaml.cpp");
+            var appFilePath = GetAppFilePath(pathToBuiltProject, App_IL2CPP_XAML);
             var regexPattern = "InitializeUnity\\(e->Arguments\\);";
-            InjectCodeToFile(appFilePath, regexPattern, "xamlil2cpp.txt", false);
+            InjectCodeToFile(appFilePath, App_IL2CPP_XAML, regexPattern, "xamlil2cpp.txt", false);
         }
         // IL2CPP, D3D
         else if (EditorUserBuildSettings.wsaUWPBuildType == WSAUWPBuildType.D3D &&
-                PlayerSettings.GetScriptingBackend(BuildTargetGroup.WSA) == ScriptingImplementation.IL2CPP)
+                 PlayerSettings.GetScriptingBackend(BuildTargetGroup.WSA) == ScriptingImplementation.IL2CPP)
         {
-            var appFilePath = GetAppFilePath(pathToBuiltProject, "App.cpp");
+            var appFilePath = GetAppFilePath(pathToBuiltProject, App_IL2CPP_D3D);
             var regexPattern = "void App::OnActivated\\(CoreApplicationView\\s*\\^ [a-zA-Z0-9_]+, IActivatedEventArgs\\s*\\^ [a-zA-Z0-9_]+\\) {".Replace(" ", "[\\s]*");
-            InjectCodeToFile(appFilePath, regexPattern, "d3dil2cpp.txt");
+            InjectCodeToFile(appFilePath, App_IL2CPP_D3D, regexPattern, "d3dil2cpp.txt");
         }
     }
 
-    public static void InjectCodeToFile(string appFilePath, string searchRegex, string codeToInsertFileName, bool includeSearchText = true)
+    public static void InjectCodeToFile(string appFilePath, string appFileName, string searchRegex, string codeToInsertFileName, bool includeSearchText = true)
     {
+        if (string.IsNullOrEmpty(appFilePath))
+        {
+            LogInjectFailed(appFileName);
+            return;
+        }
         var appAdditionsFolder = AppCenterSettingsContext.AppCenterPath + "/AppCenter/Plugins/WSA/Push/AppAdditions";
         var codeToInsert = File.ReadAllText(Path.Combine(appAdditionsFolder, codeToInsertFileName));
         var commentText = "App Center Push code:";
@@ -155,9 +164,7 @@ public class AppCenterPostBuild : IPostprocessBuild
         }
         else
         {
-            // TODO Update documentation link
-            Debug.LogError("Unable to automatically modify file '" + appFilePath + "'. For App Center Push to work properly, " +
-                           "please follow troubleshooting instructions at https://docs.microsoft.com/en-us/mobile-center/sdk/troubleshooting/unity");
+            LogInjectFailed(appFilePath);
         }
     }
 
@@ -171,7 +178,7 @@ public class AppCenterPostBuild : IPostprocessBuild
 
     public static string GetAppFilePath(string pathToBuiltProject, string filename)
     {
-        var candidate = Path.Combine(pathToBuiltProject, PlayerSettings.WSA.tileShortName);
+        var candidate = Path.Combine(pathToBuiltProject, Application.productName);
         candidate = Path.Combine(candidate, filename);
         return File.Exists(candidate) ? candidate : null;
     }
@@ -307,10 +314,15 @@ public class AppCenterPostBuild : IPostprocessBuild
         var attribute = element.Attribute(attributeName);
         return attribute == null ? null : attribute.Value;
     }
+
+    private static void LogInjectFailed(string fileName)
+    {
+        Debug.LogError("Unable to automatically modify file '" + fileName + "'. For App Center Push to work properly, " +
+                       "please follow troubleshooting instructions at https://docs.microsoft.com/en-us/appcenter/sdk/troubleshooting/unity");
+    }
     #endregion
 
     #region iOS Methods
-
     private static void OnPostprocessProject(PBXProjectWrapper project)
     {
         // Need to add "-lsqlite3" linker flag to "Other linker flags" due to
