@@ -22,7 +22,11 @@ public class PuppetCrashDialogHandler : MonoBehaviour
     [MonoPInvokeCallback(typeof(Crashes.UserConfirmationHandler))]
     public static bool UserConfirmationHandler()
     {
-        shouldShowDialog = true;
+        lock (uiLocker)
+        {
+            shouldShowDialog = true;
+        }
+
         return true;
     }
 

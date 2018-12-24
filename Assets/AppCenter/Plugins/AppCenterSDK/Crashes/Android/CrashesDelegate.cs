@@ -18,8 +18,8 @@ namespace Microsoft.AppCenter.Unity.Crashes.Internal
 
         private static readonly CrashesDelegate instance = new CrashesDelegate();
 
-        private Crashes.UserConfirmationHandler shouldAwaitUserConfirmationHandler = null;
-        private Crashes.ShouldProcessErrorReportHandler shouldProcessErrorReportHandler = null;
+        private static Crashes.UserConfirmationHandler shouldAwaitUserConfirmationHandler = null;
+        private static Crashes.ShouldProcessErrorReportHandler shouldProcessErrorReportHandler = null;
 
         private CrashesDelegate() : base("com.microsoft.appcenter.crashes.CrashesListener")
         {
@@ -64,9 +64,10 @@ namespace Microsoft.AppCenter.Unity.Crashes.Internal
 
         public bool shouldProcess(AndroidJavaObject report)
         {
-            if (instance.shouldProcessErrorReportHandler != null)
+            var handler = shouldProcessErrorReportHandler;
+            if (handler != null)
             {
-                return instance.shouldProcessErrorReportHandler.Invoke(JavaObjectsConverter.ConvertErrorReport(report));
+                return handler.Invoke(JavaObjectsConverter.ConvertErrorReport(report));
             }
 
             return true;
@@ -74,9 +75,10 @@ namespace Microsoft.AppCenter.Unity.Crashes.Internal
 
         public bool shouldAwaitUserConfirmation()
         {
-            if (instance.shouldAwaitUserConfirmationHandler != null)
+            var handler = shouldAwaitUserConfirmationHandler;
+            if (handler != null)
             {
-                return instance.shouldAwaitUserConfirmationHandler.Invoke();
+                return handler.Invoke();
             }
 
             return false;
@@ -131,12 +133,12 @@ namespace Microsoft.AppCenter.Unity.Crashes.Internal
 
         public static void SetShouldAwaitUserConfirmationHandler(Crashes.UserConfirmationHandler handler)
         {
-            instance.shouldAwaitUserConfirmationHandler = handler;
+            shouldAwaitUserConfirmationHandler = handler;
         }
 
         public static void SetShouldProcessErrorReportHandler(Crashes.ShouldProcessErrorReportHandler handler)
         {
-            instance.shouldProcessErrorReportHandler = handler;
+            shouldProcessErrorReportHandler = handler;
         }
 
         public static void SetGetErrorAttachmentsHandler(Crashes.GetErrorAttachmentsHandler handler)
