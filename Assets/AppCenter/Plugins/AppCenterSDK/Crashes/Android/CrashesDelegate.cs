@@ -14,12 +14,10 @@ namespace Microsoft.AppCenter.Unity.Crashes.Internal
         public static event Crashes.SentErrorReportHandler SentErrorReport;
         public static event Crashes.FailedToSendErrorReportHandler FailedToSendErrorReport;
         private static event Crashes.GetErrorAttachmentsHandler GetErrorAttachments;
-        private static AndroidJavaClass _errorAttachmentLog = new AndroidJavaClass("com.microsoft.appcenter.crashes.ingestion.models.ErrorAttachmentLog");
-
-        private static readonly CrashesDelegate instance = new CrashesDelegate();
-
         private static Crashes.UserConfirmationHandler shouldAwaitUserConfirmationHandler = null;
         private static Crashes.ShouldProcessErrorReportHandler shouldProcessErrorReportHandler = null;
+        private static AndroidJavaClass _errorAttachmentLog = new AndroidJavaClass("com.microsoft.appcenter.crashes.ingestion.models.ErrorAttachmentLog");
+        private static readonly CrashesDelegate instance = new CrashesDelegate();
 
         private CrashesDelegate() : base("com.microsoft.appcenter.crashes.CrashesListener")
         {
@@ -69,7 +67,6 @@ namespace Microsoft.AppCenter.Unity.Crashes.Internal
             {
                 return handler.Invoke(JavaObjectsConverter.ConvertErrorReport(report));
             }
-
             return true;
         }
 
@@ -80,7 +77,6 @@ namespace Microsoft.AppCenter.Unity.Crashes.Internal
             {
                 return handler.Invoke();
             }
-
             return false;
         }
 
