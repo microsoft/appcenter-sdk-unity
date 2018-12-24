@@ -8,8 +8,7 @@ namespace Microsoft.AppCenter.Unity.Crashes
 {
     public class ErrorReport
     {
-        public ErrorReport(string id, DateTimeOffset appStartTime, DateTimeOffset appErrorTime, Models.Exception exception, Device device,
-            string threadName, int processId, string reporterKey, string reporterSignal, bool isAppKill)
+        public ErrorReport(string id, DateTimeOffset appStartTime, DateTimeOffset appErrorTime, Models.Exception exception, Device device, string threadName)
         {
             Id = id;
             AppStartTime = appStartTime;
@@ -17,6 +16,15 @@ namespace Microsoft.AppCenter.Unity.Crashes
             Exception = exception;
             Device = device;
             ThreadName = threadName;
+        }
+
+        public ErrorReport(string id, DateTimeOffset appStartTime, DateTimeOffset appErrorTime, Models.Exception exception, int processId, string reporterKey,
+            string reporterSignal, bool isAppKill)
+        {
+            Id = id;
+            AppStartTime = appStartTime;
+            AppErrorTime = appErrorTime;
+            Exception = exception;
             ProcessId = processId;
             ReporterKey = reporterKey;
             ReporterSignal = reporterSignal;

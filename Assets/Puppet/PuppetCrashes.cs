@@ -182,6 +182,6 @@ public class PuppetCrashes : MonoBehaviour
     [MonoPInvokeCallback(typeof(Crashes.FailedToSendErrorReportHandler))]
     public static void FailedToSendErrorReportHandler(ErrorReport errorReport, Exception exception)
     {
-        Debug.Log("Puppet FailedToSendErrorReportHandler");
+        Debug.LogFormat("Puppet FailedToSendErrorReportHandler, exception message: {0}", exception.Message);
     }
 }

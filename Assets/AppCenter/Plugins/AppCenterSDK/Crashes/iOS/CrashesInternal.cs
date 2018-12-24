@@ -106,7 +106,7 @@ namespace Microsoft.AppCenter.Unity.Crashes.Internal
             var isAppKill = app_center_unity_crashes_error_report_is_app_kill(errorReportPtr);
             var condition = exceptionName + " : " + exceptionReason;
             var exception = new Models.Exception(condition, "");
-            return new ErrorReport(identifier, dtoStart, dtoError, exception, null, "", procId, reporterKey, reporterSignal, isAppKill);
+            return new ErrorReport(identifier, dtoStart, dtoError, exception, procId, reporterKey, reporterSignal, isAppKill);
         }
 
 #region External
