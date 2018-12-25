@@ -31,10 +31,10 @@ public class AppCenterPostBuild : IPostprocessBuild
     private const string CapabilityElement = "Capability";
     private const string CapabilityNameAttribute = "Name";
     private const string CapabilityNameAttributeValue = "internetClient";
-    private const string App_NET_D3D = "App.cs";
-    private const string App_NET_XAML = "App.xaml.cs";
-    private const string App_IL2CPP_XAML = "App.xaml.cpp";
-    private const string App_IL2CPP_D3D = "App.cpp";
+    private const string AppNetD3d = "App.cs";
+    private const string AppNetXaml = "App.xaml.cs";
+    private const string AppIl2cppXaml = "App.xaml.cpp";
+    private const string AppIl2cppD3d = "App.cpp";
 
 #if UNITY_2018_1_OR_NEWER
     public void OnPostprocessBuild(BuildReport report)
@@ -105,33 +105,33 @@ public class AppCenterPostBuild : IPostprocessBuild
         if (EditorUserBuildSettings.wsaUWPBuildType == WSAUWPBuildType.D3D &&
             PlayerSettings.GetScriptingBackend(BuildTargetGroup.WSA) == ScriptingImplementation.WinRTDotNET)
         {
-            var appFilePath = GetAppFilePath(pathToBuiltProject, App_NET_D3D);
+            var appFilePath = GetAppFilePath(pathToBuiltProject, AppNetD3d);
             var regexPattern = "private void ApplicationView_Activated \\( CoreApplicationView [a-zA-Z0-9_]*, IActivatedEventArgs args \\) {".Replace(" ", "[\\s]*");
-            InjectCodeToFile(appFilePath, App_NET_D3D, regexPattern, "d3ddotnet.txt");
+            InjectCodeToFile(appFilePath, AppNetD3d, regexPattern, "d3ddotnet.txt");
         }
         // .NET, XAML
         else if (EditorUserBuildSettings.wsaUWPBuildType == WSAUWPBuildType.XAML &&
                  PlayerSettings.GetScriptingBackend(BuildTargetGroup.WSA) == ScriptingImplementation.WinRTDotNET)
         {
-            var appFilePath = GetAppFilePath(pathToBuiltProject, App_NET_XAML);
+            var appFilePath = GetAppFilePath(pathToBuiltProject, AppNetXaml);
             var regexPattern = "InitializeUnity\\(args.Arguments\\);";
-            InjectCodeToFile(appFilePath, App_NET_XAML, regexPattern, "xamldotnet.txt", false);
+            InjectCodeToFile(appFilePath, AppNetXaml, regexPattern, "xamldotnet.txt", false);
         }
         // IL2CPP, XAML
         else if (EditorUserBuildSettings.wsaUWPBuildType == WSAUWPBuildType.XAML &&
                  PlayerSettings.GetScriptingBackend(BuildTargetGroup.WSA) == ScriptingImplementation.IL2CPP)
         {
-            var appFilePath = GetAppFilePath(pathToBuiltProject, App_IL2CPP_XAML);
+            var appFilePath = GetAppFilePath(pathToBuiltProject, AppIl2cppXaml);
             var regexPattern = "InitializeUnity\\(e->Arguments\\);";
-            InjectCodeToFile(appFilePath, App_IL2CPP_XAML, regexPattern, "xamlil2cpp.txt", false);
+            InjectCodeToFile(appFilePath, AppIl2cppXaml, regexPattern, "xamlil2cpp.txt", false);
         }
         // IL2CPP, D3D
         else if (EditorUserBuildSettings.wsaUWPBuildType == WSAUWPBuildType.D3D &&
                  PlayerSettings.GetScriptingBackend(BuildTargetGroup.WSA) == ScriptingImplementation.IL2CPP)
         {
-            var appFilePath = GetAppFilePath(pathToBuiltProject, App_IL2CPP_D3D);
+            var appFilePath = GetAppFilePath(pathToBuiltProject, AppIl2cppD3d);
             var regexPattern = "void App::OnActivated\\(CoreApplicationView\\s*\\^ [a-zA-Z0-9_]+, IActivatedEventArgs\\s*\\^ [a-zA-Z0-9_]+\\) {".Replace(" ", "[\\s]*");
-            InjectCodeToFile(appFilePath, App_IL2CPP_D3D, regexPattern, "d3dil2cpp.txt");
+            InjectCodeToFile(appFilePath, AppIl2cppD3d, regexPattern, "d3dil2cpp.txt");
         }
     }
 
