@@ -3,11 +3,11 @@
 // Licensed under the MIT license.
 
 #if UNITY_ANDROID
+using System.Text;
 using Microsoft.AppCenter.Unity;
 using Microsoft.AppCenter.Unity.Crashes;
 using Microsoft.AppCenter.Unity.Crashes.Models;
 using Microsoft.AppCenter.Unity.Internal.Utility;
-using System.Text;
 using UnityEngine;
 
 public class JavaObjectsConverter
