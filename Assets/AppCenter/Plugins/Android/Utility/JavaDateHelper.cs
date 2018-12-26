@@ -11,24 +11,33 @@ namespace Microsoft.AppCenter.Unity.Internal.Utility
 {
     public class JavaDateHelper
     {
+        private const string DotNetDateFormat = "yyyy-MM-dd'T'HH:mm:ss.fffK";
+
+        private static AndroidJavaObject _javaDateFormatter;
+        private static AndroidJavaObject JavaDateFormatter
+        {
+            get
+            {
+                if (_javaDateFormatter == null)
+                {
+                    _javaDateFormatter = new AndroidJavaObject("java.text.SimpleDateFormat", "yyyy-MM-dd'T'HH:mm:ss.SSSXXX");
+                }
+                return _javaDateFormatter;
+            }
+        }
+
         public static AndroidJavaObject DateTimeConvert(DateTime date)
         {
-            var format = "yyyy-MM-dd'T'HH:mm:ss.fffK";
-            var javaFormat = "yyyy-MM-dd'T'HH:mm:ss.SSS";
-            var dateFormatter = new AndroidJavaObject("java.text.SimpleDateFormat", javaFormat);
-            var dateString = date.ToString(format);
-            return dateFormatter.Call<AndroidJavaObject>("parse", dateString);
+            var dateString = date.ToString(DotNetDateFormat);
+            return JavaDateFormatter.Call<AndroidJavaObject>("parse", dateString);
         }
 
         public static DateTimeOffset DateTimeConvert(AndroidJavaObject date)
         {
-            // Unable to use DateTimeOffset.ParseExact(dateString, format, CultureInfo.InvariantCulture) here
+            // Unable to use DateTimeOffset.ParseExact(dateString, DotNetDateFormat, CultureInfo.InvariantCulture) here
             // because it throws "Invalid format string" exception
-            var format = "yyyy-MM-dd'T'HH:mm:ss.fffK";
-            var javaFormat = "yyyy-MM-dd'T'HH:mm:ss.SSSXXX";
-            var dateFormatter = new AndroidJavaObject("java.text.SimpleDateFormat", javaFormat);
-            var dateString = dateFormatter.Call<string>("format", date);
-            var dateTime = DateTime.ParseExact(dateString, format, CultureInfo.InvariantCulture, DateTimeStyles.AdjustToUniversal);
+            var dateString = JavaDateFormatter.Call<string>("format", date);
+            var dateTime = DateTime.ParseExact(dateString, DotNetDateFormat, CultureInfo.InvariantCulture, DateTimeStyles.AdjustToUniversal);
             return new DateTimeOffset(dateTime);
         }
     }
