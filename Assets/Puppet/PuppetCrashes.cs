@@ -29,8 +29,8 @@ public class PuppetCrashes : MonoBehaviour
             CrashesEnabled.isOn = task.Result;
         });
         ReportUnhandledExceptions.isOn = Crashes.IsReportingUnhandledExceptions();
-        TextAttachment.text = PuppetAppCenter._textAttachmentCached;
-        BinaryAttachment.text = PuppetAppCenter._binaryAttachmentCached;
+        TextAttachment.text = PuppetAppCenter.TextAttachmentCached;
+        BinaryAttachment.text = PuppetAppCenter.BinaryAttachmentCached;
     }
 
     public void OnValueChanged()
@@ -111,8 +111,8 @@ public class PuppetCrashes : MonoBehaviour
     {
         return new ErrorAttachmentLog[]
         {
-            ErrorAttachmentLog.AttachmentWithText(PuppetAppCenter._textAttachmentCached, "hello.txt"),
-            ErrorAttachmentLog.AttachmentWithBinary(ParseBytes(PuppetAppCenter._binaryAttachmentCached), "fake_image.jpeg", "image/jpeg")
+            ErrorAttachmentLog.AttachmentWithText(PuppetAppCenter.TextAttachmentCached, "hello.txt"),
+            ErrorAttachmentLog.AttachmentWithBinary(ParseBytes(PuppetAppCenter.BinaryAttachmentCached), "fake_image.jpeg", "image/jpeg")
         };
     }
 
