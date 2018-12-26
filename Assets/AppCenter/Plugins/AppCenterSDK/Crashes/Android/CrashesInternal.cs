@@ -109,12 +109,9 @@ namespace Microsoft.AppCenter.Unity.Crashes.Internal
             {
                 case Crashes.ConfirmationResult.Send:
                     return _crashes.GetStatic<int>("SEND");
-
                 case Crashes.ConfirmationResult.AlwaysSend:
                     return _crashes.GetStatic<int>("ALWAYS_SEND");
-
                 default:
-                case Crashes.ConfirmationResult.DontSend:
                     return _crashes.GetStatic<int>("DONT_SEND");
             }
         }
