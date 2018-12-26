@@ -90,8 +90,5 @@ namespace Microsoft.AppCenter.Unity.Crashes
         /// </summary>
         /// <value>True if the details represent an app kill instead of a crash</value>
         public bool IsAppKill { get; private set; }
-
-        //TODO don't have android or ios details
-        //TODO bind device
     }
 }
