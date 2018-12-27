@@ -9,6 +9,7 @@ using System.Linq;
 using System.Collections.Generic;
 using System.Runtime.InteropServices;
 using Microsoft.AppCenter.Unity.Crashes.Models;
+using UnityEngine;
 
 namespace Microsoft.AppCenter.Unity.Crashes.Internal
 {
@@ -104,9 +105,15 @@ namespace Microsoft.AppCenter.Unity.Crashes.Internal
                 dtoError = DateTimeOffset.Parse(errorTime);
             }
             var isAppKill = app_center_unity_crashes_error_report_is_app_kill(errorReportPtr);
-            var condition = exceptionName + " : " + exceptionReason;
-            var exception = new Models.Exception(condition, "");
-            return new ErrorReport(identifier, dtoStart, dtoError, exception, procId, reporterKey, reporterSignal, isAppKill);
+            var exception = new Models.Exception(exceptionName + ": " + exceptionReason, "");
+            var device = GetDevice(errorReportPtr);
+            return new ErrorReport(identifier, dtoStart, dtoError, exception, procId, reporterKey, reporterSignal, isAppKill, device);
+        }
+
+        private static Device GetDevice(IntPtr errorReportPtr)
+        {
+            var device = app_center_unity_crashes_error_report_device(errorReportPtr);
+            return DeviceConverter.Convert(device);
         }
 
 #region External
@@ -170,6 +177,9 @@ namespace Microsoft.AppCenter.Unity.Crashes.Internal
 
         [DllImport("__Internal")]
         private static extern bool app_center_unity_crashes_error_report_is_app_kill(IntPtr errorReport);
+
+        [DllImport("__Internal")]
+        private static extern IntPtr app_center_unity_crashes_error_report_device(IntPtr errorReport);
 
         [DllImport("__Internal")]
         private static extern void appcenter_unity_start_crashes();
