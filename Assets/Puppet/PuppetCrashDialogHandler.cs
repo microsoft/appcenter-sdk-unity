@@ -1,13 +1,12 @@
 ﻿using AOT;
 using Microsoft.AppCenter.Unity.Crashes;
+using System.Threading;
 using UnityEngine;
 
 public class PuppetCrashDialogHandler : MonoBehaviour
 {
     public PuppetConfirmationDialog ConfirmationDialog;
-
-    private static object uiLocker = new object();
-    private static bool shouldShowDialog;
+    private static int shouldShowDialog;
 
     private void Awake()
     {
@@ -22,25 +21,15 @@ public class PuppetCrashDialogHandler : MonoBehaviour
     [MonoPInvokeCallback(typeof(Crashes.UserConfirmationHandler))]
     public static bool UserConfirmationHandler()
     {
-        lock (uiLocker)
-        {
-            shouldShowDialog = true;
-        }
+        Interlocked.Exchange(ref shouldShowDialog, 1);
         return true;
     }
 
     void Update()
     {
-        if (shouldShowDialog)
+        if (Interlocked.CompareExchange(ref shouldShowDialog, 0, 1) == 1)
         {
-            lock (uiLocker)
-            {
-                if (shouldShowDialog)
-                {
-                    ConfirmationDialog.Show();
-                    shouldShowDialog = false;
-                }
-            }
+            ConfirmationDialog.Show();
         }
     }
 
@@ -48,7 +37,7 @@ public class PuppetCrashDialogHandler : MonoBehaviour
     [ContextMenu("Test crash dialog")]
     void TestShowDialog()
     {
-        shouldShowDialog = true;
+        Interlocked.Exchange(ref shouldShowDialog, 1);
     }
 #endif
 }
