@@ -3,7 +3,7 @@
 // Licensed under the MIT license.
 
 #import "NSStringHelper.h"
-#import "Device.h"
+#import "DeviceHelper.h"
 #import <AppCenter/AppCenter.h>
 
 const char* app_center_unity_device_sdk_name(void* device)
