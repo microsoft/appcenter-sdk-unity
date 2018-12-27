@@ -11,8 +11,8 @@ using UnityEngine.UI;
 
 public class PuppetAppCenter : MonoBehaviour
 {
-    public static string _textAttachmentCached = "";
-    public static string _binaryAttachmentCached = "";
+    public static string TextAttachmentCached = "";
+    public static string BinaryAttachmentCached = "";
     public Toggle Enabled;
     public Text StorageSizeLabel;
     public Text InstallIdLabel;
@@ -95,8 +95,8 @@ public class PuppetAppCenter : MonoBehaviour
         }
 
         // Caching this in Awake method because PlayerPrefs.GetString() can't be called from a background thread.
-        _textAttachmentCached = PlayerPrefs.GetString(TextAttachmentKey);
-        _binaryAttachmentCached = PlayerPrefs.GetString(BinaryAttachmentKey);
+        TextAttachmentCached = PlayerPrefs.GetString(TextAttachmentKey);
+        BinaryAttachmentCached = PlayerPrefs.GetString(BinaryAttachmentKey);
     }
 
     void OnEnable()

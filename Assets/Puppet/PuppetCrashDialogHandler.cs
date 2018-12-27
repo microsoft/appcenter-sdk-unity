@@ -26,7 +26,6 @@ public class PuppetCrashDialogHandler : MonoBehaviour
         {
             shouldShowDialog = true;
         }
-
         return true;
     }
 
@@ -36,8 +35,11 @@ public class PuppetCrashDialogHandler : MonoBehaviour
         {
             lock (uiLocker)
             {
-                ConfirmationDialog.Show();
-                shouldShowDialog = false;
+                if (shouldShowDialog)
+                {
+                    ConfirmationDialog.Show();
+                    shouldShowDialog = false;
+                }
             }
         }
     }
