@@ -11,10 +11,6 @@ namespace Microsoft.AppCenter.Unity
 {
     public partial class AppCenterTask
     {
-        protected AppCenterTask()
-        {
-        }
-
         // Task parameter should be started already!
         public AppCenterTask(Task task)
         {

@@ -22,6 +22,10 @@ namespace Microsoft.AppCenter.Unity
         /// <value><c>true</c> if it is complete; otherwise, <c>false</c>.</value>
         public bool IsComplete { get; private set; }
 
+        public AppCenterTask()
+        {
+        }
+
         /// <summary>
         /// Adds a callback that will be invoked once the task is complete. If
         /// the task is already complete, it is invoked immediately after being set.

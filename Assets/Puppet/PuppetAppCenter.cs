@@ -2,18 +2,17 @@
 //
 // Licensed under the MIT license.
 
-using System;
-using System.Collections;
 using Microsoft.AppCenter.Unity;
-using UnityEngine;
-using UnityEngine.UI;
-using Microsoft.AppCenter.Unity.Crashes;
 using Microsoft.AppCenter.Unity.Distribute;
 using Microsoft.AppCenter.Unity.Push;
-using AOT;
+using System.Collections;
+using UnityEngine;
+using UnityEngine.UI;
 
 public class PuppetAppCenter : MonoBehaviour
 {
+    public static string TextAttachmentCached = "";
+    public static string BinaryAttachmentCached = "";
     public Toggle Enabled;
     public Text StorageSizeLabel;
     public Text InstallIdLabel;
@@ -27,9 +26,6 @@ public class PuppetAppCenter : MonoBehaviour
     public const string TextAttachmentKey = "text_attachment";
     public const string BinaryAttachmentKey = "binary_attachment";
     public const string UserIdKey = "user_id";
-
-    static PuppetAppCenter instance;
-
     public GameObject CustomProperty;
     public RectTransform PropertiesList;
     public Toggle DistributeEnabled;
@@ -92,25 +88,15 @@ public class PuppetAppCenter : MonoBehaviour
     private void Awake()
     {
         var customUserId = PlayerPrefs.GetString(UserIdKey);
-        if (customUserId != null && customUserId.Length > 0) 
+        if (customUserId != null && customUserId.Length > 0)
         {
             _customUserId = customUserId;
             AppCenter.SetUserId(customUserId);
         }
-        Crashes.ShouldProcessErrorReport = PuppetCrashes.ShouldProcessErrorReportHandler;
-        Crashes.ShouldAwaitUserConfirmation = UserConfirmationHandler;
-        Crashes.GetErrorAttachments = PuppetCrashes.GetErrorAttachmentstHandler;
-        Crashes.SendingErrorReport += PuppetCrashes.SendingErrorReportHandler;
-        Crashes.SentErrorReport += PuppetCrashes.SentErrorReportHandler;
-        Crashes.FailedToSendErrorReport += PuppetCrashes.FailedToSendErrorReportHandler;
-        instance = this;
-    }
 
-    [MonoPInvokeCallback(typeof(Crashes.UserConfirmationHandler))]
-    public static bool UserConfirmationHandler()
-    {
-        instance.userConfirmationDialog.Show();
-        return true;
+        // Caching this in Awake method because PlayerPrefs.GetString() can't be called from a background thread.
+        TextAttachmentCached = PlayerPrefs.GetString(TextAttachmentKey);
+        BinaryAttachmentCached = PlayerPrefs.GetString(BinaryAttachmentKey);
     }
 
     void OnEnable()

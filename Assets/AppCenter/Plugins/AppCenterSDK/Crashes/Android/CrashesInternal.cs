@@ -63,15 +63,23 @@ namespace Microsoft.AppCenter.Unity.Crashes.Internal
             }
         }
 
-        public static AppCenterTask<bool> HasCrashedInLastSession()
+        public static AppCenterTask<bool> HasCrashedInLastSessionAsync()
         {
             var future = _crashes.CallStatic<AndroidJavaObject>("hasCrashedInLastSession");
             return new AppCenterTask<bool>(future);
         }
 
-        public static ErrorReport LastSessionCrashReport()
+        public static AppCenterTask<ErrorReport> GetLastSessionCrashReportAsync()
         {
-            return null;
+            var future = _crashes.CallStatic<AndroidJavaObject>("getLastSessionCrashReport");
+            var javaTask = new AppCenterTask<AndroidJavaObject>(future);
+            var errorReportTask = new AppCenterTask<ErrorReport>();
+            javaTask.ContinueWith(t =>
+            {
+                var errorReport = JavaObjectsConverter.ConvertErrorReport(t.Result);
+                errorReportTask.SetResult(errorReport);
+            });
+            return errorReportTask;
         }
 
         public static void DisableMachExceptionHandler()
@@ -80,15 +88,32 @@ namespace Microsoft.AppCenter.Unity.Crashes.Internal
 
         public static void SetUserConfirmationHandler(Crashes.UserConfirmationHandler handler)
         {
+            CrashesDelegate.SetShouldAwaitUserConfirmationHandler(handler);
         }
 
         public static void NotifyWithUserConfirmation(Crashes.ConfirmationResult answer)
         {
+            _crashes.CallStatic("notifyUserConfirmation", ToJavaConfirmationResult(answer));
         }
 
         public static void StartCrashes()
         {
             AppCenterInternal.Start(AppCenter.Crashes);
+        }
+
+        private static int ToJavaConfirmationResult(Crashes.ConfirmationResult answer)
+        {
+            // Java values: SEND=0, DONT_SEND=1, ALWAYS_SEND=2
+            // Crashes.ConfirmationResult values: SEND=1, DONT_SEND=0, ALWAYS_SEND=2
+            switch (answer)
+            {
+                case Crashes.ConfirmationResult.Send:
+                    return _crashes.GetStatic<int>("SEND");
+                case Crashes.ConfirmationResult.AlwaysSend:
+                    return _crashes.GetStatic<int>("ALWAYS_SEND");
+                default:
+                    return _crashes.GetStatic<int>("DONT_SEND");
+            }
         }
     }
 }

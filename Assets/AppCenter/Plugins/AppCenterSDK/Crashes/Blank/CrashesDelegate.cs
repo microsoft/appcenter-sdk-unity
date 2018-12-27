@@ -33,6 +33,10 @@ namespace Microsoft.AppCenter.Unity.Crashes.Internal
         public static void SetFailedToSendErrorReportHandler(Crashes.FailedToSendErrorReportHandler handler)
         {
         }
+
+        public static void SetShouldAwaitUserConfirmationHandler(Crashes.UserConfirmationHandler handler)
+        {
+        }
     }
 }
 #endif

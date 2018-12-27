@@ -73,10 +73,11 @@ public class AppCenterLoader extends ContentProvider {
             isModuleAvailable("com.microsoft.appcenter.analytics.Analytics", "Analytics")) {
             classes.add(Analytics.class);
         }
-        if (isTrueValue(getStringResource(USE_CRASHES_KEY)) &&
-            isModuleAvailable("com.microsoft.appcenter.crashes.Crashes", "Crashes")) {
-            classes.add(Crashes.class);
-        }
+        // We start crash service in .Net code, to give app an opportunity to assign handlers after crash and restart in Awake method
+        // if (isTrueValue(getStringResource(USE_CRASHES_KEY)) &&
+        //     isModuleAvailable("com.microsoft.appcenter.crashes.Crashes", "Crashes")) {
+        //     classes.add(Crashes.class);
+        // }
         if (isTrueValue(getStringResource(USE_DISTRIBUTE_KEY)) &&
             isModuleAvailable("com.microsoft.appcenter.distribute.Distribute", "Distribute")) {
             if (isTrueValue(getStringResource(USE_CUSTOM_API_URL_KEY))) {
@@ -102,7 +103,7 @@ public class AppCenterLoader extends ContentProvider {
             }
         }
         int logLevel = Integer.parseInt(getStringResource(INITIAL_LOG_LEVEL_KEY));
-        AppCenterLog.setLogLevel(logLevel);
+        AppCenter.setLogLevel(logLevel);
         if (isTrueValue(getStringResource(USE_CUSTOM_LOG_URL_KEY))) {
             String customLogUrl = getStringResource(CUSTOM_LOG_URL_KEY);
             if (customLogUrl != null) {

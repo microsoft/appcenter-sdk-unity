@@ -28,10 +28,6 @@ namespace Microsoft.AppCenter.Unity
             }
         }
 
-        internal AppCenterTask()
-        {
-        }
-
         public AppCenterTask(Task<TResult> task) : base(task)
         {
             // Need to save the task to access result later

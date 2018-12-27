@@ -110,9 +110,9 @@ namespace Microsoft.AppCenter.Unity.Crashes
             CrashesInternal.GenerateTestCrash();
         }
 
-        public static AppCenterTask<bool> HasCrashedInLastSession()
+        public static AppCenterTask<bool> HasCrashedInLastSessionAsync()
         {
-            return CrashesInternal.HasCrashedInLastSession();
+            return CrashesInternal.HasCrashedInLastSessionAsync();
         }
 
         public static void DisableMachExceptionHandler()
@@ -120,9 +120,9 @@ namespace Microsoft.AppCenter.Unity.Crashes
             CrashesInternal.DisableMachExceptionHandler();
         }
 
-        public static ErrorReport LastSessionCrashReport()
+        public static AppCenterTask<ErrorReport> GetLastSessionCrashReportAsync()
         {
-            return CrashesInternal.LastSessionCrashReport();
+            return CrashesInternal.GetLastSessionCrashReportAsync();
         }
 
         /// <summary>
@@ -246,7 +246,7 @@ namespace Microsoft.AppCenter.Unity.Crashes
 #if ENABLE_IL2CPP
         [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
 #endif
-        public delegate void FailedToSendErrorReportHandler(ErrorReport errorReport);
+        public delegate void FailedToSendErrorReportHandler(ErrorReport errorReport, Models.Exception exception);
 
         public static event FailedToSendErrorReportHandler FailedToSendErrorReport
         {

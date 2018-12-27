@@ -9,7 +9,6 @@ using Microsoft.AppCenter.Unity.Internal;
 using UnityEngine;
 using System.Runtime.InteropServices;
 
-
 namespace Microsoft.AppCenter.Unity
 {
 #if UNITY_IOS || UNITY_ANDROID
