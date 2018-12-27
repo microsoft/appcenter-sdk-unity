@@ -8,7 +8,7 @@ using System.Runtime.InteropServices;
 
 namespace Microsoft.AppCenter.Unity
 {
-    public static class DeviceConverter
+    public static class DeviceHelper
     {
         public static Device Convert(IntPtr devicePtr)
         {

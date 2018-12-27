@@ -113,7 +113,7 @@ namespace Microsoft.AppCenter.Unity.Crashes.Internal
         private static Device GetDevice(IntPtr errorReportPtr)
         {
             var device = app_center_unity_crashes_error_report_device(errorReportPtr);
-            return DeviceConverter.Convert(device);
+            return DeviceHelper.Convert(device);
         }
 
 #region External
