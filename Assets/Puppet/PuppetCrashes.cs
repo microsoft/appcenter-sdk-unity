@@ -24,13 +24,18 @@ public class PuppetCrashes : MonoBehaviour
 
     void OnEnable()
     {
-        Crashes.IsEnabledAsync().ContinueWith(task =>
-        {
-            CrashesEnabled.isOn = task.Result;
-        });
         ReportUnhandledExceptions.isOn = Crashes.IsReportingUnhandledExceptions();
         TextAttachment.text = PuppetAppCenter.TextAttachmentCached;
         BinaryAttachment.text = PuppetAppCenter.BinaryAttachmentCached;
+
+        StartCoroutine(OnEnableCoroutine());
+    }
+
+    private IEnumerator OnEnableCoroutine()
+    {
+        var isEnabled = Crashes.IsEnabledAsync();
+        yield return isEnabled;
+        CrashesEnabled.isOn = isEnabled.Result;
     }
 
     public void OnValueChanged()
