@@ -2,9 +2,9 @@
 //
 // Licensed under the MIT license.
 
-#import "NSStringHelper.h"
-#import "DeviceHelper.h"
 #import <AppCenter/AppCenter.h>
+#import "DeviceHelper.h"
+#import "NSStringHelper.h"
 
 const char* app_center_unity_device_sdk_name(void* device)
 {
@@ -60,7 +60,7 @@ const char* app_center_unity_device_locale(void* device)
   return appcenter_unity_ns_string_to_cstr([deviceInfo locale]);
 }
 
-const int app_center_unity_device_time_zone_offset(void* device)
+int app_center_unity_device_time_zone_offset(void* device)
 {
   MSDevice *deviceInfo = (__bridge MSDevice*)device;
   return [[deviceInfo timeZoneOffset] intValue];

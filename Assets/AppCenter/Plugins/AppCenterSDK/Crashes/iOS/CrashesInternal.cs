@@ -8,8 +8,6 @@ using System;
 using System.Linq;
 using System.Collections.Generic;
 using System.Runtime.InteropServices;
-using Microsoft.AppCenter.Unity.Crashes.Models;
-using UnityEngine;
 
 namespace Microsoft.AppCenter.Unity.Crashes.Internal
 {
