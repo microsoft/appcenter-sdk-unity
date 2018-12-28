@@ -138,16 +138,17 @@ namespace Microsoft.AppCenter.Unity.Crashes.Internal
 #if ENABLE_IL2CPP
         [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
 #endif
-        public delegate void NativeFailedToSendErrorReportDelegate(IntPtr report);
+        public delegate void NativeFailedToSendErrorReportDelegate(IntPtr report, IntPtr error);
         public static event Crashes.FailedToSendErrorReportHandler FailedToSendErrorReport;
 
         [MonoPInvokeCallback(typeof(NativeFailedToSendErrorReportDelegate))]
-        public static void FailedToSendErrorReportNativeFunc(IntPtr report)
+        public static void FailedToSendErrorReportNativeFunc(IntPtr report, IntPtr error)
         {
             if (FailedToSendErrorReport != null)
             {
-                ErrorReport errorReport = CrashesInternal.GetErrorReportFromIntPtr(report);
-                FailedToSendErrorReport(errorReport, null);
+                var errorReport = CrashesInternal.GetErrorReportFromIntPtr(report);
+                var exception = NSErrorHelper.Convert(error);
+                FailedToSendErrorReport(errorReport, exception);
             }
         }
 
