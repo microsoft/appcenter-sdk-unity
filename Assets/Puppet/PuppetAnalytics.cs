@@ -19,10 +19,14 @@ public class PuppetAnalytics : MonoBehaviour
 
     void OnEnable()
     {
-        Analytics.IsEnabledAsync().ContinueWith(task =>
-        {
-            Enabled.isOn = task.Result;
-        });
+        StartCoroutine(OnEnableCoroutine());
+    }
+
+    private IEnumerator OnEnableCoroutine()
+    {
+        var task = Analytics.IsEnabledAsync();
+        yield return task;
+        Enabled.isOn = task.Result;
     }
 
     public void SetEnabled(bool enabled)
