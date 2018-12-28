@@ -48,7 +48,7 @@ const char* app_center_unity_device_os_build(void* device)
   return appcenter_unity_ns_string_to_cstr([deviceInfo osBuild]);
 }
 
-const int app_center_unity_device_os_api_level(void* device)
+int app_center_unity_device_os_api_level(void* device)
 {
   MSDevice *deviceInfo = (__bridge MSDevice*)device;
   return [[deviceInfo osApiLevel] intValue];

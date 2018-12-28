@@ -9,7 +9,7 @@ extern "C" const char* app_center_unity_device_oem_name(void* device);
 extern "C" const char* app_center_unity_device_os_name(void* device);
 extern "C" const char* app_center_unity_device_os_version(void* device);
 extern "C" const char* app_center_unity_device_os_build(void* device);
-extern "C" const int app_center_unity_device_os_api_level(void* device);
+extern "C" int app_center_unity_device_os_api_level(void* device);
 extern "C" const char* app_center_unity_device_locale(void* device);
 extern "C" int app_center_unity_device_time_zone_offset(void* device);
 extern "C" const char* app_center_unity_device_screen_size(void* device);
