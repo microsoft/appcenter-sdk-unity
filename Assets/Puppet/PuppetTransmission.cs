@@ -48,20 +48,29 @@ public class PuppetTransmission : MonoBehaviour
             ChildTransmissionEnabled.isOn = false;
             return;
         }
-        transmissionTarget.IsEnabledAsync().ContinueWith(task =>
-        {
-            TransmissionEnabled.isOn = task.Result;
-        });
+
+        StartCoroutine(IsEnabledCoroutine(transmissionTarget));
         TransmissionTarget childTransmissionTarget = transmissionTarget.GetTransmissionTarget(ResolveChildToken());
         if (childTransmissionTarget != null)
         {
-            childTransmissionTarget.IsEnabledAsync().ContinueWith(task =>
-            {
-                ChildTransmissionEnabled.isOn = task.Result;
-            });
+            StartCoroutine(IsChildEnabledCoroutine(childTransmissionTarget));
         }
         CollectDeviceId.isOn = false;
         CollectDeviceIdChild.isOn = false;
+    }
+
+    private IEnumerator IsChildEnabledCoroutine(TransmissionTarget childTransmissionTarget)
+    {
+        var task = childTransmissionTarget.IsEnabledAsync();
+        yield return task;
+        ChildTransmissionEnabled.isOn = task.Result;
+    }
+
+    private IEnumerator IsEnabledCoroutine(TransmissionTarget transmissionTarget)
+    {
+        var task = transmissionTarget.IsEnabledAsync();
+        yield return task;
+        TransmissionEnabled.isOn = task.Result;
     }
 
     public void SetIsCritical(bool critical)

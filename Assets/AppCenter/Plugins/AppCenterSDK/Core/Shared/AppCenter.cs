@@ -19,9 +19,9 @@ namespace Microsoft.AppCenter.Unity
 
     public class AppCenter
     {
-        private static AppCenterTask<string> _secretTask;
-        private static AppCenterTask<string> _logUrlTask;
-        private static AppCenterTask<long> _storageSizeTask;
+        private static AppCenterTask<string> _secretTask = new AppCenterTask<string>();
+        private static AppCenterTask<string> _logUrlTask = new AppCenterTask<string>();
+        private static AppCenterTask<long> _storageSizeTask = new AppCenterTask<long>();
 
         public static LogLevel LogLevel
         {
