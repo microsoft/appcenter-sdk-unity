@@ -19,7 +19,7 @@ namespace Microsoft.AppCenter.Unity.Crashes
         }
 
         public ErrorReport(string id, DateTimeOffset appStartTime, DateTimeOffset appErrorTime, Models.Exception exception, int processId, string reporterKey,
-            string reporterSignal, bool isAppKill)
+                           string reporterSignal, bool isAppKill, Device device)
         {
             Id = id;
             AppStartTime = appStartTime;
@@ -29,6 +29,7 @@ namespace Microsoft.AppCenter.Unity.Crashes
             ReporterKey = reporterKey;
             ReporterSignal = reporterSignal;
             IsAppKill = isAppKill;
+            Device = device;
         }
 
         /// <summary>
