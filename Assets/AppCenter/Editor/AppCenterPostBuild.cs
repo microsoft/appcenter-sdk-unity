@@ -149,6 +149,19 @@ public class AppCenterPostBuild : IPostprocessBuild
         var fileText = File.ReadAllText(appFilePath);
         var regex = new Regex(searchRegex);
         var matches = regex.Match(fileText);
+        if (fileText.Contains(commentText))
+        {
+            if (fileText.Contains(codeToInsert))
+            {
+                Debug.Log(string.Format("AppCenterPostBuild.InjectCodeToFile - Code file [{0}], already containts the injection code. Will not re-inject", appFileName));
+            }
+            else
+            {
+                Debug.LogWarning(string.Format("AppCenterPostBuild.InjectCodeToFile - Code file [{0}], already containts the injection code but it does not match the latest code injecttion. Plese refer to the code injection file {1}", appFileName, codeToInsertFileName));
+            }
+
+            return;
+        }
         if (matches.Success)
         {
             var codeToReplace = matches.ToString();
