@@ -16,3 +16,9 @@ long app_center_unity_nserror_code(void* error)
   NSError *nsError = (__bridge NSError*)error;
   return [nsError code];
 }
+
+const char* app_center_unity_nserror_description(void* error)
+{
+  NSError *nsError = (__bridge NSError*)error;
+  return appcenter_unity_ns_string_to_cstr([nsError localizedDescription]);
+}

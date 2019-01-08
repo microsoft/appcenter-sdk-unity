@@ -19,7 +19,8 @@ namespace Microsoft.AppCenter.Unity.Crashes.Utility
             }
             var domain = app_center_unity_nserror_domain(nsErrorPtr);
             var errorCode = app_center_unity_nserror_code(nsErrorPtr);
-            return new Exception(string.Format("Domain: {0}, Error code: {1}", domain, errorCode), string.Empty);
+            var description = app_center_unity_nserror_description(nsErrorPtr);
+            return new Exception(string.Format("Domain: {0}, error code: {1}, description: {2}", domain, errorCode, description), string.Empty);
         }
 
         [DllImport("__Internal")]
@@ -27,6 +28,9 @@ namespace Microsoft.AppCenter.Unity.Crashes.Utility
 
         [DllImport("__Internal")]
         private static extern long app_center_unity_nserror_code(IntPtr error);
+
+        [DllImport("__Internal")]
+        private static extern string app_center_unity_nserror_description(IntPtr error);
     }
 }
 #endif
