@@ -143,23 +143,32 @@ public class AppCenterPostBuild : IPostprocessBuild
             return;
         }
         var appAdditionsFolder = AppCenterSettingsContext.AppCenterPath + "/AppCenter/Plugins/WSA/Push/AppAdditions";
-        var codeToInsert = File.ReadAllText(Path.Combine(appAdditionsFolder, codeToInsertFileName));
         var commentText = "App Center Push code:";
-        codeToInsert = "\n            // " + commentText + "\n" + codeToInsert;
+        var codeToInsert = Environment.NewLine + "            // " + commentText + Environment.NewLine
+            + File.ReadAllText(Path.Combine(appAdditionsFolder, codeToInsertFileName));
         var fileText = File.ReadAllText(appFilePath);
+        if (fileText.Contains(commentText))
+        {
+            if (fileText.Contains(codeToInsert))
+            {
+                Debug.LogFormat("App Center Push: Code file `{0}` already contains the injection code. Will not re-inject", appFilePath);
+            }
+            else
+            {
+                Debug.LogWarningFormat("App Center Push: Code file `{0}` already contains the injection code but it does not match the latest code injection. Please rebuild the project into an empty folder", appFilePath);
+            }
+            return;
+        }
         var regex = new Regex(searchRegex);
         var matches = regex.Match(fileText);
         if (matches.Success)
         {
             var codeToReplace = matches.ToString();
-            if (!fileText.Contains(commentText))
+            if (includeSearchText)
             {
-                if (includeSearchText)
-                {
-                    codeToInsert = codeToReplace + codeToInsert;
-                }
-                fileText = fileText.Replace(codeToReplace, codeToInsert);
+                codeToInsert = codeToReplace + codeToInsert;
             }
+            fileText = fileText.Replace(codeToReplace, codeToInsert);
             File.WriteAllText(appFilePath, fileText);
         }
         else

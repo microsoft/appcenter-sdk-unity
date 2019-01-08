@@ -21,7 +21,7 @@ namespace Microsoft.AppCenter.Unity.Crashes
     public class Crashes
     {
         // Used by App Center Unity Editor Extensions: https://github.com/Microsoft/AppCenter-SDK-Unity-Extension
-        public const string CrashesSDKVersion = "1.2.1";
+        public const string CrashesSDKVersion = "1.3.0";
         private static bool _reportUnhandledExceptions = false;
         private static readonly object _objectLock = new object();
 

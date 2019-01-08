@@ -26,7 +26,9 @@ namespace Microsoft.AppCenter.Unity.Internal.Utils
             _initializationTaskSource.SetResult(true);
         }
 
+#pragma warning disable 0067
         public override event EventHandler ScreenSizeChanged;
+#pragma warning restore 0067
 
         public override Task WaitUntilReadyAsync()
         {
