@@ -40,7 +40,7 @@ const char* app_center_unity_crashes_error_report_app_start_time(void* errorRepo
 {
   MSErrorReport *report = (__bridge MSErrorReport*)errorReport;
   NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
-  [dateFormatter setDateFormat:@"yyyy-MM-dd hh:mm:ss"];
+  [dateFormatter setDateFormat:@"yyyy-MM-dd HH:mm:ss ZZZZZ"];
   NSString *dateStr = [dateFormatter stringFromDate:report.appStartTime];
   return appcenter_unity_ns_string_to_cstr(dateStr);
 }
@@ -49,7 +49,7 @@ const char* app_center_unity_crashes_error_report_app_error_time(void* errorRepo
 {
   MSErrorReport *report = (__bridge MSErrorReport*)errorReport;
   NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
-  [dateFormatter setDateFormat:@"yyyy-MM-dd hh:mm:ss"];
+  [dateFormatter setDateFormat:@"yyyy-MM-dd HH:mm:ss ZZZZZ"];
   NSString *dateStr = [dateFormatter stringFromDate:report.appErrorTime];
   return appcenter_unity_ns_string_to_cstr(dateStr);
 }
