@@ -10,7 +10,7 @@ static bool (*shouldProcessErrorReport)(MSErrorReport *);
 static NSArray<MSErrorAttachmentLog *>* (*getErrorAttachments)(MSErrorReport *);
 static void (*sendingErrorReport)(MSErrorReport *);
 static void (*sentErrorReport)(MSErrorReport *);
-static void (*failedToSendErrorReport)(MSErrorReport *);
+static void (*failedToSendErrorReport)(MSErrorReport *, NSError *);
 
 // we need static instance var because we have weak reaf in native part
 static UnityCrashesDelegate *unityCrashesDelegate = NULL;
@@ -41,7 +41,7 @@ void app_center_unity_crashes_delegate_set_sent_error_report_delegate(void(*hand
     sentErrorReport = handler;
 }
 
-void app_center_unity_crashes_delegate_set_failed_to_send_error_report_delegate(void(*handler)(MSErrorReport *))
+void app_center_unity_crashes_delegate_set_failed_to_send_error_report_delegate(void(*handler)(MSErrorReport *, NSError *))
 {
     failedToSendErrorReport = handler;
 }
@@ -92,7 +92,7 @@ void app_center_unity_crashes_delegate_set_failed_to_send_error_report_delegate(
 {
     if (failedToSendErrorReport)
     {
-        (*failedToSendErrorReport)(errorReport);
+        (*failedToSendErrorReport)(errorReport, error);
     }
 }
 
