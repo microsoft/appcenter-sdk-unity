@@ -1,3 +1,7 @@
+# Release 1.4.0
+
+* Updated native SDK versions.
+
 # Release 1.3.0
 
 **Breaking changes**
