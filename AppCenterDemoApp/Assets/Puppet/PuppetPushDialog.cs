@@ -5,6 +5,7 @@ using UnityEngine.UI;
 
 public class PuppetPushDialog : MonoBehaviour
 {
+#pragma warning disable 0649
     [SerializeField]
     private Text _titleText;
 
@@ -13,6 +14,7 @@ public class PuppetPushDialog : MonoBehaviour
 
     [SerializeField]
     private Text _dataText;
+#pragma warning restore 0649
 
     public string Title
     {
