@@ -1,5 +1,9 @@
 # App Center SDK for Unity Change Log
 
+## Release 1.4.1
+
+* **[Fix]** Fixed `async`/`await` operators support with .NETStandard 2.0
+
 ## Release 1.4.0
 
 Updated native SDK versions:
