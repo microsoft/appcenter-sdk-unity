@@ -2,7 +2,7 @@
 
 ## Release 1.4.1
 
-* **[Fix]** Fixed `async`/`await` operators support with .NETStandard 2.0
+* **[Fix]** Fixed `async`/`await` operators support by SDK’s methods for .NETStandard 2.0 profile
 
 ## Release 1.4.0
 
