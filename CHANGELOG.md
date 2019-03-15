@@ -1,5 +1,9 @@
 # App Center SDK for Unity Change Log
 
+## Release 1.4.1
+
+* **[Fix]** Fixed iOS application crash when trying to pass exception without stack trace to `Crashes.TrackError`
+
 ## Release 1.4.0
 
 Updated native SDK versions:
