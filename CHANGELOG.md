@@ -2,6 +2,7 @@
 
 ## Release 1.4.1
 
+* **[Fix]** Fixed `async`/`await` operators support by SDK’s methods for .NETStandard 2.0 profile
 * **[Fix]** Fixed iOS application crash when trying to pass exception without stack trace to `Crashes.TrackError`
 
 ## Release 1.4.0
