@@ -17,7 +17,7 @@ namespace Microsoft.AppCenter.Unity.Push
     public class Push
     {
         // Used by App Center Unity Editor Extensions: https://github.com/Microsoft/AppCenter-SDK-Unity-Extension
-        public const string PushSDKVersion = "1.4.0";
+        public const string PushSDKVersion = "1.4.1";
         private static readonly object _lockObject = new object();
         private static bool _needsReplay = true;
 

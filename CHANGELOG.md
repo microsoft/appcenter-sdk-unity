@@ -2,6 +2,11 @@
 
 ## Release 1.4.1
 
+Updated native SDK versions:
+* Android from `1.11.3` to [1.11.4](https://github.com/Microsoft/AppCenter-SDK-Android/releases/tag/1.11.4)
+* iOS from `1.13.2` to [1.14.0](https://github.com/Microsoft/AppCenter-SDK-Apple/releases/tag/1.14.0)
+* UWP from `1.13.2` to [1.14.0](https://github.com/Microsoft/AppCenter-SDK-DotNet/releases/tag/1.14.0)
+
 * **[Fix]** Fixed `async`/`await` operators support by SDK’s methods for .NETStandard 2.0 profile
 * **[Fix]** Fixed iOS application crash when trying to pass exception without stack trace to `Crashes.TrackError`
 
