@@ -1,5 +1,4 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
-//
 // Licensed under the MIT license.
 
 #ifndef DISTRIBUTE_UNITY_H

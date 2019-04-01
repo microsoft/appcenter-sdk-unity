@@ -1,4 +1,7 @@
-﻿using AOT;
+﻿// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT license.
+
+using AOT;
 using Microsoft.AppCenter.Unity.Crashes;
 using System.Threading;
 using UnityEngine;
