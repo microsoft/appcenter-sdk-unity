@@ -1,6 +1,6 @@
 # App Center SDK for Unity Change Log
 
-# Release 2.0.0
+## Release 2.0.0
 
 Updated native SDK versions:
 * Android from `1.11.4` to [2.0.0](https://github.com/Microsoft/AppCenter-SDK-Android/releases/tag/2.0.0)
@@ -8,7 +8,8 @@ Updated native SDK versions:
 * UWP from `1.14.0` to [2.0.0](https://github.com/Microsoft/AppCenter-SDK-DotNet/releases/tag/2.0.0)
 
 **Breaking changes**
-* “This version has a breaking change, it only supports Xcode 10.0.0+.”
+
+* This version has a breaking change, it only supports Xcode 10.0.0+.
 
 ## Release 1.4.1
 
