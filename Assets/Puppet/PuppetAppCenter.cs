@@ -21,6 +21,7 @@ public class PuppetAppCenter : MonoBehaviour
     public Text SdkVersionLabel;
     public InputField UserId;
     public Dropdown LogLevel;
+    public Dropdown StartupType;
     public PuppetConfirmationDialog userConfirmationDialog;
     public const string TextAttachmentKey = "text_attachment";
     public const string BinaryAttachmentKey = "binary_attachment";
@@ -135,6 +136,7 @@ public class PuppetAppCenter : MonoBehaviour
         DeviceIdLabel.text = SystemInfo.deviceUniqueIdentifier;
         SdkVersionLabel.text = AppCenter.GetSdkVersion();
         LogLevel.value = AppCenter.LogLevel - Microsoft.AppCenter.Unity.LogLevel.Verbose;
+        StartupType.value = Enum.GetName(AppCenter.StartupType);
 
         var isPushEnabled = Push.IsEnabledAsync();
         yield return isPushEnabled;
@@ -164,6 +166,11 @@ public class PuppetAppCenter : MonoBehaviour
     public void SetLogLevel(int logLevel)
     {
         AppCenter.LogLevel = Microsoft.AppCenter.Unity.LogLevel.Verbose + logLevel;
+    }
+
+    public void setStartupMode()
+    {
+        AppCenter.StartupType = (StartupType)Enum.Parse(typeof(StartupType), Microsoft.AppCenter.Unity.StartupType);
     }
 
     public void OnUserIdChanged(string newUserId)
