@@ -15,8 +15,6 @@ public class PuppetTransmission : MonoBehaviour
     public Toggle ChildTransmissionEnabled;
     public Toggle DefaultTransmissionEnabled;
     public Toggle CollectDeviceId;
-    public Toggle CollectDeviceIdChild;
-    public Toggle CollectDeviceIdDefault;
     public Toggle UseParentPropertyConfigurator;
     public Toggle UseChildPropertyConfigurator;
     public Toggle UseDefaultPropertyConfigurator;
@@ -132,22 +130,6 @@ public class PuppetTransmission : MonoBehaviour
         {
             transmissionTarget.GetPropertyConfigurator().CollectDeviceId();
             CollectDeviceId.enabled = false;
-        }
-    }
-
-    public void SetCollectDeviceIDChild(bool enabled)
-    {
-        var transmissionTarget = Analytics.GetTransmissionTarget(ResolveToken());
-        if (transmissionTarget == null)
-        {
-            Debug.Log("Transmission target is null.");
-            return;
-        }
-        var childTransmissionTarget = transmissionTarget.GetTransmissionTarget(ResolveChildToken());
-        if (enabled)
-        {
-            childTransmissionTarget.GetPropertyConfigurator().CollectDeviceId();
-            CollectDeviceIdChild.enabled = false;
         }
     }
 
@@ -607,15 +589,5 @@ public class PuppetTransmission : MonoBehaviour
     {
         ParentUserId.text = "";
         OnParentUserIdChanged(null);
-    }
-
-    public void ClearChildUserId()
-    {
-        ChildUserId.text = "";
-    }
-
-    public void CleardefaultUserId()
-    {
-        DefaultUserId.text = "";
     }
 }

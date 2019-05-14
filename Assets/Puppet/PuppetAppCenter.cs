@@ -138,7 +138,7 @@ public class PuppetAppCenter : MonoBehaviour
         DeviceIdLabel.text = SystemInfo.deviceUniqueIdentifier;
         SdkVersionLabel.text = AppCenter.GetSdkVersion();
         LogLevel.value = AppCenter.LogLevel - Microsoft.AppCenter.Unity.LogLevel.Verbose;
-        StartupType.value = getStartupMode();
+        StartupType.value = GetStartupMode();
 
         var isPushEnabled = Push.IsEnabledAsync();
         yield return isPushEnabled;
@@ -170,7 +170,7 @@ public class PuppetAppCenter : MonoBehaviour
         AppCenter.LogLevel = Microsoft.AppCenter.Unity.LogLevel.Verbose + logLevel;
     }
 
-    public void setStartupMode(string startupMode)
+    public void SetStartupMode(string startupMode)
     {
         foreach (var value in Enum.GetValues(typeof(StartupType)))
         {
@@ -183,18 +183,9 @@ public class PuppetAppCenter : MonoBehaviour
         }
     }
 
-    public int getStartupMode()
+    public int GetStartupMode()
     {
         return PlayerPrefs.GetInt(StartupModeValue, 0);
-        //int startupMode = PlayerPrefs.GetInt(StartupModeValue, 0);
-        //foreach (var value in Enum.GetValues(typeof(StartupType)))
-        //{
-        //    if (((int)value) == startupMode)
-        //    {
-        //        return ((StartupType)value).ToString();
-        //    }
-        //}
-        //return Microsoft.AppCenter.Unity.StartupType.AppCenter.ToString();
     }
 
     public void OnUserIdChanged(string newUserId)
