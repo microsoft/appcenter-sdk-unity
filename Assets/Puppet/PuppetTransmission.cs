@@ -29,16 +29,14 @@ public class PuppetTransmission : MonoBehaviour
     public Text ChildTransmissionStatus;
     public Text DefaultTransmissionStatus;
     public Toggle IsCritical;
-    private string _transmissionTargetToken = "";
-    private string _childTransmissionTargetToken = "";
-    private string _defaultTransmissionTargetToken = "";
+    private string _transmissionTargetToken = "f4c077c9fd0641f4b2d53beaf99c7f6e-029eddb7-7fae-4aa3-b1f8-c6cfcb0fa470-7450";
+    private string _childTransmissionTargetToken = "de994d374a7d4210ac2c148e61417680-5d57d718-d749-468b-8483-be21b5945fe0-7149";
     private bool _isCritical;
 
     private void OnEnable()
     {
         TransmissionTarget.text = _transmissionTargetToken;
         ChildTransmissionTarget.text = _childTransmissionTargetToken;
-        DefaultTransmissionTarget.text = _defaultTransmissionTargetToken;
 
         var transmissionTarget = Analytics.GetTransmissionTarget(ResolveToken());
         if (transmissionTarget == null)

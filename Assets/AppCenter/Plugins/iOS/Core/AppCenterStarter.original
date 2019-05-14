@@ -40,6 +40,7 @@ static NSString *const kMSTargetToken = @"appcenter-transmission-target-token";
 static NSString *const kMSCustomLogUrl = @"custom-log-url";
 static NSString *const kMSCustomApiUrl = @"custom-api-url";
 static NSString *const kMSCustomInstallUrl = @"custom-install-url";
+static NSString *const kMSStartTargetKey = @"start-target-user-defaults-key";
 
 static const int kMSLogLevel = 0/*LOG_LEVEL*/;
 static const int kMSStartupType = 0/*STARTUP_TYPE*/;
@@ -52,7 +53,7 @@ static const int kMSStartupType = 0/*STARTUP_TYPE*/;
 }
 
 + (void)startAppCenter {
-  NSInteger startTarget = kMSStartupType;
+  NSInteger startTarget = [[NSUserDefaults standardUserDefaults] objectForKey:kMSStartTargetKey] ?: kMSStartupType;
   if (startTarget == SKIP) {
     return;
   }

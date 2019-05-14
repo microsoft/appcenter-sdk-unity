@@ -16,7 +16,6 @@ import android.util.Log;
 import com.microsoft.appcenter.AppCenter;
 import com.microsoft.appcenter.AppCenterService;
 import com.microsoft.appcenter.analytics.Analytics;
-import com.microsoft.appcenter.crashes.Crashes;
 import com.microsoft.appcenter.distribute.Distribute;
 import com.microsoft.appcenter.push.Push;
 import com.microsoft.appcenter.utils.AppCenterLog;
@@ -45,6 +44,7 @@ public class AppCenterLoader extends ContentProvider {
     private static final String APP_SECRET_KEY = "appcenter_app_secret";
     private static final String TRANSMISSION_TARGET_TOKEN_KEY = "appcenter_transmission_target_token";
     private static final String STARTUP_TYPE_KEY = "appcenter_startup_type";
+    private static final String STARTUP_TYPE_SHARED_PREFERENCES_KEY = "start-target-user-defaults-key";
     private static final String TRUE_VALUE = "True";
     private static final String TAG = "AppCenterLoader";
 
@@ -55,7 +55,7 @@ public class AppCenterLoader extends ContentProvider {
         mContext = getApplicationContext();
         String appSecret = getStringResource(APP_SECRET_KEY);
         String transmissionTargetToken = getStringResource(TRANSMISSION_TARGET_TOKEN_KEY);
-        int startupTypeInt = Integer.parseInt(getStringResource(STARTUP_TYPE_KEY));
+        int startupTypeInt = mContext.getSharedPreferences(mContext.getPackageName(), Context.MODE_PRIVATE).getInt(STARTUP_TYPE_SHARED_PREFERENCES_KEY, Integer.parseInt(getStringResource(STARTUP_TYPE_KEY)));;
         StartupType startupType = StartupType.values()[startupTypeInt];
 
         /*

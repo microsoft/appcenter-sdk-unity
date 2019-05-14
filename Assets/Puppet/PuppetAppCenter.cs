@@ -13,6 +13,7 @@ public class PuppetAppCenter : MonoBehaviour
 {
     public static string TextAttachmentCached = "";
     public static string BinaryAttachmentCached = "";
+    public static int StartupTypeCached = 2;
     public Toggle Enabled;
     public Text StorageSizeLabel;
     public Text InstallIdLabel;
@@ -27,7 +28,7 @@ public class PuppetAppCenter : MonoBehaviour
     public const string TextAttachmentKey = "text_attachment";
     public const string BinaryAttachmentKey = "binary_attachment";
     public const string UserIdKey = "user_id";
-    private const string StartupModeValue = "STARTUP_MODE_VALUE";
+    private const string StartupModeKey = "start-target-user-defaults-key";
     public GameObject CustomProperty;
     public RectTransform PropertiesList;
     public Toggle DistributeEnabled;
@@ -99,6 +100,7 @@ public class PuppetAppCenter : MonoBehaviour
         // Caching this in Awake method because PlayerPrefs.GetString() can't be called from a background thread.
         TextAttachmentCached = PlayerPrefs.GetString(TextAttachmentKey);
         BinaryAttachmentCached = PlayerPrefs.GetString(BinaryAttachmentKey);
+        StartupTypeCached = PlayerPrefs.GetInt(StartupModeKey, 2);
     }
 
     void OnEnable()
@@ -138,7 +140,7 @@ public class PuppetAppCenter : MonoBehaviour
         DeviceIdLabel.text = SystemInfo.deviceUniqueIdentifier;
         SdkVersionLabel.text = AppCenter.GetSdkVersion();
         LogLevel.value = AppCenter.LogLevel - Microsoft.AppCenter.Unity.LogLevel.Verbose;
-        StartupType.value = GetStartupMode();
+        StartupType.value = StartupTypeCached;
 
         var isPushEnabled = Push.IsEnabledAsync();
         yield return isPushEnabled;
@@ -172,13 +174,8 @@ public class PuppetAppCenter : MonoBehaviour
 
     public void SetStartupMode(int startupMode)
     {
-        PlayerPrefs.SetInt(StartupModeValue, startupMode);
+        PlayerPrefs.SetInt(StartupModeKey, startupMode);
         PlayerPrefs.Save();
-    }
-
-    public int GetStartupMode()
-    {
-        return PlayerPrefs.GetInt(StartupModeValue, 0);
     }
 
     public void OnUserIdChanged(string newUserId)
