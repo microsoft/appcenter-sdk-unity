@@ -4,6 +4,7 @@
 using Microsoft.AppCenter.Unity;
 using Microsoft.AppCenter.Unity.Distribute;
 using Microsoft.AppCenter.Unity.Push;
+using System;
 using System.Collections;
 using UnityEngine;
 using UnityEngine.UI;
@@ -136,7 +137,7 @@ public class PuppetAppCenter : MonoBehaviour
         DeviceIdLabel.text = SystemInfo.deviceUniqueIdentifier;
         SdkVersionLabel.text = AppCenter.GetSdkVersion();
         LogLevel.value = AppCenter.LogLevel - Microsoft.AppCenter.Unity.LogLevel.Verbose;
-        StartupType.value = Enum.GetName(AppCenter.StartupType);
+        //StartupType.value = Enum.GetName(AppCenter.StartupType);
 
         var isPushEnabled = Push.IsEnabledAsync();
         yield return isPushEnabled;
@@ -168,9 +169,28 @@ public class PuppetAppCenter : MonoBehaviour
         AppCenter.LogLevel = Microsoft.AppCenter.Unity.LogLevel.Verbose + logLevel;
     }
 
-    public void setStartupMode()
+    public void setStartupMode(string startupMode)
     {
-        AppCenter.StartupType = (StartupType)Enum.Parse(typeof(StartupType), Microsoft.AppCenter.Unity.StartupType);
+        //AppCenter.StartupType = (StartupType)Enum.Parse(typeof(StartupType), Microsoft.AppCenter.Unity.StartupType);
+#if UNITY_ANDROID && !UNITY_EDITOR
+    ISharedPreferences prefs = PreferenceManager.GetDefaultSharedPreferences(Android.App.Application.Context);
+    ISharedPreferencesEditor editor = prefs.Edit();
+    editor.PutInt("STARTUP_MODE_VALUE", 1);
+    editor.Apply();
+#elif UNITY_IOS && !UNITY_EDITOR
+    NSUserDefaults.StandardUserDefaults.SetString("STARTUP_MODE_VALUE", "key");
+    NSUserDefaults.StandardUserDefaults.Synchronize();
+#endif
+    }
+
+    public void getStartupMode()
+    {
+        //#if UNITY_ANDROID && !UNITY_EDITOR
+        //    ISharedPreferences prefs = PreferenceManager.GetDefaultSharedPreferences(Android.App.Application.Context);
+        //    mInt = prefs.GetInt("STARTUP_MODE_VALUE", 1);
+        //# elif UNITY_IOS && !UNITY_EDITOR
+        //    NSUserDefaults.StandardUserDefaults.StringForKey("STARTUP_MODE_VALUE");
+        //#endif
     }
 
     public void OnUserIdChanged(string newUserId)
