@@ -28,6 +28,10 @@ namespace Microsoft.AppCenter.Unity.Internal
             return appcenter_unity_get_log_level();
         }
 
+        public static void SetPreferenceInt(string prefKey, int prefValue) 
+        {
+        }
+
         public static string GetSdkVersion()
         {
             return appcenter_unity_get_sdk_version();

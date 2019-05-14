@@ -38,6 +38,11 @@ namespace Microsoft.AppCenter.Unity
             AppCenterInternal.StartFromLibrary(AppCenterInternal.ServicesToNativeTypes(servicesArray));
         }
 
+        public static void SetPreferenceInt(string prefKey, int prefValue)
+        {
+            AppCenterInternal.SetPreferenceInt(prefKey, prefValue);
+        }
+
         public static AppCenterTask<bool> IsEnabledAsync()
         {
             return AppCenterInternal.IsEnabledAsync();

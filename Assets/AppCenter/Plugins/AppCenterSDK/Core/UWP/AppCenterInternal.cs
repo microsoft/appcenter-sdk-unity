@@ -31,6 +31,10 @@ namespace Microsoft.AppCenter.Unity.Internal
             UWPAppCenter.Start(appSecret, nativeServiceTypes);
         }
 
+        public static void SetPreferenceInt(string prefKey, int prefValue) 
+        {
+        }
+
         public static void Start(Type[] services)
         {
             var nativeServiceTypes = ServicesToNativeTypes(services);

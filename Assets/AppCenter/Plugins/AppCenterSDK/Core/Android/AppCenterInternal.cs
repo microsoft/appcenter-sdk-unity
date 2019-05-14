@@ -12,6 +12,7 @@ namespace Microsoft.AppCenter.Unity.Internal
     {
         private static AndroidJavaClass _appCenter = new AndroidJavaClass("com.microsoft.appcenter.AppCenter");
         private static AndroidJavaObject _context;
+        private static String PREFS_NAME = "AppCenterUserPrefs";
 
         public static void SetLogLevel(int logLevel)
         {
@@ -141,6 +142,14 @@ namespace Microsoft.AppCenter.Unity.Internal
             var activity = unityPlayer.GetStatic<AndroidJavaObject>("currentActivity");
             _context = activity.Call<AndroidJavaObject>("getApplicationContext");
             return _context;
+        }
+
+        public static void SetPreferenceInt(string prefKey, int prefValue) {
+            AndroidJavaObject context = GetAndroidContext();
+            AndroidJavaObject sharedPreferences = context.Call<AndroidJavaObject>("getSharedPreferences", new object[] { PREFS_NAME, 0 });
+            AndroidJavaObject editor = sharedPreferences.Call<AndroidJavaObject>("edit");
+            editor = editor.Call<AndroidJavaObject>("putInt", new object[] { prefKey, prefValue });
+            editor.Call("apply");
         }
 
         public static void StartFromLibrary(IntPtr servicesArray)

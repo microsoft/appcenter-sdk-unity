@@ -176,6 +176,9 @@ public class PuppetAppCenter : MonoBehaviour
     {
         PlayerPrefs.SetInt(StartupModeKey, startupMode);
         PlayerPrefs.Save();
+#if UNITY_ANDROID && !UNITY_EDITOR
+        AppCenter.SetPreferenceInt(StartupModeKey, startupMode);
+#endif
     }
 
     public void OnUserIdChanged(string newUserId)

@@ -37,6 +37,10 @@ namespace Microsoft.AppCenter.Unity.Internal
         {
         }
 
+        public static void SetPreferenceInt(string prefKey, int prefValue)
+        {
+        }
+
         public static void Start(string appSecret, ServiceType[] services)
         {
         }
