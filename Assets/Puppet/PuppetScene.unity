@@ -10841,7 +10841,7 @@ MonoBehaviour:
   SdkVersionLabel: {fileID: 134039199}
   UserId: {fileID: 1764686210}
   LogLevel: {fileID: 1404622633}
-  StartupType: {fileID: 0}
+  StartupType: {fileID: 1044898860}
   userConfirmationDialog: {fileID: 1399467467}
   CustomProperty: {fileID: 1625581900459890, guid: 17704888042e344418ac116f660243e9,
     type: 3}
@@ -12205,11 +12205,6 @@ MonoBehaviour:
   ChildTransmissionEnabled: {fileID: 425829953}
   DefaultTransmissionEnabled: {fileID: 0}
   CollectDeviceId: {fileID: 1522726766}
-  CollectDeviceIdChild: {fileID: 0}
-  CollectDeviceIdDefault: {fileID: 0}
-  UseParentPropertyConfigurator: {fileID: 0}
-  UseChildPropertyConfigurator: {fileID: 0}
-  UseDefaultPropertyConfigurator: {fileID: 0}
   EventName: {fileID: 486612592}
   AppName: {fileID: 1648102423}
   AppVersion: {fileID: 1522651092}
@@ -12218,8 +12213,6 @@ MonoBehaviour:
   ChildTransmissionTarget: {fileID: 960362301}
   DefaultTransmissionTarget: {fileID: 0}
   ParentUserId: {fileID: 59084009}
-  ChildUserId: {fileID: 0}
-  DefaultUserId: {fileID: 0}
   EventProperty: {fileID: 1555665463774876, guid: 1140cb7424b4712439087e226e9ff786,
     type: 3}
   EventPropertiesList: {fileID: 600305397}
@@ -14475,7 +14468,7 @@ MonoBehaviour:
     m_PersistentCalls:
       m_Calls:
       - m_Target: {fileID: 769943387}
-        m_MethodName: SetLogLevel
+        m_MethodName: SetStartupMode
         m_Mode: 0
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -23726,7 +23719,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0d5e2b5dc171f164b8ef2a7b94198b04, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  SettingsAdvanced: {fileID: 0}
+  SettingsAdvanced: {fileID: 11400000, guid: be9e18e5bb901bf418d10e4df6efba73, type: 2}
 --- !u!4 &1653541468
 Transform:
   m_ObjectHideFlags: 0

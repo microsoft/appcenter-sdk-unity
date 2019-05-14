@@ -170,17 +170,10 @@ public class PuppetAppCenter : MonoBehaviour
         AppCenter.LogLevel = Microsoft.AppCenter.Unity.LogLevel.Verbose + logLevel;
     }
 
-    public void SetStartupMode(string startupMode)
+    public void SetStartupMode(int startupMode)
     {
-        foreach (var value in Enum.GetValues(typeof(StartupType)))
-        {
-            if (((StartupType)value).ToString() == startupMode)
-            {
-                PlayerPrefs.SetInt(StartupModeValue, (int)value);
-                PlayerPrefs.Save();
-                break;
-            }
-        }
+        PlayerPrefs.SetInt(StartupModeValue, startupMode);
+        PlayerPrefs.Save();
     }
 
     public int GetStartupMode()
