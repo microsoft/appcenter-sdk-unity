@@ -37,7 +37,6 @@ public class PuppetTransmission : MonoBehaviour
     {
         TransmissionTarget.text = _transmissionTargetToken;
         ChildTransmissionTarget.text = _childTransmissionTargetToken;
-
         var transmissionTarget = Analytics.GetTransmissionTarget(ResolveToken());
         if (transmissionTarget == null)
         {
