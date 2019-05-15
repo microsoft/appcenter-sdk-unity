@@ -19,7 +19,7 @@ string Token = EnvironmentVariable("APP_CENTER_API_TOKEN");
 string BaseUrl = "https://api.appcenter.ms";
 ApplicationInfo CurrentApp = null;
 string ProjectPath = "AppCenterDemoApp";
-string BuildFolder = GetBuildFolder("Demo", ProjectPath);
+string BuildFolder = GetBuildFolder("Puppet", ProjectPath);
 
 public enum Environment
 {
@@ -77,18 +77,18 @@ public class ApplicationInfo
 ApplicationInfo.OutputDirectory = ArchiveDirectory;
 IList<ApplicationInfo> Applications = new List<ApplicationInfo>
 {
-    new ApplicationInfo(Environment.Int, Platform.iOS, ScriptingBackend.Mono, "alchocro", "iOS-Unity-Puppet", "BuildPuppet.BuildPuppetSceneIosMonoDeviceSdk", "BuildPuppet.IncrementVersionNumber", "ipa"),
+   /* new ApplicationInfo(Environment.Int, Platform.iOS, ScriptingBackend.Mono, "alchocro", "iOS-Unity-Puppet", "BuildPuppet.BuildPuppetSceneIosMonoDeviceSdk", "BuildPuppet.IncrementVersionNumber", "ipa"),
     new ApplicationInfo(Environment.Int, Platform.iOS, ScriptingBackend.Il2Cpp, "alchocro", "iOS-Unity-Puppet", "BuildPuppet.BuildPuppetSceneIosIl2CPPDeviceSdk", "BuildPuppet.IncrementVersionNumber", "ipa"),
     new ApplicationInfo(Environment.Int, Platform.Android, ScriptingBackend.Mono, "alchocro", "Unity-Android-Puppet", "BuildPuppet.BuildPuppetSceneAndroidMono", "BuildPuppet.IncrementVersionNumber", "apk"),
     new ApplicationInfo(Environment.Int, Platform.Android, ScriptingBackend.Il2Cpp, "alchocro", "Unity-Android-Puppet", "BuildPuppet.BuildPuppetSceneAndroidIl2CPP", "BuildPuppet.IncrementVersionNumber", "apk"),
     new ApplicationInfo(Environment.Int, Platform.UWP, ScriptingBackend.DotNet, "alchocro", "UWP-Unity-Puppet"),
-    new ApplicationInfo(Environment.Int, Platform.UWP, ScriptingBackend.Il2Cpp, "alchocro", "UWP-Unity-Puppet"),
-    new ApplicationInfo(Environment.Prod, Platform.iOS, ScriptingBackend.Mono, "appcenter-sdk", "iOS-Unity-Demo-App", "BuildDemo.BuildDemoSceneIosMonoDeviceSdk", "BuildDemo.IncrementVersionNumber", "ipa"),
-    new ApplicationInfo(Environment.Prod, Platform.iOS, ScriptingBackend.Il2Cpp, "appcenter-sdk", "iOS-Unity-Demo-App", "BuildDemo.BuildDemoSceneIosIl2CPPDeviceSdk", "BuildDemo.IncrementVersionNumber", "ipa"),
-    new ApplicationInfo(Environment.Prod, Platform.Android, ScriptingBackend.Mono, "appcenter-sdk", "Android-Unity-Demo-App", "BuildDemo.BuildDemoSceneAndroidMono", "BuildDemo.IncrementVersionNumber", "apk"),
-    new ApplicationInfo(Environment.Prod, Platform.Android, ScriptingBackend.Il2Cpp, "appcenter-sdk", "Android-Unity-Demo-App", "BuildDemo.BuildDemoSceneAndroidIl2CPP", "BuildDemo.IncrementVersionNumber", "apk"),
-    new ApplicationInfo(Environment.Prod, Platform.UWP, ScriptingBackend.DotNet, "appcenter-sdk", "UWP-Unity-Demo-App"),
-    new ApplicationInfo(Environment.Prod, Platform.UWP, ScriptingBackend.Il2Cpp, "appcenter-sdk", "UWP-Unity-Demo-App")
+    new ApplicationInfo(Environment.Int, Platform.UWP, ScriptingBackend.Il2Cpp, "alchocro", "UWP-Unity-Puppet"),*/
+    new ApplicationInfo(Environment.Prod, Platform.iOS, ScriptingBackend.Mono, "anna-kocheshkova-cehg", "Unity-IOS-1", "BuildDemo.BuildDemoSceneIosMonoDeviceSdk", "BuildDemo.IncrementVersionNumber", "ipa"),
+    new ApplicationInfo(Environment.Prod, Platform.iOS, ScriptingBackend.Il2Cpp, "anna-kocheshkova-cehg", "Unity-IOS-1", "BuildDemo.BuildDemoSceneIosIl2CPPDeviceSdk", "BuildDemo.IncrementVersionNumber", "ipa"),
+    new ApplicationInfo(Environment.Prod, Platform.Android, ScriptingBackend.Mono, "anna-kocheshkova-cehg", "Unity-Android", "BuildDemo.BuildDemoSceneAndroidMono", "BuildDemo.IncrementVersionNumber", "apk"),
+    new ApplicationInfo(Environment.Prod, Platform.Android, ScriptingBackend.Il2Cpp, "anna-kocheshkova-cehg", "Unity-Android", "BuildDemo.BuildDemoSceneAndroidIl2CPP", "BuildDemo.IncrementVersionNumber", "apk"),
+    new ApplicationInfo(Environment.Prod, Platform.UWP, ScriptingBackend.DotNet, "anna-kocheshkova-cehg", "Unity-UWP"),
+    new ApplicationInfo(Environment.Prod, Platform.UWP, ScriptingBackend.Il2Cpp, "anna-kocheshkova-cehg", "Unity-UWP")
 };
 
 Setup(context =>
