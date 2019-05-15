@@ -83,10 +83,10 @@ IList<ApplicationInfo> Applications = new List<ApplicationInfo>
     new ApplicationInfo(Environment.Int, Platform.Android, ScriptingBackend.Il2Cpp, "alchocro", "Unity-Android-Puppet", "BuildPuppet.BuildPuppetSceneAndroidIl2CPP", "BuildPuppet.IncrementVersionNumber", "apk"),
     new ApplicationInfo(Environment.Int, Platform.UWP, ScriptingBackend.DotNet, "alchocro", "UWP-Unity-Puppet"),
     new ApplicationInfo(Environment.Int, Platform.UWP, ScriptingBackend.Il2Cpp, "alchocro", "UWP-Unity-Puppet"),*/
-    new ApplicationInfo(Environment.Prod, Platform.iOS, ScriptingBackend.Mono, "anna-kocheshkova-cehg", "Unity-IOS-1", "BuildDemo.BuildDemoSceneIosMonoDeviceSdk", "BuildDemo.IncrementVersionNumber", "ipa"),
-    new ApplicationInfo(Environment.Prod, Platform.iOS, ScriptingBackend.Il2Cpp, "anna-kocheshkova-cehg", "Unity-IOS-1", "BuildDemo.BuildDemoSceneIosIl2CPPDeviceSdk", "BuildDemo.IncrementVersionNumber", "ipa"),
-    new ApplicationInfo(Environment.Prod, Platform.Android, ScriptingBackend.Mono, "anna-kocheshkova-cehg", "Unity-Android", "BuildDemo.BuildDemoSceneAndroidMono", "BuildDemo.IncrementVersionNumber", "apk"),
-    new ApplicationInfo(Environment.Prod, Platform.Android, ScriptingBackend.Il2Cpp, "anna-kocheshkova-cehg", "Unity-Android", "BuildDemo.BuildDemoSceneAndroidIl2CPP", "BuildDemo.IncrementVersionNumber", "apk"),
+    new ApplicationInfo(Environment.Prod, Platform.iOS, ScriptingBackend.Mono, "anna-kocheshkova-cehg", "Unity-IOS-1", "BuildPuppet.BuildPuppetSceneIosMonoDeviceSdk", "BuildPuppet.IncrementVersionNumber", "ipa"),
+    new ApplicationInfo(Environment.Prod, Platform.iOS, ScriptingBackend.Il2Cpp, "anna-kocheshkova-cehg", "Unity-IOS-1", "BuildPuppet.BuildPuppetSceneIosIl2CPPDeviceSdk", "BuildPuppet.IncrementVersionNumber", "ipa"),
+    new ApplicationInfo(Environment.Prod, Platform.Android, ScriptingBackend.Mono, "anna-kocheshkova-cehg", "Unity-Android", "BuildPuppet.BuildPuppetSceneAndroidMono", "BuildPuppet.IncrementVersionNumber", "apk"),
+    new ApplicationInfo(Environment.Prod, Platform.Android, ScriptingBackend.Il2Cpp, "anna-kocheshkova-cehg", "Unity-Android", "BuildPuppet.BuildPuppetSceneAndroidIl2CPP", "BuildPuppet.IncrementVersionNumber", "apk"),
     new ApplicationInfo(Environment.Prod, Platform.UWP, ScriptingBackend.DotNet, "anna-kocheshkova-cehg", "Unity-UWP"),
     new ApplicationInfo(Environment.Prod, Platform.UWP, ScriptingBackend.Il2Cpp, "anna-kocheshkova-cehg", "Unity-UWP")
 };
