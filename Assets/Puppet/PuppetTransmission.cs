@@ -345,7 +345,6 @@ public class PuppetTransmission : MonoBehaviour
 
     public void TrackEventTypedPropertiesDefaultTransmission()
     {
-
         var properties = PropertiesHelper.GetTypedProperties(EventPropertiesList);
         if (properties == null)
         {

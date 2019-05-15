@@ -44,7 +44,7 @@ public class AppCenterLoader extends ContentProvider {
     private static final String APP_SECRET_KEY = "appcenter_app_secret";
     private static final String TRANSMISSION_TARGET_TOKEN_KEY = "appcenter_transmission_target_token";
     private static final String STARTUP_TYPE_KEY = "appcenter_startup_type";
-    private static final String STARTUP_TYPE_SHARED_PREFERENCES_KEY = "start-target-user-defaults-key";
+    private static final String STARTUP_TYPE_SHARED_PREFERENCES_KEY = "AppCenter.Unity.StartTargetKey";
     private static final String TRUE_VALUE = "True";
     private static final String TAG = "AppCenterLoader";
 

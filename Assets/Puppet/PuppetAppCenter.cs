@@ -1,6 +1,7 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT license.
 
+using Assets.AppCenter.Plugins.Android.Utility;
 using Microsoft.AppCenter.Unity;
 using Microsoft.AppCenter.Unity.Distribute;
 using Microsoft.AppCenter.Unity.Push;
@@ -28,7 +29,8 @@ public class PuppetAppCenter : MonoBehaviour
     public const string TextAttachmentKey = "text_attachment";
     public const string BinaryAttachmentKey = "binary_attachment";
     public const string UserIdKey = "user_id";
-    private const string StartupModeKey = "start-target-user-defaults-key";
+    private const string StartupModeAndroidKey = "AppCenter.Unity.StartTargetKey";
+    private const string StartupModeKey = "MSAppCenterStartTargetUnityKey";
     public GameObject CustomProperty;
     public RectTransform PropertiesList;
     public Toggle DistributeEnabled;
@@ -177,7 +179,7 @@ public class PuppetAppCenter : MonoBehaviour
         PlayerPrefs.SetInt(StartupModeKey, startupMode);
         PlayerPrefs.Save();
 #if UNITY_ANDROID && !UNITY_EDITOR
-        AppCenter.SetPreferenceInt(StartupModeKey, startupMode);
+        AndroidUtility.SetPreferenceInt(StartupModeAndroidKey, startupMode);
 #endif
     }
 
