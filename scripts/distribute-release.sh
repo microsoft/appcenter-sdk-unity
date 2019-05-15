@@ -18,4 +18,4 @@ for i in "$@"; do
     shift
 done
 
-../build.sh -s test-tools.cake -target=ReleaseApplication $GROUP $SCRIPTING_BACKEND $MANDATORY $PLATFORM $ENVIRONMENT
+../build.sh -s ../test-tools.cake -target=ReleaseApplication $GROUP $SCRIPTING_BACKEND $MANDATORY $PLATFORM $ENVIRONMENT
