@@ -145,7 +145,7 @@ Setup(context =>
     }
     catch
     {
-        Error("No application configuration exists with the given arguments.");
+        Error("No application configuration exists with the given arguments." + platform + environment + backend);
     }
     DistributionGroup = Argument<string>("Group", DistributionGroup);
     DistributionGroup = DistributionGroup.Replace('_', ' ');
