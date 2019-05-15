@@ -1,7 +1,7 @@
 # Define default arguments.
 MANDATORY=""
 GROUP=""
-ENVIRONMENT=""
+ENVIRONMENT="Prod"
 PLATFORM=""
 SCRIPTING_BACKEND=""
 
