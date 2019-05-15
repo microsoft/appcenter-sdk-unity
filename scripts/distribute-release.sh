@@ -1,7 +1,7 @@
 # Define default arguments.
 MANDATORY=""
 GROUP=""
-ENVIRONMENT="Prod"
+ENVIRONMENT=""
 PLATFORM=""
 SCRIPTING_BACKEND=""
 
@@ -9,7 +9,7 @@ SCRIPTING_BACKEND=""
 for i in "$@"; do
     case $1 in
         -m|--mandatory) MANDATORY="-Mandatory=true" ;;
-        -e|--environment) ENVIRONMENT="-Environment=$2"; shift ;;
+        -e|--environment) ENVIRONMENT="-Environment=Prod"; shift ;;
         -p|--platform) PLATFORM="-Platform=$2"; shift ;;
         -s|--scriptingBackend) SCRIPTING_BACKEND="-ScriptingBackend=$2"; shift ;;
         -g|--group) GROUP="-Group=$2"; shift ;;
