@@ -9,7 +9,7 @@ namespace Assets.AppCenter.Plugins.Android.Utility
     class AndroidUtility
     {
         private static AndroidJavaObject _context;
-        private static string PREFS_NAME = "AppCenterUserPrefs";
+        private const string PREFS_NAME = "AppCenterUserPrefs";
 
         public static AndroidJavaObject GetAndroidContext()
         {

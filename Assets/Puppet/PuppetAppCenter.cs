@@ -102,7 +102,7 @@ public class PuppetAppCenter : MonoBehaviour
         // Caching this in Awake method because PlayerPrefs.GetString() can't be called from a background thread.
         TextAttachmentCached = PlayerPrefs.GetString(TextAttachmentKey);
         BinaryAttachmentCached = PlayerPrefs.GetString(BinaryAttachmentKey);
-        StartupTypeCached = PlayerPrefs.GetInt(StartupModeKey, 2);
+        StartupTypeCached = PlayerPrefs.GetInt(StartupModeKey, (int) Microsoft.AppCenter.Unity.StartupType.Both);
     }
 
     void OnEnable()
