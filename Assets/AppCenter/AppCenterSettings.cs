@@ -26,6 +26,8 @@ public class AppCenterSettings : ScriptableObject
     public bool UseDistribute = true;
     public CustomUrlProperty CustomApiUrl = new CustomUrlProperty("API");
     public CustomUrlProperty CustomInstallUrl = new CustomUrlProperty("Install");
+    [Tooltip("By default, App Center Distribute is disabled in debuggable builds. Check this to enable it.")]
+    public bool EnableDistributeInDebug = false;
 
     [Tooltip("App Center Push enables you to send push notifications to users of your app from the App Center portal.")]
     public bool UsePush = true;

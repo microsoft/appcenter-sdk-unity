@@ -134,4 +134,10 @@ public class AppCenterSettingsMakerIos : IAppCenterSettingsMaker
     {
         return Directory.Exists(AppCenterSettingsContext.AppCenterPath + "/AppCenter/Plugins/iOS/Push");
     }
+
+    public void SetShouldEnableDistributeInDebug()
+    {
+        //TODO implement this
+    }
+
 }
