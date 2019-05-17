@@ -1,9 +1,11 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT license.
 
+using Assets.AppCenter.Plugins.Android.Utility;
 using Microsoft.AppCenter.Unity;
 using Microsoft.AppCenter.Unity.Distribute;
 using Microsoft.AppCenter.Unity.Push;
+using System;
 using System.Collections;
 using UnityEngine;
 using UnityEngine.UI;
@@ -12,6 +14,7 @@ public class PuppetAppCenter : MonoBehaviour
 {
     public static string TextAttachmentCached = "";
     public static string BinaryAttachmentCached = "";
+    public static int StartupTypeCached = 2;
     public Toggle Enabled;
     public Text StorageSizeLabel;
     public Text InstallIdLabel;
@@ -21,10 +24,13 @@ public class PuppetAppCenter : MonoBehaviour
     public Text SdkVersionLabel;
     public InputField UserId;
     public Dropdown LogLevel;
+    public Dropdown StartupType;
     public PuppetConfirmationDialog userConfirmationDialog;
     public const string TextAttachmentKey = "text_attachment";
     public const string BinaryAttachmentKey = "binary_attachment";
     public const string UserIdKey = "user_id";
+    private const string StartupModeAndroidKey = "AppCenter.Unity.StartTargetKey";
+    private const string StartupModeKey = "MSAppCenterStartTargetUnityKey";
     public GameObject CustomProperty;
     public RectTransform PropertiesList;
     public Toggle DistributeEnabled;
@@ -96,6 +102,7 @@ public class PuppetAppCenter : MonoBehaviour
         // Caching this in Awake method because PlayerPrefs.GetString() can't be called from a background thread.
         TextAttachmentCached = PlayerPrefs.GetString(TextAttachmentKey);
         BinaryAttachmentCached = PlayerPrefs.GetString(BinaryAttachmentKey);
+        StartupTypeCached = PlayerPrefs.GetInt(StartupModeKey, (int) Microsoft.AppCenter.Unity.StartupType.Both);
     }
 
     void OnEnable()
@@ -135,6 +142,7 @@ public class PuppetAppCenter : MonoBehaviour
         DeviceIdLabel.text = SystemInfo.deviceUniqueIdentifier;
         SdkVersionLabel.text = AppCenter.GetSdkVersion();
         LogLevel.value = AppCenter.LogLevel - Microsoft.AppCenter.Unity.LogLevel.Verbose;
+        StartupType.value = StartupTypeCached;
 
         var isPushEnabled = Push.IsEnabledAsync();
         yield return isPushEnabled;
@@ -164,6 +172,15 @@ public class PuppetAppCenter : MonoBehaviour
     public void SetLogLevel(int logLevel)
     {
         AppCenter.LogLevel = Microsoft.AppCenter.Unity.LogLevel.Verbose + logLevel;
+    }
+
+    public void SetStartupMode(int startupMode)
+    {
+        PlayerPrefs.SetInt(StartupModeKey, startupMode);
+        PlayerPrefs.Save();
+#if UNITY_ANDROID && !UNITY_EDITOR
+        AndroidUtility.SetPreferenceInt(StartupModeAndroidKey, startupMode);
+#endif
     }
 
     public void OnUserIdChanged(string newUserId)
