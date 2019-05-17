@@ -57,7 +57,7 @@ public class AppCenterLoader extends ContentProvider {
         mContext = getApplicationContext();
         String appSecret = getStringResource(APP_SECRET_KEY);
         String transmissionTargetToken = getStringResource(TRANSMISSION_TARGET_TOKEN_KEY);
-        int startupTypeInt = mContext.getSharedPreferences(PREFS_NAME, Context.MODE_PRIVATE).getInt(STARTUP_TYPE_SHARED_PREFERENCES_KEY, Integer.parseInt(getStringResource(STARTUP_TYPE_KEY)));;
+        int startupTypeInt = mContext.getSharedPreferences(PREFS_NAME, Context.MODE_PRIVATE).getInt(STARTUP_TYPE_SHARED_PREFERENCES_KEY, Integer.parseInt(getStringResource(STARTUP_TYPE_KEY)));
         StartupType startupType = StartupType.values()[startupTypeInt];
 
         /*
