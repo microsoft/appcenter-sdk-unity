@@ -26,7 +26,7 @@ MonoBehaviour:
     UrlName: Install
     UseCustomUrl: 1
     Url: https://install.portal-server-core-integration.dev.avalanch.es
-  EnableDistributeInDebug: 1
+  EnableDistributeInDebug: 0
   UsePush: 0
   EnableFirebaseAnalytics: 0
   InitialLogLevel: 2

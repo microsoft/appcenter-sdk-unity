@@ -359,7 +359,10 @@ PlayerSettings:
   - m_BuildTarget: Windows Store Apps
     m_StaticBatching: 1
     m_DynamicBatching: 1
-  m_BuildTargetGraphicsAPIs: []
+  m_BuildTargetGraphicsAPIs:
+  - m_BuildTarget: iOSSupport
+    m_APIs: 1000000008000000
+    m_Automatic: 0
   m_BuildTargetVRSettings:
   - m_BuildTarget: iOS
     m_Enabled: 0

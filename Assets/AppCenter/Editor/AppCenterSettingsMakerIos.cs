@@ -2,6 +2,7 @@
 // Licensed under the MIT license.
 
 using System.IO;
+using UnityEditor;
 
 public class AppCenterSettingsMakerIos : IAppCenterSettingsMaker
 {
@@ -25,6 +26,7 @@ public class AppCenterSettingsMakerIos : IAppCenterSettingsMaker
     private const string MaxStorageSize = "APPCENTER_MAX_STORAGE_SIZE";
 
     private string _loaderFileText;
+    private bool _enableDistributeInDebug;
 
     public AppCenterSettingsMakerIos()
     {
@@ -64,6 +66,10 @@ public class AppCenterSettingsMakerIos : IAppCenterSettingsMaker
 
     public void StartDistributeClass()
     {
+        if (EditorUserBuildSettings.development && !_enableDistributeInDebug)
+        {
+            return;
+        }
         AddToken(UseDistributeToken);
     }
 
@@ -137,7 +143,6 @@ public class AppCenterSettingsMakerIos : IAppCenterSettingsMaker
 
     public void SetShouldEnableDistributeInDebug()
     {
-        //TODO implement this
+        _enableDistributeInDebug = true;
     }
-
 }
