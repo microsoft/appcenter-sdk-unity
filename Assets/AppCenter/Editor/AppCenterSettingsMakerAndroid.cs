@@ -142,5 +142,4 @@ public class AppCenterSettingsMakerAndroid : IAppCenterSettingsMaker
     {
         _resourceValues[EnableDistributeInDebugKey] = true.ToString();
     }
-
 }
