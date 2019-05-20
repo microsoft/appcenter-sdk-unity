@@ -24,7 +24,7 @@ public class AppCenterSettingsMakerAndroid : IAppCenterSettingsMaker
     private const string UseCustomInstallUrlKey = "appcenter_use_custom_install_url";
     private const string EnableFirebaseAnalyticsKey = "appcenter_enable_firebase_analytics";
     private const string MaxStorageSizeKey = "appcenter_max_storage_size";
-    private const string EnableDistributeInDebugKey = "appcenter_enable_distribute_in_debug";
+    private const string EnableDistributeForDebuggableBuildKey = "appcenter_enable_distribute_for_debuggable_build";
 
     private readonly IDictionary<string, string> _resourceValues = new Dictionary<string, string>();
 
@@ -138,9 +138,9 @@ public class AppCenterSettingsMakerAndroid : IAppCenterSettingsMaker
         return File.Exists(AppCenterSettingsContext.AppCenterPath + "/AppCenter/Plugins/Android/appcenter-push-release.aar");
     }
 
-    public void SetShouldEnableDistributeInDebug()
+    public void SetShouldEnableDistributeForDebuggableBuild()
     {
-        _resourceValues[EnableDistributeInDebugKey] = true.ToString();
+        _resourceValues[EnableDistributeForDebuggableBuildKey] = true.ToString();
     }
 
 }

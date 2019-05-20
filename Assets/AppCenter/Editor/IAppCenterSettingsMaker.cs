@@ -22,5 +22,5 @@ public interface IAppCenterSettingsMaker
     void SetMaxStorageSize(long size);
     void EnableFirebaseAnalytics();
     void CommitSettings();
-    void SetShouldEnableDistributeInDebug();
+    void SetShouldEnableDistributeForDebuggableBuild();
 }

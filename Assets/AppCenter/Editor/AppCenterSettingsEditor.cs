@@ -35,7 +35,7 @@ public class AppCenterSettingsEditor : Editor
             Header("Distribute");
             var serializedProperty = serializedObject.FindProperty("UseDistribute");
             EditorGUILayout.PropertyField(serializedProperty);
-            EditorGUILayout.PropertyField(serializedObject.FindProperty("EnableDistributeInDebug"));
+            EditorGUILayout.PropertyField(serializedObject.FindProperty("EnableDistributeForDebuggableBuild"));
             EditorGUILayout.PropertyField(serializedObject.FindProperty("CustomApiUrl"));
             EditorGUILayout.PropertyField(serializedObject.FindProperty("CustomInstallUrl"));
         }

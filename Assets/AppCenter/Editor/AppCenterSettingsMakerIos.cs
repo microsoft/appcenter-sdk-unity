@@ -26,7 +26,7 @@ public class AppCenterSettingsMakerIos : IAppCenterSettingsMaker
     private const string MaxStorageSize = "APPCENTER_MAX_STORAGE_SIZE";
 
     private string _loaderFileText;
-    private bool _enableDistributeInDebug;
+    private bool _enableDistributeForDebuggableBuild;
 
     public AppCenterSettingsMakerIos()
     {
@@ -66,11 +66,10 @@ public class AppCenterSettingsMakerIos : IAppCenterSettingsMaker
 
     public void StartDistributeClass()
     {
-        if (EditorUserBuildSettings.development && !_enableDistributeInDebug)
+        if (_enableDistributeForDebuggableBuild || !EditorUserBuildSettings.development)
         {
-            return;
+            AddToken(UseDistributeToken);
         }
-        AddToken(UseDistributeToken);
     }
 
     public void StartAnalyticsClass()
@@ -141,8 +140,8 @@ public class AppCenterSettingsMakerIos : IAppCenterSettingsMaker
         return Directory.Exists(AppCenterSettingsContext.AppCenterPath + "/AppCenter/Plugins/iOS/Push");
     }
 
-    public void SetShouldEnableDistributeInDebug()
+    public void SetShouldEnableDistributeForDebuggableBuild()
     {
-        _enableDistributeInDebug = true;
+        _enableDistributeForDebuggableBuild = true;
     }
 }

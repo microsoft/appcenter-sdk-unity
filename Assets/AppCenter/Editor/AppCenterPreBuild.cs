@@ -80,9 +80,9 @@ public class AppCenterPreBuild : IPreprocessBuild
             {
                 settingsMaker.SetInstallUrl(settings.CustomInstallUrl.Url);
             }
-            if (settings.EnableDistributeInDebug)
+            if (settings.EnableDistributeForDebuggableBuild)
             {
-                settingsMaker.SetShouldEnableDistributeInDebug();
+                settingsMaker.SetShouldEnableDistributeForDebuggableBuild();
             }
             settingsMaker.StartDistributeClass();
         }
