@@ -81,9 +81,6 @@ public class BuildPuppet
     public static void BuildPuppetSceneWsaNetXaml()
     {
         EditorUserBuildSettings.wsaUWPBuildType = WSAUWPBuildType.XAML;
-#if !UNITY_5
-        PlayerSettings.scriptingRuntimeVersion = ScriptingRuntimeVersion.Legacy;
-#endif
         PlayerSettings.SetApiCompatibilityLevel(BuildTargetGroup.WSA, ApiCompatibilityLevel.NET_4_6);
         BuildPuppetScene(BuildTarget.WSAPlayer, BuildTargetGroup.WSA, ScriptingImplementation.WinRTDotNET, "WSANetBuildXaml");
     }
@@ -91,9 +88,6 @@ public class BuildPuppet
     public static void BuildPuppetSceneWsaIl2CPPXaml()
     {
         EditorUserBuildSettings.wsaUWPBuildType = WSAUWPBuildType.XAML;
-#if !UNITY_5
-        PlayerSettings.scriptingRuntimeVersion = ScriptingRuntimeVersion.Legacy;
-#endif
         PlayerSettings.SetApiCompatibilityLevel(BuildTargetGroup.WSA, ApiCompatibilityLevel.NET_4_6);
         BuildPuppetScene(BuildTarget.WSAPlayer, BuildTargetGroup.WSA, ScriptingImplementation.IL2CPP, "WSAIL2CPPBuildXaml");
     }
@@ -102,9 +96,6 @@ public class BuildPuppet
     {
         EditorUserBuildSettings.wsaUWPBuildType = WSAUWPBuildType.D3D;
         PlayerSettings.WSA.compilationOverrides = PlayerSettings.WSACompilationOverrides.UseNetCore;
-#if !UNITY_5
-        PlayerSettings.scriptingRuntimeVersion = ScriptingRuntimeVersion.Legacy;
-#endif
         PlayerSettings.SetApiCompatibilityLevel(BuildTargetGroup.WSA, ApiCompatibilityLevel.NET_4_6);
         BuildPuppetScene(BuildTarget.WSAPlayer, BuildTargetGroup.WSA, ScriptingImplementation.WinRTDotNET, "WSANetBuildD3D");
     }
@@ -112,9 +103,6 @@ public class BuildPuppet
     public static void BuildPuppetSceneWsaIl2CPPD3D()
     {
         EditorUserBuildSettings.wsaUWPBuildType = WSAUWPBuildType.D3D;
-#if !UNITY_5
-        PlayerSettings.scriptingRuntimeVersion = ScriptingRuntimeVersion.Legacy;
-#endif
         PlayerSettings.SetApiCompatibilityLevel(BuildTargetGroup.WSA, ApiCompatibilityLevel.NET_4_6);
         BuildPuppetScene(BuildTarget.WSAPlayer, BuildTargetGroup.WSA, ScriptingImplementation.IL2CPP, "WSAIL2CPPBuildD3D");
     }
