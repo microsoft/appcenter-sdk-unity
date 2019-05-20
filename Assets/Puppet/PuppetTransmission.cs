@@ -368,7 +368,6 @@ public class PuppetTransmission : MonoBehaviour
                 Analytics.TrackEvent(EventName.text, properties);
             }
         }
-
     }
 
     public void OnParentUserIdChanged(string newUserId)
