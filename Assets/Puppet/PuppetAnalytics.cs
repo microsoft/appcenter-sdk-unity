@@ -81,6 +81,18 @@ public class PuppetAnalytics : MonoBehaviour
         }
     }
 
+    public void TrackEvent()
+    {
+        if (OnlyStringProperties())
+        {
+            TrackEventStringProperties();
+        }
+        else
+        {
+            TrackEventTypedProperties();
+        }
+    }
+
     public void TrackEventTypedProperties()
     {
         var properties = PropertiesHelper.GetTypedProperties(EventPropertiesList);
@@ -94,5 +106,17 @@ public class PuppetAnalytics : MonoBehaviour
         {
             Analytics.TrackEvent(EventName.text, properties);
         }
+    }
+
+    private bool OnlyStringProperties()
+    {
+        foreach (var fragment in EventPropertiesList)
+        {
+            if (fragment.GetType() != typeof(string))
+            {
+                return false;
+            }
+        }
+        return true;
     }
 }

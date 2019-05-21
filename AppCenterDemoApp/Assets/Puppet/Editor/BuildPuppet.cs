@@ -1,4 +1,4 @@
-﻿// Copyright (c) Microsoft Corporation. All rights reserved.
+// Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT license.
 
 using System;
@@ -25,11 +25,13 @@ public class BuildPuppet
 
     public static void BuildPuppetSceneAndroidMono()
     {
+        CreateGoogleServicesJsonIfNotPresent();
         BuildPuppetScene(BuildTarget.Android, BuildTargetGroup.Android, ScriptingImplementation.Mono2x, "AndroidMonoBuild.apk");
     }
 
     public static void BuildPuppetSceneAndroidIl2CPP()
     {
+        CreateGoogleServicesJsonIfNotPresent();
         // Set NDK location if provided
         var args = Environment.GetCommandLineArgs();
         bool next = false;
@@ -79,7 +81,9 @@ public class BuildPuppet
     public static void BuildPuppetSceneWsaNetXaml()
     {
         EditorUserBuildSettings.wsaUWPBuildType = WSAUWPBuildType.XAML;
+#if !UNITY_5
         PlayerSettings.scriptingRuntimeVersion = ScriptingRuntimeVersion.Legacy;
+#endif
         PlayerSettings.SetApiCompatibilityLevel(BuildTargetGroup.WSA, ApiCompatibilityLevel.NET_4_6);
         BuildPuppetScene(BuildTarget.WSAPlayer, BuildTargetGroup.WSA, ScriptingImplementation.WinRTDotNET, "WSANetBuildXaml");
     }
@@ -87,7 +91,9 @@ public class BuildPuppet
     public static void BuildPuppetSceneWsaIl2CPPXaml()
     {
         EditorUserBuildSettings.wsaUWPBuildType = WSAUWPBuildType.XAML;
+#if !UNITY_5
         PlayerSettings.scriptingRuntimeVersion = ScriptingRuntimeVersion.Legacy;
+#endif
         PlayerSettings.SetApiCompatibilityLevel(BuildTargetGroup.WSA, ApiCompatibilityLevel.NET_4_6);
         BuildPuppetScene(BuildTarget.WSAPlayer, BuildTargetGroup.WSA, ScriptingImplementation.IL2CPP, "WSAIL2CPPBuildXaml");
     }
@@ -96,7 +102,9 @@ public class BuildPuppet
     {
         EditorUserBuildSettings.wsaUWPBuildType = WSAUWPBuildType.D3D;
         PlayerSettings.WSA.compilationOverrides = PlayerSettings.WSACompilationOverrides.UseNetCore;
+#if !UNITY_5
         PlayerSettings.scriptingRuntimeVersion = ScriptingRuntimeVersion.Legacy;
+#endif
         PlayerSettings.SetApiCompatibilityLevel(BuildTargetGroup.WSA, ApiCompatibilityLevel.NET_4_6);
         BuildPuppetScene(BuildTarget.WSAPlayer, BuildTargetGroup.WSA, ScriptingImplementation.WinRTDotNET, "WSANetBuildD3D");
     }
@@ -104,7 +112,9 @@ public class BuildPuppet
     public static void BuildPuppetSceneWsaIl2CPPD3D()
     {
         EditorUserBuildSettings.wsaUWPBuildType = WSAUWPBuildType.D3D;
+#if !UNITY_5
         PlayerSettings.scriptingRuntimeVersion = ScriptingRuntimeVersion.Legacy;
+#endif
         PlayerSettings.SetApiCompatibilityLevel(BuildTargetGroup.WSA, ApiCompatibilityLevel.NET_4_6);
         BuildPuppetScene(BuildTarget.WSAPlayer, BuildTargetGroup.WSA, ScriptingImplementation.IL2CPP, "WSAIL2CPPBuildD3D");
     }
@@ -121,6 +131,26 @@ public class BuildPuppet
             target = target
         };
         BuildPipeline.BuildPlayer(options);
+    }
+
+    // Detects whether there exists a "google-services.json" file, and if not,
+    // copies the "google-services-placeholder.json" and imports it as a
+    // "google-services.json" file. The resulting file contains only
+    // placeholders for keys, not actual keys.
+    private static void CreateGoogleServicesJsonIfNotPresent()
+    {
+        var actualFile = "Assets/Puppet/Editor/google-services.json";
+        if (File.Exists(actualFile))
+        {
+            return;
+        }
+        var placeholderFile = "Assets/Puppet/Editor/google-services-placeholder.json";
+        if (!File.Exists(placeholderFile))
+        {
+            Debug.Log("Could not find google services placeholder.");
+        }
+        File.Copy(placeholderFile, actualFile);
+        AssetDatabase.ImportAsset(actualFile, ImportAssetOptions.Default);
     }
 
     // Increments build version for all platforms

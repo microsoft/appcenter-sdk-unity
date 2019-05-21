@@ -13,27 +13,24 @@ public class PuppetTransmission : MonoBehaviour
 {
     public Toggle TransmissionEnabled;
     public Toggle ChildTransmissionEnabled;
+    public Toggle DefaultTransmissionEnabled;
     public Toggle CollectDeviceId;
-    public Toggle CollectDeviceIdChild;
-    public Toggle UseParentPropertyConfigurator;
-    public Toggle UseChildPropertyConfigurator;
     public InputField EventName;
     public InputField AppName;
     public InputField AppVersion;
     public InputField AppLocale;
     public InputField TransmissionTarget;
     public InputField ChildTransmissionTarget;
+    public InputField DefaultTransmissionTarget;
     public InputField ParentUserId;
-    public InputField ChildUserId;
     public GameObject EventProperty;
     public RectTransform EventPropertiesList;
     public Text TransmissionStatus;
     public Text ChildTransmissionStatus;
+    public Text DefaultTransmissionStatus;
     public Toggle IsCritical;
-    private string _transmissionTargetToken = "";
-    private string _childTransmissionTargetToken = "";
-    private TransmissionTarget _transmissionTarget;
-    private TransmissionTarget _childTransmissionTarget;
+    private string _transmissionTargetToken = "f4c077c9fd0641f4b2d53beaf99c7f6e-029eddb7-7fae-4aa3-b1f8-c6cfcb0fa470-7450";
+    private string _childTransmissionTargetToken = "de994d374a7d4210ac2c148e61417680-5d57d718-d749-468b-8483-be21b5945fe0-7149";
     private bool _isCritical;
 
     private void OnEnable()
@@ -45,6 +42,7 @@ public class PuppetTransmission : MonoBehaviour
         {
             TransmissionEnabled.isOn = false;
             ChildTransmissionEnabled.isOn = false;
+            DefaultTransmissionEnabled.isOn = false;
             return;
         }
 
@@ -55,7 +53,6 @@ public class PuppetTransmission : MonoBehaviour
             StartCoroutine(IsChildEnabledCoroutine(childTransmissionTarget));
         }
         CollectDeviceId.isOn = false;
-        CollectDeviceIdChild.isOn = false;
     }
 
     private IEnumerator IsChildEnabledCoroutine(TransmissionTarget childTransmissionTarget)
@@ -63,6 +60,13 @@ public class PuppetTransmission : MonoBehaviour
         var task = childTransmissionTarget.IsEnabledAsync();
         yield return task;
         ChildTransmissionEnabled.isOn = task.Result;
+    }
+
+    private IEnumerator IsDefaultEnabledCoroutine(TransmissionTarget defaultTransmissionTarget)
+    {
+        var task = Analytics.IsEnabledAsync();
+        yield return task;
+        DefaultTransmissionEnabled.isOn = task.Result;
     }
 
     private IEnumerator IsEnabledCoroutine(TransmissionTarget transmissionTarget)
@@ -118,22 +122,6 @@ public class PuppetTransmission : MonoBehaviour
         {
             transmissionTarget.GetPropertyConfigurator().CollectDeviceId();
             CollectDeviceId.enabled = false;
-        }
-    }
-
-    public void SetCollectDeviceIDChild(bool enabled)
-    {
-        var transmissionTarget = Analytics.GetTransmissionTarget(ResolveToken());
-        if (transmissionTarget == null)
-        {
-            Debug.Log("Transmission target is null.");
-            return;
-        }
-        var childTransmissionTarget = transmissionTarget.GetTransmissionTarget(ResolveChildToken());
-        if (enabled)
-        {
-            childTransmissionTarget.GetPropertyConfigurator().CollectDeviceId();
-            CollectDeviceIdChild.enabled = false;
         }
     }
 
@@ -197,35 +185,13 @@ public class PuppetTransmission : MonoBehaviour
             }
             else
             {
-                if (UseChildPropertyConfigurator.isOn)
+                if (_isCritical)
                 {
-                    var propertyConfigurator = transmissionTarget.GetPropertyConfigurator();
-                    foreach (var property in properties)
-                    {
-                        propertyConfigurator.SetEventProperty(property.Key, property.Value);
-                    }
-                    propertyConfigurator.SetEventProperty("extraEventProperty", "should be removed!");
-                    propertyConfigurator.RemoveEventProperty("extraEventProperty");
-                    if (_isCritical)
-                    {
-                        IDictionary<string, string> nullProps = null;
-                        transmissionTarget.TrackEvent(EventName.text, nullProps, Flags.PersistenceCritical);
-                    }
-                    else
-                    {
-                        transmissionTarget.TrackEvent(EventName.text);
-                    }
+                    transmissionTarget.TrackEvent(EventName.text, properties, Flags.PersistenceCritical);
                 }
                 else
                 {
-                    if (_isCritical)
-                    {
-                        transmissionTarget.TrackEvent(EventName.text, properties, Flags.PersistenceCritical);
-                    }
-                    else
-                    {
-                        transmissionTarget.TrackEvent(EventName.text, properties);
-                    }
+                    transmissionTarget.TrackEvent(EventName.text, properties);
                 }
             }
         }
@@ -251,32 +217,13 @@ public class PuppetTransmission : MonoBehaviour
             }
             else
             {
-                if (UseChildPropertyConfigurator.isOn)
+                if (_isCritical)
                 {
-                    var propertyConfigurator = transmissionTarget.GetPropertyConfigurator();
-                    PropertiesHelper.AddPropertiesToPropertyConfigurator(EventPropertiesList, propertyConfigurator);
-                    propertyConfigurator.SetEventProperty("extraEventProperty", "should be removed!");
-                    propertyConfigurator.RemoveEventProperty("extraEventProperty");
-                    if (_isCritical)
-                    {
-                        EventProperties nullProps = null;
-                        transmissionTarget.TrackEvent(EventName.text, nullProps, Flags.PersistenceCritical);
-                    }
-                    else
-                    {
-                        transmissionTarget.TrackEvent(EventName.text);
-                    }
+                    transmissionTarget.TrackEvent(EventName.text, properties, Flags.PersistenceCritical);
                 }
                 else
                 {
-                    if (_isCritical)
-                    {
-                        transmissionTarget.TrackEvent(EventName.text, properties, Flags.PersistenceCritical);
-                    }
-                    else
-                    {
-                        transmissionTarget.TrackEvent(EventName.text, properties);
-                    }
+                    transmissionTarget.TrackEvent(EventName.text, properties);
                 }
             }
         }
@@ -322,35 +269,13 @@ public class PuppetTransmission : MonoBehaviour
             }
             else
             {
-                if (UseParentPropertyConfigurator.isOn)
+                if (_isCritical)
                 {
-                    var propertyConfigurator = transmissionTarget.GetPropertyConfigurator();
-                    foreach (var property in properties)
-                    {
-                        propertyConfigurator.SetEventProperty(property.Key, property.Value);
-                    }
-                    propertyConfigurator.SetEventProperty("extraEventProperty", "should be removed!");
-                    propertyConfigurator.RemoveEventProperty("extraEventProperty");
-                    if (_isCritical)
-                    {
-                        IDictionary<string, string> nullProps = null;
-                        transmissionTarget.TrackEvent(EventName.text, nullProps, Flags.PersistenceCritical);
-                    }
-                    else
-                    {
-                        transmissionTarget.TrackEvent(EventName.text);
-                    }
+                    transmissionTarget.TrackEvent(EventName.text, properties, Flags.PersistenceCritical);
                 }
                 else
                 {
-                    if (_isCritical)
-                    {
-                        transmissionTarget.TrackEvent(EventName.text, properties, Flags.PersistenceCritical);
-                    }
-                    else
-                    {
-                        transmissionTarget.TrackEvent(EventName.text, properties);
-                    }
+                    transmissionTarget.TrackEvent(EventName.text, properties);
                 }
             }
         }
@@ -377,33 +302,70 @@ public class PuppetTransmission : MonoBehaviour
             }
             else
             {
-                if (UseParentPropertyConfigurator.isOn)
+                if (_isCritical)
                 {
-                    var propertyConfigurator = transmissionTarget.GetPropertyConfigurator();
-                    PropertiesHelper.AddPropertiesToPropertyConfigurator(EventPropertiesList, propertyConfigurator);
-                    propertyConfigurator.SetEventProperty("extraEventProperty", "should be removed!");
-                    propertyConfigurator.RemoveEventProperty("extraEventProperty");
-                    if (_isCritical)
-                    {
-                        EventProperties nullProps = null;
-                        transmissionTarget.TrackEvent(EventName.text, nullProps, Flags.PersistenceCritical);
-                    }
-                    else
-                    {
-                        transmissionTarget.TrackEvent(EventName.text);
-                    }
+                    transmissionTarget.TrackEvent(EventName.text, properties, Flags.PersistenceCritical);
                 }
                 else
                 {
-                    if (_isCritical)
-                    {
-                        transmissionTarget.TrackEvent(EventName.text, properties, Flags.PersistenceCritical);
-                    }
-                    else
-                    {
-                        transmissionTarget.TrackEvent(EventName.text, properties);
-                    }
+                    transmissionTarget.TrackEvent(EventName.text, properties);
                 }
+            }
+        }
+    }
+
+    public void TrackEventStringPropertiesDefaultTransmission()
+    {
+        var properties = PropertiesHelper.GetStringProperties(EventPropertiesList);
+        if (properties == null)
+        {
+            if (_isCritical)
+            {
+                IDictionary<string, string> nullProps = null;
+                Analytics.TrackEvent(EventName.text, nullProps, Flags.PersistenceCritical);
+            }
+            else
+            {
+                Analytics.TrackEvent(EventName.text);
+            }
+        }
+        else
+        {
+            if (_isCritical)
+            {
+                Analytics.TrackEvent(EventName.text, properties, Flags.PersistenceCritical);
+            }
+            else
+            {
+                Analytics.TrackEvent(EventName.text, properties);
+            }
+        }
+    }
+
+    public void TrackEventTypedPropertiesDefaultTransmission()
+    {
+        var properties = PropertiesHelper.GetTypedProperties(EventPropertiesList);
+        if (properties == null)
+        {
+            if (_isCritical)
+            {
+                EventProperties nullProps = null;
+                Analytics.TrackEvent(EventName.text, nullProps, Flags.PersistenceCritical);
+            }
+            else
+            {
+                Analytics.TrackEvent(EventName.text);
+            }
+        }
+        else
+        {
+            if (_isCritical)
+            {
+                Analytics.TrackEvent(EventName.text, properties, Flags.PersistenceCritical);
+            }
+            else
+            {
+                Analytics.TrackEvent(EventName.text, properties);
             }
         }
     }
@@ -411,16 +373,6 @@ public class PuppetTransmission : MonoBehaviour
     public void OnParentUserIdChanged(string newUserId)
     {
         var transmissionTarget = GetTransmissionTarget();
-        if (transmissionTarget != null)
-        {
-            var propertyConfigurator = transmissionTarget.GetPropertyConfigurator();
-            propertyConfigurator.SetUserId(newUserId);
-        }
-    }
-
-    public void OnChildUserIdChanged(string newUserId)
-    {
-        var transmissionTarget = GetChildTransmissionTarget();
         if (transmissionTarget != null)
         {
             var propertyConfigurator = transmissionTarget.GetPropertyConfigurator();
@@ -472,6 +424,18 @@ public class PuppetTransmission : MonoBehaviour
         }
     }
 
+    public void ResumeDefaultTransmission()
+    {
+        Analytics.Resume();
+        DefaultTransmissionStatus.text = "Default transmission resumed.";
+    }
+
+    public void PauseDefaultTransmission()
+    {
+        Analytics.Pause();
+        DefaultTransmissionStatus.text = "Default transmission paused.";
+    }
+
     private TransmissionTarget GetTransmissionTarget()
     {
         var transmissionTarget = Analytics.GetTransmissionTarget(ResolveToken());
@@ -503,11 +467,5 @@ public class PuppetTransmission : MonoBehaviour
     {
         ParentUserId.text = "";
         OnParentUserIdChanged(null);
-    }
-
-    public void ClearChildUserId()
-    {
-        ChildUserId.text = "";
-        OnChildUserIdChanged(null);
     }
 }

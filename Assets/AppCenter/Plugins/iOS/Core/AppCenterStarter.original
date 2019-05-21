@@ -40,6 +40,7 @@ static NSString *const kMSTargetToken = @"appcenter-transmission-target-token";
 static NSString *const kMSCustomLogUrl = @"custom-log-url";
 static NSString *const kMSCustomApiUrl = @"custom-api-url";
 static NSString *const kMSCustomInstallUrl = @"custom-install-url";
+static NSString *const kMSStartTargetKey = @"MSAppCenterStartTargetUnityKey";
 
 static const int kMSLogLevel = 0/*LOG_LEVEL*/;
 static const int kMSStartupType = 0/*STARTUP_TYPE*/;
@@ -51,11 +52,12 @@ static const int kMSStartupType = 0/*STARTUP_TYPE*/;
                                              object:nil];
 }
 
-+ (void)startAppCenter {
-  NSInteger startTarget = kMSStartupType;
-  if (startTarget == SKIP) {
-    return;
-  }
++ (void)startAppCenter {  
+  NSNumber *startTarget = [[NSUserDefaults standardUserDefaults] objectForKey:kMSStartTargetKey];
+  int startTargetValue = startTarget == nil ? kMSStartupType : startTarget.intValue;
+  if (startTargetValue == SKIP) {
+    return;
+  }
 
   NSMutableArray<Class>* classes = [[NSMutableArray alloc] init];
 
@@ -92,7 +94,7 @@ static const int kMSStartupType = 0/*STARTUP_TYPE*/;
 #ifdef APPCENTER_UNITY_USE_CUSTOM_LOG_URL
   [MSAppCenter setLogUrl:kMSCustomLogUrl];
 #endif
-  switch (startTarget) {
+  switch (startTargetValue) {
     case APPCENTER:
       [MSAppCenter start:kMSAppSecret withServices:classes];
       break;
