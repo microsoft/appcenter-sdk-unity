@@ -47,6 +47,7 @@ public class AppCenterLoader extends ContentProvider {
     private static final String STARTUP_TYPE_KEY = "appcenter_startup_type";
     private static final String TRUE_VALUE = "True";
     private static final String TAG = "AppCenterLoader";
+    private static final String ENABLE_DISTRIBUTE_FOR_DEBUGGABLE_BUILD_KEY = "appcenter_enable_distribute_for_debuggable_build";
 
     private Context mContext;
 
@@ -79,6 +80,9 @@ public class AppCenterLoader extends ContentProvider {
         // }
         if (isTrueValue(getStringResource(USE_DISTRIBUTE_KEY)) &&
             isModuleAvailable("com.microsoft.appcenter.distribute.Distribute", "Distribute")) {
+            if (isTrueValue(getStringResource(ENABLE_DISTRIBUTE_FOR_DEBUGGABLE_BUILD_KEY))) {
+                Distribute.setEnabledForDebuggableBuild(true);
+            }
             if (isTrueValue(getStringResource(USE_CUSTOM_API_URL_KEY))) {
                 String customApiUrl = getStringResource(CUSTOM_API_URL_KEY);
                 if (customApiUrl != null) {

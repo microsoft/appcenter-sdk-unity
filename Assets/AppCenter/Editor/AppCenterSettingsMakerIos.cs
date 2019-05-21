@@ -2,6 +2,7 @@
 // Licensed under the MIT license.
 
 using System.IO;
+using UnityEditor;
 
 public class AppCenterSettingsMakerIos : IAppCenterSettingsMaker
 {
@@ -25,6 +26,7 @@ public class AppCenterSettingsMakerIos : IAppCenterSettingsMaker
     private const string MaxStorageSize = "APPCENTER_MAX_STORAGE_SIZE";
 
     private string _loaderFileText;
+    private bool _enableDistributeForDebuggableBuild;
 
     public AppCenterSettingsMakerIos()
     {
@@ -64,7 +66,10 @@ public class AppCenterSettingsMakerIos : IAppCenterSettingsMaker
 
     public void StartDistributeClass()
     {
-        AddToken(UseDistributeToken);
+        if (_enableDistributeForDebuggableBuild || !EditorUserBuildSettings.development)
+        {
+            AddToken(UseDistributeToken);
+        }
     }
 
     public void StartAnalyticsClass()
@@ -133,5 +138,10 @@ public class AppCenterSettingsMakerIos : IAppCenterSettingsMaker
     public bool IsPushAvailable()
     {
         return Directory.Exists(AppCenterSettingsContext.AppCenterPath + "/AppCenter/Plugins/iOS/Push");
+    }
+
+    public void SetShouldEnableDistributeForDebuggableBuild()
+    {
+        _enableDistributeForDebuggableBuild = true;
     }
 }
