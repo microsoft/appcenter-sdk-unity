@@ -167,6 +167,12 @@ public class PuppetAppCenter : MonoBehaviour
         var isEnabled = AppCenter.IsEnabledAsync();
         yield return isEnabled;
         Enabled.isOn = isEnabled.Result;
+        var isPushEnabled = Push.IsEnabledAsync();
+        yield return isPushEnabled;
+        PushEnabled.isOn = isPushEnabled.Result;
+        var isDistributeEnabled = Distribute.IsEnabledAsync();
+        yield return isDistributeEnabled;
+        DistributeEnabled.isOn = isDistributeEnabled.Result;
     }
 
     public void SetLogLevel(int logLevel)
