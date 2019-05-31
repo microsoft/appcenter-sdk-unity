@@ -7,6 +7,7 @@ using System.Linq;
 using System.Text.RegularExpressions;
 using System.Xml.Linq;
 using System;
+using System.Collections.Generic;
 #if UNITY_2018_1_OR_NEWER
 using UnityEditor.Build.Reporting;
 #endif
@@ -178,10 +179,93 @@ public class AppCenterPostBuild : IPostprocessBuild
 
     public static void FixIl2CppLogging(string pathToBuiltProject)
     {
-        var sourceDebuggerPath = "Assets\\AppCenter\\Plugins\\WSA\\IL2CPP\\Debugger.cpp.txt";
         var destDebuggerPath = Path.Combine(pathToBuiltProject,
             "Il2CppOutputProject\\IL2CPP\\libil2cpp\\icalls\\mscorlib\\System.Diagnostics\\Debugger.cpp");
-        File.Copy(sourceDebuggerPath, destDebuggerPath, true);
+        if (!File.Exists(destDebuggerPath))
+        {
+            throw new FileNotFoundException("Debugger.cpp file not found");
+        }
+
+        var codeLines = File.ReadAllLines(destDebuggerPath).ToList();
+
+        // Update #include and #undef derictives.
+        var lastIncludeLineIndex = SearchForLine(codeLines, "#include", true);
+        if (lastIncludeLineIndex == -1)
+        {
+            throw new Exception("Unexpected content of Debugger.cpp");
+        }
+        codeLines.Insert(lastIncludeLineIndex + 1, "#include <Windows.h>");
+        codeLines.Insert(lastIncludeLineIndex + 2, "#undef GetCurrentDirectory");
+        // Add logging method.
+        var logMethodLineIndex = SearchForLine(codeLines, "void Debugger::Log");
+        if (logMethodLineIndex == -1)
+        {
+            throw new Exception("Unexpected content of Debugger.cpp");
+        }
+        var insertingPosition = GetFirstLineInMethodBody(codeLines, logMethodLineIndex);
+        codeLines.Insert(insertingPosition, "OutputDebugStringW(message->chars);");
+        // Enable logging.
+        var isLoggingMethodLineIndex = SearchForLine(codeLines, "bool Debugger::IsLogging");
+        if (isLoggingMethodLineIndex == -1)
+        {
+            throw new Exception("Unexpected content of Debugger.cpp");
+        }
+        var firstLineInMethodBody = GetFirstLineInMethodBody(codeLines, isLoggingMethodLineIndex);
+        var lastLineInMethodBody = GetLastLineInMethodBody(codeLines, isLoggingMethodLineIndex);
+        codeLines.RemoveRange(firstLineInMethodBody, lastLineInMethodBody - firstLineInMethodBody);
+        codeLines.Insert(firstLineInMethodBody, "return true;");
+
+        File.WriteAllLines(destDebuggerPath, codeLines);
+    }
+
+    private static int GetFirstLineInMethodBody(List<string> lines, int currentLineIndex)
+    {
+        while (currentLineIndex <= lines.Count && !lines[currentLineIndex].Contains("{"))
+        {
+            currentLineIndex++;
+        }
+        if (currentLineIndex >= lines.Count)
+        {
+            throw new Exception("Unexpected content of Debugger.cpp");
+        }
+        return currentLineIndex + 1;
+    }
+
+    private static int GetLastLineInMethodBody(List<string> lines, int currentLineIndex)
+    {
+        var lineIndex = GetFirstLineInMethodBody(lines, currentLineIndex);
+        int bracketsBalance = lines[lineIndex - 1].Count((item) => item == '{');
+        while (lineIndex <= lines.Count && bracketsBalance != 0)
+        {
+            bracketsBalance += lines[lineIndex].Count((item) => item == '{');
+            bracketsBalance -= lines[lineIndex].Count((item) => item == '}');
+            lineIndex++;
+        }
+        if (bracketsBalance != 0)
+        {
+            throw new Exception("Unexpected content of Debugger.cpp");
+        }
+        return lineIndex - 1;
+    }
+
+    private static int SearchForLine(List<string> lines, string searchString, bool returnTheLast = false)
+    {
+        int position = -1;
+        for (var i = 0; i < lines.Count; i++)
+        {
+            if (lines[i].Contains(searchString))
+            {
+                if (returnTheLast)
+                {
+                    position = i;
+                }
+                else
+                {
+                    return i;
+                }
+            }
+        }
+        return position;
     }
 
     public static string GetAppFilePath(string pathToBuiltProject, string filename)
