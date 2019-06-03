@@ -227,7 +227,7 @@ public class AppCenterPostBuild : IPostprocessBuild
         var lastLineInMethodBody = GetLastLineInMethodBody(codeLines, isLoggingMethodLineIndex);
         codeLines.RemoveRange(firstLineInMethodBody, lastLineInMethodBody - firstLineInMethodBody);
         codeLines.Insert(firstLineInMethodBody, "return true;");
-        File.WriteAllLines(destDebuggerPath, codeLines);
+        File.WriteAllLines(destDebuggerPath, codeLines.ToArray());
     }
 
     private static int GetFirstLineInMethodBody(List<string> lines, int currentLineIndex)
