@@ -224,6 +224,12 @@ public class PuppetAppCenter : MonoBehaviour
 
     public void SetMaxStorageSize(string maxStorageSize)
     {
+        long result;
+        if (!long.TryParse(maxStorageSize, out result))
+        {
+            MaxStorageSize.text = "Invalid";
+            return;
+        }
         PlayerPrefs.SetString(MaxStorageSizeKey, maxStorageSize);
         PlayerPrefs.Save();
 #if UNITY_ANDROID && !UNITY_EDITOR

@@ -20423,7 +20423,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: Enter max storage size...
+  m_Text: Enter max size...
 --- !u!222 &1451157385
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -26774,7 +26774,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: Max storage size
+  m_Text: Max storage size (bytes)
 --- !u!222 &1898591433
 CanvasRenderer:
   m_ObjectHideFlags: 0
