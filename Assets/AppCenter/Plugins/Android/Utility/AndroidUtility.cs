@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -29,6 +29,15 @@ namespace Assets.AppCenter.Plugins.Android.Utility
             AndroidJavaObject sharedPreferences = context.Call<AndroidJavaObject>("getSharedPreferences", new object[] { PREFS_NAME, 0 });
             AndroidJavaObject editor = sharedPreferences.Call<AndroidJavaObject>("edit");
             editor = editor.Call<AndroidJavaObject>("putInt", new object[] { prefKey, prefValue });
+            editor.Call("apply");
+        }
+
+        public static void SetPreferenceString(string prefKey, string prefValue)
+        {
+            AndroidJavaObject context = GetAndroidContext();
+            AndroidJavaObject sharedPreferences = context.Call<AndroidJavaObject>("getSharedPreferences", new object[] { PREFS_NAME, 0 });
+            AndroidJavaObject editor = sharedPreferences.Call<AndroidJavaObject>("edit");
+            editor = editor.Call<AndroidJavaObject>("putString", new object[] { prefKey, prefValue });
             editor.Call("apply");
         }
     }

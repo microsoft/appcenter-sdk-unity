@@ -41,6 +41,9 @@ static NSString *const kMSCustomLogUrl = @"custom-log-url";
 static NSString *const kMSCustomApiUrl = @"custom-api-url";
 static NSString *const kMSCustomInstallUrl = @"custom-install-url";
 static NSString *const kMSStartTargetKey = @"MSAppCenterStartTargetUnityKey";
+static NSString *const kMSStorageSizeKey = @"MSAppCenterMaxStorageSizeUnityKey";
+static NSString *const kMSLogUrlKey = @"MSAppCenterLogUrlUnityKey";
+static NSString *const kMSAppSecretKey = @"MSAppCenterAppSecretUnityKey";
 
 static const int kMSLogLevel = 0/*LOG_LEVEL*/;
 static const int kMSStartupType = 0/*STARTUP_TYPE*/;
@@ -61,12 +64,20 @@ static const int kMSStartupType = 0/*STARTUP_TYPE*/;
 
   NSMutableArray<Class>* classes = [[NSMutableArray alloc] init];
 
+  NSNumber *maxStorageSize = [[NSUserDefaults standardUserDefaults] objectForKey:kMSStorageSizeKey];
+  if (maxStorageSize != nil) {
+    [MSAppCenter setMaxStorageSize:maxStorageSize completionHandler:^void(bool result){
+      if (!result)
+        MSLogWarning(@"MSAppCenter", @"setMaxStorageSize failed");
+    }];
+  } else {
 #ifdef APPCENTER_USE_CUSTOM_MAX_STORAGE_SIZE
   [MSAppCenter setMaxStorageSize:APPCENTER_MAX_STORAGE_SIZE completionHandler:^void(bool result){
     if (!result)
       MSLogWarning(@"MSAppCenter", @"setMaxStorageSize failed");
   }];
 #endif
+  }
 
 #ifdef APPCENTER_UNITY_USE_ANALYTICS
   [classes addObject:MSAnalytics.class];
@@ -91,19 +102,28 @@ static const int kMSStartupType = 0/*STARTUP_TYPE*/;
 
   [MSAppCenter setLogLevel:(MSLogLevel)kMSLogLevel];
 
+
+  NSString *customLogUrl = [[NSUserDefaults standardUserDefaults] objectForKey:kMSLogUrlKey];
+  if (customLogUrl != nil) {
+    [MSAppCenter setLogUrl:customLogUrl];
+  } else {
 #ifdef APPCENTER_UNITY_USE_CUSTOM_LOG_URL
   [MSAppCenter setLogUrl:kMSCustomLogUrl];
 #endif
+  }
+  NSString *customAppSecret = [[NSUserDefaults standardUserDefaults] objectForKey:kMSAppSecretKey];
+  NSString *customAppSecretValue = customAppSecret == nil ? kMSAppSecret : customAppSecret;
+  
   switch (startTargetValue) {
     case APPCENTER:
-      [MSAppCenter start:kMSAppSecret withServices:classes];
+      [MSAppCenter start:customAppSecretValue withServices:classes];
       break;
     case ONECOLLECTOR:
       [MSAppCenter start:[NSString stringWithFormat:@"target=%@", kMSTargetToken]
             withServices:classes];
       break;
     case BOTH:
-      [MSAppCenter start:[NSString stringWithFormat:@"appsecret=%@;target=%@", kMSAppSecret, kMSTargetToken]
+      [MSAppCenter start:[NSString stringWithFormat:@"appsecret=%@;target=%@", customAppSecretValue, kMSTargetToken]
             withServices:classes];
       break;
     case NONE:
