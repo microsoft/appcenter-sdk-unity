@@ -131,7 +131,7 @@ public class PuppetAppCenter : MonoBehaviour
         }
         else
         {
-            var logUrl = AppCenter.GetLogUrl();
+            var logUrl = AppCenter.GetLogUrlAsync();
             yield return logUrl;
             LogUrl.text = logUrl.Result;
         }
@@ -156,7 +156,7 @@ public class PuppetAppCenter : MonoBehaviour
         }
         else
         {
-            var appSecret = AppCenter.GetSecretForPlatform();
+            var appSecret = AppCenter.GetSecretForPlatformAsync();
             yield return appSecret;
             AppSecret.text = appSecret.Result;
         }
@@ -167,9 +167,9 @@ public class PuppetAppCenter : MonoBehaviour
         }
         else
         {
-            var storageSize = AppCenter.GetStorageSize();
+            var storageSize = AppCenter.GetStorageSizeAsync();
             yield return storageSize;
-            MaxStorageSize.text = (storageSize.Result <= 0) ? "Unchanged" : storageSize.Result.ToString();
+            MaxStorageSize.text = storageSize.Result <= 0 ? "Unchanged" : storageSize.Result.ToString();
         }
 
         DeviceIdLabel.text = SystemInfo.deviceUniqueIdentifier;
