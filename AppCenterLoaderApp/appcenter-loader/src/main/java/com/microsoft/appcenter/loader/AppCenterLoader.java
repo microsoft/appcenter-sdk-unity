@@ -45,6 +45,9 @@ public class AppCenterLoader extends ContentProvider {
     private static final String TRANSMISSION_TARGET_TOKEN_KEY = "appcenter_transmission_target_token";
     private static final String STARTUP_TYPE_KEY = "appcenter_startup_type";
     private static final String STARTUP_TYPE_SHARED_PREFERENCES_KEY = "AppCenter.Unity.StartTargetKey";
+    private static final String LOG_URL_SHARED_PREFERENCES_KEY = "AppCenter.Unity.LogUrlKey";
+    private static final String APP_SECRET_SHARED_PREFERENCES_KEY = "AppCenter.Unity.AppSecretKey";
+    private static final String MAX_STORAGE_SIZE_SHARED_PREFERENCES_KEY = "AppCenter.Unity.MaxStorageSizeKey";
     private static final String TRUE_VALUE = "True";
     private static final String TAG = "AppCenterLoader";
     private static final String ENABLE_DISTRIBUTE_FOR_DEBUGGABLE_BUILD_KEY = "appcenter_enable_distribute_for_debuggable_build";
@@ -56,7 +59,8 @@ public class AppCenterLoader extends ContentProvider {
     @Override
     public boolean onCreate() {
         mContext = getApplicationContext();
-        String appSecret = getStringResource(APP_SECRET_KEY);
+        String appSecret = mContext.getSharedPreferences(PREFS_NAME, Context.MODE_PRIVATE).getString(APP_SECRET_SHARED_PREFERENCES_KEY, getStringResource(APP_SECRET_KEY));
+
         String transmissionTargetToken = getStringResource(TRANSMISSION_TARGET_TOKEN_KEY);
         int startupTypeInt = mContext.getSharedPreferences(PREFS_NAME, Context.MODE_PRIVATE).getInt(STARTUP_TYPE_SHARED_PREFERENCES_KEY, Integer.parseInt(getStringResource(STARTUP_TYPE_KEY)));
         StartupType startupType = StartupType.values()[startupTypeInt];
@@ -109,8 +113,11 @@ public class AppCenterLoader extends ContentProvider {
         }
         int logLevel = Integer.parseInt(getStringResource(INITIAL_LOG_LEVEL_KEY));
         AppCenter.setLogLevel(logLevel);
-        if (isTrueValue(getStringResource(USE_CUSTOM_LOG_URL_KEY))) {
-            String customLogUrl = getStringResource(CUSTOM_LOG_URL_KEY);
+        String customLogUrl = mContext.getSharedPreferences(PREFS_NAME, Context.MODE_PRIVATE).getString(LOG_URL_SHARED_PREFERENCES_KEY, null);
+        if (customLogUrl != null) {
+            AppCenter.setLogUrl(customLogUrl);
+        } else if (isTrueValue(getStringResource(USE_CUSTOM_LOG_URL_KEY))) {
+            customLogUrl = getStringResource(CUSTOM_LOG_URL_KEY);
             if (customLogUrl != null) {
                 AppCenter.setLogUrl(customLogUrl);
             }
@@ -147,7 +154,7 @@ public class AppCenterLoader extends ContentProvider {
     }
 
     private void SetMaxStorageSize() {
-        String maxStorageSizeString = getStringResource(MAX_STORAGE_SIZE);
+        String maxStorageSizeString = mContext.getSharedPreferences(PREFS_NAME, Context.MODE_PRIVATE).getString(MAX_STORAGE_SIZE_SHARED_PREFERENCES_KEY, getStringResource(MAX_STORAGE_SIZE));
         if (maxStorageSizeString != null) {
             long maxStorageSize = Long.parseLong(maxStorageSizeString);
             if (maxStorageSize > 0) {
