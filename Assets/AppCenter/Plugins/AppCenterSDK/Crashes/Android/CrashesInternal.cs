@@ -95,6 +95,12 @@ namespace Microsoft.AppCenter.Unity.Crashes.Internal
             _crashes.CallStatic("notifyUserConfirmation", ToJavaConfirmationResult(answer));
         }
 
+        public static AppCenterTask<string> GetMinidumpDirectoryAsync()
+        {
+            var future = _crashes.CallStatic<AndroidJavaObject>("getMinidumpDirectory");
+            return new AppCenterTask<string>(future);
+        }
+
         public static void StartCrashes()
         {
             AppCenterInternal.Start(AppCenter.Crashes);

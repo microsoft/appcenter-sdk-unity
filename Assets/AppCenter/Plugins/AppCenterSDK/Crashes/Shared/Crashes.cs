@@ -94,6 +94,11 @@ namespace Microsoft.AppCenter.Unity.Crashes
         }
 #endif
 
+        public static AppCenterTask<string> GetMinidumpDirectoryAsync()
+        {
+            return CrashesInternal.GetMinidumpDirectoryAsync();
+        }
+
         public static AppCenterTask<bool> IsEnabledAsync()
         {
             return CrashesInternal.IsEnabledAsync();
