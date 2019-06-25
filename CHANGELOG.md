@@ -1,5 +1,15 @@
 # App Center SDK for Unity Change Log
 
+## Release 2.1.0
+
+Updated native SDK versions:
+* Android from `2.0.0` to [2.1.0](https://github.com/Microsoft/AppCenter-SDK-Android/releases/tag/2.1.0)
+* iOS from `2.0.1` to [2.1.0](https://github.com/Microsoft/AppCenter-SDK-Apple/releases/tag/2.1.0)
+* UWP from `2.0.0` to [2.1.0](https://github.com/Microsoft/AppCenter-SDK-DotNet/releases/tag/2.1.0)
+
+* **[Feature]**  Add `Distribute.setEnabledForDebuggableBuild(boolean)` method to allow in-app updates in debuggable builds.
+* **[Bug fix]**  Fixed UWP build in Unity 2019
+
 ## Release 2.0.0
 
 Updated native SDK versions:
