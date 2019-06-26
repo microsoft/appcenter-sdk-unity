@@ -282,7 +282,6 @@ Task("BuildAndroidContentProvider").Does(()=>
     var appName = "AppCenterLoaderApp";
     var libraryName = "appcenter-loader";
     BuildAndroidLibrary(appName, libraryName);
-    appName = "AppCenterPushDelegate";
     libraryName = "appcenter-push-delegate";
     BuildAndroidLibrary(appName, libraryName);
     
