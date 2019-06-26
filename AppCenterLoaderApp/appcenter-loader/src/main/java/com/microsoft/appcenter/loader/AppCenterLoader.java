@@ -107,7 +107,7 @@ public class AppCenterLoader extends ContentProvider {
         if (isTrueValue(getStringResource(USE_PUSH_KEY)) &&
             isModuleAvailable("com.microsoft.appcenter.push.Push", "Push")) {
             try {
-                Class<PushListener> pushClass = (Class<PushListener>) Class.forName("com.microsoft.appcenter.loader.UnityAppCenterPushDelegate");
+                Class<PushListener> pushClass = (Class<PushListener>) Class.forName("com.microsoft.appcenter.pushdelegate.UnityAppCenterPushDelegate");
                 Push.setListener(pushClass.newInstance());
             } catch (Exception e) {
                 Log.i(TAG, "UnityAppCenterPushDelegate is not available: " + e.getMessage());
