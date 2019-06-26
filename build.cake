@@ -281,6 +281,14 @@ Task("BuildAndroidContentProvider").Does(()=>
     // Folder and script locations
     var appName = "AppCenterLoaderApp";
     var libraryName = "appcenter-loader";
+    BuildAndroidLibrary(appName, libraryName);
+    appName = "AppCenterPushDelegate";
+    libraryName = "appcenter-push-delegate";
+    BuildAndroidLibrary(appName, libraryName);
+    
+}).OnError(HandleError);
+
+void BuildAndroidLibrary(string appName, string libraryName) {
     var libraryFolder = System.IO.Path.Combine(appName, libraryName);
     var gradleScript = System.IO.Path.Combine(libraryFolder, "build.gradle");
 
@@ -307,7 +315,7 @@ Task("BuildAndroidContentProvider").Does(()=>
 
     // Move the .aar to Assets/AppCenter/Plugins/Android
     MoveFileToDirectory(aarSource, aarDestination);
-}).OnError(HandleError);
+}
 
 // Install Unity Editor for Windows
 Task("Install-Unity-Windows").Does(() => {

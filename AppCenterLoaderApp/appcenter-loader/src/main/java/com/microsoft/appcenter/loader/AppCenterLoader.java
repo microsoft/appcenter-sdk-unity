@@ -18,6 +18,7 @@ import com.microsoft.appcenter.AppCenterService;
 import com.microsoft.appcenter.analytics.Analytics;
 import com.microsoft.appcenter.distribute.Distribute;
 import com.microsoft.appcenter.push.Push;
+import com.microsoft.appcenter.push.PushListener;
 import com.microsoft.appcenter.utils.AppCenterLog;
 
 import java.util.ArrayList;
@@ -105,7 +106,13 @@ public class AppCenterLoader extends ContentProvider {
         }
         if (isTrueValue(getStringResource(USE_PUSH_KEY)) &&
             isModuleAvailable("com.microsoft.appcenter.push.Push", "Push")) {
-            Push.setListener(new UnityAppCenterPushDelegate());
+            try {
+                Class<PushListener> pushClass = (Class<PushListener>) Class.forName("com.microsoft.appcenter.loader.UnityAppCenterPushDelegate");
+                Push.setListener(pushClass.newInstance());
+            } catch (Exception e) {
+                Log.i(TAG, "UnityAppCenterPushDelegate is not available: " + e.getMessage());
+                return false;
+            }
             classes.add(Push.class);
             if (isTrueValue(getStringResource(ENABLE_FIREBASE_ANALYTICS_KEY))) {
                 Push.enableFirebaseAnalytics(mContext);
