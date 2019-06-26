@@ -20,7 +20,7 @@ android {
 }
 
 dependencies {
-    implementation fileTree(dir: '../../Assets/AppCenter/Plugins/Android', include: ['appcenter-push-release.aar'])
+    implementation fileTree(dir: '../../Assets/AppCenter/Plugins/Android', include: ['appcenter*.aar'])
     androidTestImplementation('com.android.support.test.espresso:espresso-core:2.2.2', {
         exclude group: 'com.android.support', module: 'support-annotations'
     })
