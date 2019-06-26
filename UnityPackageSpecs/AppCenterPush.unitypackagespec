@@ -8,8 +8,8 @@
         <file path="Assets/AppCenter/Plugins/AppCenterSDK/Push/Blank" />
 
         <!-- Android files -->
-        <file path="Assets/AppCenter/Plugins/Android/appcenter-push-delegate-release.aar" />
         <file path="Assets/AppCenter/Plugins/Android/appcenter-push-release.aar" />
+        <file path="Assets/AppCenter/Plugins/Android/appcenter-push-delegate-release.aar" />
         <file path="Assets/AppCenter/Plugins/AppCenterSDK/Push/Android" />
 
         <!-- iOS files -->
