@@ -111,7 +111,7 @@ public class AppCenterLoader extends ContentProvider {
                 Class<PushListener> pushClass = (Class<PushListener>) Class.forName("com.microsoft.appcenter.pushdelegate.UnityAppCenterPushDelegate");
                 Push.setListener(pushClass.newInstance());
             } catch (Exception e) {
-                Log.i(TAG, "UnityAppCenterPushDelegate is not available: " + e.getMessage());
+                AppCenterLog.error(TAG, "UnityAppCenterPushDelegate is not available", e);
                 return false;
             }
             classes.add(Push.class);

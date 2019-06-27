@@ -283,8 +283,7 @@ Task("BuildAndroidContentProvider").Does(()=>
     var libraryName = "appcenter-loader";
     BuildAndroidLibrary(appName, libraryName);
     libraryName = "appcenter-push-delegate";
-    BuildAndroidLibrary(appName, libraryName);
-    
+    BuildAndroidLibrary(appName, libraryName);    
 }).OnError(HandleError);
 
 void BuildAndroidLibrary(string appName, string libraryName) {
