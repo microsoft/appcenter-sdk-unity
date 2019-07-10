@@ -49,7 +49,7 @@ public class PuppetCrashes : MonoBehaviour
 
     public void SetCrashesEnabled(bool enabled)
     {
-        StartCoroutine(SetCrashesEnabledCoroutine(CrashesEnabled.isOn));
+        StartCoroutine(SetCrashesEnabledCoroutine(enabled));
     }
 
     public void SetReportUnhandledExceptions(bool enabled)

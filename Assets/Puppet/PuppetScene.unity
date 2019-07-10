@@ -7985,7 +7985,7 @@ MonoBehaviour:
       m_Calls:
       - m_Target: {fileID: 1489810417}
         m_MethodName: SetCrashesEnabled
-        m_Mode: 6
+        m_Mode: 0
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
           m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
@@ -9117,7 +9117,7 @@ MonoBehaviour:
   m_HandleRect: {fileID: 1111163099}
   m_Direction: 2
   m_Value: 1
-  m_Size: 0.40304324
+  m_Size: 0.40473774
   m_NumberOfSteps: 0
   m_OnValueChanged:
     m_PersistentCalls:
