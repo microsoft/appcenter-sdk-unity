@@ -107,8 +107,6 @@ static const int kMSStartupType = 0 /*STARTUP_TYPE*/;
 
 #endif // APPCENTER_UNITY_USE_DISTRIBUTE
 
-  [MSAppCenter setLogLevel:(MSLogLevel)kMSLogLevel];
-
   NSString *customLogUrl =
       [[NSUserDefaults standardUserDefaults] objectForKey:kMSLogUrlKey];
   if (customLogUrl != nil) {
