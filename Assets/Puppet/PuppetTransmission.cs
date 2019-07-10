@@ -21,7 +21,6 @@ public class PuppetTransmission : MonoBehaviour
     public InputField AppLocale;
     public InputField TransmissionTarget;
     public InputField ChildTransmissionTarget;
-    public InputField DefaultTransmissionTarget;
     public InputField ParentUserId;
     public GameObject EventProperty;
     public RectTransform EventPropertiesList;
