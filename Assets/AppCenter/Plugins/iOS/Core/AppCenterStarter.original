@@ -61,9 +61,9 @@ static const int kMSStartupType = 0 /*STARTUP_TYPE*/;
       [[NSUserDefaults standardUserDefaults] objectForKey:kMSStartTargetKey];
     int startTargetValue =
       startTarget == nil ? kMSStartupType : startTarget.intValue;
+    [MSAppCenter setLogLevel:(MSLogLevel)kMSLogLevel];
     if (startTargetValue == SKIP) {
         return;
-      
   }
 
   NSMutableArray<Class> *classes = [[NSMutableArray alloc] init];
