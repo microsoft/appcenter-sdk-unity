@@ -57,32 +57,32 @@ static const int kMSStartupType = 0 /*STARTUP_TYPE*/;
 }
 
 + (void)startAppCenter {
-    NSNumber *startTarget =
-      [[NSUserDefaults standardUserDefaults] objectForKey:kMSStartTargetKey];
+  NSNumber *startTarget =
+    [[NSUserDefaults standardUserDefaults] objectForKey:kMSStartTargetKey];
     int startTargetValue =
       startTarget == nil ? kMSStartupType : startTarget.intValue;
     [MSAppCenter setLogLevel:(MSLogLevel)kMSLogLevel];
     if (startTargetValue == SKIP) {
-        return;
+       return;
     }
 
   NSMutableArray<Class> *classes = [[NSMutableArray alloc] init];
 
   NSNumber *maxStorageSize =
-      [[NSUserDefaults standardUserDefaults] objectForKey:kMSStorageSizeKey];
+    [[NSUserDefaults standardUserDefaults] objectForKey:kMSStorageSizeKey];
   if (maxStorageSize != nil) {
     [MSAppCenter setMaxStorageSize:maxStorageSize
-                 completionHandler:^void(bool result) {
-                   if (!result)
-                     MSLogWarning(@"MSAppCenter", @"setMaxStorageSize failed");
-                 }];
+                completionHandler:^void(bool result) {
+                  if (!result)
+                    MSLogWarning(@"MSAppCenter", @"setMaxStorageSize failed");
+                }];
   } else {
 #ifdef APPCENTER_USE_CUSTOM_MAX_STORAGE_SIZE
     [MSAppCenter setMaxStorageSize:APPCENTER_MAX_STORAGE_SIZE
-                 completionHandler:^void(bool result) {
-                   if (!result)
-                     MSLogWarning(@"MSAppCenter", @"setMaxStorageSize failed");
-                 }];
+                completionHandler:^void(bool result) {
+                  if (!result)
+                    MSLogWarning(@"MSAppCenter", @"setMaxStorageSize failed");
+                }];
 #endif
   }
 
@@ -108,7 +108,7 @@ static const int kMSStartupType = 0 /*STARTUP_TYPE*/;
 #endif // APPCENTER_UNITY_USE_DISTRIBUTE
 
   NSString *customLogUrl =
-      [[NSUserDefaults standardUserDefaults] objectForKey:kMSLogUrlKey];
+    [[NSUserDefaults standardUserDefaults] objectForKey:kMSLogUrlKey];
   if (customLogUrl != nil) {
     [MSAppCenter setLogUrl:customLogUrl];
   } else {
@@ -117,26 +117,26 @@ static const int kMSStartupType = 0 /*STARTUP_TYPE*/;
 #endif
   }
   NSString *customAppSecret =
-      [[NSUserDefaults standardUserDefaults] objectForKey:kMSAppSecretKey];
+    [[NSUserDefaults standardUserDefaults] objectForKey:kMSAppSecretKey];
   NSString *customAppSecretValue =
-      customAppSecret == nil ? kMSAppSecret : customAppSecret;
-     switch (startTargetValue) {
-  case APPCENTER:
-    [MSAppCenter start:customAppSecretValue withServices:classes];
-    break;
-  case ONECOLLECTOR:
-    [MSAppCenter start:[NSString stringWithFormat:@"target=%@", kMSTargetToken]
-          withServices:classes];
-    break;
-  case BOTH:
-    [MSAppCenter start:[NSString stringWithFormat:@"appsecret=%@;target=%@",
+    customAppSecret == nil ? kMSAppSecret : customAppSecret;
+  switch (startTargetValue) {
+    case APPCENTER:
+      [MSAppCenter start:customAppSecretValue withServices:classes];
+      break;
+    case ONECOLLECTOR:
+      [MSAppCenter start:[NSString stringWithFormat:@"target=%@", kMSTargetToken]
+        withServices:classes];
+      break;
+    case BOTH:
+      [MSAppCenter start:[NSString stringWithFormat:@"appsecret=%@;target=%@",
                                                   customAppSecretValue,
                                                   kMSTargetToken]
-          withServices:classes];
-    break;
-  case NONE:
-    [MSAppCenter startWithServices:classes];
-    break;
+        withServices:classes];
+      break;
+    case NONE:
+      [MSAppCenter startWithServices:classes];
+      break;
   }
 }
 
