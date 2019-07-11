@@ -9117,7 +9117,7 @@ MonoBehaviour:
   m_HandleRect: {fileID: 1111163099}
   m_Direction: 2
   m_Value: 1
-  m_Size: 0.40473774
+  m_Size: 0.40355492
   m_NumberOfSteps: 0
   m_OnValueChanged:
     m_PersistentCalls:
@@ -12156,7 +12156,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   TransmissionEnabled: {fileID: 561615129}
   ChildTransmissionEnabled: {fileID: 425829953}
-  DefaultTransmissionEnabled: {fileID: 0}
+  DefaultTransmissionEnabled: {fileID: 1411534065}
   CollectDeviceId: {fileID: 1522726766}
   EventName: {fileID: 486612592}
   AppName: {fileID: 1648102423}
@@ -12171,7 +12171,7 @@ MonoBehaviour:
   EventPropertiesList: {fileID: 600305397}
   TransmissionStatus: {fileID: 1077534651}
   ChildTransmissionStatus: {fileID: 1758332687}
-  DefaultTransmissionStatus: {fileID: 0}
+  DefaultTransmissionStatus: {fileID: 1011658847}
   IsCritical: {fileID: 1029283884}
 --- !u!114 &886347192
 MonoBehaviour:
@@ -13853,7 +13853,7 @@ GameObject:
   - component: {fileID: 1011658848}
   - component: {fileID: 1011658847}
   m_Layer: 5
-  m_Name: Status
+  m_Name: DefaultTransmissionStatus
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -19616,7 +19616,7 @@ GameObject:
   - component: {fileID: 1411534064}
   - component: {fileID: 1411534065}
   m_Layer: 5
-  m_Name: Toggle
+  m_Name: DefaultTransmissionEnabledToggle
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
