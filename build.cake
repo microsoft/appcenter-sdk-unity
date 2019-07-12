@@ -283,10 +283,12 @@ Task("BuildAndroidContentProvider").Does(()=>
     var libraryName = "appcenter-loader";
     BuildAndroidLibrary(appName, libraryName);
     libraryName = "appcenter-push-delegate";
-    BuildAndroidLibrary(appName, libraryName);    
+    BuildAndroidLibrary(appName, libraryName);  
+    appName = "breakpad-support";
+    BuildAndroidLibrary(appName, "", false);   
 }).OnError(HandleError);
 
-void BuildAndroidLibrary(string appName, string libraryName) {
+void BuildAndroidLibrary(string appName, string libraryName, bool copyBinary = true) {
     var libraryFolder = System.IO.Path.Combine(appName, libraryName);
     var gradleScript = System.IO.Path.Combine(libraryFolder, "build.gradle");
 
@@ -299,20 +301,22 @@ void BuildAndroidLibrary(string appName, string libraryName) {
     var fullArgs = "-b " + gradleScript + " assembleRelease";
     StartProcess(gradleWrapper, fullArgs);
 
-    // Source and destination of generated aar
-    var aarName = libraryName + "-release.aar";
-    var aarSource = System.IO.Path.Combine(libraryFolder, "build/outputs/aar/" + aarName);
-    var aarDestination = "Assets/AppCenter/Plugins/Android";
+    if (copyBinary) {
+        // Source and destination of generated aar
+        var aarName = libraryName + "-release.aar";
+        var aarSource = System.IO.Path.Combine(libraryFolder, "build/outputs/aar/" + aarName);
+        var aarDestination = "Assets/AppCenter/Plugins/Android";
 
-    // Delete the aar in case it already exists in the Assets folder
-    var existingAar = System.IO.Path.Combine(aarDestination, aarName);
-    if (FileExists(existingAar))
-    {
-        DeleteFile(existingAar);
+        // Delete the aar in case it already exists in the Assets folder
+        var existingAar = System.IO.Path.Combine(aarDestination, aarName);
+        if (FileExists(existingAar))
+        {
+            DeleteFile(existingAar);
+        }
+
+        // Move the .aar to Assets/AppCenter/Plugins/Android
+        MoveFileToDirectory(aarSource, aarDestination);
     }
-
-    // Move the .aar to Assets/AppCenter/Plugins/Android
-    MoveFileToDirectory(aarSource, aarDestination);
 }
 
 // Install Unity Editor for Windows
