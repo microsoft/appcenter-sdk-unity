@@ -283,9 +283,17 @@ Task("BuildAndroidContentProvider").Does(()=>
     var libraryName = "appcenter-loader";
     BuildAndroidLibrary(appName, libraryName);
     libraryName = "appcenter-push-delegate";
-    BuildAndroidLibrary(appName, libraryName);  
-    appName = "BreakpadSupport";
-    BuildAndroidLibrary(appName, "", false);   
+    BuildAndroidLibrary(appName, libraryName);
+
+    // This is a workaround for NDK build making an error where it claims
+    // it can't find the built .so library (which is built successfully).
+    // This error is breaking the CI build on Windows. If you are seeing this, 
+    // most likely we haven't found a fix and this is an NDK bug.
+    if (!IsRunningOnWindows())
+    {
+        appName = "BreakpadSupport";
+        BuildAndroidLibrary(appName, "", false);
+    }
 }).OnError(HandleError);
 
 void BuildAndroidLibrary(string appName, string libraryName, bool copyBinary = true) {
