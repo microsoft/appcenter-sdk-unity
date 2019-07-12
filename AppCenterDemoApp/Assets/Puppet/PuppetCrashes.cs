@@ -238,9 +238,9 @@ public class PuppetCrashes : MonoBehaviour
         }
     }
 
-    [DllImport("puppetbreakpad")]
+    [DllImport("PuppetBreakpad")]
     private static extern void nativeCrashNullPointer();
 
-    [DllImport("puppetbreakpad")]
+    [DllImport("PuppetBreakpad")]
     private static extern void setupNativeCrashesListener(string path);
 }
