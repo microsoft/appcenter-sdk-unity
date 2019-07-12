@@ -284,7 +284,7 @@ Task("BuildAndroidContentProvider").Does(()=>
     BuildAndroidLibrary(appName, libraryName);
     libraryName = "appcenter-push-delegate";
     BuildAndroidLibrary(appName, libraryName);  
-    appName = "breakpad-support";
+    appName = "BreakpadSupport";
     BuildAndroidLibrary(appName, "", false);   
 }).OnError(HandleError);
 
