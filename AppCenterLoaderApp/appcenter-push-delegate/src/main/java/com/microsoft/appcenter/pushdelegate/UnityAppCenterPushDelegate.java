@@ -1,7 +1,7 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT license.
 
-package com.microsoft.appcenter.loader;
+package com.microsoft.appcenter.pushdelegate;
 
 import android.app.Activity;
 

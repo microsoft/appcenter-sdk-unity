@@ -28,7 +28,7 @@ const char* appcenter_unity_release_details_get_release_notes(MSReleaseDetails* 
 
 bool appcenter_unity_release_details_get_mandatory_update(MSReleaseDetails* details)
 {
-  return [details mandatoryUpdate];
+  return [details isMandatoryUpdate];
 }
 
 const char* appcenter_unity_release_details_get_url(MSReleaseDetails* details)

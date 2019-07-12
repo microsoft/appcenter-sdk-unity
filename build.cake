@@ -12,9 +12,9 @@ using System.Runtime.Versioning;
 using NuGet;
 
 // Native SDK versions
-var AndroidSdkVersion = "2.1.0-7+df4dfd7f7";
-var IosSdkVersion = "2.0.1";
-var UwpSdkVersion = "2.0.0";
+var AndroidSdkVersion = "2.1.0";
+var IosSdkVersion = "2.1.0";
+var UwpSdkVersion = "2.1.0";
 
 // URLs for downloading binaries.
 /*
@@ -281,6 +281,12 @@ Task("BuildAndroidContentProvider").Does(()=>
     // Folder and script locations
     var appName = "AppCenterLoaderApp";
     var libraryName = "appcenter-loader";
+    BuildAndroidLibrary(appName, libraryName);
+    libraryName = "appcenter-push-delegate";
+    BuildAndroidLibrary(appName, libraryName);    
+}).OnError(HandleError);
+
+void BuildAndroidLibrary(string appName, string libraryName) {
     var libraryFolder = System.IO.Path.Combine(appName, libraryName);
     var gradleScript = System.IO.Path.Combine(libraryFolder, "build.gradle");
 
@@ -307,7 +313,7 @@ Task("BuildAndroidContentProvider").Does(()=>
 
     // Move the .aar to Assets/AppCenter/Plugins/Android
     MoveFileToDirectory(aarSource, aarDestination);
-}).OnError(HandleError);
+}
 
 // Install Unity Editor for Windows
 Task("Install-Unity-Windows").Does(() => {
