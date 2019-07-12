@@ -5,7 +5,7 @@ include $(MY_ROOT_PATH)/google-breakpad/android/google_breakpad/Android.mk
 LOCAL_PATH := $(MY_ROOT_PATH)
 include $(CLEAR_VARS)
 
-LOCAL_MODULE    := puppetbreakpad
+LOCAL_MODULE    := PuppetBreakpad
 LOCAL_SRC_FILES := main.cpp
 
 LOCAL_CPPFLAGS := -D__NDK_R16B__
