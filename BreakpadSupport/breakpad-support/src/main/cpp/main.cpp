@@ -23,13 +23,6 @@ extern "C" void nativeCrashNullPointer() {
     *a = 1;
 }
 
-extern "C" void nativeDivideByZero() {
-    __android_log_print(ANDROID_LOG_INFO, "AppCenterPuppet",
-                        "Force divide by zero...");
-    int test = 42;
-    test = test / 0;
-}
-
 /**
  * Registers breakpad as the exception handler for NDK code.
  * @param path minidump directory path returned from Crashes.getMinidumpDirectory()

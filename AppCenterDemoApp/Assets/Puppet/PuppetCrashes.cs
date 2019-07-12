@@ -96,11 +96,7 @@ public class PuppetCrashes : MonoBehaviour
 
     public void DivideByZero()
     {
-#if UNITY_ANDROID && !UNITY_EDITOR
-        nativeDivideByZero();       
-#else
         Debug.Log(42 / int.Parse("0"));
-#endif
     }
 
     public void NullReferenceException()
@@ -244,9 +240,6 @@ public class PuppetCrashes : MonoBehaviour
 
     [DllImport("puppetbreakpad")]
     private static extern void nativeCrashNullPointer();
-
-    [DllImport("puppetbreakpad")]
-    private static extern void nativeDivideByZero();
 
     [DllImport("puppetbreakpad")]
     private static extern void setupNativeCrashesListener(string path);
