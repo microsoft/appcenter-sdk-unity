@@ -1,0 +1,3 @@
+[submodule "BreakpadSupport/breakpad-support/src/main/cpp/google-breakpad"]
+	path = BreakpadSupport/breakpad-support/src/main/cpp/google-breakpad
+	url = https://github.com/microsoft/appcenter-sdk-android-breakpad.git
