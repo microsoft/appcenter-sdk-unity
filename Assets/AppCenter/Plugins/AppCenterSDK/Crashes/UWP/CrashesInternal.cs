@@ -67,11 +67,6 @@ namespace Microsoft.AppCenter.Unity.Crashes.Internal
         public static void StartCrashes()
         {
         }
-
-        public static AppCenterTask<string> GetMinidumpDirectoryAsync() 
-        {
-            return AppCenterTask<string>.FromCompleted("");
-        }
     }
 }
 #endif

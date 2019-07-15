@@ -43,11 +43,6 @@ namespace Microsoft.AppCenter.Unity.Crashes.Internal
             return AppCenterTask<bool>.FromCompleted(false);
         }
 
-        public static AppCenterTask<string> GetMinidumpDirectoryAsync()
-        {
-            return AppCenterTask<string>.FromCompleted("");
-        }
-
         public static void GenerateTestCrash()
         {
         }
