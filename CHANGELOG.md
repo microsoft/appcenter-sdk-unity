@@ -9,6 +9,7 @@ Updated native SDK versions:
 
 * **[Feature]**  Add `Distribute.setEnabledForDebuggableBuild(boolean)` method to allow in-app updates in debuggable builds.
 * **[Bug fix]**  Fixed UWP build in Unity 2019
+* **[Bug fix]**  Fixed wrong default Log Level value for the test app.
 
 ## Release 2.0.0
 
@@ -83,7 +84,7 @@ App Center SDK for Unity now uses the latest native SDKs:
 * App Center SDK for .NET version 1.11.0
 
 * **[Feature]** Add support for `Push`.
-* **[Feature]** Implement `AppCenter.SetUserId` that allows users to set userId that applies to crashes, error and push logs. 
+* **[Feature]** Implement `AppCenter.SetUserId` that allows users to set userId that applies to crashes, error and push logs.
 * **[Feature]** Work for a future change in transmission protocol and endpoint for Analytics data. There is no impact on your current workflow when using App Center.
 * **[Bug Fix]** Fix AppCenter Analytics working incorrectly in case there's no advanced behavior but this file exists.
 
