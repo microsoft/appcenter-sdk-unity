@@ -1,5 +1,14 @@
 # App Center SDK for Unity Change Log
 
+## Release 2.2.0
+
+Updated native SDK versions:
+* Android from `2.1.0` to [2.2.0](https://github.com/Microsoft/AppCenter-SDK-Android/releases/tag/2.2.0)
+* iOS from `2.1.0` to [2.2.0](https://github.com/Microsoft/AppCenter-SDK-Apple/releases/tag/2.2.0)
+* UWP from `2.1.0` to [2.2.0](https://github.com/Microsoft/AppCenter-SDK-DotNet/releases/tag/2.2.0)
+
+* **[Bug fix]** Separeted Push logic in order to avoid `ClassNotFoundException`
+
 ## Release 2.1.0
 
 Updated native SDK versions:
@@ -83,7 +92,7 @@ App Center SDK for Unity now uses the latest native SDKs:
 * App Center SDK for .NET version 1.11.0
 
 * **[Feature]** Add support for `Push`.
-* **[Feature]** Implement `AppCenter.SetUserId` that allows users to set userId that applies to crashes, error and push logs. 
+* **[Feature]** Implement `AppCenter.SetUserId` that allows users to set userId that applies to crashes, error and push logs.
 * **[Feature]** Work for a future change in transmission protocol and endpoint for Analytics data. There is no impact on your current workflow when using App Center.
 * **[Bug Fix]** Fix AppCenter Analytics working incorrectly in case there's no advanced behavior but this file exists.
 
