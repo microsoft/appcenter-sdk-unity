@@ -2,11 +2,6 @@
 
 ## Release 2.2.0
 
-Updated native SDK versions:
-* Android from `2.1.0` to [2.2.0](https://github.com/Microsoft/AppCenter-SDK-Android/releases/tag/2.2.0)
-* iOS from `2.1.0` to [2.2.0](https://github.com/Microsoft/AppCenter-SDK-Apple/releases/tag/2.2.0)
-* UWP from `2.1.0` to [2.2.0](https://github.com/Microsoft/AppCenter-SDK-DotNet/releases/tag/2.2.0)
-
 * **[Bug fix]** Fixed wrong default Log Level value for the test app.
 
 ## Release 2.1.0
