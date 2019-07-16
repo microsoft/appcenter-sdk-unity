@@ -4,9 +4,7 @@
 
  Updated native SDK versions:
 * Android from `2.1.0` to [2.2.0](https://github.com/Microsoft/AppCenter-SDK-Android/releases/tag/2.2.0)
-This conversation was marked as resolved by dtrabo
 * iOS from `2.1.0` to [2.2.0](https://github.com/Microsoft/AppCenter-SDK-Apple/releases/tag/2.2.0)
-This conversation was marked as resolved by dtrabo
 
  * **[Bug fix]** Fix Xcode archiving issue.
 
