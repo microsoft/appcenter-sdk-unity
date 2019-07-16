@@ -1,9 +1,5 @@
 # App Center SDK for Unity Change Log
 
-## Release 2.2.0
-
-* **[Bug fix]** Fixed wrong default Log Level value for the test app.
-
 ## Release 2.1.0
 
 Updated native SDK versions:
