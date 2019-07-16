@@ -1,5 +1,9 @@
 # App Center SDK for Unity Change Log
 
+## Release 2.2.0
+
+ * **[Bug fix]** Fixed wrong type for max data storage which causes an issue with the archiving.
+
 ## Release 2.1.0
 
 Updated native SDK versions:
