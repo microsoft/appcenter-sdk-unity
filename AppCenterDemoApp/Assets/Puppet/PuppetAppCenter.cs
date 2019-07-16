@@ -113,7 +113,7 @@ public class PuppetAppCenter : MonoBehaviour
 
     private IEnumerator ShowCustomLogUrl()
     {
-        var logUrl = AppCenter.GetLogUrl();
+        var logUrl = AppCenter.GetLogUrlAsync();
         yield return logUrl;
         LogUrlLabel.text = logUrl.Result;
     }
@@ -131,11 +131,11 @@ public class PuppetAppCenter : MonoBehaviour
             InstallIdLabel.text = installId.Result.ToString();
         }
 
-        var appSecret = AppCenter.GetSecretForPlatform();
+        var appSecret = AppCenter.GetSecretForPlatformAsync();
         yield return appSecret;
         AppSecretLabel.text = appSecret.Result;
 
-        var storageSize = AppCenter.GetStorageSize();
+        var storageSize = AppCenter.GetStorageSizeAsync();
         yield return storageSize;
         StorageSizeLabel.text = storageSize.Result <= 0 ? "Unchanged" : storageSize.Result.ToString() + " bytes";
 

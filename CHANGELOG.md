@@ -7,6 +7,7 @@ Updated native SDK versions:
 * iOS from `2.1.0` to [2.2.0](https://github.com/Microsoft/AppCenter-SDK-Apple/releases/tag/2.2.0)
 
 * **[Bug fix]** Separeted Push logic in order to avoid `ClassNotFoundException`.
+* **[Bug fix]** Fixed wrong type for max data storage which causes an issue with the archiving.
 
 ## Release 2.1.0
 
@@ -15,8 +16,8 @@ Updated native SDK versions:
 * iOS from `2.0.1` to [2.1.0](https://github.com/Microsoft/AppCenter-SDK-Apple/releases/tag/2.1.0)
 * UWP from `2.0.0` to [2.1.0](https://github.com/Microsoft/AppCenter-SDK-DotNet/releases/tag/2.1.0)
 
-* **[Feature]**  Add `Distribute.setEnabledForDebuggableBuild(boolean)` method to allow in-app updates in debuggable builds.
-* **[Bug fix]**  Fixed UWP build in Unity 2019
+* **[Feature]** Add `Distribute.setEnabledForDebuggableBuild(boolean)` method to allow in-app updates in debuggable builds.
+* **[Bug fix]** Fixed UWP build in Unity 2019.
 
 ## Release 2.0.0
 
