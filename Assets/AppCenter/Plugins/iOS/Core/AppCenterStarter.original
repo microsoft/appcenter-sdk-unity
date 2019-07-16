@@ -69,15 +69,17 @@ static const int kMSStartupType = 0 /*STARTUP_TYPE*/;
   if (maxStorageSize != nil) {
     [MSAppCenter setMaxStorageSize:maxStorageSize
                  completionHandler:^void(BOOL result) {
-                   if (!result)
+                   if (!result) {
                      MSLogWarning(@"MSAppCenter", @"setMaxStorageSize failed");
+                     }
                  }];
   } else {
 #ifdef APPCENTER_USE_CUSTOM_MAX_STORAGE_SIZE
     [MSAppCenter setMaxStorageSize:APPCENTER_MAX_STORAGE_SIZE
                  completionHandler:^void(BOOL result) {
-                   if (!result)
+                   if (!result) {
                      MSLogWarning(@"MSAppCenter", @"setMaxStorageSize failed");
+                     }
                  }];
 #endif
   }
