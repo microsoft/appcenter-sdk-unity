@@ -7,7 +7,7 @@ Updated native SDK versions:
 * iOS from `2.1.0` to [2.2.0](https://github.com/Microsoft/AppCenter-SDK-Apple/releases/tag/2.2.0)
 * UWP from `2.1.0` to [2.2.0](https://github.com/Microsoft/AppCenter-SDK-DotNet/releases/tag/2.2.0)
 
-* **[Bug fix]** Separeted Push logic in order to avoid `ClassNotFoundException`
+* **[Bug fix]** Separeted Push logic in order to avoid `ClassNotFoundException`.
 
 ## Release 2.1.0
 
