@@ -12,8 +12,8 @@ using System.Runtime.Versioning;
 using NuGet;
 
 // Native SDK versions
-var AndroidSdkVersion = "2.1.0";
-var IosSdkVersion = "2.1.0";
+var AndroidSdkVersion = "2.2.0";
+var IosSdkVersion = "2.2.0";
 var UwpSdkVersion = "2.1.0";
 
 // URLs for downloading binaries.
@@ -283,7 +283,7 @@ Task("BuildAndroidContentProvider").Does(()=>
     var libraryName = "appcenter-loader";
     BuildAndroidLibrary(appName, libraryName);
     libraryName = "appcenter-push-delegate";
-    BuildAndroidLibrary(appName, libraryName);    
+    BuildAndroidLibrary(appName, libraryName);
 }).OnError(HandleError);
 
 void BuildAndroidLibrary(string appName, string libraryName) {
@@ -488,7 +488,7 @@ Task("DownloadNdk")
         throw new Exception("Ndk Url is empty string or null");
     }
     var zipDestination = Statics.TemporaryPrefix + "ndk.zip";
-    
+
     // Download required NDK
     DownloadFile(ndkUrl, zipDestination);
 

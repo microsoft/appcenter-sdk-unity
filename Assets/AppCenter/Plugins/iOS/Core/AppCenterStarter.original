@@ -71,7 +71,7 @@ static const int kMSStartupType = 0 /*STARTUP_TYPE*/;
                  completionHandler:^void(BOOL result) {
                    if (!result) {
                      MSLogWarning(@"MSAppCenter", @"setMaxStorageSize failed");
-                    }
+                   }
                  }];
   } else {
 #ifdef APPCENTER_USE_CUSTOM_MAX_STORAGE_SIZE
@@ -79,7 +79,7 @@ static const int kMSStartupType = 0 /*STARTUP_TYPE*/;
                  completionHandler:^void(BOOL result) {
                    if (!result) {
                      MSLogWarning(@"MSAppCenter", @"setMaxStorageSize failed");
-                    }
+                   }
                  }];
 #endif
   }
