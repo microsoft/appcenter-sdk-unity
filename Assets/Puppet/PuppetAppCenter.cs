@@ -114,7 +114,7 @@ public class PuppetAppCenter : MonoBehaviour
         AppSecretCached = PlayerPrefs.GetString(AppSecretKey, null);
         LogUrlCached = PlayerPrefs.GetString(LogUrlKey, null);
         MaxSizeCached = PlayerPrefs.GetString(MaxStorageSizeKey, null);
-        StartupTypeCached = PlayerPrefs.GetInt(StartupModeKey, (int) Microsoft.AppCenter.Unity.StartupType.Both);
+        StartupTypeCached = PlayerPrefs.GetInt(StartupModeKey, (int) Microsoft.AppCenter.Unity.StartupType.AppCenter);
     }
 
     void OnEnable()
