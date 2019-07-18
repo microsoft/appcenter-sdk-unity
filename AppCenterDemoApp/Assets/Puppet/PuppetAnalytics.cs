@@ -83,10 +83,11 @@ public class PuppetAnalytics : MonoBehaviour
 
     public void TrackEvent()
     {
-        if(OnlyStringProperties())
+        if (OnlyStringProperties())
         {
             TrackEventStringProperties();
-        } else
+        }
+        else
         {
             TrackEventTypedProperties();
         }
