@@ -14,13 +14,25 @@ public class PuppetTransmission : MonoBehaviour
     public Toggle TransmissionEnabled;
     public Toggle ChildTransmissionEnabled;
     public Toggle DefaultTransmissionEnabled;
+    public Toggle UseParentPropertyConfigurator;
+    public Toggle UseChildPropertyConfigurator;
     public Toggle CollectDeviceId;
+    public Toggle CollectDeviceIdChild;
+    public Toggle CollectDeviceIdParent;
     public InputField EventName;
-    public InputField AppName;
-    public InputField AppVersion;
-    public InputField AppLocale;
+    public InputField AppNameDefault;
+    public InputField AppVersionDefault;
+    public InputField AppLocaleDefault;
+    public InputField AppNameParent;
+    public InputField AppVersionParent;
+    public InputField AppLocaleParent;
+    public InputField AppNameChild;
+    public InputField AppVersionChild;
+    public InputField AppLocaleChild;
     public InputField TransmissionTarget;
     public InputField ChildTransmissionTarget;
+    public InputField DefaultUserId;
+    public InputField ChildUserId;
     public InputField ParentUserId;
     public GameObject EventProperty;
     public RectTransform EventPropertiesList;
@@ -164,75 +176,11 @@ public class PuppetTransmission : MonoBehaviour
         property.transform.SetParent(EventPropertiesList, false);
     }
 
-    public void TrackEventStringPropertiesChildTransmission()
+    private void OverrideDefaultProperties(TransmissionTarget transmissionTarget)
     {
-        var transmissionTarget = GetChildTransmissionTarget();
-        if (transmissionTarget != null)
-        {
-            var properties = PropertiesHelper.GetStringProperties(EventPropertiesList);
-            if (properties == null)
-            {
-                if (_isCritical)
-                {
-                    IDictionary<string, string> nullProps = null;
-                    transmissionTarget.TrackEvent(EventName.text, nullProps, Flags.PersistenceCritical);
-                }
-                else
-                {
-                    transmissionTarget.TrackEvent(EventName.text);
-                }
-            }
-            else
-            {
-                if (_isCritical)
-                {
-                    transmissionTarget.TrackEvent(EventName.text, properties, Flags.PersistenceCritical);
-                }
-                else
-                {
-                    transmissionTarget.TrackEvent(EventName.text, properties);
-                }
-            }
-        }
-    }
-
-    public void TrackEventTypedPropertiesChildTransmission()
-    {
-        var transmissionTarget = GetChildTransmissionTarget();
-        if (transmissionTarget != null)
-        {
-            var properties = PropertiesHelper.GetTypedProperties(EventPropertiesList);
-            if (properties == null)
-            {
-                if (_isCritical)
-                {
-                    EventProperties nullProps = null;
-                    transmissionTarget.TrackEvent(EventName.text, nullProps, Flags.PersistenceCritical);
-                }
-                else
-                {
-                    transmissionTarget.TrackEvent(EventName.text);
-                }
-            }
-            else
-            {
-                if (_isCritical)
-                {
-                    transmissionTarget.TrackEvent(EventName.text, properties, Flags.PersistenceCritical);
-                }
-                else
-                {
-                    transmissionTarget.TrackEvent(EventName.text, properties);
-                }
-            }
-        }
-    }
-
-    private void OverrideProperties(TransmissionTarget transmissionTarget)
-    {
-        var overridenAppName = AppName.text;
-        var overridenAppVersion = AppVersion.text;
-        var overridenAppLocale = AppLocale.text;
+        var overridenAppName = AppNameDefault.text;
+        var overridenAppVersion = AppVersionDefault.text;
+        var overridenAppLocale = AppLocaleDefault.text;
         if (!string.IsNullOrEmpty(overridenAppName))
         {
             transmissionTarget.GetPropertyConfigurator().SetAppName(overridenAppName);
@@ -247,69 +195,41 @@ public class PuppetTransmission : MonoBehaviour
         }
     }
 
-    public void TrackEventStringPropertiesTransmission()
+    private void OverrideParentProperties(TransmissionTarget transmissionTarget)
     {
-        var transmissionTarget = GetTransmissionTarget();
-        if (transmissionTarget != null)
+        var overridenAppName = AppNameParent.text;
+        var overridenAppVersion = AppVersionParent.text;
+        var overridenAppLocale = AppLocaleParent.text;
+        if (!string.IsNullOrEmpty(overridenAppName))
         {
-            OverrideProperties(transmissionTarget);
-            var properties = PropertiesHelper.GetStringProperties(EventPropertiesList);
-            if (properties == null)
-            {
-                if (_isCritical)
-                {
-                    IDictionary<string, string> nullProps = null;
-                    transmissionTarget.TrackEvent(EventName.text, nullProps, Flags.PersistenceCritical);
-                }
-                else
-                {
-                    transmissionTarget.TrackEvent(EventName.text);
-                }
-            }
-            else
-            {
-                if (_isCritical)
-                {
-                    transmissionTarget.TrackEvent(EventName.text, properties, Flags.PersistenceCritical);
-                }
-                else
-                {
-                    transmissionTarget.TrackEvent(EventName.text, properties);
-                }
-            }
+            transmissionTarget.GetPropertyConfigurator().SetAppName(overridenAppName);
+        }
+        if (!string.IsNullOrEmpty(overridenAppVersion))
+        {
+            transmissionTarget.GetPropertyConfigurator().SetAppVersion(overridenAppVersion);
+        }
+        if (!string.IsNullOrEmpty(overridenAppLocale))
+        {
+            transmissionTarget.GetPropertyConfigurator().SetAppLocale(overridenAppLocale);
         }
     }
 
-    public void TrackEventTypedPropertiesTransmission()
+    private void OverrideChildProperties(TransmissionTarget transmissionTarget)
     {
-        var transmissionTarget = GetTransmissionTarget();
-        if (transmissionTarget != null)
+        var overridenAppName = AppNameChild.text;
+        var overridenAppVersion = AppVersionChild.text;
+        var overridenAppLocale = AppLocaleChild.text;
+        if (!string.IsNullOrEmpty(overridenAppName))
         {
-            OverrideProperties(transmissionTarget);
-            var properties = PropertiesHelper.GetTypedProperties(EventPropertiesList);
-            if (properties == null)
-            {
-                if (_isCritical)
-                {
-                    EventProperties nullProps = null;
-                    transmissionTarget.TrackEvent(EventName.text, nullProps, Flags.PersistenceCritical);
-                }
-                else
-                {
-                    transmissionTarget.TrackEvent(EventName.text);
-                }
-            }
-            else
-            {
-                if (_isCritical)
-                {
-                    transmissionTarget.TrackEvent(EventName.text, properties, Flags.PersistenceCritical);
-                }
-                else
-                {
-                    transmissionTarget.TrackEvent(EventName.text, properties);
-                }
-            }
+            transmissionTarget.GetPropertyConfigurator().SetAppName(overridenAppName);
+        }
+        if (!string.IsNullOrEmpty(overridenAppVersion))
+        {
+            transmissionTarget.GetPropertyConfigurator().SetAppVersion(overridenAppVersion);
+        }
+        if (!string.IsNullOrEmpty(overridenAppLocale))
+        {
+            transmissionTarget.GetPropertyConfigurator().SetAppLocale(overridenAppLocale);
         }
     }
 
@@ -369,9 +289,29 @@ public class PuppetTransmission : MonoBehaviour
         }
     }
 
+    public void OnDefaultUserIdChanged(string newUserId)
+    {
+        var transmissionTarget = GetDefaultTransmissionTarget();
+        if (transmissionTarget != null)
+        {
+            var propertyConfigurator = transmissionTarget.GetPropertyConfigurator();
+            propertyConfigurator.SetUserId(newUserId);
+        }
+    }
+
     public void OnParentUserIdChanged(string newUserId)
     {
-        var transmissionTarget = GetTransmissionTarget();
+        var transmissionTarget = GetParentTransmissionTarget();
+        if (transmissionTarget != null)
+        {
+            var propertyConfigurator = transmissionTarget.GetPropertyConfigurator();
+            propertyConfigurator.SetUserId(newUserId);
+        }
+    }
+
+    public void OnChildUserIdChanged(string newUserId)
+    {
+        var transmissionTarget = GetChildTransmissionTarget();
         if (transmissionTarget != null)
         {
             var propertyConfigurator = transmissionTarget.GetPropertyConfigurator();
@@ -381,7 +321,7 @@ public class PuppetTransmission : MonoBehaviour
 
     public void PauseParentTransmission()
     {
-        var transmissionTarget = GetTransmissionTarget();
+        var transmissionTarget = GetParentTransmissionTarget();
         if (transmissionTarget != null)
         {
             Debug.Log("Pausing the parent transmission...");
@@ -392,7 +332,7 @@ public class PuppetTransmission : MonoBehaviour
 
     public void ResumeParentTransmission()
     {
-        var transmissionTarget = GetTransmissionTarget();
+        var transmissionTarget = GetParentTransmissionTarget();
         if (transmissionTarget != null)
         {
             Debug.Log("Resuming the parent transmission...");
@@ -435,12 +375,24 @@ public class PuppetTransmission : MonoBehaviour
         DefaultTransmissionStatus.text = "Default transmission paused.";
     }
 
-    private TransmissionTarget GetTransmissionTarget()
+    private TransmissionTarget GetDefaultTransmissionTarget()
     {
         var transmissionTarget = Analytics.GetTransmissionTarget(ResolveToken());
         if (transmissionTarget != null)
         {
-            OverrideProperties(transmissionTarget);
+            OverrideDefaultProperties(transmissionTarget);
+            return transmissionTarget;
+        }
+        Debug.Log("Transmission target is null.");
+        return null;
+    }
+
+    private TransmissionTarget GetParentTransmissionTarget()
+    {
+        var transmissionTarget = Analytics.GetTransmissionTarget(ResolveToken());
+        if (transmissionTarget != null)
+        {
+            OverrideParentProperties(transmissionTarget);
             return transmissionTarget;
         }
         Debug.Log("Transmission target is null.");
@@ -449,7 +401,7 @@ public class PuppetTransmission : MonoBehaviour
 
     private TransmissionTarget GetChildTransmissionTarget()
     {
-        var transmissionTarget = GetTransmissionTarget();
+        var transmissionTarget = GetParentTransmissionTarget();
         if (transmissionTarget != null)
         {
             var childTransmissionTarget = transmissionTarget.GetTransmissionTarget(ResolveChildToken());
@@ -462,9 +414,233 @@ public class PuppetTransmission : MonoBehaviour
         return null;
     }
 
+    public void ClearDefaultUserId()
+    {
+        DefaultUserId.text = "";
+        OnDefaultUserIdChanged(null);
+    }
+
     public void ClearParentUserId()
     {
         ParentUserId.text = "";
         OnParentUserIdChanged(null);
+    }
+
+    public void ClearChildUserId()
+    {
+        ChildUserId.text = "";
+        OnChildUserIdChanged(null);
+    }
+
+    public void TrackEventParentStringPropertiesTransmission()
+    {
+        var transmissionTarget = GetParentTransmissionTarget();
+        if (transmissionTarget != null)
+        {
+            OverrideParentProperties(transmissionTarget);
+            var properties = PropertiesHelper.GetStringProperties(EventPropertiesList);
+            if (properties == null)
+            {
+                if (_isCritical)
+                {
+                    IDictionary<string, string> nullProps = null;
+                    transmissionTarget.TrackEvent(EventName.text, nullProps, Flags.PersistenceCritical);
+                }
+                else
+                {
+                    transmissionTarget.TrackEvent(EventName.text);
+                }
+            }
+            else
+            {
+                if (UseParentPropertyConfigurator.isOn)
+                {
+                    var propertyConfigurator = transmissionTarget.GetPropertyConfigurator();
+                    foreach (var property in properties)
+                    {
+                        propertyConfigurator.SetEventProperty(property.Key, property.Value);
+                    }
+                    propertyConfigurator.SetEventProperty("extraEventProperty", "should be removed!");
+                    propertyConfigurator.RemoveEventProperty("extraEventProperty");
+                    if (_isCritical)
+                    {
+                        IDictionary<string, string> nullProps = null;
+                        transmissionTarget.TrackEvent(EventName.text, nullProps, Flags.PersistenceCritical);
+                    }
+                    else
+                    {
+                        transmissionTarget.TrackEvent(EventName.text);
+                    }
+                }
+                else
+                {
+                    if (_isCritical)
+                    {
+                        transmissionTarget.TrackEvent(EventName.text, properties, Flags.PersistenceCritical);
+                    }
+                    else
+                    {
+                        transmissionTarget.TrackEvent(EventName.text, properties);
+                    }
+                }
+            }
+        }
+    }
+
+    public void TrackEventParentTypedPropertiesTransmission()
+    {
+        var transmissionTarget = GetParentTransmissionTarget();
+        if (transmissionTarget != null)
+        {
+            OverrideParentProperties(transmissionTarget);
+            var properties = PropertiesHelper.GetTypedProperties(EventPropertiesList);
+            if (properties == null)
+            {
+                if (_isCritical)
+                {
+                    EventProperties nullProps = null;
+                    transmissionTarget.TrackEvent(EventName.text, nullProps, Flags.PersistenceCritical);
+                }
+                else
+                {
+                    transmissionTarget.TrackEvent(EventName.text);
+                }
+            }
+            else
+            {
+                if (UseParentPropertyConfigurator.isOn)
+                {
+                    var propertyConfigurator = transmissionTarget.GetPropertyConfigurator();
+                    PropertiesHelper.AddPropertiesToPropertyConfigurator(EventPropertiesList, propertyConfigurator);
+                    propertyConfigurator.SetEventProperty("extraEventProperty", "should be removed!");
+                    propertyConfigurator.RemoveEventProperty("extraEventProperty");
+                    if (_isCritical)
+                    {
+                        EventProperties nullProps = null;
+                        transmissionTarget.TrackEvent(EventName.text, nullProps, Flags.PersistenceCritical);
+                    }
+                    else
+                    {
+                        transmissionTarget.TrackEvent(EventName.text);
+                    }
+                }
+                else
+                {
+                    if (_isCritical)
+                    {
+                        transmissionTarget.TrackEvent(EventName.text, properties, Flags.PersistenceCritical);
+                    }
+                    else
+                    {
+                        transmissionTarget.TrackEvent(EventName.text, properties);
+                    }
+                }
+            }
+        }
+    }
+
+    public void TrackEventStringPropertiesChildTransmission()
+    {
+        var transmissionTarget = GetChildTransmissionTarget();
+        if (transmissionTarget != null)
+        {
+            var properties = PropertiesHelper.GetStringProperties(EventPropertiesList);
+            if (properties == null)
+            {
+                if (_isCritical)
+                {
+                    IDictionary<string, string> nullProps = null;
+                    transmissionTarget.TrackEvent(EventName.text, nullProps, Flags.PersistenceCritical);
+                }
+                else
+                {
+                    transmissionTarget.TrackEvent(EventName.text);
+                }
+            }
+            else
+            {
+                if (UseChildPropertyConfigurator.isOn)
+                {
+                    var propertyConfigurator = transmissionTarget.GetPropertyConfigurator();
+                    foreach (var property in properties)
+                    {
+                        propertyConfigurator.SetEventProperty(property.Key, property.Value);
+                    }
+                    propertyConfigurator.SetEventProperty("extraEventProperty", "should be removed!");
+                    propertyConfigurator.RemoveEventProperty("extraEventProperty");
+                    if (_isCritical)
+                    {
+                        IDictionary<string, string> nullProps = null;
+                        transmissionTarget.TrackEvent(EventName.text, nullProps, Flags.PersistenceCritical);
+                    }
+                    else
+                    {
+                        transmissionTarget.TrackEvent(EventName.text);
+                    }
+                }
+                else
+                {
+                    if (_isCritical)
+                    {
+                        transmissionTarget.TrackEvent(EventName.text, properties, Flags.PersistenceCritical);
+                    }
+                    else
+                    {
+                        transmissionTarget.TrackEvent(EventName.text, properties);
+                    }
+                }
+            }
+        }
+    }
+
+    public void TrackEventTypedPropertiesChildTransmission()
+    {
+        var transmissionTarget = GetChildTransmissionTarget();
+        if (transmissionTarget != null)
+        {
+            var properties = PropertiesHelper.GetTypedProperties(EventPropertiesList);
+            if (properties == null)
+            {
+                if (_isCritical)
+                {
+                    EventProperties nullProps = null;
+                    transmissionTarget.TrackEvent(EventName.text, nullProps, Flags.PersistenceCritical);
+                }
+                else
+                {
+                    transmissionTarget.TrackEvent(EventName.text);
+                }
+            }
+            else
+            {
+                if (UseChildPropertyConfigurator.isOn)
+                {
+                    var propertyConfigurator = transmissionTarget.GetPropertyConfigurator();
+                    PropertiesHelper.AddPropertiesToPropertyConfigurator(EventPropertiesList, propertyConfigurator);
+                    propertyConfigurator.SetEventProperty("extraEventProperty", "should be removed!");
+                    propertyConfigurator.RemoveEventProperty("extraEventProperty");
+                    if (_isCritical)
+                    {
+                        EventProperties nullProps = null;
+                        transmissionTarget.TrackEvent(EventName.text, nullProps, Flags.PersistenceCritical);
+                    }
+                    else
+                    {
+                        transmissionTarget.TrackEvent(EventName.text);
+                    }
+                }
+                else
+                {
+                    if (_isCritical)
+                    {
+                        transmissionTarget.TrackEvent(EventName.text, properties, Flags.PersistenceCritical);
+                    }
+                    else
+                    {
+                        transmissionTarget.TrackEvent(EventName.text, properties);
+                    }
+                }
+            }
+        }
     }
 }
