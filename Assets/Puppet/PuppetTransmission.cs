@@ -16,7 +16,7 @@ public class PuppetTransmission : MonoBehaviour
     public Toggle DefaultTransmissionEnabled;
     public Toggle UseParentPropertyConfigurator;
     public Toggle UseChildPropertyConfigurator;
-    public Toggle CollectDeviceId;
+    public Toggle CollectDeviceIdDefault;
     public Toggle CollectDeviceIdChild;
     public Toggle CollectDeviceIdParent;
     public InputField EventName;
@@ -63,7 +63,9 @@ public class PuppetTransmission : MonoBehaviour
         {
             StartCoroutine(IsChildEnabledCoroutine(childTransmissionTarget));
         }
-        CollectDeviceId.isOn = false;
+        CollectDeviceIdDefault.isOn = false;
+        CollectDeviceIdChild.isOn = false;
+        CollectDeviceIdParent.isOn = false;
     }
 
     private IEnumerator IsChildEnabledCoroutine(TransmissionTarget childTransmissionTarget)
@@ -121,7 +123,7 @@ public class PuppetTransmission : MonoBehaviour
         StartCoroutine(SetTransmissionEnabledCoroutine(enabled));
     }
 
-    public void SetCollectDeviceID(bool enabled)
+    public void SetDefaultCollectDeviceID(bool enabled)
     {
         var transmissionTarget = Analytics.GetTransmissionTarget(ResolveToken());
         if (transmissionTarget == null)
@@ -132,7 +134,38 @@ public class PuppetTransmission : MonoBehaviour
         if (enabled)
         {
             transmissionTarget.GetPropertyConfigurator().CollectDeviceId();
-            CollectDeviceId.enabled = false;
+            CollectDeviceIdDefault.enabled = false;
+        }
+    }
+
+    public void SetParentCollectDeviceID(bool enabled)
+    {
+        var transmissionTarget = Analytics.GetTransmissionTarget(ResolveToken());
+        if (transmissionTarget == null)
+        {
+            Debug.Log("Transmission target is null.");
+            return;
+        }
+        if (enabled)
+        {
+            transmissionTarget.GetPropertyConfigurator().CollectDeviceId();
+            CollectDeviceIdParent.enabled = false;
+        }
+    }
+
+    public void SetChildCollectDeviceID(bool enabled)
+    {
+        var transmissionTarget = Analytics.GetTransmissionTarget(ResolveToken());
+        if (transmissionTarget == null)
+        {
+            Debug.Log("Transmission target is null.");
+            return;
+        }
+        var childTransmissionTarget = transmissionTarget.GetTransmissionTarget(ResolveChildToken());
+        if (enabled)
+        {
+            childTransmissionTarget.GetPropertyConfigurator().CollectDeviceId();
+            CollectDeviceIdChild.enabled = false;
         }
     }
 

@@ -4353,7 +4353,7 @@ MonoBehaviour:
     m_PersistentCalls:
       m_Calls:
       - m_Target: {fileID: 886347191}
-        m_MethodName: SetCollectDeviceID
+        m_MethodName: SetChildCollectDeviceID
         m_Mode: 0
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -6025,7 +6025,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: Enable
+  m_Text: Enable properties
 --- !u!222 &394516448
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -10615,7 +10615,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: Enable
+  m_Text: Enable properties
 --- !u!222 &676127443
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -13638,7 +13638,7 @@ MonoBehaviour:
   DefaultTransmissionEnabled: {fileID: 1411534065}
   UseParentPropertyConfigurator: {fileID: 1944857493}
   UseChildPropertyConfigurator: {fileID: 1978310701}
-  CollectDeviceId: {fileID: 1522726766}
+  CollectDeviceIdDefault: {fileID: 1522726766}
   CollectDeviceIdChild: {fileID: 253512509}
   CollectDeviceIdParent: {fileID: 1224903403}
   EventName: {fileID: 486612592}
@@ -18548,7 +18548,7 @@ MonoBehaviour:
     m_PersistentCalls:
       m_Calls:
       - m_Target: {fileID: 886347191}
-        m_MethodName: SetCollectDeviceID
+        m_MethodName: SetParentCollectDeviceID
         m_Mode: 0
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -24952,7 +24952,7 @@ MonoBehaviour:
     m_PersistentCalls:
       m_Calls:
       - m_Target: {fileID: 886347191}
-        m_MethodName: SetCollectDeviceID
+        m_MethodName: SetDefaultCollectDeviceID
         m_Mode: 0
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
