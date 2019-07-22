@@ -299,6 +299,7 @@ public class PuppetTransmission : MonoBehaviour
         if (transmissionTarget != null)
         {
             var childTransmissionTarget = transmissionTarget.GetTransmissionTarget(ResolveChildToken());
+            OverrideChildProperties(childTransmissionTarget);
             if (childTransmissionTarget != null)
             {
                 return childTransmissionTarget;
@@ -459,6 +460,7 @@ public class PuppetTransmission : MonoBehaviour
         var transmissionTarget = GetChildTransmissionTarget();
         if (transmissionTarget != null)
         {
+            OverrideChildProperties(transmissionTarget);
             var properties = PropertiesHelper.GetTypedProperties(EventPropertiesList);
             if (properties == null)
             {
