@@ -257,6 +257,7 @@ public class PuppetAppCenter : MonoBehaviour
 
     public void OnUserIdChanged(string newUserId)
     {
+        _customUserId = newUserId;
         PlayerPrefs.SetString(UserIdKey, newUserId);
         AppCenter.SetUserId(newUserId);
     }
