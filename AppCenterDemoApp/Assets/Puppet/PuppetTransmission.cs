@@ -34,6 +34,7 @@ public class PuppetTransmission : MonoBehaviour
 
     private void OnEnable()
     {
+        AppCenter.StartFromLibrary(new Type[]{ AppCenter.Analytics });
         TransmissionTarget.text = _transmissionTargetToken;
         ChildTransmissionTarget.text = _childTransmissionTargetToken;
         var transmissionTarget = Analytics.GetTransmissionTarget(ResolveToken());
