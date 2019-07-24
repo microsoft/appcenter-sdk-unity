@@ -6,6 +6,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using Microsoft.AppCenter.Unity.Analytics;
+using Microsoft.AppCenter.Unity;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -39,6 +40,7 @@ public class PuppetTransmission : MonoBehaviour
 
     private void OnEnable()
     {
+        AppCenter.StartFromLibrary(new Type[]{ AppCenter.Analytics });
         TransmissionTarget.text = _parentTransmissionTargetToken;
         ChildTransmissionTarget.text = _childTransmissionTargetToken;
 
