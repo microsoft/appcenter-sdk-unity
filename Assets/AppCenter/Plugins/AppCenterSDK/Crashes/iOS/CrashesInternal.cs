@@ -107,6 +107,11 @@ namespace Microsoft.AppCenter.Unity.Crashes.Internal
             return new ErrorReport(identifier, dtoStart, dtoError, exception, procId, reporterKey, reporterSignal, isAppKill, device);
         }
 
+        public static AppCenterTask<string> GetMinidumpDirectoryAsync() 
+        {
+            return AppCenterTask<string>.FromCompleted("");
+        }
+
         private static Device GetDevice(IntPtr errorReportPtr)
         {
             var device = app_center_unity_crashes_error_report_device(errorReportPtr);

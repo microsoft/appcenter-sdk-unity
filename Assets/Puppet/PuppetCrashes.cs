@@ -7,6 +7,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using System.Runtime.InteropServices;
 using System.Text;
 using System.Threading;
 using UnityEngine;
@@ -20,6 +21,7 @@ public class PuppetCrashes : MonoBehaviour
     public Text LastSessionCrashReport;
     public InputField TextAttachment;
     public InputField BinaryAttachment;
+    private static bool _crashesNativeCallbackRegistered;
 
     void OnEnable()
     {
@@ -35,6 +37,20 @@ public class PuppetCrashes : MonoBehaviour
         var isEnabled = Crashes.IsEnabledAsync();
         yield return isEnabled;
         CrashesEnabled.isOn = isEnabled.Result;
+#if UNITY_ANDROID
+        if (!_crashesNativeCallbackRegistered)
+        {
+            var minidumpDir = Crashes.GetMinidumpDirectoryAsync();
+            yield return minidumpDir;
+            setupNativeCrashesListener(minidumpDir.Result);
+            _crashesNativeCallbackRegistered = true;
+        }
+#endif
+    }
+
+    public void TestCrash()
+    {
+        Crashes.GenerateTestCrash();
     }
 
     public void OnValueChanged()
@@ -78,11 +94,6 @@ public class PuppetCrashes : MonoBehaviour
         }
     }
 
-    public void TestCrash()
-    {
-        Crashes.GenerateTestCrash();
-    }
-
     public void DivideByZero()
     {
         Debug.Log(42 / int.Parse("0"));
@@ -90,8 +101,12 @@ public class PuppetCrashes : MonoBehaviour
 
     public void NullReferenceException()
     {
+#if UNITY_ANDROID && !UNITY_EDITOR
+        nativeCrashNullPointer();       
+#else
         string str = null;
         Debug.Log(str.Length);
+#endif
     }
 
     public void ExceptionInNewThread()
@@ -222,4 +237,10 @@ public class PuppetCrashes : MonoBehaviour
             LastSessionCrashReport.text = "App has not crashed during the last session";
         }
     }
+
+    [DllImport("PuppetBreakpad")]
+    private static extern void nativeCrashNullPointer();
+
+    [DllImport("PuppetBreakpad")]
+    private static extern void setupNativeCrashesListener(string path);
 }
