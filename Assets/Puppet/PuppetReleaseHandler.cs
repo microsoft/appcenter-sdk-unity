@@ -22,8 +22,12 @@ public class PuppetReleaseHandler : MonoBehaviour
     {
         lock (_releaseLock)
         {
-            _releaseDetails = details;
-            return PlayerPrefs.GetInt(PuppetAppCenter.FlagCustomDialog, 0) == 1 ? true : false; ;
+            if (PlayerPrefs.GetInt(PuppetAppCenter.FlagCustomDialog, 0) == 1)
+            {
+                _releaseDetails = details;
+                return true;
+            }
+            return false;
         }
     }
 

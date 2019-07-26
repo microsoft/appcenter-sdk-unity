@@ -8,7 +8,6 @@ namespace Microsoft.AppCenter.Unity.Distribute
     /// </summary>
     public enum UpdateAction
     {
-
 #if UNITY_ANDROID
         /// <summary>
         /// Action to trigger the download of the release.
@@ -31,7 +30,6 @@ namespace Microsoft.AppCenter.Unity.Distribute
         /// </summary>
         Postpone = 1
 #endif
-
 
     }
 }
