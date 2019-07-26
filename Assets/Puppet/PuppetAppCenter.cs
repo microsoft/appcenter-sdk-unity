@@ -117,7 +117,7 @@ public class PuppetAppCenter : MonoBehaviour
         LogUrlCached = PlayerPrefs.GetString(LogUrlKey, null);
         MaxSizeCached = PlayerPrefs.GetString(MaxStorageSizeKey, null);
         StartupTypeCached = PlayerPrefs.GetInt(StartupModeKey, (int)Microsoft.AppCenter.Unity.StartupType.Both);
-        CustomDialog.isOn = PlayerPrefs.GetBoolean(FlagCustomDialog);
+        CustomDialog.isOn = PlayerPrefs.GetInt(FlagCustomDialog, 0) == 1 ? true : false;
     }
 
     void OnEnable()
@@ -216,10 +216,11 @@ public class PuppetAppCenter : MonoBehaviour
 
     public void SetCustomDialog(bool enable)
     {
-        PlayerPrefs.SetBoolean(FlagCustomDialog, enable);
+        int isEnable = enable ? 1 : 0;
+        PlayerPrefs.SetInt(FlagCustomDialog, isEnable);
         PlayerPrefs.Save();
 #if UNITY_ANDROID && !UNITY_EDITOR
-        AndroidUtility.SetPreferenceInt(FlagCustomDialog, enable);
+        AndroidUtility.SetPreferenceInt(FlagCustomDialog, isEnable);
 #endif
     }
 
