@@ -3,6 +3,8 @@
 
 using Microsoft.AppCenter.Unity.Distribute;
 using UnityEngine;
+using System.Threading;
+using AOT;
 
 // Very simple release handler.
 public class PuppetReleaseHandler : MonoBehaviour
@@ -11,17 +13,22 @@ public class PuppetReleaseHandler : MonoBehaviour
     private static readonly object _releaseLock = new object();
 
     public PuppetUpdateDialog Dialog;
-
     void Awake()
     {
-        Distribute.ReleaseAvailable = details =>
+        Distribute.ReleaseAvailable = OnReleaseAvailable;
+    }
+
+    bool OnReleaseAvailable(ReleaseDetails details)
+    {
+        lock (_releaseLock)
         {
-            lock (_releaseLock)
+            if (PlayerPrefs.GetInt(PuppetAppCenter.FlagCustomDialog, 0) == 1)
             {
                 _releaseDetails = details;
-                return false;
+                return true;
             }
-        };
+            return false;
+        }
     }
 
     void Update()
