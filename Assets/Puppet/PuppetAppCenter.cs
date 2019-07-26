@@ -184,8 +184,6 @@ public class PuppetAppCenter : MonoBehaviour
         var isDistributeEnabled = Distribute.IsEnabledAsync();
         yield return isDistributeEnabled;
         DistributeEnabled.isOn = isDistributeEnabled.Result;
-
-        Distribute.ReleaseAvailable = (releaseDetails) => true;
         UserId.text = _customUserId;
     }
 

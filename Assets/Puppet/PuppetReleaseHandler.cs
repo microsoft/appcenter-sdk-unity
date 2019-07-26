@@ -1,6 +1,8 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT license.
 
+using System.Threading;
+using AOT;
 using Microsoft.AppCenter.Unity.Distribute;
 using UnityEngine;
 
@@ -9,19 +11,20 @@ public class PuppetReleaseHandler : MonoBehaviour
 {
     private static ReleaseDetails _releaseDetails = null;
     private static readonly object _releaseLock = new object();
-
     public PuppetUpdateDialog Dialog;
 
     void Awake()
     {
-        Distribute.ReleaseAvailable = details =>
+        Distribute.ReleaseAvailable = OnReleaseAvailable;
+    }
+
+    bool OnReleaseAvailable(ReleaseDetails details)
+    {
+        lock (_releaseLock)
         {
-            lock (_releaseLock)
-            {
-                _releaseDetails = details;
-                return false;
-            }
-        };
+            _releaseDetails = details;
+            return true;
+        }
     }
 
     void Update()
