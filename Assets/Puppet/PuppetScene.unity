@@ -10523,6 +10523,7 @@ MonoBehaviour:
   PropertiesList: {fileID: 880802954}
   DistributeEnabled: {fileID: 200897936}
   PushEnabled: {fileID: 1707415137}
+  CustomDialog: {fileID: 1380227928}
 --- !u!114 &769943388
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -10778,7 +10779,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: Set custom dialog
+  m_Text: Set Custom Dialog
 --- !u!222 &798701264
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -18963,7 +18964,7 @@ GameObject:
   - component: {fileID: 1380227927}
   - component: {fileID: 1380227928}
   m_Layer: 5
-  m_Name: Toggle
+  m_Name: SetCustomDialog
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -19031,7 +19032,7 @@ MonoBehaviour:
     m_PersistentCalls:
       m_Calls:
       - m_Target: {fileID: 769943387}
-        m_MethodName: SetDistributeEnabled
+        m_MethodName: SetCustomDialog
         m_Mode: 0
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
