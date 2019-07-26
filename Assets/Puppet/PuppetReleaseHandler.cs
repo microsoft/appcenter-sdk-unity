@@ -23,7 +23,7 @@ public class PuppetReleaseHandler : MonoBehaviour
         lock (_releaseLock)
         {
             _releaseDetails = details;
-            return true;
+            return PlayerPrefs.GetBoolean(PuppetAppCenter.FlagCustomDialog);
         }
     }
 

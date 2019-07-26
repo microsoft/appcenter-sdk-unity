@@ -44,6 +44,8 @@ public class PuppetAppCenter : MonoBehaviour
     public RectTransform PropertiesList;
     public Toggle DistributeEnabled;
     public Toggle PushEnabled;
+    public Toggle CustomDialog;
+    public static string FlagCustomDialog = "FlagCustomDialog";
 
     private string _customUserId;
 
@@ -114,7 +116,8 @@ public class PuppetAppCenter : MonoBehaviour
         AppSecretCached = PlayerPrefs.GetString(AppSecretKey, null);
         LogUrlCached = PlayerPrefs.GetString(LogUrlKey, null);
         MaxSizeCached = PlayerPrefs.GetString(MaxStorageSizeKey, null);
-        StartupTypeCached = PlayerPrefs.GetInt(StartupModeKey, (int) Microsoft.AppCenter.Unity.StartupType.Both);
+        StartupTypeCached = PlayerPrefs.GetInt(StartupModeKey, (int)Microsoft.AppCenter.Unity.StartupType.Both);
+        CustomDialog.isOn = PlayerPrefs.GetBoolean(FlagCustomDialog);
     }
 
     void OnEnable()
@@ -209,6 +212,15 @@ public class PuppetAppCenter : MonoBehaviour
     public void SetLogLevel(int logLevel)
     {
         AppCenter.LogLevel = Microsoft.AppCenter.Unity.LogLevel.Verbose + logLevel;
+    }
+
+    public void SetCustomDialog(bool enable)
+    {
+        PlayerPrefs.SetBoolean(FlagCustomDialog, enable);
+        PlayerPrefs.Save();
+#if UNITY_ANDROID && !UNITY_EDITOR
+        AndroidUtility.SetPreferenceInt(FlagCustomDialog, enable);
+#endif
     }
 
     public void SetStartupMode(int startupMode)
