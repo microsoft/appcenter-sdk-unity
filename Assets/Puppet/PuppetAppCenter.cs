@@ -218,9 +218,6 @@ public class PuppetAppCenter : MonoBehaviour
         int isEnable = enable ? 1 : 0;
         PlayerPrefs.SetInt(FlagCustomDialog, isEnable);
         PlayerPrefs.Save();
-#if UNITY_ANDROID && !UNITY_EDITOR
-        AndroidUtility.SetPreferenceInt(FlagCustomDialog, isEnable);
-#endif
     }
 
     public void SetStartupMode(int startupMode)
