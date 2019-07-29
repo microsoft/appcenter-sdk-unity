@@ -46,7 +46,6 @@ public class PuppetAppCenter : MonoBehaviour
     public Toggle PushEnabled;
     public Toggle CustomDialog;
     public static string FlagCustomDialog = "FlagCustomDialog";
-
     private string _customUserId;
 
     public void SetPushEnabled(bool enabled)
@@ -117,7 +116,7 @@ public class PuppetAppCenter : MonoBehaviour
         LogUrlCached = PlayerPrefs.GetString(LogUrlKey, null);
         MaxSizeCached = PlayerPrefs.GetString(MaxStorageSizeKey, null);
         StartupTypeCached = PlayerPrefs.GetInt(StartupModeKey, (int) Microsoft.AppCenter.Unity.StartupType.Both);
-        CustomDialog.isOn = PlayerPrefs.GetInt(FlagCustomDialog, 0) == 1 ? true : false;
+        CustomDialog.isOn = PlayerPrefs.GetInt(FlagCustomDialog, 0) == 1;
     }
 
     void OnEnable()

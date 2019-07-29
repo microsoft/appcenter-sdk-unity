@@ -11,8 +11,8 @@ public class PuppetReleaseHandler : MonoBehaviour
 {
     private static ReleaseDetails _releaseDetails = null;
     private static readonly object _releaseLock = new object();
-
     public PuppetUpdateDialog Dialog;
+
     void Awake()
     {
         Distribute.ReleaseAvailable = OnReleaseAvailable;
