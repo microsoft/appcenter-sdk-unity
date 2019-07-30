@@ -4,7 +4,7 @@
 
 **Android**
 
-* **[Bug fix]** Fixed handler the update actions in custom update dialog in Distributed module.
+* **[Bug fix]** Fixed handling the update actions in custom update dialog in Distributed module.
 
 ___
 
