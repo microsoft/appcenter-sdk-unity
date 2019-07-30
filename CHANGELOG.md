@@ -1,5 +1,11 @@
 # App Center SDK for Unity Change Log
 
+## Release 2.2.1 (Under development)
+
+**Android**
+
+* **[Bug fix]** Fixed handler the update actions in custom update dialog in Distributed module.
+
 ## Release 2.2.0
 
 Updated native SDK versions:
