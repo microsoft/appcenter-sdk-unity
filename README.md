@@ -4,7 +4,7 @@ The App Center Unity SDK enables you to use App Center Analytics, Crash and Dist
 
 # Getting Started
 
-## 1. Prerequisite
+## 1. Prerequisites
 
 Before you begin, make sure that your project is set up in Unity 5.6 or later.
 
