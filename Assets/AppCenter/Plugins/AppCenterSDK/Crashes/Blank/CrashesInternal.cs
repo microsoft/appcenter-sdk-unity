@@ -33,6 +33,11 @@ namespace Microsoft.AppCenter.Unity.Crashes.Internal
         {
         }
 
+        public static AppCenterTask<bool> HadMemoryWarningInLastSessionAsync()
+        {
+            return AppCenterTask<bool>.FromCompleted(false);
+        }
+
         public static AppCenterTask SetEnabledAsync(bool enabled)
         {
             return AppCenterTask.FromCompleted();
