@@ -1,5 +1,13 @@
 # App Center SDK for Unity Change Log
 
+## Release 2.2.1 (Under development)
+
+**Android**
+
+* **[Bug fix]** Fixed handling the update actions in custom update dialog in Distributed module.
+
+___
+
 ## Release 2.2.0
 
 Updated native SDK versions:
@@ -8,6 +16,8 @@ Updated native SDK versions:
 
 * **[Bug fix]** Separeted Push logic in order to avoid `ClassNotFoundException`.
 * **[Bug fix]** Fixed wrong type for max data storage which causes an issue with the archiving.
+
+___
 
 ## Release 2.1.0
 
@@ -18,6 +28,8 @@ Updated native SDK versions:
 
 * **[Feature]** Add `Distribute.setEnabledForDebuggableBuild(boolean)` method to allow in-app updates in debuggable builds.
 * **[Bug fix]** Fixed UWP build in Unity 2019.
+
+___
 
 ## Release 2.0.0
 
@@ -30,6 +42,8 @@ Updated native SDK versions:
 
 * This version has a breaking change, it only supports Xcode 10.0.0+.
 
+___
+
 ## Release 1.4.1
 
 Updated native SDK versions:
@@ -40,12 +54,16 @@ Updated native SDK versions:
 * **[Fix]** Fixed `async`/`await` operators support by SDK’s methods for .NETStandard 2.0 profile
 * **[Fix]** Fixed iOS application crash when trying to pass exception without stack trace to `Crashes.TrackError`
 
+___
+
 ## Release 1.4.0
 
 Updated native SDK versions:
 * Android from `1.11.0` to [1.11.3](https://github.com/Microsoft/AppCenter-SDK-Android/releases/tag/1.11.3)
 * iOS from `1.12.0` to [1.13.2](https://github.com/Microsoft/AppCenter-SDK-Apple/releases/tag/1.13.2)
 * UWP from `1.12.0` to [1.13.2](https://github.com/Microsoft/AppCenter-SDK-DotNet/releases/tag/1.13.2)
+
+___
 
 ## Release 1.3.0
 

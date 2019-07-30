@@ -9,19 +9,24 @@ public class PuppetReleaseHandler : MonoBehaviour
 {
     private static ReleaseDetails _releaseDetails = null;
     private static readonly object _releaseLock = new object();
-
     public PuppetUpdateDialog Dialog;
 
     void Awake()
     {
-        Distribute.ReleaseAvailable = details =>
+        Distribute.ReleaseAvailable = OnReleaseAvailable;
+    }
+
+    bool OnReleaseAvailable(ReleaseDetails details)
+    {
+        lock (_releaseLock)
         {
-            lock (_releaseLock)
+            if (PlayerPrefs.GetInt(PuppetAppCenter.FlagCustomDialog, 0) == 1)
             {
                 _releaseDetails = details;
-                return false;
+                return true;
             }
-        };
+            return false;
+        }
     }
 
     void Update()

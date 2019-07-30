@@ -60,7 +60,16 @@ namespace Microsoft.AppCenter.Unity.Distribute.Internal
 
         public static void NotifyUpdateAction(int updateAction)
         {
-            _distribute.CallStatic("notifyUpdateAction", updateAction);
+            var nativeAction = -2;
+            switch((UpdateAction)updateAction) {
+                case UpdateAction.Update: 
+                    nativeAction = -1;
+                    break;
+                case UpdateAction.Postpone: 
+                    nativeAction = -2;
+                    break;
+            }
+            _distribute.CallStatic("notifyUpdateAction", nativeAction);
         }
     }
 }
