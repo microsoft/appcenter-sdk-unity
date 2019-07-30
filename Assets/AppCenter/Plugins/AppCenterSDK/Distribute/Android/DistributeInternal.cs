@@ -61,11 +61,11 @@ namespace Microsoft.AppCenter.Unity.Distribute.Internal
         public static void NotifyUpdateAction(int updateAction)
         {
             var nativeAction = -2;
-            switch(updateAction) {
-                case 0: 
+            switch((UpdateAction)updateAction) {
+                case UpdateAction.Update: 
                     nativeAction = -1;
                     break;
-                case 1: 
+                case UpdateAction.Postpone: 
                     nativeAction = -2;
                     break;
             }

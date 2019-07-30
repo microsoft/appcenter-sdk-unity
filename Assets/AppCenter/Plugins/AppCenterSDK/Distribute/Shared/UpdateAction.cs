@@ -8,7 +8,6 @@ namespace Microsoft.AppCenter.Unity.Distribute
     /// </summary>
     public enum UpdateAction
     {
-
         /// <summary>
         /// Action to trigger the download of the release.
         /// </summary>
