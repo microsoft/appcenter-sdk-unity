@@ -3,8 +3,6 @@
 
 using Microsoft.AppCenter.Unity.Distribute;
 using UnityEngine;
-using System.Threading;
-using AOT;
 
 // Very simple release handler.
 public class PuppetReleaseHandler : MonoBehaviour

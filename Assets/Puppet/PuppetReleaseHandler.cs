@@ -1,8 +1,6 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT license.
 
-using System.Threading;
-using AOT;
 using Microsoft.AppCenter.Unity.Distribute;
 using UnityEngine;
 
