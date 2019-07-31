@@ -44,7 +44,8 @@ public class PuppetAppCenter : MonoBehaviour
     public RectTransform PropertiesList;
     public Toggle DistributeEnabled;
     public Toggle PushEnabled;
-
+    public Toggle CustomDialog;
+    public static string FlagCustomDialog = "FlagCustomDialog";
     private string _customUserId;
 
     public void SetPushEnabled(bool enabled)
@@ -115,6 +116,7 @@ public class PuppetAppCenter : MonoBehaviour
         LogUrlCached = PlayerPrefs.GetString(LogUrlKey, null);
         MaxSizeCached = PlayerPrefs.GetString(MaxStorageSizeKey, null);
         StartupTypeCached = PlayerPrefs.GetInt(StartupModeKey, (int) Microsoft.AppCenter.Unity.StartupType.Both);
+        CustomDialog.isOn = PlayerPrefs.GetInt(FlagCustomDialog, 0) == 1;
     }
 
     void OnEnable()
@@ -184,8 +186,6 @@ public class PuppetAppCenter : MonoBehaviour
         var isDistributeEnabled = Distribute.IsEnabledAsync();
         yield return isDistributeEnabled;
         DistributeEnabled.isOn = isDistributeEnabled.Result;
-
-        Distribute.ReleaseAvailable = (releaseDetails) => true;
         UserId.text = _customUserId;
     }
 
@@ -206,6 +206,13 @@ public class PuppetAppCenter : MonoBehaviour
         var isDistributeEnabled = Distribute.IsEnabledAsync();
         yield return isDistributeEnabled;
         DistributeEnabled.isOn = isDistributeEnabled.Result;
+    }
+
+    public void SetCustomDialog(bool enable)
+    {
+        int isEnable = enable ? 1 : 0;
+        PlayerPrefs.SetInt(FlagCustomDialog, isEnable);
+        PlayerPrefs.Save();
     }
 
     public void SetLogLevel(int logLevel)
