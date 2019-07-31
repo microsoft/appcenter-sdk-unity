@@ -105,7 +105,7 @@ public class PuppetCrashes : MonoBehaviour
 
     private IEnumerator LowMemoryTrigger()
     {
-        List<byte[]> list = new List<byte[]>();
+        var list = new List<byte[]>();
         while (true)
         {
             list.Add(new byte[1024 * 1024 * 128]);
