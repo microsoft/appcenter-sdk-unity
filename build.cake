@@ -13,7 +13,7 @@ using NuGet;
 
 // Native SDK versions
 var AndroidSdkVersion = "2.2.1-4+731760d88";
-var IosSdkVersion = "2.2.1-5";
+var IosSdkVersion = "2.2.1-5+49fca27d68baabc7654b47c2bb6ab609e997382e";
 var UwpSdkVersion = "2.1.0";
 
 // URLs for downloading binaries.
