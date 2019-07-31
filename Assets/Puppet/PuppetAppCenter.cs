@@ -3,6 +3,7 @@
 
 using Assets.AppCenter.Plugins.Android.Utility;
 using Microsoft.AppCenter.Unity;
+using Microsoft.AppCenter.Unity.Crashes;
 using Microsoft.AppCenter.Unity.Distribute;
 using Microsoft.AppCenter.Unity.Push;
 using System;

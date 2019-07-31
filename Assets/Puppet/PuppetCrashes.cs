@@ -21,6 +21,7 @@ public class PuppetCrashes : MonoBehaviour
     public Text LastSessionCrashReport;
     public InputField TextAttachment;
     public InputField BinaryAttachment;
+    public Text LowMemoryLabel;
     private static bool _crashesNativeCallbackRegistered;
 
     void OnEnable()
@@ -37,6 +38,9 @@ public class PuppetCrashes : MonoBehaviour
         var isEnabled = Crashes.IsEnabledAsync();
         yield return isEnabled;
         CrashesEnabled.isOn = isEnabled.Result;
+        var hasLowMemoryWarning = Crashes.HasReceivedMemoryWarningInLastSessionAsync();
+        yield return hasLowMemoryWarning;
+        LowMemoryLabel.text = hasLowMemoryWarning.Result ? "Yes" : "No";
 #if UNITY_ANDROID
         if (!_crashesNativeCallbackRegistered)
         {
@@ -91,6 +95,21 @@ public class PuppetCrashes : MonoBehaviour
         {
             var properties = new Dictionary<string, string> { { "Category", "Music" }, { "Wifi", "On" } };
             Crashes.TrackError(ex, properties);
+        }
+    }
+
+    public void TriggerLowMemoryWarning()
+    {
+        StartCoroutine(LowMemoryTrigger());
+    }
+
+    private IEnumerator LowMemoryTrigger()
+    {
+        List<byte[]> list = new List<byte[]>();
+        while (true)
+        {
+            list.Add(new byte[1024 * 1024 * 128]);
+            yield return null;
         }
     }
 

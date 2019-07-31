@@ -112,9 +112,9 @@ namespace Microsoft.AppCenter.Unity.Crashes.Internal
             return AppCenterTask<string>.FromCompleted("");
         }
 
-        public static AppCenterTask<bool> HadMemoryWarningInLastSessionAsync()
+        public static AppCenterTask<bool> HasReceivedMemoryWarningInLastSessionAsync()
         {
-            var hadWarning = appcenter_unity_crashes_had_memory_warning_in_last_session();
+            var hadWarning = appcenter_unity_crashes_has_received_memory_warning_in_last_session();
             return AppCenterTask<bool>.FromCompleted(hadWarning);
         }
 
@@ -130,7 +130,7 @@ namespace Microsoft.AppCenter.Unity.Crashes.Internal
         private static extern IntPtr appcenter_unity_crashes_get_type();
 
         [DllImport("__Internal")]
-        private static extern bool appcenter_unity_crashes_had_memory_warning_in_last_session();
+        private static extern bool appcenter_unity_crashes_has_received_memory_warning_in_last_session();
 
         [DllImport("__Internal")]
         private static extern void appcenter_unity_crashes_track_model_exception(IntPtr exception);

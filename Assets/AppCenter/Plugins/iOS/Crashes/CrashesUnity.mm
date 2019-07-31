@@ -36,9 +36,9 @@ bool appcenter_unity_crashes_is_enabled()
   return [MSCrashes isEnabled];
 }
 
-bool appcenter_unity_crashes_had_memory_warning_in_last_session() 
+bool appcenter_unity_crashes_has_received_memory_warning_in_last_session() 
 {
-  return [MSCrashes hadMemoryWarningInLastSession];
+  return [MSCrashes hasReceivedMemoryWarningInLastSession];
 }
 
 void appcenter_unity_crashes_generate_test_crash()
