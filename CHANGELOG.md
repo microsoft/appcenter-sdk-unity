@@ -2,10 +2,12 @@
 
 ## Release 2.2.1 (Under development)
 
+* **[Feature]** Catch "low memory warning" and provide the API to check if it has happened in last session:  `Crashes.HasReceivedMemoryWarningInLastSessionAsync`.
+
 **Android**
 
 * **[Bug fix]** Fixed handling the update actions in custom update dialog in Distributed module.
-* **[Feature]** Add `Crashes.HasReceivedMemoryWarningInLastSessionAsync` API.
+
 ___
 
 ## Release 2.2.0
