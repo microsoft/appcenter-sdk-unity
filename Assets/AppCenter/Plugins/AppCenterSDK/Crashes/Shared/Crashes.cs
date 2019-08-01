@@ -99,6 +99,11 @@ namespace Microsoft.AppCenter.Unity.Crashes
             return CrashesInternal.GetMinidumpDirectoryAsync();
         }
 
+        public static AppCenterTask<bool> HasReceivedMemoryWarningInLastSessionAsync()
+        {
+            return CrashesInternal.HasReceivedMemoryWarningInLastSessionAsync();
+        }
+
         public static AppCenterTask<bool> IsEnabledAsync()
         {
             return CrashesInternal.IsEnabledAsync();

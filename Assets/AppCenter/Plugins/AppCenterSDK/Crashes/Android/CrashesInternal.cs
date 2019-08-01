@@ -34,6 +34,12 @@ namespace Microsoft.AppCenter.Unity.Crashes.Internal
             _wrapperSdkExceptionManager.CallStatic("trackException", exception, propertiesMap);
         }
 
+        public static AppCenterTask<bool> HasReceivedMemoryWarningInLastSessionAsync()
+        {
+            var future = _crashes.CallStatic<AndroidJavaObject>("hasReceivedMemoryWarningInLastSession");
+            return new AppCenterTask<bool>(future);
+        }
+
         public static AppCenterTask SetEnabledAsync(bool isEnabled)
         {
             var future = _crashes.CallStatic<AndroidJavaObject>("setEnabled", isEnabled);
