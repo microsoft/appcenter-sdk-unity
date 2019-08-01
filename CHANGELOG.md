@@ -5,7 +5,7 @@
 **Android**
 
 * **[Bug fix]** Fixed handling the update actions in custom update dialog in Distributed module.
-
+* **[Feature]** Add `Crashes.HasReceivedMemoryWarningInLastSessionAsync` API.
 ___
 
 ## Release 2.2.0
