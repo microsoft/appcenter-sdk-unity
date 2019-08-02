@@ -1,6 +1,8 @@
 # App Center SDK for Unity Change Log
 
-## Release 2.2.1 (Under development)
+## Release 2.3.0 (Under development)
+
+* **[Feature]** Catch "low memory warning" and provide the API to check if it has happened in last session:  `Crashes.HasReceivedMemoryWarningInLastSessionAsync()`.
 
 **Android**
 
