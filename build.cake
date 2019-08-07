@@ -1,7 +1,7 @@
 #addin nuget:?package=Cake.FileHelpers
-#addin "Cake.AzureStorage"
+#addin nuget:?package=Cake.AzureStorage
 #addin nuget:?package=NuGet.Core
-#addin "Cake.Xcode"
+#addin nuget:?package=Cake.Xcode
 #load "utility.cake"
 
 using System;
