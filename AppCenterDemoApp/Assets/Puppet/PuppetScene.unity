@@ -8737,7 +8737,7 @@ MonoBehaviour:
   m_HandleRect: {fileID: 1111163099}
   m_Direction: 2
   m_Value: 1
-  m_Size: 0.37837595
+  m_Size: 0.377494
   m_NumberOfSteps: 0
   m_OnValueChanged:
     m_PersistentCalls:
@@ -12414,7 +12414,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!114 &941407075
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -23179,9 +23179,9 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1653541468}
+  - component: {fileID: 1653541466}
   - component: {fileID: 1653541464}
   - component: {fileID: 1653541465}
-  - component: {fileID: 1653541466}
   - component: {fileID: 1653541463}
   - component: {fileID: 1653541467}
   m_Layer: 0
@@ -23238,7 +23238,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b9a3a6a28c6a80a46adde9b4e01eeb93, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Settings: {fileID: 0}
+  Settings: {fileID: 11400000, guid: b0e23b9dd6fee9942b6dd20962e8cd27, type: 2}
 --- !u!114 &1653541467
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -23250,7 +23250,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0d5e2b5dc171f164b8ef2a7b94198b04, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  SettingsAdvanced: {fileID: 0}
+  SettingsAdvanced: {fileID: 11400000, guid: 045fbf4b28b65144a885661ebd1535fc, type: 2}
 --- !u!4 &1653541468
 Transform:
   m_ObjectHideFlags: 0
