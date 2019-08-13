@@ -8,8 +8,6 @@ using UnityEngine;
 
 namespace Microsoft.AppCenter.Unity.Auth.Internal
 {
-    using UWPAuth = Microsoft.AppCenter.Auth.Auth;
-
     class AuthInternal
     {
         private static bool _warningLogged = false;
@@ -20,27 +18,16 @@ namespace Microsoft.AppCenter.Unity.Auth.Internal
 
         public static void AddNativeType(List<Type> nativeTypes)
         {
-            nativeTypes.Add(typeof(UWPAuth));
-        }
-
-        public static AppCenterTask<UserInformation> SignInAsync()
-        {
-            return AppCenterTask<UserInformation>.FromCompleted(UWPAuth.SignInAsync());
-        }
-
-        public static void SignOut()
-        {
-            UWPAuth.SignOut();
         }
 
         public static AppCenterTask SetEnabledAsync(bool isEnabled)
         {
-            return new AppCenterTask(UWPAuth.SetEnabledAsync(isEnabled));
+            return AppCenterTask.FromCompleted();
         }
 
         public static AppCenterTask<bool> IsEnabledAsync()
         {
-            return new AppCenterTask<bool>(UWPAuth.IsEnabledAsync());
+            return AppCenterTask<bool>.FromCompleted(false);
         }
     }
 }

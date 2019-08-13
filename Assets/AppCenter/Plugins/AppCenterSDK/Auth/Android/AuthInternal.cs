@@ -31,15 +31,6 @@ namespace Microsoft.AppCenter.Unity.Auth.Internal
             nativeTypes.Add(AndroidJNI.FindClass("com/microsoft/appcenter/auth/Auth"));
         }
 
-        public static AppCenterTask<UserInformation> SignInAsync()
-        {
-            return AppCenterTask<UserInformation>.FromCompleted(null);
-        }
-
-        public static void SignOut()
-        {
-        }
-
         public static AppCenterTask SetEnabledAsync(bool isEnabled)
         {
             var future = _auth.CallStatic<AndroidJavaObject>("setEnabled", isEnabled);

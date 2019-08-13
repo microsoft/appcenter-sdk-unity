@@ -20,17 +20,6 @@ namespace Microsoft.AppCenter.Unity.Auth.Internal
             nativeTypes.Add(appcenter_unity_auth_get_type());
         }
 
-        public static AppCenterTask<UserInformation> SignInAsync()
-        {
-            var userInformation = appcenter_unity_auth_sign_in();
-            return AppCenterTask<UserInformation>.FromCompleted(userInformation);
-        }
-
-        public static void SignOut()
-        {
-            appcenter_unity_auth_sign_out();
-        }
-
         public static AppCenterTask SetEnabledAsync(bool isEnabled)
         {
             appcenter_unity_auth_set_enabled(isEnabled);
@@ -43,17 +32,10 @@ namespace Microsoft.AppCenter.Unity.Auth.Internal
             return AppCenterTask<bool>.FromCompleted(isEnabled);
         }
 
-
 #region External
 
         [DllImport("__Internal")]
         private static extern IntPtr appcenter_unity_auth_get_type();
-
-        [DllImport("__Internal")]
-        private static extern UserInformation appcenter_unity_auth_sign_in();
-
-        [DllImport("__Internal")]
-        private static extern void appcenter_unity_auth_sign_out();
 
         [DllImport("__Internal")]
         private static extern void appcenter_unity_auth_set_enabled(bool isEnabled);

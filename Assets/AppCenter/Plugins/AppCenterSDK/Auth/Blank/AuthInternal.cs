@@ -2,7 +2,6 @@
 // Licensed under the MIT license.
 
 #if (!UNITY_IOS && !UNITY_ANDROID && !UNITY_WSA_10_0) || UNITY_EDITOR
-using System;
 using System.Collections.Generic;
 
 namespace Microsoft.AppCenter.Unity.Auth.Internal
@@ -28,15 +27,6 @@ namespace Microsoft.AppCenter.Unity.Auth.Internal
         }
 
         public static void AddNativeType(List<RawType> nativeTypes)
-        {
-        }
-
-        public static AppCenterTask<UserInformation> SignInAsync()
-        {
-            return null;
-        }
-
-        public static void SignOut()
         {
         }
 
