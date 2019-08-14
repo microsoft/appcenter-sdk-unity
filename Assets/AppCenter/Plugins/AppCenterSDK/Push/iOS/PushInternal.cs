@@ -35,6 +35,7 @@ namespace Microsoft.AppCenter.Unity.Push.Internal
         {
             _receivedPushDel = ReceivedPushNotificationFunc;
             appcenter_unity_push_set_received_push_impl(_receivedPushDel);
+            ReplayUnprocessedPushNotifications();
         }
 
         public static void AddNativeType(List<IntPtr> nativeTypes)
