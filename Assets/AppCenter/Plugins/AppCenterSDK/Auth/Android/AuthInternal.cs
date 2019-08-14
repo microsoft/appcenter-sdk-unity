@@ -28,7 +28,7 @@ namespace Microsoft.AppCenter.Unity.Auth.Internal
 
         public static void AddNativeType(List<IntPtr> nativeTypes)
         {
-            nativeTypes.Add(AndroidJNI.FindClass("com/microsoft/appcenter/auth/Auth"));
+            nativeTypes.Add(_auth.GetRawClass());
         }
 
         public static AppCenterTask SetEnabledAsync(bool isEnabled)
