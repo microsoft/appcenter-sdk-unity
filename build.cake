@@ -260,16 +260,16 @@ Task ("Externals-Uwp")
         CleanDirectory ("externals/uwp");
         EnsureDirectoryExists ("Assets/AppCenter/Plugins/WSA/");
         foreach (var module in AppCenterModules) {
+            if (module.Moniker == "Auth") {
+                Warning ("Skipping 'Auth' for UWP.");
+                continue;
+            }
             if (module.Moniker == "Distribute") {
                 Warning ("Skipping 'Distribute' for UWP.");
                 continue;
             }
             if (module.Moniker == "Crashes") {
                 Warning ("Skipping 'Crashes' for UWP.");
-                continue;
-            }
-            if (module.Moniker == "Auth") {
-                Warning ("Skipping 'Auth' for UWP.");
                 continue;
             }
             Information ("Downloading " + module.DotNetModule + "...");
