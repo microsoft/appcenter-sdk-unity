@@ -10,8 +10,6 @@ namespace Microsoft.AppCenter.Unity.Auth.Internal
 {
     class AuthInternal
     {
-        private static bool _warningLogged = false;
-
         public static void PrepareEventHandlers()
         {
         }
