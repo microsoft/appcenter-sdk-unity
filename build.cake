@@ -32,6 +32,7 @@ var IosUrl = SdkStorageUrl + "AppCenter-SDK-Apple-" + IosSdkVersion + ".zip";
 var AppCenterModules = new [] {
     new AppCenterModule("appcenter-release.aar", "AppCenter.framework", "Microsoft.AppCenter", "Core"),
     new AppCenterModule("appcenter-analytics-release.aar", "AppCenterAnalytics.framework", "Microsoft.AppCenter.Analytics", "Analytics"),
+    new AppCenterModule("appcenter-auth-release.aar", "AppCenterAuth.framework", "Microsoft.AppCenter.Auth", "Auth"),
     new AppCenterModule("appcenter-distribute-release.aar", new[] { "AppCenterDistribute.framework", "AppCenterDistributeResources.bundle" }, "Microsoft.AppCenter.Distribute", "Distribute"),
     new AppCenterModule("appcenter-push-release.aar", "AppCenterPush.framework", "Microsoft.AppCenter.Push", "Push"),
     new AppCenterModule("appcenter-crashes-release.aar", "AppCenterCrashes.framework", "Microsoft.AppCenter.Crashes", "Crashes")
@@ -265,6 +266,10 @@ Task ("Externals-Uwp")
             }
             if (module.Moniker == "Crashes") {
                 Warning ("Skipping 'Crashes' for UWP.");
+                continue;
+            }
+            if (module.Moniker == "Auth") {
+                Warning ("Skipping 'Auth' for UWP.");
                 continue;
             }
             Information ("Downloading " + module.DotNetModule + "...");
