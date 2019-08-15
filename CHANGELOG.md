@@ -3,6 +3,7 @@
 ## Release 2.3.0 (Under development)
 
 * **[Feature]** Catch "low memory warning" and provide the API to check if it has happened in last session:  `Crashes.HasReceivedMemoryWarningInLastSessionAsync()`.
+* **[Bug fix]** Fixed handling the display notification from background.
 
 **Android**
 
