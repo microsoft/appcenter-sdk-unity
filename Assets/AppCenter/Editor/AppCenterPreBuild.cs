@@ -66,6 +66,10 @@ public class AppCenterPreBuild : IPreprocessBuild
         {
             settingsMaker.StartAnalyticsClass();
         }
+        if (settings.UseAuth && settingsMaker.IsAuthAvailable())
+        {
+            settingsMaker.StartAuthClass();
+        }
         if (settings.UseCrashes && settingsMaker.IsCrashesAvailable())
         {
             settingsMaker.StartCrashesClass();

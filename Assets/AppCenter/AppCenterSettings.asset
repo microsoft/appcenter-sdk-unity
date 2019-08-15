@@ -15,6 +15,7 @@ MonoBehaviour:
   AndroidAppSecret: 6d4f2a96-71ea-4a6f-9fa8-27e0a6992750
   UWPAppSecret: 41870fa1-1ee5-4417-ad41-499c16fa1dda
   UseAnalytics: 1
+  UseAuth: 1
   UseCrashes: 1
   UseDistribute: 1
   CustomApiUrl:

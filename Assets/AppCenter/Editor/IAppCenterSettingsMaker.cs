@@ -4,10 +4,12 @@
 public interface IAppCenterSettingsMaker
 {
     bool IsAnalyticsAvailable();
+    bool IsAuthAvailable();
     bool IsCrashesAvailable();
     bool IsDistributeAvailable();
     bool IsPushAvailable();
     void StartAnalyticsClass();
+    void StartAuthClass();
     void StartCrashesClass();
     void StartDistributeClass();
     void StartPushClass();
