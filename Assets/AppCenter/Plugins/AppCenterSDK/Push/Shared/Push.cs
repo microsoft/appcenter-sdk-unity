@@ -34,7 +34,7 @@ namespace Microsoft.AppCenter.Unity.Push
                 // we will double check inside the lock, and if it's false, its
                 // value will never change. Just check outside to avoid waiting
                 // for the lock unnecessarily.
-                if (_needsReplay && PushInternal.IsInitialize)
+                if (_needsReplay)
                 {
                     var replay = false;
                     lock (_lockObject)
