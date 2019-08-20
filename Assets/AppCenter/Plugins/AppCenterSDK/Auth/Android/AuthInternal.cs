@@ -39,7 +39,8 @@ namespace Microsoft.AppCenter.Unity.Auth.Internal
             javaTask.ContinueWith(t =>
             {
                 var exception = t.Result.Call<AndroidJavaObject>("getException");
-                if (exception != null){
+                if (exception != null)
+                {
                     //TODO handle exception
                 }
                 var userInfo = t.Result.Call<AndroidJavaObject>("getUserInformation");
