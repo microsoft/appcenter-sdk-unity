@@ -18,6 +18,15 @@ namespace Microsoft.AppCenter.Unity.Auth.Internal
         {
         }
 
+        public static AppCenterTask<UserInformation> SignInAsync()
+        {
+            return AppCenterTask<UserInformation>.FromCompleted(null);
+        }
+
+        public static void SignOut()
+        {
+        }
+        
         public static AppCenterTask SetEnabledAsync(bool isEnabled)
         {
             return AppCenterTask.FromCompleted();
