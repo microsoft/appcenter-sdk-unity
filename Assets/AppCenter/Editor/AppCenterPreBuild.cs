@@ -28,8 +28,7 @@ public class AppCenterPreBuild : IPreprocessBuild
         if (target == BuildTarget.Android)
         {
             var settings = AppCenterSettingsContext.SettingsInstance;
-            //TODO: will add the UseAuth condition in Script UI Task
-            if (true)
+            if (settings.UseAuth && AppCenter.Auth != null)
             {
                 MsalDependency.SetupAuth();
             }
@@ -73,6 +72,10 @@ public class AppCenterPreBuild : IPreprocessBuild
         }
         if (settings.UseAuth && settingsMaker.IsAuthAvailable())
         {
+            if (settings.CustomConfigUrl.UseCustomUrl)
+            {
+                settingsMaker.SetConfigUrl(settings.CustomConfigUrl.Url);
+            }
             settingsMaker.StartAuthClass();
         }
         if (settings.UseCrashes && settingsMaker.IsCrashesAvailable())
