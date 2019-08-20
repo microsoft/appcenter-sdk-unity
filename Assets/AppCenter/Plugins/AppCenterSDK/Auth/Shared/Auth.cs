@@ -23,6 +23,16 @@ namespace Microsoft.AppCenter.Unity.Auth
             AuthInternal.AddNativeType(nativeTypes);
         }
 
+        public static AppCenterTask<UserInformation> SignInAsync()
+        {
+            return AuthInternal.SignInAsync();
+        }
+
+        public static void SignOut()
+        {
+            AuthInternal.SignOut();
+        }
+        
         public static AppCenterTask<bool> IsEnabledAsync()
         {
             return AuthInternal.IsEnabledAsync();

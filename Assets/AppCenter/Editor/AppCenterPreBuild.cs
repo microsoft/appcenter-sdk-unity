@@ -28,6 +28,11 @@ public class AppCenterPreBuild : IPreprocessBuild
         if (target == BuildTarget.Android)
         {
             var settings = AppCenterSettingsContext.SettingsInstance;
+            //TODO: will add the UseAuth condition in Script UI Task
+            if (true)
+            {
+                MsalDependency.SetupAuth();
+            }
             if (settings.UsePush && AppCenter.Push != null)
             {
                 FirebaseDependency.SetupPush();
