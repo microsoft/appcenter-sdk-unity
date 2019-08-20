@@ -31,6 +31,32 @@ namespace Microsoft.AppCenter.Unity.Auth.Internal
             nativeTypes.Add(_auth.GetRawClass());
         }
 
+        public static AppCenterTask<UserInformation> SignInAsync()
+        {
+            var future = _auth.CallStatic<AndroidJavaObject>("signIn");
+            var javaTask = new AppCenterTask<AndroidJavaObject>(future);
+            var signInTask = new AppCenterTask<UserInformation>();
+            javaTask.ContinueWith(t =>
+            {
+                var exception = t.Result.Call<AndroidJavaObject>("getException");
+                if (exception != null)
+                {
+                    //TODO handle exception
+                }
+                var userInfo = t.Result.Call<AndroidJavaObject>("getUserInformation");
+                var aid = userInfo.Call<string>("getAccountId");
+                var atoken = userInfo.Call<string>("getAccessToken");
+                var it = userInfo.Call<string>("getIdToken");
+                signInTask.SetResult(new UserInformation(aid, atoken, it));
+            });
+            return signInTask;
+        }
+
+        public static void SignOut()
+        {
+            _auth.CallStatic("signOut");
+        }
+
         public static AppCenterTask SetEnabledAsync(bool isEnabled)
         {
             var future = _auth.CallStatic<AndroidJavaObject>("setEnabled", isEnabled);
