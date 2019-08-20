@@ -29,7 +29,6 @@ public class AppCenterSettingsEditor : Editor
         {
             Header("Auth");
             EditorGUILayout.PropertyField(serializedObject.FindProperty("UseAuth"));
-            EditorGUILayout.PropertyField(serializedObject.FindProperty("CustomConfigUrl"));
         }
         if (AppCenter.Crashes != null)
         {

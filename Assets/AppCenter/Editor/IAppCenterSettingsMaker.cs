@@ -19,7 +19,6 @@ public interface IAppCenterSettingsMaker
     bool IsStartFromAppCenterBehavior(AppCenterSettingsAdvanced advancedSettings);
     void SetStartupType(int startupType);
     void SetLogUrl(string logUrl);
-    void SetConfigUrl(string configUrl);
     void SetApiUrl(string apiUrl);
     void SetInstallUrl(string installUrl);
     void SetMaxStorageSize(long size);

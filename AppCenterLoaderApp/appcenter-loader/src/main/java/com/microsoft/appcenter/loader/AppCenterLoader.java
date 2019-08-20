@@ -39,10 +39,8 @@ public class AppCenterLoader extends ContentProvider {
     private static final String USE_ANALYTICS_KEY = "appcenter_use_analytics";
     private static final String USE_AUTH_KEY = "appcenter_use_auth";
     private static final String USE_DISTRIBUTE_KEY = "appcenter_use_distribute";
-    private static final String USE_CUSTOM_CONFIG_URL_KEY = "appcenter_use_custom_config_url";
     private static final String USE_CUSTOM_API_URL_KEY = "appcenter_use_custom_api_url";
-    private static final String USE_CUSTOM_INSTALL_URL_KEY = "appcenter_use_custom_install_url";    
-    private static final String CUSTOM_CONFIG_URL_KEY = "appcenter_custom_config_url";
+    private static final String USE_CUSTOM_INSTALL_URL_KEY = "appcenter_use_custom_install_url";
     private static final String CUSTOM_API_URL_KEY = "appcenter_custom_api_url";
     private static final String CUSTOM_INSTALL_URL_KEY = "appcenter_custom_install_url";
     private static final String USE_CRASHES_KEY = "appcenter_use_crashes";
@@ -85,14 +83,7 @@ public class AppCenterLoader extends ContentProvider {
             classes.add(Analytics.class);
         }
         if (isTrueValue(getStringResource(USE_AUTH_KEY)) &&
-            isModuleAvailable("com.microsoft.appcenter.auth.Auth", "Auth")) {            
-            //if (isTrueValue(USE_CUSTOM_CONFIG_URL_KEY)) {
-            //    String customConfigUrl = getStringResource(CUSTOM_CONFIG_URL_KEY);
-            //    if (customConfigUrl != null) {
-            //        Auth.setConfigUrl(customConfigUrl);
-            //    }
-            //}
-            Auth.setConfigUrl("https://config-integration.dev.avalanch.es");
+            isModuleAvailable("com.microsoft.appcenter.auth.Auth", "Auth")) {
             classes.add(Auth.class);
         }
         // We start crash service in .Net code, to give app an opportunity to assign handlers after crash and restart in Awake method
