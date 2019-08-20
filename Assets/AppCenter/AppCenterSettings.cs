@@ -32,6 +32,8 @@ public class AppCenterSettings : ScriptableObject
     [Tooltip("App Center Distribute will let your users install a new version of the app when you distribute it via the App Center.")]
     public bool UseDistribute = true;
 
+    public CustomUrlProperty CustomConfigUrl = new CustomUrlProperty("Config");
+
     public CustomUrlProperty CustomApiUrl = new CustomUrlProperty("API");
 
     public CustomUrlProperty CustomInstallUrl = new CustomUrlProperty("Install");

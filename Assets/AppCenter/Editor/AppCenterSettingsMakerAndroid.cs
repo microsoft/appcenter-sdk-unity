@@ -18,6 +18,8 @@ public class AppCenterSettingsMakerAndroid : IAppCenterSettingsMaker
     private const string UsePushKey = "appcenter_use_push";
     private const string UseAnalyticsKey = "appcenter_use_analytics";
     private const string UseAuthKey = "appcenter_use_auth";
+    private const string CustomConfigUrlKey = "appcenter_custom_config_url";
+    private const string UseCustomConfigUrlKey = "appcenter_use_custom_config_url";
     private const string UseDistributeKey = "appcenter_use_distribute";
     private const string CustomApiUrlKey = "appcenter_custom_api_url";
     private const string UseCustomApiUrlKey = "appcenter_use_custom_api_url";
@@ -88,6 +90,12 @@ public class AppCenterSettingsMakerAndroid : IAppCenterSettingsMaker
         _resourceValues[UseAuthKey] = true.ToString();
     }
 
+    public void SetConfigUrl(string configUrl)
+    {
+        _resourceValues[CustomConfigUrlKey] = configUrl;
+        _resourceValues[UseCustomConfigUrlKey] = true.ToString();
+    }
+    
     public void StartDistributeClass()
     {
         _resourceValues[UseDistributeKey] = true.ToString();

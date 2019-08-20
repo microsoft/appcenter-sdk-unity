@@ -18,6 +18,10 @@ MonoBehaviour:
   UseAuth: 1
   UseCrashes: 1
   UseDistribute: 1
+  CustomConfigUrl:
+    UrlName: Config
+    UseCustomUrl: 1
+    Url: https://config-integration.dev.avalanch.es
   CustomApiUrl:
     UrlName: API
     UseCustomUrl: 1
