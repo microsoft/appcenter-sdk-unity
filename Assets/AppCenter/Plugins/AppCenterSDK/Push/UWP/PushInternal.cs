@@ -57,7 +57,6 @@ namespace Microsoft.AppCenter.Unity.Push.Internal
                 };
                 HandlePushNotification(eventArgs);
             };
-            PushInternal.ReplayUnprocessedPushNotifications();
         }
 
         public static void AddNativeType(List<Type> nativeTypes)

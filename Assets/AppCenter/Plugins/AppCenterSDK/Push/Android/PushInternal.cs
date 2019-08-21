@@ -22,7 +22,6 @@ namespace Microsoft.AppCenter.Unity.Push.Internal
         private static void Initialize()
         {
             _unityListener.CallStatic("setListener", new PushDelegate());
-            PushInternal.ReplayUnprocessedPushNotifications();
         }
 
         public static void StartPush()
