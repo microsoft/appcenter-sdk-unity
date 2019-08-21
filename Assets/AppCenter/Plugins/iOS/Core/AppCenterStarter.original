@@ -16,8 +16,8 @@
 #import "../Push/PushDelegate.h"
 #endif
 
-#ifdef APPCENTER_UNITY_USE_AUTH
-@import AppCenterAuth;
+#ifdef APPCENTER_UNITY_USE_ANALYTICS
+@import AppCenterAnalytics;
 #endif
 
 #ifdef APPCENTER_UNITY_USE_DISTRIBUTE
@@ -86,10 +86,6 @@ static const int kMSStartupType = 0 /*STARTUP_TYPE*/;
 
 #ifdef APPCENTER_UNITY_USE_ANALYTICS
   [classes addObject:MSAnalytics.class];
-#endif
-
-#ifdef APPCENTER_UNITY_USE_AUTH
-  [classes addObject:MSAuth.class];
 #endif
 
 #ifdef APPCENTER_UNITY_USE_PUSH

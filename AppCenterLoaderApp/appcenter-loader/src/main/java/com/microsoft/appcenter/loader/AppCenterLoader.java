@@ -86,12 +86,12 @@ public class AppCenterLoader extends ContentProvider {
         }
         if (isTrueValue(getStringResource(USE_AUTH_KEY)) &&
             isModuleAvailable("com.microsoft.appcenter.auth.Auth", "Auth")) {
-            //if (isTrueValue(USE_CUSTOM_CONFIG_URL_KEY)) {
+            if (isTrueValue(getStringResource(USE_CUSTOM_CONFIG_URL_KEY))) {
                 String customConfigUrl = getStringResource(CUSTOM_CONFIG_URL_KEY);
                 if (customConfigUrl != null) {
                     Auth.setConfigUrl(customConfigUrl);
                 }
-            //}
+            }
             classes.add(Auth.class);
         }
         // We start crash service in .Net code, to give app an opportunity to assign handlers after crash and restart in Awake method
