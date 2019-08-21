@@ -39,10 +39,10 @@ public class AppCenterLoader extends ContentProvider {
     private static final String USE_ANALYTICS_KEY = "appcenter_use_analytics";
     private static final String USE_AUTH_KEY = "appcenter_use_auth";
     private static final String USE_DISTRIBUTE_KEY = "appcenter_use_distribute";
-    private static final String USE_CUSTOM_CONFIG_URL_KEY = "appcenter_use_custom_config_url";
+    private static final String USE_CUSTOM_AUTH_CONFIG_URL_KEY = "appcenter_use_custom_auth_config_url";
     private static final String USE_CUSTOM_API_URL_KEY = "appcenter_use_custom_api_url";
     private static final String USE_CUSTOM_INSTALL_URL_KEY = "appcenter_use_custom_install_url";    
-    private static final String CUSTOM_CONFIG_URL_KEY = "appcenter_custom_config_url";
+    private static final String CUSTOM_AUTH_CONFIG_URL_KEY = "appcenter_custom_auth_config_url";
     private static final String CUSTOM_API_URL_KEY = "appcenter_custom_api_url";
     private static final String CUSTOM_INSTALL_URL_KEY = "appcenter_custom_install_url";
     private static final String USE_CRASHES_KEY = "appcenter_use_crashes";
@@ -86,10 +86,10 @@ public class AppCenterLoader extends ContentProvider {
         }
         if (isTrueValue(getStringResource(USE_AUTH_KEY)) &&
             isModuleAvailable("com.microsoft.appcenter.auth.Auth", "Auth")) {
-            if (isTrueValue(getStringResource(USE_CUSTOM_CONFIG_URL_KEY))) {
-                String customConfigUrl = getStringResource(CUSTOM_CONFIG_URL_KEY);
-                if (customConfigUrl != null) {
-                    Auth.setConfigUrl(customConfigUrl);
+            if (isTrueValue(getStringResource(USE_CUSTOM_AUTH_CONFIG_URL_KEY))) {
+                String customAuthConfigUrl = getStringResource(CUSTOM_AUTH_CONFIG_URL_KEY);
+                if (customAuthConfigUrl != null) {
+                    Auth.setConfigUrl(customAuthConfigUrl);
                 }
             }
             classes.add(Auth.class);

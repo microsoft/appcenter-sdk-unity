@@ -18,8 +18,8 @@ public class AppCenterSettingsMakerIos : IAppCenterSettingsMaker
     private const string UsePushToken = "APPCENTER_UNITY_USE_PUSH";
     private const string UseAnalyticsToken = "APPCENTER_UNITY_USE_ANALYTICS";
     private const string UseAuthToken = "APPCENTER_UNITY_USE_AUTH";
-    private const string ConfigUrlSearchText = "custom-config-url";
-    private const string ConfigUrlToken = "APPCENTER_UNITY_USE_CUSTOM_CONFIG_URL";
+    private const string AuthConfigUrlSearchText = "auth-custom-config-url";
+    private const string AuthConfigUrlToken = "APPCENTER_UNITY_USE_AUTH_CUSTOM_CONFIG_URL";
     private const string UseDistributeToken = "APPCENTER_UNITY_USE_DISTRIBUTE";
     private const string ApiUrlSearchText = "custom-api-url";
     private const string ApiUrlToken = "APPCENTER_UNITY_USE_CUSTOM_API_URL";
@@ -85,10 +85,10 @@ public class AppCenterSettingsMakerIos : IAppCenterSettingsMaker
         AddToken(UseAuthToken);
     }
     
-    public void SetConfigUrl(string configUrl)
+    public void SetAuthConfigUrl(string authConfigUrl)
     {
-        AddToken(ConfigUrlToken);
-        _loaderFileText = _loaderFileText.Replace(ConfigUrlSearchText, configUrl);
+        AddToken(AuthConfigUrlToken);
+        _loaderFileText = _loaderFileText.Replace(AuthConfigUrlSearchText, authConfigUrl);
     }
 
     public void SetApiUrl(string apiUrl)

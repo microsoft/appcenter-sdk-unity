@@ -72,9 +72,9 @@ public class AppCenterPreBuild : IPreprocessBuild
         }
         if (settings.UseAuth && settingsMaker.IsAuthAvailable())
         {
-            if (settings.CustomConfigUrl.UseCustomUrl)
+            if (settings.CustomAuthConfigUrl.UseCustomUrl)
             {
-                settingsMaker.SetConfigUrl(settings.CustomConfigUrl.Url);
+                settingsMaker.SetAuthConfigUrl(settings.CustomAuthConfigUrl.Url);
             }
             settingsMaker.StartAuthClass();
         }
