@@ -44,10 +44,10 @@ namespace Microsoft.AppCenter.Unity.Auth.Internal
                     //TODO handle exception
                 }
                 var userInfo = t.Result.Call<AndroidJavaObject>("getUserInformation");
-                var aid = userInfo.Call<string>("getAccountId");
-                var atoken = userInfo.Call<string>("getAccessToken");
-                var it = userInfo.Call<string>("getIdToken");
-                signInTask.SetResult(new UserInformation(aid, atoken, it));
+                var accountId = userInfo.Call<string>("getAccountId");
+                var accessToken = userInfo.Call<string>("getAccessToken");
+                var idToken = userInfo.Call<string>("getIdToken");
+                signInTask.SetResult(new UserInformation(accountId, accessToken, idToken));
             });
             return signInTask;
         }
