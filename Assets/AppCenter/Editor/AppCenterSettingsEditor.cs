@@ -25,6 +25,12 @@ public class AppCenterSettingsEditor : Editor
             EditorGUILayout.PropertyField(serializedObject.FindProperty("UseAnalytics"));
             EditorGUILayout.PropertyField(serializedObject.FindProperty("MaxStorageSize"));
         }
+        if (AppCenter.Auth != null)
+        {
+            Header("Auth");
+            EditorGUILayout.PropertyField(serializedObject.FindProperty("UseAuth"));
+            EditorGUILayout.PropertyField(serializedObject.FindProperty("CustomAuthConfigUrl"));
+        }
         if (AppCenter.Crashes != null)
         {
             Header("Crashes");

@@ -23,11 +23,16 @@ public class AppCenterSettings : ScriptableObject
     [Tooltip("App Center Analytics helps you understand user behavior and customer engagement to improve your app.")]
     public bool UseAnalytics = true;
 
+    [Tooltip("App Center Auth is a cloud-based identity management service that enables developers to authenticate application users and manage user identities.")]
+    public bool UseAuth = true;
+
     [Tooltip("App Center Crashes will automatically generate a crash log every time your app crashes.")]
     public bool UseCrashes = true;
 
     [Tooltip("App Center Distribute will let your users install a new version of the app when you distribute it via the App Center.")]
     public bool UseDistribute = true;
+
+    public CustomUrlProperty CustomAuthConfigUrl = new CustomUrlProperty("AuthConfig");
 
     public CustomUrlProperty CustomApiUrl = new CustomUrlProperty("API");
 
@@ -73,6 +78,10 @@ public class AppCenterSettings : ScriptableObject
             if (UseAnalytics)
             {
                 services.Add(AppCenter.Analytics);
+            }
+            if (UseAuth)
+            {
+                services.Add(AppCenter.Auth);
             }
             if (UseCrashes)
             {
