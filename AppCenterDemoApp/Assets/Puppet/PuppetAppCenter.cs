@@ -3,6 +3,7 @@
 
 using Assets.AppCenter.Plugins.Android.Utility;
 using Microsoft.AppCenter.Unity;
+using Microsoft.AppCenter.Unity.Crashes;
 using Microsoft.AppCenter.Unity.Distribute;
 using Microsoft.AppCenter.Unity.Push;
 using System;
@@ -208,16 +209,16 @@ public class PuppetAppCenter : MonoBehaviour
         DistributeEnabled.isOn = isDistributeEnabled.Result;
     }
 
+    public void SetLogLevel(int logLevel)
+    {
+        AppCenter.LogLevel = Microsoft.AppCenter.Unity.LogLevel.Verbose + logLevel;
+    }
+
     public void SetCustomDialog(bool enable)
     {
         int isEnable = enable ? 1 : 0;
         PlayerPrefs.SetInt(FlagCustomDialog, isEnable);
         PlayerPrefs.Save();
-    }
-
-    public void SetLogLevel(int logLevel)
-    {
-        AppCenter.LogLevel = Microsoft.AppCenter.Unity.LogLevel.Verbose + logLevel;
     }
 
     public void SetStartupMode(int startupMode)
@@ -264,6 +265,7 @@ public class PuppetAppCenter : MonoBehaviour
 
     public void OnUserIdChanged(string newUserId)
     {
+        _customUserId = newUserId;
         PlayerPrefs.SetString(UserIdKey, newUserId);
         AppCenter.SetUserId(newUserId);
     }
