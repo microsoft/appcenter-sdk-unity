@@ -465,6 +465,10 @@ public class AppCenterPostBuild : IPostprocessBuild
 
     private static void OnPostprocessCapabilities(ProjectCapabilityManagerWrapper capabilityManager, AppCenterSettings settings)
     {
+        if (settings.UseAuth && AppCenter.Auth != null)
+        {
+            capabilityManager.AddAuthKeychainSharing();
+        }
         if (settings.UsePush && AppCenter.Push != null)
         {
             capabilityManager.AddPushNotifications();
