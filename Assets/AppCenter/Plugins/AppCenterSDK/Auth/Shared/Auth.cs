@@ -4,6 +4,7 @@
 using System;
 using System.Collections.Generic;
 using Microsoft.AppCenter.Unity.Auth.Internal;
+using System.Runtime.InteropServices;
 
 namespace Microsoft.AppCenter.Unity.Auth
 {
@@ -42,5 +43,10 @@ namespace Microsoft.AppCenter.Unity.Auth
         {
             return AuthInternal.SetEnabledAsync(enabled);
         }
+
+#if ENABLE_IL2CPP
+        [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
+#endif
+        public delegate bool SignInCompletionHandler(UserInformation userInformation, Exception error);
     }
 }
