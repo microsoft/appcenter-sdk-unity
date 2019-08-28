@@ -9,7 +9,7 @@ namespace Microsoft.AppCenter.Unity.Internal.Utility
 {
     public static partial class NSErrorHelper
     {
-        public static System.Exception ToSystemException(IntPtr nsErrorPtr)
+        public static Exception ToSystemException(IntPtr nsErrorPtr)
         {
             if (nsErrorPtr == IntPtr.Zero)
             {
@@ -18,7 +18,7 @@ namespace Microsoft.AppCenter.Unity.Internal.Utility
             var domain = app_center_unity_nserror_domain(nsErrorPtr);
             var errorCode = app_center_unity_nserror_code(nsErrorPtr);
             var description = app_center_unity_nserror_description(nsErrorPtr);
-            return new System.Exception(string.Format("Domain: {0}, error code: {1}, description: {2}", domain, errorCode, description));
+            return new Exception(string.Format("Domain: {0}, error code: {1}, description: {2}", domain, errorCode, description));
         }
 
         [DllImport("__Internal")]
