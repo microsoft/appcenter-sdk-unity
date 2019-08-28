@@ -5,6 +5,7 @@
 using System;
 using System.Collections.Generic;
 using System.Runtime.InteropServices;
+using Microsoft.AppCenter.Unity.Internal.Utility;
 using AOT;
 
 namespace Microsoft.AppCenter.Unity.Auth.Internal
@@ -29,7 +30,7 @@ namespace Microsoft.AppCenter.Unity.Auth.Internal
                     _signInTask.SetResult(userInformation);
                 }
                 else{
-                    _signInTask.SetException(ConvertException(nsErrorPtr));
+                    _signInTask.SetException(NSErrorHelper.ToSystemException(nsErrorPtr));
                 }
             }
         }
@@ -79,18 +80,6 @@ namespace Microsoft.AppCenter.Unity.Auth.Internal
             return new UserInformation(accountId, accessToken, idToken);
         }
 
-        public static Exception ConvertException(IntPtr nsErrorPtr)
-        {
-            if (nsErrorPtr == IntPtr.Zero)
-            {
-                return null;
-            }
-            var domain = app_center_unity_nserror_domain(nsErrorPtr);
-            var errorCode = app_center_unity_nserror_code(nsErrorPtr);
-            var description = app_center_unity_nserror_description(nsErrorPtr);
-            return new Exception(string.Format("Domain: {0}, error code: {1}, description: {2}", domain, errorCode, description));
-        }
-
 #region External
 
         [DllImport("__Internal")]
@@ -116,15 +105,6 @@ namespace Microsoft.AppCenter.Unity.Auth.Internal
 
         [DllImport("__Internal")]
         private static extern string app_center_unity_auth_user_information_id_token(IntPtr userInformationPtr);
-
-        [DllImport("__Internal")]
-        private static extern string app_center_unity_nserror_domain(IntPtr error);
-
-        [DllImport("__Internal")]
-        private static extern long app_center_unity_nserror_code(IntPtr error);
-
-        [DllImport("__Internal")]
-        private static extern string app_center_unity_nserror_description(IntPtr error);
 
 #endregion
     }
