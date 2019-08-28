@@ -6,10 +6,6 @@ using System;
 using System.Collections.Generic;
 using System.Runtime.InteropServices;
 using AOT;
-using System.IO;
-using UnityEditor;
-using UnityEngine;
-using System.Linq;
 
 namespace Microsoft.AppCenter.Unity.Auth.Internal
 {
