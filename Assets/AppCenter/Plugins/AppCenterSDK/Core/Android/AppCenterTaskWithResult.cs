@@ -65,6 +65,7 @@ namespace Microsoft.AppCenter.Unity
             lock (_lockObject)
             {
                 ThrowIfCompleted();
+                _consumer.CompletionCallback = null;
                 _exception = exception;
                 _completionEvent.Set();
                 CompletionAction();

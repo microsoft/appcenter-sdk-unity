@@ -3,6 +3,7 @@
 
 #if UNITY_ANDROID && !UNITY_EDITOR
 using System;
+using System.Text;
 using System.Collections.Generic;
 using Microsoft.AppCenter.Unity.Internal.Utility;
 using UnityEngine;
@@ -39,15 +40,18 @@ namespace Microsoft.AppCenter.Unity.Auth.Internal
             javaTask.ContinueWith(t =>
             {
                 var exception = t.Result.Call<AndroidJavaObject>("getException");
-                if (exception != null)
+                if (exception == null)
                 {
-                    //TODO handle exception
+                    var userInfo = t.Result.Call<AndroidJavaObject>("getUserInformation");
+                    var accountId = userInfo.Call<string>("getAccountId");
+                    var accessToken = userInfo.Call<string>("getAccessToken");
+                    var idToken = userInfo.Call<string>("getIdToken");
+                    signInTask.SetResult(new UserInformation(accountId, accessToken, idToken));
                 }
-                var userInfo = t.Result.Call<AndroidJavaObject>("getUserInformation");
-                var accountId = userInfo.Call<string>("getAccountId");
-                var accessToken = userInfo.Call<string>("getAccessToken");
-                var idToken = userInfo.Call<string>("getIdToken");
-                signInTask.SetResult(new UserInformation(accountId, accessToken, idToken));
+                else 
+                {
+                    signInTask.SetException(ConvertException(exception));
+                }
             });
             return signInTask;
         }
@@ -67,6 +71,12 @@ namespace Microsoft.AppCenter.Unity.Auth.Internal
         {
             var future = _auth.CallStatic<AndroidJavaObject>("isEnabled");
             return new AppCenterTask<bool>(future);
+        }
+        
+        public static Exception ConvertException(AndroidJavaObject throwable)
+        {
+            var message = throwable.Call<string>("toString");
+            return new Exception(message);
         }
     }
 }
