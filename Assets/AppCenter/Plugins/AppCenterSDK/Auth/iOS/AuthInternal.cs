@@ -6,6 +6,10 @@ using System;
 using System.Collections.Generic;
 using System.Runtime.InteropServices;
 using AOT;
+using System.IO;
+using UnityEditor;
+using UnityEngine;
+using System.Linq;
 
 namespace Microsoft.AppCenter.Unity.Auth.Internal
 {
@@ -24,12 +28,13 @@ namespace Microsoft.AppCenter.Unity.Auth.Internal
             if (_signInTask != null)
             {
                 var userInformation = GetUserInformationFromIntPtr(userInformationPtr);
-                // if (nsErrorPtr != IntPtr.Zero)
-                // {        
-                //     throw (Convert(nsErrorPtr));
-                //     //Seems cannot just throw the exception. 
-                // }
-                _signInTask.SetResult(userInformation);
+                if (nsErrorPtr == IntPtr.Zero)
+                {        
+                    _signInTask.SetResult(userInformation);
+                }
+                else{
+                    _signInTask.SetException(Convert(nsErrorPtr));
+                }
             }
         }
 

@@ -12,15 +12,31 @@ namespace Microsoft.AppCenter.Unity
 {
     public partial class AppCenterTask<TResult>
     {
+        private ManualResetEvent _completionEvent = new ManualResetEvent(false);
         private TResult _result;
+        private Exception _exception;
+
         public TResult Result
         {
             get
             {
-                lock (_lockObject)
+                _completionEvent.WaitOne();
+                if (_exception == null)
                 {
                     return _result;
                 }
+                else
+                {
+                    throw _exception;
+                }
+            }
+        }
+
+        public Exception Exception
+        {
+            get
+            {
+                return _exception;
             }
         }
 
@@ -30,6 +46,18 @@ namespace Microsoft.AppCenter.Unity
             {
                 ThrowIfCompleted();
                 _result = result;
+                _completionEvent.Set();
+                CompletionAction();
+            }
+        }
+
+        internal void SetException(Exception exception)
+        {
+            lock (_lockObject)
+            {
+                ThrowIfCompleted();
+                _exception = exception;
+                _completionEvent.Set();
                 CompletionAction();
             }
         }
