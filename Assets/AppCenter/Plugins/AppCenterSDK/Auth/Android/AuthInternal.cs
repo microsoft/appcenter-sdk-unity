@@ -3,7 +3,6 @@
 
 #if UNITY_ANDROID && !UNITY_EDITOR
 using System;
-using System.Text;
 using System.Collections.Generic;
 using Microsoft.AppCenter.Unity.Internal.Utility;
 using UnityEngine;

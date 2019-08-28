@@ -33,7 +33,7 @@ namespace Microsoft.AppCenter.Unity.Auth.Internal
                     _signInTask.SetResult(userInformation);
                 }
                 else{
-                    _signInTask.SetException(Convert(nsErrorPtr));
+                    _signInTask.SetException(ConvertException(nsErrorPtr));
                 }
             }
         }
@@ -83,7 +83,7 @@ namespace Microsoft.AppCenter.Unity.Auth.Internal
             return new UserInformation(accountId, accessToken, idToken);
         }
 
-        public static Exception Convert(IntPtr nsErrorPtr)
+        public static Exception ConvertException(IntPtr nsErrorPtr)
         {
             if (nsErrorPtr == IntPtr.Zero)
             {
