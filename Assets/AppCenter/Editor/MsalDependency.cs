@@ -9,10 +9,12 @@ using System.Reflection;
 using UnityEditor;
 using UnityEngine;
 
+
 /// <summary>
 /// This file is used to define dependencies, and pass them along to a system which can resolve dependencies.
 /// </summary>
-public class MsalDependency
+public class MsalDependency : BaseDependency 
+
 {
     private const string MsalVersion = "0.3.1-alpha";
     private const string SupportLibVersion = "27.1.1";
@@ -20,11 +22,14 @@ public class MsalDependency
     private const string IdentityCommonVersion = "0.0.10-alpha";
     private const string NimbusVersion = "5.7";
 
-    static void SetupDependencies()
+    public override void SetupDependencies()
     {
+        
 #if UNITY_ANDROID
         // Setup the resolver using reflection as the module may not be available at compile time.
-        
+
+        base.SetupDependencies();
+
         object svcSupport = versionHandler.InvokeMember("InvokeStaticMethod", BindingFlags.Public | BindingFlags.Static | BindingFlags.InvokeMethod, null, null, new object[]
         {
             playServicesSupport, "CreateInstance", new object[] { "Msal", EditorPrefs.GetString("AndroidSdkRoot"), "ProjectSettings" }, null
@@ -78,7 +83,7 @@ public class MsalDependency
         {
             if (asset.Contains("JarResolver"))
             {
-                SetupDependencies();
+                (new MsalDependency()).SetupDependencies();
             }
         }
     }

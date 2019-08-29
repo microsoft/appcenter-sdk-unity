@@ -1,13 +1,28 @@
-Public abstract class DependencyResolver {
-    public MethodName() {
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT license.
 
-        Type versionHandler = Type.GetType("Google.VersionHandler, Google.VersionHandler, Version=1.2.0.0, Culture=neutral, PublicKeyToken=null");
+using System;
+using UnityEditor;
+using UnityEngine;
+using System.Collections.Generic;
+using System.IO;
+using System.Linq;
+using System.Reflection;
+
+public abstract class BaseDependency
+{
+    protected Type versionHandler;
+    protected Type playServicesSupport;
+
+    public virtual void SetupDependencies() {
+
+        versionHandler = Type.GetType("Google.VersionHandler, Google.VersionHandler, Version=1.2.0.0, Culture=neutral, PublicKeyToken=null");
         if (versionHandler == null)
         {
             Debug.LogError("Unable to set up Android dependencies, class `Google.VersionHandler` is not found");
             return;
         }
-        Type playServicesSupport = (Type)versionHandler.InvokeMember("FindClass", BindingFlags.Public | BindingFlags.Static | BindingFlags.InvokeMethod, null, null, new object[]
+        playServicesSupport = (Type)versionHandler.InvokeMember("FindClass", BindingFlags.Public | BindingFlags.Static | BindingFlags.InvokeMethod, null, null, new object[]
         {
             "Google.JarResolver", "Google.JarResolver.PlayServicesSupport"
         });
@@ -18,15 +33,21 @@ Public abstract class DependencyResolver {
         }
         // Shared code
     }
+    
 }
 
-public class FirebaseResolver extends DependencyResolver {
+
+/* 
+public class FirebaseResolver extend DependencyResolver {
 
     @Override
     public SetupDependencies() {
         base.SetupDependencies();
+    }
 
-  object svcSupport = versionHandler.InvokeMember("InvokeStaticMethod", BindingFlags.Public | BindingFlags.Static | BindingFlags.InvokeMethod, null, null, new object[]
+    public void FirebaseDependencies(){
+        // Unique code
+        object svcSupport = versionHandler.InvokeMember("InvokeStaticMethod", BindingFlags.Public | BindingFlags.Static | BindingFlags.InvokeMethod, null, null, new object[]
         {
             playServicesSupport, "CreateInstance", new object[] { "FirebaseMessaging", EditorPrefs.GetString("AndroidSdkRoot"), "ProjectSettings" }, null
         });
@@ -47,8 +68,8 @@ public class FirebaseResolver extends DependencyResolver {
                 { "repositories", null }
             }
         });
-        // Unique code
     }
+    
 }
 
 Public class MsalResolver extends DependencyResolver{
@@ -96,3 +117,4 @@ Public class MsalResolver extends DependencyResolver{
         });
     }
 }
+*/

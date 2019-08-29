@@ -12,7 +12,8 @@ using UnityEngine;
 /// <summary>
 /// This file is used to define dependencies, and pass them along to a system which can resolve dependencies.
 /// </summary>
-public class FirebaseDependency
+public class FirebaseDependency : BaseDependency 
+
 {
     private const string GoogleServicesFileBasename = "google-services";
     private const string GoogleServicesInputFile = GoogleServicesFileBasename + ".json";
@@ -32,11 +33,14 @@ public class FirebaseDependency
 
     private const string FirebaseMessagingVersion = "18.0.0";
     private const string FirebaseCoreVersion = "16.0.9";
-
-    static void SetupDependencies()
+   
+    public override void SetupDependencies()
     {
 #if UNITY_ANDROID
-        // Setup the resolver using reflection as the module may not be available at compile time.
+        // Setup the resolver using reflection as the module may not xe available at compile time.
+
+        base.SetupDependencies();
+
         Type versionHandler = Type.GetType("Google.VersionHandler, Google.VersionHandler, Version=1.2.0.0, Culture=neutral, PublicKeyToken=null");
        
         object svcSupport = versionHandler.InvokeMember("InvokeStaticMethod", BindingFlags.Public | BindingFlags.Static | BindingFlags.InvokeMethod, null, null, new object[]
@@ -147,7 +151,7 @@ public class FirebaseDependency
         {
             if (asset.Contains("JarResolver"))
             {
-                SetupDependencies();
+                (new FirebaseDependency()).SetupDependencies();
             }
             else if (Path.GetFileName(asset) == GoogleServicesInputFile)
             {
