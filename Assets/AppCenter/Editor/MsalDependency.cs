@@ -30,15 +30,15 @@ public class MsalDependency : BaseDependency
 
         base.SetupDependencies();
 
-        object svcSupport = versionHandler.InvokeMember("InvokeStaticMethod", BindingFlags.Public | BindingFlags.Static | BindingFlags.InvokeMethod, null, null, new object[]
+        object svcSupport = VersionHandler.InvokeMember("InvokeStaticMethod", BindingFlags.Public | BindingFlags.Static | BindingFlags.InvokeMethod, null, null, new object[]
         {
-            playServicesSupport, "CreateInstance", new object[] { "Msal", EditorPrefs.GetString("AndroidSdkRoot"), "ProjectSettings" }, null
+            PlayServicesSupport, "CreateInstance", new object[] { "Msal", EditorPrefs.GetString("AndroidSdkRoot"), "ProjectSettings" }, null
         });
-        versionHandler.InvokeMember("InvokeInstanceMethod", BindingFlags.Public | BindingFlags.Static | BindingFlags.InvokeMethod, null, null, new object[]
+        VersionHandler.InvokeMember("InvokeInstanceMethod", BindingFlags.Public | BindingFlags.Static | BindingFlags.InvokeMethod, null, null, new object[]
         {
             svcSupport, "DependOn", new object[] { "com.microsoft.identity.client", "msal", MsalVersion }, null
         });
-        versionHandler.InvokeMember("InvokeInstanceMethod", BindingFlags.Public | BindingFlags.Static | BindingFlags.InvokeMethod, null, null, new object[]
+        VersionHandler.InvokeMember("InvokeInstanceMethod", BindingFlags.Public | BindingFlags.Static | BindingFlags.InvokeMethod, null, null, new object[]
         {
             svcSupport, "DependOn",
             new object[] { "com.android.support", "appcompat-v7", SupportLibVersion },
@@ -47,7 +47,7 @@ public class MsalDependency : BaseDependency
                 { "repositories", null }
             }
         });
-        versionHandler.InvokeMember("InvokeInstanceMethod", BindingFlags.Public | BindingFlags.Static | BindingFlags.InvokeMethod, null, null, new object[]
+        VersionHandler.InvokeMember("InvokeInstanceMethod", BindingFlags.Public | BindingFlags.Static | BindingFlags.InvokeMethod, null, null, new object[]
         {
             svcSupport, "DependOn",
             new object[] { "com.android.support", "customtabs", SupportLibVersion },
@@ -56,15 +56,15 @@ public class MsalDependency : BaseDependency
                 { "repositories", null }
             }
         });
-        versionHandler.InvokeMember("InvokeInstanceMethod", BindingFlags.Public | BindingFlags.Static | BindingFlags.InvokeMethod, null, null, new object[]
+        VersionHandler.InvokeMember("InvokeInstanceMethod", BindingFlags.Public | BindingFlags.Static | BindingFlags.InvokeMethod, null, null, new object[]
         {
             svcSupport, "DependOn", new object[] { "com.google.code.gson", "gson", GsonVersion }, null
         });
-        versionHandler.InvokeMember("InvokeInstanceMethod", BindingFlags.Public | BindingFlags.Static | BindingFlags.InvokeMethod, null, null, new object[]
+        VersionHandler.InvokeMember("InvokeInstanceMethod", BindingFlags.Public | BindingFlags.Static | BindingFlags.InvokeMethod, null, null, new object[]
         {
             svcSupport, "DependOn", new object[] { "com.microsoft.identity", "common", IdentityCommonVersion }, null
         });
-        versionHandler.InvokeMember("InvokeInstanceMethod", BindingFlags.Public | BindingFlags.Static | BindingFlags.InvokeMethod, null, null, new object[]
+        VersionHandler.InvokeMember("InvokeInstanceMethod", BindingFlags.Public | BindingFlags.Static | BindingFlags.InvokeMethod, null, null, new object[]
         {
             svcSupport, "DependOn", new object[] { "com.nimbusds", "nimbus-jose-jwt", NimbusVersion }, null
         });

@@ -41,13 +41,13 @@ public class FirebaseDependency : BaseDependency
 
         base.SetupDependencies();
 
-        Type versionHandler = Type.GetType("Google.VersionHandler, Google.VersionHandler, Version=1.2.0.0, Culture=neutral, PublicKeyToken=null");
+        Type VersionHandler = Type.GetType("Google.VersionHandler, Google.VersionHandler, Version=1.2.0.0, Culture=neutral, PublicKeyToken=null");
        
-        object svcSupport = versionHandler.InvokeMember("InvokeStaticMethod", BindingFlags.Public | BindingFlags.Static | BindingFlags.InvokeMethod, null, null, new object[]
+        object svcSupport = VersionHandler.InvokeMember("InvokeStaticMethod", BindingFlags.Public | BindingFlags.Static | BindingFlags.InvokeMethod, null, null, new object[]
         {
-            playServicesSupport, "CreateInstance", new object[] { "FirebaseMessaging", EditorPrefs.GetString("AndroidSdkRoot"), "ProjectSettings" }, null
+            PlayServicesSupport, "CreateInstance", new object[] { "FirebaseMessaging", EditorPrefs.GetString("AndroidSdkRoot"), "ProjectSettings" }, null
         });
-        versionHandler.InvokeMember("InvokeInstanceMethod", BindingFlags.Public | BindingFlags.Static | BindingFlags.InvokeMethod, null, null, new object[]
+        VersionHandler.InvokeMember("InvokeInstanceMethod", BindingFlags.Public | BindingFlags.Static | BindingFlags.InvokeMethod, null, null, new object[]
         {
             svcSupport, "DependOn", new object[] { "com.google.firebase", "firebase-messaging", FirebaseMessagingVersion },
             new Dictionary<string, object>() {
@@ -55,7 +55,7 @@ public class FirebaseDependency : BaseDependency
                 { "repositories", null }
             }
         });
-        versionHandler.InvokeMember("InvokeInstanceMethod", BindingFlags.Public | BindingFlags.Static | BindingFlags.InvokeMethod, null, null, new object[]
+        VersionHandler.InvokeMember("InvokeInstanceMethod", BindingFlags.Public | BindingFlags.Static | BindingFlags.InvokeMethod, null, null, new object[]
         {
             svcSupport, "DependOn",
             new object[] { "com.google.firebase", "firebase-core", FirebaseCoreVersion },
