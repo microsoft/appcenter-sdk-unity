@@ -37,7 +37,7 @@ public class FirebaseDependency : BaseDependency
     public override void SetupDependencies()
     {
 #if UNITY_ANDROID
-        // Setup the resolver using reflection as the module may not xe available at compile time.
+        // Setup the resolver using reflection as the module may not be available at compile time.
 
         base.SetupDependencies();
 
