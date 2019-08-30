@@ -7,6 +7,7 @@ using System.Collections.Generic;
 using System.Runtime.InteropServices;
 using Microsoft.AppCenter.Unity.Internal.Utility;
 using AOT;
+using UnityEngine;
 
 namespace Microsoft.AppCenter.Unity.Auth.Internal
 {
@@ -29,9 +30,11 @@ namespace Microsoft.AppCenter.Unity.Auth.Internal
                 {        
                     _signInTask.SetResult(userInformation);
                 }
-                else{
+                else
+                {
                     _signInTask.SetException(NSErrorHelper.ToSystemException(nsErrorPtr));
                 }
+                _signInTask = null;
             }
         }
 
@@ -46,14 +49,29 @@ namespace Microsoft.AppCenter.Unity.Auth.Internal
         
         public static AppCenterTask<UserInformation> SignInAsync()
         {          
-            _signInTask = new AppCenterTask<UserInformation>();
-            appcenter_unity_auth_sign_in_with_completion_handler(SignInCompletionHandlerNativeFunc);
-            return _signInTask;
+            if (_signInTask != null)
+            {
+                var localsignInTask = new AppCenterTask<UserInformation>();
+                var exception = new Exception("Sign-in already in progress");
+                localsignInTask.SetException(exception);
+                return localsignInTask;
+            }
+            else
+            {
+                // Create a local variable to avoid race condition
+                var localsignInTask = new AppCenterTask<UserInformation>();
+                _signInTask = localsignInTask;
+                appcenter_unity_auth_sign_in_with_completion_handler(SignInCompletionHandlerNativeFunc);
+                return localsignInTask;
+            }
         }
 
         public static void SignOut()
         {
-            appcenter_unity_auth_sign_out();
+            if (_signInTask == null)
+            {
+                appcenter_unity_auth_sign_out();
+            }
         }
         
         public static AppCenterTask SetEnabledAsync(bool isEnabled)

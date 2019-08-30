@@ -3,8 +3,8 @@
 
 using System;
 using System.Collections.Generic;
-using Microsoft.AppCenter.Unity.Auth.Internal;
 using System.Runtime.InteropServices;
+using Microsoft.AppCenter.Unity.Auth.Internal;
 
 namespace Microsoft.AppCenter.Unity.Auth
 {

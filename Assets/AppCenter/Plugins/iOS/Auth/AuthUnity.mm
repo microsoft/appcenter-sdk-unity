@@ -11,14 +11,14 @@ void* appcenter_unity_auth_get_type()
 
 void appcenter_unity_auth_sign_in_with_completion_handler(void(* handler)(MSUserInformation *, NSError *))
 {
-    [MSAuth signInWithCompletionHandler:^void(MSUserInformation *_Nullable userInformation, NSError *_Nullable error){
-        return handler(userInformation, error);
-    }];
+  [MSAuth signInWithCompletionHandler:^void(MSUserInformation *_Nullable userInformation, NSError *_Nullable error){
+    return handler(userInformation, error);
+  }];
 }
 
 void appcenter_unity_auth_sign_out()
 {
-    [MSAuth signOut];
+  [MSAuth signOut];
 }
 
 void appcenter_unity_auth_set_enabled(bool isEnabled)
