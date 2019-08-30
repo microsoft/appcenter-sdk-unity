@@ -1,7 +1,7 @@
 #addin nuget:?package=Cake.FileHelpers
-#addin "Cake.AzureStorage"
+#addin nuget:?package=Cake.AzureStorage
 #addin nuget:?package=NuGet.Core
-#addin "Cake.Xcode"
+#addin nuget:?package=Cake.Xcode
 #load "utility.cake"
 
 using System;
@@ -12,8 +12,8 @@ using System.Runtime.Versioning;
 using NuGet;
 
 // Native SDK versions
-var AndroidSdkVersion = "2.2.1-4+731760d88";
-var IosSdkVersion = "2.2.1-5+49fca27d68baabc7654b47c2bb6ab609e997382e";
+var AndroidSdkVersion = "2.3.0";
+var IosSdkVersion = "2.3.0";
 var UwpSdkVersion = "2.1.0";
 
 // URLs for downloading binaries.

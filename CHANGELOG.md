@@ -1,6 +1,10 @@
 # App Center SDK for Unity Change Log
 
-## Release 2.3.0 (Under development)
+## Release 2.3.0
+
+Updated native SDK versions:
+* Android from 2.2.0 to [2.3.0](https://github.com/Microsoft/AppCenter-SDK-Android/releases/tag/2.3.0)
+* iOS from 2.2.0 to [2.3.0](https://github.com/Microsoft/AppCenter-SDK-Apple/releases/tag/2.3.0)
 
 * **[Feature]** Catch "low memory warning" and provide the API to check if it has happened in last session:  `Crashes.HasReceivedMemoryWarningInLastSessionAsync()`.
 * **[Bug fix]** Fixed receiving push notifications from background.
