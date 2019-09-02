@@ -141,6 +141,7 @@ public class PuppetAppCenter : MonoBehaviour
         var isEnabled = AppCenter.IsEnabledAsync();
         yield return isEnabled;
         Enabled.isOn = isEnabled.Result;
+
         var installId = AppCenter.GetInstallIdAsync();
         yield return installId;
         if (installId.Result.HasValue)
@@ -174,8 +175,8 @@ public class PuppetAppCenter : MonoBehaviour
         SdkVersionLabel.text = AppCenter.GetSdkVersion();
         LogLevel.value = AppCenter.LogLevel - Microsoft.AppCenter.Unity.LogLevel.Verbose;
         StartupType.value = StartupTypeCached;
-        yield return ShowIsPushEnable();
-        yield return ShowIsDistributeEnable();
+        ShowIsPushEnable();
+        ShowIsDistributeEnable();
         UserId.text = _customUserId;
     }
 
