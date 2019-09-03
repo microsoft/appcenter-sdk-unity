@@ -45,6 +45,7 @@ public class PuppetAuth : MonoBehaviour
             if (t.Exception != null)
             {
                 AuthStatus.text = "Sign In failed. User is not authenticated";
+                ShowLabels(true);
                 AccountIdName.text = "Exception";
                 AccountIdLabel.text = t.Exception.ToString();
             }
@@ -56,10 +57,11 @@ public class PuppetAuth : MonoBehaviour
                 }
                 else
                 {
+                    AuthStatus.text = "Sign in succeeded. User is authenticated";
+                    ShowLabels(true);
                     var accountId = userInformation.AccountId;
                     var accessToken = userInformation.AccessToken;
                     var idToken = userInformation.IdToken;
-                    AuthStatus.text = "Sign in succeeded. User is authenticated";
                     AccountIdName.text = "Account Id";
                     AccessTokenName.text = "Access Token";
                     IdTokenName.text = "Id Token";
@@ -76,12 +78,7 @@ public class PuppetAuth : MonoBehaviour
         Auth.SignOut();
         userInformation = null;
         AuthStatus.text = "Sign out succeeded. User is not authenticated";
-        AccountIdName.enabled = false;
-        AccessTokenName.enabled = false;
-        IdTokenName.enabled = false;
-        AccountIdLabel.enabled = false;
-        AccessTokenLabel.enabled = false;
-        IdTokenLabel.enabled = false;
+        ShowLabels(false);
     }
 
     private IEnumerator SetEnabledCoroutine(bool enabled)
@@ -90,6 +87,16 @@ public class PuppetAuth : MonoBehaviour
         var isEnabled = Auth.IsEnabledAsync();
         yield return isEnabled;
         AuthEnabled.isOn = isEnabled.Result;
+    }
+
+    private void ShowLabels(bool enabled)
+    {
+        AccountIdName.enabled = enabled;
+        AccessTokenName.enabled = enabled;
+        IdTokenName.enabled = enabled;
+        AccountIdLabel.enabled = enabled;
+        AccessTokenLabel.enabled = enabled;
+        IdTokenLabel.enabled = enabled;
     }
 
     public string convertToken(string encodedText)
