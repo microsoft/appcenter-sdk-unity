@@ -37,7 +37,7 @@ public class UnityAppCenterPushDelegate implements PushListener
     synchronized
     public static void replayPushNotifications()
     {
-        if (mUnprocessedNotifications != null) {
+        if (mUnprocessedNotifications != null && mPushListener != null) {
             for (PushNotification notification : mUnprocessedNotifications) {
                 mPushListener.onPushNotificationReceived(null, notification);
             }
