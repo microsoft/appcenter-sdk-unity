@@ -12,7 +12,7 @@ using UnityEngine;
 /// <summary>
 /// This file is used to define dependencies, and pass them along to a system which can resolve dependencies.
 /// </summary>
-public class MsalDependency
+public class MsalDependency : BaseDependency
 {
     private const string MsalVersion = "0.3.1-alpha";
     private const string SupportLibVersion = "27.1.1";
@@ -23,20 +23,9 @@ public class MsalDependency
     static void SetupDependencies()
     {
 #if UNITY_ANDROID
-        // Setup the resolver using reflection as the module may not be available at compile time.
-        Type versionHandler = Type.GetType("Google.VersionHandler, Google.VersionHandler, Version=1.2.0.0, Culture=neutral, PublicKeyToken=null");
-        if (versionHandler == null)
+        InitializePlayServices();
+        if (versionHandler == null || playServicesSupport == null)
         {
-            Debug.LogError("Unable to set up Android dependencies, class `Google.VersionHandler` is not found");
-            return;
-        }
-        Type playServicesSupport = (Type)versionHandler.InvokeMember("FindClass", BindingFlags.Public | BindingFlags.Static | BindingFlags.InvokeMethod, null, null, new object[]
-        {
-            "Google.JarResolver", "Google.JarResolver.PlayServicesSupport"
-        });
-        if (playServicesSupport == null)
-        {
-            Debug.LogError("Unable to set up Android dependencies, class `Google.JarResolver.PlayServicesSupport` is not found");
             return;
         }
         object svcSupport = versionHandler.InvokeMember("InvokeStaticMethod", BindingFlags.Public | BindingFlags.Static | BindingFlags.InvokeMethod, null, null, new object[]
