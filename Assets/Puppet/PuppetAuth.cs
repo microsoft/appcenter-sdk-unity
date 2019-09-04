@@ -42,8 +42,8 @@ public class PuppetAuth : MonoBehaviour
 
     public void SignIn()
     {
-        var signInTaskTwo = Auth.SignInAsync();
-        signInTaskTwo.ContinueWith(t => 
+        var signInTask = Auth.SignInAsync();
+        signInTask.ContinueWith(t =>
         {
             if (t.Exception != null)
             {
