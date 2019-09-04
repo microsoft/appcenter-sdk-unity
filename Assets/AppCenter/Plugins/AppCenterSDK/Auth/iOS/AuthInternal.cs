@@ -2,11 +2,11 @@
 // Licensed under the MIT license.
 
 #if UNITY_IOS && !UNITY_EDITOR
+using AOT;
+using Microsoft.AppCenter.Unity.Internal.Utility;
 using System;
 using System.Collections.Generic;
 using System.Runtime.InteropServices;
-using Microsoft.AppCenter.Unity.Internal.Utility;
-using AOT;
 using UnityEngine;
 
 namespace Microsoft.AppCenter.Unity.Auth.Internal
@@ -23,8 +23,11 @@ namespace Microsoft.AppCenter.Unity.Auth.Internal
         [MonoPInvokeCallback(typeof(NativeSignInCompletionHandler))]
         public static void SignInCompletionHandlerNativeFunc(IntPtr userInformationPtr, IntPtr nsErrorPtr)
         {
-            if (_signInTask != null)
+            if (_signInTask == null)
             {
+                return;
+            }
+            else{
                 var userInformation = GetUserInformationFromIntPtr(userInformationPtr);
                 if (nsErrorPtr == IntPtr.Zero)
                 {        
@@ -104,16 +107,16 @@ namespace Microsoft.AppCenter.Unity.Auth.Internal
         private static extern IntPtr appcenter_unity_auth_get_type();
 
         [DllImport("__Internal")]
-        private static extern void appcenter_unity_auth_sign_in_with_completion_handler(NativeSignInCompletionHandler functionPtr);
-
-        [DllImport("__Internal")]
-        private static extern void appcenter_unity_auth_sign_out();
-
-        [DllImport("__Internal")]
         private static extern void appcenter_unity_auth_set_enabled(bool isEnabled);
 
         [DllImport("__Internal")]
         private static extern bool appcenter_unity_auth_is_enabled();
+
+        [DllImport("__Internal")]
+        private static extern void appcenter_unity_auth_sign_in_with_completion_handler(NativeSignInCompletionHandler functionPtr);
+
+        [DllImport("__Internal")]
+        private static extern void appcenter_unity_auth_sign_out();
 
         [DllImport("__Internal")]
         private static extern string app_center_unity_auth_user_information_account_id(IntPtr userInformationPtr);
