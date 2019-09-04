@@ -82,7 +82,7 @@ public class PuppetAuth : MonoBehaviour
     {
         Auth.SignOut();
         userInformation = null;
-        AuthStatus.text = "Sign out succeeded. User is not authenticated";
+        AuthStatus.text = "Sign out succeeded. User is not authenticated.";
         ShowLabels(false);
     }
 
