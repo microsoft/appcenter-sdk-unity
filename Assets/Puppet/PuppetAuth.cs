@@ -19,6 +19,9 @@ public class PuppetAuth : MonoBehaviour
     public Text AccountIdLabel;
     public Text AccessTokenLabel;
     public Text IdTokenLabel;
+    public const string UserNotAuthenticated = "Sign In failed. User is not authenticated.";
+    public const string TokenSet = "Set";
+    public const string TokenUnset = "Unset";
 
     void OnEnable()
     {
@@ -44,7 +47,7 @@ public class PuppetAuth : MonoBehaviour
         {
             if (t.Exception != null)
             {
-                AuthStatus.text = "Sign In failed. User is not authenticated";
+                AuthStatus.text = UserNotAuthenticated;
                 ShowLabels(true);
                 AccountIdName.text = "Exception";
                 AccountIdLabel.text = t.Exception.ToString();
@@ -53,11 +56,11 @@ public class PuppetAuth : MonoBehaviour
                 var userInformation = t.Result;
                 if (userInformation == null)
                 {
-                    AuthStatus.text = "Sign In failed. User is not authenticated";
+                    AuthStatus.text = UserNotAuthenticated;
                 }
                 else
                 {
-                    AuthStatus.text = "Sign in succeeded. User is authenticated";
+                    AuthStatus.text = "Sign in succeeded. User is authenticated.";
                     ShowLabels(true);
                     var accountId = userInformation.AccountId;
                     var accessToken = userInformation.AccessToken;
@@ -66,8 +69,22 @@ public class PuppetAuth : MonoBehaviour
                     AccessTokenName.text = "Access Token";
                     IdTokenName.text = "Id Token";
                     AccountIdLabel.text = accountId;
-                    AccessTokenLabel.text = convertToken(accessToken);
-                    IdTokenLabel.text = convertToken(idToken);
+                    if (accessToken == null)
+                    {
+                        AccessTokenLabel.text = TokenUnset;
+                    }
+                    else
+                    {
+                        AccessTokenLabel.text = TokenSet;
+                    }
+                    if (idToken == null)
+                    {
+                        IdTokenLabel.text = TokenUnset;
+                    }
+                    else
+                    {
+                        IdTokenLabel.text = TokenSet;
+                    }
                 }
             }
         });
@@ -97,24 +114,5 @@ public class PuppetAuth : MonoBehaviour
         AccountIdLabel.enabled = enabled;
         AccessTokenLabel.enabled = enabled;
         IdTokenLabel.enabled = enabled;
-    }
-
-    public string convertToken(string encodedText)
-    {
-        char[] separator = { '.' };
-        string[] splitedText = encodedText.Split(separator);
-        if (splitedText.Length < 2) 
-        {
-            return null;
-        }
-        string textToDecode = splitedText[1];
-        if (textToDecode.Length % 4 != 0)
-        {
-            int extraChars = 4 - textToDecode.Length % 4;
-            textToDecode = String.Concat(textToDecode, new string('=', extraChars));
-        }
-        byte[] decodedBytes = Convert.FromBase64String (textToDecode);
-        string decodedText = Encoding.UTF8.GetString (decodedBytes);
-        return decodedText;
     }
 }
