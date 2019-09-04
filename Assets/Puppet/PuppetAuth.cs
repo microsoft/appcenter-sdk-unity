@@ -48,11 +48,13 @@ public class PuppetAuth : MonoBehaviour
             if (t.Exception != null)
             {
                 AuthStatus.text = UserNotAuthenticated;
-                ShowLabels(true);
+                AccountIdName.enabled = enabled;
                 AccountIdName.text = "Exception";
+                AccountIdLabel.enabled = enabled;
                 AccountIdLabel.text = t.Exception.ToString();
             }
-            else{
+            else
+            {
                 var userInformation = t.Result;
                 if (userInformation == null)
                 {
@@ -69,22 +71,8 @@ public class PuppetAuth : MonoBehaviour
                     AccessTokenName.text = "Access Token";
                     IdTokenName.text = "Id Token";
                     AccountIdLabel.text = accountId;
-                    if (accessToken == null)
-                    {
-                        AccessTokenLabel.text = TokenUnset;
-                    }
-                    else
-                    {
-                        AccessTokenLabel.text = TokenSet;
-                    }
-                    if (idToken == null)
-                    {
-                        IdTokenLabel.text = TokenUnset;
-                    }
-                    else
-                    {
-                        IdTokenLabel.text = TokenSet;
-                    }
+                    AccessTokenLabel.text = accessToken == null ? TokenUnset : TokenSet;
+                    IdTokenLabel.text = idToken == null ? TokenUnset : TokenSet;
                 }
             }
         });
