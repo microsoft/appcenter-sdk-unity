@@ -55,10 +55,10 @@ namespace Microsoft.AppCenter.Unity.Auth.Internal
         {          
             if (_signInTask != null)
             {
-                var localsignInTask = new AppCenterTask<UserInformation>();
+                var localSignInTask = new AppCenterTask<UserInformation>();
                 var exception = new Exception("Sign-in already in progress");
-                localsignInTask.SetException(exception);
-                return localsignInTask;
+                localSignInTask.SetException(exception);
+                return localSignInTask;
             }
             else
             {
