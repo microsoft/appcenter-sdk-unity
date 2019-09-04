@@ -27,7 +27,8 @@ namespace Microsoft.AppCenter.Unity.Auth.Internal
             {
                 return;
             }
-            else{
+            else
+            {
                 var userInformation = GetUserInformationFromIntPtr(userInformationPtr);
                 if (nsErrorPtr == IntPtr.Zero)
                 {        
@@ -62,10 +63,10 @@ namespace Microsoft.AppCenter.Unity.Auth.Internal
             else
             {
                 // Create a local variable to avoid race condition
-                var localsignInTask = new AppCenterTask<UserInformation>();
-                _signInTask = localsignInTask;
+                var localSignInTask = new AppCenterTask<UserInformation>();
+                _signInTask = localSignInTask;
                 appcenter_unity_auth_sign_in_with_completion_handler(SignInCompletionHandlerNativeFunc);
-                return localsignInTask;
+                return localSignInTask;
             }
         }
 
