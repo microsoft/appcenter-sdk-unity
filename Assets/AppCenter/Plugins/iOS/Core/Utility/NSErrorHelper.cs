@@ -3,13 +3,13 @@
 
 #if UNITY_IOS && !UNITY_EDITOR
 using System;
-using Exception = Microsoft.AppCenter.Unity.Crashes.Models.Exception;
+using System.Runtime.InteropServices;
 
 namespace Microsoft.AppCenter.Unity.Internal.Utility
 {
     public static partial class NSErrorHelper
     {
-        public static Exception Convert(IntPtr nsErrorPtr)
+        public static Exception ToSystemException(IntPtr nsErrorPtr)
         {
             if (nsErrorPtr == IntPtr.Zero)
             {
@@ -18,8 +18,17 @@ namespace Microsoft.AppCenter.Unity.Internal.Utility
             var domain = app_center_unity_nserror_domain(nsErrorPtr);
             var errorCode = app_center_unity_nserror_code(nsErrorPtr);
             var description = app_center_unity_nserror_description(nsErrorPtr);
-            return new Exception(string.Format("Domain: {0}, error code: {1}, description: {2}", domain, errorCode, description), string.Empty);
+            return new Exception(string.Format("Domain: {0}, error code: {1}, description: {2}", domain, errorCode, description));
         }
+
+        [DllImport("__Internal")]
+        private static extern string app_center_unity_nserror_domain(IntPtr error);
+
+        [DllImport("__Internal")]
+        private static extern long app_center_unity_nserror_code(IntPtr error);
+
+        [DllImport("__Internal")]
+        private static extern string app_center_unity_nserror_description(IntPtr error);
     }
 }
 #endif

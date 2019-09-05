@@ -7,7 +7,7 @@ using System.Collections.Generic;
 using System.Runtime.InteropServices;
 using AOT;
 using Microsoft.AppCenter.Unity.Crashes;
-using Microsoft.AppCenter.Unity.Crashes.Utility;
+using Microsoft.AppCenter.Unity.Internal.Utility;
 
 namespace Microsoft.AppCenter.Unity.Crashes.Internal
 {

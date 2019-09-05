@@ -16,6 +16,7 @@ namespace Microsoft.AppCenter.Unity
         private Task<TResult> _task;
         private ManualResetEvent _completionEvent = new ManualResetEvent(false);
         private TResult _result;
+        private Exception _exception;
 
         // This will block if it is called before the task is complete
         public TResult Result
@@ -23,7 +24,22 @@ namespace Microsoft.AppCenter.Unity
             get
             {
                 _completionEvent.WaitOne();
-                return _result;
+                if (_exception == null)
+                {
+                    return _result;
+                }
+                else
+                {
+                    throw _exception;
+                }
+            }
+        }
+
+        public Exception Exception
+        {
+            get
+            {
+                return _exception;
             }
         }
 
@@ -53,6 +69,17 @@ namespace Microsoft.AppCenter.Unity
             {
                 ThrowIfCompleted();
                 _result = result;
+                _completionEvent.Set();
+                base.CompletionAction();
+            }
+        }
+
+        internal void SetException(Exception exception)
+        {
+            lock (_lockObject)
+            {
+                ThrowIfCompleted();
+                _exception = exception;
                 _completionEvent.Set();
                 base.CompletionAction();
             }
