@@ -5807,7 +5807,7 @@ GameObject:
   - component: {fileID: 425829954}
   - component: {fileID: 425829953}
   m_Layer: 5
-  m_Name: Toggle
+  m_Name: ChildEnable
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -7713,7 +7713,7 @@ GameObject:
   - component: {fileID: 561615130}
   - component: {fileID: 561615129}
   m_Layer: 5
-  m_Name: Toggle
+  m_Name: ParentEnable
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -12684,7 +12684,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 55c7e56bb80a0479d9c144b042144485, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  ParentTransmissionEnabled: {fileID: 0}
+  ParentTransmissionEnabled: {fileID: 561615129}
   ChildTransmissionEnabled: {fileID: 425829953}
   UseParentPropertyConfigurator: {fileID: 0}
   UseChildPropertyConfigurator: {fileID: 0}
@@ -12701,8 +12701,10 @@ MonoBehaviour:
   ChildTransmissionTarget: {fileID: 960362301}
   ChildUserId: {fileID: 245697640}
   ParentUserId: {fileID: 210379772}
-  EventParentProperty: {fileID: 0}
-  EventChildProperty: {fileID: 0}
+  EventParentProperty: {fileID: 1555665463774876, guid: 1140cb7424b4712439087e226e9ff786,
+    type: 2}
+  EventChildProperty: {fileID: 1555665463774876, guid: 1140cb7424b4712439087e226e9ff786,
+    type: 2}
   EventParentPropertiesList: {fileID: 600305397}
   EventChildPropertiesList: {fileID: 874740839}
   TransmissionStatus: {fileID: 1077534651}
