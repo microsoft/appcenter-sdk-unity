@@ -29,8 +29,10 @@ public class PuppetTransmission : MonoBehaviour
     public InputField ChildTransmissionTarget;
     public InputField ChildUserId;
     public InputField ParentUserId;
-    public GameObject EventProperty;
-    public RectTransform EventPropertiesList;
+    public GameObject EventParentProperty;
+    public GameObject EventChildProperty;
+    public RectTransform EventParentPropertiesList;
+    public RectTransform EventChildPropertiesList;
     public Text TransmissionStatus;
     public Text ChildTransmissionStatus;
     public Toggle IsCritical;
@@ -175,10 +177,16 @@ public class PuppetTransmission : MonoBehaviour
         ChildTransmissionEnabled.isOn = isEnabled.Result;
     }
 
-    public void AddProperty()
+    public void AddParentProperty()
     {
-        var property = Instantiate(EventProperty);
-        property.transform.SetParent(EventPropertiesList, false);
+        var property = Instantiate(EventParentProperty);
+        property.transform.SetParent(EventParentPropertiesList, false);
+    }
+
+    public void AddChildProperty()
+    {
+        var property = Instantiate(EventChildProperty);
+        property.transform.SetParent(EventChildPropertiesList, false);
     }
 
     private void OverrideParentProperties(TransmissionTarget transmissionTarget)
@@ -329,7 +337,7 @@ public class PuppetTransmission : MonoBehaviour
         if (transmissionTarget != null)
         {
             OverrideParentProperties(transmissionTarget);
-            var properties = PropertiesHelper.GetStringProperties(EventPropertiesList);
+            var properties = PropertiesHelper.GetStringProperties(EventParentPropertiesList);
             if (properties == null)
             {
                 if (_isCritical)
@@ -384,7 +392,7 @@ public class PuppetTransmission : MonoBehaviour
         if (transmissionTarget != null)
         {
             OverrideParentProperties(transmissionTarget);
-            var properties = PropertiesHelper.GetTypedProperties(EventPropertiesList);
+            var properties = PropertiesHelper.GetTypedProperties(EventParentPropertiesList);
             if (properties == null)
             {
                 if (_isCritical)
@@ -400,7 +408,7 @@ public class PuppetTransmission : MonoBehaviour
             else
             {
                 var propertyConfigurator = transmissionTarget.GetPropertyConfigurator();
-                PropertiesHelper.AddPropertiesToPropertyConfigurator(EventPropertiesList, propertyConfigurator);
+                PropertiesHelper.AddPropertiesToPropertyConfigurator(EventParentPropertiesList, propertyConfigurator);
                 propertyConfigurator.SetEventProperty("extraEventProperty", "should be removed!");
                 propertyConfigurator.RemoveEventProperty("extraEventProperty");
                 if (_isCritical)
@@ -422,7 +430,7 @@ public class PuppetTransmission : MonoBehaviour
         if (transmissionTarget != null)
         {
             OverrideChildProperties(transmissionTarget);
-            var properties = PropertiesHelper.GetStringProperties(EventPropertiesList);
+            var properties = PropertiesHelper.GetStringProperties(EventChildPropertiesList);
             if (properties == null)
             {
                 if (_isCritical)
@@ -463,7 +471,7 @@ public class PuppetTransmission : MonoBehaviour
         if (transmissionTarget != null)
         {
             OverrideChildProperties(transmissionTarget);
-            var properties = PropertiesHelper.GetTypedProperties(EventPropertiesList);
+            var properties = PropertiesHelper.GetTypedProperties(EventChildPropertiesList);
             if (properties == null)
             {
                 if (_isCritical)
@@ -479,7 +487,7 @@ public class PuppetTransmission : MonoBehaviour
             else
             {
                 var propertyConfigurator = transmissionTarget.GetPropertyConfigurator();
-                PropertiesHelper.AddPropertiesToPropertyConfigurator(EventPropertiesList, propertyConfigurator);
+                PropertiesHelper.AddPropertiesToPropertyConfigurator(EventChildPropertiesList, propertyConfigurator);
                 propertyConfigurator.SetEventProperty("extraEventProperty", "should be removed!");
                 propertyConfigurator.RemoveEventProperty("extraEventProperty");
                 if (_isCritical)
