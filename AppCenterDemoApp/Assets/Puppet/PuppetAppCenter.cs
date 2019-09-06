@@ -254,6 +254,28 @@ public class PuppetAppCenter : MonoBehaviour
 #endif
     }
 
+    public void ClearLogUrl()
+    {
+        LogUrl.text = "";
+        LogUrlCached = null;
+        PlayerPrefs.DeleteKey(LogUrlKey);
+        AppCenter.SetLogUrl(null);
+#if UNITY_ANDROID && !UNITY_EDITOR
+        AndroidUtility.SetPreferenceString(LogUrlAndroidKey, null);
+#endif
+    }
+
+    public void ClearAppSecret()
+    {
+        AppSecret.text = "";
+        AppSecretCached = null;
+        PlayerPrefs.DeleteKey(AppSecretKey);
+        AppCenter.ParseAndSaveSecretForPlatform(null);
+#if UNITY_ANDROID && !UNITY_EDITOR
+        AndroidUtility.SetPreferenceString(AppSecretAndroidKey, null);
+#endif
+    }
+
     public void SetAppSecret(string appSecret)
     {
         PlayerPrefs.SetString(AppSecretKey, appSecret);
