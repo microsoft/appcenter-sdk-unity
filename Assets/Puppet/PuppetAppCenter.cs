@@ -272,8 +272,9 @@ public class PuppetAppCenter : MonoBehaviour
 
     public void ClearUserId()
     {
-        PlayerPrefs.DeleteKey(UserIdKey);
         UserId.text = "";
+        PlayerPrefs.DeleteKey(UserIdKey);
+        _customUserId = null;
         AppCenter.SetUserId(null);
     }
 }
