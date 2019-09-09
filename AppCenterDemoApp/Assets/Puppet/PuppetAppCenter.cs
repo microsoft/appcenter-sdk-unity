@@ -223,6 +223,7 @@ public class PuppetAppCenter : MonoBehaviour
 
     public void SetStartupMode(int startupMode)
     {
+        // A workaround for android. Both calls to PlayerPrefs and AndroidUtility are needed
         PlayerPrefs.SetInt(StartupModeKey, startupMode);
         PlayerPrefs.Save();
 #if UNITY_ANDROID && !UNITY_EDITOR
