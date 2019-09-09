@@ -259,6 +259,8 @@ public class PuppetAppCenter : MonoBehaviour
     {
         LogUrl.text = "";
         LogUrlCached = null;
+        
+        // A workaround for android. Both calls to PlayerPrefs and AndroidUtility are needed.
         PlayerPrefs.DeleteKey(LogUrlKey);
         AppCenter.SetLogUrl(null);
 #if UNITY_ANDROID && !UNITY_EDITOR
@@ -270,6 +272,8 @@ public class PuppetAppCenter : MonoBehaviour
     {
         AppSecret.text = "";
         AppSecretCached = null;
+        
+        // A workaround for android. Both calls to PlayerPrefs and AndroidUtility are needed.
         PlayerPrefs.DeleteKey(AppSecretKey);
         AppCenter.ParseAndSaveSecretForPlatform(null);
 #if UNITY_ANDROID && !UNITY_EDITOR
