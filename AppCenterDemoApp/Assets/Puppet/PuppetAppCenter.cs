@@ -223,6 +223,8 @@ public class PuppetAppCenter : MonoBehaviour
 
     public void SetStartupMode(int startupMode)
     {
+        // A workaround for android. Both calls to PlayerPrefs and AndroidUtility are needed.
+        // AndroidUtility allows to load preferenes in native Java code, PlayerPrefs is for Unity layer.
         PlayerPrefs.SetInt(StartupModeKey, startupMode);
         PlayerPrefs.Save();
 #if UNITY_ANDROID && !UNITY_EDITOR
@@ -251,6 +253,34 @@ public class PuppetAppCenter : MonoBehaviour
         PlayerPrefs.Save();
 #if UNITY_ANDROID && !UNITY_EDITOR
         AndroidUtility.SetPreferenceString(LogUrlAndroidKey, logUrl);
+#endif
+    }
+
+    public void ClearLogUrl()
+    {
+        LogUrl.text = "";
+        LogUrlCached = null;
+        
+        // A workaround for android. Both calls to PlayerPrefs and AndroidUtility are needed.
+        // AndroidUtility allows to load preferenes in native Java code, PlayerPrefs is for Unity layer.
+        PlayerPrefs.DeleteKey(LogUrlKey);
+        AppCenter.SetLogUrl(null);
+#if UNITY_ANDROID && !UNITY_EDITOR
+        AndroidUtility.SetPreferenceString(LogUrlAndroidKey, null);
+#endif
+    }
+
+    public void ClearAppSecret()
+    {
+        AppSecret.text = "";
+        AppSecretCached = null;
+        
+        // A workaround for android. Both calls to PlayerPrefs and AndroidUtility are needed.
+        // AndroidUtility allows to load preferenes in native Java code, PlayerPrefs is for Unity layer.
+        PlayerPrefs.DeleteKey(AppSecretKey);
+        AppCenter.ParseAndSaveSecretForPlatform(null);
+#if UNITY_ANDROID && !UNITY_EDITOR
+        AndroidUtility.SetPreferenceString(AppSecretAndroidKey, null);
 #endif
     }
 
