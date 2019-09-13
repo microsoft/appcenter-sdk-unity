@@ -20,7 +20,7 @@ public class CreateManifest
     {
         if (Application.platform == RuntimePlatform.WindowsEditor)
         {
-
+            // TODO
         }
         else if (Application.platform == RuntimePlatform.OSXEditor)
         {
@@ -29,7 +29,6 @@ public class CreateManifest
                 StartInfo = new ProcessStartInfo
                 {
                     FileName = "/bin/bash",
-                    //Arguments = $"-c \"zip -r {destinationFile} {"appcenter-loader-release/*"} \"",
                     Arguments = $"-c \"cd {"appcenter-loader-release"} ; zip -r {"../Assets/AppCenter/Plugins/Android/appcenter-loader-release.aar"} {"*"} \"",
                     RedirectStandardOutput = true,
                     UseShellExecute = false,
@@ -49,7 +48,7 @@ public class CreateManifest
     {
         if (Application.platform == RuntimePlatform.WindowsEditor)
         {
-
+            // TODO
         }
         else if (Application.platform == RuntimePlatform.OSXEditor)
         {
