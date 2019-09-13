@@ -433,6 +433,8 @@ public class AppCenterPostBuild : IPostprocessBuild
         // SQLite dependency.
         project.AddBuildProperty("OTHER_LDFLAGS", "-lsqlite3");
         project.AddBuildProperty("CLANG_ENABLE_MODULES", "YES");
+        project.AddBuildProperty("OTHER_LDFLAGS", "-weak_framework AuthenticationServices");
+        project.AddBuildProperty("OTHER_LDFLAGS", "-framework WebKit");
     }
 
     private static void OnPostprocessInfo(PlistDocumentWrapper info, AppCenterSettings settings)
