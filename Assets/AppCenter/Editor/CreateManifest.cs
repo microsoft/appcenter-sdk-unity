@@ -38,10 +38,6 @@ public class CreateManifest
             process.Start();
             process.WaitForExit();
         }
-        else
-        {
-            UnityEngine.Debug.Log("entering else");
-        }
     }
 
     public static void UnzipFile(string sourceFile, string destinationFile)
@@ -81,7 +77,7 @@ public class CreateManifest
         }
 
         // Delete unzipeed directory if it already exists.
-        if(Directory.Exists(loaderFolder)) 
+        if (Directory.Exists(loaderFolder))
         {
             Directory.Delete(loaderFolder, true);
         }
