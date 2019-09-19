@@ -35,13 +35,15 @@ public class CreateManifest
             args = stringBuilder
                 .Append("-c \"cd ")
                 .Append(destinationFile)
-                .Append(" ; zip -r ../")
+                .Append(" ; zip -r ")
                 .Append(sourceFile)
                 .Append(" * \"")
                 .ToString();
             processName = "/bin/bash";
         }
-        ExecuteProcess(processName, args);
+        if (processName.length > 0) {
+            ExecuteProcess(processName, args);
+        }
     }
 
     private static void ExecuteProcess(string processName, string args)
@@ -100,7 +102,9 @@ public class CreateManifest
                    .ToString();
             processName = "/bin/bash";
         }
-        ExecuteProcess(processName, args);
+        if (processName.length > 0) {
+            ExecuteProcess(processName, args);
+        }
     }
 
     public static void Create(AppCenterSettings settings)
