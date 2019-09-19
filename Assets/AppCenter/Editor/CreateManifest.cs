@@ -61,7 +61,7 @@ public class CreateManifest
                 StartInfo = new ProcessStartInfo
                 {
                     FileName = "cmd.exe",
-                    Arguments = "-c \"cd appcenter-loader-release ; jar xf " + sourceFile + "-d " + destinationFile + " \"",
+                    Arguments = "-c \"cd appcenter-loader-release ; jar xf " + sourceFile + " -d " + destinationFile + " \"",
                     RedirectStandardOutput = true,
                     UseShellExecute = false,
                     CreateNoWindow = true,
