@@ -20,20 +20,20 @@ public class CreateManifest
     {
         if (Application.platform == RuntimePlatform.WindowsEditor)
         {
-            var process = new Process()
+            var process3 = new Process()
             {
                 StartInfo = new ProcessStartInfo
                 {
-                    FileName = "cmd.exe",
-                    Arguments = "-c \"cd appcenter-loader-release ; " + root + "Assets/AppCenter/Plugins/Android/Utility/archive-aar.ps1 -Source " + root + "/Assets/AppCenter/Plugins/Android/appcenter-loader-release.aar -Destination ./ \"",
-                    //Arguments = "-c \"cd appcenter-loader-release ; jar -cMf ../Assets/AppCenter/Plugins/Android/appcenter-loader-release.aar . \"",
+                    FileName = "powershell.exe",
+                    Arguments = "/c -File \"" + root + "Assets/AppCenter/Plugins/Android/Utility/archive-aar.ps1 \" -Source " +
+                    root + sourceFile + " -Destination " + root + destinationFile,
                     RedirectStandardOutput = true,
                     UseShellExecute = false,
                     CreateNoWindow = true,
                 }
             };
-            process.Start();
-            process.WaitForExit();
+            process3.Start();
+            process3.WaitForExit();
         }
         else if (Application.platform == RuntimePlatform.OSXEditor)
         {
@@ -57,20 +57,35 @@ public class CreateManifest
     {
         if (Application.platform == RuntimePlatform.WindowsEditor)
         {
-            var process = new Process()
+            /*var process = new Process()
             {
                 StartInfo = new ProcessStartInfo
                 {
-                    FileName = "cmd.exe",
-                    Arguments = "-c \" " + root + "Assets/AppCenter/Plugins/Android/Utility/unarchive-aar.ps1 -Source " + root + sourceFile + " -Destination " + root + destinationFile + "\"",
-                    //Arguments = "-c \"cd appcenter-loader-release ; jar xf " + sourceFile + "-d " + destinationFile + " \"",
+                    FileName = "cmd",
+                    Arguments = "/c md " + destinationFile,
                     RedirectStandardOutput = true,
                     UseShellExecute = false,
                     CreateNoWindow = true,
                 }
             };
             process.Start();
-            process.WaitForExit();
+            process.WaitForExit();*/
+
+            var process3 = new Process()
+            {
+                StartInfo = new ProcessStartInfo
+                {
+                    FileName = "powershell.exe",
+                    Arguments = "/c powershell -File \"" + root + "Assets/AppCenter/Plugins/Android/Utility/unarchive-aar.ps1 \" -Source " +
+                    root + sourceFile + " -Destination " + root + destinationFile,
+                    RedirectStandardOutput = false,
+                    UseShellExecute = false,
+                    CreateNoWindow = true,
+                }
+            };
+            process3.OutputDataReceived += Process3_OutputDataReceived;
+            process3.Start();
+            process3.WaitForExit();
         }
         else if (Application.platform == RuntimePlatform.OSXEditor)
         {
@@ -90,7 +105,16 @@ public class CreateManifest
         }
     }
 
-    public static void Create(AppCenterSettings settings, string root){
+    private static void Process3_OutputDataReceived(object sender, DataReceivedEventArgs e)
+    {
+        UnityEngine.Debug.Log(e.Data.ToString());
+    }
+
+    public static void Create(AppCenterSettings settings, string root)
+    {
+        int lastSeparator = root.LastIndexOf('/');
+        root = root.Substring(0, lastSeparator + 1);
+        UnityEngine.Debug.Log(root);
         string loaderZipFile = "Assets/AppCenter/Plugins/Android/appcenter-loader-release.aar";
         string loaderFolder = "appcenter-loader-release";
         string manifestPath = "appcenter-loader-release/AndroidManifest.xml";

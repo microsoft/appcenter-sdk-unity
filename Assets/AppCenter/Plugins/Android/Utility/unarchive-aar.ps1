@@ -6,6 +6,8 @@ param
     $Destination
 )
 
+New-Item -ItemType directory -Path $Destination
+
 Try
 {
     Add-Type -assembly "system.io.compression.filesystem"
