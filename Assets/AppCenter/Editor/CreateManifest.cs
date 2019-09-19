@@ -24,8 +24,8 @@ public class CreateManifest
             {
                 StartInfo = new ProcessStartInfo
                 {
-                    FileName = "cmd.exe",
-                    Arguments = "-c \"cd appcenter-loader-release ; jar -cMf ../Assets/AppCenter/Plugins/Android/appcenter-loader-release.aar . \"",
+                    FileName = "powershell.exe",
+                    Arguments = "/c cd appcenter-loader-release",
                     RedirectStandardOutput = true,
                     UseShellExecute = false,
                     CreateNoWindow = true,
@@ -33,6 +33,20 @@ public class CreateManifest
             };
             process.Start();
             process.WaitForExit();
+
+            var process2 = new Process()
+            {
+                StartInfo = new ProcessStartInfo
+                {
+                    FileName = "powershell.exe",
+                    Arguments = "/c jar -cMf ../Assets/AppCenter/Plugins/Android/appcenter-loader-release.aar . ",
+                    RedirectStandardOutput = true,
+                    UseShellExecute = false,
+                    CreateNoWindow = true,
+                }
+            };
+            process2.Start();
+            process2.WaitForExit();
         }
         else if (Application.platform == RuntimePlatform.OSXEditor)
         {
@@ -52,7 +66,7 @@ public class CreateManifest
         }
     }
 
-    public static void UnzipFile(string sourceFile, string destinationFile)
+    public static void UnzipFile(string sourceFile, string destinationFile, string root)
     {
         if (Application.platform == RuntimePlatform.WindowsEditor)
         {
@@ -60,8 +74,8 @@ public class CreateManifest
             {
                 StartInfo = new ProcessStartInfo
                 {
-                    FileName = "cmd.exe",
-                    Arguments = "-c \"cd appcenter-loader-release ; jar xf " + sourceFile + " -d " + destinationFile + " \"",
+                    FileName = "powershell.exe",
+                    Arguments = "/c md " + destinationFile,
                     RedirectStandardOutput = true,
                     UseShellExecute = false,
                     CreateNoWindow = true,
@@ -69,6 +83,35 @@ public class CreateManifest
             };
             process.Start();
             process.WaitForExit();
+
+            var process2 = new Process()
+            {
+                StartInfo = new ProcessStartInfo
+                {
+                    FileName = "powershell.exe",
+                    Arguments = "/c cd " + destinationFile,
+                    RedirectStandardOutput = true,
+                    UseShellExecute = false,
+                    CreateNoWindow = true,
+                }
+            };
+            process2.Start();
+            process2.WaitForExit();
+
+            var process3 = new Process()
+            {
+                StartInfo = new ProcessStartInfo
+                {
+                    FileName = "powershell.exe",
+                    Arguments = "jar xf " + root + sourceFile,
+                    RedirectStandardOutput = true,
+                    UseShellExecute = false,
+                    CreateNoWindow = true,
+                }
+            };
+            process3.OutputDataReceived += Process3_OutputDataReceived; 
+            process3.Start();
+            process3.WaitForExit();
         }
         else if (Application.platform == RuntimePlatform.OSXEditor)
         {
@@ -88,7 +131,15 @@ public class CreateManifest
         }
     }
 
-    public static void Create(AppCenterSettings settings){
+    private static void Process3_OutputDataReceived(object sender, DataReceivedEventArgs e)
+    {
+        UnityEngine.Debug.Log(e.Data.ToString());
+    }
+
+    public static void Create(AppCenterSettings settings, string root) {
+        int lastSeparator = root.LastIndexOf('/');
+        root = root.Substring(0, lastSeparator + 1);
+        UnityEngine.Debug.Log(root);
         string loaderZipFile = "Assets/AppCenter/Plugins/Android/appcenter-loader-release.aar";
         string loaderFolder = "appcenter-loader-release";
         string manifestPath = "appcenter-loader-release/AndroidManifest.xml";
@@ -106,7 +157,7 @@ public class CreateManifest
             Directory.Delete(loaderFolder, true);
         }
 
-        UnzipFile(loaderZipFile, loaderFolder);
+        UnzipFile(loaderZipFile, loaderFolder, root);
         if (!Directory.Exists(loaderFolder))
         {
             UnityEngine.Debug.LogWarning("Unzipping loader folder failed.");
