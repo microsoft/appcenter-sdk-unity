@@ -41,7 +41,7 @@ public class CreateManifest
                 .ToString();
             processName = "/bin/bash";
         }
-        if (processName.length > 0) {
+        if (processName.Length > 0) {
             ExecuteProcess(processName, args);
         }
     }
@@ -102,7 +102,7 @@ public class CreateManifest
                    .ToString();
             processName = "/bin/bash";
         }
-        if (processName.length > 0) {
+        if (processName.Length > 0) {
             ExecuteProcess(processName, args);
         }
     }
