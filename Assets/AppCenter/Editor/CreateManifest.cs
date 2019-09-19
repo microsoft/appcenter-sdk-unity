@@ -20,7 +20,19 @@ public class CreateManifest
     {
         if (Application.platform == RuntimePlatform.WindowsEditor)
         {
-            // TODO
+            var process = new Process()
+            {
+                StartInfo = new ProcessStartInfo
+                {
+                    FileName = "cmd.exe",
+                    Arguments = "-c \"cd appcenter-loader-release ; jar -cMf ../Assets/AppCenter/Plugins/Android/appcenter-loader-release.aar . \"",
+                    RedirectStandardOutput = true,
+                    UseShellExecute = false,
+                    CreateNoWindow = true,
+                }
+            };
+            process.Start();
+            process.WaitForExit();
         }
         else if (Application.platform == RuntimePlatform.OSXEditor)
         {
@@ -29,7 +41,7 @@ public class CreateManifest
                 StartInfo = new ProcessStartInfo
                 {
                     FileName = "/bin/bash",
-                    Arguments = $"-c \"cd {"appcenter-loader-release"} ; zip -r {"../Assets/AppCenter/Plugins/Android/appcenter-loader-release.aar"} {"*"} \"",
+                    Arguments = "-c \"cd appcenter-loader-release ; zip -r ../Assets/AppCenter/Plugins/Android/appcenter-loader-release.aar * \"",
                     RedirectStandardOutput = true,
                     UseShellExecute = false,
                     CreateNoWindow = true,
@@ -44,7 +56,19 @@ public class CreateManifest
     {
         if (Application.platform == RuntimePlatform.WindowsEditor)
         {
-            // TODO
+            var process = new Process()
+            {
+                StartInfo = new ProcessStartInfo
+                {
+                    FileName = "cmd.exe",
+                    Arguments = "-c \"cd appcenter-loader-release ; jar xf " + sourceFile + "-d " + destinationFile + " \"",
+                    RedirectStandardOutput = true,
+                    UseShellExecute = false,
+                    CreateNoWindow = true,
+                }
+            };
+            process.Start();
+            process.WaitForExit();
         }
         else if (Application.platform == RuntimePlatform.OSXEditor)
         {
@@ -53,7 +77,7 @@ public class CreateManifest
                 StartInfo = new ProcessStartInfo
                 {
                     FileName = "/bin/bash",
-                    Arguments = $"-c \"unzip {sourceFile} -d {destinationFile} \"",
+                    Arguments = "-c \"unzip " + sourceFile + " -d " + destinationFile + " \"",
                     RedirectStandardOutput = true,
                     UseShellExecute = false,
                     CreateNoWindow = true,
