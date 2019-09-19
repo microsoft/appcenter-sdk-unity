@@ -6,11 +6,6 @@ param
     $Destination
 )
 
-If(Test-path $Destination) 
-{
-    Remove-item $Destination
-}
-
 Try
 {
     Add-Type -assembly "system.io.compression.filesystem"

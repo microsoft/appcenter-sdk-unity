@@ -20,20 +20,27 @@ public class CreateManifest
     {
         if (Application.platform == RuntimePlatform.WindowsEditor)
         {
-            var process3 = new Process()
+            var process = new Process()
             {
                 StartInfo = new ProcessStartInfo
                 {
-                    FileName = "powershell.exe",
-                    Arguments = "/c -File \"" + root + "Assets/AppCenter/Plugins/Android/Utility/archive-aar.ps1 \" -Source " +
+                    FileName = "cmd",
+                    Arguments = "/c powershell -File \"" + root + "Assets/AppCenter/Plugins/Android/Utility/archive-aar.ps1 \" -Source " +
                     root + sourceFile + " -Destination " + root + destinationFile,
                     RedirectStandardOutput = true,
+                    RedirectStandardError = true,
                     UseShellExecute = false,
                     CreateNoWindow = true,
                 }
             };
-            process3.Start();
-            process3.WaitForExit();
+            process.Start();
+            string output = process.StandardOutput.ReadToEnd();
+            string error = process.StandardError.ReadToEnd();
+            process.WaitForExit();
+            if (output.Length > 0 || error.Length > 0)
+            {
+                UnityEngine.Debug.Log(output + error);
+            }
         }
         else if (Application.platform == RuntimePlatform.OSXEditor)
         {
@@ -57,35 +64,28 @@ public class CreateManifest
     {
         if (Application.platform == RuntimePlatform.WindowsEditor)
         {
-            /*var process = new Process()
+
+            var process = new Process()
             {
                 StartInfo = new ProcessStartInfo
                 {
                     FileName = "cmd",
-                    Arguments = "/c md " + destinationFile,
+                    Arguments = "/c powershell -File \"" + root + "Assets/AppCenter/Plugins/Android/Utility/unarchive-aar.ps1 \" -Source " +
+                    root + sourceFile + " -Destination " + root + destinationFile,
                     RedirectStandardOutput = true,
+                    RedirectStandardError = true,
                     UseShellExecute = false,
                     CreateNoWindow = true,
                 }
             };
             process.Start();
-            process.WaitForExit();*/
-
-            var process3 = new Process()
+            string output = process.StandardOutput.ReadToEnd();
+            string error = process.StandardError.ReadToEnd();
+            process.WaitForExit();
+            if (output.Length > 0 || error.Length > 0)
             {
-                StartInfo = new ProcessStartInfo
-                {
-                    FileName = "powershell.exe",
-                    Arguments = "/c powershell -File \"" + root + "Assets/AppCenter/Plugins/Android/Utility/unarchive-aar.ps1 \" -Source " +
-                    root + sourceFile + " -Destination " + root + destinationFile,
-                    RedirectStandardOutput = false,
-                    UseShellExecute = false,
-                    CreateNoWindow = true,
-                }
-            };
-            process3.OutputDataReceived += Process3_OutputDataReceived;
-            process3.Start();
-            process3.WaitForExit();
+                UnityEngine.Debug.Log(output + error);
+            }
         }
         else if (Application.platform == RuntimePlatform.OSXEditor)
         {
@@ -105,16 +105,10 @@ public class CreateManifest
         }
     }
 
-    private static void Process3_OutputDataReceived(object sender, DataReceivedEventArgs e)
-    {
-        UnityEngine.Debug.Log(e.Data.ToString());
-    }
-
     public static void Create(AppCenterSettings settings, string root)
     {
         int lastSeparator = root.LastIndexOf('/');
         root = root.Substring(0, lastSeparator + 1);
-        UnityEngine.Debug.Log(root);
         string loaderZipFile = "Assets/AppCenter/Plugins/Android/appcenter-loader-release.aar";
         string loaderFolder = "appcenter-loader-release";
         string manifestPath = "appcenter-loader-release/AndroidManifest.xml";
