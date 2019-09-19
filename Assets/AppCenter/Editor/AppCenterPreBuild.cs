@@ -37,7 +37,7 @@ public class AppCenterPreBuild : IPreprocessBuild
                 FirebaseDependency.SetupPush();
             }
             AddStartupCode(new AppCenterSettingsMakerAndroid());
-            CreateManifest.Create(settings, path);
+            CreateManifest.Create(settings);
         }
         else if (target == BuildTarget.iOS)
         {

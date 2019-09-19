@@ -11,7 +11,7 @@ using System.Text;
 
 public class CreateManifest
 {
-    public static void ZipFile(string sourceFile, string destinationFile, string root)
+    public static void ZipFile(string sourceFile, string destinationFile)
     {
         var stringBuilder = new StringBuilder();
         var args = "";
@@ -21,13 +21,11 @@ public class CreateManifest
             args = stringBuilder
                 .Append("/c powershell")
                 .Append(" -File \"")
-                .Append(root)
-                .Append("Assets/AppCenter/Plugins/Android/Utility/archive.ps1 \"")
+                .Append(AppCenterSettingsContext.AppCenterPath)
+                .Append("/AppCenter/Plugins/Android/Utility/archive.ps1 \"")
                 .Append(" -Source ")
-                .Append(root)
                 .Append(sourceFile)
                 .Append(" -Destination ")
-                .Append(root)
                 .Append(destinationFile)
                 .ToString();
             processName = "cmd";
@@ -70,7 +68,7 @@ public class CreateManifest
         }
     }
 
-    public static void UnzipFile(string sourceFile, string destinationFile, string root)
+    public static void UnzipFile(string sourceFile, string destinationFile)
     {
         var stringBuilder = new StringBuilder();
         var args = "";
@@ -81,17 +79,15 @@ public class CreateManifest
             args = stringBuilder
                 .Append("/c powershell")
                 .Append(" -File \"")
-                .Append(root)
-                .Append("Assets/AppCenter/Plugins/Android/Utility/unarchive.ps1 \"")
+                .Append(AppCenterSettingsContext.AppCenterPath)
+                .Append("/AppCenter/Plugins/Android/Utility/unarchive.ps1 \"")
                 .Append(" -Source ")
-                .Append(root)
                 .Append(sourceFile)
                 .Append(" -Destination ")
-                .Append(root)
                 .Append(destinationFile)
                 .ToString();
             processName = "cmd";
-;        }
+        }
         else if (Application.platform == RuntimePlatform.OSXEditor)
         {
             stringBuilder = new StringBuilder();
@@ -107,14 +103,12 @@ public class CreateManifest
         ExecuteProcess(processName, args);
     }
 
-    public static void Create(AppCenterSettings settings, string root)
+    public static void Create(AppCenterSettings settings)
     {
-        int lastSeparator = root.LastIndexOf('/');
-        root = root.Substring(0, lastSeparator + 1);
-        string loaderZipFile = "Assets/AppCenter/Plugins/Android/appcenter-loader-release.aar";
-        string loaderFolder = "appcenter-loader-release";
-        string manifestPath = "appcenter-loader-release/AndroidManifest.xml";
-        string manifestMetafile = "appcenter-loader-release/AndroidManifest.xml.meta";
+        string loaderZipFile = AppCenterSettingsContext.AppCenterPath + "/AppCenter/Plugins/Android/appcenter-loader-release.aar";
+        string loaderFolder = AppCenterSettingsContext.AppCenterPath + "appcenter-loader-release";
+        string manifestPath = AppCenterSettingsContext.AppCenterPath + "appcenter-loader-release/AndroidManifest.xml";
+        string manifestMetafile = AppCenterSettingsContext.AppCenterPath + "appcenter-loader-release/AndroidManifest.xml.meta";
         
         if (!File.Exists(loaderZipFile))
         {
@@ -128,7 +122,7 @@ public class CreateManifest
             Directory.Delete(loaderFolder, true);
         }
 
-        UnzipFile(loaderZipFile, loaderFolder, root);
+        UnzipFile(loaderZipFile, loaderFolder);
         if (!Directory.Exists(loaderFolder))
         {
             UnityEngine.Debug.LogWarning("Unzipping loader folder failed.");
@@ -183,7 +177,7 @@ public class CreateManifest
 
         // Delete the original aar file and zipped the extracted folder to generate a new one.
         File.Delete(loaderZipFile);
-        ZipFile(loaderFolder, loaderZipFile, root);
+        ZipFile(loaderFolder, loaderZipFile);
         Directory.Delete(loaderFolder, true);
     }
 }
