@@ -16,7 +16,7 @@ using UnityEngine;
 
 public class CreateManifest
 {
-    public static void ZipFile(string sourceFile, string destinationFile)
+    public static void ZipFile(string sourceFile, string destinationFile, string root)
     {
         if (Application.platform == RuntimePlatform.WindowsEditor)
         {
@@ -24,29 +24,23 @@ public class CreateManifest
             {
                 StartInfo = new ProcessStartInfo
                 {
-                    FileName = "powershell.exe",
-                    Arguments = "/c cd appcenter-loader-release",
+                    FileName = "cmd",
+                    Arguments = "/c powershell -File \"" + root + "Assets/AppCenter/Plugins/Android/Utility/archive-aar.ps1 \" -Source " +
+                    root + sourceFile + " -Destination " + root + destinationFile,
                     RedirectStandardOutput = true,
+                    RedirectStandardError = true,
                     UseShellExecute = false,
                     CreateNoWindow = true,
                 }
             };
             process.Start();
+            string output = process.StandardOutput.ReadToEnd();
+            string error = process.StandardError.ReadToEnd();
             process.WaitForExit();
-
-            var process2 = new Process()
+            if (output.Length > 0 || error.Length > 0)
             {
-                StartInfo = new ProcessStartInfo
-                {
-                    FileName = "powershell.exe",
-                    Arguments = "/c jar -cMf ../Assets/AppCenter/Plugins/Android/appcenter-loader-release.aar . ",
-                    RedirectStandardOutput = true,
-                    UseShellExecute = false,
-                    CreateNoWindow = true,
-                }
-            };
-            process2.Start();
-            process2.WaitForExit();
+                UnityEngine.Debug.Log(output + error);
+            }
         }
         else if (Application.platform == RuntimePlatform.OSXEditor)
         {
@@ -70,48 +64,28 @@ public class CreateManifest
     {
         if (Application.platform == RuntimePlatform.WindowsEditor)
         {
+
             var process = new Process()
             {
                 StartInfo = new ProcessStartInfo
                 {
-                    FileName = "powershell.exe",
-                    Arguments = "/c md " + destinationFile,
+                    FileName = "cmd",
+                    Arguments = "/c powershell -File \"" + root + "Assets/AppCenter/Plugins/Android/Utility/unarchive-aar.ps1 \" -Source " +
+                    root + sourceFile + " -Destination " + root + destinationFile,
                     RedirectStandardOutput = true,
+                    RedirectStandardError = true,
                     UseShellExecute = false,
                     CreateNoWindow = true,
                 }
             };
             process.Start();
+            string output = process.StandardOutput.ReadToEnd();
+            string error = process.StandardError.ReadToEnd();
             process.WaitForExit();
-
-            var process2 = new Process()
+            if (output.Length > 0 || error.Length > 0)
             {
-                StartInfo = new ProcessStartInfo
-                {
-                    FileName = "powershell.exe",
-                    Arguments = "/c cd " + destinationFile,
-                    RedirectStandardOutput = true,
-                    UseShellExecute = false,
-                    CreateNoWindow = true,
-                }
-            };
-            process2.Start();
-            process2.WaitForExit();
-
-            var process3 = new Process()
-            {
-                StartInfo = new ProcessStartInfo
-                {
-                    FileName = "powershell.exe",
-                    Arguments = "jar xf " + root + sourceFile,
-                    RedirectStandardOutput = true,
-                    UseShellExecute = false,
-                    CreateNoWindow = true,
-                }
-            };
-            process3.OutputDataReceived += Process3_OutputDataReceived; 
-            process3.Start();
-            process3.WaitForExit();
+                UnityEngine.Debug.Log(output + error);
+            }
         }
         else if (Application.platform == RuntimePlatform.OSXEditor)
         {
@@ -131,15 +105,10 @@ public class CreateManifest
         }
     }
 
-    private static void Process3_OutputDataReceived(object sender, DataReceivedEventArgs e)
+    public static void Create(AppCenterSettings settings, string root)
     {
-        UnityEngine.Debug.Log(e.Data.ToString());
-    }
-
-    public static void Create(AppCenterSettings settings, string root) {
         int lastSeparator = root.LastIndexOf('/');
         root = root.Substring(0, lastSeparator + 1);
-        UnityEngine.Debug.Log(root);
         string loaderZipFile = "Assets/AppCenter/Plugins/Android/appcenter-loader-release.aar";
         string loaderFolder = "appcenter-loader-release";
         string manifestPath = "appcenter-loader-release/AndroidManifest.xml";
@@ -212,7 +181,7 @@ public class CreateManifest
 
         // Delete the original aar file and zipped the extracted folder to generate a new one.
         File.Delete(loaderZipFile);
-        ZipFile(loaderFolder, loaderZipFile);
+        ZipFile(loaderFolder, loaderZipFile, root);
         Directory.Delete(loaderFolder, true);
     }
 }
