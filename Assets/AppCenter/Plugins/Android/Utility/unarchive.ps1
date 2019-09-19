@@ -1,6 +1,6 @@
 param
 (
-    [Parameter(Position=0, Mandatory = $false, HelpMessage="Source aar", ValueFromPipeline = $true)] 
+    [Parameter(Position=0, Mandatory = $false, HelpMessage="Source file", ValueFromPipeline = $true)] 
     $Source,
     [Parameter(Position=1, Mandatory = $false, HelpMessage="Destination path", ValueFromPipeline = $true)] 
     $Destination

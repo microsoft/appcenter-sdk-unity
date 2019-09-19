@@ -1,8 +1,8 @@
 param
 (
-    [Parameter(Position=0, Mandatory = $false, HelpMessage="Source folder or file path", ValueFromPipeline = $true)] 
+    [Parameter(Position=0, Mandatory = $false, HelpMessage="Source folder", ValueFromPipeline = $true)] 
     $Source,
-    [Parameter(Position=1, Mandatory = $false, HelpMessage="Destination path", ValueFromPipeline = $true)] 
+    [Parameter(Position=1, Mandatory = $false, HelpMessage="Destination file path", ValueFromPipeline = $true)] 
     $Destination
 )
 

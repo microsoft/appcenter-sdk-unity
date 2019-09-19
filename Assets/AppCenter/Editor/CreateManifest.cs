@@ -4,105 +4,107 @@
 using System;
 using System.Diagnostics;
 using System.IO;
-using System.IO.Compression;
 using System.Linq;
 using System.Xml.Linq;
-#if UNITY_2018_1_OR_NEWER
-using UnityEditor.Build.Reporting;
-#endif
-using UnityEditor.Build;
-using UnityEditor;
 using UnityEngine;
+using System.Text;
 
 public class CreateManifest
 {
     public static void ZipFile(string sourceFile, string destinationFile, string root)
     {
+        var stringBuilder = new StringBuilder();
+        var args = "";
+        var processName = "";
         if (Application.platform == RuntimePlatform.WindowsEditor)
         {
-            var process = new Process()
-            {
-                StartInfo = new ProcessStartInfo
-                {
-                    FileName = "cmd",
-                    Arguments = "/c powershell -File \"" + root + "Assets/AppCenter/Plugins/Android/Utility/archive-aar.ps1 \" -Source " +
-                    root + sourceFile + " -Destination " + root + destinationFile,
-                    RedirectStandardOutput = true,
-                    RedirectStandardError = true,
-                    UseShellExecute = false,
-                    CreateNoWindow = true,
-                }
-            };
-            process.Start();
-            string output = process.StandardOutput.ReadToEnd();
-            string error = process.StandardError.ReadToEnd();
-            process.WaitForExit();
-            if (output.Length > 0 || error.Length > 0)
-            {
-                UnityEngine.Debug.Log(output + error);
-            }
+            args = stringBuilder
+                .Append("/c powershell")
+                .Append(" -File \"")
+                .Append(root)
+                .Append("Assets/AppCenter/Plugins/Android/Utility/archive.ps1 \"")
+                .Append(" -Source ")
+                .Append(root)
+                .Append(sourceFile)
+                .Append(" -Destination ")
+                .Append(root)
+                .Append(destinationFile)
+                .ToString();
+            processName = "cmd";
         }
         else if (Application.platform == RuntimePlatform.OSXEditor)
         {
-            var process = new Process()
+            args = stringBuilder
+                .Append("-c \"cd ")
+                .Append(destinationFile)
+                .Append(" ; zip -r ../")
+                .Append(sourceFile)
+                .Append(" * \"")
+                .ToString();
+            processName = "/bin/bash";
+        }
+        ExecuteProcess(processName, args);
+    }
+
+    private static void ExecuteProcess(string processName, string args)
+    {
+        var process = new Process()
+        {
+            StartInfo = new ProcessStartInfo
             {
-                StartInfo = new ProcessStartInfo
-                {
-                    FileName = "/bin/bash",
-                    Arguments = "-c \"cd appcenter-loader-release ; zip -r ../Assets/AppCenter/Plugins/Android/appcenter-loader-release.aar * \"",
-                    RedirectStandardOutput = true,
-                    UseShellExecute = false,
-                    CreateNoWindow = true,
-                }
-            };
-            process.Start();
-            process.WaitForExit();
+                FileName = processName,
+                Arguments = args,
+                RedirectStandardOutput = true,
+                RedirectStandardError = true,
+                UseShellExecute = false,
+                CreateNoWindow = true,
+            }
+        };
+        process.Start();
+        string output = process.StandardOutput.ReadToEnd();
+        string error = process.StandardError.ReadToEnd();
+        process.WaitForExit();
+        if (output.Length > 0 || error.Length > 0)
+        {
+            UnityEngine.Debug.Log(output + error);
         }
     }
 
     public static void UnzipFile(string sourceFile, string destinationFile, string root)
     {
+        var stringBuilder = new StringBuilder();
+        var args = "";
+        var processName = "";
         if (Application.platform == RuntimePlatform.WindowsEditor)
         {
-
-            var process = new Process()
-            {
-                StartInfo = new ProcessStartInfo
-                {
-                    FileName = "cmd",
-                    Arguments = "/c powershell -File \"" + root + "Assets/AppCenter/Plugins/Android/Utility/unarchive-aar.ps1 \" -Source " +
-                    root + sourceFile + " -Destination " + root + destinationFile,
-                    RedirectStandardOutput = true,
-                    RedirectStandardError = true,
-                    UseShellExecute = false,
-                    CreateNoWindow = true,
-                }
-            };
-            process.Start();
-            string output = process.StandardOutput.ReadToEnd();
-            string error = process.StandardError.ReadToEnd();
-            process.WaitForExit();
-            if (output.Length > 0 || error.Length > 0)
-            {
-                UnityEngine.Debug.Log(output + error);
-            }
-        }
+            stringBuilder = new StringBuilder();
+            args = stringBuilder
+                .Append("/c powershell")
+                .Append(" -File \"")
+                .Append(root)
+                .Append("Assets/AppCenter/Plugins/Android/Utility/unarchive.ps1 \"")
+                .Append(" -Source ")
+                .Append(root)
+                .Append(sourceFile)
+                .Append(" -Destination ")
+                .Append(root)
+                .Append(destinationFile)
+                .ToString();
+            processName = "cmd";
+;        }
         else if (Application.platform == RuntimePlatform.OSXEditor)
         {
-            var process = new Process()
-            {
-                StartInfo = new ProcessStartInfo
-                {
-                    FileName = "/bin/bash",
-                    Arguments = "-c \"unzip " + sourceFile + " -d " + destinationFile + " \"",
-                    RedirectStandardOutput = true,
-                    UseShellExecute = false,
-                    CreateNoWindow = true,
-                }
-            };
-            process.Start();
-            process.WaitForExit();
+            stringBuilder = new StringBuilder();
+            args = stringBuilder
+                   .Append("-c \"unzip ")
+                   .Append(sourceFile)
+                   .Append(" -d ")
+                   .Append(destinationFile)
+                   .Append(" \"")
+                   .ToString();
+            processName = "/bin/bash";
         }
+        ExecuteProcess(processName, args);
     }
 
     public static void Create(AppCenterSettings settings, string root)
