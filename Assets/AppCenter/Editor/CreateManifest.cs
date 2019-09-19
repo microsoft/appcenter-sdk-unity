@@ -16,7 +16,7 @@ using UnityEngine;
 
 public class CreateManifest
 {
-    public static void ZipFile(string sourceFile, string destinationFile)
+    public static void ZipFile(string sourceFile, string destinationFile, string root)
     {
         if (Application.platform == RuntimePlatform.WindowsEditor)
         {
@@ -25,7 +25,8 @@ public class CreateManifest
                 StartInfo = new ProcessStartInfo
                 {
                     FileName = "cmd.exe",
-                    Arguments = "-c \"cd appcenter-loader-release ; jar -cMf ../Assets/AppCenter/Plugins/Android/appcenter-loader-release.aar . \"",
+                    Arguments = "-c \"cd appcenter-loader-release ; " + root + "Assets/AppCenter/Plugins/Android/Utility/archive-aar.ps1 -Source " + root + "/Assets/AppCenter/Plugins/Android/appcenter-loader-release.aar -Destination ./ \"",
+                    //Arguments = "-c \"cd appcenter-loader-release ; jar -cMf ../Assets/AppCenter/Plugins/Android/appcenter-loader-release.aar . \"",
                     RedirectStandardOutput = true,
                     UseShellExecute = false,
                     CreateNoWindow = true,
@@ -52,7 +53,7 @@ public class CreateManifest
         }
     }
 
-    public static void UnzipFile(string sourceFile, string destinationFile)
+    public static void UnzipFile(string sourceFile, string destinationFile, string root)
     {
         if (Application.platform == RuntimePlatform.WindowsEditor)
         {
@@ -61,7 +62,8 @@ public class CreateManifest
                 StartInfo = new ProcessStartInfo
                 {
                     FileName = "cmd.exe",
-                    Arguments = "-c \"cd appcenter-loader-release ; jar xf " + sourceFile + "-d " + destinationFile + " \"",
+                    Arguments = "-c \" " + root + "Assets/AppCenter/Plugins/Android/Utility/unarchive-aar.ps1 -Source " + root + sourceFile + " -Destination " + root + destinationFile + "\"",
+                    //Arguments = "-c \"cd appcenter-loader-release ; jar xf " + sourceFile + "-d " + destinationFile + " \"",
                     RedirectStandardOutput = true,
                     UseShellExecute = false,
                     CreateNoWindow = true,
@@ -88,7 +90,7 @@ public class CreateManifest
         }
     }
 
-    public static void Create(AppCenterSettings settings){
+    public static void Create(AppCenterSettings settings, string root){
         string loaderZipFile = "Assets/AppCenter/Plugins/Android/appcenter-loader-release.aar";
         string loaderFolder = "appcenter-loader-release";
         string manifestPath = "appcenter-loader-release/AndroidManifest.xml";
@@ -106,7 +108,7 @@ public class CreateManifest
             Directory.Delete(loaderFolder, true);
         }
 
-        UnzipFile(loaderZipFile, loaderFolder);
+        UnzipFile(loaderZipFile, loaderFolder, root);
         if (!Directory.Exists(loaderFolder))
         {
             UnityEngine.Debug.LogWarning("Unzipping loader folder failed.");
@@ -161,7 +163,7 @@ public class CreateManifest
 
         // Delete the original aar file and zipped the extracted folder to generate a new one.
         File.Delete(loaderZipFile);
-        ZipFile(loaderFolder, loaderZipFile);
+        ZipFile(loaderFolder, loaderZipFile, root);
         Directory.Delete(loaderFolder, true);
     }
 }

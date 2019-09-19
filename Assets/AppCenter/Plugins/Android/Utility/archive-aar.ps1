@@ -1,0 +1,23 @@
+param
+(
+    [Parameter(Position=0, Mandatory = $false, HelpMessage="Source folder or file path", ValueFromPipeline = $true)] 
+    $Source,
+    [Parameter(Position=1, Mandatory = $false, HelpMessage="Destination path", ValueFromPipeline = $true)] 
+    $Destination
+)
+
+If(Test-path $Destination) 
+{
+    Remove-item $Destination
+}
+
+Try
+{
+    Add-Type -assembly "system.io.compression.filesystem"
+    [io.compression.zipfile]::CreateFromDirectory($Source, $Destination)
+}
+Catch
+{
+    $Exc = $_.Exception.Message
+    Write-Error "File $Destination was not created. Error: $Exc"
+}
