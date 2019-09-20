@@ -115,10 +115,10 @@ public class CreateManifest
             AppCenterSettingsContext.AppCenterPath + "/appcenter-loader-release" :
             "appcenter-loader-release";
         var manifestPath = Application.platform == RuntimePlatform.WindowsEditor ?
-            AppCenterSettingsContext.AppCenterPath + "appcenter-loader-release/AndroidManifest.xml" :
+            AppCenterSettingsContext.AppCenterPath + "/appcenter-loader-release/AndroidManifest.xml" :
             "appcenter-loader-release/AndroidManifest.xml";
         var manifestMetafile = Application.platform == RuntimePlatform.WindowsEditor ?
-            AppCenterSettingsContext.AppCenterPath + "appcenter-loader-release/AndroidManifest.xml.meta" :
+            AppCenterSettingsContext.AppCenterPath + "/appcenter-loader-release/AndroidManifest.xml.meta" :
             "appcenter-loader-release/AndroidManifest.xml.meta";
 
         if (!File.Exists(loaderZipFile))
