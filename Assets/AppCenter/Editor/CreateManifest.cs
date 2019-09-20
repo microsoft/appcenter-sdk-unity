@@ -110,9 +110,9 @@ public class CreateManifest
     public static void Create(AppCenterSettings settings)
     {
         string loaderZipFile = AppCenterSettingsContext.AppCenterPath + "/AppCenter/Plugins/Android/appcenter-loader-release.aar";
-        string loaderFolder = AppCenterSettingsContext.AppCenterPath + "appcenter-loader-release";
-        string manifestPath = AppCenterSettingsContext.AppCenterPath + "appcenter-loader-release/AndroidManifest.xml";
-        string manifestMetafile = AppCenterSettingsContext.AppCenterPath + "appcenter-loader-release/AndroidManifest.xml.meta";
+        string loaderFolder = AppCenterSettingsContext.AppCenterPath + "/appcenter-loader-release";
+        string manifestPath = AppCenterSettingsContext.AppCenterPath + "/appcenter-loader-release/AndroidManifest.xml";
+        string manifestMetafile = AppCenterSettingsContext.AppCenterPath + "/appcenter-loader-release/AndroidManifest.xml.meta";
         
         if (!File.Exists(loaderZipFile))
         {
