@@ -34,9 +34,10 @@ public class CreateManifest
         {
             args = stringBuilder
                 .Append("-c \"cd ")
-                .Append(destinationFile)
-                .Append(" ; zip -r ")
                 .Append(sourceFile)
+                .Append(" ; zip -r ")
+                .Append("../")
+                .Append(destinationFile)
                 .Append(" * \"")
                 .ToString();
             processName = "/bin/bash";
@@ -77,7 +78,6 @@ public class CreateManifest
         var processName = "";
         if (Application.platform == RuntimePlatform.WindowsEditor)
         {
-            stringBuilder = new StringBuilder();
             args = stringBuilder
                 .Append("/c powershell")
                 .Append(" -File \"")
@@ -92,7 +92,6 @@ public class CreateManifest
         }
         else if (Application.platform == RuntimePlatform.OSXEditor)
         {
-            stringBuilder = new StringBuilder();
             args = stringBuilder
                    .Append("-c \"unzip ")
                    .Append(sourceFile)
@@ -109,11 +108,19 @@ public class CreateManifest
 
     public static void Create(AppCenterSettings settings)
     {
-        string loaderZipFile = AppCenterSettingsContext.AppCenterPath + "/AppCenter/Plugins/Android/appcenter-loader-release.aar";
-        string loaderFolder = AppCenterSettingsContext.AppCenterPath + "/appcenter-loader-release";
-        string manifestPath = AppCenterSettingsContext.AppCenterPath + "/appcenter-loader-release/AndroidManifest.xml";
-        string manifestMetafile = AppCenterSettingsContext.AppCenterPath + "/appcenter-loader-release/AndroidManifest.xml.meta";
-        
+        var loaderZipFile = Application.platform == RuntimePlatform.WindowsEditor ?
+            AppCenterSettingsContext.AppCenterPath + "/AppCenter/Plugins/Android/appcenter-loader-release.aar" :
+            "Assets/AppCenter/Plugins/Android/appcenter-loader-release.aar";
+        var loaderFolder = Application.platform == RuntimePlatform.WindowsEditor ?
+            AppCenterSettingsContext.AppCenterPath + "/appcenter-loader-release" :
+            "appcenter-loader-release";
+        var manifestPath = Application.platform == RuntimePlatform.WindowsEditor ?
+            AppCenterSettingsContext.AppCenterPath + "appcenter-loader-release/AndroidManifest.xml" :
+            "appcenter-loader-release/AndroidManifest.xml";
+        var manifestMetafile = Application.platform == RuntimePlatform.WindowsEditor ?
+            AppCenterSettingsContext.AppCenterPath + "appcenter-loader-release/AndroidManifest.xml.meta" :
+            "appcenter-loader-release/AndroidManifest.xml.meta";
+
         if (!File.Exists(loaderZipFile))
         {
             UnityEngine.Debug.LogWarning("Failed to load dependency file appcenter-loader-release.aar");
