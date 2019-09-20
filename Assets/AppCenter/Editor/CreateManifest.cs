@@ -5,9 +5,9 @@ using System;
 using System.Diagnostics;
 using System.IO;
 using System.Linq;
+using System.Text;
 using System.Xml.Linq;
 using UnityEngine;
-using System.Text;
 
 public class CreateManifest
 {
@@ -42,7 +42,8 @@ public class CreateManifest
                 .ToString();
             processName = "/bin/bash";
         }
-        if (processName.Length > 0) {
+        if (processName.Length > 0)
+        {
             ExecuteProcess(processName, args);
         }
     }
@@ -101,7 +102,8 @@ public class CreateManifest
                    .ToString();
             processName = "/bin/bash";
         }
-        if (processName.Length > 0) {
+        if (processName.Length > 0)
+        {
             ExecuteProcess(processName, args);
         }
     }
@@ -142,41 +144,41 @@ public class CreateManifest
             return;
         }
         var activityElements = applicationElements[0].Elements().Where(element => element.Name.LocalName == "activity").ToList();
-        
+
         // Delete the unzipped folder if the activity element already exists in the AndroidManifest.xml file
-        if (activityElements.Count == 1) 
+        if (activityElements.Count == 1)
         {
             Directory.Delete(loaderFolder, true);
             return;
         }
 
-        var intentelement = new XElement("intent-filter");
+        var intentElement = new XElement("intent-filter");
         XNamespace ns = "http://schemas.android.com/apk/res/android";
         var activityElement = new XElement("activity");
-        activityElement.SetAttributeValue(ns+"name", "com.microsoft.identity.client.BrowserTabActivity");
+        activityElement.SetAttributeValue(ns + "name", "com.microsoft.identity.client.BrowserTabActivity");
         var actionElement = new XElement("action");
-        actionElement.SetAttributeValue(ns+"name", "android.intent.action.VIEW");
+        actionElement.SetAttributeValue(ns + "name", "android.intent.action.VIEW");
         var categoryElement1 = new XElement("category");
-        categoryElement1.SetAttributeValue(ns+"name", "android.intent.category.DEFAULT");
+        categoryElement1.SetAttributeValue(ns + "name", "android.intent.category.DEFAULT");
         var categoryElement2 = new XElement("category");
-        categoryElement2.SetAttributeValue(ns+"name", "android.intent.category.BROWSABLE");
+        categoryElement2.SetAttributeValue(ns + "name", "android.intent.category.BROWSABLE");
         var dataElement = new XElement("data");
-        dataElement.SetAttributeValue(ns+"host", "auth");
-        dataElement.SetAttributeValue(ns+"scheme", "msal" + settings.AndroidAppSecret);
+        dataElement.SetAttributeValue(ns + "host", "auth");
+        dataElement.SetAttributeValue(ns + "scheme", "msal" + settings.AndroidAppSecret);
 
-        intentelement.Add(actionElement);
-        intentelement.Add(categoryElement1);
-        intentelement.Add(categoryElement2);
-        intentelement.Add(dataElement);
-        activityElement.Add(intentelement);
+        intentElement.Add(actionElement);
+        intentElement.Add(categoryElement1);
+        intentElement.Add(categoryElement2);
+        intentElement.Add(dataElement);
+        activityElement.Add(intentElement);
         applicationElements[0].Add(activityElement);
         xmlFile.Save(manifestPath);
-      
+
         // Delete the AndroidManifest.xml.meta file if generated
         if (File.Exists(manifestMetafile))
-        {    
-            File.Delete(manifestMetafile);    
-        }    
+        {
+            File.Delete(manifestMetafile);
+        }
 
         // Delete the original aar file and zipped the extracted folder to generate a new one.
         File.Delete(loaderZipFile);
