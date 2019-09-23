@@ -38,39 +38,38 @@ public class PuppetAuth : MonoBehaviour
     private IEnumerator SignInCoroutine()
     {
         var signInTask = Auth.SignInAsync();
-            if (signInTask.Exception != null)
-            {
+        if (signInTask.Exception != null)
+        {
             yield return signInTask.Exception;
-                AuthStatus.text = UserNotAuthenticated;
-                AccountIdName.enabled = enabled;
-                AccountIdName.text = "Exception";
-                AccountIdLabel.enabled = enabled;
-                AccountIdLabel.text = signInTask.Exception.ToString();
-            }
-            else
+            AuthStatus.text = UserNotAuthenticated;
+            AccountIdName.enabled = enabled;
+            AccountIdName.text = "Exception";
+            AccountIdLabel.enabled = enabled;
+            AccountIdLabel.text = signInTask.Exception.ToString();
+        }
+        else
         {
             var userInformation = signInTask.Result;
             yield return userInformation;
             if (userInformation == null)
-                {
-                    AuthStatus.text = UserNotAuthenticated;
-                }
-                else
-                {
-                    AuthStatus.text = "Sign in succeeded. User is authenticated.";
-                    ShowLabels(true);
-                    var accountId = userInformation.AccountId;
-                    var accessToken = userInformation.AccessToken;
-                    var idToken = userInformation.IdToken;
-                    AccountIdName.text = "Account Id";
-                    AccessTokenName.text = "Access Token";
-                    IdTokenName.text = "Id Token";
-                    AccountIdLabel.text = accountId;
-                    AccessTokenLabel.text = accessToken == null ? TokenUnset : TokenSet;
-                    IdTokenLabel.text = idToken == null ? TokenUnset : TokenSet;
-                }
+            {
+                AuthStatus.text = UserNotAuthenticated;
             }
-        
+            else
+            {
+                AuthStatus.text = "Sign in succeeded. User is authenticated.";
+                ShowLabels(true);
+                var accountId = userInformation.AccountId;
+                var accessToken = userInformation.AccessToken;
+                var idToken = userInformation.IdToken;
+                AccountIdName.text = "Account Id";
+                AccessTokenName.text = "Access Token";
+                IdTokenName.text = "Id Token";
+                AccountIdLabel.text = accountId;
+                AccessTokenLabel.text = accessToken == null ? TokenUnset : TokenSet;
+                IdTokenLabel.text = idToken == null ? TokenUnset : TokenSet;
+            }
+        }
     }
 
     public void SetEnabled(bool enabled)
