@@ -35,28 +35,23 @@ public class PuppetAuth : MonoBehaviour
         AuthEnabled.isOn = task.Result;
     }
 
-    public void SetEnabled(bool enabled)
-    {
-        StartCoroutine(SetEnabledCoroutine(enabled));
-    }
-
-    public void SignIn()
+    private IEnumerator SignInCoroutine()
     {
         var signInTask = Auth.SignInAsync();
-        signInTask.ContinueWith(t =>
-        {
-            if (t.Exception != null)
+            if (signInTask.Exception != null)
             {
+            yield return signInTask.Exception;
                 AuthStatus.text = UserNotAuthenticated;
                 AccountIdName.enabled = enabled;
                 AccountIdName.text = "Exception";
                 AccountIdLabel.enabled = enabled;
-                AccountIdLabel.text = t.Exception.ToString();
+                AccountIdLabel.text = signInTask.Exception.ToString();
             }
             else
-            {
-                var userInformation = t.Result;
-                if (userInformation == null)
+        {
+            var userInformation = signInTask.Result;
+            yield return userInformation;
+            if (userInformation == null)
                 {
                     AuthStatus.text = UserNotAuthenticated;
                 }
@@ -75,7 +70,17 @@ public class PuppetAuth : MonoBehaviour
                     IdTokenLabel.text = idToken == null ? TokenUnset : TokenSet;
                 }
             }
-        });
+        
+    }
+
+    public void SetEnabled(bool enabled)
+    {
+        StartCoroutine(SetEnabledCoroutine(enabled));
+    }
+
+    public void SignIn()
+    {
+        StartCoroutine(SignInCoroutine());
     }
 
     public void SignOut()
