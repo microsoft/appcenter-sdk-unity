@@ -38,9 +38,9 @@ public class PuppetAuth : MonoBehaviour
     private IEnumerator SignInCoroutine()
     {
         var signInTask = Auth.SignInAsync();
+        yield return signInTask;
         if (signInTask.Exception != null)
         {
-            yield return signInTask.Exception;
             AuthStatus.text = UserNotAuthenticated;
             AccountIdName.enabled = enabled;
             AccountIdName.text = "Exception";
@@ -50,7 +50,6 @@ public class PuppetAuth : MonoBehaviour
         else
         {
             var userInformation = signInTask.Result;
-            yield return userInformation;
             if (userInformation == null)
             {
                 AuthStatus.text = UserNotAuthenticated;
