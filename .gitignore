@@ -13,6 +13,8 @@
 xcuserdata
 .vscode
 .vs
+ProjectSettings/PresetManager.asset
+ProjectSettings/ProjectVersion.txt
 
 # Build results
 [Dd]ebug/

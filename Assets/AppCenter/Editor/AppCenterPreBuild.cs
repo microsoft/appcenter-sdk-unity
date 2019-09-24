@@ -28,11 +28,16 @@ public class AppCenterPreBuild : IPreprocessBuild
         if (target == BuildTarget.Android)
         {
             var settings = AppCenterSettingsContext.SettingsInstance;
+            if (settings.UseAuth && AppCenter.Auth != null)
+            {
+                MsalDependency.SetupAuth();
+            }
             if (settings.UsePush && AppCenter.Push != null)
             {
                 FirebaseDependency.SetupPush();
             }
             AddStartupCode(new AppCenterSettingsMakerAndroid());
+            CreateManifest.Create(settings);
         }
         else if (target == BuildTarget.iOS)
         {
@@ -65,6 +70,14 @@ public class AppCenterPreBuild : IPreprocessBuild
         if (settings.UseAnalytics && settingsMaker.IsAnalyticsAvailable())
         {
             settingsMaker.StartAnalyticsClass();
+        }
+        if (settings.UseAuth && settingsMaker.IsAuthAvailable())
+        {
+            if (settings.CustomAuthConfigUrl.UseCustomUrl)
+            {
+                settingsMaker.SetAuthConfigUrl(settings.CustomAuthConfigUrl.Url);
+            }
+            settingsMaker.StartAuthClass();
         }
         if (settings.UseCrashes && settingsMaker.IsCrashesAvailable())
         {

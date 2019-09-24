@@ -1,0 +1,41 @@
+﻿// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT license.
+
+#if UNITY_WSA_10_0 && !UNITY_EDITOR
+using System;
+using System.Collections.Generic;
+using UnityEngine;
+
+namespace Microsoft.AppCenter.Unity.Auth.Internal
+{
+    class AuthInternal
+    {
+        public static void PrepareEventHandlers()
+        {
+        }
+
+        public static void AddNativeType(List<Type> nativeTypes)
+        {
+        }
+
+        public static AppCenterTask<UserInformation> SignInAsync()
+        {
+            return AppCenterTask<UserInformation>.FromCompleted(null);
+        }
+
+        public static void SignOut()
+        {
+        }
+        
+        public static AppCenterTask SetEnabledAsync(bool isEnabled)
+        {
+            return AppCenterTask.FromCompleted();
+        }
+
+        public static AppCenterTask<bool> IsEnabledAsync()
+        {
+            return AppCenterTask<bool>.FromCompleted(false);
+        }
+    }
+}
+#endif
