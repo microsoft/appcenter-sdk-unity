@@ -223,6 +223,11 @@ namespace Microsoft.AppCenter.Unity
             get { return AppCenterAssembly.GetType("Microsoft.AppCenter.Unity.Analytics.Analytics"); }
         }
 
+        public static Type Auth
+        {
+            get { return AppCenterAssembly.GetType("Microsoft.AppCenter.Unity.Auth.Auth"); }
+        }
+
         public static Type Crashes
         {
             get { return AppCenterAssembly.GetType("Microsoft.AppCenter.Unity.Crashes.Crashes"); }

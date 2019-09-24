@@ -3,6 +3,7 @@
 
 #if UNITY_ANDROID && !UNITY_EDITOR
 
+using System;
 using System.Threading;
 using UnityEngine;
 
@@ -12,6 +13,7 @@ namespace Microsoft.AppCenter.Unity
     {
         private ManualResetEvent _completionEvent = new ManualResetEvent(false);
         private TResult _result;
+        private Exception _exception;
         private UnityAppCenterConsumer<TResult> _consumer = new UnityAppCenterConsumer<TResult>();
 
         // This will block if it is called before the task is complete
@@ -21,7 +23,22 @@ namespace Microsoft.AppCenter.Unity
             {
                 // Locking in here is both unnecessary and can deadlock.
                 _completionEvent.WaitOne();
-                return _result;
+                if (_exception == null)
+                {
+                    return _result;
+                }
+                else
+                {
+                    throw _exception;
+                }
+            }
+        }
+        
+        public Exception Exception
+        {
+            get
+            {
+                return _exception;
             }
         }
 
@@ -38,6 +55,18 @@ namespace Microsoft.AppCenter.Unity
                 ThrowIfCompleted();
                 _consumer.CompletionCallback = null;
                 _result = result;
+                _completionEvent.Set();
+                CompletionAction();
+            }
+        }
+        
+        internal void SetException(Exception exception)
+        {
+            lock (_lockObject)
+            {
+                ThrowIfCompleted();
+                _consumer.CompletionCallback = null;
+                _exception = exception;
                 _completionEvent.Set();
                 CompletionAction();
             }

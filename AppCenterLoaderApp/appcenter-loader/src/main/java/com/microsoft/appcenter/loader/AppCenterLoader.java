@@ -16,6 +16,7 @@ import android.util.Log;
 import com.microsoft.appcenter.AppCenter;
 import com.microsoft.appcenter.AppCenterService;
 import com.microsoft.appcenter.analytics.Analytics;
+import com.microsoft.appcenter.auth.Auth;
 import com.microsoft.appcenter.distribute.Distribute;
 import com.microsoft.appcenter.push.Push;
 import com.microsoft.appcenter.push.PushListener;
@@ -36,9 +37,12 @@ public class AppCenterLoader extends ContentProvider {
     private static final String SENDER_ID_KEY = "appcenter_sender_id";
     private static final String ENABLE_FIREBASE_ANALYTICS_KEY = "appcenter_enable_firebase_analytics";
     private static final String USE_ANALYTICS_KEY = "appcenter_use_analytics";
+    private static final String USE_AUTH_KEY = "appcenter_use_auth";
     private static final String USE_DISTRIBUTE_KEY = "appcenter_use_distribute";
+    private static final String USE_CUSTOM_AUTH_CONFIG_URL_KEY = "appcenter_use_custom_auth_config_url";
     private static final String USE_CUSTOM_API_URL_KEY = "appcenter_use_custom_api_url";
-    private static final String USE_CUSTOM_INSTALL_URL_KEY = "appcenter_use_custom_install_url";
+    private static final String USE_CUSTOM_INSTALL_URL_KEY = "appcenter_use_custom_install_url";    
+    private static final String CUSTOM_AUTH_CONFIG_URL_KEY = "appcenter_custom_auth_config_url";
     private static final String CUSTOM_API_URL_KEY = "appcenter_custom_api_url";
     private static final String CUSTOM_INSTALL_URL_KEY = "appcenter_custom_install_url";
     private static final String USE_CRASHES_KEY = "appcenter_use_crashes";
@@ -79,6 +83,16 @@ public class AppCenterLoader extends ContentProvider {
         if (isTrueValue(getStringResource(USE_ANALYTICS_KEY)) &&
             isModuleAvailable("com.microsoft.appcenter.analytics.Analytics", "Analytics")) {
             classes.add(Analytics.class);
+        }
+        if (isTrueValue(getStringResource(USE_AUTH_KEY)) &&
+            isModuleAvailable("com.microsoft.appcenter.auth.Auth", "Auth")) {
+            if (isTrueValue(getStringResource(USE_CUSTOM_AUTH_CONFIG_URL_KEY))) {
+                String customAuthConfigUrl = getStringResource(CUSTOM_AUTH_CONFIG_URL_KEY);
+                if (customAuthConfigUrl != null) {
+                    Auth.setConfigUrl(customAuthConfigUrl);
+                }
+            }
+            classes.add(Auth.class);
         }
         // We start crash service in .Net code, to give app an opportunity to assign handlers after crash and restart in Awake method
         // if (isTrueValue(getStringResource(USE_CRASHES_KEY)) &&

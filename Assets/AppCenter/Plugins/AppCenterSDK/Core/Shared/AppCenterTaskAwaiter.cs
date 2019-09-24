@@ -23,7 +23,16 @@ namespace Microsoft.AppCenter.Unity
         public new TaskAwaiter<TResult> GetAwaiter()
         {
             var taskCompletionSource = new TaskCompletionSource<TResult>();
-            ContinueWith(task => taskCompletionSource.SetResult(task.Result));
+            ContinueWith(task => 
+            {
+                if (task.Exception == null)
+                {
+                    taskCompletionSource.SetResult(task.Result);
+                }
+                else{
+                    taskCompletionSource.SetException(task.Exception);
+                }
+            });
             return taskCompletionSource.Task.GetAwaiter();
         }
     }
