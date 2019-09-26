@@ -33,7 +33,6 @@ Please list the steps used to reproduce your issue.
 3. What device version did you see this error on?  Were you using an emulator or a physical device?
     - e.g. Google Pixel 2 emulator, iPhone XR
 4. What third party plugins are you using?
-    - example
 5. Please enable verbose logging for your app using **Initial Log Level** setting and include the logs here:
 6. Please share a screenshot of App Center Settings (without app secrets)
-7. Please share a screenshot of Build and PLayer Settings.
+7. Please share a screenshot of Build and Player Settings.
