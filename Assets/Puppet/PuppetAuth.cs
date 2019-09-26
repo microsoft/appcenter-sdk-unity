@@ -35,6 +35,42 @@ public class PuppetAuth : MonoBehaviour
         AuthEnabled.isOn = task.Result;
     }
 
+    private IEnumerator SignInCoroutine()
+    {
+        var signInTask = Auth.SignInAsync();
+        yield return signInTask;
+        if (signInTask.Exception != null)
+        {
+            AuthStatus.text = UserNotAuthenticated;
+            AccountIdName.enabled = enabled;
+            AccountIdName.text = "Exception";
+            AccountIdLabel.enabled = enabled;
+            AccountIdLabel.text = signInTask.Exception.ToString();
+        }
+        else
+        {
+            var userInformation = signInTask.Result;
+            if (userInformation == null)
+            {
+                AuthStatus.text = UserNotAuthenticated;
+            }
+            else
+            {
+                AuthStatus.text = "Sign in succeeded. User is authenticated.";
+                ShowLabels(true);
+                var accountId = userInformation.AccountId;
+                var accessToken = userInformation.AccessToken;
+                var idToken = userInformation.IdToken;
+                AccountIdName.text = "Account Id";
+                AccessTokenName.text = "Access Token";
+                IdTokenName.text = "Id Token";
+                AccountIdLabel.text = accountId;
+                AccessTokenLabel.text = accessToken == null ? TokenUnset : TokenSet;
+                IdTokenLabel.text = idToken == null ? TokenUnset : TokenSet;
+            }
+        }
+    }
+
     public void SetEnabled(bool enabled)
     {
         StartCoroutine(SetEnabledCoroutine(enabled));
@@ -42,40 +78,7 @@ public class PuppetAuth : MonoBehaviour
 
     public void SignIn()
     {
-        var signInTask = Auth.SignInAsync();
-        signInTask.ContinueWith(t =>
-        {
-            if (t.Exception != null)
-            {
-                AuthStatus.text = UserNotAuthenticated;
-                AccountIdName.enabled = enabled;
-                AccountIdName.text = "Exception";
-                AccountIdLabel.enabled = enabled;
-                AccountIdLabel.text = t.Exception.ToString();
-            }
-            else
-            {
-                var userInformation = t.Result;
-                if (userInformation == null)
-                {
-                    AuthStatus.text = UserNotAuthenticated;
-                }
-                else
-                {
-                    AuthStatus.text = "Sign in succeeded. User is authenticated.";
-                    ShowLabels(true);
-                    var accountId = userInformation.AccountId;
-                    var accessToken = userInformation.AccessToken;
-                    var idToken = userInformation.IdToken;
-                    AccountIdName.text = "Account Id";
-                    AccessTokenName.text = "Access Token";
-                    IdTokenName.text = "Id Token";
-                    AccountIdLabel.text = accountId;
-                    AccessTokenLabel.text = accessToken == null ? TokenUnset : TokenSet;
-                    IdTokenLabel.text = idToken == null ? TokenUnset : TokenSet;
-                }
-            }
-        });
+        StartCoroutine(SignInCoroutine());
     }
 
     public void SignOut()
