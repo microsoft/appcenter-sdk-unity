@@ -1,5 +1,27 @@
 # App Center SDK for Unity Change Log
 
+## Release 2.4.0
+
+Updated native SDK versions:
+
+* iOS from 2.3.0 to [2.4.0](https://github.com/Microsoft/AppCenter-SDK-Apple/releases/tag/2.4.0)
+
+### App Center Auth
+
+#### iOS
+
+* **[Fix]** Redirect URIs are now hidden in logs.
+* **[Fix]** Fix interactive sign in on iOS 13. Temporary fix, will be revisited in the future.
+* **[Feature]** Updated the Microsoft Authentication Library dependency to v0.7.0.
+
+### App Center Analytics
+
+#### iOS
+
+* **[Fix]** Fix crash involving SDK's `ms_viewWillAppear` method.
+
+___
+
 ## Release 2.3.0
 
 Updated native SDK versions:
