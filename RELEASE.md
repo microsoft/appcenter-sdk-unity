@@ -6,11 +6,7 @@ Updated native SDK versions:
 
 ### App Center Auth
 
-#### iOS
-
-* **[Fix]** Redirect URIs are now hidden in logs.
-* **[Fix]** Fix interactive sign in on iOS 13. Temporary fix, will be revisited in the future.
-* **[Feature]** Updated the Microsoft Authentication Library dependency to v0.7.0.
+App Center Auth is a cloud-based identity management service that enables developers to authenticate application users and manage user identities. The service integrates with other parts of App Center, enabling developers to leverage the user identity to view user data in other services and even send push notifications to users instead of individual devices.
 
 ### App Center Analytics
 
