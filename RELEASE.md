@@ -1,3 +1,21 @@
+## Release 2.4.0
+
+Updated native SDK versions:
+
+* iOS from 2.3.0 to [2.4.0](https://github.com/Microsoft/AppCenter-SDK-Apple/releases/tag/2.4.0)
+
+### App Center Auth
+
+This version of App Center Unity SDK includes a new module: Auth. 
+
+App Center Auth is a cloud-based identity management service that enables developers to authenticate application users and manage user identities. The service integrates with other parts of App Center, enabling developers to leverage the user identity to view user data in other services and even send push notifications to users instead of individual devices.
+
+### App Center Analytics
+
+#### iOS
+
+* **[Fix]** Fix crash involving SDK's `ms_viewWillAppear` method.
+
 ## Release 2.3.0
 
 Updated native SDK versions:
