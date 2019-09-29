@@ -182,13 +182,13 @@ public class PuppetTransmission : MonoBehaviour
         var property = Instantiate(EventParentProperty);
         property.transform.SetParent(EventParentPropertiesList, false);
     }
-    
+
     public void AddChildProperty()
     {
         var property = Instantiate(EventChildProperty);
         property.transform.SetParent(EventChildPropertiesList, false);
     }
-    
+
     private void OverrideParentProperties(TransmissionTarget transmissionTarget)
     {
         var overridenAppName = AppNameParent.text;

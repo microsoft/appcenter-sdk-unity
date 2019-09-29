@@ -57,7 +57,9 @@ public class PuppetAppCenter : MonoBehaviour
     private IEnumerator SetPushEnabledCoroutine(bool enabled)
     {
         yield return Push.SetEnabledAsync(enabled);
-        yield return ShowIsPushEnable();
+        var isEnabled = Push.IsEnabledAsync();
+        yield return isEnabled;
+        PushEnabled.isOn = isEnabled.Result;
     }
 
     public void SetDistributeEnabled(bool enabled)
@@ -68,7 +70,9 @@ public class PuppetAppCenter : MonoBehaviour
     private IEnumerator SetDistributeEnabledCoroutine(bool enabled)
     {
         yield return Distribute.SetEnabledAsync(enabled);
-        yield return ShowIsDistributeEnable();
+        var isEnabled = Distribute.IsEnabledAsync();
+        yield return isEnabled;
+        DistributeEnabled.isOn = isEnabled.Result;
     }
 
     public void AddProperty()
@@ -175,38 +179,34 @@ public class PuppetAppCenter : MonoBehaviour
         SdkVersionLabel.text = AppCenter.GetSdkVersion();
         LogLevel.value = AppCenter.LogLevel - Microsoft.AppCenter.Unity.LogLevel.Verbose;
         StartupType.value = StartupTypeCached;
-        ShowIsPushEnable();
-        ShowIsDistributeEnable();
-        UserId.text = _customUserId;
-    }
 
-    private IEnumerator ShowIsPushEnable()
-    {
         var isPushEnabled = Push.IsEnabledAsync();
         yield return isPushEnabled;
         PushEnabled.isOn = isPushEnabled.Result;
-    }
 
-    private IEnumerator ShowIsDistributeEnable()
-    {
         var isDistributeEnabled = Distribute.IsEnabledAsync();
         yield return isDistributeEnabled;
         DistributeEnabled.isOn = isDistributeEnabled.Result;
+        UserId.text = _customUserId;
     }
 
     public void SetEnabled(bool enabled)
     {
         StartCoroutine(SetEnabledCoroutine(enabled));
-        StartCoroutine(ShowIsPushEnable());
-        StartCoroutine(ShowIsDistributeEnable());
     }
 
     private IEnumerator SetEnabledCoroutine(bool enabled)
     {
-        AppCenter.SetEnabledAsync(enabled);
+        yield return AppCenter.SetEnabledAsync(enabled);
         var isEnabled = AppCenter.IsEnabledAsync();
         yield return isEnabled;
         Enabled.isOn = isEnabled.Result;
+        var isPushEnabled = Push.IsEnabledAsync();
+        yield return isPushEnabled;
+        PushEnabled.isOn = isPushEnabled.Result;
+        var isDistributeEnabled = Distribute.IsEnabledAsync();
+        yield return isDistributeEnabled;
+        DistributeEnabled.isOn = isDistributeEnabled.Result;
     }
 
     public void SetLogLevel(int logLevel)
@@ -223,8 +223,6 @@ public class PuppetAppCenter : MonoBehaviour
 
     public void SetStartupMode(int startupMode)
     {
-        // A workaround for android. Both calls to PlayerPrefs and AndroidUtility are needed.
-        // AndroidUtility allows to load preferenes in native Java code, PlayerPrefs is for Unity layer.
         PlayerPrefs.SetInt(StartupModeKey, startupMode);
         PlayerPrefs.Save();
 #if UNITY_ANDROID && !UNITY_EDITOR
@@ -260,9 +258,6 @@ public class PuppetAppCenter : MonoBehaviour
     {
         LogUrl.text = "";
         LogUrlCached = null;
-        
-        // A workaround for android. Both calls to PlayerPrefs and AndroidUtility are needed.
-        // AndroidUtility allows to load preferenes in native Java code, PlayerPrefs is for Unity layer.
         PlayerPrefs.DeleteKey(LogUrlKey);
         AppCenter.SetLogUrl(null);
 #if UNITY_ANDROID && !UNITY_EDITOR
@@ -274,9 +269,6 @@ public class PuppetAppCenter : MonoBehaviour
     {
         AppSecret.text = "";
         AppSecretCached = null;
-        
-        // A workaround for android. Both calls to PlayerPrefs and AndroidUtility are needed.
-        // AndroidUtility allows to load preferenes in native Java code, PlayerPrefs is for Unity layer.
         PlayerPrefs.DeleteKey(AppSecretKey);
         AppCenter.ParseAndSaveSecretForPlatform(null);
 #if UNITY_ANDROID && !UNITY_EDITOR
