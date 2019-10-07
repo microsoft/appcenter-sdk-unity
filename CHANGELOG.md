@@ -1,5 +1,13 @@
 # App Center SDK for Unity Change Log
 
+## Release 2.5.0 (Under development)
+
+### App Center Crashes
+
+#### Android
+
+* **[Bug fix]** Fixes a security issue with the `Exception` field on `ErrorReport` objects. The `Exception.StackTrace` might look a bit different now, and the `Exception.Message` field will be `null`.
+
 ## Release 2.4.0
 
 Updated native SDK versions:
