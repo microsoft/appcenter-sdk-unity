@@ -6,7 +6,7 @@
 
 #### Android
 
-* **[Bug fix]** Fixes a security issue with the `Exception` field on `ErrorReport` objects. The `Exception.StackTrace` might look a bit different now, and the `Exception.Message` field will be `null`.
+* **[Behavior change]** Fix a security issue with the `Exception` field on `ErrorReport` objects. As a result, the `Exception.StackTrace` now holds the raw stack trace, and the `Exception.Message` field is `null`.
 
 ## Release 2.4.0
 
