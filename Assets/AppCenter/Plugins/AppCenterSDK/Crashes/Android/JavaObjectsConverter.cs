@@ -23,7 +23,7 @@ public class JavaObjectsConverter
             var threadName = errorReport.Call<string>("getThreadName");
             var startTime = JavaDateHelper.DateTimeConvert(errorReport.Call<AndroidJavaObject>("getAppStartTime"));
             var errorTime = JavaDateHelper.DateTimeConvert(errorReport.Call<AndroidJavaObject>("getAppErrorTime"));
-            var exception = ConvertException(errorReport.Call<AndroidJavaObject>("getStackTrace"));
+            var exception = ConvertException(errorReport.Call<string>("getStackTrace"));
             var device = ConvertDevice(errorReport.Call<AndroidJavaObject>("getDevice"));
             return new ErrorReport(id, startTime, errorTime, exception, device, threadName);
         }
@@ -36,7 +36,7 @@ public class JavaObjectsConverter
 
     public static Exception ConvertException(string stackTrace)
     {
-        return new Exception(null, stackTrace.ToString());
+        return new Exception(null, stackTrace);
     }
 
     private static Device ConvertDevice(AndroidJavaObject device)

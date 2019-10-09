@@ -8,6 +8,8 @@
 
 * **[Behavior change]** Fix a security issue with the `Exception` field on `ErrorReport` objects. As a result, the `Exception.StackTrace` now holds the raw stack trace, and the `Exception.Message` field is `null`.
 
+___
+
 ## Release 2.4.0
 
 Updated native SDK versions:

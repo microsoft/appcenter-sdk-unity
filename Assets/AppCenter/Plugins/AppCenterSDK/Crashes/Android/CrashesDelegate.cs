@@ -44,7 +44,8 @@ namespace Microsoft.AppCenter.Unity.Crashes.Internal
             if (handlers != null)
             {
                 var errorReport = JavaObjectsConverter.ConvertErrorReport(report);
-                var failCause = JavaObjectsConverter.ConvertException(exception);
+                var exceptionStackTrace = exception.Call<string>("getStackTrace");
+                var failCause = JavaObjectsConverter.ConvertException(exceptionStackTrace);
                 handlers.Invoke(errorReport, failCause);
             }
         }
