@@ -17,12 +17,7 @@ namespace Microsoft.AppCenter.Unity.Crashes.Internal
             nativeTypes.Add(appcenter_unity_crashes_get_type());
         }
 
-        public static void TrackException(IntPtr exception)
-        {
-            appcenter_unity_crashes_track_model_exception(exception);
-        }
-
-        public static void TrackException(IntPtr exception, IDictionary<string, string> properties)
+        public static void TrackException(IntPtr exception, IDictionary<string, string> properties, ErrorAttachmentLog[] attachments)
         {
             appcenter_unity_crashes_track_model_exception_with_properties(exception, properties.Keys.ToArray(), properties.Values.ToArray(), properties.Count);
         }

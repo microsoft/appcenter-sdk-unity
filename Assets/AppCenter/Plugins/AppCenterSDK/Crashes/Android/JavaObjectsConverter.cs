@@ -11,6 +11,8 @@ using UnityEngine;
 
 public class JavaObjectsConverter
 {
+    private static readonly AndroidJavaClass _errorAttachmentLogClass = new AndroidJavaClass("com.microsoft.appcenter.crashes.ingestion.models.ErrorAttachmentLog");
+
     public static ErrorReport ConvertErrorReport(AndroidJavaObject errorReport)
     {
         if (errorReport == null)
@@ -64,6 +66,28 @@ public class JavaObjectsConverter
     {
         var integer = javaObject.Call<AndroidJavaObject>(getterName);
         return integer.Call<int>("intValue");
+    }
+
+    internal static AndroidJavaObject ToJavaAttachments(ErrorAttachmentLog[] attachments)
+    {
+        var javaList = new AndroidJavaObject("java.util.LinkedList");
+        if (attachments != null)
+        {
+            foreach (var errorAttachmentLog in attachments)
+            {
+                AndroidJavaObject nativeLog = null;
+                if (errorAttachmentLog.Type == ErrorAttachmentLog.AttachmentType.Text)
+                {
+                    nativeLog = _errorAttachmentLogClass.CallStatic<AndroidJavaObject>("attachmentWithText", errorAttachmentLog.Text, errorAttachmentLog.FileName);
+                }
+                else
+                {
+                    nativeLog = _errorAttachmentLogClass.CallStatic<AndroidJavaObject>("attachmentWithBinary", errorAttachmentLog.Data, errorAttachmentLog.FileName, errorAttachmentLog.ContentType);
+                }
+                javaList.Call("addLast", nativeLog);
+            }
+        }
+        return javaList;
     }
 }
 #endif

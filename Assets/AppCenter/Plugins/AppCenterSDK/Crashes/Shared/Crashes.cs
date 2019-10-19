@@ -44,19 +44,12 @@ namespace Microsoft.AppCenter.Unity.Crashes
             CrashesInternal.AddNativeType(nativeTypes);
         }
 
-        public static void TrackError(Exception exception, IDictionary<string, string> properties = null)
+        public static void TrackError(Exception exception, IDictionary<string, string> properties = null, params ErrorAttachmentLog[] attachments)
         {
             if (exception != null)
             {
                 var exceptionWrapper = CreateWrapperException(exception);
-                if (properties == null || properties.Count == 0)
-                {
-                    CrashesInternal.TrackException(exceptionWrapper.GetRawObject());
-                }
-                else
-                {
-                    CrashesInternal.TrackException(exceptionWrapper.GetRawObject(), properties);
-                }
+                CrashesInternal.TrackException(exceptionWrapper.GetRawObject(), properties, attachments);
             }
         }
 
@@ -65,7 +58,7 @@ namespace Microsoft.AppCenter.Unity.Crashes
             if (LogType.Assert == type || LogType.Exception == type || LogType.Error == type)
             {
                 var exception = CreateWrapperException(logString, stackTrace, type);
-                CrashesInternal.TrackException(exception.GetRawObject());
+                CrashesInternal.TrackException(exception.GetRawObject(), null, null);
             }
         }
 
@@ -325,7 +318,7 @@ namespace Microsoft.AppCenter.Unity.Crashes
                 if (exception != null)
                 {
                     var exceptionWrapper = CreateWrapperException(exception);
-                    CrashesInternal.TrackException(exceptionWrapper.GetRawObject());
+                    CrashesInternal.TrackException(exceptionWrapper.GetRawObject(), null, null);
                 }
                 yield return null; // report remaining exceptions on next frames
             }
