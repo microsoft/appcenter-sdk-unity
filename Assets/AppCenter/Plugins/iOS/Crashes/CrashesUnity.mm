@@ -1,13 +1,13 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT license.
 
-#import "../Core/Utility/NSStringDictionaryHelper.h"
-#import "MSException.h"
-#import "CrashesUnity.h"
-#import "CrashesDelegate.h"
 #import <Foundation/Foundation.h>
 #import <AppCenter/MSAppCenter.h>
-#import "AppCenterCrashes/MSErrorAttachmentLog.h"
+#import <AppCenterCrashes/MSErrorAttachmentLog.h>
+#import "../Core/Utility/NSStringDictionaryHelper.h"
+#import "CrashesUnity.h"
+#import "CrashesDelegate.h"
+#import "MSException.h"
 #import "NSStringHelper.h"
 
 void* appcenter_unity_crashes_get_type()
@@ -15,15 +15,17 @@ void* appcenter_unity_crashes_get_type()
   return (void *)CFBridgingRetain([MSCrashes class]);
 }
 
-void appcenter_unity_crashes_track_model_exception(MSException* exception)
+void appcenter_unity_crashes_track_model_exception_with_properties_with_attachments(MSException* exception, char** propertyKeys, char** propertyValues, int propertyCount, MSErrorAttachmentLog** attachments, int attachmentCount)
 {
-  [MSCrashes trackModelException:exception];
-}
-
-void appcenter_unity_crashes_track_model_exception_with_properties(MSException* exception, char** keys, char** values, int count)
-{
-  NSDictionary<NSString*, NSString*> *properties = appcenter_unity_create_ns_string_dictionary(keys, values, count);
-  [MSCrashes trackModelException:exception withProperties:properties];
+  NSDictionary<NSString*, NSString*> *properties = appcenter_unity_create_ns_string_dictionary(propertyKeys, propertyValues, propertyCount);
+  NSMutableArray<MSErrorAttachmentLog *> *nativeAttachments = nil;
+  if (attachments) {
+    [nativeAttachments = [NSMutableArray alloc] initWithCapacity:attachmentCount];
+    for (int i = 0; i < attachmentCount; i++) {
+      [nativeAttachments addObject:attachments[i]];
+    }
+  }
+  [MSCrashes trackModelException:exception withProperties:properties withAttachments:attachments];
 }
 
 void appcenter_unity_crashes_set_enabled(bool isEnabled)

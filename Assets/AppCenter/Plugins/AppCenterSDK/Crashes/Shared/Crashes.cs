@@ -81,7 +81,7 @@ namespace Microsoft.AppCenter.Unity.Crashes
                 UnityCoroutineHelper.StartCoroutine(SendUnhandledExceptionReports);
 #else
                 var exceptionWrapper = CreateWrapperException(exception);
-                CrashesInternal.TrackException(exceptionWrapper.GetRawObject());
+                CrashesInternal.TrackException(exceptionWrapper.GetRawObject(), null, null);
 #endif
             }
         }

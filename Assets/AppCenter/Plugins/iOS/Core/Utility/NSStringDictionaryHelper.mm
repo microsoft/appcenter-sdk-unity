@@ -22,8 +22,12 @@ const char* appcenter_unity_ns_string_dictionary_get_value_for_key(NSDictionary 
 
 NSDictionary* appcenter_unity_create_ns_string_dictionary(char** keys, char** values, int count)
 {
+  if (count == 0) {
+    return nil;
+  }
+
   // Convert the two arrays to a single dictionary
-  NSMutableDictionary<NSString*, NSString*> *nsdictionary = [[NSMutableDictionary<NSString*, NSString*> alloc] init];
+  NSMutableDictionary<NSString*, NSString*> *nsdictionary = [[NSMutableDictionary alloc] initWithCapacity:count];
   for (int i = 0; i < count; ++i)
   {
     NSString * key = [NSString stringWithUTF8String:keys[i]];

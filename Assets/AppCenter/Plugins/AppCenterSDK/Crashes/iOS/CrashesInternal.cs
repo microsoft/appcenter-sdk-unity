@@ -19,7 +19,12 @@ namespace Microsoft.AppCenter.Unity.Crashes.Internal
 
         public static void TrackException(IntPtr exception, IDictionary<string, string> properties, ErrorAttachmentLog[] attachments)
         {
-            appcenter_unity_crashes_track_model_exception_with_properties(exception, properties.Keys.ToArray(), properties.Values.ToArray(), properties.Count);
+            var keys = properties == null ? null : properties.Keys.ToArray();
+            var values = properties == null ? null : properties.Values.ToArray();
+            var propertyCount = properties == null ? 0 : properties.Count;
+            var nativeAttachments = NativeObjectsConverter.ToNativeAttachments(attachments);
+            var attachmentCount = attachments == null ? 0 : attachments.Length;
+            appcenter_unity_crashes_track_model_exception_with_properties_with_attachments(exception, keys, values, propertyCount, nativeAttachments, attachmentCount);
         }
 
         public static AppCenterTask SetEnabledAsync(bool isEnabled)
@@ -128,10 +133,7 @@ namespace Microsoft.AppCenter.Unity.Crashes.Internal
         private static extern bool appcenter_unity_crashes_has_received_memory_warning_in_last_session();
 
         [DllImport("__Internal")]
-        private static extern void appcenter_unity_crashes_track_model_exception(IntPtr exception);
-
-        [DllImport("__Internal")]
-        private static extern void appcenter_unity_crashes_track_model_exception_with_properties(IntPtr exception, string[] keys, string[] values, int count);
+        private static extern void appcenter_unity_crashes_track_model_exception_with_properties_with_attachments(IntPtr exception, string[] propertyKeys, string[] propertyValues, int propertyCount, IntPtr attachments, int attachmentCount);
 
         [DllImport("__Internal")]
         private static extern void appcenter_unity_crashes_set_enabled(bool isEnabled);
