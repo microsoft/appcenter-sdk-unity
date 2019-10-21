@@ -96,7 +96,7 @@ public class PuppetCrashes : MonoBehaviour
             var properties = new Dictionary<string, string> { { "Category", "Music" }, { "Wifi", "On" } };
 
             // TODO: uncomment attachments when API will be added
-            Crashes.TrackError(ex, properties/*, GetErrorAttachmentst()*/);
+            Crashes.TrackError(ex, properties/*, GetErrorAttachments()*/);
         }
     }
 
@@ -149,10 +149,10 @@ public class PuppetCrashes : MonoBehaviour
 
     public static ErrorAttachmentLog[] GetErrorAttachmentstHandler(ErrorReport errorReport)
     {
-        return GetErrorAttachmentst();
+        return GetErrorAttachments();
     }
 
-    private static ErrorAttachmentLog[] GetErrorAttachmentst()
+    private static ErrorAttachmentLog[] GetErrorAttachments()
     {
         return new ErrorAttachmentLog[]
         {
