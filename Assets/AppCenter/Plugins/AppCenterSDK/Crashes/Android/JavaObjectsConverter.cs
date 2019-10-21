@@ -70,22 +70,23 @@ public class JavaObjectsConverter
 
     internal static AndroidJavaObject ToJavaAttachments(ErrorAttachmentLog[] attachments)
     {
-        var javaList = new AndroidJavaObject("java.util.LinkedList");
-        if (attachments != null)
+        if (attachments == null)
         {
-            foreach (var errorAttachmentLog in attachments)
+            return null;
+        }
+        var javaList = new AndroidJavaObject("java.util.ArrayList", attachments.Length);
+        foreach (var errorAttachmentLog in attachments)
+        {
+            AndroidJavaObject nativeLog = null;
+            if (errorAttachmentLog.Type == ErrorAttachmentLog.AttachmentType.Text)
             {
-                AndroidJavaObject nativeLog = null;
-                if (errorAttachmentLog.Type == ErrorAttachmentLog.AttachmentType.Text)
-                {
-                    nativeLog = _errorAttachmentLogClass.CallStatic<AndroidJavaObject>("attachmentWithText", errorAttachmentLog.Text, errorAttachmentLog.FileName);
-                }
-                else
-                {
-                    nativeLog = _errorAttachmentLogClass.CallStatic<AndroidJavaObject>("attachmentWithBinary", errorAttachmentLog.Data, errorAttachmentLog.FileName, errorAttachmentLog.ContentType);
-                }
-                javaList.Call("addLast", nativeLog);
+                nativeLog = _errorAttachmentLogClass.CallStatic<AndroidJavaObject>("attachmentWithText", errorAttachmentLog.Text, errorAttachmentLog.FileName);
             }
+            else
+            {
+                nativeLog = _errorAttachmentLogClass.CallStatic<AndroidJavaObject>("attachmentWithBinary", errorAttachmentLog.Data, errorAttachmentLog.FileName, errorAttachmentLog.ContentType);
+            }
+            javaList.Call<bool>("add", nativeLog);
         }
         return javaList;
     }
