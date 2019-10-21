@@ -94,7 +94,7 @@ public class PuppetCrashes : MonoBehaviour
         catch (System.Exception ex)
         {
             var properties = new Dictionary<string, string> { { "Category", "Music" }, { "Wifi", "On" } };
-            Crashes.TrackError(ex, properties);
+            Crashes.TrackError(ex, properties/*, GetErrorAttachmentst()*/);
         }
     }
 
@@ -146,6 +146,11 @@ public class PuppetCrashes : MonoBehaviour
     }
 
     public static ErrorAttachmentLog[] GetErrorAttachmentstHandler(ErrorReport errorReport)
+    {
+        return GetErrorAttachmentst();
+    }
+
+    private static ErrorAttachmentLog[] GetErrorAttachmentst()
     {
         return new ErrorAttachmentLog[]
         {
