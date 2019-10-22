@@ -15,16 +15,9 @@ void* appcenter_unity_crashes_get_type()
   return (void *)CFBridgingRetain([MSCrashes class]);
 }
 
-void appcenter_unity_crashes_track_model_exception_with_properties_with_attachments(MSException* exception, char** propertyKeys, char** propertyValues, int propertyCount, MSErrorAttachmentLog** attachments, int attachmentCount)
+void appcenter_unity_crashes_track_model_exception_with_properties_with_attachments(MSException* exception, char** propertyKeys, char** propertyValues, int propertyCount, NSArray<MSErrorAttachmentLog*>* attachments)
 {
   NSDictionary<NSString*, NSString*> *properties = appcenter_unity_create_ns_string_dictionary(propertyKeys, propertyValues, propertyCount);
-  NSMutableArray<MSErrorAttachmentLog *> *nativeAttachments = nil;
-  if (attachments) {
-    [nativeAttachments = [NSMutableArray alloc] initWithCapacity:attachmentCount];
-    for (int i = 0; i < attachmentCount; i++) {
-      [nativeAttachments addObject:attachments[i]];
-    }
-  }
   [MSCrashes trackModelException:exception withProperties:properties withAttachments:attachments];
 }
 
