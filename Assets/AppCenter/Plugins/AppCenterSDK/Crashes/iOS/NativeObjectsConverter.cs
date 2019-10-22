@@ -1,7 +1,9 @@
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT license.
+
 using System;
 using System.Collections.Generic;
 using System.Runtime.InteropServices;
-using Microsoft.AppCenter.Unity.Crashes;
 
 namespace Microsoft.AppCenter.Unity.Crashes.Internal
 {
