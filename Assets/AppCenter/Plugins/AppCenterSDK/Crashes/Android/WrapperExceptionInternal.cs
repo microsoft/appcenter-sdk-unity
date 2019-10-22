@@ -2,8 +2,6 @@
 // Licensed under the MIT license.
 
 #if UNITY_ANDROID && !UNITY_EDITOR
-using System;
-using System.Runtime.InteropServices;
 using UnityEngine;
 
 namespace Microsoft.AppCenter.Unity.Crashes.Internal

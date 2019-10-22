@@ -2,7 +2,6 @@
 // Licensed under the MIT license.
 
 #if UNITY_ANDROID
-using System.Text;
 using Microsoft.AppCenter.Unity;
 using Microsoft.AppCenter.Unity.Crashes;
 using Microsoft.AppCenter.Unity.Crashes.Models;
@@ -77,16 +76,19 @@ public class JavaObjectsConverter
         var javaList = new AndroidJavaObject("java.util.ArrayList", attachments.Length);
         foreach (var errorAttachmentLog in attachments)
         {
-            AndroidJavaObject nativeLog = null;
-            if (errorAttachmentLog.Type == ErrorAttachmentLog.AttachmentType.Text)
+            if (errorAttachmentLog != null)
             {
-                nativeLog = _errorAttachmentLogClass.CallStatic<AndroidJavaObject>("attachmentWithText", errorAttachmentLog.Text, errorAttachmentLog.FileName);
+                AndroidJavaObject nativeLog = null;
+                if (errorAttachmentLog.Type == ErrorAttachmentLog.AttachmentType.Text)
+                {
+                    nativeLog = _errorAttachmentLogClass.CallStatic<AndroidJavaObject>("attachmentWithText", errorAttachmentLog.Text, errorAttachmentLog.FileName);
+                }
+                else
+                {
+                    nativeLog = _errorAttachmentLogClass.CallStatic<AndroidJavaObject>("attachmentWithBinary", errorAttachmentLog.Data, errorAttachmentLog.FileName, errorAttachmentLog.ContentType);
+                }
+                javaList.Call<bool>("add", nativeLog);
             }
-            else
-            {
-                nativeLog = _errorAttachmentLogClass.CallStatic<AndroidJavaObject>("attachmentWithBinary", errorAttachmentLog.Data, errorAttachmentLog.FileName, errorAttachmentLog.ContentType);
-            }
-            javaList.Call<bool>("add", nativeLog);
         }
         return javaList;
     }

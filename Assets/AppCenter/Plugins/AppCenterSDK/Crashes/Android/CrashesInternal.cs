@@ -2,13 +2,11 @@
 // Licensed under the MIT license.
 
 #if UNITY_ANDROID && !UNITY_EDITOR
-using Microsoft.AppCenter.Unity.Crashes.Models;
-using Microsoft.AppCenter.Unity.Crashes;
-using Microsoft.AppCenter.Unity.Internal.Utility;
-using Microsoft.AppCenter.Unity.Internal;
+using System;
 using System.Collections.Generic;
 using System.Threading;
-using System;
+using Microsoft.AppCenter.Unity.Internal;
+using Microsoft.AppCenter.Unity.Internal.Utility;
 using UnityEngine;
 
 namespace Microsoft.AppCenter.Unity.Crashes.Internal
