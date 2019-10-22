@@ -156,8 +156,8 @@ public class PuppetCrashes : MonoBehaviour
     {
         return new ErrorAttachmentLog[]
         {
-            ErrorAttachmentLog.AttachmentWithText(PuppetAppCenter.TextAttachmentCached, "hello.txt"),
-            ErrorAttachmentLog.AttachmentWithBinary(ParseBytes(PuppetAppCenter.BinaryAttachmentCached), "fake_image.jpeg", "image/jpeg")
+            ErrorAttachmentLog.AttachmentWithText(PlayerPrefs.GetString(PuppetAppCenter.TextAttachmentKey), "hello.txt"),
+            ErrorAttachmentLog.AttachmentWithBinary(ParseBytes(PlayerPrefs.GetString(PuppetAppCenter.BinaryAttachmentKey)), "fake_image.jpeg", "image/jpeg")
         };
     }
 
