@@ -4,10 +4,12 @@
 #ifndef CRASHES_UNITY_H
 #define CRASHES_UNITY_H
 
+#import <Foundation/Foundation.h>
 #import <AppCenterCrashes/AppCenterCrashes.h>
+#import "MSException.h"
 
 extern "C" void* appcenter_unity_crashes_get_type();
-extern "C" void appcenter_unity_crashes_track_model_exception_with_properties_with_attachments(MSException* exception, char** propertyKeys, char** propertyValues, int propertyCount, MSErrorAttachmentLog** attachments, int attachmentCount);
+extern "C" void appcenter_unity_crashes_track_model_exception_with_properties_with_attachments(MSException* exception, char** propertyKeys, char** propertyValues, int propertyCount, NSArray<MSErrorAttachmentLog*>* attachments);
 extern "C" void appcenter_unity_crashes_set_enabled(bool isEnabled);
 extern "C" bool appcenter_unity_crashes_has_received_memory_warning_in_last_session();
 extern "C" bool appcenter_unity_crashes_is_enabled();
@@ -22,5 +24,11 @@ extern "C" void appcenter_unity_start_crashes();
 extern "C" void* app_center_unity_crashes_get_error_attachment_log_text(char* text, char* fileName);
 extern "C" void* app_center_unity_crashes_get_error_attachment_log_binary(const void* data, int size, char* fileName, char* contentType);
 extern "C" void* app_center_unity_create_error_attachments_array(MSErrorAttachmentLog* errorAttachment0, MSErrorAttachmentLog* errorAttachment1);
+
+@interface MSCrashes ()
+
++ (void)trackModelException:(MSException *)exception withProperties:(nullable NSDictionary<NSString *, NSString *> *)properties withAttachments:(nullable NSArray<MSErrorAttachmentLog *> *)attachments;
+
+@end
 
 #endif
