@@ -48,7 +48,7 @@ namespace Assets.Puppet.Plugins.Android.FilePickerManager
 
         void onGetBytes(byte[] bytes)
         {
-            System.Diagnostics.Debug.WriteLine("Byte count: {0}", bytes.Length);
+            Debug.LogFormat("Byte count: {0}", bytes.Length);
         }
     }
 }

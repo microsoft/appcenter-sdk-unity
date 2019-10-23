@@ -7,6 +7,7 @@ using Microsoft.AppCenter.Unity.Crashes;
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Runtime.InteropServices;
 using System.Text;
@@ -24,26 +25,6 @@ public class PuppetCrashes : MonoBehaviour
     public Text BinaryAttachment;
     public Text LowMemoryLabel;
     private static bool _crashesNativeCallbackRegistered;
-    private IFilePicker filePicker;
-
-    public void Awake()
-    {
-        FilePickerBehaviour.Completed += OnFilePicked;
-        filePicker =
-#if UNITY_IOS && !UNITY_EDITOR
-        new IOSFilePicker();
-#elif UNITY_ANDROID && !UNITY_EDITOR
-        new AndroidFilePicker();
-#else
-        new DefaultFilePicker();
-#endif
-}
-
-    private void OnFilePicked(string filePath)
-    {
-        BinaryAttachment.text = filePath;
-        PlayerPrefs.SetString(PuppetAppCenter.BinaryAttachmentKey, filePath);
-    }
 
     void OnEnable()
     {
@@ -125,11 +106,6 @@ public class PuppetCrashes : MonoBehaviour
         StartCoroutine(LowMemoryTrigger());
     }
 
-    public void SelectFileErrorAttachment()
-    {
-        filePicker.Show();
-    }
-
     private IEnumerator LowMemoryTrigger()
     {
         var list = new List<byte[]>();
@@ -182,8 +158,18 @@ public class PuppetCrashes : MonoBehaviour
         return new ErrorAttachmentLog[]
         {
             ErrorAttachmentLog.AttachmentWithText(PlayerPrefs.GetString(PuppetAppCenter.TextAttachmentKey), "hello.txt"),
-            ErrorAttachmentLog.AttachmentWithBinary(ParseBytes(PlayerPrefs.GetString(PuppetAppCenter.BinaryAttachmentKey)), "fake_image.jpeg", "image/jpeg")
+            ErrorAttachmentLog.AttachmentWithBinary(GetFileBytes(PlayerPrefs.GetString(PuppetAppCenter.BinaryAttachmentKey)), "fake_image.jpeg", "image/jpeg")
         };
+    }
+
+    private static byte[] GetFileBytes(string filePath)
+    {
+        if (!string.IsNullOrEmpty(filePath))
+        {
+            return File.ReadAllBytes(filePath);
+        }
+
+        return new byte[0];
     }
 
     private static byte[] ParseBytes(string bytesString)

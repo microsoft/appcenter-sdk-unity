@@ -1,8 +1,11 @@
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT license.
+
 #import "FilePicker.h"
 
 #pragma mark Config
 
-const char* kMSCallbackObjectName = "FilePickerBehaviour";
+const char* kMSCallbackObjectName = "Attachment";
 const char* kMSCallbackMethodSuccess = "onSelectFileSuccessful";
 const char* kMSCallbackMethodFailure = "onSelectFileFailure";
 const char* kMSFailedPickFile = "Failed to pick the file";
@@ -38,20 +41,20 @@ const char* kMSFailedFindFile = "Failed to find the file";
 - (void)documentPicker:(UIDocumentPickerViewController *)controller didPickDocumentAtURL:(NSURL *)url {
     if (url == nil) {
         UnitySendMessage(kMSCallbackObjectName, kMSCallbackMethodFailure, kMSFailedFindFile);
-        [self dismissPicker];
+        [self removePicker];
         return;
     }
-    UnitySendMessage(kMSCallbackObjectName, kMSCallbackMethodSuccess, [url.absoluteString UTF8String]);
-    [self dismissPicker];
+    UnitySendMessage(kMSCallbackObjectName, kMSCallbackMethodSuccess, [url.path UTF8String]);
+    [self removePicker];
 }
 
 
 - (void)documentPickerWasCancelled:(UIDocumentPickerViewController *)picker {
     UnitySendMessage(kMSCallbackObjectName, kMSCallbackMethodFailure, kMSFailedPickFile);
-    [self dismissPicker];
+    [self removePicker];
 }
 
-- (void)dismissPicker {
+- (void)removePicker {
     if (self.pickerController != nil) {
         [self.pickerController dismissViewControllerAnimated:YES completion:^{
             self.pickerController = nil;

@@ -1,9 +1,12 @@
-﻿using UnityEngine;
+﻿// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT license.
+
+using UnityEngine;
 
 internal class DefaultFilePicker : IFilePicker
 {
     public void Show()
     {
-        Debug.LogError("Something went wrong with file picker. Platfom unsupported.");
+        Debug.LogError("There is no applicable file picker. Platfom unsupported.");
     }
 }

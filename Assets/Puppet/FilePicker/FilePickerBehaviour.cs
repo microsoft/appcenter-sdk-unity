@@ -1,17 +1,23 @@
-﻿using System;
+﻿// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT license.
+
 using UnityEngine;
+using UnityEngine.UI;
 
 public class FilePickerBehaviour : MonoBehaviour
 {
+    [SerializeField]
+    private Text BinaryAttachment;
     public delegate void FileDelegate(string path);
-
     public delegate void ErrorDelegate(string message);
-
     public static event FileDelegate Completed;
-
     public static event ErrorDelegate Failed;
+    private IFilePicker filePicker;
 
-    private IFilePicker picker =
+    public void Awake()
+    {
+        FilePickerBehaviour.Completed += OnFilePicked;
+        filePicker =
 #if UNITY_IOS && !UNITY_EDITOR
         new IOSFilePicker();
 #elif UNITY_ANDROID && !UNITY_EDITOR
@@ -19,10 +25,17 @@ public class FilePickerBehaviour : MonoBehaviour
 #else
         new DefaultFilePicker();
 #endif
+    }
 
-    public void Show()
+    private void OnFilePicked(string filePath)
     {
-        picker.Show();
+        BinaryAttachment.text = filePath;
+        PlayerPrefs.SetString(PuppetAppCenter.BinaryAttachmentKey, filePath);
+    }
+
+    public void SelectFileErrorAttachment()
+    {
+        filePicker.Show();
     }
 
     private void onSelectFileSuccessful(string path)
