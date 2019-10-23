@@ -2,6 +2,10 @@
 
 ## Release 2.5.0 (Under development)
 
+### App Center
+
+* **[Fix]** Fix "AppCenterStarter not included in the first build"
+
 ### App Center Crashes
 
 #### Android
