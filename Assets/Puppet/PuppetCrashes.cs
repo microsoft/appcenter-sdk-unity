@@ -2,10 +2,12 @@
 // Licensed under the MIT license.
 
 using AOT;
+using Assets.AppCenter.Plugins.Android.Utility;
 using Microsoft.AppCenter.Unity.Crashes;
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Runtime.InteropServices;
 using System.Text;
@@ -20,7 +22,7 @@ public class PuppetCrashes : MonoBehaviour
     public Toggle ReportUnhandledExceptions;
     public Text LastSessionCrashReport;
     public InputField TextAttachment;
-    public InputField BinaryAttachment;
+    public Text BinaryAttachment;
     public Text LowMemoryLabel;
     private static bool _crashesNativeCallbackRegistered;
 
@@ -29,7 +31,6 @@ public class PuppetCrashes : MonoBehaviour
         ReportUnhandledExceptions.isOn = Crashes.IsReportingUnhandledExceptions();
         TextAttachment.text = PuppetAppCenter.TextAttachmentCached;
         BinaryAttachment.text = PuppetAppCenter.BinaryAttachmentCached;
-
         StartCoroutine(OnEnableCoroutine());
     }
 
@@ -157,8 +158,18 @@ public class PuppetCrashes : MonoBehaviour
         return new ErrorAttachmentLog[]
         {
             ErrorAttachmentLog.AttachmentWithText(PlayerPrefs.GetString(PuppetAppCenter.TextAttachmentKey), "hello.txt"),
-            ErrorAttachmentLog.AttachmentWithBinary(ParseBytes(PlayerPrefs.GetString(PuppetAppCenter.BinaryAttachmentKey)), "fake_image.jpeg", "image/jpeg")
+            ErrorAttachmentLog.AttachmentWithBinary(GetFileBytes(PlayerPrefs.GetString(PuppetAppCenter.BinaryAttachmentKey)), "fake_image.jpeg", "image/jpeg")
         };
+    }
+
+    private static byte[] GetFileBytes(string filePath)
+    {
+        if (!string.IsNullOrEmpty(filePath))
+        {
+            return File.ReadAllBytes(filePath);
+        }
+
+        return new byte[0];
     }
 
     private static byte[] ParseBytes(string bytesString)
