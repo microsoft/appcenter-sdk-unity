@@ -2,13 +2,11 @@
 // Licensed under the MIT license.
 
 #if UNITY_ANDROID && !UNITY_EDITOR
-using Microsoft.AppCenter.Unity.Crashes.Models;
-using Microsoft.AppCenter.Unity.Crashes;
-using Microsoft.AppCenter.Unity.Internal.Utility;
-using Microsoft.AppCenter.Unity.Internal;
+using System;
 using System.Collections.Generic;
 using System.Threading;
-using System;
+using Microsoft.AppCenter.Unity.Internal;
+using Microsoft.AppCenter.Unity.Internal.Utility;
 using UnityEngine;
 
 namespace Microsoft.AppCenter.Unity.Crashes.Internal
@@ -23,15 +21,11 @@ namespace Microsoft.AppCenter.Unity.Crashes.Internal
             nativeTypes.Add(AndroidJNI.FindClass("com/microsoft/appcenter/crashes/Crashes"));
         }
 
-        public static void TrackException(AndroidJavaObject exception)
+        public static void TrackException(AndroidJavaObject exception, IDictionary<string, string> properties, ErrorAttachmentLog[] attachments)
         {
-            _wrapperSdkExceptionManager.CallStatic("trackException", exception);
-        }
-
-        public static void TrackException(AndroidJavaObject exception, IDictionary<string, string> properties)
-        {
-            var propertiesMap = JavaStringMapHelper.ConvertToJava(properties);
-            _wrapperSdkExceptionManager.CallStatic("trackException", exception, propertiesMap);
+            var javaProperties = JavaStringMapHelper.ConvertToJava(properties);
+            var javaAttachments = JavaObjectsConverter.ToJavaAttachments(attachments);
+            _wrapperSdkExceptionManager.CallStatic("trackException", exception, javaProperties, javaAttachments);
         }
 
         public static AppCenterTask<bool> HasReceivedMemoryWarningInLastSessionAsync()

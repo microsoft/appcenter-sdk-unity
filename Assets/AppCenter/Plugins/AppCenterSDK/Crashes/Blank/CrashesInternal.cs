@@ -25,11 +25,7 @@ namespace Microsoft.AppCenter.Unity.Crashes.Internal
         {
         }
 
-        public static void TrackException(RawType exception)
-        {
-        }
-
-        public static void TrackException(RawType exception, IDictionary<string, string> properties)
+        public static void TrackException(RawType exception, IDictionary<string, string> properties, ErrorAttachmentLog[] attachments)
         {
         }
 

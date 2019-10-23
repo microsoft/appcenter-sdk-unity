@@ -12581,7 +12581,7 @@ MonoBehaviour:
   UserId: {fileID: 1764686210}
   AppSecret: {fileID: 1264999689}
   LogUrl: {fileID: 1542493263}
-  MaxStorageSize: {fileID: 0}
+  MaxStorageSize: {fileID: 1342666645}
   LogLevel: {fileID: 1404622633}
   StartupType: {fileID: 1044898860}
   userConfirmationDialog: {fileID: 1399467467}
