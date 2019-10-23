@@ -2,6 +2,7 @@
 // Licensed under the MIT license.
 
 using AOT;
+using Assets.AppCenter.Plugins.Android.Utility;
 using Microsoft.AppCenter.Unity.Crashes;
 using System;
 using System.Collections;
@@ -20,7 +21,7 @@ public class PuppetCrashes : MonoBehaviour
     public Toggle ReportUnhandledExceptions;
     public Text LastSessionCrashReport;
     public InputField TextAttachment;
-    public InputField BinaryAttachment;
+    public Text BinaryAttachment;
     public Text LowMemoryLabel;
     private static bool _crashesNativeCallbackRegistered;
 
@@ -103,6 +104,14 @@ public class PuppetCrashes : MonoBehaviour
     public void TriggerLowMemoryWarning()
     {
         StartCoroutine(LowMemoryTrigger());
+    }
+
+    public void SelectFileErrorAttachment()
+    {
+#if UNITY_ANDROID
+        FilePickerManager filePicker = new FilePickerManager();
+        filePicker.OpenFilePicker();
+#endif
     }
 
     private IEnumerator LowMemoryTrigger()
