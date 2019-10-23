@@ -20,7 +20,7 @@ namespace Microsoft.AppCenter.Unity.Crashes.Internal
         {
         }
 
-        public static void TrackException(object exception, IDictionary<string, string> properties)
+        public static void TrackException(AndroidJavaObject exception, IDictionary<string, string> properties, ErrorAttachmentLog[] attachments)
         {
         }
 
