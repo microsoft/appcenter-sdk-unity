@@ -8,7 +8,7 @@ namespace Assets.AppCenter.Plugins.Android.Utility
 {
     public class FilePickerManager
     {
-        private static AndroidJavaClass _push = new AndroidJavaClass("com.microsoft.appcenter.FilePickerManager");
+        private static AndroidJavaClass _push = new AndroidJavaClass("com.microsoft.appcenter.filepicker.FilePickerManager");
 
         public FilePickerManager()
         {
@@ -33,18 +33,20 @@ namespace Assets.AppCenter.Plugins.Android.Utility
 
     class FilePickerManagerDelegate : AndroidJavaProxy
     {
-        public FilePickerManagerDelegate() : base("com.microsoft.appcenter.FilePickerManager.FilePickerManagerListener")
+        public FilePickerManagerDelegate() : base("com.microsoft.appcenter.filepicker.FilePickerManagerListener")
         {
         }
 
         void onSelectFileSuccessful(AndroidJavaObject objectPath)
         {
             var path = objectPath.Call<string>("toString");
+            PlayerPrefs.SetString(PuppetAppCenter.BinaryAttachmentKey, path);
         }
 
         void onSelectFileFailure(AndroidJavaObject objectMessage)
         {
             var message = objectMessage.Call<string>("toString");
+            System.Diagnostics.Debug.WriteLine("Faild select file with error message: {0}", message);
         }
     }
 }

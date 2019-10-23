@@ -1,7 +1,7 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT license.
 
-package com.microsoft.appcenter;
+package com.microsoft.appcenter.filepicker;
 
 import android.app.Activity;
 import android.app.Fragment;
@@ -77,6 +77,7 @@ public class FilePickerManager extends Fragment {
             intent = new Intent(Intent.ACTION_GET_CONTENT);
         }
         intent.addCategory(Intent.CATEGORY_OPENABLE);
+        intent.setType("text/*");
         startActivityForResult(intent, READ_REQUEST_CODE);
     }
 
@@ -91,21 +92,15 @@ public class FilePickerManager extends Fragment {
                     mListener.onSelectFileSuccessful(uri.getPath());
                 }
             } else {
-                Log.i(LOG_TAG, "Failed to get data from result data. ");
+                Log.i(LOG_TAG, "Failed to get data from result data.");
                 if (mListener != null) {
-                    mListener.onSelectFileFailure("Failed to pick the file");
+                    mListener.onSelectFileFailure("Failed to pick the file.");
                 }
             }
         } else {
             if (mListener != null) {
-                mListener.onSelectFileFailure("Failed to pick the file");
+                mListener.onSelectFileFailure("Failed to pick the file.");
             }
         }
-    }
-
-    public interface FilePickerManagerListener {
-        void onSelectFileSuccessful(String path);
-
-        void onSelectFileFailure(String message);
     }
 }
