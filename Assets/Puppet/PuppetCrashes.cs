@@ -95,9 +95,7 @@ public class PuppetCrashes : MonoBehaviour
         catch (System.Exception ex)
         {
             var properties = new Dictionary<string, string> { { "Category", "Music" }, { "Wifi", "On" } };
-
-            // TODO: uncomment attachments when API will be added
-            Crashes.TrackError(ex, properties/*, GetErrorAttachments()*/);
+            Crashes.TrackError(ex, properties, GetErrorAttachments());
         }
     }
 
