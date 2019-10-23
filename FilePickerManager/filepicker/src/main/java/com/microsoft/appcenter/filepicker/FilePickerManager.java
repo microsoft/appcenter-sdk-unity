@@ -37,11 +37,14 @@ public class FilePickerManager extends Fragment {
         transaction.commit();
     }
 
-    private String readTextFromUri(Activity unityActivity, String path) throws IOException {
+    public static void readTextFromUri(Activity unityActivity, String path) throws IOException {
         if (path == null) {
-            return null;
+            if (mListener != null) {
+                mListener.onSelectFileFailure("Path is null.");
+            }
+            return;
         }
-        Uri uri = Uri.parse(path);
+        Uri uri = Uri.parse("file://" + path);
         StringBuilder stringBuilder = new StringBuilder();
         InputStream inputStream = null;
         BufferedReader reader = null;
@@ -64,7 +67,10 @@ public class FilePickerManager extends Fragment {
                 reader.close();
             }
         }
-        return stringBuilder.toString();
+
+        if (mListener != null) {
+            mListener.onGetBytes(String.valueOf(stringBuilder).getBytes());
+        }
     }
 
     @Override

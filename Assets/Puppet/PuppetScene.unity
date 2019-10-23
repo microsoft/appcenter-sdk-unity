@@ -10723,7 +10723,7 @@ MonoBehaviour:
   m_HandleRect: {fileID: 1111163099}
   m_Direction: 2
   m_Value: 1
-  m_Size: 0.35513818
+  m_Size: 0.35292265
   m_NumberOfSteps: 0
   m_OnValueChanged:
     m_PersistentCalls:
@@ -24023,8 +24023,9 @@ MonoBehaviour:
   ReportUnhandledExceptions: {fileID: 1435607825}
   LastSessionCrashReport: {fileID: 568992943}
   TextAttachment: {fileID: 742630267}
-  BinaryAttachment: {fileID: 0}
+  BinaryAttachment: {fileID: 1565886257}
   LowMemoryLabel: {fileID: 295323396}
+  filePicker: {fileID: 0}
 --- !u!114 &1489810418
 MonoBehaviour:
   m_ObjectHideFlags: 0

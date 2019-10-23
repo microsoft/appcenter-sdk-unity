@@ -36,14 +36,19 @@ namespace Assets.Puppet.Plugins.Android.FilePickerManager
         {
         }
 
-        void onSelectFileSuccessful(string objectPath)
+        void onSelectFileSuccessful(string path)
         {
-            PlayerPrefs.SetString(PuppetAppCenter.BinaryAttachmentKey, objectPath);
+            FilePickerBehaviour.SetComplete(path);
         }
 
-        void onSelectFileFailure(string objectMessage)
+        void onSelectFileFailure(string message)
         {
-            System.Diagnostics.Debug.WriteLine("Faild select file with error message: {0}", objectMessage);
+            FilePickerBehaviour.SetFailed(message);
+        }
+
+        void onGetBytes(byte[] bytes)
+        {
+            System.Diagnostics.Debug.WriteLine("Byte count: {0}", bytes.Length);
         }
     }
 }

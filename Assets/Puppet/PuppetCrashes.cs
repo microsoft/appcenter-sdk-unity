@@ -24,13 +24,32 @@ public class PuppetCrashes : MonoBehaviour
     public Text BinaryAttachment;
     public Text LowMemoryLabel;
     private static bool _crashesNativeCallbackRegistered;
+    private IFilePicker filePicker;
+
+    public void Awake()
+    {
+        FilePickerBehaviour.Completed += OnFilePicked;
+        filePicker =
+#if UNITY_IOS && !UNITY_EDITOR
+        new IOSFilePicker();
+#elif UNITY_ANDROID && !UNITY_EDITOR
+        new AndroidFilePicker();
+#else
+        new DefaultFilePicker();
+#endif
+}
+
+    private void OnFilePicked(string filePath)
+    {
+        BinaryAttachment.text = filePath;
+        PlayerPrefs.SetString(PuppetAppCenter.BinaryAttachmentKey, filePath);
+    }
 
     void OnEnable()
     {
         ReportUnhandledExceptions.isOn = Crashes.IsReportingUnhandledExceptions();
         TextAttachment.text = PuppetAppCenter.TextAttachmentCached;
         BinaryAttachment.text = PuppetAppCenter.BinaryAttachmentCached;
-
         StartCoroutine(OnEnableCoroutine());
     }
 
@@ -108,10 +127,7 @@ public class PuppetCrashes : MonoBehaviour
 
     public void SelectFileErrorAttachment()
     {
-#if UNITY_ANDROID
-        FilePickerManager filePicker = new FilePickerManager();
-        filePicker.OpenFilePicker();
-#endif
+        filePicker.Show();
     }
 
     private IEnumerator LowMemoryTrigger()

@@ -6,4 +6,5 @@ package com.microsoft.appcenter.filepicker;
 public interface FilePickerManagerListener {
     void onSelectFileSuccessful(String path);
     void onSelectFileFailure(String message);
+    void onGetBytes(byte[] bytes);
 }

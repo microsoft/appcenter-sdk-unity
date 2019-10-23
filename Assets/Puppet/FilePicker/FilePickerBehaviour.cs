@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using System;
+using UnityEngine;
 
 public class FilePickerBehaviour : MonoBehaviour
 {
@@ -6,9 +7,9 @@ public class FilePickerBehaviour : MonoBehaviour
 
     public delegate void ErrorDelegate(string message);
 
-    public event FileDelegate Completed;
+    public static event FileDelegate Completed;
 
-    public event ErrorDelegate Failed;
+    public static event ErrorDelegate Failed;
 
     private IFilePicker picker =
 #if UNITY_IOS && !UNITY_EDITOR
@@ -26,6 +27,16 @@ public class FilePickerBehaviour : MonoBehaviour
 
     private void onSelectFileSuccessful(string path)
     {
+        SetComplete(path);
+    }
+
+    private void onSelectFileFailure(string message)
+    {
+        SetFailed(message);
+    }
+
+    public static void SetComplete(string path)
+    {
         var handler = Completed;
         if (handler != null)
         {
@@ -33,7 +44,7 @@ public class FilePickerBehaviour : MonoBehaviour
         }
     }
 
-    private void onSelectFileFailure(string message)
+    public static void SetFailed(string message)
     {
         var handler = Failed;
         if (handler != null)
@@ -41,4 +52,5 @@ public class FilePickerBehaviour : MonoBehaviour
             handler(message);
         }
     }
+
 }

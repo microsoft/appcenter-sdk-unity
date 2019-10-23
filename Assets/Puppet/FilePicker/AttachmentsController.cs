@@ -30,7 +30,7 @@ public class PickerController : MonoBehaviour
         usePicker = false;
 #endif
 
-        filePicker.Completed += OnFilePicked;
+        FilePickerBehaviour.Completed += OnFilePicked;
     }
 
     public void OnPressShowPicker()
@@ -52,6 +52,7 @@ public class PickerController : MonoBehaviour
             return File.ReadAllBytes(binaryAttachmentPath);
         }
 
-        return ParseBytes(PlayerPrefs.GetString(PuppetAppCenter.BinaryAttachmentKey));
+        //return ParseBytes(PlayerPrefs.GetString(PuppetAppCenter.BinaryAttachmentKey));
+        return new byte[0];
     }
 }
