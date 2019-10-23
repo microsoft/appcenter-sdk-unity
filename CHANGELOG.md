@@ -4,7 +4,7 @@
 
 ### App Center
 
-* **[Fix]** Fix AppCenterStarter.m was not included in the first build
+* **[Fix]** Fix `AppCenterStarter.m` was not included in the first build.
 
 ### App Center Crashes
 
