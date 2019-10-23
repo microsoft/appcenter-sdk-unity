@@ -37,16 +37,14 @@ namespace Assets.AppCenter.Plugins.Android.Utility
         {
         }
 
-        void onSelectFileSuccessful(AndroidJavaObject objectPath)
+        void onSelectFileSuccessful(string objectPath)
         {
-            var path = objectPath.Call<string>("toString");
-            PlayerPrefs.SetString(PuppetAppCenter.BinaryAttachmentKey, path);
+            PlayerPrefs.SetString(PuppetAppCenter.BinaryAttachmentKey, objectPath);
         }
 
-        void onSelectFileFailure(AndroidJavaObject objectMessage)
+        void onSelectFileFailure(string objectMessage)
         {
-            var message = objectMessage.Call<string>("toString");
-            System.Diagnostics.Debug.WriteLine("Faild select file with error message: {0}", message);
+            System.Diagnostics.Debug.WriteLine("Faild select file with error message: {0}", objectMessage);
         }
     }
 }
