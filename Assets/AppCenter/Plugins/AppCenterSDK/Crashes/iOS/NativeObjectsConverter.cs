@@ -12,18 +12,21 @@ namespace Microsoft.AppCenter.Unity.Crashes.Internal
         public static IntPtr ToNativeAttachments(ErrorAttachmentLog[] logs)
         {
             var nativeLogs = new List<IntPtr>();
-            foreach (var errorAttachmetLog in logs)
+            foreach (var errorAttachmentLog in logs)
             {
-                IntPtr nativeLog = IntPtr.Zero;
-                if (errorAttachmetLog.Type == ErrorAttachmentLog.AttachmentType.Text)
+                if (errorAttachmentLog != null)
                 {
-                    nativeLog = app_center_unity_crashes_get_error_attachment_log_text(errorAttachmetLog.Text, errorAttachmetLog.FileName);
+                    IntPtr nativeLog = IntPtr.Zero;
+                    if (errorAttachmentLog.Type == ErrorAttachmentLog.AttachmentType.Text)
+                    {
+                        nativeLog = app_center_unity_crashes_get_error_attachment_log_text(errorAttachmentLog.Text, errorAttachmentLog.FileName);
+                    }
+                    else
+                    {
+                        nativeLog = app_center_unity_crashes_get_error_attachment_log_binary(errorAttachmentLog.Data, errorAttachmentLog.Data.Length, errorAttachmentLog.FileName, errorAttachmentLog.ContentType);
+                    }
+                    nativeLogs.Add(nativeLog);
                 }
-                else
-                {
-                    nativeLog = app_center_unity_crashes_get_error_attachment_log_binary(errorAttachmetLog.Data, errorAttachmetLog.Data.Length, errorAttachmetLog.FileName, errorAttachmetLog.ContentType);
-                }
-                nativeLogs.Add(nativeLog);
             }
 
             IntPtr log0 = IntPtr.Zero;
