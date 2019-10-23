@@ -13,8 +13,6 @@ using UnityEngine.UI;
 
 public class PuppetAppCenter : MonoBehaviour
 {
-    public static string TextAttachmentCached = "";
-    public static string BinaryAttachmentCached = "";
     public static string AppSecretCached;
     public static string LogUrlCached;
     public static string MaxSizeCached;
@@ -111,8 +109,6 @@ public class PuppetAppCenter : MonoBehaviour
         }
 
         // Caching this in Awake method because PlayerPrefs.GetString() can't be called from a background thread.
-        TextAttachmentCached = PlayerPrefs.GetString(TextAttachmentKey);
-        BinaryAttachmentCached = PlayerPrefs.GetString(BinaryAttachmentKey);
         AppSecretCached = PlayerPrefs.GetString(AppSecretKey, null);
         LogUrlCached = PlayerPrefs.GetString(LogUrlKey, null);
         MaxSizeCached = PlayerPrefs.GetString(MaxStorageSizeKey, null);

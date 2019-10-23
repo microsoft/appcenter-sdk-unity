@@ -29,8 +29,8 @@ public class PuppetCrashes : MonoBehaviour
     void OnEnable()
     {
         ReportUnhandledExceptions.isOn = Crashes.IsReportingUnhandledExceptions();
-        TextAttachment.text = PuppetAppCenter.TextAttachmentCached;
-        BinaryAttachment.text = PuppetAppCenter.BinaryAttachmentCached;
+        TextAttachment.text = PlayerPrefs.GetString(PuppetAppCenter.TextAttachmentKey);
+        BinaryAttachment.text = PlayerPrefs.GetString(PuppetAppCenter.BinaryAttachmentKey);
         StartCoroutine(OnEnableCoroutine());
     }
 
