@@ -1,6 +1,7 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT license.
 
+#if UNITY_IOS
 using System;
 using System.Runtime.InteropServices;
 
@@ -51,3 +52,4 @@ namespace Microsoft.AppCenter.Unity.Crashes.Internal
         #endregion
     }
 }
+#endif
