@@ -12,7 +12,6 @@ namespace Assets.Puppet.Plugins.Android.FilePickerManager
         public FilePickerManager()
         {
             _push.CallStatic("setListener", new FilePickerManagerDelegate());
-            OpenFilePicker();
         }
 
         public void OpenFilePicker()
@@ -46,9 +45,17 @@ namespace Assets.Puppet.Plugins.Android.FilePickerManager
             FilePickerBehaviour.SetFailed(message);
         }
 
-        void onGetBytes(byte[] bytes)
+        void onGetBytes(AndroidJavaObject bytesObject)
         {
-            Debug.LogFormat("Byte count: {0}", bytes.Length);
+            if (bytesObject == null)
+            {
+                Debug.LogFormat("Byte count: 0");
+            }
+            else
+            {
+                byte[] bytes = bytesObject.Call<byte[]>("toByteArray");
+                Debug.LogFormat("Byte count: {0}", bytes.Length);
+            }
         }
     }
 }

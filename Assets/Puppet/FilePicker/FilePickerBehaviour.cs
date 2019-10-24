@@ -16,7 +16,7 @@ public class FilePickerBehaviour : MonoBehaviour
 
     public void Awake()
     {
-        FilePickerBehaviour.Completed += OnFilePicked;
+        Completed += OnFilePicked;
         filePicker =
 #if UNITY_IOS && !UNITY_EDITOR
         new IOSFilePicker();

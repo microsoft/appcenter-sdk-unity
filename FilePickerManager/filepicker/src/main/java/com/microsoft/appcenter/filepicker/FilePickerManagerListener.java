@@ -3,8 +3,10 @@
 
 package com.microsoft.appcenter.filepicker;
 
+import java.io.ByteArrayOutputStream;
+
 public interface FilePickerManagerListener {
     void onSelectFileSuccessful(String path);
     void onSelectFileFailure(String message);
-    void onGetBytes(byte[] bytes);
+    void onGetBytes(ByteArrayOutputStream bytes);
 }
