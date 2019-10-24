@@ -15,6 +15,7 @@ public class FilePickerBehaviour : MonoBehaviour
     public static event ErrorDelegate Failed;
     public static event GetBytesDelegate GetBytes;
     private IFilePicker filePicker;
+    public static byte[] fileBytes;
 
     public void Awake()
     {
@@ -28,6 +29,7 @@ public class FilePickerBehaviour : MonoBehaviour
 #else
         new DefaultFilePicker();
 #endif
+        filePicker.InitBytes(PlayerPrefs.GetString(PuppetAppCenter.BinaryAttachmentKey));
     }
 
     private void OnFilePicked(string filePath)
@@ -38,7 +40,7 @@ public class FilePickerBehaviour : MonoBehaviour
 
     private void OnGetBytes(byte[] bytes)
     {
-        // todo send attachments
+        fileBytes = bytes;
     }
 
     public void SelectFileErrorAttachment()

@@ -162,11 +162,10 @@ public class PuppetCrashes : MonoBehaviour
 
     private static byte[] GetFileBytes(string filePath)
     {
-        if (!string.IsNullOrEmpty(filePath))
+        if (FilePickerBehaviour.fileBytes != null)
         {
-            return File.ReadAllBytes(filePath);
+            return FilePickerBehaviour.fileBytes;
         }
-
         return new byte[0];
     }
 
