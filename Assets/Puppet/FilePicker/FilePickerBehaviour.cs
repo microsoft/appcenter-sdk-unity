@@ -10,13 +10,16 @@ public class FilePickerBehaviour : MonoBehaviour
     private Text BinaryAttachment;
     public delegate void FileDelegate(string path);
     public delegate void ErrorDelegate(string message);
+    public delegate void GetBytesDelegate(byte[] bytes);
     public static event FileDelegate Completed;
     public static event ErrorDelegate Failed;
+    public static event GetBytesDelegate GetBytes;
     private IFilePicker filePicker;
 
     public void Awake()
     {
         Completed += OnFilePicked;
+        GetBytes += OnGetBytes;
         filePicker =
 #if UNITY_IOS && !UNITY_EDITOR
         new IOSFilePicker();
@@ -33,10 +36,22 @@ public class FilePickerBehaviour : MonoBehaviour
         PlayerPrefs.SetString(PuppetAppCenter.BinaryAttachmentKey, filePath);
     }
 
+    private void OnGetBytes(byte[] bytes)
+    {
+        // todo send attachments
+    }
+
     public void SelectFileErrorAttachment()
     {
         filePicker.Show();
     }
+
+    public void InitBytesFileErrorAttachment(string path)
+    {
+        filePicker.InitBytes(path);
+    }
+
+    #region for iOS
 
     private void onSelectFileSuccessful(string path)
     {
@@ -47,6 +62,8 @@ public class FilePickerBehaviour : MonoBehaviour
     {
         SetFailed(message);
     }
+
+    #endregion
 
     public static void SetComplete(string path)
     {
@@ -66,4 +83,12 @@ public class FilePickerBehaviour : MonoBehaviour
         }
     }
 
+    public static void SetBytes(byte[] bytes)
+    {
+        var handler = GetBytes;
+        if (handler != null)
+        {
+            handler(bytes);
+        }
+    }
 }

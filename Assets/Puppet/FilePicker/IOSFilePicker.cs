@@ -8,6 +8,11 @@ internal class IOSFilePicker : IFilePicker
     [DllImport("__Internal")]
     private static extern void CustomFilePicker_show();
 
+    public void InitBytes(string path)
+    {
+        // todo init bytes
+    }
+
     public void Show()
     {
         CustomFilePicker_show();

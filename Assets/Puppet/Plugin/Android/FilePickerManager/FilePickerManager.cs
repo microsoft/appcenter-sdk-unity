@@ -49,13 +49,13 @@ namespace Assets.Puppet.Plugins.Android.FilePickerManager
         {
             if (bytesObject == null)
             {
-                Debug.LogFormat("Byte count: 0");
+                FilePickerBehaviour.SetBytes(new byte[0]);
             }
             else
             {
-                byte[] bytes = bytesObject.Call<byte[]>("toByteArray");
-                Debug.LogFormat("Byte count: {0}", bytes.Length);
+                FilePickerBehaviour.SetBytes(bytesObject.Call<byte[]>("toByteArray"));
             }
+           
         }
     }
 }

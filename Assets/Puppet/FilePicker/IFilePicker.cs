@@ -4,4 +4,5 @@
 internal interface IFilePicker
 {
     void Show();
+    void InitBytes(string path);
 }
