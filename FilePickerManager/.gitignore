@@ -1,8 +1,0 @@
-# Intellij
-*.iml
-.idea/
-
-# Gradle files
-.gradle/
-build/
-/*/build/
