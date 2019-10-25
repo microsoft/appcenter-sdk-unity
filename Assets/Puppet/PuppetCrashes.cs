@@ -150,8 +150,13 @@ public class PuppetCrashes : MonoBehaviour
 
     private static ErrorAttachmentLog[] GetErrorAttachments()
     {
+        var textAttachmentLog = ErrorAttachmentLog.AttachmentWithText(PlayerPrefs.GetString(PuppetAppCenter.TextAttachmentKey), "hello.txt");
         ErrorAttachmentLog binaryAttachmentLog;
-        if (PlayerPrefs.GetString(PuppetAppCenter.BinaryAttachmentKey) == "realimage")
+        if (string.IsNullOrEmpty(PlayerPrefs.GetString(PuppetAppCenter.BinaryAttachmentKey)))
+        {
+            return new ErrorAttachmentLog[] { textAttachmentLog };
+        }
+        if (PlayerPrefs.GetString(PuppetAppCenter.BinaryAttachmentKey).ToLower() == "realimage")
         {
             binaryAttachmentLog = PuppetAttachmentHelper.getSampleBinaryAttachmentLog();
         }
