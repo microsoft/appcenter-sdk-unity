@@ -5,14 +5,20 @@ using Assets.Puppet.Plugins.Android.FilePickerManager;
 
 public class AndroidFilePicker : IFilePicker
 {
-    public static byte[] GetFileBytes(string fileUrl)
+    FilePickerManager filePickerManager;
+
+    public AndroidFilePicker()
     {
-        throw new System.NotImplementedException();
+        filePickerManager = new FilePickerManager();
+    }
+
+    public void InitBytes(string path)
+    {
+        filePickerManager.ReadTextFromUri(path);
     }
 
     public void Show()
     {
-        FilePickerManager filePickerManager = new FilePickerManager();
         filePickerManager.OpenFilePicker();
     }
 }

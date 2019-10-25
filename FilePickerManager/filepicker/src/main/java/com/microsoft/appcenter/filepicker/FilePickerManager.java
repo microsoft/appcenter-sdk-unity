@@ -8,13 +8,11 @@ import android.app.Fragment;
 import android.app.FragmentTransaction;
 import android.content.Intent;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
-import android.util.Log;
-
-import java.io.BufferedReader;
+import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
-import java.io.InputStreamReader;
 
 public class FilePickerManager extends Fragment {
     private static final String LOG_TAG = "FilePickerManager";
@@ -28,7 +26,7 @@ public class FilePickerManager extends Fragment {
 
     public static void openFilePicker(Activity unityActivity) {
         if (unityActivity == null && mListener != null) {
-            mListener.onSelectFileFailure("Failed to open the picker");
+            mListener.onSelectFileFailure("Failed to open the picker.");
             return;
         }
         FilePickerManager picker = new FilePickerManager();
@@ -37,39 +35,50 @@ public class FilePickerManager extends Fragment {
         transaction.commit();
     }
 
-    public static void readTextFromUri(Activity unityActivity, String path) throws IOException {
+    public static void readTextFromUri(Activity unityActivity, String path) {
         if (path == null) {
             if (mListener != null) {
                 mListener.onSelectFileFailure("Path is null.");
             }
             return;
         }
-        Uri uri = Uri.parse("file://" + path);
-        StringBuilder stringBuilder = new StringBuilder();
         InputStream inputStream = null;
-        BufferedReader reader = null;
-        String line;
-
-        // noinspection TryFinallyCanBeTryWithResources
-        try {
-            inputStream = unityActivity.getContentResolver().openInputStream(uri);
-            if (inputStream != null) {
-                reader = new BufferedReader(new InputStreamReader(inputStream));
-                while ((line = reader.readLine()) != null) {
-                    stringBuilder.append(line);
+        ByteArrayOutputStream outputStream = null;
+        Uri uri = Uri.parse(path);
+        try
+        {
+            inputStream = unityActivity.getApplicationContext().getContentResolver().openInputStream(uri);
+            if (inputStream == null) {
+                if (mListener != null) {
+                    mListener.onSelectFileFailure("Failed file name.");
                 }
             }
-        } finally {
-            if (inputStream != null) {
-                inputStream.close();
+            outputStream = new ByteArrayOutputStream();
+            byte[] buffer = new byte[4096];
+            int read;
+            while ((read = inputStream.read(buffer)) != -1) {
+                outputStream.write(buffer, 0, read);
             }
-            if (reader != null) {
-                reader.close();
+        } catch (IOException e) {
+            if (mListener != null) {
+                mListener.onSelectFileFailure("Couldn't read file.");
+            }
+        } finally {
+            try {
+                if (inputStream != null) {
+                    inputStream.close();
+                }
+            } catch (IOException ignore) {
+            }
+            try {
+                if (outputStream != null) {
+                    outputStream.close();
+                }
+            } catch (IOException ignore) {
             }
         }
-
         if (mListener != null) {
-            mListener.onGetBytes(String.valueOf(stringBuilder).getBytes());
+            mListener.onGetBytes(outputStream);
         }
     }
 
@@ -79,12 +88,13 @@ public class FilePickerManager extends Fragment {
         Intent intent = null;
         if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.KITKAT) {
             intent = new Intent(Intent.ACTION_OPEN_DOCUMENT);
+            intent.addCategory(Intent.CATEGORY_OPENABLE);
         } else {
             intent = new Intent(Intent.ACTION_GET_CONTENT);
         }
-        intent.addCategory(Intent.CATEGORY_OPENABLE);
-        intent.setType("text/*");
-        startActivityForResult(intent, READ_REQUEST_CODE);
+        intent.setFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
+        intent.setType("*/*");
+        startActivityForResult(Intent.createChooser(intent, "Select attachment file"), READ_REQUEST_CODE);
     }
 
     @Override
@@ -93,12 +103,13 @@ public class FilePickerManager extends Fragment {
             Uri uri = null;
             if (resultData != null && resultData.getData() != null) {
                 uri = resultData.getData();
-                Log.i(LOG_TAG, "Uri: " + uri.toString());
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
+                    getActivity().getContentResolver().takePersistableUriPermission(uri, resultData.getFlags() & Intent.FLAG_GRANT_READ_URI_PERMISSION);
+                }
                 if (mListener != null) {
-                    mListener.onSelectFileSuccessful(uri.getPath());
+                    mListener.onSelectFileSuccessful(uri.toString());
                 }
             } else {
-                Log.i(LOG_TAG, "Failed to get data from result data.");
                 if (mListener != null) {
                     mListener.onSelectFileFailure("Failed to pick the file.");
                 }

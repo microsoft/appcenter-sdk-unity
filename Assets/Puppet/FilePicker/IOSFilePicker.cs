@@ -22,6 +22,11 @@ internal class IOSFilePicker : IFilePicker
         return mangedData;
     }
 
+    public void InitBytes(string path)
+    {
+        IOSFilePicker.GetFileBytes(path);    
+	}
+
     public void Show()
     {
         CustomFilePicker_show();

@@ -10,13 +10,17 @@ public class FilePickerBehaviour : MonoBehaviour
     private Text BinaryAttachment;
     public delegate void FileDelegate(string path);
     public delegate void ErrorDelegate(string message);
+    public delegate void GetBytesDelegate(byte[] bytes);
     public static event FileDelegate Completed;
     public static event ErrorDelegate Failed;
+    public static event GetBytesDelegate GetBytes;
     private IFilePicker filePicker;
+    public static byte[] fileBytes;
 
     public void Awake()
     {
-        FilePickerBehaviour.Completed += OnFilePicked;
+        Completed += OnFilePicked;
+        GetBytes += OnGetBytes;
         filePicker =
 #if UNITY_IOS && !UNITY_EDITOR
         new IOSFilePicker();
@@ -25,20 +29,13 @@ public class FilePickerBehaviour : MonoBehaviour
 #else
         new DefaultFilePicker();
 #endif
+        filePicker.InitBytes(PlayerPrefs.GetString(PuppetAppCenter.BinaryAttachmentKey));
     }
 
-    public static byte[] GetFileBytes(string fileUrl)
-    {
-        byte[] result =
-#if UNITY_IOS && !UNITY_EDITOR
-        IOSFilePicker.GetFileBytes(fileUrl);
-#elif UNITY_ANDROID && !UNITY_EDITOR
-        AndroidFilePicker.GetFileBytes(fileUrl);
-#else
-        new byte[0];
-#endif
 
-        return result;
+    private void OnGetBytes(byte[] bytes)
+    {
+        fileBytes = bytes;
     }
 
     public void SelectFileErrorAttachment()
@@ -46,11 +43,12 @@ public class FilePickerBehaviour : MonoBehaviour
         filePicker.Show();
     }
 
-    private void OnFilePicked(string filePath)
+    public void InitBytesFileErrorAttachment(string path)
     {
-        BinaryAttachment.text = filePath;
-        PlayerPrefs.SetString(PuppetAppCenter.BinaryAttachmentKey, filePath);
+        filePicker.InitBytes(path);
     }
+
+    #region for iOS
 
     private void onSelectFileSuccessful(string path)
     {
@@ -61,6 +59,8 @@ public class FilePickerBehaviour : MonoBehaviour
     {
         SetFailed(message);
     }
+
+    #endregion
 
     public static void SetComplete(string path)
     {
@@ -80,4 +80,12 @@ public class FilePickerBehaviour : MonoBehaviour
         }
     }
 
+    public static void SetBytes(byte[] bytes)
+    {
+        var handler = GetBytes;
+        if (handler != null)
+        {
+            handler(bytes);
+        }
+    }
 }
