@@ -6,7 +6,8 @@
 
 #import <Foundation/Foundation.h>
 #import <AppCenterCrashes/AppCenterCrashes.h>
-#import "MSException.h"
+
+@class MSException;
 
 extern "C" void* appcenter_unity_crashes_get_type();
 extern "C" void appcenter_unity_crashes_track_model_exception_with_properties_with_attachments(MSException* exception, char** propertyKeys, char** propertyValues, int propertyCount, NSArray<MSErrorAttachmentLog*>* attachments);
@@ -25,11 +26,5 @@ extern "C" void* app_center_unity_crashes_create_error_attachments_array(int cap
 extern "C" void* app_center_unity_crashes_create_error_attachment_log_text(char* text, char* fileName);
 extern "C" void* app_center_unity_crashes_create_error_attachment_log_binary(const void* data, int size, char* fileName, char* contentType);
 extern "C" void appcenter_unity_crashes_add_error_attachment(NSMutableArray<MSErrorAttachmentLog*>* attachments, MSErrorAttachmentLog* attachment);
-
-@interface MSCrashes ()
-
-+ (void)trackModelException:(MSException *)exception withProperties:(nullable NSDictionary<NSString *, NSString *> *)properties withAttachments:(nullable NSArray<MSErrorAttachmentLog *> *)attachments;
-
-@end
 
 #endif

@@ -15,7 +15,7 @@ namespace Microsoft.AppCenter.Unity.Crashes.Internal
             {
                 return IntPtr.Zero;
             }
-            IntPtr nativeArray = app_center_unity_crashes_create_error_attachments_array(logs.Length);
+            var nativeArray = app_center_unity_crashes_create_error_attachments_array(logs.Length);
             foreach (var errorAttachmentLog in logs)
             {
                 if (errorAttachmentLog != null)

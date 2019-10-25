@@ -10,6 +10,12 @@
 #import "MSException.h"
 #import "NSStringHelper.h"
 
+@interface MSCrashes ()
+
++ (void)trackModelException:(MSException *)exception withProperties:(nullable NSDictionary<NSString *, NSString *> *)properties withAttachments:(nullable NSArray<MSErrorAttachmentLog *> *)attachments;
+
+@end
+
 void* appcenter_unity_crashes_get_type()
 {
   return (void *)CFBridgingRetain([MSCrashes class]);
