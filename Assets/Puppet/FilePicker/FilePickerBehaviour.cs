@@ -32,10 +32,15 @@ public class FilePickerBehaviour : MonoBehaviour
         filePicker.InitBytes(PlayerPrefs.GetString(PuppetAppCenter.BinaryAttachmentKey));
     }
 
-
     private void OnGetBytes(byte[] bytes)
     {
         fileBytes = bytes;
+    }
+
+    private void OnFilePicked(string filePath)
+    {
+        BinaryAttachment.text = filePath;
+        PlayerPrefs.SetString(PuppetAppCenter.BinaryAttachmentKey, filePath);
     }
 
     public void SelectFileErrorAttachment()

@@ -24,7 +24,7 @@ internal class IOSFilePicker : IFilePicker
 
     public void InitBytes(string path)
     {
-        IOSFilePicker.GetFileBytes(path);    
+        FilePickerBehaviour.SetBytes(GetFileBytes(path));    
 	}
 
     public void Show()
