@@ -6,7 +6,6 @@ using Microsoft.AppCenter.Unity.Crashes;
 using System;
 using System.Collections;
 using System.Collections.Generic;
-using System.Linq;
 using System.Runtime.InteropServices;
 using System.Text;
 using System.Threading;
@@ -151,10 +150,19 @@ public class PuppetCrashes : MonoBehaviour
 
     private static ErrorAttachmentLog[] GetErrorAttachments()
     {
+        ErrorAttachmentLog binaryAttachmentLog;
+        if (PlayerPrefs.GetString(PuppetAppCenter.BinaryAttachmentKey) == "realimage")
+        {
+            binaryAttachmentLog = PuppetAttachmentHelper.getSampleBinaryAttachmentLog();
+        }
+        else
+        {
+            binaryAttachmentLog = ErrorAttachmentLog.AttachmentWithBinary(ParseBytes(PlayerPrefs.GetString(PuppetAppCenter.BinaryAttachmentKey)), "fake_image.jpeg", "image/jpeg");
+        }
         return new ErrorAttachmentLog[]
         {
             ErrorAttachmentLog.AttachmentWithText(PlayerPrefs.GetString(PuppetAppCenter.TextAttachmentKey), "hello.txt"),
-            ErrorAttachmentLog.AttachmentWithBinary(ParseBytes(PlayerPrefs.GetString(PuppetAppCenter.BinaryAttachmentKey)), "fake_image.txt", "plain/text")
+            binaryAttachmentLog
         };
     }
 
