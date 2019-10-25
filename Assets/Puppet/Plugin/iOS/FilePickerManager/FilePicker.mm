@@ -2,14 +2,15 @@
 // Licensed under the MIT license.
 
 #import "FilePicker.h"
+#import <Photos/Photos.h>
 
 #pragma mark Config
 
 const char* kMSCallbackObjectName = "Attachment";
 const char* kMSCallbackMethodSuccess = "onSelectFileSuccessful";
 const char* kMSCallbackMethodFailure = "onSelectFileFailure";
-const char* kMSFailedPickFile = "Failed to pick the file";
-const char* kMSFailedFindFile = "Failed to find the file";
+const char* kMSImageNotPicked = "Image not picked";
+const char* kMSImageNotFound = "Image not found";
 
 #pragma mark FilePicker
 
@@ -25,43 +26,30 @@ const char* kMSFailedFindFile = "Failed to find the file";
 }
 
 - (void)show {
-    if (self.pickerController != nil) {
-        UnitySendMessage(kMSCallbackObjectName, kMSCallbackMethodFailure, kMSFailedPickFile);
-        return;
-    }
-    UIDocumentPickerViewController *documentPicker = [[UIDocumentPickerViewController alloc] initWithDocumentTypes:@[@"public.data"] inMode:UIDocumentPickerModeImport];
-    documentPicker.delegate = self;
-    documentPicker.modalPresentationStyle = UIModalPresentationFormSheet;
+    UIImagePickerController *imagePicker = [[UIImagePickerController alloc] init];
+    imagePicker.delegate = self;
+    imagePicker.allowsEditing = NO;
+    imagePicker.sourceType = UIImagePickerControllerSourceTypePhotoLibrary;
     UIViewController *unityController = UnityGetGLViewController();
-    [unityController presentViewController:documentPicker animated:YES completion:^{}];
+    [unityController presentViewController:imagePicker animated:YES completion:nil];
 }
 
-#pragma mark UIDocumentPickerDelegate
+#pragma mark UIImagePickerControllerDelegate
 
-- (void)documentPicker:(UIDocumentPickerViewController *)controller didPickDocumentAtURL:(NSURL *)url {
-    if (url == nil) {
-        UnitySendMessage(kMSCallbackObjectName, kMSCallbackMethodFailure, kMSFailedFindFile);
-        [self removePicker];
-        return;
+-(void)imagePickerController:(UIImagePickerController *)imagePicker didFinishPickingMediaWithInfo:(NSDictionary *)info {
+    NSURL *imageUrl = [info objectForKey:UIImagePickerControllerReferenceURL];
+    if (imageUrl == nil) {
+        UnitySendMessage(kMSCallbackObjectName, kMSCallbackMethodFailure, kMSImageNotFound);
+        [imagePicker dismissViewControllerAnimated:YES completion:nil];
     }
-    UnitySendMessage(kMSCallbackObjectName, kMSCallbackMethodSuccess, [url.path UTF8String]);
-    [self removePicker];
+    UnitySendMessage(kMSCallbackObjectName, kMSCallbackMethodSuccess, [imageUrl.absoluteString UTF8String]);
+    [imagePicker dismissViewControllerAnimated:YES completion:nil];
 }
 
-
-- (void)documentPickerWasCancelled:(UIDocumentPickerViewController *)picker {
-    UnitySendMessage(kMSCallbackObjectName, kMSCallbackMethodFailure, kMSFailedPickFile);
-    [self removePicker];
+- (void)imagePickerControllerDidCancel:(UIImagePickerController *)imagePicker {
+    UnitySendMessage(kMSCallbackObjectName, kMSCallbackMethodFailure, kMSImageNotPicked);
+    [imagePicker dismissViewControllerAnimated:YES completion:nil];
 }
-
-- (void)removePicker {
-    if (self.pickerController != nil) {
-        [self.pickerController dismissViewControllerAnimated:YES completion:^{
-            self.pickerController = nil;
-        }];
-    }
-}
-
 @end
 
 #pragma mark Unity Plugin
@@ -70,5 +58,32 @@ extern "C" {
     void CustomFilePicker_show() {
         FilePicker *picker = [FilePicker sharedInstance];
         [picker show];
+    }
+
+    int GetFileBytes(const char* url, unsigned char* dataPtr) {
+        NSString* urlString = [NSString stringWithUTF8String:url];
+        NSURL* imageUrl = [NSURL URLWithString:urlString];
+        PHAsset *asset = [[PHAsset fetchAssetsWithALAssetURLs:@[imageUrl] options:nil] lastObject];
+        __block int result = 0;
+        __block unsigned char* data;
+        if (asset) {
+            PHImageRequestOptions *options = [[PHImageRequestOptions alloc] init];
+            options.synchronous = YES;
+            options.networkAccessAllowed = YES;
+            [[PHImageManager defaultManager]
+                requestImageDataForAsset:asset
+                                options:options
+                            resultHandler:^(NSData *_Nullable imageData, NSString *_Nullable dataUTI, __unused UIImageOrientation orientation,
+                                            __unused NSDictionary *_Nullable info) {
+                            NSString *myString = [[NSString alloc] initWithData:imageData encoding:NSUTF8StringEncoding];
+                            /*unsigned char* imageBytes = (unsigned char*)[imageData bytes];
+                            data = (unsigned char*)malloc(imageData.length);
+                            for (int i = 0; i < imageData.length; i++)
+                                data[i] = imageBytes[i];
+                            result = (int)imageData.length;*/
+                            }];
+            //*dataPtr = *data;
+            }
+        return result;
     }
 }

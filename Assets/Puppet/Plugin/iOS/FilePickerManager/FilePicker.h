@@ -3,12 +3,7 @@
 
 #import <UIKit/UIKit.h>
 
-@interface FilePicker : NSObject<UIDocumentPickerDelegate>
-
-@property(nonatomic) UIDocumentPickerViewController* pickerController;
-
+@interface FilePicker : NSObject<UIImagePickerControllerDelegate, UINavigationControllerDelegate>
 + (instancetype)sharedInstance;
-
 - (void)show;
-
 @end

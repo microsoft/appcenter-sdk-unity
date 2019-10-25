@@ -5,6 +5,11 @@ using Assets.Puppet.Plugins.Android.FilePickerManager;
 
 public class AndroidFilePicker : IFilePicker
 {
+    public static byte[] GetFileBytes(string fileUrl)
+    {
+        throw new System.NotImplementedException();
+    }
+
     public void Show()
     {
         FilePickerManager filePickerManager = new FilePickerManager();

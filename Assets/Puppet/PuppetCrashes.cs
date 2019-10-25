@@ -25,6 +25,8 @@ public class PuppetCrashes : MonoBehaviour
     public Text BinaryAttachment;
     public Text LowMemoryLabel;
     private static bool _crashesNativeCallbackRegistered;
+    [SerializeField]
+    private FilePickerBehaviour filePickerBehaviour;
 
     void OnEnable()
     {
@@ -97,6 +99,7 @@ public class PuppetCrashes : MonoBehaviour
             var properties = new Dictionary<string, string> { { "Category", "Music" }, { "Wifi", "On" } };
 
             // TODO: uncomment attachments when API will be added
+            GetErrorAttachments();
             Crashes.TrackError(ex, properties/*, GetErrorAttachments()*/);
         }
     }
@@ -158,18 +161,8 @@ public class PuppetCrashes : MonoBehaviour
         return new ErrorAttachmentLog[]
         {
             ErrorAttachmentLog.AttachmentWithText(PlayerPrefs.GetString(PuppetAppCenter.TextAttachmentKey), "hello.txt"),
-            ErrorAttachmentLog.AttachmentWithBinary(GetFileBytes(PlayerPrefs.GetString(PuppetAppCenter.BinaryAttachmentKey)), "fake_image.jpeg", "image/jpeg")
+            ErrorAttachmentLog.AttachmentWithBinary(FilePickerBehaviour.GetFileBytes(PlayerPrefs.GetString(PuppetAppCenter.BinaryAttachmentKey)), "fake_image.jpeg", "image/jpeg")
         };
-    }
-
-    private static byte[] GetFileBytes(string filePath)
-    {
-        if (!string.IsNullOrEmpty(filePath))
-        {
-            return File.ReadAllBytes(filePath);
-        }
-
-        return new byte[0];
     }
 
     private static byte[] ParseBytes(string bytesString)

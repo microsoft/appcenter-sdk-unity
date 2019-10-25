@@ -27,15 +27,29 @@ public class FilePickerBehaviour : MonoBehaviour
 #endif
     }
 
-    private void OnFilePicked(string filePath)
+    public static byte[] GetFileBytes(string fileUrl)
     {
-        BinaryAttachment.text = filePath;
-        PlayerPrefs.SetString(PuppetAppCenter.BinaryAttachmentKey, filePath);
+        byte[] result =
+#if UNITY_IOS && !UNITY_EDITOR
+        IOSFilePicker.GetFileBytes(fileUrl);
+#elif UNITY_ANDROID && !UNITY_EDITOR
+        AndroidFilePicker.GetFileBytes(fileUrl);
+#else
+        new byte[0];
+#endif
+
+        return result;
     }
 
     public void SelectFileErrorAttachment()
     {
         filePicker.Show();
+    }
+
+    private void OnFilePicked(string filePath)
+    {
+        BinaryAttachment.text = filePath;
+        PlayerPrefs.SetString(PuppetAppCenter.BinaryAttachmentKey, filePath);
     }
 
     private void onSelectFileSuccessful(string path)
