@@ -3,20 +3,22 @@
 
 using Assets.AppCenter.Plugins.Android.Utility;
 using Microsoft.AppCenter.Unity;
-using Microsoft.AppCenter.Unity.Crashes;
 using Microsoft.AppCenter.Unity.Distribute;
 using Microsoft.AppCenter.Unity.Push;
-using System;
 using System.Collections;
+using System.Threading;
 using UnityEngine;
 using UnityEngine.UI;
 
 public class PuppetAppCenter : MonoBehaviour
 {
+    public static string TextAttachmentCached;
+    public static bool BinaryAttachmentCached;
     public static string AppSecretCached;
     public static string LogUrlCached;
     public static string MaxSizeCached;
     public static int StartupTypeCached = 2;
+    public static readonly EventWaitHandle StorageReadyEvent = new ManualResetEvent(false);
     public Toggle Enabled;
     public Text InstallIdLabel;
     public Text DeviceIdLabel;
@@ -109,11 +111,14 @@ public class PuppetAppCenter : MonoBehaviour
         }
 
         // Caching this in Awake method because PlayerPrefs.GetString() can't be called from a background thread.
+        TextAttachmentCached = PlayerPrefs.GetString(TextAttachmentKey, null);
+        BinaryAttachmentCached = PlayerPrefs.GetInt(BinaryAttachmentKey, 0) == 1;
         AppSecretCached = PlayerPrefs.GetString(AppSecretKey, null);
         LogUrlCached = PlayerPrefs.GetString(LogUrlKey, null);
         MaxSizeCached = PlayerPrefs.GetString(MaxStorageSizeKey, null);
         StartupTypeCached = PlayerPrefs.GetInt(StartupModeKey, (int) Microsoft.AppCenter.Unity.StartupType.Both);
         CustomDialog.isOn = PlayerPrefs.GetInt(FlagCustomDialog, 0) == 1;
+        StorageReadyEvent.Set();
     }
 
     void OnEnable()

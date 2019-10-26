@@ -1,33 +1,33 @@
 ﻿// Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT license.
 
-using AOT;
-using Microsoft.AppCenter.Unity.Crashes;
-using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Runtime.InteropServices;
 using System.Text;
 using System.Threading;
+using AOT;
+using Microsoft.AppCenter.Unity.Crashes;
 using UnityEngine;
 using UnityEngine.UI;
 using Exception = Microsoft.AppCenter.Unity.Crashes.Models.Exception;
 
 public class PuppetCrashes : MonoBehaviour
 {
+    private static bool _crashesNativeCallbackRegistered;
+
     public Toggle CrashesEnabled;
     public Toggle ReportUnhandledExceptions;
     public Text LastSessionCrashReport;
     public InputField TextAttachment;
-    public InputField BinaryAttachment;
+    public Toggle BinaryAttachment;
     public Text LowMemoryLabel;
-    private static bool _crashesNativeCallbackRegistered;
 
     void OnEnable()
     {
         ReportUnhandledExceptions.isOn = Crashes.IsReportingUnhandledExceptions();
-        TextAttachment.text = PlayerPrefs.GetString(PuppetAppCenter.TextAttachmentKey);
-        BinaryAttachment.text = PlayerPrefs.GetString(PuppetAppCenter.BinaryAttachmentKey);
+        TextAttachment.text = PuppetAppCenter.TextAttachmentCached;
+        BinaryAttachment.isOn = PuppetAppCenter.BinaryAttachmentCached;
         StartCoroutine(OnEnableCoroutine());
     }
 
@@ -57,12 +57,14 @@ public class PuppetCrashes : MonoBehaviour
 
     public void OnValueChanged()
     {
+        PuppetAppCenter.TextAttachmentCached = TextAttachment.text;
         PlayerPrefs.SetString(PuppetAppCenter.TextAttachmentKey, TextAttachment.text);
     }
 
     public void OnBinaryValueChanged()
     {
-        PlayerPrefs.SetString(PuppetAppCenter.BinaryAttachmentKey, BinaryAttachment.text);
+        PuppetAppCenter.BinaryAttachmentCached = BinaryAttachment.isOn;
+        PlayerPrefs.SetInt(PuppetAppCenter.BinaryAttachmentKey, BinaryAttachment.isOn ? 1 : 0);
     }
 
     public void SetCrashesEnabled(bool enabled)
@@ -150,50 +152,17 @@ public class PuppetCrashes : MonoBehaviour
 
     private static ErrorAttachmentLog[] GetErrorAttachments()
     {
-        var textAttachmentLog = ErrorAttachmentLog.AttachmentWithText(PlayerPrefs.GetString(PuppetAppCenter.TextAttachmentKey), "hello.txt");
-        ErrorAttachmentLog binaryAttachmentLog;
-        if (string.IsNullOrEmpty(PlayerPrefs.GetString(PuppetAppCenter.BinaryAttachmentKey)))
+        PuppetAppCenter.StorageReadyEvent.WaitOne();
+        var attachments = new List<ErrorAttachmentLog>();
+        if (!string.IsNullOrEmpty(PuppetAppCenter.TextAttachmentCached))
         {
-            return new ErrorAttachmentLog[] { textAttachmentLog };
+            attachments.Add(ErrorAttachmentLog.AttachmentWithText(PuppetAppCenter.TextAttachmentCached, "hello.txt"));
         }
-        if (PlayerPrefs.GetString(PuppetAppCenter.BinaryAttachmentKey).ToLower() == "realimage")
+        if (PuppetAppCenter.BinaryAttachmentCached)
         {
-            binaryAttachmentLog = PuppetAttachmentHelper.getSampleBinaryAttachmentLog();
+            attachments.Add(PuppetAttachmentHelper.getSampleBinaryAttachmentLog());
         }
-        else
-        {
-            binaryAttachmentLog = ErrorAttachmentLog.AttachmentWithBinary(ParseBytes(PlayerPrefs.GetString(PuppetAppCenter.BinaryAttachmentKey)), "fake_image.jpeg", "image/jpeg");
-        }
-        return new ErrorAttachmentLog[]
-        {
-            ErrorAttachmentLog.AttachmentWithText(PlayerPrefs.GetString(PuppetAppCenter.TextAttachmentKey), "hello.txt"),
-            binaryAttachmentLog
-        };
-    }
-
-    private static byte[] ParseBytes(string bytesString)
-    {
-        string[] bytesArray = bytesString.Split(' ');
-        if (bytesArray.Length == 0)
-        {
-            return new byte[] { 100, 101, 102, 103 };
-        }
-        byte[] result = new byte[bytesArray.Length];
-        int i = 0;
-        foreach (string byteString in bytesArray)
-        {
-            byte parsed;
-            bool isParsed = Byte.TryParse(bytesString, out parsed);
-            if (isParsed)
-            {
-                result[i] = parsed;
-            }
-            else
-            {
-                result[i] = 0;
-            }
-        }
-        return result;
+        return attachments.Count == 0 ? null : attachments.ToArray();
     }
 
     [MonoPInvokeCallback(typeof(Crashes.ShouldProcessErrorReportHandler))]
