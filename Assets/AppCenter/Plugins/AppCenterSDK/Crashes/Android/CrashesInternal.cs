@@ -21,11 +21,14 @@ namespace Microsoft.AppCenter.Unity.Crashes.Internal
             nativeTypes.Add(AndroidJNI.FindClass("com/microsoft/appcenter/crashes/Crashes"));
         }
 
-        public static void TrackException(AndroidJavaObject exception, IDictionary<string, string> properties, ErrorAttachmentLog[] attachments)
+        public static string TrackException(AndroidJavaObject exception, IDictionary<string, string> properties, ErrorAttachmentLog[] attachments)
         {
             var javaProperties = JavaStringMapHelper.ConvertToJava(properties);
             var javaAttachments = JavaObjectsConverter.ToJavaAttachments(attachments);
             _wrapperSdkExceptionManager.CallStatic("trackException", exception, javaProperties, javaAttachments);
+            return null;
+            //TODO return _wrapperSdkExceptionManager.CallStatic<string>("trackException", exception, javaProperties, javaAttachments);
+
         }
 
         public static AppCenterTask<bool> HasReceivedMemoryWarningInLastSessionAsync()
@@ -106,15 +109,17 @@ namespace Microsoft.AppCenter.Unity.Crashes.Internal
             AppCenterInternal.Start(AppCenter.Crashes);
         }
 
-        public static ErrorReport BuildHandledErrorReport(string errorId)
+        public static ErrorReport BuildHandledErrorReport(string errorReportId)
         {
-            //TODO implement me
+            //TODO var nativeErrorReport = _wrapperSdkExceptionManager.CallStatic<AndroidJavaObject>("buildHandledErrorReport", errorReportId);
+            //TODO return JavaObjectsConverter.ConvertErrorReport(nativeErrorReport);
             return null;
         }
 
-        public static void SendErrorAttachments(string errorId, ErrorAttachmentLog[] attachments)
+        public static void SendErrorAttachments(string errorReportId, ErrorAttachmentLog[] attachments)
         {
-            //TODO implement
+            var nativeAttachments = JavaObjectsConverter.ToJavaAttachments(attachments);
+            _wrapperSdkExceptionManager.CallStatic("sendErrorAttachments", errorReportId, nativeAttachments);
         }
 
         private static int ToJavaConfirmationResult(Crashes.ConfirmationResult answer)

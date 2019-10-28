@@ -84,7 +84,7 @@ namespace Microsoft.AppCenter.Unity.Crashes.Internal
             return null;
         }
 
-        public static void SendErrorAttachments(string errorId, ErrorAttachmentLog[] attachments)
+        public static void SendErrorAttachments(ErrorAttachmentLog[] attachments)
         {
         }
     }
