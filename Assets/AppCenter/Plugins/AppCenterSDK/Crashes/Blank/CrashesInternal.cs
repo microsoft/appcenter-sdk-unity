@@ -78,6 +78,15 @@ namespace Microsoft.AppCenter.Unity.Crashes.Internal
         public static void StartCrashes()
         {
         }
+
+        public static ErrorReport BuildHandledErrorReport(string errorId)
+        {
+            return null;
+        }
+
+        public static void SendErrorAttachments(string errorId, ErrorAttachmentLog[] attachments)
+        {
+        }
     }
 }
 #endif

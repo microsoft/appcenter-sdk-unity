@@ -117,6 +117,17 @@ namespace Microsoft.AppCenter.Unity.Crashes.Internal
             return AppCenterTask<bool>.FromCompleted(hadWarning);
         }
 
+        public static ErrorReport BuildHandledErrorReport(string errorId)
+        {
+            //TODO implement me
+            return null;
+        }
+
+        public static void SendErrorAttachments(string errorId, ErrorAttachmentLog[] attachments)
+        {
+            //TODO implement
+        }
+
         private static Device GetDevice(IntPtr errorReportPtr)
         {
             var device = app_center_unity_crashes_error_report_device(errorReportPtr);

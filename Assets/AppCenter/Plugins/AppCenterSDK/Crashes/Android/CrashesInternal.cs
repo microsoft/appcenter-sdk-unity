@@ -106,6 +106,17 @@ namespace Microsoft.AppCenter.Unity.Crashes.Internal
             AppCenterInternal.Start(AppCenter.Crashes);
         }
 
+        public static ErrorReport BuildHandledErrorReport(string errorId)
+        {
+            //TODO implement me
+            return null;
+        }
+
+        public static void SendErrorAttachments(string errorId, ErrorAttachmentLog[] attachments)
+        {
+            //TODO implement
+        }
+
         private static int ToJavaConfirmationResult(Crashes.ConfirmationResult answer)
         {
             // Java values: SEND=0, DONT_SEND=1, ALWAYS_SEND=2

@@ -12,7 +12,7 @@ namespace Microsoft.AppCenter.Unity.Crashes.Internal
         public static event Crashes.SendingErrorReportHandler SendingErrorReport;
         public static event Crashes.SentErrorReportHandler SentErrorReport;
         public static event Crashes.FailedToSendErrorReportHandler FailedToSendErrorReport;
-        private static event Crashes.GetErrorAttachmentsHandler GetErrorAttachments;
+        internal static Crashes.GetErrorAttachmentsHandler getErrorAttachmentsHandler = null;
         private static Crashes.UserConfirmationHandler shouldAwaitUserConfirmationHandler = null;
         private static Crashes.ShouldProcessErrorReportHandler shouldProcessErrorReportHandler = null;
         private static readonly CrashesDelegate instance = new CrashesDelegate();
@@ -81,9 +81,9 @@ namespace Microsoft.AppCenter.Unity.Crashes.Internal
 
         public AndroidJavaObject getErrorAttachments(AndroidJavaObject report)
         {
-            if (GetErrorAttachments != null)
+            if (getErrorAttachmentsHandler != null)
             {
-                var logs = GetErrorAttachments(JavaObjectsConverter.ConvertErrorReport(report));
+                var logs = getErrorAttachmentsHandler(JavaObjectsConverter.ConvertErrorReport(report));
                 return JavaObjectsConverter.ToJavaAttachments(logs);
             }
             else
@@ -104,7 +104,7 @@ namespace Microsoft.AppCenter.Unity.Crashes.Internal
 
         public static void SetGetErrorAttachmentsHandler(Crashes.GetErrorAttachmentsHandler handler)
         {
-            GetErrorAttachments = handler;
+            getErrorAttachmentsHandler = handler;
         }
     }
 }

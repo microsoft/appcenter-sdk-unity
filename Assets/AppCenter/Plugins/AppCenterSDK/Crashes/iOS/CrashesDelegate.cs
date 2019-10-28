@@ -56,7 +56,7 @@ namespace Microsoft.AppCenter.Unity.Crashes.Internal
         [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
 #endif
         public delegate IntPtr NativeGetErrorAttachmentsDelegate(IntPtr report);
-        private static Crashes.GetErrorAttachmentsHandler getErrorAttachmentsHandler;
+        internal static Crashes.GetErrorAttachmentsHandler getErrorAttachmentsHandler;
 
         [MonoPInvokeCallback(typeof(NativeGetErrorAttachmentsDelegate))]
         public static IntPtr GetErrorAttachmentsNativeFunc(IntPtr report)
