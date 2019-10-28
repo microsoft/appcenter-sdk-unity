@@ -25,9 +25,7 @@ namespace Microsoft.AppCenter.Unity.Crashes.Internal
         {
             var javaProperties = JavaStringMapHelper.ConvertToJava(properties);
             var javaAttachments = JavaObjectsConverter.ToJavaAttachments(attachments);
-            _wrapperSdkExceptionManager.CallStatic("trackException", exception, javaProperties, javaAttachments);
-            return null;
-            //TODO return _wrapperSdkExceptionManager.CallStatic<string>("trackException", exception, javaProperties, javaAttachments);
+            TODO return _wrapperSdkExceptionManager.CallStatic<string>("trackException", exception, javaProperties, javaAttachments);
 
         }
 
@@ -111,9 +109,8 @@ namespace Microsoft.AppCenter.Unity.Crashes.Internal
 
         public static ErrorReport BuildHandledErrorReport(string errorReportId)
         {
-            //TODO var nativeErrorReport = _wrapperSdkExceptionManager.CallStatic<AndroidJavaObject>("buildHandledErrorReport", errorReportId);
-            //TODO return JavaObjectsConverter.ConvertErrorReport(nativeErrorReport);
-            return null;
+            var nativeErrorReport = _wrapperSdkExceptionManager.CallStatic<AndroidJavaObject>("buildHandledErrorReport", AndroidUtility.GetAndroidContext(), errorReportId);
+            return JavaObjectsConverter.ConvertErrorReport(nativeErrorReport);
         }
 
         public static void SendErrorAttachments(string errorReportId, ErrorAttachmentLog[] attachments)

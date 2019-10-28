@@ -327,7 +327,7 @@ namespace Microsoft.AppCenter.Unity.Crashes
 
                     // Send attachments for error report.
                     var errorReport = CrashesInternal.BuildHandledErrorReport(errorId);
-                    var attachments = CrashesDelegate.getErrorAttachmentsHandler?.Invoke(errorReport);
+                    var attachments = CrashesDelegate.getErrorAttachmentsHandler == null ? null : CrashesDelegate.getErrorAttachmentsHandler(errorReport);
                     CrashesInternal.SendErrorAttachments(errorId, attachments);
                 }
                 yield return null; // report remaining exceptions on next frames
