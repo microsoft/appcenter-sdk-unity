@@ -18,7 +18,7 @@ public class PuppetCrashes : MonoBehaviour
 
     public Toggle CrashesEnabled;
     public Toggle ReportUnhandledExceptions;
-	public Toggle EnableUnhandledExceptionAttachments;
+    public Toggle EnableUnhandledExceptionAttachments;
     public Text LastSessionCrashReport;
     public InputField TextAttachment;
     public Toggle BinaryAttachment;
