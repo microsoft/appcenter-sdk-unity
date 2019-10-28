@@ -5,6 +5,7 @@
 using System;
 using System.Collections.Generic;
 using System.Threading;
+using Assets.AppCenter.Plugins.Android.Utility;
 using Microsoft.AppCenter.Unity.Internal;
 using Microsoft.AppCenter.Unity.Internal.Utility;
 using UnityEngine;
@@ -25,8 +26,7 @@ namespace Microsoft.AppCenter.Unity.Crashes.Internal
         {
             var javaProperties = JavaStringMapHelper.ConvertToJava(properties);
             var javaAttachments = JavaObjectsConverter.ToJavaAttachments(attachments);
-            TODO return _wrapperSdkExceptionManager.CallStatic<string>("trackException", exception, javaProperties, javaAttachments);
-
+            return _wrapperSdkExceptionManager.CallStatic<string>("trackException", exception, javaProperties, javaAttachments);
         }
 
         public static AppCenterTask<bool> HasReceivedMemoryWarningInLastSessionAsync()
