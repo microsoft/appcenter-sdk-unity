@@ -1,3 +1,44 @@
+## Release 2.5.0
+
+Updated native SDK versions:
+* Android from `2.3.0` to [2.4.1](https://github.com/Microsoft/AppCenter-SDK-Android/releases/tag/2.4.1)
+* iOS from `2.4.0` to [2.5.0](https://github.com/Microsoft/AppCenter-SDK-Apple/releases/tag/2.5.0)
+* UWP from `2.1.0` to [2.5.0](https://github.com/Microsoft/AppCenter-SDK-DotNet/releases/tag/2.5.0)
+
+### App Center
+
+* **[Fix]** Fix `AppCenterStarter.m` was not included in the first build.
+
+### App Center Crashes
+
+#### Android
+
+* **[Behavior change]** Fix a security issue with the `Exception` field on `ErrorReport` objects. As a result, the `Exception.StackTrace` now holds the raw stack trace, and the `Exception.Message` field is `null`.
+
+#### Uwp
+
+* **[Feature]** App Center now supports crashes for sideloaded UWP applications.
+
+* **[Feature]** APIs in the Crashes module are now implemented for UWP: handled errors, crash attachments, crash callbacks, getting crash information about last session, and enabling/disabling the module. Detecting low memory warning is not supported.
+
+* **[Feature]** Allow users to set userId that applies to crashes and errors.
+
+### App Center Push
+
+#### UWP
+
+* **[Feature]** Allow developers to push notifications to a specific userId.
+
+### App Center Distribute
+
+#### Android
+
+* **[Feature]** Downloading in-app update APK file has been failing on Android 4.x since TLS 1.2 has been enforced early September. The file is now downloaded using HTTPS direct connection when running on Android 4 instead of relying on system's download manager.
+
+* **[Feature]** Fix a crash and improve logging when downloading an update fails on Android 5+.
+
+* **[Behavior change]** If your minSdkVersion is lower than 19, Android requires the WRITE_EXTERNAL_STORAGE permission to store new downloaded updates. Please refer to the updated documentation site for detailed instructions. This is related to the download fix.
+
 ## Release 2.4.0
 
 Updated native SDK versions:
