@@ -17,12 +17,6 @@ Updated native SDK versions:
 
 * **[Behavior change]** Fix a security issue with the `Exception` field on `ErrorReport` objects. As a result, the `Exception.StackTrace` now holds the raw stack trace, and the `Exception.Message` field is `null`.
 
-#### UWP
-
-* **[Feature]** App Center now supports crashes for sideloaded UWP applications.
-* **[Feature]** APIs in the Crashes module are now implemented for UWP: handled errors, crash attachments, crash callbacks, getting crash information about last session, and enabling/disabling the module. Detecting low memory warning is not supported.
-* **[Feature]** Allow users to set userId that applies to crashes and errors.
-
 ### App Center Push
 
 #### UWP
