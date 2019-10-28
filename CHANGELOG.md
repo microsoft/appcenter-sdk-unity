@@ -17,7 +17,7 @@ Updated native SDK versions:
 
 * **[Behavior change]** Fix a security issue with the `Exception` field on `ErrorReport` objects. As a result, the `Exception.StackTrace` now holds the raw stack trace, and the `Exception.Message` field is `null`.
 
-#### Uwp
+#### UWP
 
 * **[Feature]** App Center now supports crashes for sideloaded UWP applications.
 
