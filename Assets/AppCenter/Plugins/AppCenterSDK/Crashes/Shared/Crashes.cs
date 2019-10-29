@@ -131,7 +131,7 @@ namespace Microsoft.AppCenter.Unity.Crashes
         /// Report unhandled exceptions, automatically captured by Unity, as handled errors
         /// </summary>
         /// <param name="enabled">Specify true to enable reporting of unhandled exceptions, automatically captured by Unity, as handled errors; otherwise, false.</param>
-        public static void ReportUnhandledExceptions(bool enabled)
+        public static void ReportUnhandledExceptions(bool enabled, bool enableAttachmentsCallback = false)
         {
             if (_reportUnhandledExceptions == enabled)
             {
