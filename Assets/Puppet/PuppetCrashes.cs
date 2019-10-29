@@ -18,6 +18,7 @@ public class PuppetCrashes : MonoBehaviour
 
     public Toggle CrashesEnabled;
     public Toggle ReportUnhandledExceptions;
+    public Toggle EnableUnhandledExceptionAttachments;
     public Text LastSessionCrashReport;
     public InputField TextAttachment;
     public Toggle BinaryAttachment;
@@ -26,6 +27,7 @@ public class PuppetCrashes : MonoBehaviour
     void OnEnable()
     {
         ReportUnhandledExceptions.isOn = Crashes.IsReportingUnhandledExceptions();
+        EnableUnhandledExceptionAttachments.interactable = ReportUnhandledExceptions.isOn;
         TextAttachment.text = PuppetAppCenter.TextAttachmentCached;
         BinaryAttachment.isOn = PuppetAppCenter.BinaryAttachmentCached;
         StartCoroutine(OnEnableCoroutine());
@@ -72,9 +74,11 @@ public class PuppetCrashes : MonoBehaviour
         StartCoroutine(SetCrashesEnabledCoroutine(enabled));
     }
 
-    public void SetReportUnhandledExceptions(bool enabled)
+    public void SetReportUnhandledExceptions()
     {
-        Crashes.ReportUnhandledExceptions(enabled);
+        Crashes.ReportUnhandledExceptions(ReportUnhandledExceptions.isOn, EnableUnhandledExceptionAttachments.isOn);
+        EnableUnhandledExceptionAttachments.interactable = ReportUnhandledExceptions.isOn;
+        EnableUnhandledExceptionAttachments.isOn = EnableUnhandledExceptionAttachments.isOn && ReportUnhandledExceptions.isOn;
     }
 
     private IEnumerator SetCrashesEnabledCoroutine(bool enabled)
