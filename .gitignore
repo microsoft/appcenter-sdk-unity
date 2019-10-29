@@ -15,6 +15,7 @@ xcuserdata
 .vs
 ProjectSettings/PresetManager.asset
 ProjectSettings/ProjectVersion.txt
+AppCenterDemoApp/ProjectSettings/ProjectVersion.txt
 
 # Build results
 [Dd]ebug/
