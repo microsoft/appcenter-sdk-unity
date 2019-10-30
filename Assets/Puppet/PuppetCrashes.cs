@@ -160,7 +160,7 @@ public class PuppetCrashes : MonoBehaviour
         var attachments = new List<ErrorAttachmentLog>();
         if (!string.IsNullOrEmpty(PuppetAppCenter.TextAttachmentCached))
         {
-            attachments.Add(ErrorAttachmentLog.AttachmentWithText(PuppetAppCenter.TextAttachmentCached, "hello.txt"));
+            attachments.Add(ErrorAttachmentLog.AttachmentWithText(PuppetAppCenter.TextAttachmentCached, "hi.txt"));
         }
         if (PuppetAppCenter.BinaryAttachmentCached)
         {

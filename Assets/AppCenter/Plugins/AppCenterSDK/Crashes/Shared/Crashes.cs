@@ -59,7 +59,11 @@ namespace Microsoft.AppCenter.Unity.Crashes
             if (LogType.Assert == type || LogType.Exception == type || LogType.Error == type)
             {
                 var exception = CreateWrapperException(logString, stackTrace, type);
-                CrashesInternal.TrackException(exception.GetRawObject(), null, null);
+                var errorReportId = CrashesInternal.TrackException(exception.GetRawObject(), null, null);
+                if (_enableErrorAttachmentsCallbacks)
+                {
+                    SendErrorAttachments(errorReportId);
+                }
             }
         }
 
@@ -324,11 +328,10 @@ namespace Microsoft.AppCenter.Unity.Crashes
                 {
                     var exceptionWrapper = CreateWrapperException(exception);
                     var errorId = CrashesInternal.TrackException(exceptionWrapper.GetRawObject(), null, null);
-
-                    // Send attachments for error report.
-                    var errorReport = CrashesInternal.BuildHandledErrorReport(errorId);
-                    var attachments = CrashesDelegate.getErrorAttachmentsHandler == null ? null : CrashesDelegate.getErrorAttachmentsHandler(errorReport);
-                    CrashesInternal.SendErrorAttachments(errorId, attachments);
+                    if (_enableErrorAttachmentsCallbacks)
+                    {
+                        SendErrorAttachments(errorId);
+                    }
                 }
                 yield return null; // report remaining exceptions on next frames
             }
@@ -379,6 +382,18 @@ namespace Microsoft.AppCenter.Unity.Crashes
         {
             //return WrapperSdk.Name;
             return "appcenter.xamarin"; // fix stack traces are not showing up in the portal UI
+        }
+
+        private static void SendErrorAttachments(string errorReportId)
+        {
+
+                // Send attachments for error report.
+                var errorReport = CrashesInternal.BuildHandledErrorReport(errorReportId);
+                Debug.Log("error report = " + errorReport);
+                Debug.Log("error report id = " + errorReportId);
+                var attachments = CrashesDelegate.getErrorAttachmentsHandler == null ? null : CrashesDelegate.getErrorAttachmentsHandler(errorReport);
+                Debug.Log("attachments = " + attachments);
+                CrashesInternal.SendErrorAttachments(errorReportId, attachments);
         }
     }
 }
