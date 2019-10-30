@@ -386,14 +386,11 @@ namespace Microsoft.AppCenter.Unity.Crashes
 
         private static void SendErrorAttachments(string errorReportId)
         {
-
-                // Send attachments for error report.
-                var errorReport = CrashesInternal.BuildHandledErrorReport(errorReportId);
-                Debug.Log("error report = " + errorReport);
-                Debug.Log("error report id = " + errorReportId);
-                var attachments = CrashesDelegate.getErrorAttachmentsHandler == null ? null : CrashesDelegate.getErrorAttachmentsHandler(errorReport);
-                Debug.Log("attachments = " + attachments);
-                CrashesInternal.SendErrorAttachments(errorReportId, attachments);
+            // Send attachments for error report.
+            var errorReport = CrashesInternal.BuildHandledErrorReport(errorReportId);
+            errorReport.IsCrash = false;
+            var attachments = CrashesDelegate.getErrorAttachmentsHandler == null ? null : CrashesDelegate.getErrorAttachmentsHandler(errorReport);
+            CrashesInternal.SendErrorAttachments(errorReportId, attachments);
         }
     }
 }
