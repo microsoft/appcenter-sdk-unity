@@ -76,7 +76,7 @@ public class PBXProjectWrapper
 
     public void AddBuildProperty(string name, string value)
     {
-        var targetGuid = PBXProjectType.GetMethod("GetUnityFrameworkTargetGuid")
+        var targetGuid = PBXProjectType.GetMethod("GetUnityMainTargetGuid")
                                        .Invoke(_pbxProject, null);
         PBXProjectType.GetMethod("AddBuildProperty",
                                  new[] { typeof(string), typeof(string), typeof(string) })
