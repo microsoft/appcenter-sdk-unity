@@ -45,11 +45,17 @@ public class ProjectCapabilityManagerWrapper
         }
     }
 
-    public ProjectCapabilityManagerWrapper(string projectPath, string targetName)
+    public ProjectCapabilityManagerWrapper(string projectPath, string targetName, string targetGuid)
     {
+#if UNITY_2019_3_OR_NEWER
         _capabilityManager = ProjectCapabilityManagerType
-            .GetConstructor(new[] { typeof(string), typeof(string), typeof(string) })
+            .GetConstructor(new[] { typeof(string), typeof(string), typeof(string), typeof(string) })
+            .Invoke(new object[] { projectPath, targetName + ".entitlements", targetName, targetGuid });
+#else
+        _capabilityManager = ProjectCapabilityManagerType
+            .GetConstructor(new[] { typeof(string), typeof(string), typeof(string)})
             .Invoke(new object[] { projectPath, targetName + ".entitlements", targetName });
+#endif
     }
 
     public void WriteToFile()
