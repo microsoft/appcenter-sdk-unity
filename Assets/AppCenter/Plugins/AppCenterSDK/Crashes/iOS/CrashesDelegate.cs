@@ -56,23 +56,23 @@ namespace Microsoft.AppCenter.Unity.Crashes.Internal
         [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
 #endif
         public delegate IntPtr NativeGetErrorAttachmentsDelegate(IntPtr report);
-        internal static Crashes.GetErrorAttachmentsHandler getErrorAttachmentsHandler;
+        internal static Crashes.GetErrorAttachmentsHandler GetErrorAttachmentsHandler;
 
         [MonoPInvokeCallback(typeof(NativeGetErrorAttachmentsDelegate))]
         public static IntPtr GetErrorAttachmentsNativeFunc(IntPtr report)
         {
-            if (getErrorAttachmentsHandler == null)
+            if (GetErrorAttachmentsHandler == null)
             {
                 return IntPtr.Zero;
             }
             var errorReport = CrashesInternal.GetErrorReportFromIntPtr(report);
-            var logs = getErrorAttachmentsHandler(errorReport);
+            var logs = GetErrorAttachmentsHandler(errorReport);
             return NativeObjectsConverter.ToNativeAttachments(logs);
         }
 
         public static void SetGetErrorAttachmentsHandler(Crashes.GetErrorAttachmentsHandler handler)
         {
-            getErrorAttachmentsHandler = handler;
+            GetErrorAttachmentsHandler = handler;
         }
 
 #if ENABLE_IL2CPP

@@ -389,7 +389,7 @@ namespace Microsoft.AppCenter.Unity.Crashes
             // Send attachments for error report.
             var errorReport = CrashesInternal.BuildHandledErrorReport(errorReportId);
             errorReport.IsCrash = false;
-            var attachments = CrashesDelegate.getErrorAttachmentsHandler == null ? null : CrashesDelegate.getErrorAttachmentsHandler(errorReport);
+            var attachments = CrashesDelegate.GetErrorAttachmentsHandler == null ? null : CrashesDelegate.GetErrorAttachmentsHandler(errorReport);
             CrashesInternal.SendErrorAttachments(errorReportId, attachments);
         }
     }
