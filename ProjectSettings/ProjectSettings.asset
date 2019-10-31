@@ -155,7 +155,7 @@ PlayerSettings:
     Android: com.microsoft.appcenter.unity.puppet
     Metro: com.microsoft.appcenter.unity.puppet
     Standalone: com.microsoft.appcenter.unity.puppet
-    iOS: com.microsoft.appcenter.unity.ios.puppet
+    iOS: com.microsoft.appcenter.unity.puppet
   buildNumber: {}
   AndroidBundleVersionCode: 1
   AndroidMinSdkVersion: 16
@@ -231,7 +231,7 @@ PlayerSettings:
   metalEditorSupport: 0
   metalAPIValidation: 1
   iOSRenderExtraFrameOnPause: 0
-  appleDeveloperTeamID: UBF8T346G9
+  appleDeveloperTeamID: L4RARDNZ2Y
   iOSManualSigningProvisioningProfileID: 
   tvOSManualSigningProvisioningProfileID: 
   iOSManualSigningProvisioningProfileType: 0
