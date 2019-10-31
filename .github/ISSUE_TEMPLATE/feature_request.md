@@ -1,18 +1,20 @@
 ---
 name: Feature request
-about: Suggest an idea for this project
+about: Suggest an idea for the Unity SDK for App Center
 title: ''
-labels: ''
+labels: feature request
 assignees: ''
 
 ---
 
-<!--
-    Thanks for your interest in using the App Center SDK for Unity.
-    If your issue is not related to using our Unity SDK but rather about the product experience like the portal or CI,
-    please create a ticket using the blue chat button on any page of the https://appcenter.ms portal instead.
--->
+**Is your feature request related to a problem? Please describe.**
+A clear and concise description of what the problem is. Ex. I'm always frustrated when [...]
 
-### **Description**
+**Describe the solution you'd like**
+A clear and concise description of what you want to happen.
 
-Please describe the issue you are facing or a feature you would like to be added to the SDK.
+**Describe alternatives you've considered**
+A clear and concise description of any alternative solutions or features you've considered.
+
+**Additional context**
+Add any other context or screenshots about the feature request here.
