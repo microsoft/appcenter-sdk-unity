@@ -73,6 +73,15 @@ namespace Microsoft.AppCenter.Unity.Crashes.Internal
         {
         }
 
+        public static ErrorReport BuildHandledErrorReport(string errorReportId)
+        {
+            return null;
+        }
+
+        public static void SendErrorAttachments(string errorReportId, ErrorAttachmentLog[] attachments)
+        {
+        }
+
         public static AppCenterTask<string> GetMinidumpDirectoryAsync() 
         {
             return AppCenterTask<string>.FromCompleted("");
