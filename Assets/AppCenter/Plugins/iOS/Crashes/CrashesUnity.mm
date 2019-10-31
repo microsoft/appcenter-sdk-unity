@@ -12,12 +12,6 @@
 #import "MSException.h"
 #import "NSStringHelper.h"
 
-@interface MSCrashes ()
-
-+ (NSString *)trackModelException:(MSException *)exception withProperties:(nullable NSDictionary<NSString *, NSString *> *)properties withAttachments:(nullable NSArray<MSErrorAttachmentLog *> *)attachments;
-
-@end
-
 void* appcenter_unity_crashes_get_type()
 {
   return (void *)CFBridgingRetain([MSCrashes class]);
@@ -26,7 +20,7 @@ void* appcenter_unity_crashes_get_type()
 void* appcenter_unity_crashes_track_model_exception_with_properties_with_attachments(MSException* exception, char** propertyKeys, char** propertyValues, int propertyCount, NSArray<MSErrorAttachmentLog*>* attachments)
 {
   NSDictionary<NSString*, NSString*> *properties = appcenter_unity_create_ns_string_dictionary(propertyKeys, propertyValues, propertyCount);
-  NSString *errorId = [MSCrashes trackModelException:exception withProperties:properties withAttachments:attachments];
+  NSString *errorId = [MSWrapperCrashesHelper trackModelException:exception withProperties:properties withAttachments:attachments];
   return (void *)appcenter_unity_ns_string_to_cstr(errorId);
 }
 
