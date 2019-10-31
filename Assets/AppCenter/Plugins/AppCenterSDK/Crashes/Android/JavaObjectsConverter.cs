@@ -12,7 +12,7 @@ public class JavaObjectsConverter
 {
     private static readonly AndroidJavaClass _errorAttachmentLogClass = new AndroidJavaClass("com.microsoft.appcenter.crashes.ingestion.models.ErrorAttachmentLog");
 
-    public static ErrorReport ConvertErrorReport(AndroidJavaObject errorReport, bool isCrash = true)
+    public static ErrorReport ConvertErrorReport(AndroidJavaObject errorReport)
     {
         if (errorReport == null)
         {
