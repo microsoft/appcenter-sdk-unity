@@ -17,6 +17,8 @@ namespace Microsoft.AppCenter.Unity.Push.Internal
         public static readonly object _lockObject = new object();
         private static string _prevIdString = "";
         private static int _idLength = Guid.NewGuid().ToString().Length;
+        private static bool IsAppCenterStart = false;
+        private static bool IsWaitingToReply = false;
 
         public static void PrepareEventHandlers()
         {
@@ -57,6 +59,12 @@ namespace Microsoft.AppCenter.Unity.Push.Internal
                 };
                 HandlePushNotification(eventArgs);
             };
+            IsAppCenterStart = true;
+            if (IsWaitingToReply)
+            {
+                PushInternal.ReplayUnprocessedPushNotifications();
+                IsWaitingToReply = false;
+            }
         }
 
         public static void AddNativeType(List<Type> nativeTypes)
@@ -100,6 +108,11 @@ namespace Microsoft.AppCenter.Unity.Push.Internal
 
         internal static void ReplayUnprocessedPushNotifications()
         {
+            if(!IsAppCenterStart)
+            {
+                IsWaitingToReply = true;
+                return;
+            }
             List<PushNotificationReceivedEventArgs> unprocessedPushNotificationsCopy = null;
             lock (_lockObject)
             {

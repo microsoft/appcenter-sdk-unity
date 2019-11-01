@@ -12,6 +12,8 @@ namespace Microsoft.AppCenter.Unity.Push.Internal
     {
         private static AndroidJavaClass _push = new AndroidJavaClass("com.microsoft.appcenter.push.Push");
         private static AndroidJavaClass _unityListener = new AndroidJavaClass("com.microsoft.appcenter.pushdelegate.UnityAppCenterPushDelegate");
+        private static bool IsAppCenterStart = false;
+        private static bool IsWaitingToReply = false;
 
         public static void PrepareEventHandlers()
         {
@@ -22,6 +24,12 @@ namespace Microsoft.AppCenter.Unity.Push.Internal
         private static void Initialize()
         {
             _unityListener.CallStatic("setListener", new PushDelegate());
+            IsAppCenterStart = true;
+            if (IsWaitingToReply)
+            {
+                PushInternal.ReplayUnprocessedPushNotifications();
+                IsWaitingToReply = false;
+            }           
         }
 
         public static void StartPush()
@@ -60,6 +68,11 @@ namespace Microsoft.AppCenter.Unity.Push.Internal
 
         internal static void ReplayUnprocessedPushNotifications()
         {
+            if(!IsAppCenterStart)
+            {
+                IsWaitingToReply = true;
+                return;
+            }
             _unityListener.CallStatic("replayPushNotifications");
         }
     }
