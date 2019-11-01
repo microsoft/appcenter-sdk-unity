@@ -5,6 +5,7 @@
 using System;
 using System.Collections.Generic;
 using System.Threading;
+using Assets.AppCenter.Plugins.Android.Utility;
 using Microsoft.AppCenter.Unity.Internal;
 using Microsoft.AppCenter.Unity.Internal.Utility;
 using UnityEngine;
@@ -21,11 +22,11 @@ namespace Microsoft.AppCenter.Unity.Crashes.Internal
             nativeTypes.Add(AndroidJNI.FindClass("com/microsoft/appcenter/crashes/Crashes"));
         }
 
-        public static void TrackException(AndroidJavaObject exception, IDictionary<string, string> properties, ErrorAttachmentLog[] attachments)
+        public static string TrackException(AndroidJavaObject exception, IDictionary<string, string> properties, ErrorAttachmentLog[] attachments)
         {
             var javaProperties = JavaStringMapHelper.ConvertToJava(properties);
             var javaAttachments = JavaObjectsConverter.ToJavaAttachments(attachments);
-            _wrapperSdkExceptionManager.CallStatic("trackException", exception, javaProperties, javaAttachments);
+            return _wrapperSdkExceptionManager.CallStatic<string>("trackException", exception, javaProperties, javaAttachments);
         }
 
         public static AppCenterTask<bool> HasReceivedMemoryWarningInLastSessionAsync()
@@ -104,6 +105,18 @@ namespace Microsoft.AppCenter.Unity.Crashes.Internal
         public static void StartCrashes()
         {
             AppCenterInternal.Start(AppCenter.Crashes);
+        }
+
+        public static ErrorReport BuildHandledErrorReport(string errorReportId)
+        {
+            var nativeErrorReport = _wrapperSdkExceptionManager.CallStatic<AndroidJavaObject>("buildHandledErrorReport", AndroidUtility.GetAndroidContext(), errorReportId);
+            return JavaObjectsConverter.ConvertErrorReport(nativeErrorReport);
+        }
+
+        public static void SendErrorAttachments(string errorReportId, ErrorAttachmentLog[] attachments)
+        {
+            var nativeAttachments = JavaObjectsConverter.ToJavaAttachments(attachments);
+            _wrapperSdkExceptionManager.CallStatic("sendErrorAttachments", errorReportId, nativeAttachments);
         }
 
         private static int ToJavaConfirmationResult(Crashes.ConfirmationResult answer)

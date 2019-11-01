@@ -22,9 +22,10 @@ namespace Microsoft.AppCenter.Unity.Crashes
         // Used by App Center Unity Editor Extensions: https://github.com/Microsoft/AppCenter-SDK-Unity-Extension
         public const string CrashesSDKVersion = "2.5.0";
         private static bool _reportUnhandledExceptions = false;
+        private static bool _enableErrorAttachmentsCallbacks = false;
         private static readonly object _objectLock = new object();
 
-#if UNITY_ANDROID
+#if !UNITY_WSA_10_0
         private static Queue<Exception> _unhandledExceptions = new Queue<Exception>();
 #endif
 
@@ -58,7 +59,11 @@ namespace Microsoft.AppCenter.Unity.Crashes
             if (LogType.Assert == type || LogType.Exception == type || LogType.Error == type)
             {
                 var exception = CreateWrapperException(logString, stackTrace, type);
-                CrashesInternal.TrackException(exception.GetRawObject(), null, null);
+                var errorReportId = CrashesInternal.TrackException(exception.GetRawObject(), null, null);
+                if (_enableErrorAttachmentsCallbacks)
+                {
+                    SendErrorAttachments(errorReportId);
+                }
             }
         }
 
@@ -73,16 +78,11 @@ namespace Microsoft.AppCenter.Unity.Crashes
             if (exception != null)
             {
                 Debug.Log("Unhandled exception: " + exception.ToString());
-#if UNITY_ANDROID
                 lock (_unhandledExceptions)
                 {
                     _unhandledExceptions.Enqueue(exception);
                 }
                 UnityCoroutineHelper.StartCoroutine(SendUnhandledExceptionReports);
-#else
-                var exceptionWrapper = CreateWrapperException(exception);
-                CrashesInternal.TrackException(exceptionWrapper.GetRawObject(), null, null);
-#endif
             }
         }
 #endif
@@ -131,8 +131,17 @@ namespace Microsoft.AppCenter.Unity.Crashes
         /// Report unhandled exceptions, automatically captured by Unity, as handled errors
         /// </summary>
         /// <param name="enabled">Specify true to enable reporting of unhandled exceptions, automatically captured by Unity, as handled errors; otherwise, false.</param>
+        /// <param name="enableAttachmentsCallback">Specify true to enable a callback that gives the app an opportunity to augment crash reports with additional attachments.</param>
         public static void ReportUnhandledExceptions(bool enabled, bool enableAttachmentsCallback = false)
         {
+            if (!enabled && enableAttachmentsCallback)
+            {
+                Debug.LogWarning("Cannot enable attachments callbacks without enabling unhandled exception reporting.");
+            }
+            else
+            {
+                _enableErrorAttachmentsCallbacks = enableAttachmentsCallback;
+            }
             if (_reportUnhandledExceptions == enabled)
             {
                 return;
@@ -297,7 +306,7 @@ namespace Microsoft.AppCenter.Unity.Crashes
             }
         }
 
-#if UNITY_ANDROID
+#if !UNITY_WSA_10_0
         private static IEnumerator SendUnhandledExceptionReports()
         {
             yield return null; // ensure that code is executed in main thread
@@ -318,7 +327,11 @@ namespace Microsoft.AppCenter.Unity.Crashes
                 if (exception != null)
                 {
                     var exceptionWrapper = CreateWrapperException(exception);
-                    CrashesInternal.TrackException(exceptionWrapper.GetRawObject(), null, null);
+                    var errorId = CrashesInternal.TrackException(exceptionWrapper.GetRawObject(), null, null);
+                    if (_enableErrorAttachmentsCallbacks)
+                    {
+                        SendErrorAttachments(errorId);
+                    }
                 }
                 yield return null; // report remaining exceptions on next frames
             }
@@ -369,6 +382,15 @@ namespace Microsoft.AppCenter.Unity.Crashes
         {
             //return WrapperSdk.Name;
             return "appcenter.xamarin"; // fix stack traces are not showing up in the portal UI
+        }
+
+        private static void SendErrorAttachments(string errorReportId)
+        {
+            // Send attachments for error report.
+            var errorReport = CrashesInternal.BuildHandledErrorReport(errorReportId);
+            errorReport.IsCrash = false;
+            var attachments = CrashesDelegate.GetErrorAttachmentsHandler == null ? null : CrashesDelegate.GetErrorAttachmentsHandler(errorReport);
+            CrashesInternal.SendErrorAttachments(errorReportId, attachments);
         }
     }
 }

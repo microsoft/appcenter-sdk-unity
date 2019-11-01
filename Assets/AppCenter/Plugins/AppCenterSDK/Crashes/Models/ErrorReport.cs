@@ -15,6 +15,7 @@ namespace Microsoft.AppCenter.Unity.Crashes
             Exception = exception;
             Device = device;
             ThreadName = threadName;
+            IsCrash = true;
         }
 
         public ErrorReport(string id, DateTimeOffset appStartTime, DateTimeOffset appErrorTime, Models.Exception exception, int processId, string reporterKey,
@@ -29,6 +30,7 @@ namespace Microsoft.AppCenter.Unity.Crashes
             ReporterSignal = reporterSignal;
             IsAppKill = isAppKill;
             Device = device;
+            IsCrash = true;
         }
 
         /// <summary>
@@ -88,7 +90,13 @@ namespace Microsoft.AppCenter.Unity.Crashes
         /// <summary>
         /// True if the details represent an app kill instead of a crash.
         /// </summary>
-        /// <value>True if the details represent an app kill instead of a crash</value>
+        /// <value>True if the details represent an app kill instead of a crash.</value>
         public bool IsAppKill { get; private set; }
+
+        /// <summary>
+        /// Indicates whether this error report reprents a true app crash.
+        /// </summary>
+        /// <value>True if the unhandled error actually resulted in app termination.</value>
+        public bool IsCrash { get; internal set; }
     }
 }

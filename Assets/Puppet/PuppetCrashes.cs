@@ -125,7 +125,7 @@ public class PuppetCrashes : MonoBehaviour
     public void NullReferenceException()
     {
 #if UNITY_ANDROID && !UNITY_EDITOR
-        nativeCrashNullPointer();       
+        nativeCrashNullPointer();
 #else
         string str = null;
         Debug.Log(str.Length);
@@ -151,6 +151,7 @@ public class PuppetCrashes : MonoBehaviour
 
     public static ErrorAttachmentLog[] GetErrorAttachmentstHandler(ErrorReport errorReport)
     {
+        Debug.LogFormat("GetErrorAttachments for error report with ID: {0}. IsCrash={1}", errorReport.Id, errorReport.IsCrash);
         return GetErrorAttachments();
     }
 
@@ -215,6 +216,7 @@ public class PuppetCrashes : MonoBehaviour
                 status.AppendLine("Is App Killed: " + errorReport.IsAppKill);
                 status.AppendLine("Thread Name: " + errorReport.ThreadName);
                 status.AppendLine("Stack Trace: " + errorReport.Exception.StackTrace);
+                status.AppendLine("IsCrash: " + errorReport.IsCrash);
                 if (errorReport.Device != null)
                 {
                     status.AppendLine("Device.SdkName: " + errorReport.Device.SdkName);

@@ -16,12 +16,9 @@ namespace Microsoft.AppCenter.Unity.Crashes.Internal
         {
         }
 
-        public static void TrackException(object exception)
+        public static string TrackException(object exception, IDictionary<string, string> properties, ErrorAttachmentLog[] attachments)
         {
-        }
-
-        public static void TrackException(object exception, IDictionary<string, string> properties, ErrorAttachmentLog[] attachments)
-        {
+            return "";
         }
 
         public static AppCenterTask<bool> HasReceivedMemoryWarningInLastSessionAsync()
@@ -70,6 +67,15 @@ namespace Microsoft.AppCenter.Unity.Crashes.Internal
         }
 
         public static void StartCrashes()
+        {
+        }
+
+        public static ErrorReport BuildHandledErrorReport(string errorReportId)
+        {
+            return null;
+        }
+
+        public static void SendErrorAttachments(string errorReportId, ErrorAttachmentLog[] attachments)
         {
         }
 

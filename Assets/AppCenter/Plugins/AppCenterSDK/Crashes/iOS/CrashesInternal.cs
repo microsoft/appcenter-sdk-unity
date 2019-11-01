@@ -17,13 +17,13 @@ namespace Microsoft.AppCenter.Unity.Crashes.Internal
             nativeTypes.Add(appcenter_unity_crashes_get_type());
         }
 
-        public static void TrackException(IntPtr exception, IDictionary<string, string> properties, ErrorAttachmentLog[] attachments)
+        public static string TrackException(IntPtr exception, IDictionary<string, string> properties, ErrorAttachmentLog[] attachments)
         {
             var keys = properties == null ? null : properties.Keys.ToArray();
             var values = properties == null ? null : properties.Values.ToArray();
             var propertyCount = properties == null ? 0 : properties.Count;
             var nativeAttachments = NativeObjectsConverter.ToNativeAttachments(attachments);
-            appcenter_unity_crashes_track_model_exception_with_properties_with_attachments(exception, keys, values, propertyCount, nativeAttachments);
+            return appcenter_unity_crashes_track_model_exception_with_properties_with_attachments(exception, keys, values, propertyCount, nativeAttachments);
         }
 
         public static AppCenterTask SetEnabledAsync(bool isEnabled)
@@ -117,6 +117,18 @@ namespace Microsoft.AppCenter.Unity.Crashes.Internal
             return AppCenterTask<bool>.FromCompleted(hadWarning);
         }
 
+        public static ErrorReport BuildHandledErrorReport(string errorId)
+        {
+            var nativeErrorReport = appcenter_unity_crashes_build_handled_error_report(errorId);
+            return GetErrorReportFromIntPtr(nativeErrorReport);
+        }
+
+        public static void SendErrorAttachments(string errorReportId, ErrorAttachmentLog[] attachments)
+        {
+            var nativeAttachments = NativeObjectsConverter.ToNativeAttachments(attachments);
+            appcenter_unity_crashes_send_error_attachments(errorReportId, nativeAttachments);
+        }
+
         private static Device GetDevice(IntPtr errorReportPtr)
         {
             var device = app_center_unity_crashes_error_report_device(errorReportPtr);
@@ -132,7 +144,7 @@ namespace Microsoft.AppCenter.Unity.Crashes.Internal
         private static extern bool appcenter_unity_crashes_has_received_memory_warning_in_last_session();
 
         [DllImport("__Internal")]
-        private static extern void appcenter_unity_crashes_track_model_exception_with_properties_with_attachments(IntPtr exception, string[] propertyKeys, string[] propertyValues, int propertyCount, IntPtr attachments);
+        private static extern string appcenter_unity_crashes_track_model_exception_with_properties_with_attachments(IntPtr exception, string[] propertyKeys, string[] propertyValues, int propertyCount, IntPtr attachments);
 
         [DllImport("__Internal")]
         private static extern void appcenter_unity_crashes_set_enabled(bool isEnabled);
@@ -191,6 +203,11 @@ namespace Microsoft.AppCenter.Unity.Crashes.Internal
         [DllImport("__Internal")]
         private static extern void appcenter_unity_start_crashes();
 
+        [DllImport("__Internal")]
+        private static extern void appcenter_unity_crashes_send_error_attachments(string errorReportId, IntPtr attachments);
+
+        [DllImport("__Internal")]
+        private static extern IntPtr appcenter_unity_crashes_build_handled_error_report(string errorId);
 #endregion
     }
 }
