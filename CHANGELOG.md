@@ -10,6 +10,7 @@ Updated native SDK versions:
 ### App Center
 
 * **[Fix]** Fix `AppCenterStarter.m` was not included in the first build.
+* **[Fix]** Fix Unity 2019.3 iOS build.
 
 ### App Center Crashes
 
