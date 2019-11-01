@@ -19,6 +19,8 @@ Updated native SDK versions:
 
 ### App Center Push
 
+* **[Bug fix]** Fixed receiving push notifications from background.
+
 #### UWP
 
 * **[Feature]** Allow developers to push notifications to a specific userId.
