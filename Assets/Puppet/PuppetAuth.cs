@@ -1,8 +1,9 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT license.
 
+using System;
+using System.Text;
 using System.Collections;
-using Microsoft.AppCenter.Unity;
 using Microsoft.AppCenter.Unity.Auth;
 using UnityEngine;
 using UnityEngine.UI;
@@ -21,7 +22,7 @@ public class PuppetAuth : MonoBehaviour
     public const string UserNotAuthenticated = "Sign In failed. User is not authenticated.";
     public const string TokenSet = "Set";
     public const string TokenUnset = "Unset";
-    
+
     void OnEnable()
     {
         StartCoroutine(OnEnableCoroutine());
@@ -31,9 +32,7 @@ public class PuppetAuth : MonoBehaviour
     {
         var task = Auth.IsEnabledAsync();
         yield return task;
-        var appCenterEnabledTask = AppCenter.IsEnabledAsync();
-        yield return appCenterEnabledTask;
-        AuthEnabled.isOn = task.Result && appCenterEnabledTask.Result;
+        AuthEnabled.isOn = task.Result;
     }
 
     private IEnumerator SignInCoroutine()
@@ -95,9 +94,7 @@ public class PuppetAuth : MonoBehaviour
         yield return Auth.SetEnabledAsync(enabled);
         var isEnabled = Auth.IsEnabledAsync();
         yield return isEnabled;
-        var appCenterEnabledTask = AppCenter.IsEnabledAsync();
-        yield return appCenterEnabledTask;
-        AuthEnabled.isOn = isEnabled.Result && appCenterEnabledTask.Result;
+        AuthEnabled.isOn = isEnabled.Result;
     }
 
     private void ShowLabels(bool enabled)
