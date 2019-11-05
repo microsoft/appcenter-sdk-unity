@@ -143,60 +143,34 @@ public class CreateManifest
             Directory.Delete(loaderFolder, true);
             return;
         }
-        bool activityElementIsNew = false;
-        var activityElement = applicationElements[0].Elements().FirstOrDefault(element => element.Name.LocalName == "activity");
-        if (activityElement == null)
-        {
-            activityElementIsNew = true;
-            activityElement = new XElement("activity");
-        }
-        bool intentElementIsNew = false;
-        var intentElement = activityElement.Elements().FirstOrDefault(element => element.Name.LocalName == "intent-filter");
-        if (intentElement == null)
-        {
-            intentElementIsNew = true;
-            intentElement = new XElement("intent-filter");
-        }
+        var activityElementOld = applicationElements[0].Elements().FirstOrDefault(element => element.Name.LocalName == "activity");
+       
 
+        var intentElement = new XElement("intent-filter");
         XNamespace ns = "http://schemas.android.com/apk/res/android";
+        var activityElement = new XElement("activity");
         activityElement.SetAttributeValue(ns + "name", "com.microsoft.identity.client.BrowserTabActivity");
-        var actionElement = intentElement.Elements().FirstOrDefault(element => element.Name.LocalName == "intent-filter");
-        bool actionElementIsNew = false;
-        if (actionElement == null)
-        {
-            actionElementIsNew = true;
-            actionElement = new XElement("action");
-        }
+        var actionElement = new XElement("action");
         actionElement.SetAttributeValue(ns + "name", "android.intent.action.VIEW");
         var categoryElement1 = new XElement("category");
         categoryElement1.SetAttributeValue(ns + "name", "android.intent.category.DEFAULT");
         var categoryElement2 = new XElement("category");
         categoryElement2.SetAttributeValue(ns + "name", "android.intent.category.BROWSABLE");
-        bool dataElementIsNew = false;
-        var dataElement = intentElement.Elements().FirstOrDefault(element => element.Name.LocalName == "data");
-        if (dataElement == null)
-        {
-            dataElementIsNew = true;
-            dataElement = new XElement("data");
-        }
+        var dataElement = new XElement("data");
         dataElement.SetAttributeValue(ns + "host", "auth");
         dataElement.SetAttributeValue(ns + "scheme", "msal" + settings.AndroidAppSecret);
 
-        if (actionElementIsNew)
-        {
-            intentElement.Add(actionElement);
-        }
+        intentElement.Add(actionElement);
         intentElement.Add(categoryElement1);
         intentElement.Add(categoryElement2);
-        if (dataElementIsNew)
+        intentElement.Add(dataElement);
+        activityElement.Add(intentElement);
+
+        if (activityElementOld != null)
         {
-            intentElement.Add(dataElement);
+            activityElementOld.ReplaceWith(activityElement);
         }
-        if (intentElementIsNew)
-        {
-            activityElement.Add(intentElement);
-        }
-        if (activityElementIsNew)
+        else
         {
             applicationElements[0].Add(activityElement);
         }
