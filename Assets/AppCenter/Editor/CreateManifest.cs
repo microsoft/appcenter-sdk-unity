@@ -143,22 +143,19 @@ public class CreateManifest
             Directory.Delete(loaderFolder, true);
             return;
         }
-        var activityElement = new XElement("activity");
-        var activityElements = applicationElements[0].Elements().Where(element => element.Name.LocalName == "activity").ToList();
 
-        if (activityElements.Count == 1)
+        var activityElement = applicationElements[0].Elements().FirstOrDefault(element => element.Name.LocalName == "activity");
+        if (activityElement == null)
         {
-            activityElement = activityElements[0];
+            activityElement = new XElement("activity");
         }
-        var intentElement = new XElement("intent-filter");
-        var intentElements = activityElement.Elements().Where(element => element.Name.LocalName == "intent-filter").ToList();
+        var intentElement = activityElement.Elements().FirstOrDefault(element => element.Name.LocalName == "intent-filter");
+        if (intentElement == null)
+        {
+            intentElement = new XElement("intent-filter");
+        }
 
-        if (intentElements.Count == 1)
-        {
-            intentElement = intentElements[0];
-        }
         XNamespace ns = "http://schemas.android.com/apk/res/android";
-
         activityElement.SetAttributeValue(ns + "name", "com.microsoft.identity.client.BrowserTabActivity");
         var actionElement = new XElement("action");
         actionElement.SetAttributeValue(ns + "name", "android.intent.action.VIEW");

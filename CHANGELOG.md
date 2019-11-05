@@ -14,7 +14,7 @@ Updated native SDK versions:
 
 ### App Center Auth
 
-* **[Fix]** Fix Auth was incorrectly caching the old app secret in the manifest if it wqas changed.
+* **[Fix]** Fix Auth was incorrectly caching the old app secret in the manifest if it was changed.
 
 ### App Center Crashes
 
