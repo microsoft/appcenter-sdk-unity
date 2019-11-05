@@ -38,6 +38,9 @@ namespace Microsoft.AppCenter.Unity.Push.Internal
         {
             _receivedPushDel = ReceivedPushNotificationFunc;
             appcenter_unity_push_set_received_push_impl(_receivedPushDel);
+
+            // If `ReplayUnprocessedPushNotifications` was called before App Center start 
+            // than need to call it again after App Center was started.
             IsAppCenterStart = true;
             if (IsWaitingToReply)
             {
@@ -74,6 +77,8 @@ namespace Microsoft.AppCenter.Unity.Push.Internal
 
         internal static void ReplayUnprocessedPushNotifications()
         {
+            // Verify that the App Center was started, otherwise set a flag 
+            // that needs call `ReplayUnprocessedPushNotifications` after the App Center will be started.
             if(!IsAppCenterStart)
             {
                 IsWaitingToReply = true;
