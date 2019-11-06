@@ -706,7 +706,7 @@ Task("RegisterUnity").Does(()=>
     {
         found = GetFiles("/Library/Application Support/Unity/*.ulf").Count > 0;
     } else {
-        var localAppDataUnityPath = System.IO.File.Path.Combine(EnvironmentVariable("LOCALAPPDATA"), @"VirtualStore\ProgramData\Unity\*.ulf");
+        var localAppDataUnityPath = System.IO.Path.Combine(EnvironmentVariable("LOCALAPPDATA"), @"VirtualStore\ProgramData\Unity\*.ulf");
         found = GetFiles(localAppDataUnityPath).Count + GetFiles(@"C:\ProgramData\Unity\*.ulf").Count > 0;
     }
     if (!found)
