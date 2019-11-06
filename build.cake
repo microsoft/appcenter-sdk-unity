@@ -704,9 +704,24 @@ Task("RegisterUnity").Does(()=>
     var found = false;
     if (Statics.Context.IsRunningOnUnix())
     {
+        var files = GetFiles("/Library/Application Support/Unity/*.ulf");
+        Information ("------------");
+        foreach (var f in files) {
+            Information ("File: " + f);
+        }
         found = GetFiles("/Library/Application Support/Unity/*.ulf").Count > 0;
     } else {
         var localAppDataUnityPath = System.IO.Path.Combine(EnvironmentVariable("LOCALAPPDATA"), @"VirtualStore\ProgramData\Unity\*.ulf");
+        var files = GetFiles(localAppDataUnityPath);
+        Information ("------------");
+        foreach (var f in files) {
+            Information ("File: " + f);
+        }
+        files = GetFiles(System.IO.Path.Combine(EnvironmentVariable("PROGRAMDATA"), @"Unity\*.ulf"));
+        Information ("------------");
+        foreach (var f in files) {
+            Information ("File: " + f);
+        }
         found = GetFiles(localAppDataUnityPath).Count + GetFiles(System.IO.Path.Combine(EnvironmentVariable("PROGRAMDATA"), @"Unity\*.ulf")).Count > 0;
     }
     if (!found)
