@@ -7,11 +7,13 @@ namespace Microsoft.AppCenter.Unity.Crashes.Internal
 {
     class CrashesDelegate
     {
+#pragma warning disable 0067
         public static event Crashes.SendingErrorReportHandler SendingErrorReport;
 
         public static event Crashes.SentErrorReportHandler SentErrorReport;
 
         public static event Crashes.FailedToSendErrorReportHandler FailedToSendErrorReport;
+#pragma warning restore 0067
 
         public static void SetDelegate()
         {
