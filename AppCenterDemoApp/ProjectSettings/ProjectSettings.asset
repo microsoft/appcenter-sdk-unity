@@ -150,7 +150,11 @@ PlayerSettings:
   resolutionScalingMode: 0
   androidSupportedAspectRatio: 1
   androidMaxAspectRatio: 2.1
-  applicationIdentifier: {}
+  applicationIdentifier:
+    Android: com.microsoft.appcenter.unity.demo
+    Metro: com.microsoft.appcenter.unity.demo
+    Standalone: com.microsoft.appcenter.unity.demo
+    iOS: com.microsoft.appcenter.unity.ios.demo
   buildNumber: {}
   AndroidBundleVersionCode: 1
   AndroidMinSdkVersion: 16
@@ -226,7 +230,7 @@ PlayerSettings:
   metalEditorSupport: 1
   metalAPIValidation: 1
   iOSRenderExtraFrameOnPause: 0
-  appleDeveloperTeamID: 
+  appleDeveloperTeamID: UBF8T346G9
   iOSManualSigningProvisioningProfileID: 
   tvOSManualSigningProvisioningProfileID: 
   iOSManualSigningProvisioningProfileType: 0
