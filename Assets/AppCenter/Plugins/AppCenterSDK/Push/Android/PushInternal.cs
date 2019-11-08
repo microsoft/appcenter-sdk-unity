@@ -12,8 +12,8 @@ namespace Microsoft.AppCenter.Unity.Push.Internal
     {
         private static AndroidJavaClass _push = new AndroidJavaClass("com.microsoft.appcenter.push.Push");
         private static AndroidJavaClass _unityListener = new AndroidJavaClass("com.microsoft.appcenter.pushdelegate.UnityAppCenterPushDelegate");
-        private static bool IsAppCenterStarted = false;
-        private static bool IsWaitingForReplay = false;
+        private static bool IsAppCenterStart = false;
+        private static bool IsWaitingToReply = false;
 
         public static void PrepareEventHandlers()
         {
@@ -24,14 +24,14 @@ namespace Microsoft.AppCenter.Unity.Push.Internal
         private static void Initialize()
         {
             _unityListener.CallStatic("setListener", new PushDelegate());
-            IsAppCenterStarted = true;
+            IsAppCenterStart = true;
             
             // If `ReplayUnprocessedPushNotifications` was called before App Center start 
             // than need to call it again after App Center was started.
-            if (IsWaitingForReplay)
+            if (IsWaitingToReply)
             {
                 PushInternal.ReplayUnprocessedPushNotifications();
-                IsWaitingForReplay = false;
+                IsWaitingToReply = false;
             }           
         }
 
@@ -73,9 +73,9 @@ namespace Microsoft.AppCenter.Unity.Push.Internal
         {
             // Verify that the App Center was started, otherwise set a flag 
             // that needs call `ReplayUnprocessedPushNotifications` after the App Center will be started.
-            if(!IsAppCenterStarted)
+            if(!IsAppCenterStart)
             {
-                IsWaitingForReplay = true;
+                IsWaitingToReply = true;
                 return;
             }
             _unityListener.CallStatic("replayPushNotifications");
