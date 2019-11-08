@@ -701,6 +701,18 @@ Task("RegisterUnity").Does(()=>
     // This will produce an error, but that's okay because the project "noproject" is used so that the
     // root isn't opened by unity, which could potentially remove important .meta files.
     ExecuteUnityCommand($"-serial {serialNumber} -username {username} -password {password}", "noproject");
+    var found = false;
+    if (Statics.Context.IsRunningOnUnix())
+    {
+        found = GetFiles("/Library/Application Support/Unity/*.ulf").Count > 0;
+    } else {
+        var localAppDataUnityPath = System.IO.Path.Combine(EnvironmentVariable("LOCALAPPDATA"), @"VirtualStore\ProgramData\Unity\*.ulf");
+        found = GetFiles(localAppDataUnityPath).Count + GetFiles(System.IO.Path.Combine(EnvironmentVariable("PROGRAMDATA"), @"Unity\*.ulf")).Count > 0;
+    }
+    if (!found)
+    {
+        throw new Exception("Failed to activate license.");
+    }
 }).OnError(HandleError);
 
 Task("UnregisterUnity").Does(()=>
