@@ -123,7 +123,7 @@ namespace Microsoft.AppCenter.Unity.Internal
                                          string liveUpdatePackageHash)
         {
             Prepare();
-            var wrapperSdk = new Microsoft.AppCenter.WrapperSdk(wrapperSdkVersion, wrapperSdkName, wrapperRuntimeVersion, liveUpdateReleaseLabel, liveUpdateDeploymentKey, liveUpdatePackageHash);
+            var wrapperSdk = new Microsoft.AppCenter.WrapperSdk(wrapperSdkName, wrapperSdkVersion, wrapperRuntimeVersion, liveUpdateReleaseLabel, liveUpdateDeploymentKey, liveUpdatePackageHash);
             UWPAppCenter.SetWrapperSdk(wrapperSdk);
         }
 
