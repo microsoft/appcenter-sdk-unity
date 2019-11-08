@@ -18,7 +18,7 @@ Updated native SDK versions:
 
 ### App Center Crashes
 
-* **[Fix]** Fix Unity warnings in CrashesDelegate class.
+* **[Fix]** Fix Unity warnings in `CrashesDelegate` class.
 
 #### Android
 
@@ -32,7 +32,7 @@ Updated native SDK versions:
 
 ### App Center Distribute
 
-* **[Fix]** Fix line endings Unity warning in UpdateAtion class.
+* **[Fix]** Fix line endings Unity warning in `UpdateAction` class.
 
 #### Android
 
