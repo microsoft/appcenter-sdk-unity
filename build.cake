@@ -12,8 +12,8 @@ using System.Runtime.Versioning;
 using NuGet;
 
 // Native SDK versions
-var AndroidSdkVersion = "2.4.1";
-var IosSdkVersion = "2.5.0";
+var AndroidSdkVersion = "2.5.0";
+var IosSdkVersion = "2.5.1";
 var UwpSdkVersion = "2.5.1-r0008-5be3f46";
 
 // URLs for downloading binaries.
@@ -701,6 +701,18 @@ Task("RegisterUnity").Does(()=>
     // This will produce an error, but that's okay because the project "noproject" is used so that the
     // root isn't opened by unity, which could potentially remove important .meta files.
     ExecuteUnityCommand($"-serial {serialNumber} -username {username} -password {password}", "noproject");
+    var found = false;
+    if (Statics.Context.IsRunningOnUnix())
+    {
+        found = GetFiles("/Library/Application Support/Unity/*.ulf").Count > 0;
+    } else {
+        var localAppDataUnityPath = System.IO.Path.Combine(EnvironmentVariable("LOCALAPPDATA"), @"VirtualStore\ProgramData\Unity\*.ulf");
+        found = GetFiles(localAppDataUnityPath).Count + GetFiles(System.IO.Path.Combine(EnvironmentVariable("PROGRAMDATA"), @"Unity\*.ulf")).Count > 0;
+    }
+    if (!found)
+    {
+        throw new Exception("Failed to activate license.");
+    }
 }).OnError(HandleError);
 
 Task("UnregisterUnity").Does(()=>
