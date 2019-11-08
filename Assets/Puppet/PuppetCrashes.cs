@@ -1,35 +1,35 @@
 ﻿// Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT license.
 
-using AOT;
-using Microsoft.AppCenter.Unity.Crashes;
-using System;
 using System.Collections;
 using System.Collections.Generic;
-using System.Linq;
 using System.Runtime.InteropServices;
 using System.Text;
 using System.Threading;
+using AOT;
+using Microsoft.AppCenter.Unity.Crashes;
 using UnityEngine;
 using UnityEngine.UI;
 using Exception = Microsoft.AppCenter.Unity.Crashes.Models.Exception;
 
 public class PuppetCrashes : MonoBehaviour
 {
+    private static bool _crashesNativeCallbackRegistered;
+
     public Toggle CrashesEnabled;
     public Toggle ReportUnhandledExceptions;
+    public Toggle EnableUnhandledExceptionAttachments;
     public Text LastSessionCrashReport;
     public InputField TextAttachment;
-    public InputField BinaryAttachment;
+    public Toggle BinaryAttachment;
     public Text LowMemoryLabel;
-    private static bool _crashesNativeCallbackRegistered;
 
     void OnEnable()
     {
         ReportUnhandledExceptions.isOn = Crashes.IsReportingUnhandledExceptions();
+        EnableUnhandledExceptionAttachments.interactable = ReportUnhandledExceptions.isOn;
         TextAttachment.text = PuppetAppCenter.TextAttachmentCached;
-        BinaryAttachment.text = PuppetAppCenter.BinaryAttachmentCached;
-
+        BinaryAttachment.isOn = PuppetAppCenter.BinaryAttachmentCached;
         StartCoroutine(OnEnableCoroutine());
     }
 
@@ -59,12 +59,14 @@ public class PuppetCrashes : MonoBehaviour
 
     public void OnValueChanged()
     {
+        PuppetAppCenter.TextAttachmentCached = TextAttachment.text;
         PlayerPrefs.SetString(PuppetAppCenter.TextAttachmentKey, TextAttachment.text);
     }
 
     public void OnBinaryValueChanged()
     {
-        PlayerPrefs.SetString(PuppetAppCenter.BinaryAttachmentKey, BinaryAttachment.text);
+        PuppetAppCenter.BinaryAttachmentCached = BinaryAttachment.isOn;
+        PlayerPrefs.SetInt(PuppetAppCenter.BinaryAttachmentKey, BinaryAttachment.isOn ? 1 : 0);
     }
 
     public void SetCrashesEnabled(bool enabled)
@@ -72,9 +74,11 @@ public class PuppetCrashes : MonoBehaviour
         StartCoroutine(SetCrashesEnabledCoroutine(enabled));
     }
 
-    public void SetReportUnhandledExceptions(bool enabled)
+    public void SetReportUnhandledExceptions()
     {
-        Crashes.ReportUnhandledExceptions(enabled);
+        Crashes.ReportUnhandledExceptions(ReportUnhandledExceptions.isOn, EnableUnhandledExceptionAttachments.isOn);
+        EnableUnhandledExceptionAttachments.interactable = ReportUnhandledExceptions.isOn;
+        EnableUnhandledExceptionAttachments.isOn = EnableUnhandledExceptionAttachments.isOn && ReportUnhandledExceptions.isOn;
     }
 
     private IEnumerator SetCrashesEnabledCoroutine(bool enabled)
@@ -94,7 +98,7 @@ public class PuppetCrashes : MonoBehaviour
         catch (System.Exception ex)
         {
             var properties = new Dictionary<string, string> { { "Category", "Music" }, { "Wifi", "On" } };
-            Crashes.TrackError(ex, properties);
+            Crashes.TrackError(ex, properties, GetErrorAttachments());
         }
     }
 
@@ -121,7 +125,7 @@ public class PuppetCrashes : MonoBehaviour
     public void NullReferenceException()
     {
 #if UNITY_ANDROID && !UNITY_EDITOR
-        nativeCrashNullPointer();       
+        nativeCrashNullPointer();
 #else
         string str = null;
         Debug.Log(str.Length);
@@ -147,36 +151,23 @@ public class PuppetCrashes : MonoBehaviour
 
     public static ErrorAttachmentLog[] GetErrorAttachmentstHandler(ErrorReport errorReport)
     {
-        return new ErrorAttachmentLog[]
-        {
-            ErrorAttachmentLog.AttachmentWithText(PuppetAppCenter.TextAttachmentCached, "hello.txt"),
-            ErrorAttachmentLog.AttachmentWithBinary(ParseBytes(PuppetAppCenter.BinaryAttachmentCached), "fake_image.jpeg", "image/jpeg")
-        };
+        Debug.LogFormat("GetErrorAttachments for error report with ID: {0}. IsCrash={1}", errorReport.Id, errorReport.IsCrash);
+        return GetErrorAttachments();
     }
 
-    private static byte[] ParseBytes(string bytesString)
+    private static ErrorAttachmentLog[] GetErrorAttachments()
     {
-        string[] bytesArray = bytesString.Split(' ');
-        if (bytesArray.Length == 0)
+        PuppetAppCenter.StorageReadyEvent.WaitOne();
+        var attachments = new List<ErrorAttachmentLog>();
+        if (!string.IsNullOrEmpty(PuppetAppCenter.TextAttachmentCached))
         {
-            return new byte[] { 100, 101, 102, 103 };
+            attachments.Add(ErrorAttachmentLog.AttachmentWithText(PuppetAppCenter.TextAttachmentCached, "hello.txt"));
         }
-        byte[] result = new byte[bytesArray.Length];
-        int i = 0;
-        foreach (string byteString in bytesArray)
+        if (PuppetAppCenter.BinaryAttachmentCached)
         {
-            byte parsed;
-            bool isParsed = Byte.TryParse(bytesString, out parsed);
-            if (isParsed)
-            {
-                result[i] = parsed;
-            }
-            else
-            {
-                result[i] = 0;
-            }
+            attachments.Add(PuppetAttachmentHelper.getSampleBinaryAttachmentLog());
         }
-        return result;
+        return attachments.Count == 0 ? null : attachments.ToArray();
     }
 
     [MonoPInvokeCallback(typeof(Crashes.ShouldProcessErrorReportHandler))]
@@ -225,6 +216,7 @@ public class PuppetCrashes : MonoBehaviour
                 status.AppendLine("Is App Killed: " + errorReport.IsAppKill);
                 status.AppendLine("Thread Name: " + errorReport.ThreadName);
                 status.AppendLine("Stack Trace: " + errorReport.Exception.StackTrace);
+                status.AppendLine("IsCrash: " + errorReport.IsCrash);
                 if (errorReport.Device != null)
                 {
                     status.AppendLine("Device.SdkName: " + errorReport.Device.SdkName);
