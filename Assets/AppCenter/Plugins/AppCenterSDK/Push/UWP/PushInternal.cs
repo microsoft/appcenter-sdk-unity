@@ -113,7 +113,7 @@ namespace Microsoft.AppCenter.Unity.Push.Internal
         {
             // Verify that the App Center was started, otherwise set a flag 
             // that needs call `ReplayUnprocessedPushNotifications` after the App Center will be started.
-            if(!IsAppCenterStarted)
+            if (!IsAppCenterStarted)
             {
                 IsWaitingForReplay = true;
                 return;
