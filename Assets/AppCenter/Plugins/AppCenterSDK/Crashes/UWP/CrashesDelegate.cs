@@ -13,6 +13,9 @@ namespace Microsoft.AppCenter.Unity.Crashes.Internal
         public static event Crashes.SentErrorReportHandler SentErrorReport;
 
         public static event Crashes.FailedToSendErrorReportHandler FailedToSendErrorReport;
+
+        internal static Crashes.GetErrorAttachmentsHandler GetErrorAttachmentsHandler;
+
 #pragma warning restore 0067
 
         public static void SetDelegate()

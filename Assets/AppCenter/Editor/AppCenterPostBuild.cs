@@ -85,7 +85,8 @@ public class AppCenterPostBuild : IPostprocessBuild
             if (ProjectCapabilityManagerWrapper.ProjectCapabilityManagerIsAvailable)
             {
                 var capabilityManager = new ProjectCapabilityManagerWrapper(pbxProject.ProjectPath,
-                                                                            PBXProjectWrapper.GetUnityTargetName());
+                                                                            PBXProjectWrapper.GetUnityTargetName(),
+                                                                            pbxProject.GetUnityTargetGuid());
                 OnPostprocessCapabilities(capabilityManager, settings);
                 capabilityManager.WriteToFile();
             }

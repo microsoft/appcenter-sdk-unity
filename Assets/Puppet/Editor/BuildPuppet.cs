@@ -95,7 +95,6 @@ public class BuildPuppet
     public static void BuildPuppetSceneWsaNetD3D()
     {
         EditorUserBuildSettings.wsaUWPBuildType = WSAUWPBuildType.D3D;
-        PlayerSettings.WSA.compilationOverrides = PlayerSettings.WSACompilationOverrides.UseNetCore;
         PlayerSettings.SetApiCompatibilityLevel(BuildTargetGroup.WSA, ApiCompatibilityLevel.NET_4_6);
         BuildPuppetScene(BuildTarget.WSAPlayer, BuildTargetGroup.WSA, ScriptingImplementation.WinRTDotNET, "WSANetBuildD3D");
     }

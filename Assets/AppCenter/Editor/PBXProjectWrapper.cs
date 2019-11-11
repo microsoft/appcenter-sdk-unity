@@ -33,6 +33,16 @@ public class PBXProjectWrapper
                              .Invoke(PBXProjectType, null) as string;
     }
 
+    public string GetUnityTargetGuid()
+    {
+#if UNITY_2019_3_OR_NEWER
+        return PBXProjectType.GetMethod("GetUnityFrameworkTargetGuid")
+                                       .Invoke(_pbxProject, null).ToString();
+#else
+        return null;
+#endif
+    }
+
     public static bool PBXProjectIsAvailable
     {
         get
@@ -66,9 +76,15 @@ public class PBXProjectWrapper
 
     public void AddBuildProperty(string name, string value)
     {
+        object targetGuid;
+#if UNITY_2019_3_OR_NEWER
+        targetGuid = PBXProjectType.GetMethod("GetUnityMainTargetGuid")
+                                       .Invoke(_pbxProject, null);
+#else
         var targetName = GetUnityTargetName();
-        var targetGuid = PBXProjectType.GetMethod("TargetGuidByName")
+        targetGuid = PBXProjectType.GetMethod("TargetGuidByName")
                                        .Invoke(_pbxProject, new object[] { targetName });
+#endif
         PBXProjectType.GetMethod("AddBuildProperty",
                                  new[] { typeof(string), typeof(string), typeof(string) })
                       .Invoke(_pbxProject,

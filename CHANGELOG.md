@@ -10,8 +10,15 @@ Updated native SDK versions:
 ### App Center
 
 * **[Fix]** Fix `AppCenterStarter.m` was not included in the first build.
+* **[Fix]** Fix Unity 2019.3 iOS build.
+
+### App Center Auth
+
+* **[Fix]** Fix Auth was incorrectly caching the old app secret in the manifest if it was changed.
 
 ### App Center Crashes
+
+* **[Fix]** Fix Unity warnings in `CrashesDelegate` class.
 
 #### Android
 
@@ -24,6 +31,8 @@ Updated native SDK versions:
 * **[Feature]** Allow developers to push notifications to a specific userId.
 
 ### App Center Distribute
+
+* **[Fix]** Fix line endings Unity warning in `UpdateAction` class.
 
 #### Android
 

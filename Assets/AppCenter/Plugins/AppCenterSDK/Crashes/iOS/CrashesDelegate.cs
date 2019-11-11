@@ -56,51 +56,23 @@ namespace Microsoft.AppCenter.Unity.Crashes.Internal
         [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
 #endif
         public delegate IntPtr NativeGetErrorAttachmentsDelegate(IntPtr report);
-        private static Crashes.GetErrorAttachmentsHandler getErrorAttachmentsHandler;
+        internal static Crashes.GetErrorAttachmentsHandler GetErrorAttachmentsHandler;
 
         [MonoPInvokeCallback(typeof(NativeGetErrorAttachmentsDelegate))]
         public static IntPtr GetErrorAttachmentsNativeFunc(IntPtr report)
         {
-            if (getErrorAttachmentsHandler != null)
-            {
-                var errorReport = CrashesInternal.GetErrorReportFromIntPtr(report);
-                var logs = getErrorAttachmentsHandler(errorReport);
-                var nativeLogs = new List<IntPtr>();
-                foreach (var errorAttachmetLog in logs)
-                {
-                    IntPtr nativeLog = IntPtr.Zero;
-                    if (errorAttachmetLog.Type == ErrorAttachmentLog.AttachmentType.Text)
-                    {
-                        nativeLog = app_center_unity_crashes_get_error_attachment_log_text(errorAttachmetLog.Text, errorAttachmetLog.FileName);
-                    }
-                    else
-                    {
-                        nativeLog = app_center_unity_crashes_get_error_attachment_log_binary(errorAttachmetLog.Data, errorAttachmetLog.Data.Length, errorAttachmetLog.FileName, errorAttachmetLog.ContentType);
-                    }
-                    nativeLogs.Add(nativeLog);
-                }
-
-                IntPtr log0 = IntPtr.Zero;
-                if (nativeLogs.Count > 0)
-                {
-                    log0 = nativeLogs[0];
-                }
-                IntPtr log1 = IntPtr.Zero;
-                if (nativeLogs.Count > 1)
-                {
-                    log1 = nativeLogs[1];
-                }
-                return app_center_unity_create_error_attachments_array(log0, log1);
-            }
-            else
+            if (GetErrorAttachmentsHandler == null)
             {
                 return IntPtr.Zero;
             }
+            var errorReport = CrashesInternal.GetErrorReportFromIntPtr(report);
+            var logs = GetErrorAttachmentsHandler(errorReport);
+            return NativeObjectsConverter.ToNativeAttachments(logs);
         }
 
         public static void SetGetErrorAttachmentsHandler(Crashes.GetErrorAttachmentsHandler handler)
         {
-            getErrorAttachmentsHandler = handler;
+            GetErrorAttachmentsHandler = handler;
         }
 
 #if ENABLE_IL2CPP
@@ -162,15 +134,6 @@ namespace Microsoft.AppCenter.Unity.Crashes.Internal
 
         [DllImport("__Internal")]
         private static extern void app_center_unity_crashes_delegate_set_get_error_attachments_delegate(NativeGetErrorAttachmentsDelegate functionPtr);
-
-        [DllImport("__Internal")]
-        private static extern IntPtr app_center_unity_crashes_get_error_attachment_log_text(string text, string fileName);
-
-        [DllImport("__Internal")]
-        private static extern IntPtr app_center_unity_crashes_get_error_attachment_log_binary(byte[] data, int size, string fileName, string contentType);
-
-        [DllImport("__Internal")]
-        private static extern IntPtr app_center_unity_create_error_attachments_array(IntPtr errorAttachment0, IntPtr errorAttachment1);
 
         [DllImport("__Internal")]
         private static extern void app_center_unity_crashes_delegate_set_sending_error_report_delegate(NativeSendingErrorReportDelegate functionPtr);

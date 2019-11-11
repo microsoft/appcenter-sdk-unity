@@ -143,14 +143,8 @@ public class CreateManifest
             Directory.Delete(loaderFolder, true);
             return;
         }
-        var activityElements = applicationElements[0].Elements().Where(element => element.Name.LocalName == "activity").ToList();
-
-        // Delete the unzipped folder if the activity element already exists in the AndroidManifest.xml file
-        if (activityElements.Count == 1)
-        {
-            Directory.Delete(loaderFolder, true);
-            return;
-        }
+        var activityElementOld = applicationElements[0].Elements().FirstOrDefault(element => element.Name.LocalName == "activity");
+       
 
         var intentElement = new XElement("intent-filter");
         XNamespace ns = "http://schemas.android.com/apk/res/android";
@@ -171,7 +165,15 @@ public class CreateManifest
         intentElement.Add(categoryElement2);
         intentElement.Add(dataElement);
         activityElement.Add(intentElement);
-        applicationElements[0].Add(activityElement);
+
+        if (activityElementOld != null)
+        {
+            activityElementOld.ReplaceWith(activityElement);
+        }
+        else
+        {
+            applicationElements[0].Add(activityElement);
+        }
         xmlFile.Save(manifestPath);
 
         // Delete the AndroidManifest.xml.meta file if generated
