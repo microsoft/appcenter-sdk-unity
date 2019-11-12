@@ -1,9 +1,9 @@
-## Release 2.5.0
+## Release 2.5.1
 
 Updated native SDK versions:
-* Android from `2.3.0` to [2.4.1](https://github.com/Microsoft/AppCenter-SDK-Android/releases/tag/2.4.1)
-* iOS from `2.4.0` to [2.5.0](https://github.com/Microsoft/AppCenter-SDK-Apple/releases/tag/2.5.0)
-* UWP from `2.1.0` to [2.5.0](https://github.com/Microsoft/AppCenter-SDK-DotNet/releases/tag/2.5.0)
+* Android from `2.3.0` to [2.5.0](https://github.com/Microsoft/AppCenter-SDK-Android/releases/tag/2.5.0)
+* iOS from `2.4.0` to [2.5.1](https://github.com/Microsoft/AppCenter-SDK-Apple/releases/tag/2.5.1)
+* UWP from `2.1.0` to [2.6.1](https://github.com/Microsoft/AppCenter-SDK-DotNet/releases/tag/2.6.1)
 
 ### App Center
 
