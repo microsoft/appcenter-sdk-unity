@@ -11219,7 +11219,7 @@ MonoBehaviour:
   m_HandleRect: {fileID: 1111163099}
   m_Direction: 2
   m_Value: 1
-  m_Size: 0.37532917
+  m_Size: 0.37744308
   m_NumberOfSteps: 0
   m_OnValueChanged:
     m_PersistentCalls:
@@ -33873,7 +33873,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 80e85dbda54e3493a88c49f7eb29eb83, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  AuthEnabled: {fileID: 425829953}
+  AuthEnabled: {fileID: 355062204}
   AuthStatus: {fileID: 760503092}
   AccountIdName: {fileID: 1127735493}
   AccessTokenName: {fileID: 1217866849}
