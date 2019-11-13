@@ -19,7 +19,7 @@ Updated native SDK versions:
 
 ### App Center Push
 
-* **[Bug fix]** Fixed receiving push notifications from background.
+* **[Bug fix]** Fix receiving push notifications from background.
 
 #### UWP
 

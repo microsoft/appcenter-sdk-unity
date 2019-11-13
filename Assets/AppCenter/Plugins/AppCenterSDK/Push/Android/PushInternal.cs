@@ -27,7 +27,7 @@ namespace Microsoft.AppCenter.Unity.Push.Internal
             IsAppCenterStarted = true;
             
             // If `ReplayUnprocessedPushNotifications` was called before App Center start 
-            // than need to call it again after App Center was started.
+            // then need to call it again after App Center was started.
             if (IsWaitingForReplay)
             {
                 PushInternal.ReplayUnprocessedPushNotifications();
