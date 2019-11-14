@@ -307,7 +307,7 @@ Task("BuildAndroidContentProvider").Does(()=>
         appName = "BreakpadSupport";
         BuildAndroidLibrary(appName, "", false);
         Warning ("Ignoring BreakpadSupport build failure... It's ok.");
-        if (!System.IO.File.Exists("Assets/AppCenter/Plugins/Android/libPuppetBreakpad.so")) 
+        if (!FileExists("Assets/AppCenter/Plugins/Android/libPuppetBreakpad.so")) 
         {
             throw new Exception("Building breakpad library failed.");
         }
