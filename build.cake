@@ -306,6 +306,11 @@ Task("BuildAndroidContentProvider").Does(()=>
     {
         appName = "BreakpadSupport";
         BuildAndroidLibrary(appName, "", false);
+        Warning ("Ignoring BreakpadSupport build failure... It's ok.");
+        if (!System.IO.File.Exists("Assets/AppCenter/Plugins/Android/libPuppetBreakpad.so")) 
+        {
+            throw new Exception("Building breakpad library failed.");
+        }
     }
 }).OnError(HandleError);
 
@@ -415,9 +420,9 @@ Task ("Externals-Uwp-IL2CPP-Dependencies")
         // Process UWP IL2CPP dependencies.
         Information ("Processing UWP IL2CPP dependencies. This could take a minute.");
         var result = ExecuteUnityCommand ("-executeMethod AppCenterPostBuild.ProcessUwpIl2CppDependencies");
-        if (result == 0)
+        if (result != 0)
         {
-            Statics.Context.Error("Something went wrong while exedcuting post build script");
+            throw new Exception("Something went wrong while executing post build script");
         }
     }).OnError (HandleError);
 
