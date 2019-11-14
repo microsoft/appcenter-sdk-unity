@@ -440,7 +440,7 @@ Task("Externals-Unity-Packages").Does(()=>
         var result = ExecuteUnityCommand(command);
         if (result != 0)
         {
-            Statics.Context.Error("Something went wrong while importing packages.");
+            throw new Exception("Something went wrong while importing packages.");
         }
     }
 }).OnError(HandleError);
@@ -755,7 +755,7 @@ Task("UnregisterUnity").Does(()=>
     var result = ExecuteUnityCommand("-returnLicense", null);
     if (result != 0)
     {
-        Statics.Context.Error("Something went wrong while returning Unity license.");
+        throw new Exception("Something went wrong while returning Unity license.");
     }
 }).OnError(HandleError);
 
