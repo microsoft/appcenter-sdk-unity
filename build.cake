@@ -137,23 +137,30 @@ class UnityPackage
 
     public UnityPackage(string specFilePath)
     {
-        AddFilesFromSpec(specFilePath);
+        var result = AddFilesFromSpec(specFilePath);
+        if (!result)
+        {
+            throw new Exception("Failed to form unity package.");
+        }
     }
 
-    private void AddFilesFromSpec(string specFilePath)
+    private bool AddFilesFromSpec(string specFilePath)
     {
         var needsCore = Statics.Context.XmlPeek(specFilePath, "package/@needsCore") == "true";
         if (needsCore)
         {
             var specFileDirectory = System.IO.Path.GetDirectoryName(specFilePath);
-            AddFilesFromSpec(specFileDirectory + "/AppCenter.unitypackagespec");
+            if (!AddFilesFromSpec(specFileDirectory + "/AppCenter.unitypackagespec")) 
+            {
+                return false;
+            }
         }
         _packageName = Statics.Context.XmlPeek(specFilePath, "package/@name");
         _packageVersion = Statics.Context.XmlPeek(specFilePath, "package/@version");
         if (_packageName == null || _packageVersion == null)
         {
             Statics.Context.Error("Invalid format for UnityPackageSpec file '" + specFilePath + "': missing package name or version");
-            return;
+            return false;
         }
 
         var xpathPrefix = "/package/include/file[";
@@ -172,6 +179,7 @@ class UnityPackage
             currentPath =  Statics.Context.XmlPeek(specFilePath, xpathPrefix + currentIdx++ + xpathSuffix);
             _includePaths.Add(currentPath);
         }
+        return true;
     }
 
     public void CreatePackage(string targetDirectory)
@@ -312,9 +320,19 @@ void BuildAndroidLibrary(string appName, string libraryName, bool copyBinary = t
         gradleWrapper += ".bat";
     }
     var fullArgs = "-b " + gradleScript + " assembleRelease";
-    StartProcess(gradleWrapper, fullArgs);
+
+    var result = StartProcess(gradleWrapper, fullArgs);
 
     if (copyBinary) {
+
+        // We check the result of the build only here because we need to check build
+        // result only in case we build native binary.
+        // In another case, when we build breakpad, we don't check it
+        // Due to the known issue that breakpad build always reports false failure.
+        if (result != 0)
+        {
+            throw new Exception("Failed to build android native library.");
+        }
         // Source and destination of generated aar
         var aarName = libraryName + "-release.aar";
         var aarSource = System.IO.Path.Combine(libraryFolder, "build/outputs/aar/" + aarName);
@@ -396,7 +414,11 @@ Task ("Externals-Uwp-IL2CPP-Dependencies")
 
         // Process UWP IL2CPP dependencies.
         Information ("Processing UWP IL2CPP dependencies. This could take a minute.");
-        ExecuteUnityCommand ("-executeMethod AppCenterPostBuild.ProcessUwpIl2CppDependencies");
+        var result = ExecuteUnityCommand ("-executeMethod AppCenterPostBuild.ProcessUwpIl2CppDependencies");
+        if (result == 0)
+        {
+            Statics.Context.Error("Something went wrong while exedcuting post build script");
+        }
     }).OnError (HandleError);
 
 // Download and install all external Unity packages required.
@@ -410,7 +432,11 @@ Task("Externals-Unity-Packages").Does(()=>
         DownloadFile(package.Url, destination);
         Information("Importing package " + package.Name + ". This could take a minute.");
         var command = package.AdditionalImportArgs + " -importPackage " + destination.FullPath;
-        ExecuteUnityCommand(command);
+        var result = ExecuteUnityCommand(command);
+        if (result != 0)
+        {
+            Statics.Context.Error("Something went wrong while importing packages.");
+        }
     }
 }).OnError(HandleError);
 
@@ -513,7 +539,11 @@ Task("DownloadNdk")
     if (IsRunningOnUnix())
     {
         CleanDirectory(NdkFolder);
-        StartProcess("unzip", new ProcessSettings{ Arguments = $"{zipDestination} -d {NdkFolder}"});
+        var result = StartProcess("unzip", new ProcessSettings{ Arguments = $"{zipDestination} -d {NdkFolder}"});
+        if (result != 0)
+        {
+            throw new Exception("Failed to unzip ndk.");
+        }
     }
     else
     {
@@ -717,7 +747,11 @@ Task("RegisterUnity").Does(()=>
 
 Task("UnregisterUnity").Does(()=>
 {
-    ExecuteUnityCommand("-returnLicense", null);
+    var result = ExecuteUnityCommand("-returnLicense", null);
+    if (result != 0)
+    {
+        Statics.Context.Error("Something went wrong while returning Unity license.");
+    }
 }).OnError(HandleError);
 
 

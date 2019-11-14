@@ -161,7 +161,11 @@ Task("CreateIosArchive").IsDependentOn("IncreaseIosVersion")
     var xcodeProjectPath = GetDirectories(BuildFolder + "/*/*.xcodeproj").Single().FullPath;
     Information("Creating archive...");
     var archiveName = Statics.TemporaryPrefix + "iosArchive.xcarchive";
-    StartProcess("xcodebuild", "-project \"" + xcodeProjectPath + "\" -configuration Release -scheme Unity-iPhone -archivePath \"" + archiveName + "\" archive");
+    var result = StartProcess("xcodebuild", "-project \"" + xcodeProjectPath + "\" -configuration Release -scheme Unity-iPhone -archivePath \"" + archiveName + "\" archive");
+    if (result != 0)
+    {
+        throw new Exception("Failed to archive ipa.");
+    }
 
     // Just create the empty plist file here so it doesn't cluttering the repo.
     var plistName = Statics.TemporaryPrefix + "exportoptions.plist";
@@ -171,9 +175,13 @@ Task("CreateIosArchive").IsDependentOn("IncreaseIosVersion")
         "<plist version=\"1.0\"><dict></dict></plist>");
     Information("Creating ipa...");
     DeleteFileIfExists(CurrentApp.AppPath);
-    StartProcess("xcodebuild", "-exportArchive -archivePath \"" + archiveName +
+    result = StartProcess("xcodebuild", "-exportArchive -archivePath \"" + archiveName +
                     "\" -exportPath \"" + CurrentApp.AppPath +
                     "\" -exportOptionsPlist \"" + plistName + "\"");
+    if (result != 0)
+    {
+        throw new Exception("Failed to export ipa.");
+    }
     var ipaFile = GetFiles(CurrentApp.AppPath + "/*.ipa").Single();
     var temporaryIpaPath = ArchiveDirectory + "/" + Statics.TemporaryPrefix + "tempIpa.ipa";
     MoveFile(ipaFile, temporaryIpaPath);
