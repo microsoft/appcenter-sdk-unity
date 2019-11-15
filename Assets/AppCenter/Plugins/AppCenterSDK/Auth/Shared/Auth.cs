@@ -17,7 +17,7 @@ namespace Microsoft.AppCenter.Unity.Auth
     public class Auth
     {
         // Used by App Center Unity Editor Extensions: https://github.com/Microsoft/AppCenter-SDK-Unity-Extension
-        public const string AuthSDKVersion = "2.5.0";
+        public const string AuthSDKVersion = "2.5.1";
 
         public static void AddNativeType(List<RawType> nativeTypes)
         {

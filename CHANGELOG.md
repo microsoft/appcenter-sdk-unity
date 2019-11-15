@@ -1,15 +1,20 @@
 # App Center SDK for Unity Change Log
 
-## Release 2.5.0
+## Release 2.5.1
 
 Updated native SDK versions:
-* Android from `2.3.0` to [2.4.1](https://github.com/Microsoft/AppCenter-SDK-Android/releases/tag/2.4.1)
-* iOS from `2.4.0` to [2.5.0](https://github.com/Microsoft/AppCenter-SDK-Apple/releases/tag/2.5.0)
-* UWP from `2.1.0` to [2.5.0](https://github.com/Microsoft/AppCenter-SDK-DotNet/releases/tag/2.5.0)
+* Android from `2.3.0` to [2.5.0](https://github.com/Microsoft/AppCenter-SDK-Android/releases/tag/2.5.0)
+* iOS from `2.4.0` to [2.5.1](https://github.com/Microsoft/AppCenter-SDK-Apple/releases/tag/2.5.1)
+* UWP from `2.1.0` to [2.6.1](https://github.com/Microsoft/AppCenter-SDK-DotNet/releases/tag/2.6.1)
 
 ### App Center
 
 * **[Fix]** Fix `AppCenterStarter.m` was not included in the first build.
+* **[Fix]** Fix Unity 2019.3 iOS build.
+
+### App Center Auth
+
+* **[Fix]** Fix Auth was incorrectly caching the old app secret in the manifest if it was changed.
 
 ### App Center Crashes
 
@@ -26,6 +31,8 @@ Updated native SDK versions:
 * **[Feature]** Allow developers to push notifications to a specific userId.
 
 ### App Center Distribute
+
+* **[Fix]** Fix line endings Unity warning in `UpdateAction` class.
 
 #### Android
 

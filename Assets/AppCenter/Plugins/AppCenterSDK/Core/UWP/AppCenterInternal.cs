@@ -122,7 +122,9 @@ namespace Microsoft.AppCenter.Unity.Internal
                                          string liveUpdateDeploymentKey,
                                          string liveUpdatePackageHash)
         {
-            //TODO once wrapper sdk exists for uwp, set it here
+            Prepare();
+            var wrapperSdk = new Microsoft.AppCenter.WrapperSdk(wrapperSdkName, wrapperSdkVersion, wrapperRuntimeVersion, liveUpdateReleaseLabel, liveUpdateDeploymentKey, liveUpdatePackageHash);
+            UWPAppCenter.SetWrapperSdk(wrapperSdk);
         }
 
         private static int LogLevelToUnity(int logLevel)
