@@ -17,8 +17,6 @@ namespace Microsoft.AppCenter.Unity.Push.Internal
         public static readonly object _lockObject = new object();
         private static string _prevIdString = "";
         private static int _idLength = Guid.NewGuid().ToString().Length;
-        private static bool IsAppCenterStarted = false;
-        private static bool IsWaitingForReplay = false;
 
         public static void PrepareEventHandlers()
         {
@@ -111,11 +109,8 @@ namespace Microsoft.AppCenter.Unity.Push.Internal
 
         internal static void ReplayUnprocessedPushNotifications()
         {
-            // Verify that the App Center was started, otherwise set a flag 
-            // that needs call `ReplayUnprocessedPushNotifications` after the App Center will be started.
-            if (!IsAppCenterStarted)
+            if (!Push.IsAppCenterInitialize())
             {
-                IsWaitingForReplay = true;
                 return;
             }
             List<PushNotificationReceivedEventArgs> unprocessedPushNotificationsCopy = null;

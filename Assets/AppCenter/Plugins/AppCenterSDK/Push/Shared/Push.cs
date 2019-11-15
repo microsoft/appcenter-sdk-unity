@@ -16,9 +16,11 @@ namespace Microsoft.AppCenter.Unity.Push
     public class Push
     {
         // Used by App Center Unity Editor Extensions: https://github.com/Microsoft/AppCenter-SDK-Unity-Extension
-        public const string PushSDKVersion = "2.5.0";
+        public const string PushSDKVersion = "2.4.0";
         private static readonly object _lockObject = new object();
         private static bool _needsReplay = true;
+        private static bool IsAppCenterStarted;
+        private static bool IsWaitingForReplay;
 
         private static event EventHandler<PushNotificationReceivedEventArgs> _pushNotificationReceived;
 
@@ -93,6 +95,30 @@ namespace Microsoft.AppCenter.Unity.Push
             {
                 eventCopy.Invoke(null, e);
             }
+        }
+
+        public static void ReplyPushNotificationsIfWatting()
+        {
+            IsAppCenterStarted = true;
+
+            // If `ReplayUnprocessedPushNotifications` was called before App Center start 
+            // then need to call it again after App Center was started.
+            if (IsWaitingForReplay)
+            {
+                PushInternal.ReplayUnprocessedPushNotifications();
+                IsWaitingForReplay = false;
+            }
+        }
+
+        public static bool IsAppCenterInitialize()
+        {
+            // Verify that the App Center was started, otherwise set a flag 
+            // that needs call `ReplayUnprocessedPushNotifications` after the App Center will be started.
+            if (!IsAppCenterStarted)
+            {
+                IsWaitingForReplay = true;
+            }
+            return IsAppCenterStarted;
         }
     }
 }

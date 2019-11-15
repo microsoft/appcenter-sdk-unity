@@ -26,8 +26,6 @@ namespace Microsoft.AppCenter.Unity.Push.Internal
             Push.NotifyPushNotificationReceived(eventArgs);
         }
 #endregion
-        private static bool IsAppCenterStarted = false;
-        private static bool IsWaitingForReplay = false;
 
         public static void PrepareEventHandlers()
         {
@@ -38,15 +36,7 @@ namespace Microsoft.AppCenter.Unity.Push.Internal
         {
             _receivedPushDel = ReceivedPushNotificationFunc;
             appcenter_unity_push_set_received_push_impl(_receivedPushDel);
-
-            // If `ReplayUnprocessedPushNotifications` was called before App Center start 
-            // then need to call it again after App Center was started.
-            IsAppCenterStarted = true;
-            if (IsWaitingForReplay)
-            {
-                PushInternal.ReplayUnprocessedPushNotifications();
-                IsWaitingForReplay = false;
-            }
+            Push.ReplyPushNotificationsIfWatting();
         }
 
         public static void AddNativeType(List<IntPtr> nativeTypes)
@@ -77,14 +67,10 @@ namespace Microsoft.AppCenter.Unity.Push.Internal
 
         internal static void ReplayUnprocessedPushNotifications()
         {
-            // Verify that the App Center was started, otherwise set a flag 
-            // that needs call `ReplayUnprocessedPushNotifications` after the App Center will be started.
-            if (!IsAppCenterStarted)
+            if (Push.IsAppCenterInitialize())
             {
-                IsWaitingForReplay = true;
-                return;
+                appcenter_unity_push_replay_unprocessed_notifications();
             }
-            appcenter_unity_push_replay_unprocessed_notifications();
         }
 
 #region External
