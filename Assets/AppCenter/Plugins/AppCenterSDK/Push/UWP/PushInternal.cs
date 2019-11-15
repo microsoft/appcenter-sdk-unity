@@ -57,15 +57,7 @@ namespace Microsoft.AppCenter.Unity.Push.Internal
                 };
                 HandlePushNotification(eventArgs);
             };
-
-            // If `ReplayUnprocessedPushNotifications` was called before App Center start 
-            // then need to call it again after App Center was started.
-            IsAppCenterStarted = true;
-            if (IsWaitingForReplay)
-            {
-                PushInternal.ReplayUnprocessedPushNotifications();
-                IsWaitingForReplay = false;
-            }
+            Push.ReplyPushNotificationsIfWatting();
         }
 
         public static void AddNativeType(List<Type> nativeTypes)
