@@ -1,5 +1,13 @@
 # App Center SDK for Unity Change Log
 
+## Release 2.6.0 (Under development)
+
+### App Center Push
+
+* **[Bug fix]** Fix receiving push notifications from background.
+
+__
+
 ## Release 2.5.1
 
 Updated native SDK versions:
@@ -21,10 +29,6 @@ Updated native SDK versions:
 #### Android
 
 * **[Behavior change]** Fix a security issue with the `Exception` field on `ErrorReport` objects. As a result, the `Exception.StackTrace` now holds the raw stack trace, and the `Exception.Message` field is `null`.
-
-### App Center Push
-
-* **[Bug fix]** Fix receiving push notifications from background.
 
 #### UWP
 
