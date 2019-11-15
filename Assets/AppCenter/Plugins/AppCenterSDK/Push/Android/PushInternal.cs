@@ -22,7 +22,7 @@ namespace Microsoft.AppCenter.Unity.Push.Internal
         private static void Initialize()
         {
             _unityListener.CallStatic("setListener", new PushDelegate());
-            Push.ReplyPushNotificationsIfWatting();         
+            Push.ReplayPushNotificationsIfWaiting();         
         }
 
         public static void StartPush()

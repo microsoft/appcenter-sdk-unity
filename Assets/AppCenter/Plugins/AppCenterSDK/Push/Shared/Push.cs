@@ -97,7 +97,7 @@ namespace Microsoft.AppCenter.Unity.Push
             }
         }
 
-        public static void ReplyPushNotificationsIfWatting()
+        public static void ReplayPushNotificationsIfWaiting()
         {
             IsAppCenterStarted = true;
 
