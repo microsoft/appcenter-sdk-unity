@@ -339,7 +339,7 @@ void BuildAndroidLibrary(string appName, string libraryName, bool copyBinary = t
         // Due to the known issue that breakpad build always reports false failure.
         if (result != 0)
         {
-            throw new Exception("Failed to build android native library.");
+            throw new Exception("Failed to build android native library. Gradle result code: " + result);
         }
         // Source and destination of generated aar
         var aarName = libraryName + "-release.aar";
@@ -425,7 +425,7 @@ Task ("Externals-Uwp-IL2CPP-Dependencies")
         var result = ExecuteUnityCommand ("-executeMethod AppCenterPostBuild.ProcessUwpIl2CppDependencies");
         if (result != 0)
         {
-            throw new Exception("Something went wrong while executing post build script");
+            throw new Exception("Something went wrong while executing post build script. Unity result code: " + result);
         }
     }).OnError (HandleError);
 
@@ -443,7 +443,7 @@ Task("Externals-Unity-Packages").Does(()=>
         var result = ExecuteUnityCommand(command);
         if (result != 0)
         {
-            throw new Exception("Something went wrong while importing packages.");
+            throw new Exception("Something went wrong while importing packages. Unity result code: " + result);
         }
     }
 }).OnError(HandleError);
