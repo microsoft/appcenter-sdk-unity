@@ -4,7 +4,7 @@
 
 ### App Center Push
 
-* **[Bug fix]** Fix receiving push notifications from background.
+* **[Bug fix]** Fix missing `NotifyPushNotificationReceived` callback if push notification is received from the background.
 
 __
 
