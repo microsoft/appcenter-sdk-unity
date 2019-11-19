@@ -57,6 +57,7 @@ namespace Microsoft.AppCenter.Unity.Push.Internal
                 };
                 HandlePushNotification(eventArgs);
             };
+            Push.ReplayPushNotificationsIfWaiting();
         }
 
         public static void AddNativeType(List<Type> nativeTypes)
@@ -100,6 +101,10 @@ namespace Microsoft.AppCenter.Unity.Push.Internal
 
         internal static void ReplayUnprocessedPushNotifications()
         {
+            if (!Push.IsAppCenterInitialize())
+            {
+                return;
+            }
             List<PushNotificationReceivedEventArgs> unprocessedPushNotificationsCopy = null;
             lock (_lockObject)
             {

@@ -1,5 +1,13 @@
 # App Center SDK for Unity Change Log
 
+## Release 2.6.0 (Under development)
+
+### App Center Push
+
+* **[Bug fix]** Fix missing `NotifyPushNotificationReceived` callback if push notification is received from the background.
+
+__
+
 ## Release 2.5.1
 
 Updated native SDK versions:

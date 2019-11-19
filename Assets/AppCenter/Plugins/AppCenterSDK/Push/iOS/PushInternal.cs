@@ -26,6 +26,7 @@ namespace Microsoft.AppCenter.Unity.Push.Internal
             Push.NotifyPushNotificationReceived(eventArgs);
         }
 #endregion
+
         public static void PrepareEventHandlers()
         {
             AppCenterBehavior.InitializingServices += Initialize;
@@ -35,6 +36,7 @@ namespace Microsoft.AppCenter.Unity.Push.Internal
         {
             _receivedPushDel = ReceivedPushNotificationFunc;
             appcenter_unity_push_set_received_push_impl(_receivedPushDel);
+            Push.ReplayPushNotificationsIfWaiting();
         }
 
         public static void AddNativeType(List<IntPtr> nativeTypes)
@@ -65,7 +67,10 @@ namespace Microsoft.AppCenter.Unity.Push.Internal
 
         internal static void ReplayUnprocessedPushNotifications()
         {
-            appcenter_unity_push_replay_unprocessed_notifications();
+            if (Push.IsAppCenterInitialize())
+            {
+                appcenter_unity_push_replay_unprocessed_notifications();
+            }
         }
 
 #region External

@@ -22,6 +22,7 @@ namespace Microsoft.AppCenter.Unity.Push.Internal
         private static void Initialize()
         {
             _unityListener.CallStatic("setListener", new PushDelegate());
+            Push.ReplayPushNotificationsIfWaiting();         
         }
 
         public static void StartPush()
@@ -60,7 +61,10 @@ namespace Microsoft.AppCenter.Unity.Push.Internal
 
         internal static void ReplayUnprocessedPushNotifications()
         {
-            _unityListener.CallStatic("replayPushNotifications");
+            if (Push.IsAppCenterInitialize())
+            {
+                _unityListener.CallStatic("replayPushNotifications");
+            }
         }
     }
 }
