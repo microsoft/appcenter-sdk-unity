@@ -431,7 +431,11 @@ public class PuppetTransmission : MonoBehaviour
         {
             OverrideChildProperties(transmissionTarget);
             var properties = PropertiesHelper.GetStringProperties(EventChildPropertiesList);
-            if (properties == null)
+            var propertiesParents = PropertiesHelper.GetStringProperties(EventParentPropertiesList);
+            List<Dictionary<string, string>> propertylist = new List<Dictionary<string, string>>();
+            propertylist.Add(properties);
+            propertylist.Add(propertiesParents);
+            if (propertylist.Count == 0)
             {
                 if (_isCritical)
                 {
@@ -446,9 +450,17 @@ public class PuppetTransmission : MonoBehaviour
             else
             {
                 var propertyConfigurator = transmissionTarget.GetPropertyConfigurator();
-                foreach (var property in properties)
-                {
-                    propertyConfigurator.SetEventProperty(property.Key, property.Value);
+                if (properties != null) {
+                  foreach (var property in properties)
+                  {
+                      propertyConfigurator.SetEventProperty(property.Key, property.Value);
+                  }
+                }
+                if (propertiesParents != null) {
+                  foreach (var property in propertiesParents)
+                  {
+                      propertyConfigurator.SetEventProperty(property.Key, property.Value);
+                  }
                 }
                 propertyConfigurator.SetEventProperty("extraEventProperty", "should be removed!");
                 propertyConfigurator.RemoveEventProperty("extraEventProperty");
@@ -472,7 +484,11 @@ public class PuppetTransmission : MonoBehaviour
         {
             OverrideChildProperties(transmissionTarget);
             var properties = PropertiesHelper.GetTypedProperties(EventChildPropertiesList);
-            if (properties == null)
+            var propertiesParents = PropertiesHelper.GetTypedProperties(EventParentPropertiesList);
+            List<EventProperties> propertylist = new List<EventProperties>();
+            propertylist.Add(properties);
+            propertylist.Add(propertiesParents);
+            if (propertylist.Count == 0)
             {
                 if (_isCritical)
                 {
@@ -487,7 +503,12 @@ public class PuppetTransmission : MonoBehaviour
             else
             {
                 var propertyConfigurator = transmissionTarget.GetPropertyConfigurator();
-                PropertiesHelper.AddPropertiesToPropertyConfigurator(EventChildPropertiesList, propertyConfigurator);
+                if (properties != null) {
+                    PropertiesHelper.AddPropertiesToPropertyConfigurator(EventChildPropertiesList, propertyConfigurator);
+                }
+                if (propertiesParents != null) {
+                    PropertiesHelper.AddPropertiesToPropertyConfigurator(EventParentPropertiesList, propertyConfigurator);
+                }
                 propertyConfigurator.SetEventProperty("extraEventProperty", "should be removed!");
                 propertyConfigurator.RemoveEventProperty("extraEventProperty");
                 if (_isCritical)
