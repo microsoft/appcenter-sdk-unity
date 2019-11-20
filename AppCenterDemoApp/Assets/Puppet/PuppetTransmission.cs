@@ -450,17 +450,19 @@ public class PuppetTransmission : MonoBehaviour
             else
             {
                 var propertyConfigurator = transmissionTarget.GetPropertyConfigurator();
-                if (properties != null) {
-                  foreach (var property in properties)
-                  {
-                      propertyConfigurator.SetEventProperty(property.Key, property.Value);
-                  }
+                if (properties != null)
+                {
+                    foreach (var property in properties)
+                    {
+                        propertyConfigurator.SetEventProperty(property.Key, property.Value);
+                    }
                 }
-                if (propertiesParents != null) {
-                  foreach (var property in propertiesParents)
-                  {
-                      propertyConfigurator.SetEventProperty(property.Key, property.Value);
-                  }
+                if (propertiesParents != null)
+                {
+                    foreach (var property in propertiesParents)
+                    {
+                        propertyConfigurator.SetEventProperty(property.Key, property.Value);
+                    }
                 }
                 propertyConfigurator.SetEventProperty("extraEventProperty", "should be removed!");
                 propertyConfigurator.RemoveEventProperty("extraEventProperty");
@@ -503,10 +505,12 @@ public class PuppetTransmission : MonoBehaviour
             else
             {
                 var propertyConfigurator = transmissionTarget.GetPropertyConfigurator();
-                if (properties != null) {
+                if (properties != null)
+                {
                     PropertiesHelper.AddPropertiesToPropertyConfigurator(EventChildPropertiesList, propertyConfigurator);
                 }
-                if (propertiesParents != null) {
+                if (propertiesParents != null)
+                {
                     PropertiesHelper.AddPropertiesToPropertyConfigurator(EventParentPropertiesList, propertyConfigurator);
                 }
                 propertyConfigurator.SetEventProperty("extraEventProperty", "should be removed!");
