@@ -14,8 +14,6 @@ public class PuppetTransmission : MonoBehaviour
 {
     public Toggle ParentTransmissionEnabled;
     public Toggle ChildTransmissionEnabled;
-    public Toggle UseParentPropertyConfigurator;
-    public Toggle UseChildPropertyConfigurator;
     public Toggle CollectDeviceIdChild;
     public Toggle CollectDeviceIdParent;
     public InputField EventName;
@@ -352,35 +350,21 @@ public class PuppetTransmission : MonoBehaviour
             }
             else
             {
-                if (UseParentPropertyConfigurator.isOn)
+                var propertyConfigurator = transmissionTarget.GetPropertyConfigurator();
+                foreach (var property in properties)
                 {
-                    var propertyConfigurator = transmissionTarget.GetPropertyConfigurator();
-                    foreach (var property in properties)
-                    {
-                        propertyConfigurator.SetEventProperty(property.Key, property.Value);
-                    }
-                    propertyConfigurator.SetEventProperty("extraEventProperty", "should be removed!");
-                    propertyConfigurator.RemoveEventProperty("extraEventProperty");
-                    if (_isCritical)
-                    {
-                        IDictionary<string, string> nullProps = null;
-                        transmissionTarget.TrackEvent(EventName.text, nullProps, Flags.PersistenceCritical);
-                    }
-                    else
-                    {
-                        transmissionTarget.TrackEvent(EventName.text);
-                    }
+                    propertyConfigurator.SetEventProperty(property.Key, property.Value);
+                }
+                propertyConfigurator.SetEventProperty("extraEventProperty", "should be removed!");
+                propertyConfigurator.RemoveEventProperty("extraEventProperty");
+                if (_isCritical)
+                {
+                    IDictionary<string, string> nullProps = null;
+                    transmissionTarget.TrackEvent(EventName.text, nullProps, Flags.PersistenceCritical);
                 }
                 else
                 {
-                    if (_isCritical)
-                    {
-                        transmissionTarget.TrackEvent(EventName.text, properties, Flags.PersistenceCritical);
-                    }
-                    else
-                    {
-                        transmissionTarget.TrackEvent(EventName.text, properties);
-                    }
+                    transmissionTarget.TrackEvent(EventName.text);
                 }
             }
         }
