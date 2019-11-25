@@ -30,6 +30,10 @@ static int ExecuteUnityCommand(string extraArgs, string projectPath = ".")
             unityPath = "C:\\Program Files\\Unity\\Editor\\Unity.exe";
         }
     }
+    if (!System.IO.File.Exists(unityPath)) 
+    {
+        throw new Exception("Unity installation does not exist under " + unityPath);
+    }
 
     // Unity log file
     var unityLogFile = "CAKE_SCRIPT_TEMPunity_build_log.log";
