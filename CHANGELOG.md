@@ -2,6 +2,10 @@
 
 ## Release 2.6.0 (Under development)
 
+### App Center
+
+* **[Enhancement]** SDK now detects its location automatically.
+
 ### App Center Push
 
 * **[Bug fix]** Fix missing `NotifyPushNotificationReceived` callback if push notification is received from the background.
