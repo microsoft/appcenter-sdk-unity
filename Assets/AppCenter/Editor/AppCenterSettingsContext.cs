@@ -4,26 +4,25 @@
 using UnityEngine;
 using UnityEditor;
 using System.IO;
-using System.Reflection;
 using System;
-using System.Runtime.CompilerServices;
 
 public class AppCenterSettingsContext : ScriptableObject
 {
-	private static readonly string SettingsPath = AppCenterPath + "/AppCenterSettings.asset";
+    private static readonly string SettingsPath = AppCenterPath + "/AppCenterSettings.asset";
     private static readonly string AdvancedSettingsPath = AppCenterPath + "/AppCenterSettingsAdvanced.asset";
     private static AppCenterSettingsContext Instance;
 
     public static AppCenterSettingsContext GetInstance()
     {
-        if(Instance == null)
+        if (Instance == null)
         {
             Instance = new AppCenterSettingsContext();
         }
         return Instance;
     }
 
-    private AppCenterSettingsContext() {
+    private AppCenterSettingsContext()
+    {
     }
 
     public static string AppCenterPath
@@ -55,7 +54,7 @@ public class AppCenterSettingsContext : ScriptableObject
         get
         {
             // No need to lock because this can only be accessed from the main thread.
-            return AssetDatabase.LoadAssetAtPath<AppCenterSettingsAdvanced>(AdvancedSettingsPath);      
+            return AssetDatabase.LoadAssetAtPath<AppCenterSettingsAdvanced>(AdvancedSettingsPath);
         }
     }
 
@@ -69,7 +68,7 @@ public class AppCenterSettingsContext : ScriptableObject
     }
 
     public static AppCenterSettingsAdvanced CreateSettingsInstanceAdvanced()
-    { 
+    {
         var instance = AssetDatabase.LoadAssetAtPath<AppCenterSettingsAdvanced>(AdvancedSettingsPath);
         if (instance == null)
         {
