@@ -16,14 +16,14 @@ public class AppCenterSettingsAdvanced : ScriptableObject
     public StartupType AppCenterStartupType = StartupType.Both;
 
     [Tooltip("Start Android native SDK from the App Center Behavior script instead of the native plugin")]
-#if DONT_USE_NATIVE_STARTER
+#if APPCENTER_DONT_USE_NATIVE_STARTER
     public bool StartAndroidNativeSDKFromAppCenterBehavior = true;
 #else
     public bool StartAndroidNativeSDKFromAppCenterBehavior = false;
 #endif
 
     [Tooltip("Start iOS native SDK from the App Center Behavior script instead of the native plugin")]
-#if DONT_USE_NATIVE_STARTER
+#if APPCENTER_DONT_USE_NATIVE_STARTER
     public bool StartIOSNativeSDKFromAppCenterBehavior = true;
 #else
     public bool StartIOSNativeSDKFromAppCenterBehavior = false;

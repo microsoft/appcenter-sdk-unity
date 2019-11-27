@@ -36,14 +36,14 @@ public class AppCenterPreBuild : IPreprocessBuild
             {
                 FirebaseDependency.SetupPush();
             }
-#if !DONT_USE_NATIVE_STARTER
+#if !APPCENTER_DONT_USE_NATIVE_STARTER
             AddStartupCode(new AppCenterSettingsMakerAndroid());
             CreateManifest.Create(settings);
 #endif
         }
         else if (target == BuildTarget.iOS)
         {
-#if !DONT_USE_NATIVE_STARTER
+#if !APPCENTER_DONT_USE_NATIVE_STARTER
             AddStartupCode(new AppCenterSettingsMakerIos());
 #endif
         }
