@@ -3,12 +3,36 @@
 
 using UnityEngine;
 using UnityEditor;
+using System.IO;
+using System.Reflection;
+using System;
+using System.Runtime.CompilerServices;
 
 public class AppCenterSettingsContext : ScriptableObject
 {
-    public const string AppCenterPath = "Assets";
-    private const string SettingsPath = AppCenterPath + "/AppCenter/AppCenterSettings.asset";
-    private const string AdvancedSettingsPath = AppCenterPath + "/AppCenter/AppCenterSettingsAdvanced.asset";
+	private static readonly string SettingsPath = AppCenterPath + "/AppCenterSettings.asset";
+    private static readonly string AdvancedSettingsPath = AppCenterPath + "/AppCenterSettingsAdvanced.asset";
+    private static AppCenterSettingsContext Instance;
+
+    public static AppCenterSettingsContext GetInstance()
+    {
+        if(Instance == null)
+        {
+            Instance = new AppCenterSettingsContext();
+        }
+        return Instance;
+    }
+
+    private AppCenterSettingsContext() {
+    }
+
+    public static string AppCenterPath
+    {
+        get
+        {
+            return GetInstance().GetAppCenterPath();
+        }
+    }
 
     public static AppCenterSettings SettingsInstance
     {
@@ -35,8 +59,17 @@ public class AppCenterSettingsContext : ScriptableObject
         }
     }
 
-    public static AppCenterSettingsAdvanced CreateSettingsInstanceAdvanced()
+    public string GetAppCenterPath()
     {
+        var script = MonoScript.FromScriptableObject(this);
+        var pathScript = AssetDatabase.GetAssetPath(script);
+        var lastAppCenterIndex = pathScript.LastIndexOf("Editor", StringComparison.Ordinal);
+        var directoryAppCenter = pathScript.Remove(lastAppCenterIndex).TrimEnd(Path.DirectorySeparatorChar);
+        return directoryAppCenter;
+    }
+
+    public static AppCenterSettingsAdvanced CreateSettingsInstanceAdvanced()
+    { 
         var instance = AssetDatabase.LoadAssetAtPath<AppCenterSettingsAdvanced>(AdvancedSettingsPath);
         if (instance == null)
         {
@@ -51,4 +84,5 @@ public class AppCenterSettingsContext : ScriptableObject
     {
         AssetDatabase.DeleteAsset(AdvancedSettingsPath);
     }
+
 }

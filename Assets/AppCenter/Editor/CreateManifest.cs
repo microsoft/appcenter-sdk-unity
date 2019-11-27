@@ -22,7 +22,7 @@ public class CreateManifest
                 .Append("/c powershell")
                 .Append(" -File \"")
                 .Append(AppCenterSettingsContext.AppCenterPath)
-                .Append("/AppCenter/Plugins/Android/Utility/archive.ps1 \"")
+                .Append("/Plugins/Android/Utility/archive.ps1 \"")
                 .Append(" -Source ")
                 .Append(sourceFile)
                 .Append(" -Destination ")
@@ -83,7 +83,7 @@ public class CreateManifest
                 .Append("/c powershell")
                 .Append(" -File \"")
                 .Append(AppCenterSettingsContext.AppCenterPath)
-                .Append("/AppCenter/Plugins/Android/Utility/unarchive.ps1 \"")
+                .Append("/Plugins/Android/Utility/unarchive.ps1 \"")
                 .Append(" -Source ")
                 .Append(sourceFile)
                 .Append(" -Destination ")
@@ -110,7 +110,7 @@ public class CreateManifest
 
     public static void Create(AppCenterSettings settings)
     {
-        var loaderZipFile = AppCenterSettingsContext.AppCenterPath + "/AppCenter/Plugins/Android/appcenter-loader-release.aar";
+        var loaderZipFile = AppCenterSettingsContext.AppCenterPath + "/Plugins/Android/appcenter-loader-release.aar";
         var loaderFolder = "appcenter-loader-release";
         var manifestPath = "appcenter-loader-release/AndroidManifest.xml";
         var manifestMetafile = "appcenter-loader-release/AndroidManifest.xml.meta";
