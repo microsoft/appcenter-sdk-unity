@@ -5,7 +5,7 @@
 ### App Center Push
 
 * **[Bug fix]** Fix missing `NotifyPushNotificationReceived` callback if push notification is received from the background.
-* **[Enhancement]** Add ability to delay native start using a scripting define symbol `APPCENTER_DONT_USE_NATIVE_STARTER`.
+* **[Improvement]** Add ability to delay native start using a scripting define symbol `APPCENTER_DONT_USE_NATIVE_STARTER`.
 
 __
 
