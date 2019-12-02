@@ -21,10 +21,6 @@ public class AppCenterSettingsContext : ScriptableObject
         return Instance;
     }
 
-    private AppCenterSettingsContext()
-    {
-    }
-
     public static string AppCenterPath
     {
         get
