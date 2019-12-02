@@ -16,7 +16,7 @@ public class AppCenterSettingsContext : ScriptableObject
     {
         if (Instance == null)
         {
-            Instance = new AppCenterSettingsContext();
+            Instance = CreateInstance<AppCenterSettingsContext>();
         }
         return Instance;
     }
