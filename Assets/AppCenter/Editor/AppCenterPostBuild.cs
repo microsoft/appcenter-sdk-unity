@@ -433,7 +433,11 @@ public class AppCenterPostBuild : IPostprocessBuild
         // Need to add "-lsqlite3" linker flag to "Other linker flags" due to
         // SQLite dependency.
         project.AddBuildProperty("OTHER_LDFLAGS", "-lsqlite3");
+#if UNITY_2019_3_OR_NEWER
+        project.AddBuildProperty("CLANG_ENABLE_MODULES", "YES", true);
+#else
         project.AddBuildProperty("CLANG_ENABLE_MODULES", "YES");
+#endif
         project.AddBuildProperty("OTHER_LDFLAGS", "-weak_framework AuthenticationServices");
         project.AddBuildProperty("OTHER_LDFLAGS", "-framework WebKit");
     }
