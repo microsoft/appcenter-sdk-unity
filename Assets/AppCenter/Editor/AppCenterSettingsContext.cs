@@ -3,29 +3,23 @@
 
 using UnityEngine;
 using UnityEditor;
-using System.IO;
 using System;
+using System.Linq;
 
 public class AppCenterSettingsContext : ScriptableObject
 {
+    private static string appCenterPath;
     private static readonly string SettingsPath = AppCenterPath + "/AppCenterSettings.asset";
     private static readonly string AdvancedSettingsPath = AppCenterPath + "/AppCenterSettingsAdvanced.asset";
-    private static AppCenterSettingsContext Instance;
-
-    public static AppCenterSettingsContext GetInstance()
-    {
-        if (Instance == null)
-        {
-            Instance = CreateInstance<AppCenterSettingsContext>();
-        }
-        return Instance;
-    }
-
     public static string AppCenterPath
     {
         get
         {
-            return GetInstance().GetAppCenterPath();
+            if (string.IsNullOrEmpty(appCenterPath))
+            {
+                appCenterPath = FindSubfolderPath("Assets", "AppCenter");
+            }
+            return appCenterPath;
         }
     }
 
@@ -54,13 +48,24 @@ public class AppCenterSettingsContext : ScriptableObject
         }
     }
 
-    public string GetAppCenterPath()
+    private static string FindSubfolderPath(string parentFolder, string searchFolder)
     {
-        var script = MonoScript.FromScriptableObject(this);
-        var pathScript = AssetDatabase.GetAssetPath(script);
-        var lastAppCenterIndex = pathScript.LastIndexOf("Editor", StringComparison.Ordinal);
-        var directoryAppCenter = pathScript.Remove(lastAppCenterIndex).TrimEnd(Path.DirectorySeparatorChar);
-        return directoryAppCenter;
+        string[] folders = AssetDatabase.GetSubFolders(parentFolder);
+        string resultFolder = folders.FirstOrDefault(folder => folder.EndsWith(searchFolder, StringComparison.InvariantCulture));
+        if (string.IsNullOrEmpty(resultFolder) && folders.Length > 0)
+        {
+            string temp;
+            for (int i = 0; i < folders.Length; i++)
+            {
+                temp = FindSubfolderPath(folders[i], searchFolder);
+                if (!string.IsNullOrEmpty(temp))
+                {
+                    return temp;
+                }
+
+            }
+        }
+        return resultFolder;
     }
 
     public static AppCenterSettingsAdvanced CreateSettingsInstanceAdvanced()
