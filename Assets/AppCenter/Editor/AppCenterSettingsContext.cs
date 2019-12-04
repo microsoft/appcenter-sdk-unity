@@ -3,7 +3,7 @@
 
 using UnityEngine;
 using UnityEditor;
-using System;
+using System.IO;
 using System.Linq;
 
 public class AppCenterSettingsContext : ScriptableObject
@@ -51,7 +51,7 @@ public class AppCenterSettingsContext : ScriptableObject
     private static string FindSubfolderPath(string parentFolder, string searchFolder)
     {
         string[] folders = AssetDatabase.GetSubFolders(parentFolder);
-        string resultFolder = folders.FirstOrDefault(folder => folder.EndsWith(searchFolder, StringComparison.InvariantCulture));
+        string resultFolder = folders.FirstOrDefault(folder => (new DirectoryInfo(folder)).Name == searchFolder);
         if (string.IsNullOrEmpty(resultFolder) && folders.Length > 0)
         {
             string temp;
