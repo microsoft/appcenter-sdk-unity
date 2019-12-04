@@ -62,7 +62,6 @@ public class AppCenterSettingsContext : ScriptableObject
                 {
                     return temp;
                 }
-
             }
         }
         return resultFolder;
@@ -84,5 +83,4 @@ public class AppCenterSettingsContext : ScriptableObject
     {
         AssetDatabase.DeleteAsset(AdvancedSettingsPath);
     }
-
 }

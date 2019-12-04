@@ -4,7 +4,7 @@
 
 ### App Center
 
-* **[Enhancement]** SDK now detects its location automatically.
+* **[Improvement]** Detect App Center SDK location automatically.
 
 ### App Center Push
 
