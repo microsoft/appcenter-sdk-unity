@@ -2,13 +2,15 @@
 
 ## Release 2.6.0 (Under development)
 
-### App Center
+### App Center 
 
+* **[Fix]** Fix Unity 2019.3 iOS build ('Use of undeclared identifier' error).
 * **[Improvement]** Detect App Center SDK location automatically.
 
 ### App Center Push
 
 * **[Bug fix]** Fix missing `NotifyPushNotificationReceived` callback if push notification is received from the background.
+* **[Improvement]** Add ability to delay native start using a scripting define symbol `APPCENTER_DONT_USE_NATIVE_STARTER`.
 
 __
 
@@ -29,6 +31,10 @@ Updated native SDK versions:
 * **[Fix]** Fix Auth was incorrectly caching the old app secret in the manifest if it was changed.
 
 ### App Center Crashes
+
+#### Android/iOS
+
+* **[Feature]** Support sending attachments in handled errors.
 
 #### Android
 

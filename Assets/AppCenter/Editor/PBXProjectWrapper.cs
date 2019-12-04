@@ -74,12 +74,22 @@ public class PBXProjectWrapper
         PBXProjectType.GetMethod("WriteToFile").Invoke(_pbxProject, new[] { _projectPath });
     }
 
+#if UNITY_2019_3_OR_NEWER
+    public void AddBuildProperty(string name, string value, bool toFrameworkTarget = false)
+#else
     public void AddBuildProperty(string name, string value)
+#endif
     {
         object targetGuid;
 #if UNITY_2019_3_OR_NEWER
         targetGuid = PBXProjectType.GetMethod("GetUnityMainTargetGuid")
                                        .Invoke(_pbxProject, null);
+        if (toFrameworkTarget)
+        {
+            object frameworkTarget = PBXProjectType.GetMethod("GetUnityFrameworkTargetGuid").Invoke(_pbxProject, null);
+            PBXProjectType.GetMethod("AddBuildProperty", new[] { typeof(string), typeof(string), typeof(string) })
+                          .Invoke(_pbxProject, new[] { frameworkTarget, name, value });
+        }
 #else
         var targetName = GetUnityTargetName();
         targetGuid = PBXProjectType.GetMethod("TargetGuidByName")

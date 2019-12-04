@@ -20,6 +20,7 @@ public class CreateManifest
         {
             args = stringBuilder
                 .Append("/c powershell")
+                .Append(" -executionpolicy bypass")
                 .Append(" -File \"")
                 .Append(AppCenterSettingsContext.AppCenterPath)
                 .Append("/Plugins/Android/Utility/archive.ps1 \"")
@@ -81,6 +82,7 @@ public class CreateManifest
         {
             args = stringBuilder
                 .Append("/c powershell")
+                .Append(" -executionpolicy bypass")
                 .Append(" -File \"")
                 .Append(AppCenterSettingsContext.AppCenterPath)
                 .Append("/Plugins/Android/Utility/unarchive.ps1 \"")
