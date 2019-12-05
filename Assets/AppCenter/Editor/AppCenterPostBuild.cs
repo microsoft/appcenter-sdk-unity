@@ -143,7 +143,7 @@ public class AppCenterPostBuild : IPostprocessBuild
             LogInjectFailed(appFileName);
             return;
         }
-        var appAdditionsFolder = AppCenterSettingsContext.AppCenterPath + "/AppCenter/Plugins/WSA/Push/AppAdditions";
+        var appAdditionsFolder = AppCenterSettingsContext.AppCenterPath + "/Plugins/WSA/Push/AppAdditions";
         var commentText = "App Center Push code:";
         var codeToInsert = Environment.NewLine + "            // " + commentText + Environment.NewLine
             + File.ReadAllText(Path.Combine(appAdditionsFolder, codeToInsertFileName));
@@ -290,7 +290,7 @@ public class AppCenterPostBuild : IPostprocessBuild
 
     public static void ProcessUwpIl2CppDependencies()
     {
-        var binaries = AssetDatabase.FindAssets("*", new[] { AppCenterSettingsContext.AppCenterPath + "/AppCenter/Plugins/WSA/IL2CPP" });
+        var binaries = AssetDatabase.FindAssets("*", new[] { AppCenterSettingsContext.AppCenterPath + "/Plugins/WSA/IL2CPP" });
         foreach (var guid in binaries)
         {
             var assetPath = AssetDatabase.GUIDToAssetPath(guid);

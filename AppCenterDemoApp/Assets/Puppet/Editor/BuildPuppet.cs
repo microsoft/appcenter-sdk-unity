@@ -12,6 +12,7 @@ using System.Linq;
 public class BuildPuppet
 {
     private static readonly string BuildFolder = "CAKE_SCRIPT_TEMPPuppetBuilds";
+    private static readonly string AssetsFolder = "Assets";
     private static readonly string AppIdentifier = "com.microsoft.appcenter.unity.puppet";
 
     static BuildPuppet()
@@ -109,7 +110,7 @@ public class BuildPuppet
     private static void BuildPuppetScene(BuildTarget target, BuildTargetGroup targetGroup, ScriptingImplementation scriptingImplementation, string outputPath)
     {
         PlayerSettings.SetScriptingBackend(targetGroup, scriptingImplementation);
-        string[] puppetScene = { AppCenterSettingsContext.AppCenterPath + "/Puppet/PuppetScene.unity" };
+        string[] puppetScene = { AssetsFolder + "/Puppet/PuppetScene.unity" };
         var options = new BuildPlayerOptions
         {
             scenes = puppetScene,
@@ -126,12 +127,12 @@ public class BuildPuppet
     // placeholders for keys, not actual keys.
     private static void CreateGoogleServicesJsonIfNotPresent()
     {
-        var actualFile = "Assets/Puppet/Editor/google-services.json";
+        var actualFile = AssetsFolder + "/Puppet/Editor/google-services.json";
         if (File.Exists(actualFile))
         {
             return;
         }
-        var placeholderFile = "Assets/Puppet/Editor/google-services-placeholder.json";
+        var placeholderFile = AssetsFolder + "Assets/Puppet/Editor/google-services-placeholder.json";
         if (!File.Exists(placeholderFile))
         {
             Debug.Log("Could not find google services placeholder.");

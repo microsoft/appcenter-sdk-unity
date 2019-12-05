@@ -134,27 +134,27 @@ public class AppCenterSettingsMakerAndroid : IAppCenterSettingsMaker
 
     public bool IsAnalyticsAvailable()
     {
-        return File.Exists(AppCenterSettingsContext.AppCenterPath + "/AppCenter/Plugins/Android/appcenter-analytics-release.aar");
+        return File.Exists(AppCenterSettingsContext.AppCenterPath + "/Plugins/Android/appcenter-analytics-release.aar");
     }
 
     public bool IsAuthAvailable()
     {
-        return File.Exists(AppCenterSettingsContext.AppCenterPath + "/AppCenter/Plugins/Android/appcenter-auth-release.aar");
+        return File.Exists(AppCenterSettingsContext.AppCenterPath + "/Plugins/Android/appcenter-auth-release.aar");
     }
 
     public bool IsCrashesAvailable()
     {
-        return File.Exists(AppCenterSettingsContext.AppCenterPath + "/AppCenter/Plugins/Android/appcenter-crashes-release.aar");
+        return File.Exists(AppCenterSettingsContext.AppCenterPath + "/Plugins/Android/appcenter-crashes-release.aar");
     }
 
     public bool IsDistributeAvailable()
     {
-        return File.Exists(AppCenterSettingsContext.AppCenterPath + "/AppCenter/Plugins/Android/appcenter-distribute-release.aar");
+        return File.Exists(AppCenterSettingsContext.AppCenterPath + "/Plugins/Android/appcenter-distribute-release.aar");
     }
 
     public bool IsPushAvailable()
     {
-        return File.Exists(AppCenterSettingsContext.AppCenterPath + "/AppCenter/Plugins/Android/appcenter-push-release.aar");
+        return File.Exists(AppCenterSettingsContext.AppCenterPath + "/Plugins/Android/appcenter-push-release.aar");
     }
 
     public void SetShouldEnableDistributeForDebuggableBuild()

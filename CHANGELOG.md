@@ -2,9 +2,10 @@
 
 ## Release 2.6.0 (Under development)
 
-### App Center 
+### App Center
 
 * **[Fix]** Fix Unity 2019.3 iOS build ('Use of undeclared identifier' error).
+* **[Improvement]** Detect App Center SDK location automatically.
 
 ### App Center Push
 

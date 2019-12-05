@@ -6,8 +6,8 @@ using UnityEditor;
 
 public class AppCenterSettingsMakerIos : IAppCenterSettingsMaker
 {
-    private const string TemplateFilePath = AppCenterSettingsContext.AppCenterPath + "/AppCenter/Plugins/iOS/Core/AppCenterStarter.original";
-    private const string TargetFilePath = AppCenterSettingsContext.AppCenterPath + "/AppCenter/Plugins/iOS/Core/AppCenterStarter.m";
+    private static readonly string TemplateFilePath = AppCenterSettingsContext.AppCenterPath + "/Plugins/iOS/Core/AppCenterStarter.original";
+    private static readonly string TargetFilePath = AppCenterSettingsContext.AppCenterPath + "/Plugins/iOS/Core/AppCenterStarter.m";
     private const string AppSecretSearchText = "appcenter-app-secret";
     private const string TransmissionTargetTokenSearchText = "appcenter-transmission-target-token";
     private const string LogUrlSearchText = "custom-log-url";
@@ -136,27 +136,27 @@ public class AppCenterSettingsMakerIos : IAppCenterSettingsMaker
 
     public bool IsAnalyticsAvailable()
     {
-        return Directory.Exists(AppCenterSettingsContext.AppCenterPath + "/AppCenter/Plugins/iOS/Analytics");
+        return Directory.Exists(AppCenterSettingsContext.AppCenterPath + "/Plugins/iOS/Analytics");
     }
 
     public bool IsAuthAvailable()
     {
-        return Directory.Exists(AppCenterSettingsContext.AppCenterPath + "/AppCenter/Plugins/iOS/Auth");
+        return Directory.Exists(AppCenterSettingsContext.AppCenterPath + "/Plugins/iOS/Auth");
     }
 
     public bool IsCrashesAvailable()
     {
-        return Directory.Exists(AppCenterSettingsContext.AppCenterPath + "/AppCenter/Plugins/iOS/Crashes");
+        return Directory.Exists(AppCenterSettingsContext.AppCenterPath + "/Plugins/iOS/Crashes");
     }
 
     public bool IsDistributeAvailable()
     {
-        return Directory.Exists(AppCenterSettingsContext.AppCenterPath + "/AppCenter/Plugins/iOS/Distribute");
+        return Directory.Exists(AppCenterSettingsContext.AppCenterPath + "/Plugins/iOS/Distribute");
     }
 
     public bool IsPushAvailable()
     {
-        return Directory.Exists(AppCenterSettingsContext.AppCenterPath + "/AppCenter/Plugins/iOS/Push");
+        return Directory.Exists(AppCenterSettingsContext.AppCenterPath + "/Plugins/iOS/Push");
     }
 
     public void SetShouldEnableDistributeForDebuggableBuild()
