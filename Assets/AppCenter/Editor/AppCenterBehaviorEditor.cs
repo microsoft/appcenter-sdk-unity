@@ -15,8 +15,8 @@ public class AppCenterBehaviorEditor : Editor
         if (behaviour.Settings == null)
         {
             behaviour.Settings = AppCenterSettingsContext.SettingsInstance;
-			EditorUtility.SetDirty(behaviour);
-			EditorSceneManager.MarkSceneDirty(behaviour.gameObject.scene);
+	    EditorUtility.SetDirty(behaviour);
+	    EditorSceneManager.MarkSceneDirty(behaviour.gameObject.scene);
         }
         
         // Draw settings.
