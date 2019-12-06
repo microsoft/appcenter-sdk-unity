@@ -2,6 +2,7 @@
 // Licensed under the MIT license.
 
 using UnityEditor;
+using UnityEditor.SceneManagement;
 
 [CustomEditor(typeof(AppCenterBehavior))]
 public class AppCenterBehaviorEditor : Editor
@@ -15,8 +16,8 @@ public class AppCenterBehaviorEditor : Editor
         if (behaviour.Settings == null)
         {
             behaviour.Settings = AppCenterSettingsContext.SettingsInstance;
-	        EditorUtility.SetDirty(behaviour);
-	        EditorSceneManager.MarkSceneDirty(behaviour.gameObject.scene);
+            EditorUtility.SetDirty(behaviour);
+            EditorSceneManager.MarkSceneDirty(behaviour.gameObject.scene);
         }
         
         // Draw settings.
