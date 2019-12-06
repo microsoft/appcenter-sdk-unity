@@ -6,6 +6,7 @@
 
 * **[Fix]** Fix Unity 2019.3 iOS build ('Use of undeclared identifier' error).
 * **[Improvement]** Detect App Center SDK location automatically.
+* **[Fix]** Mark changes as dirty when setting up Settings in AppCenterBehavior.
 
 ### App Center Push
 
