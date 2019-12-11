@@ -43,7 +43,7 @@ var ExternalUnityPackages = new [] {
     // Import the play-services-resolver-*.unitypackage into your plugin project <...> ensuring that you add the -gvh_disable option.
     // You must specify the -gvh_disable option in order for the Version Handler to work correctly!
     new ExternalUnityPackage("play-services-resolver-" + ExternalUnityPackage.VersionPlaceholder + ".unitypackage",
-                             "1.2.95.0",
+                             "1.2.135",
                              SdkStorageUrl + ExternalUnityPackage.NamePlaceholder,
                              "-gvh_disable")
 };
