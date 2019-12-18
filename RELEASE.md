@@ -1,3 +1,46 @@
+## Release 2.6.0
+
+Updated native SDK versions:
+* Android from `2.5.0` to [2.5.1](https://github.com/Microsoft/AppCenter-SDK-Android/releases/tag/2.5.1)
+* iOS from `2.5.1` to [2.5.3](https://github.com/Microsoft/AppCenter-SDK-Apple/releases/tag/2.5.3)
+* UWP from `2.6.1` to [2.6.4](https://github.com/Microsoft/AppCenter-SDK-DotNet/releases/tag/2.6.4)
+
+### App Center
+
+* **[Fix]** Fix Unity 2019.3 iOS build ('Use of undeclared identifier' error).
+* **[Fix]** Fix Unity 2019.3 Android build ('Requested value X86 was not found' error).
+* **[Improvement]** Detect App Center SDK location automatically.
+* **[Fix]** Mark changes as dirty when setting up Settings in AppCenterBehavior.
+
+### App Center Crashes
+
+#### Android/iOS
+
+* **[Fix]** Validate error attachment size to avoid server error or out of memory issues (using the documented limit which is 7MB).
+
+#### iOS
+
+* **[Fix]** Fix to send crashes when an application was launched in background and enters foreground.
+* **[Fix]** Fix an issue where crash might contain incorrect data if two consecutive crashes occurred in a previous version of the application.
+
+### App Center Push
+
+* **[Bug fix]** Fix missing `NotifyPushNotificationReceived` callback if push notification is received from the background.
+* **[Improvement]** Add ability to delay native start using a scripting define symbol `APPCENTER_DONT_USE_NATIVE_STARTER`.
+
+### App Center Distribute
+
+#### iOS
+
+* **[Fix]** Fix missing alert dialogs in apps that use iOS 13's new UIScene API (multiple scenes are not yet supported).
+* **[Fix]** Fix an issue where users would sometimes be prompted multiple times to sign in with App Center.
+
+### App Center Auth
+
+#### iOS
+
+* **[Fix]** Fix build warnings when adding App Center Auth framework in project.
+
 ## Release 2.5.1
 
 Updated native SDK versions:
