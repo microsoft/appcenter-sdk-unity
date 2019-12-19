@@ -61,12 +61,14 @@ public class PuppetCrashes : MonoBehaviour
     {
         PuppetAppCenter.TextAttachmentCached = TextAttachment.text;
         PlayerPrefs.SetString(PuppetAppCenter.TextAttachmentKey, TextAttachment.text);
+        PlayerPrefs.Save();
     }
 
     public void OnBinaryValueChanged()
     {
         PuppetAppCenter.BinaryAttachmentCached = BinaryAttachment.isOn;
         PlayerPrefs.SetInt(PuppetAppCenter.BinaryAttachmentKey, BinaryAttachment.isOn ? 1 : 0);
+        PlayerPrefs.Save();
     }
 
     public void SetCrashesEnabled(bool enabled)

@@ -14,8 +14,6 @@ public class PuppetTransmission : MonoBehaviour
 {
     public Toggle ParentTransmissionEnabled;
     public Toggle ChildTransmissionEnabled;
-    public Toggle UseParentPropertyConfigurator;
-    public Toggle UseChildPropertyConfigurator;
     public Toggle CollectDeviceIdChild;
     public Toggle CollectDeviceIdParent;
     public InputField EventName;
@@ -191,40 +189,23 @@ public class PuppetTransmission : MonoBehaviour
 
     private void OverrideParentProperties(TransmissionTarget transmissionTarget)
     {
-        var overridenAppName = AppNameParent.text;
-        var overridenAppVersion = AppVersionParent.text;
-        var overridenAppLocale = AppLocaleParent.text;
-        if (!string.IsNullOrEmpty(overridenAppName))
-        {
-            transmissionTarget.GetPropertyConfigurator().SetAppName(overridenAppName);
-        }
-        if (!string.IsNullOrEmpty(overridenAppVersion))
-        {
-            transmissionTarget.GetPropertyConfigurator().SetAppVersion(overridenAppVersion);
-        }
-        if (!string.IsNullOrEmpty(overridenAppLocale))
-        {
-            transmissionTarget.GetPropertyConfigurator().SetAppLocale(overridenAppLocale);
-        }
+        OverrideProperties(transmissionTarget, AppNameParent, AppVersionParent, AppLocaleParent);
     }
 
     private void OverrideChildProperties(TransmissionTarget transmissionTarget)
     {
-        var overridenAppName = AppNameChild.text;
-        var overridenAppVersion = AppVersionChild.text;
-        var overridenAppLocale = AppLocaleChild.text;
-        if (!string.IsNullOrEmpty(overridenAppName))
-        {
-            transmissionTarget.GetPropertyConfigurator().SetAppName(overridenAppName);
-        }
-        if (!string.IsNullOrEmpty(overridenAppVersion))
-        {
-            transmissionTarget.GetPropertyConfigurator().SetAppVersion(overridenAppVersion);
-        }
-        if (!string.IsNullOrEmpty(overridenAppLocale))
-        {
-            transmissionTarget.GetPropertyConfigurator().SetAppLocale(overridenAppLocale);
-        }
+        OverrideProperties(transmissionTarget, AppNameChild, AppVersionChild, AppLocaleChild);
+    }
+
+    private void OverrideProperties(TransmissionTarget transmissionTarget, InputField appName, InputField appVersion, InputField appLocale)
+    {
+        var overridenAppName = string.IsNullOrEmpty(appName.text) ? null : appName.text;
+        var overridenAppVersion = string.IsNullOrEmpty(appVersion.text) ? null : appVersion.text;
+        var overridenAppLocale = string.IsNullOrEmpty(appLocale.text) ? null : appLocale.text;
+        var propertyConfigurator = transmissionTarget.GetPropertyConfigurator();
+        propertyConfigurator.SetAppName(overridenAppName);
+        propertyConfigurator.SetAppVersion(overridenAppVersion);
+        propertyConfigurator.SetAppLocale(overridenAppLocale);
     }
 
     public void OnParentUserIdChanged(string newUserId)
@@ -352,36 +333,23 @@ public class PuppetTransmission : MonoBehaviour
             }
             else
             {
-                if (UseParentPropertyConfigurator.isOn)
+                var propertyConfigurator = transmissionTarget.GetPropertyConfigurator();
+                foreach (var property in properties)
                 {
-                    var propertyConfigurator = transmissionTarget.GetPropertyConfigurator();
-                    foreach (var property in properties)
-                    {
-                        propertyConfigurator.SetEventProperty(property.Key, property.Value);
-                    }
-                    propertyConfigurator.SetEventProperty("extraEventProperty", "should be removed!");
-                    propertyConfigurator.RemoveEventProperty("extraEventProperty");
-                    if (_isCritical)
-                    {
-                        IDictionary<string, string> nullProps = null;
-                        transmissionTarget.TrackEvent(EventName.text, nullProps, Flags.PersistenceCritical);
-                    }
-                    else
-                    {
-                        transmissionTarget.TrackEvent(EventName.text);
-                    }
+                    propertyConfigurator.SetEventProperty(property.Key, property.Value);
+                }
+                propertyConfigurator.SetEventProperty("extraEventProperty", "should be removed!");
+                propertyConfigurator.RemoveEventProperty("extraEventProperty");
+                if (_isCritical)
+                {
+                    IDictionary<string, string> nullProps = null;
+                    transmissionTarget.TrackEvent(EventName.text, nullProps, Flags.PersistenceCritical);
                 }
                 else
                 {
-                    if (_isCritical)
-                    {
-                        transmissionTarget.TrackEvent(EventName.text, properties, Flags.PersistenceCritical);
-                    }
-                    else
-                    {
-                        transmissionTarget.TrackEvent(EventName.text, properties);
-                    }
+                    transmissionTarget.TrackEvent(EventName.text);
                 }
+                PropertiesHelper.RemovePropertiesFromConfigurator(EventParentPropertiesList, propertyConfigurator);
             }
         }
     }
@@ -420,6 +388,7 @@ public class PuppetTransmission : MonoBehaviour
                 {
                     transmissionTarget.TrackEvent(EventName.text);
                 }
+                PropertiesHelper.RemovePropertiesFromConfigurator(EventParentPropertiesList, propertyConfigurator);
             }
         }
     }
@@ -461,6 +430,7 @@ public class PuppetTransmission : MonoBehaviour
                 {
                     transmissionTarget.TrackEvent(EventName.text);
                 }
+                PropertiesHelper.RemovePropertiesFromConfigurator(EventParentPropertiesList, propertyConfigurator);
             }
         }
     }
@@ -499,6 +469,7 @@ public class PuppetTransmission : MonoBehaviour
                 {
                     transmissionTarget.TrackEvent(EventName.text);
                 }
+                PropertiesHelper.RemovePropertiesFromConfigurator(EventParentPropertiesList, propertyConfigurator);
             }
         }
     }
