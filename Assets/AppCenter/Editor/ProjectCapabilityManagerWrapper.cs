@@ -31,12 +31,6 @@ public class ProjectCapabilityManagerWrapper
         ProjectCapabilityManagerType.GetMethod("AddBackgroundModes").Invoke(_capabilityManager, new object[] { remoteNotifEnum });
     }
 
-    public void AddAuthKeychainSharing()
-    {
-        string[] accessGroups = { "$(AppIdentifierPrefix)com.microsoft.adalcache" };
-        ProjectCapabilityManagerType.GetMethod("AddKeychainSharing").Invoke(_capabilityManager, new object[] { accessGroups });
-    }
-
     public static bool ProjectCapabilityManagerIsAvailable
     {
         get

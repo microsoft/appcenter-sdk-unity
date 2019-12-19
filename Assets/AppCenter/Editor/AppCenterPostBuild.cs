@@ -444,20 +444,11 @@ public class AppCenterPostBuild : IPostprocessBuild
 
     private static void OnPostprocessInfo(PlistDocumentWrapper info, AppCenterSettings settings)
     {
-        if ((settings.UseAuth && AppCenter.Auth != null) || (settings.UseDistribute && AppCenter.Distribute != null))
+        if (settings.UseDistribute && AppCenter.Distribute != null)
         {
             // Add App Center URL sceme.
             var root = info.GetRoot();
             var urlTypes = root.GetType().GetMethod("CreateArray").Invoke(root, new object[] { "CFBundleURLTypes" });
-            if(settings.UseAuth && AppCenter.Auth != null)
-            {
-                var urlType = urlTypes.GetType().GetMethod("AddDict").Invoke(urlTypes, null);
-                var setStringMethod = urlType.GetType().GetMethod("SetString");
-                setStringMethod.Invoke(urlType, new object[] { "CFBundleTypeRole", "Editor" });
-                setStringMethod.Invoke(urlType, new object[] { "CFBundleURLName", "$(PRODUCT_BUNDLE_IDENTIFIER)" });
-                var urlSchemes = urlType.GetType().GetMethod("CreateArray").Invoke(urlType, new[] { "CFBundleURLSchemes" });
-                urlSchemes.GetType().GetMethod("AddString").Invoke(urlSchemes, new[] { "msal" + settings.iOSAppSecret });
-            }
             if (settings.UseDistribute && AppCenter.Distribute != null)
             {
                 var urlType = urlTypes.GetType().GetMethod("AddDict").Invoke(urlTypes, null);
@@ -472,10 +463,6 @@ public class AppCenterPostBuild : IPostprocessBuild
 
     private static void OnPostprocessCapabilities(ProjectCapabilityManagerWrapper capabilityManager, AppCenterSettings settings)
     {
-        if (settings.UseAuth && AppCenter.Auth != null)
-        {
-            capabilityManager.AddAuthKeychainSharing();
-        }
         if (settings.UsePush && AppCenter.Push != null)
         {
             capabilityManager.AddPushNotifications();

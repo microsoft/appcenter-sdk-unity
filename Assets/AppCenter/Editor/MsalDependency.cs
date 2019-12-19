@@ -81,19 +81,4 @@ public class MsalDependency
         AssetDatabase.Refresh();
 #endif
     }
-
-    /// <summary>
-    /// Handle delayed loading of the dependency resolvers.
-    /// </summary>
-    public static void SetupAuth()
-    {
-        string[] importedAssets = AssetDatabase.GetAllAssetPaths();
-        foreach (string asset in importedAssets)
-        {
-            if (asset.Contains("JarResolver"))
-            {
-                SetupDependencies();
-            }
-        }
-    }
 }
