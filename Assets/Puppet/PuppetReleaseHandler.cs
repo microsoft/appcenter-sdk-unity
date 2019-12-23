@@ -15,7 +15,7 @@ public class PuppetReleaseHandler : MonoBehaviour
     void Awake()
     {
         Distribute.ReleaseAvailable = OnReleaseAvailable;
-        IsDialogCustom = PlayerPrefs.GetInt(PuppetAppCenter.FlagCustomDialog, 0) == 1;
+        IsDialogCustom = PlayerPrefs.GetInt(PuppetAppCenter.FlagCustomDialog, 0);
     }
 
     bool OnReleaseAvailable(ReleaseDetails details)
