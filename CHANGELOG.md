@@ -1,18 +1,18 @@
 # App Center SDK for Unity Change Log
 
-## Development version
+## Version 2.6.1 (Under development)
 
 ### App Center Crashes
 
 #### iOS
 
-* **[Fix]** Fix that 'Crashes' could not be started because of 'StartCrashes' method was stripped for a high managed stripping level.
+* **[Fix]** Fix that Crashes could not be started because of `StartCrashes` method was stripped for a high managed stripping level.
 
 ### App Center Push
 
 #### iOS
 
-* **[Fix]** Fix that 'Push' could not be started because of 'StartPush' method was stripped for a high managed stripping level.
+* **[Fix]** Fix that Push could not be started because of `StartPush` method was stripped for a high managed stripping level.
 
 ___
 
