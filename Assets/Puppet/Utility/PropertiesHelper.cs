@@ -52,6 +52,10 @@ public class PropertiesHelper
 
     public static void RemovePropertiesFromConfigurator(RectTransform propertiesContainer, PropertyConfigurator configurator)
     {
+        if (configurator == null)
+        {
+            return;
+        }
         var properties = propertiesContainer.GetComponentsInChildren<PuppetEventProperty>();
         if (properties == null || properties.Length == 0)
         {

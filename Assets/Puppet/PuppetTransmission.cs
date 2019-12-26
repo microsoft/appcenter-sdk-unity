@@ -312,6 +312,28 @@ public class PuppetTransmission : MonoBehaviour
         OnChildUserIdChanged(null);
     }
 
+    private PropertyConfigurator ApplyParentPropertyToString(TransmissionTarget transmissionTarget)
+    {
+        var properties = PropertiesHelper.GetStringProperties(EventParentPropertiesList);
+        var propertyConfigurator = transmissionTarget.GetPropertyConfigurator();
+        foreach (var property in properties)
+        {
+            propertyConfigurator.SetEventProperty(property.Key, property.Value);
+        }
+        propertyConfigurator.SetEventProperty("extraEventProperty", "should be removed!");
+        propertyConfigurator.RemoveEventProperty("extraEventProperty");
+        return propertyConfigurator;
+    }
+
+    private PropertyConfigurator ApplyParentPropertyToType(TransmissionTarget transmissionTarget)
+    {
+        var propertyConfigurator = transmissionTarget.GetPropertyConfigurator();
+        PropertiesHelper.AddPropertiesToPropertyConfigurator(EventParentPropertiesList, propertyConfigurator);
+        propertyConfigurator.SetEventProperty("extraEventProperty", "should be removed!");
+        propertyConfigurator.RemoveEventProperty("extraEventProperty");
+        return propertyConfigurator;
+    }
+
     public void TrackEventParentStringPropertiesTransmission()
     {
         var transmissionTarget = GetParentTransmissionTarget();
@@ -333,13 +355,7 @@ public class PuppetTransmission : MonoBehaviour
             }
             else
             {
-                var propertyConfigurator = transmissionTarget.GetPropertyConfigurator();
-                foreach (var property in properties)
-                {
-                    propertyConfigurator.SetEventProperty(property.Key, property.Value);
-                }
-                propertyConfigurator.SetEventProperty("extraEventProperty", "should be removed!");
-                propertyConfigurator.RemoveEventProperty("extraEventProperty");
+                var propertyConfigurator = ApplyParentPropertyToString(transmissionTarget);
                 if (_isCritical)
                 {
                     IDictionary<string, string> nullProps = null;
@@ -375,10 +391,7 @@ public class PuppetTransmission : MonoBehaviour
             }
             else
             {
-                var propertyConfigurator = transmissionTarget.GetPropertyConfigurator();
-                PropertiesHelper.AddPropertiesToPropertyConfigurator(EventParentPropertiesList, propertyConfigurator);
-                propertyConfigurator.SetEventProperty("extraEventProperty", "should be removed!");
-                propertyConfigurator.RemoveEventProperty("extraEventProperty");
+                var propertyConfigurator = ApplyParentPropertyToType(transmissionTarget);
                 if (_isCritical)
                 {
                     EventProperties nullProps = null;
@@ -395,26 +408,32 @@ public class PuppetTransmission : MonoBehaviour
 
     public void TrackEventStringPropertiesChildTransmission()
     {
-        var transmissionTarget = GetChildTransmissionTarget();
-        if (transmissionTarget != null)
+        var parentTransmissionTarget = GetParentTransmissionTarget();
+        PropertyConfigurator parentPropertyConfigurator = null;
+        if (parentTransmissionTarget != null)
         {
-            OverrideChildProperties(transmissionTarget);
+            parentPropertyConfigurator = ApplyParentPropertyToString(parentTransmissionTarget);
+        }
+        var childTransmissionTarget = GetChildTransmissionTarget();
+        if (childTransmissionTarget != null)
+        {
+            OverrideChildProperties(childTransmissionTarget);
             var properties = PropertiesHelper.GetStringProperties(EventChildPropertiesList);
             if (properties == null)
             {
                 if (_isCritical)
                 {
                     IDictionary<string, string> nullProps = null;
-                    transmissionTarget.TrackEvent(EventName.text, nullProps, Flags.PersistenceCritical);
+                    childTransmissionTarget.TrackEvent(EventName.text, nullProps, Flags.PersistenceCritical);
                 }
                 else
                 {
-                    transmissionTarget.TrackEvent(EventName.text);
+                    childTransmissionTarget.TrackEvent(EventName.text);
                 }
             }
             else
             {
-                var propertyConfigurator = transmissionTarget.GetPropertyConfigurator();
+                var propertyConfigurator = childTransmissionTarget.GetPropertyConfigurator();
                 foreach (var property in properties)
                 {
                     propertyConfigurator.SetEventProperty(property.Key, property.Value);
@@ -423,54 +442,63 @@ public class PuppetTransmission : MonoBehaviour
                 propertyConfigurator.RemoveEventProperty("extraEventProperty");
                 if (_isCritical)
                 {
+                    System.Diagnostics.Debug.WriteLine("TrackEventStringPropertiesChildTransmission _isCritical");
                     IDictionary<string, string> nullProps = null;
-                    transmissionTarget.TrackEvent(EventName.text, nullProps, Flags.PersistenceCritical);
+                    childTransmissionTarget.TrackEvent(EventName.text, nullProps, Flags.PersistenceCritical);
                 }
                 else
                 {
-                    transmissionTarget.TrackEvent(EventName.text);
+                    childTransmissionTarget.TrackEvent(EventName.text);
                 }
                 PropertiesHelper.RemovePropertiesFromConfigurator(EventParentPropertiesList, propertyConfigurator);
             }
         }
+        PropertiesHelper.RemovePropertiesFromConfigurator(EventParentPropertiesList, parentPropertyConfigurator);
     }
 
     public void TrackEventTypedPropertiesChildTransmission()
     {
-        var transmissionTarget = GetChildTransmissionTarget();
-        if (transmissionTarget != null)
+        var parentTransmissionTarget = GetParentTransmissionTarget();
+        PropertyConfigurator parentPropertyConfigurator = null;
+        if (parentTransmissionTarget != null)
         {
-            OverrideChildProperties(transmissionTarget);
+            parentPropertyConfigurator = ApplyParentPropertyToString(parentTransmissionTarget);
+        }
+        var childTransmissionTarget = GetChildTransmissionTarget();
+        if (childTransmissionTarget != null)
+        {
+            OverrideChildProperties(childTransmissionTarget);
             var properties = PropertiesHelper.GetTypedProperties(EventChildPropertiesList);
             if (properties == null)
             {
                 if (_isCritical)
                 {
                     EventProperties nullProps = null;
-                    transmissionTarget.TrackEvent(EventName.text, nullProps, Flags.PersistenceCritical);
+                    childTransmissionTarget.TrackEvent(EventName.text, nullProps, Flags.PersistenceCritical);
                 }
                 else
                 {
-                    transmissionTarget.TrackEvent(EventName.text);
+                    childTransmissionTarget.TrackEvent(EventName.text);
                 }
             }
             else
             {
-                var propertyConfigurator = transmissionTarget.GetPropertyConfigurator();
+                var propertyConfigurator = childTransmissionTarget.GetPropertyConfigurator();
                 PropertiesHelper.AddPropertiesToPropertyConfigurator(EventChildPropertiesList, propertyConfigurator);
                 propertyConfigurator.SetEventProperty("extraEventProperty", "should be removed!");
                 propertyConfigurator.RemoveEventProperty("extraEventProperty");
                 if (_isCritical)
                 {
                     EventProperties nullProps = null;
-                    transmissionTarget.TrackEvent(EventName.text, nullProps, Flags.PersistenceCritical);
+                    childTransmissionTarget.TrackEvent(EventName.text, nullProps, Flags.PersistenceCritical);
                 }
                 else
                 {
-                    transmissionTarget.TrackEvent(EventName.text);
+                    childTransmissionTarget.TrackEvent(EventName.text);
                 }
                 PropertiesHelper.RemovePropertiesFromConfigurator(EventParentPropertiesList, propertyConfigurator);
             }
         }
+        PropertiesHelper.RemovePropertiesFromConfigurator(EventParentPropertiesList, parentPropertyConfigurator);
     }
 }
