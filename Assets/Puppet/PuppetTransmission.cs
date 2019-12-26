@@ -312,9 +312,9 @@ public class PuppetTransmission : MonoBehaviour
         OnChildUserIdChanged(null);
     }
 
-    private PropertyConfigurator ApplyParentPropertyToString(TransmissionTarget transmissionTarget)
+    private PropertyConfigurator ApplyPropertyToString(TransmissionTarget transmissionTarget, RectTransform eventProperties)
     {
-        var properties = PropertiesHelper.GetStringProperties(EventParentPropertiesList);
+        var properties = PropertiesHelper.GetStringProperties(eventProperties);
         var propertyConfigurator = transmissionTarget.GetPropertyConfigurator();
         foreach (var property in properties)
         {
@@ -325,10 +325,10 @@ public class PuppetTransmission : MonoBehaviour
         return propertyConfigurator;
     }
 
-    private PropertyConfigurator ApplyParentPropertyToType(TransmissionTarget transmissionTarget)
+    private PropertyConfigurator ApplyPropertyToType(TransmissionTarget transmissionTarget, RectTransform eventProperties)
     {
         var propertyConfigurator = transmissionTarget.GetPropertyConfigurator();
-        PropertiesHelper.AddPropertiesToPropertyConfigurator(EventParentPropertiesList, propertyConfigurator);
+        PropertiesHelper.AddPropertiesToPropertyConfigurator(eventProperties, propertyConfigurator);
         propertyConfigurator.SetEventProperty("extraEventProperty", "should be removed!");
         propertyConfigurator.RemoveEventProperty("extraEventProperty");
         return propertyConfigurator;
@@ -355,7 +355,7 @@ public class PuppetTransmission : MonoBehaviour
             }
             else
             {
-                var propertyConfigurator = ApplyParentPropertyToString(transmissionTarget);
+                var propertyConfigurator = ApplyPropertyToString(transmissionTarget, EventParentPropertiesList);
                 if (_isCritical)
                 {
                     IDictionary<string, string> nullProps = null;
@@ -391,7 +391,7 @@ public class PuppetTransmission : MonoBehaviour
             }
             else
             {
-                var propertyConfigurator = ApplyParentPropertyToType(transmissionTarget);
+                var propertyConfigurator = ApplyPropertyToType(transmissionTarget, EventParentPropertiesList);
                 if (_isCritical)
                 {
                     EventProperties nullProps = null;
@@ -412,7 +412,7 @@ public class PuppetTransmission : MonoBehaviour
         PropertyConfigurator parentPropertyConfigurator = null;
         if (parentTransmissionTarget != null)
         {
-            parentPropertyConfigurator = ApplyParentPropertyToString(parentTransmissionTarget);
+            parentPropertyConfigurator = ApplyPropertyToString(parentTransmissionTarget, EventParentPropertiesList);
         }
         var childTransmissionTarget = GetChildTransmissionTarget();
         if (childTransmissionTarget != null)
@@ -433,13 +433,7 @@ public class PuppetTransmission : MonoBehaviour
             }
             else
             {
-                var propertyConfigurator = childTransmissionTarget.GetPropertyConfigurator();
-                foreach (var property in properties)
-                {
-                    propertyConfigurator.SetEventProperty(property.Key, property.Value);
-                }
-                propertyConfigurator.SetEventProperty("extraEventProperty", "should be removed!");
-                propertyConfigurator.RemoveEventProperty("extraEventProperty");
+                var propertyConfigurator = ApplyPropertyToString(childTransmissionTarget, EventChildPropertiesList);
                 if (_isCritical)
                 {
                     System.Diagnostics.Debug.WriteLine("TrackEventStringPropertiesChildTransmission _isCritical");
@@ -462,7 +456,7 @@ public class PuppetTransmission : MonoBehaviour
         PropertyConfigurator parentPropertyConfigurator = null;
         if (parentTransmissionTarget != null)
         {
-            parentPropertyConfigurator = ApplyParentPropertyToString(parentTransmissionTarget);
+            parentPropertyConfigurator = ApplyPropertyToString(parentTransmissionTarget, EventParentPropertiesList);
         }
         var childTransmissionTarget = GetChildTransmissionTarget();
         if (childTransmissionTarget != null)
@@ -483,10 +477,7 @@ public class PuppetTransmission : MonoBehaviour
             }
             else
             {
-                var propertyConfigurator = childTransmissionTarget.GetPropertyConfigurator();
-                PropertiesHelper.AddPropertiesToPropertyConfigurator(EventChildPropertiesList, propertyConfigurator);
-                propertyConfigurator.SetEventProperty("extraEventProperty", "should be removed!");
-                propertyConfigurator.RemoveEventProperty("extraEventProperty");
+                var propertyConfigurator = ApplyPropertyToString(childTransmissionTarget, EventChildPropertiesList);
                 if (_isCritical)
                 {
                     EventProperties nullProps = null;
