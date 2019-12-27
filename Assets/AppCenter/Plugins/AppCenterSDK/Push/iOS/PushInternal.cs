@@ -30,12 +30,17 @@ namespace Microsoft.AppCenter.Unity.Push.Internal
         public static void PrepareEventHandlers()
         {
             AppCenterBehavior.InitializingServices += Initialize;
+            AppCenterBehavior.InitializedAppCenterAndServices += PostInitialize;
         }
 
         private static void Initialize()
         {
             _receivedPushDel = ReceivedPushNotificationFunc;
             appcenter_unity_push_set_received_push_impl(_receivedPushDel);
+        }
+
+        private static void PostInitialize()
+        {
             Push.ReplayPushNotificationsIfWaiting();
         }
 
