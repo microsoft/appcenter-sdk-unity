@@ -1,5 +1,13 @@
 # App Center SDK for Unity Change Log
 
+## Version 2.6.1 (Under development)
+
+### App Center Push 
+
+#### iOS/UWP
+
+* **[Bug fix]** Fix missed push notification window if notification was received after the application closed.
+
 ## Release 2.6.0
 
 Updated native SDK versions:
