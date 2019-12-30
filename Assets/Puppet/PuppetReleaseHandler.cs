@@ -43,7 +43,7 @@ public class PuppetReleaseHandler : MonoBehaviour
            {
                Dialog.Show(_releaseDetails);
            }
-           print("There's a release available! Version = " + _releaseDetails.Version);
+           Debug.Log("There's a release available! Version = " + _releaseDetails.Version);
            _releaseDetails = null;
         }
     }
