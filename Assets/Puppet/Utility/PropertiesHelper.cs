@@ -54,6 +54,7 @@ public class PropertiesHelper
     {
         if (configurator == null)
         {
+            Debug.Log("Property configurator is null. Can not remove properties from it.");
             return;
         }
         var properties = propertiesContainer.GetComponentsInChildren<PuppetEventProperty>();

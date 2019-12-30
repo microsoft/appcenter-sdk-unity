@@ -436,7 +436,6 @@ public class PuppetTransmission : MonoBehaviour
                 var propertyConfigurator = ApplyPropertyToString(childTransmissionTarget, EventChildPropertiesList);
                 if (_isCritical)
                 {
-                    System.Diagnostics.Debug.WriteLine("TrackEventStringPropertiesChildTransmission _isCritical");
                     IDictionary<string, string> nullProps = null;
                     childTransmissionTarget.TrackEvent(EventName.text, nullProps, Flags.PersistenceCritical);
                 }
