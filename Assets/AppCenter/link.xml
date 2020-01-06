@@ -11,4 +11,13 @@
     <assembly fullname="Microsoft.AppCenter.Crashes" preserve="all" ignoreIfMissing="1"/>
     <assembly fullname="Microsoft.AppCenter.Push" preserve="all" ignoreIfMissing="1"/>
     <assembly fullname="SQLite-net" preserve="all" ignoreIfMissing="1"/>
+    <!-- Name 'Assembly-CSharp' could be changed through 'Assembly Definitions'. In this case full name should be changed here. -->
+    <assembly fullname="Assembly-CSharp">
+        <type fullname="Microsoft.AppCenter.Unity.Crashes.Crashes">
+            <method name="StartCrashes"/>
+        </type>
+        <type fullname="Microsoft.AppCenter.Unity.Push.Push">
+            <method name="StartPush"/>
+        </type>
+    </assembly>
 </linker>
