@@ -12,7 +12,7 @@
 
 #### iOS
 
-* **[Fix]** Fix that Push could not be started because of `StartPush` method was stripped for a high managed stripping level.
+* **[Fix]** Fix that Push could not be started because `StartPush` method was stripped for a high managed stripping level.
 
 ___
 
