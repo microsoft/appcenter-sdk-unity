@@ -6,7 +6,7 @@
 
 #### iOS
 
-* **[Fix]** Fix that Crashes could not be started because of `StartCrashes` method was stripped for a high managed stripping level.
+* **[Fix]** Fix that Crashes could not be started because `StartCrashes` method was stripped for a high managed stripping level.
 
 ### App Center Push
 
