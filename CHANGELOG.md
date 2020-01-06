@@ -8,6 +8,8 @@
 
 * **[Bug fix]** Fix missed push notification window if notification was received after the application closed.
 
+___
+
 ## Release 2.6.0
 
 Updated native SDK versions:
