@@ -6,7 +6,7 @@
 
 #### iOS/UWP
 
-* **[Bug fix]** Fix missed push notification window if notification was received after the application closed.
+* **[Bug fix]** Fix triggering the notification event when restarting the application from a notification.
 
 ___
 
