@@ -2,7 +2,17 @@
 
 ## Version 2.6.1 (Under development)
 
-### App Center Push 
+### App Center Crashes
+
+#### iOS
+
+* **[Fix]** Fix an issue where Crashes could not be started because `StartCrashes` method was stripped for a high managed stripping level.
+
+### App Center Push
+
+#### iOS
+
+* **[Fix]** Fix an issue where Push could not be started because `StartPush` method was stripped for a high managed stripping level.
 
 #### iOS/UWP
 

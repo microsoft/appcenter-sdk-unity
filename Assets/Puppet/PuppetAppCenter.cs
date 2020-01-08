@@ -220,6 +220,7 @@ public class PuppetAppCenter : MonoBehaviour
         int isEnable = enable ? 1 : 0;
         PlayerPrefs.SetInt(FlagCustomDialog, isEnable);
         PlayerPrefs.Save();
+        PuppetReleaseHandler.IsDialogCustom = enable;
     }
 
     public void SetStartupMode(int startupMode)
