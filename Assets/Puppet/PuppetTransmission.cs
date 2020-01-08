@@ -312,7 +312,7 @@ public class PuppetTransmission : MonoBehaviour
         OnChildUserIdChanged(null);
     }
 
-    private PropertyConfigurator ApplyPropertyToString(TransmissionTarget transmissionTarget, RectTransform eventProperties)
+    private PropertyConfigurator ConfigurePropertiesToString(TransmissionTarget transmissionTarget, RectTransform eventProperties)
     {
         var properties = PropertiesHelper.GetStringProperties(eventProperties);
         var propertyConfigurator = transmissionTarget.GetPropertyConfigurator();
@@ -325,7 +325,7 @@ public class PuppetTransmission : MonoBehaviour
         return propertyConfigurator;
     }
 
-    private PropertyConfigurator ApplyPropertyToType(TransmissionTarget transmissionTarget, RectTransform eventProperties)
+    private PropertyConfigurator ConfigurePropertiesToType(TransmissionTarget transmissionTarget, RectTransform eventProperties)
     {
         var propertyConfigurator = transmissionTarget.GetPropertyConfigurator();
         PropertiesHelper.AddPropertiesToPropertyConfigurator(eventProperties, propertyConfigurator);
@@ -355,7 +355,7 @@ public class PuppetTransmission : MonoBehaviour
             }
             else
             {
-                var propertyConfigurator = ApplyPropertyToString(transmissionTarget, EventParentPropertiesList);
+                var propertyConfigurator = ConfigurePropertiesToString(transmissionTarget, EventParentPropertiesList);
                 if (_isCritical)
                 {
                     IDictionary<string, string> nullProps = null;
@@ -391,7 +391,7 @@ public class PuppetTransmission : MonoBehaviour
             }
             else
             {
-                var propertyConfigurator = ApplyPropertyToType(transmissionTarget, EventParentPropertiesList);
+                var propertyConfigurator = ConfigurePropertiesToType(transmissionTarget, EventParentPropertiesList);
                 if (_isCritical)
                 {
                     EventProperties nullProps = null;
@@ -412,7 +412,7 @@ public class PuppetTransmission : MonoBehaviour
         PropertyConfigurator parentPropertyConfigurator = null;
         if (parentTransmissionTarget != null)
         {
-            parentPropertyConfigurator = ApplyPropertyToString(parentTransmissionTarget, EventParentPropertiesList);
+            parentPropertyConfigurator = ConfigurePropertiesToString(parentTransmissionTarget, EventParentPropertiesList);
         }
         var childTransmissionTarget = GetChildTransmissionTarget();
         if (childTransmissionTarget != null)
@@ -433,7 +433,7 @@ public class PuppetTransmission : MonoBehaviour
             }
             else
             {
-                var propertyConfigurator = ApplyPropertyToString(childTransmissionTarget, EventChildPropertiesList);
+                var propertyConfigurator = ConfigurePropertiesToString(childTransmissionTarget, EventChildPropertiesList);
                 if (_isCritical)
                 {
                     IDictionary<string, string> nullProps = null;
@@ -455,7 +455,7 @@ public class PuppetTransmission : MonoBehaviour
         PropertyConfigurator parentPropertyConfigurator = null;
         if (parentTransmissionTarget != null)
         {
-            parentPropertyConfigurator = ApplyPropertyToString(parentTransmissionTarget, EventParentPropertiesList);
+            parentPropertyConfigurator = ConfigurePropertiesToString(parentTransmissionTarget, EventParentPropertiesList);
         }
         var childTransmissionTarget = GetChildTransmissionTarget();
         if (childTransmissionTarget != null)
@@ -476,7 +476,7 @@ public class PuppetTransmission : MonoBehaviour
             }
             else
             {
-                var propertyConfigurator = ApplyPropertyToString(childTransmissionTarget, EventChildPropertiesList);
+                var propertyConfigurator = ConfigurePropertiesToString(childTransmissionTarget, EventChildPropertiesList);
                 if (_isCritical)
                 {
                     EventProperties nullProps = null;
