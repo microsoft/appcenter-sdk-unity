@@ -34,7 +34,6 @@ public class AppCenterPreBuild : IPreprocessBuild
             }
 #if !APPCENTER_DONT_USE_NATIVE_STARTER
             AddStartupCode(new AppCenterSettingsMakerAndroid());
-            CreateManifest.Create(settings);
 #endif
         }
         else if (target == BuildTarget.iOS)
