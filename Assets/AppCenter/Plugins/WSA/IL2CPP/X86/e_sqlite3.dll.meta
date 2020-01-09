@@ -3,11 +3,15 @@ guid: 164cd007a37314fd5a973e38582191be
 timeCreated: 1504718839
 licenseType: Pro
 PluginImporter:
+
   serializedVersion: 2
   iconMap: {}
   executionOrder: {}
+
   isPreloaded: 0
   isOverridable: 0
+
+
   platformData:
     data:
       first:
