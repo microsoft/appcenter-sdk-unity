@@ -438,8 +438,6 @@ public class AppCenterPostBuild : IPostprocessBuild
 #else
         project.AddBuildProperty("CLANG_ENABLE_MODULES", "YES");
 #endif
-        project.AddBuildProperty("OTHER_LDFLAGS", "-weak_framework AuthenticationServices");
-        project.AddBuildProperty("OTHER_LDFLAGS", "-framework WebKit");
     }
 
     private static void OnPostprocessInfo(PlistDocumentWrapper info, AppCenterSettings settings)
