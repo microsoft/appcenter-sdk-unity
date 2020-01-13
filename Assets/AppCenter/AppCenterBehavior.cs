@@ -108,11 +108,6 @@ public class AppCenterBehavior : MonoBehaviour
                 if (startCrashes != null)
                     startCrashes.Invoke(null, null);
 #endif
-#if UNITY_IOS
-                var startPush = service.GetMethod("StartPush");
-                if (startPush != null)
-                    startPush.Invoke(null, null);
-#endif
             }
         }
 #endif

@@ -10,6 +10,8 @@
 
 ### App Center Push
 
+* **[Bug fix]** Fix triggering the notification event when restarting the application from a notification.
+
 #### iOS
 
 * **[Fix]** Fix an issue where Push could not be started because `StartPush` method was stripped for a high managed stripping level.
