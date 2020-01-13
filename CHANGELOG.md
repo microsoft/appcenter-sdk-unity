@@ -1,6 +1,6 @@
 # App Center SDK for Unity Change Log
 
-## Release 2.6.0 (Under development)
+## Release 3.0.0 (Under development)
 
 ### App Center
 
@@ -9,12 +9,16 @@
 * **[Improvement]** Detect App Center SDK location automatically.
 * **[Fix]** Mark changes as dirty when setting up Settings in AppCenterBehavior.
 
+### App Center Auth
+
+App Center Auth is [retired](https://aka.ms/MBaaS-retirement-blog-post) and has been removed from the SDK.
+
 ### App Center Push
 
 * **[Bug fix]** Fix missing `NotifyPushNotificationReceived` callback if push notification is received from the background.
 * **[Improvement]** Add ability to delay native start using a scripting define symbol `APPCENTER_DONT_USE_NATIVE_STARTER`.
 
-__
+___
 
 ## Release 2.5.1
 
