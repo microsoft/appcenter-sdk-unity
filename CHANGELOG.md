@@ -11,7 +11,7 @@
 
 ### App Center Auth
 
-App Center Auth has retired and been removed from the SDK.
+App Center Auth is [retired](https://aka.ms/MBaaS-retirement-blog-post) and has been removed from the SDK.
 
 ### App Center Push
 
