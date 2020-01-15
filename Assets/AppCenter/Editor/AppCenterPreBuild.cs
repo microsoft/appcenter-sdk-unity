@@ -42,7 +42,9 @@ public class AppCenterPreBuild : IPreprocessBuild
             var settingsMaker = new AppCenterSettingsMakerAndroid();
             AddStartupCode(settingsMaker);
             CreateManifest.Create(settings);
+#if UNITY_ANDROID
             AddSettingsFileToLoader(settingsMaker);
+#endif
 #endif
         }
         else if (target == BuildTarget.iOS)
