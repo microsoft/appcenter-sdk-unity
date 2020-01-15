@@ -6,8 +6,8 @@ using System.IO;
 
 public class AppCenterSettingsMakerAndroid : IAppCenterSettingsMaker
 {
-    private const string AppCenterResourcesFolderPath = "AppCenterLoaderApp/appcenter-loader/src/main/res/values/";
-    private const string AppCenterResourcesPath = AppCenterResourcesFolderPath + "appcenter-settings.xml";
+    public const string AppCenterLoaderResourcesFolderPath = "AppCenterLoaderApp/appcenter-loader/src/main/res/values/";
+    public const string AppCenterLoaderResourcesPath = AppCenterLoaderResourcesFolderPath + "appcenter-settings.xml";
     private const string AppSecretKey = "appcenter_app_secret";
     private const string TransmissionTargetTokenKey = "appcenter_transmission_target_token";
     private const string CustomLogUrlKey = "appcenter_custom_log_url";
@@ -33,9 +33,9 @@ public class AppCenterSettingsMakerAndroid : IAppCenterSettingsMaker
 
     static AppCenterSettingsMakerAndroid()
     {
-        if (!Directory.Exists(AppCenterResourcesFolderPath))
+        if (!Directory.Exists(AppCenterLoaderResourcesFolderPath))
         {
-            Directory.CreateDirectory(AppCenterResourcesFolderPath);
+            Directory.CreateDirectory(AppCenterLoaderResourcesFolderPath);
         }
     }
 
@@ -120,7 +120,7 @@ public class AppCenterSettingsMakerAndroid : IAppCenterSettingsMaker
 
     public void CommitSettings()
     {
-        CommitSettings(AppCenterResourcesPath);
+        CommitSettings(AppCenterLoaderResourcesPath);
     }
 
     public void CommitSettings(string filePath)

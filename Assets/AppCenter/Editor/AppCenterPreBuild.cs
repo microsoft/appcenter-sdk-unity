@@ -58,10 +58,10 @@ public class AppCenterPreBuild : IPreprocessBuild
 #if UNITY_ANDROID
     public static void AddSettingsFileToLoader(AppCenterSettingsMakerAndroid settingsMaker)
     {
-        var loaderZipFile = AppCenterSettingsContext.AppCenterPath + "/Plugins/Android/appcenter-loader-release.aar";
-        var loaderFolder = "appcenter-loader-release";
-        var settingsFilePath = "appcenter-loader-release/res/values/appcenter-settings.xml";
-        var settingsMetaFilePath = "appcenter-loader-release/res/values/appcenter-settings.xml.meta";
+        string loaderZipFile = AppCenterSettingsContext.AppCenterPath + "/Plugins/Android/appcenter-loader-release.aar";
+        const string loaderFolder = "appcenter-loader-release";
+        const string settingsFilePath = loaderFolder + "/res/values/appcenter-settings.xml";
+        const string settingsMetaFilePath = loaderFolder + "/res/values/appcenter-settings.xml.meta";
 
         if (!File.Exists(loaderZipFile))
         {
@@ -69,7 +69,7 @@ public class AppCenterPreBuild : IPreprocessBuild
             return;
         }
 
-        // Delete unzipeed directory if it already exists.
+        // Delete unzipped directory if it already exists.
         if (Directory.Exists(loaderFolder))
         {
             Directory.Delete(loaderFolder, true);
@@ -84,7 +84,7 @@ public class AppCenterPreBuild : IPreprocessBuild
 
         settingsMaker.CommitSettings(settingsFilePath);
 
-        // Delete the appcenter-settings.xml.meta file if generated
+        // Delete the appcenter-settings.xml.meta file if generated.
         if (File.Exists(settingsMetaFilePath))
         {
             File.Delete(settingsMetaFilePath);
