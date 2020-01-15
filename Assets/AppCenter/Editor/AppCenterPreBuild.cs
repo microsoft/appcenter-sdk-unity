@@ -82,7 +82,7 @@ public class AppCenterPreBuild : IPreprocessBuild
 
         settingsMaker.CommitSettings(settingsFilePath);
 
-        // Delete the AndroidManifest.xml.meta file if generated
+        // Delete the appcenter-settings.xml.meta file if generated
         if (File.Exists(settingsMetaFilePath))
         {
             File.Delete(settingsMetaFilePath);
