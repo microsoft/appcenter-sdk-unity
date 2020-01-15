@@ -6,7 +6,7 @@ using System.IO;
 
 public class AppCenterSettingsMakerAndroid : IAppCenterSettingsMaker
 {
-    private const string AppCenterResourcesFolderPath = "AppCenterLoaderApp/appcenter-loader/src/main/res/values/"; //"Assets/Plugins/Android/res/values/";
+    private const string AppCenterResourcesFolderPath = "AppCenterLoaderApp/appcenter-loader/src/main/res/values/";
     private const string AppCenterResourcesPath = AppCenterResourcesFolderPath + "appcenter-settings.xml";
     private const string AppSecretKey = "appcenter_app_secret";
     private const string TransmissionTargetTokenKey = "appcenter_transmission_target_token";
