@@ -58,7 +58,7 @@ public class AppCenterPreBuild : IPreprocessBuild
 #if UNITY_ANDROID
     public static void AddSettingsFileToLoader(AppCenterSettingsMakerAndroid settingsMaker)
     {
-        string loaderZipFile = AppCenterSettingsContext.AppCenterPath + "/Plugins/Android/appcenter-loader-release.aar";
+        var loaderZipFile = AppCenterSettingsContext.AppCenterPath + "/Plugins/Android/appcenter-loader-release.aar";
         const string loaderFolder = "appcenter-loader-release";
         const string settingsFilePath = loaderFolder + "/res/values/appcenter-settings.xml";
         const string settingsMetaFilePath = loaderFolder + "/res/values/appcenter-settings.xml.meta";
