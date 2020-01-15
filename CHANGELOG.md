@@ -6,7 +6,7 @@
 
 #### Android
 
-* **[Fix]** Fix the Unity warning that appears during the building app for Android.
+* **[Fix]** Fix a Unity warning that appears when building for Android.
 
 ### App Center Crashes
 
