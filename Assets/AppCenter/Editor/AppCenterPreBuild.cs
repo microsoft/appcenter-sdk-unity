@@ -2,10 +2,12 @@
 // Licensed under the MIT license.
 
 using Microsoft.AppCenter.Unity;
+using System.IO;
 using UnityEditor;
 using UnityEditor.Build;
 #if UNITY_2018_1_OR_NEWER
 using UnityEditor.Build.Reporting;
+using UnityEngine;
 #endif
 
 #if UNITY_2018_1_OR_NEWER
@@ -37,8 +39,10 @@ public class AppCenterPreBuild : IPreprocessBuild
                 FirebaseDependency.SetupPush();
             }
 #if !APPCENTER_DONT_USE_NATIVE_STARTER
-            AddStartupCode(new AppCenterSettingsMakerAndroid());
+            var settingsMaker = new AppCenterSettingsMakerAndroid();
+            AddStartupCode(settingsMaker);
             CreateManifest.Create(settings);
+            AddSettingsFileToLoader(settingsMaker);
 #endif
         }
         else if (target == BuildTarget.iOS)
@@ -48,6 +52,48 @@ public class AppCenterPreBuild : IPreprocessBuild
 #endif
         }
     }
+
+#if UNITY_ANDROID
+    public static void AddSettingsFileToLoader(AppCenterSettingsMakerAndroid settingsMaker)
+    {
+        var loaderZipFile = AppCenterSettingsContext.AppCenterPath + "/Plugins/Android/appcenter-loader-release.aar";
+        var loaderFolder = "appcenter-loader-release";
+        var settingsFilePath = "appcenter-loader-release/res/values/appcenter-settings.xml";
+        var settingsMetaFilePath = "appcenter-loader-release/res/values/appcenter-settings.xml.meta";
+
+        if (!File.Exists(loaderZipFile))
+        {
+            Debug.LogWarning("Failed to load dependency file appcenter-loader-release.aar");
+            return;
+        }
+
+        // Delete unzipeed directory if it already exists.
+        if (Directory.Exists(loaderFolder))
+        {
+            Directory.Delete(loaderFolder, true);
+        }
+
+        AndroidLibraryHelper.UnzipFile(loaderZipFile, loaderFolder);
+        if (!Directory.Exists(loaderFolder))
+        {
+            Debug.LogWarning("Unzipping loader folder failed.");
+            return;
+        }
+
+        settingsMaker.CommitSettings(settingsFilePath);
+
+        // Delete the AndroidManifest.xml.meta file if generated
+        if (File.Exists(settingsMetaFilePath))
+        {
+            File.Delete(settingsMetaFilePath);
+        }
+
+        // Delete the original aar file and zipped the extracted folder to generate a new one.
+        File.Delete(loaderZipFile);
+        AndroidLibraryHelper.ZipFile(loaderFolder, loaderZipFile);
+        Directory.Delete(loaderFolder, true);
+    }
+#endif
 
     private void AddStartupCode(IAppCenterSettingsMaker settingsMaker)
     {
@@ -113,6 +159,8 @@ public class AppCenterPreBuild : IPreprocessBuild
         {
             settingsMaker.SetStartupType((int)StartupType.AppCenter);
         }
+#if !UNITY_ANDROID
         settingsMaker.CommitSettings();
+#endif
     }
 }

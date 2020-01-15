@@ -6,7 +6,7 @@ using System.IO;
 
 public class AppCenterSettingsMakerAndroid : IAppCenterSettingsMaker
 {
-    private const string AppCenterResourcesFolderPath = "Assets/Plugins/Android/res/values/";
+    private const string AppCenterResourcesFolderPath = "AppCenterLoaderApp/appcenter-loader/src/main/res/values/"; //"Assets/Plugins/Android/res/values/";
     private const string AppCenterResourcesPath = AppCenterResourcesFolderPath + "appcenter-settings.xml";
     private const string AppSecretKey = "appcenter_app_secret";
     private const string TransmissionTargetTokenKey = "appcenter_transmission_target_token";
@@ -120,11 +120,16 @@ public class AppCenterSettingsMakerAndroid : IAppCenterSettingsMaker
 
     public void CommitSettings()
     {
-        if (File.Exists(AppCenterResourcesPath))
+        CommitSettings(AppCenterResourcesPath);
+    }
+
+    public void CommitSettings(string filePath)
+    {
+        if (File.Exists(filePath))
         {
-            File.Delete(AppCenterResourcesPath);
+            File.Delete(filePath);
         }
-        XmlResourceHelper.WriteXmlResource(AppCenterResourcesPath, _resourceValues);
+        XmlResourceHelper.WriteXmlResource(filePath, _resourceValues);
     }
 
     public bool IsStartFromAppCenterBehavior(AppCenterSettingsAdvanced advancedSettings)

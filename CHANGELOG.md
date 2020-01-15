@@ -2,6 +2,12 @@
 
 ## Version 2.6.1 (Under development)
 
+### App Center
+
+#### Android
+
+* **[Fix]** Fix the Unity warning that appears during the building app for Android.
+
 ### App Center Crashes
 
 #### iOS
