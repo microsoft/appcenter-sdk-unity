@@ -82,6 +82,16 @@ namespace Microsoft.AppCenter.Unity.Distribute.Internal
             appcenter_unity_distribute_notify_update_action(updateAction);
         }
 
+        public static void SetUpdateTrack(int updateTrack)
+        {
+            appcenter_unity_distribute_set_update_track(updateTrack);
+        }
+
+        public static UpdateTrack GetUpdateTrack()
+        {
+            return (UpdateTrack)appcenter_unity_distribute_get_update_track();
+        }
+
 #region External
 
         [DllImport("__Internal")]
@@ -110,6 +120,12 @@ namespace Microsoft.AppCenter.Unity.Distribute.Internal
 
         [DllImport("__Internal")]
         private static extern void appcenter_unity_distribute_set_delegate();
+
+        [DllImport("__Internal")]
+        private static extern void appcenter_unity_distribute_set_update_track(int updateTrack);
+
+        [DllImport("__Internal")]
+        private static extern int appcenter_unity_distribute_get_update_track();
 
 #endregion
     }

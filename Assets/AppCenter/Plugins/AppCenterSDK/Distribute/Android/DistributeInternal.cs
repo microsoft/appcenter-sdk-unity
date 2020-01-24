@@ -71,6 +71,16 @@ namespace Microsoft.AppCenter.Unity.Distribute.Internal
             }
             _distribute.CallStatic("notifyUpdateAction", nativeAction);
         }
+
+        public static void SetUpdateTrack(int updateTrack)
+        {
+            _distribute.CallStatic("setUpdateTrack", updateTrack);
+        }
+
+        public static UpdateTrack GetUpdateTrack()
+        {
+            return (UpdateTrack)_distribute.CallStatic<int>("getUpdateTrack");
+        }
     }
 }
 #endif
