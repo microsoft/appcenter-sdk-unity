@@ -14,6 +14,10 @@
 
 * **[Fix]** Fix an issue where Crashes could not be started because `StartCrashes` method was stripped for a high managed stripping level.
 
+### App Center Distribute
+
+* **[Breaking change]** Add `UpdateTrack` property to be able to explicitly set either **UpdateTrack.Private** or **UpdateTrack.Public** update track. By default, a public distribution group will be used.
+
 ### App Center Push
 
 * **[Bug fix]** Fix triggering the notification event when restarting the application from a notification.
