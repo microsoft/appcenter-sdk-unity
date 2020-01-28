@@ -18,6 +18,8 @@ public class PuppetAppCenter : MonoBehaviour
     public static string LogUrlCached;
     public static string MaxSizeCached;
     public static int StartupTypeCached = 2;
+    public static int UpdateTrackCached = (int)UpdateTrack.Public;
+    public static int WhenUpdateTrackCached = (int)WhenUpdateTrackEnum.Now;
     public static readonly EventWaitHandle StorageReadyEvent = new ManualResetEvent(false);
     public Toggle Enabled;
     public Text InstallIdLabel;
@@ -41,6 +43,10 @@ public class PuppetAppCenter : MonoBehaviour
     private const string LogUrlAndroidKey = "AppCenter.Unity.LogUrlKey";
     private const string AppSecretKey = "MSAppCenterAppSecretUnityKey";
     private const string AppSecretAndroidKey = "AppCenter.Unity.AppSecretKey";
+    private const string UpdateTrackKey = "MSAppCenterUpdateTrackUnityKey";
+    private const string UpdateTrackAndroidKey = "AppCenter.Unity.UpdateTrackKey";
+    private const string WhenUpdateTrackKey = "MSAppCenterWhenUpdateTrackUnityKey";
+    private const string WhenUpdateTrackAndroidKey = "AppCenter.Unity.WhenUpdateTrackKey";
     public GameObject CustomProperty;
     public RectTransform PropertiesList;
     public Toggle DistributeEnabled;
@@ -48,6 +54,11 @@ public class PuppetAppCenter : MonoBehaviour
     public Toggle CustomDialog;
     public static string FlagCustomDialog = "FlagCustomDialog";
     private string _customUserId;
+
+    [SerializeField]
+    private Dropdown UpdateTrackDropDown;
+    [SerializeField]
+    private Dropdown WhenUpdateTrackDropdown;
 
     public void SetPushEnabled(bool enabled)
     {
@@ -72,7 +83,7 @@ public class PuppetAppCenter : MonoBehaviour
         yield return Distribute.SetEnabledAsync(enabled);
         var isEnabled = Distribute.IsEnabledAsync();
         yield return isEnabled;
-        DistributeEnabled.isOn = isEnabled.Result;
+        DistributeEnabled.isOn = UpdateTrackDropDown.enabled = WhenUpdateTrackDropdown.enabled = isEnabled.Result;
     }
 
     public void AddProperty()
@@ -117,8 +128,11 @@ public class PuppetAppCenter : MonoBehaviour
         LogUrlCached = PlayerPrefs.GetString(LogUrlKey, null);
         MaxSizeCached = PlayerPrefs.GetString(MaxStorageSizeKey, null);
         StartupTypeCached = PlayerPrefs.GetInt(StartupModeKey, (int) Microsoft.AppCenter.Unity.StartupType.Both);
+        UpdateTrackCached = PlayerPrefs.GetInt(UpdateTrackKey, (int)Distribute.UpdateTrack);
+        WhenUpdateTrackCached = PlayerPrefs.GetInt(WhenUpdateTrackKey, (int)WhenUpdateTrackEnum.Now);
         CustomDialog.isOn = PlayerPrefs.GetInt(FlagCustomDialog, 0) == 1;
         StorageReadyEvent.Set();
+        AppCenterBehavior.InitializingServices += OnServicesInitializing;
     }
 
     void OnEnable()
@@ -180,6 +194,8 @@ public class PuppetAppCenter : MonoBehaviour
         SdkVersionLabel.text = AppCenter.GetSdkVersion();
         LogLevel.value = AppCenter.LogLevel - Microsoft.AppCenter.Unity.LogLevel.Verbose;
         StartupType.value = StartupTypeCached;
+        UpdateTrackDropDown.value = UpdateTrackCached - 1;
+        WhenUpdateTrackDropdown.value = WhenUpdateTrackCached;
 
         var isPushEnabled = Push.IsEnabledAsync();
         yield return isPushEnabled;
@@ -187,7 +203,7 @@ public class PuppetAppCenter : MonoBehaviour
 
         var isDistributeEnabled = Distribute.IsEnabledAsync();
         yield return isDistributeEnabled;
-        DistributeEnabled.isOn = isDistributeEnabled.Result;
+        DistributeEnabled.isOn = WhenUpdateTrackDropdown.enabled = UpdateTrackDropDown.enabled = isDistributeEnabled.Result;
         UserId.text = _customUserId;
     }
 
@@ -207,7 +223,7 @@ public class PuppetAppCenter : MonoBehaviour
         PushEnabled.isOn = isPushEnabled.Result;
         var isDistributeEnabled = Distribute.IsEnabledAsync();
         yield return isDistributeEnabled;
-        DistributeEnabled.isOn = isDistributeEnabled.Result;
+        DistributeEnabled.isOn = WhenUpdateTrackDropdown.enabled = UpdateTrackDropDown.enabled = isDistributeEnabled.Result;
     }
 
     public void SetLogLevel(int logLevel)
@@ -287,6 +303,32 @@ public class PuppetAppCenter : MonoBehaviour
 #endif
     }
 
+    public void SetUpdateTrack()
+    {
+        int updateTrack = UpdateTrackDropDown.value + 1;
+        PlayerPrefs.SetInt(UpdateTrackKey, updateTrack);
+        PlayerPrefs.Save();
+        UpdateTrackCached = updateTrack;
+#if UNITY_ANDROID && !UNITY_EDITOR
+        AndroidUtility.SetPreferenceInt(UpdateTrackAndroidKey, updateTrack);
+#endif
+        if(WhenUpdateTrackCached == (int)WhenUpdateTrackEnum.Now)
+        {
+            Distribute.UpdateTrack = (UpdateTrack)updateTrack;
+        }
+    }
+
+    public void SetWhenUpdateTrack()
+    {
+        int whenUpdateTrack = WhenUpdateTrackDropdown.value;
+        PlayerPrefs.SetInt(WhenUpdateTrackKey, whenUpdateTrack);
+        PlayerPrefs.Save();
+        WhenUpdateTrackCached = whenUpdateTrack;
+#if UNITY_ANDROID && !UNITY_EDITOR
+        AndroidUtility.SetPreferenceInt(WhenUpdateTrackAndroidKey, whenUpdateTrack);
+#endif
+    }
+
     public void OnUserIdChanged(string newUserId)
     {
         _customUserId = newUserId;
@@ -300,5 +342,19 @@ public class PuppetAppCenter : MonoBehaviour
         PlayerPrefs.DeleteKey(UserIdKey);
         _customUserId = null;
         AppCenter.SetUserId(null);
+    }
+
+    private enum WhenUpdateTrackEnum
+    {
+        Now,
+        BeforeNextStart
+    }
+
+    private void OnServicesInitializing()
+    {
+        if (WhenUpdateTrackCached == (int)WhenUpdateTrackEnum.BeforeNextStart)
+        {
+            Distribute.UpdateTrack = (UpdateTrack)UpdateTrackCached;
+        }
     }
 }
