@@ -47,6 +47,7 @@ namespace Microsoft.AppCenter.Unity.Distribute.Internal
 
         public static UpdateTrack GetUpdateTrack()
         {
+            return UpdateTrack.Public;
         }
 
         private class Distribute
