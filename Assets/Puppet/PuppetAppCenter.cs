@@ -5,6 +5,7 @@ using Assets.AppCenter.Plugins.Android.Utility;
 using Microsoft.AppCenter.Unity;
 using Microsoft.AppCenter.Unity.Distribute;
 using Microsoft.AppCenter.Unity.Push;
+using System;
 using System.Collections;
 using System.Threading;
 using UnityEngine;
@@ -127,7 +128,7 @@ public class PuppetAppCenter : MonoBehaviour
         AppSecretCached = PlayerPrefs.GetString(AppSecretKey, null);
         LogUrlCached = PlayerPrefs.GetString(LogUrlKey, null);
         MaxSizeCached = PlayerPrefs.GetString(MaxStorageSizeKey, null);
-        StartupTypeCached = PlayerPrefs.GetInt(StartupModeKey, (int) Microsoft.AppCenter.Unity.StartupType.Both);
+        StartupTypeCached = PlayerPrefs.GetInt(StartupModeKey, (int)Microsoft.AppCenter.Unity.StartupType.Both);
         UpdateTrackCached = PlayerPrefs.GetInt(UpdateTrackKey, (int)Distribute.UpdateTrack);
         WhenUpdateTrackCached = PlayerPrefs.GetInt(WhenUpdateTrackKey, (int)WhenUpdateTrackEnum.Now);
         CustomDialog.isOn = PlayerPrefs.GetInt(FlagCustomDialog, 0) == 1;
@@ -305,14 +306,14 @@ public class PuppetAppCenter : MonoBehaviour
 
     public void SetUpdateTrack()
     {
-        int updateTrack = UpdateTrackDropDown.value + 1;
+        int updateTrack = (int)Enum.Parse(typeof(UpdateTrack), UpdateTrackDropDown.options[UpdateTrackDropDown.value].text);
         PlayerPrefs.SetInt(UpdateTrackKey, updateTrack);
         PlayerPrefs.Save();
         UpdateTrackCached = updateTrack;
 #if UNITY_ANDROID && !UNITY_EDITOR
         AndroidUtility.SetPreferenceInt(UpdateTrackAndroidKey, updateTrack);
 #endif
-        if(WhenUpdateTrackCached == (int)WhenUpdateTrackEnum.Now)
+        if (WhenUpdateTrackCached == (int)WhenUpdateTrackEnum.Now)
         {
             Distribute.UpdateTrack = (UpdateTrack)updateTrack;
         }
