@@ -5,7 +5,7 @@
 using System;
 using System.Collections.Generic;
 using UnityEngine;
-using Assets.AppCenter.Plugins.Android.Utility
+using Assets.AppCenter.Plugins.Android.Utility;
 
 namespace Microsoft.AppCenter.Unity.Distribute.Internal
 {
