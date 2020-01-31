@@ -19,6 +19,7 @@ namespace Microsoft.AppCenter.Unity.Distribute.Internal
 
         static ReleaseAvailableDelegate del;
         static IntPtr ptr;
+        const string MSUpdateTrackKey = "MSAppCenterUpdateTrackUnityKey";
 
         [MonoPInvokeCallback(typeof(ReleaseAvailableDelegate))]
         static bool ReleaseAvailableFunc(IntPtr details)
@@ -84,6 +85,8 @@ namespace Microsoft.AppCenter.Unity.Distribute.Internal
 
         public static void SetUpdateTrack(int updateTrack)
         {
+            PlayerPrefs.SetInt(MSUpdateTrackKey, updateTrack);
+            PlayerPrefs.Save();
             appcenter_unity_distribute_set_update_track(updateTrack);
         }
 
