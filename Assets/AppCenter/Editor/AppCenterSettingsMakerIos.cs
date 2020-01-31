@@ -27,6 +27,8 @@ public class AppCenterSettingsMakerIos : IAppCenterSettingsMaker
     private const string InstallUrlToken = "APPCENTER_UNITY_USE_CUSTOM_INSTALL_URL";
     private const string UseCustomMaxStorageSize = "APPCENTER_USE_CUSTOM_MAX_STORAGE_SIZE";
     private const string MaxStorageSize = "APPCENTER_MAX_STORAGE_SIZE";
+    private const string UpdateTrackSearchText = "1/*UPDATE_TRACK*/";
+    private const string WhenUpdateTrackSearchText = "0/*WHEN_UPDATE_TRACK*/";
 
     private string _loaderFileText;
     private bool _enableDistributeForDebuggableBuild;
@@ -162,5 +164,15 @@ public class AppCenterSettingsMakerIos : IAppCenterSettingsMaker
     public void SetShouldEnableDistributeForDebuggableBuild()
     {
         _enableDistributeForDebuggableBuild = true;
+    }
+
+    public void SetUpdateTrack(int updateTrack)
+    {
+        _loaderFileText = _loaderFileText.Replace(UpdateTrackSearchText, updateTrack.ToString());
+    }
+
+    public void SetWhenUpdateTrack(int whenUpdateTrack)
+    {
+        _loaderFileText = _loaderFileText.Replace(WhenUpdateTrackSearchText, whenUpdateTrack.ToString());
     }
 }

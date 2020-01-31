@@ -33,6 +33,8 @@ public class AppCenterLoader extends ContentProvider {
     private static final String USE_CUSTOM_LOG_URL_KEY = "appcenter_use_custom_log_url";
     private static final String MAX_STORAGE_SIZE = "appcenter_max_storage_size";
     private static final String INITIAL_LOG_LEVEL_KEY = "appcenter_initial_log_level";
+    private static final String INITIAL_UPDATE_TRACK_KEY = "appcenter_initial_update_track";
+    private static final String INITIAL_WHEN_UPDATE_TRACK_KEY = "appcenter_initial_when_update_track";
     private static final String USE_PUSH_KEY = "appcenter_use_push";
     private static final String SENDER_ID_KEY = "appcenter_sender_id";
     private static final String ENABLE_FIREBASE_ANALYTICS_KEY = "appcenter_enable_firebase_analytics";
@@ -51,6 +53,8 @@ public class AppCenterLoader extends ContentProvider {
     private static final String STARTUP_TYPE_KEY = "appcenter_startup_type";
     private static final String STARTUP_TYPE_SHARED_PREFERENCES_KEY = "AppCenter.Unity.StartTargetKey";
     private static final String LOG_URL_SHARED_PREFERENCES_KEY = "AppCenter.Unity.LogUrlKey";
+    private static final String UPDATE_TRACK_SHARED_PREFERENCES_KEY = "AppCenter.Unity.UpdateTrackKey";
+    private static final String WHEN_UPDATE_TRACK_SHARED_PREFERENCES_KEY = "AppCenter.Unity.WhenUpdateTrackKey";
     private static final String APP_SECRET_SHARED_PREFERENCES_KEY = "AppCenter.Unity.AppSecretKey";
     private static final String MAX_STORAGE_SIZE_SHARED_PREFERENCES_KEY = "AppCenter.Unity.MaxStorageSizeKey";
     private static final String TRUE_VALUE = "True";
@@ -115,6 +119,11 @@ public class AppCenterLoader extends ContentProvider {
                 if (customInstallUrl != null) {
                     Distribute.setInstallUrl(customInstallUrl);
                 }
+            }
+            int whenUpdateTrack = mContext.getSharedPreferences(PREFS_NAME, Context.MODE_PRIVATE).getInt(WHEN_UPDATE_TRACK_SHARED_PREFERENCES_KEY, Integer.parseInt(getStringResource(INITIAL_WHEN_UPDATE_TRACK_KEY)));
+            if (whenUpdateTrack > 0) {
+                int updateTrack = mContext.getSharedPreferences(PREFS_NAME, Context.MODE_PRIVATE).getInt(UPDATE_TRACK_SHARED_PREFERENCES_KEY, Integer.parseInt(getStringResource(INITIAL_UPDATE_TRACK_KEY)));
+                Distribute.setUpdateTrack(updateTrack);
             }
             classes.add(Distribute.class);
         }

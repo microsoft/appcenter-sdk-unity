@@ -10,6 +10,7 @@ namespace Microsoft.AppCenter.Unity.Distribute.Internal
 {
     class DistributeInternal
     {
+        private const string UpdateTrackAndroidKey = "AppCenter.Unity.UpdateTrackKey";
         private static AndroidJavaClass _distribute = new AndroidJavaClass("com.microsoft.appcenter.distribute.Distribute");
 
         public static void PrepareEventHandlers()
@@ -74,6 +75,7 @@ namespace Microsoft.AppCenter.Unity.Distribute.Internal
 
         public static void SetUpdateTrack(int updateTrack)
         {
+            AndroidUtility.SetPreferenceInt(UpdateTrackAndroidKey, updateTrack);
             _distribute.CallStatic("setUpdateTrack", updateTrack);
         }
 

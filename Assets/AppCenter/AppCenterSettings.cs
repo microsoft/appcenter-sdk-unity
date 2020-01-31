@@ -6,6 +6,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
 using Microsoft.AppCenter.Unity;
+using Microsoft.AppCenter.Unity.Distribute;
 using UnityEngine;
 
 [Serializable]
@@ -48,6 +49,10 @@ public class AppCenterSettings : ScriptableObject
     public bool EnableFirebaseAnalytics = false;
 
     public LogLevel InitialLogLevel = LogLevel.Info;
+
+    public UpdateTrack InitialUpdateTrack = UpdateTrack.Public;
+
+    public WhenUpdateTrack InitialWhenUpdateTrack = WhenUpdateTrack.Now;
 
     public CustomUrlProperty CustomLogUrl = new CustomUrlProperty("Log");
 
