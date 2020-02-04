@@ -19,8 +19,7 @@ namespace Microsoft.AppCenter.Unity.Distribute.Internal
 
         static ReleaseAvailableDelegate del;
         static IntPtr ptr;
-        const string MSUpdateTrackKey = "MSAppCenterUpdateTrackUnityKey";
-
+        
         [MonoPInvokeCallback(typeof(ReleaseAvailableDelegate))]
         static bool ReleaseAvailableFunc(IntPtr details)
         {
