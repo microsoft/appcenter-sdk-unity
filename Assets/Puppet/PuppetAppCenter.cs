@@ -5,6 +5,7 @@ using Assets.AppCenter.Plugins.Android.Utility;
 using Microsoft.AppCenter.Unity;
 using Microsoft.AppCenter.Unity.Distribute;
 using Microsoft.AppCenter.Unity.Push;
+using System;
 using System.Collections;
 using System.Threading;
 using UnityEngine;
@@ -41,6 +42,7 @@ public class PuppetAppCenter : MonoBehaviour
     private const string LogUrlAndroidKey = "AppCenter.Unity.LogUrlKey";
     private const string AppSecretKey = "MSAppCenterAppSecretUnityKey";
     private const string AppSecretAndroidKey = "AppCenter.Unity.AppSecretKey";
+    private const string UpdateTrackKey = "MSAppCenterUpdateTrackUnityKey";    private const string UpdateTrackAndroidKey = "AppCenter.Unity.UpdateTrackKey";
     public GameObject CustomProperty;
     public RectTransform PropertiesList;
     public Toggle DistributeEnabled;
@@ -48,6 +50,9 @@ public class PuppetAppCenter : MonoBehaviour
     public Toggle CustomDialog;
     public static string FlagCustomDialog = "FlagCustomDialog";
     private string _customUserId;
+    [SerializeField]
+    private Dropdown updateTrackDropdown;
+    public static int UpdateTrackCached = (int)UpdateTrack.Public;
 
     public void SetPushEnabled(bool enabled)
     {
@@ -72,7 +77,7 @@ public class PuppetAppCenter : MonoBehaviour
         yield return Distribute.SetEnabledAsync(enabled);
         var isEnabled = Distribute.IsEnabledAsync();
         yield return isEnabled;
-        DistributeEnabled.isOn = isEnabled.Result;
+        DistributeEnabled.isOn = updateTrackDropdown.enabled = isEnabled.Result;
     }
 
     public void AddProperty()
@@ -116,9 +121,23 @@ public class PuppetAppCenter : MonoBehaviour
         AppSecretCached = PlayerPrefs.GetString(AppSecretKey, null);
         LogUrlCached = PlayerPrefs.GetString(LogUrlKey, null);
         MaxSizeCached = PlayerPrefs.GetString(MaxStorageSizeKey, null);
-        StartupTypeCached = PlayerPrefs.GetInt(StartupModeKey, (int) Microsoft.AppCenter.Unity.StartupType.Both);
+        StartupTypeCached = PlayerPrefs.GetInt(StartupModeKey, (int)Microsoft.AppCenter.Unity.StartupType.Both);
         CustomDialog.isOn = PlayerPrefs.GetInt(FlagCustomDialog, 0) == 1;
         StorageReadyEvent.Set();
+        AppCenterBehavior.Started += OnAppCenterStarted;
+    }
+
+    private void OnAppCenterStarted()
+    {
+        int updateTrack = (int)UpdateTrack.Public;
+        AppCenterBehavior appCenterBehavior = FindObjectOfType<AppCenterBehavior>();
+        if (appCenterBehavior != null)
+        {
+            UpdateTrack currentTrack = appCenterBehavior.Settings.UpdateTrack;
+            updateTrack = (int)currentTrack;
+            updateTrackDropdown.value = updateTrackDropdown.options.FindIndex(option => option.text == currentTrack.ToString());
+        }
+        UpdateTrackCached = PlayerPrefs.GetInt(UpdateTrackKey, updateTrack);
     }
 
     void OnEnable()
@@ -187,7 +206,7 @@ public class PuppetAppCenter : MonoBehaviour
 
         var isDistributeEnabled = Distribute.IsEnabledAsync();
         yield return isDistributeEnabled;
-        DistributeEnabled.isOn = isDistributeEnabled.Result;
+        DistributeEnabled.isOn = updateTrackDropdown.enabled = isDistributeEnabled.Result;
         UserId.text = _customUserId;
     }
 
@@ -207,7 +226,7 @@ public class PuppetAppCenter : MonoBehaviour
         PushEnabled.isOn = isPushEnabled.Result;
         var isDistributeEnabled = Distribute.IsEnabledAsync();
         yield return isDistributeEnabled;
-        DistributeEnabled.isOn = isDistributeEnabled.Result;
+        DistributeEnabled.isOn = updateTrackDropdown.enabled = isDistributeEnabled.Result;
     }
 
     public void SetLogLevel(int logLevel)
@@ -285,6 +304,17 @@ public class PuppetAppCenter : MonoBehaviour
 #if UNITY_ANDROID && !UNITY_EDITOR
         AndroidUtility.SetPreferenceString(AppSecretAndroidKey, appSecret);
 #endif
+    }
+
+    public void SetUpdateTrack()
+    {
+        int updateTrack = (int)Enum.Parse(typeof(UpdateTrack), updateTrackDropdown.options[updateTrackDropdown.value].text);
+        PlayerPrefs.SetInt(UpdateTrackKey, updateTrack);
+        PlayerPrefs.Save();
+#if UNITY_ANDROID && !UNITY_EDITOR
+        AndroidUtility.SetPreferenceInt(UpdateTrackAndroidKey, updateTrack);
+#endif
+        UpdateTrackCached = updateTrack;
     }
 
     public void OnUserIdChanged(string newUserId)
