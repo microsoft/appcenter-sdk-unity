@@ -20,10 +20,6 @@
 @import AppCenterAnalytics;
 #endif
 
-#ifdef APPCENTER_UNITY_USE_AUTH
-@import AppCenterAuth;
-#endif
-
 #ifdef APPCENTER_UNITY_USE_DISTRIBUTE
 @import AppCenterDistribute;
 #import "../Distribute/DistributeDelegate.h"
@@ -42,7 +38,6 @@ enum StartupMode {
 static NSString *const kMSAppSecret = @"appcenter-app-secret";
 static NSString *const kMSTargetToken = @"appcenter-transmission-target-token";
 static NSString *const kMSCustomLogUrl = @"custom-log-url";
-static NSString *const kMSCustomAuthConfigUrl = @"custom-auth-config-url";
 static NSString *const kMSCustomApiUrl = @"custom-api-url";
 static NSString *const kMSCustomInstallUrl = @"custom-install-url";
 static NSString *const kMSStartTargetKey = @"MSAppCenterStartTargetUnityKey";
@@ -94,14 +89,6 @@ static const int kMSUpdateTrack = 1 /*UPDATE_TRACK*/;
 #ifdef APPCENTER_UNITY_USE_ANALYTICS
   [classes addObject:MSAnalytics.class];
 #endif
-
-#ifdef APPCENTER_UNITY_USE_AUTH
-  [classes addObject:MSAuth.class];
-#endif
-
-#ifdef APPCENTER_UNITY_USE_CUSTOM_AUTH_CONFIG_URL
-  [MSAuth setConfigUrl:kMSCustomAuthConfigUrl];
-#endif // APPCENTER_UNITY_USE_CUSTOM_AUTH_CONFIG_URL
 
 #ifdef APPCENTER_UNITY_USE_PUSH
   [MSPush setDelegate:[UnityPushDelegate sharedInstance]];

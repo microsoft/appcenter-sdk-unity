@@ -17,9 +17,6 @@ public class AppCenterSettingsMakerAndroid : IAppCenterSettingsMaker
     private const string UseCrashesKey = "appcenter_use_crashes";
     private const string UsePushKey = "appcenter_use_push";
     private const string UseAnalyticsKey = "appcenter_use_analytics";
-    private const string UseAuthKey = "appcenter_use_auth";
-    private const string CustomAuthConfigUrlKey = "appcenter_custom_auth_config_url";
-    private const string UseCustomAuthConfigUrlKey = "appcenter_use_custom_auth_config_url";
     private const string UseDistributeKey = "appcenter_use_distribute";
     private const string CustomApiUrlKey = "appcenter_custom_api_url";
     private const string UseCustomApiUrlKey = "appcenter_use_custom_api_url";
@@ -91,17 +88,6 @@ public class AppCenterSettingsMakerAndroid : IAppCenterSettingsMaker
         _resourceValues[UseAnalyticsKey] = true.ToString();
     }
 
-    public void StartAuthClass()
-    {
-        _resourceValues[UseAuthKey] = true.ToString();
-    }
-
-    public void SetAuthConfigUrl(string authConfigUrl)
-    {
-        _resourceValues[CustomAuthConfigUrlKey] = authConfigUrl;
-        _resourceValues[UseCustomAuthConfigUrlKey] = true.ToString();
-    }
-    
     public void StartDistributeClass()
     {
         _resourceValues[UseDistributeKey] = true.ToString();
@@ -146,11 +132,6 @@ public class AppCenterSettingsMakerAndroid : IAppCenterSettingsMaker
     public bool IsAnalyticsAvailable()
     {
         return File.Exists(AppCenterSettingsContext.AppCenterPath + "/Plugins/Android/appcenter-analytics-release.aar");
-    }
-
-    public bool IsAuthAvailable()
-    {
-        return File.Exists(AppCenterSettingsContext.AppCenterPath + "/Plugins/Android/appcenter-auth-release.aar");
     }
 
     public bool IsCrashesAvailable()

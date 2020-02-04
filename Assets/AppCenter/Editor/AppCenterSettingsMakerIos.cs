@@ -17,9 +17,6 @@ public class AppCenterSettingsMakerIos : IAppCenterSettingsMaker
     private const string UseCrashesToken = "APPCENTER_UNITY_USE_CRASHES";
     private const string UsePushToken = "APPCENTER_UNITY_USE_PUSH";
     private const string UseAnalyticsToken = "APPCENTER_UNITY_USE_ANALYTICS";
-    private const string UseAuthToken = "APPCENTER_UNITY_USE_AUTH";
-    private const string AuthConfigUrlSearchText = "custom-auth-config-url";
-    private const string AuthConfigUrlToken = "APPCENTER_UNITY_USE_CUSTOM_AUTH_CONFIG_URL";
     private const string UseDistributeToken = "APPCENTER_UNITY_USE_DISTRIBUTE";
     private const string ApiUrlSearchText = "custom-api-url";
     private const string ApiUrlToken = "APPCENTER_UNITY_USE_CUSTOM_API_URL";
@@ -81,17 +78,6 @@ public class AppCenterSettingsMakerIos : IAppCenterSettingsMaker
         AddToken(UseAnalyticsToken);
     }
 
-    public void StartAuthClass()
-    {
-        AddToken(UseAuthToken);
-    }
-    
-    public void SetAuthConfigUrl(string authConfigUrl)
-    {
-        AddToken(AuthConfigUrlToken);
-        _loaderFileText = _loaderFileText.Replace(AuthConfigUrlSearchText, authConfigUrl);
-    }
-
     public void SetApiUrl(string apiUrl)
     {
         AddToken(ApiUrlToken);
@@ -138,11 +124,6 @@ public class AppCenterSettingsMakerIos : IAppCenterSettingsMaker
     public bool IsAnalyticsAvailable()
     {
         return Directory.Exists(AppCenterSettingsContext.AppCenterPath + "/Plugins/iOS/Analytics");
-    }
-
-    public bool IsAuthAvailable()
-    {
-        return Directory.Exists(AppCenterSettingsContext.AppCenterPath + "/Plugins/iOS/Auth");
     }
 
     public bool IsCrashesAvailable()
