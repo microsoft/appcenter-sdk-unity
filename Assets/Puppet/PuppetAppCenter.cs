@@ -42,14 +42,16 @@ public class PuppetAppCenter : MonoBehaviour
     private const string LogUrlAndroidKey = "AppCenter.Unity.LogUrlKey";
     private const string AppSecretKey = "MSAppCenterAppSecretUnityKey";
     private const string AppSecretAndroidKey = "AppCenter.Unity.AppSecretKey";
-    private const string UpdateTrackKey = "MSAppCenterUpdateTrackUnityKey";    private const string UpdateTrackAndroidKey = "AppCenter.Unity.UpdateTrackKey";
+    private const string UpdateTrackKey = "MSAppCenterUpdateTrackUnityKey";
+    private const string UpdateTrackAndroidKey = "AppCenter.Unity.UpdateTrackKey";
     public GameObject CustomProperty;
     public RectTransform PropertiesList;
     public Toggle DistributeEnabled;
     public Toggle PushEnabled;
     public Toggle CustomDialog;
     public static string FlagCustomDialog = "FlagCustomDialog";
-    private string _customUserId;
+
+    [SerializeField]
     [SerializeField]
     private Dropdown updateTrackDropdown;
     public static int UpdateTrackCached = (int)UpdateTrack.Public;
