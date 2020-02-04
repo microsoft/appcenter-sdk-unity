@@ -27,5 +27,4 @@ public interface IAppCenterSettingsMaker
     void CommitSettings();
     void SetShouldEnableDistributeForDebuggableBuild();
     void SetUpdateTrack(int updateTrack);
-    void SetWhenUpdateTrack(int whenUpdateTrack);
 }

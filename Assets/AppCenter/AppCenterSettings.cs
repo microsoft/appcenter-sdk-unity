@@ -52,8 +52,6 @@ public class AppCenterSettings : ScriptableObject
 
     public UpdateTrack InitialUpdateTrack = UpdateTrack.Public;
 
-    public WhenUpdateTrack InitialWhenUpdateTrack = WhenUpdateTrack.Now;
-
     public CustomUrlProperty CustomLogUrl = new CustomUrlProperty("Log");
 
     public MaxStorageSizeProperty MaxStorageSize = new MaxStorageSizeProperty();

@@ -150,7 +150,6 @@ public class AppCenterPreBuild : IPreprocessBuild
                 settingsMaker.SetShouldEnableDistributeForDebuggableBuild();
             }
             settingsMaker.SetUpdateTrack((int)settings.InitialUpdateTrack);
-            settingsMaker.SetWhenUpdateTrack((int)settings.InitialWhenUpdateTrack);
             settingsMaker.StartDistributeClass();
         }
         if (advancedSettings != null)

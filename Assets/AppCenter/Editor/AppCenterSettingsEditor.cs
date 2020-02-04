@@ -45,7 +45,6 @@ public class AppCenterSettingsEditor : Editor
             EditorGUILayout.PropertyField(serializedObject.FindProperty("CustomApiUrl"));
             EditorGUILayout.PropertyField(serializedObject.FindProperty("CustomInstallUrl"));
             EditorGUILayout.PropertyField(serializedObject.FindProperty("InitialUpdateTrack"));
-            EditorGUILayout.PropertyField(serializedObject.FindProperty("InitialWhenUpdateTrack"));
         }
         if (AppCenter.Push != null)
         {
