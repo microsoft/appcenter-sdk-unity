@@ -44,7 +44,7 @@ public class AppCenterSettingsEditor : Editor
             EditorGUILayout.PropertyField(serializedObject.FindProperty("EnableDistributeForDebuggableBuild"));
             EditorGUILayout.PropertyField(serializedObject.FindProperty("CustomApiUrl"));
             EditorGUILayout.PropertyField(serializedObject.FindProperty("CustomInstallUrl"));
-            EditorGUILayout.PropertyField(serializedObject.FindProperty("InitialUpdateTrack"));
+            EditorGUILayout.PropertyField(serializedObject.FindProperty("UpdateTrack"));
         }
         if (AppCenter.Push != null)
         {

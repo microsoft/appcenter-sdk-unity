@@ -50,7 +50,7 @@ public class AppCenterSettings : ScriptableObject
 
     public LogLevel InitialLogLevel = LogLevel.Info;
 
-    public UpdateTrack InitialUpdateTrack = UpdateTrack.Public;
+    public UpdateTrack UpdateTrack = UpdateTrack.Public;
 
     public CustomUrlProperty CustomLogUrl = new CustomUrlProperty("Log");
 

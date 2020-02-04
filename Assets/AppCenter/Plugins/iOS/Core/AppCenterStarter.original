@@ -50,12 +50,10 @@ static NSString *const kMSStorageSizeKey = @"MSAppCenterMaxStorageSizeUnityKey";
 static NSString *const kMSLogUrlKey = @"MSAppCenterLogUrlUnityKey";
 static NSString *const kMSAppSecretKey = @"MSAppCenterAppSecretUnityKey";
 static NSString *const kMSUpdateTrackKey = @"MSAppCenterUpdateTrackUnityKey";
-static NSString *const kMSWhenUpdateTrackKey = @"MSAppCenterWhenUpdateTrackUnityKey";
 
 static const int kMSLogLevel = 0 /*LOG_LEVEL*/;
 static const int kMSStartupType = 0 /*STARTUP_TYPE*/;
 static const int kMSUpdateTrack = 1 /*UPDATE_TRACK*/;
-static const int kMSWhenUpdateTrack = 0 /*WHEN_UPDATE_TRACK*/;
 
 + (void)load {
   [[NSNotificationCenter defaultCenter] addObserver:self
@@ -111,14 +109,10 @@ static const int kMSWhenUpdateTrack = 0 /*WHEN_UPDATE_TRACK*/;
 
 #ifdef APPCENTER_UNITY_USE_DISTRIBUTE
 
-  NSNumber *whenUpdate = [[NSUserDefaults standardUserDefaults] objectForKey:kMSWhenUpdateTrackKey];
-  int whenUpdateValue = whenUpdate == nil ? kMSWhenUpdateTrack : whenUpdate.intValue;
-  if (whenUpdateValue > 0) {
-    NSNumber *updateTrack = [[NSUserDefaults standardUserDefaults] objectForKey:kMSUpdateTrackKey];
-    int updateTrackValue = updateTrack == nil ? kMSUpdateTrack : updateTrack.intValue;
-    [MSDistribute setUpdateTrack:(MSUpdateTrack)updateTrackValue];
-  }
-
+NSNumber *updateTrack = [[NSUserDefaults standardUserDefaults] objectForKey:kMSUpdateTrackKey];
+int updateTrackValue = updateTrack == nil ? kMSUpdateTrack : updateTrack.intValue;
+[MSDistribute setUpdateTrack:(MSUpdateTrack)updateTrackValue];
+  
 #ifdef APPCENTER_UNITY_USE_CUSTOM_API_URL
   [MSDistribute setApiUrl:kMSCustomApiUrl];
 #endif // APPCENTER_UNITY_USE_CUSTOM_API_URL
