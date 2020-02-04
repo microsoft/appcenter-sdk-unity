@@ -21,6 +21,7 @@ namespace Microsoft.AppCenter.Unity.Push.Internal
         public static void PrepareEventHandlers()
         {
             AppCenterBehavior.InitializingServices += Initialize;
+            AppCenterBehavior.InitializedAppCenterAndServices += PostInitialize;
         }
 
         public static void StartPush()
@@ -57,6 +58,10 @@ namespace Microsoft.AppCenter.Unity.Push.Internal
                 };
                 HandlePushNotification(eventArgs);
             };
+        }
+
+        private static void PostInitialize()
+        {
             Push.ReplayPushNotificationsIfWaiting();
         }
 

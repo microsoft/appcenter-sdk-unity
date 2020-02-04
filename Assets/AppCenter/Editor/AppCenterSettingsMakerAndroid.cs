@@ -6,8 +6,8 @@ using System.IO;
 
 public class AppCenterSettingsMakerAndroid : IAppCenterSettingsMaker
 {
-    private const string AppCenterResourcesFolderPath = "Assets/Plugins/Android/res/values/";
-    private const string AppCenterResourcesPath = AppCenterResourcesFolderPath + "appcenter-settings.xml";
+    public const string AppCenterLoaderResourcesFolderPath = "AppCenterLoaderApp/appcenter-loader/src/main/res/values/";
+    public const string AppCenterLoaderResourcesPath = AppCenterLoaderResourcesFolderPath + "appcenter-settings.xml";
     private const string AppSecretKey = "appcenter_app_secret";
     private const string TransmissionTargetTokenKey = "appcenter_transmission_target_token";
     private const string CustomLogUrlKey = "appcenter_custom_log_url";
@@ -30,9 +30,9 @@ public class AppCenterSettingsMakerAndroid : IAppCenterSettingsMaker
 
     static AppCenterSettingsMakerAndroid()
     {
-        if (!Directory.Exists(AppCenterResourcesFolderPath))
+        if (!Directory.Exists(AppCenterLoaderResourcesFolderPath))
         {
-            Directory.CreateDirectory(AppCenterResourcesFolderPath);
+            Directory.CreateDirectory(AppCenterLoaderResourcesFolderPath);
         }
     }
 
@@ -106,11 +106,16 @@ public class AppCenterSettingsMakerAndroid : IAppCenterSettingsMaker
 
     public void CommitSettings()
     {
-        if (File.Exists(AppCenterResourcesPath))
+        CommitSettings(AppCenterLoaderResourcesPath);
+    }
+
+    public void CommitSettings(string filePath)
+    {
+        if (File.Exists(filePath))
         {
-            File.Delete(AppCenterResourcesPath);
+            File.Delete(filePath);
         }
-        XmlResourceHelper.WriteXmlResource(AppCenterResourcesPath, _resourceValues);
+        XmlResourceHelper.WriteXmlResource(filePath, _resourceValues);
     }
 
     public bool IsStartFromAppCenterBehavior(AppCenterSettingsAdvanced advancedSettings)

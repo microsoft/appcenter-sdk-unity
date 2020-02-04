@@ -132,7 +132,7 @@ public class BuildPuppet
         {
             return;
         }
-        var placeholderFile = AssetsFolder + "Assets/Puppet/Editor/google-services-placeholder.json";
+        var placeholderFile = AssetsFolder + "/Puppet/Editor/google-services-placeholder.json";
         if (!File.Exists(placeholderFile))
         {
             Debug.Log("Could not find google services placeholder.");

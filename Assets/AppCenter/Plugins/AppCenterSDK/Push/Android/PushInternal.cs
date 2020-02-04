@@ -22,7 +22,6 @@ namespace Microsoft.AppCenter.Unity.Push.Internal
         private static void Initialize()
         {
             _unityListener.CallStatic("setListener", new PushDelegate());
-            Push.ReplayPushNotificationsIfWaiting();         
         }
 
         public static void StartPush()
@@ -35,6 +34,7 @@ namespace Microsoft.AppCenter.Unity.Push.Internal
             AndroidJavaClass unityPlayer = new AndroidJavaClass("com.unity3d.player.UnityPlayer");
             AndroidJavaObject activity = unityPlayer.GetStatic<AndroidJavaObject>("currentActivity");
             instance.Call("onActivityResumed", activity);
+            Push.ReplayPushNotificationsIfWaiting();
         }
 
         public static AppCenterTask SetEnabledAsync(bool isEnabled)
