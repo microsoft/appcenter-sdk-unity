@@ -1,12 +1,16 @@
 # App Center SDK for Unity Change Log
 
-## Version 2.6.1 (Under development)
+## Release 3.0.0 (Under development)
 
 ### App Center
 
 #### Android
 
 * **[Fix]** Fix a Unity warning that appears when building for Android.
+
+### App Center Auth
+
+App Center Auth is [retired](https://aka.ms/MBaaS-retirement-blog-post) and has been removed from the SDK.
 
 ### App Center Crashes
 
