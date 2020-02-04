@@ -6,7 +6,6 @@ using System;
 using System.Collections.Generic;
 using System.Runtime.InteropServices;
 using AOT;
-using UnityEngine;
 
 namespace Microsoft.AppCenter.Unity.Distribute.Internal
 {
@@ -82,18 +81,6 @@ namespace Microsoft.AppCenter.Unity.Distribute.Internal
         public static void NotifyUpdateAction(int updateAction)
         {
             appcenter_unity_distribute_notify_update_action(updateAction);
-        }
-
-        public static void SetUpdateTrack(int updateTrack)
-        {
-            PlayerPrefs.SetInt(MSUpdateTrackKey, updateTrack);
-            PlayerPrefs.Save();
-            appcenter_unity_distribute_set_update_track(updateTrack);
-        }
-
-        public static UpdateTrack GetUpdateTrack()
-        {
-            return (UpdateTrack)appcenter_unity_distribute_get_update_track();
         }
 
 #region External

@@ -5,7 +5,6 @@
 using System;
 using System.Collections.Generic;
 using UnityEngine;
-using Assets.AppCenter.Plugins.Android.Utility;
 
 namespace Microsoft.AppCenter.Unity.Distribute.Internal
 {
@@ -72,17 +71,6 @@ namespace Microsoft.AppCenter.Unity.Distribute.Internal
                     break;
             }
             _distribute.CallStatic("notifyUpdateAction", nativeAction);
-        }
-
-        public static void SetUpdateTrack(int updateTrack)
-        {
-            AndroidUtility.SetPreferenceInt(UpdateTrackAndroidKey, updateTrack);
-            _distribute.CallStatic("setUpdateTrack", updateTrack);
-        }
-
-        public static UpdateTrack GetUpdateTrack()
-        {
-            return (UpdateTrack)_distribute.CallStatic<int>("getUpdateTrack");
         }
     }
 }

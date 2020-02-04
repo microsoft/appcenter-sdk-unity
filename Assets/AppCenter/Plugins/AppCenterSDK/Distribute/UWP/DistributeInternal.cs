@@ -41,15 +41,6 @@ namespace Microsoft.AppCenter.Unity.Distribute.Internal
         {
         }
 
-        public static void SetUpdateTrack(int updateTrack)
-        {
-        }
-
-        public static UpdateTrack GetUpdateTrack()
-        {
-            return UpdateTrack.Public;
-        }
-
         private class Distribute
         {
         }
