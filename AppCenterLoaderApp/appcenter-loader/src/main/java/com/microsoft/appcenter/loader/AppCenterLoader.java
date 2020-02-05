@@ -48,7 +48,6 @@ public class AppCenterLoader extends ContentProvider {
     private static final String STARTUP_TYPE_KEY = "appcenter_startup_type";
     private static final String STARTUP_TYPE_SHARED_PREFERENCES_KEY = "AppCenter.Unity.StartTargetKey";
     private static final String LOG_URL_SHARED_PREFERENCES_KEY = "AppCenter.Unity.LogUrlKey";
-    private static final String UPDATE_TRACK_SHARED_PREFERENCES_KEY = "AppCenter.Unity.UpdateTrackKey";
     private static final String APP_SECRET_SHARED_PREFERENCES_KEY = "AppCenter.Unity.AppSecretKey";
     private static final String MAX_STORAGE_SIZE_SHARED_PREFERENCES_KEY = "AppCenter.Unity.MaxStorageSizeKey";
     private static final String TRUE_VALUE = "True";
@@ -104,8 +103,10 @@ public class AppCenterLoader extends ContentProvider {
                     Distribute.setInstallUrl(customInstallUrl);
                 }
             }
-            int updateTrack = mContext.getSharedPreferences(PREFS_NAME, Context.MODE_PRIVATE).getInt(UPDATE_TRACK_SHARED_PREFERENCES_KEY, Integer.parseInt(getStringResource(UPDATE_TRACK_KEY)));
-            Distribute.setUpdateTrack(updateTrack);
+            String updateTrackValue = getStringResource(UPDATE_TRACK_KEY);
+            if (updateTrackValue != null) {
+                Distribute.setUpdateTrack(Integer.parseInt(updateTrackValue));
+            }
             classes.add(Distribute.class);
         }
         if (isTrueValue(getStringResource(USE_PUSH_KEY)) &&

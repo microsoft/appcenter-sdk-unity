@@ -96,9 +96,7 @@ static const int kMSUpdateTrack = 1 /*UPDATE_TRACK*/;
 
 #ifdef APPCENTER_UNITY_USE_DISTRIBUTE
 
-NSNumber *updateTrack = [[NSUserDefaults standardUserDefaults] objectForKey:kMSUpdateTrackKey];
-int updateTrackValue = updateTrack == nil ? kMSUpdateTrack : updateTrack.intValue;
-[MSDistribute setUpdateTrack:(MSUpdateTrack)updateTrackValue];
+[MSDistribute setUpdateTrack:(MSUpdateTrack)kMSUpdateTrack];
   
 #ifdef APPCENTER_UNITY_USE_CUSTOM_API_URL
   [MSDistribute setApiUrl:kMSCustomApiUrl];
