@@ -74,20 +74,5 @@ namespace Microsoft.AppCenter.Unity.Distribute
         {
             DistributeInternal.NotifyUpdateAction((int)updateAction);
         }
-
-        /// <summary>
-        /// Set the update track public or private.
-        /// </summary>
-        public static UpdateTrack UpdateTrack
-        {
-            get
-            {
-                return DistributeInternal.GetUpdateTrack();
-            }
-            set 
-            {
-                DistributeInternal.SetUpdateTrack((int)value);
-            }
-        }
     }
 }

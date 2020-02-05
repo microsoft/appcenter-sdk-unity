@@ -49,13 +49,3 @@ void appcenter_unity_distribute_set_delegate()
 {
   [MSDistribute setDelegate:[UnityDistributeDelegate sharedInstance]];
 }
-
-void appcenter_unity_distribute_set_update_track(int updateTrack)
-{
-  [MSDistribute setUpdateTrack:(MSUpdateTrack)updateTrack];
-}
-
-int appcenter_unity_distribute_get_update_track()
-{
-  return [MSDistribute updateTrack];
-}
