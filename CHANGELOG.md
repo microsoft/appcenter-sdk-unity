@@ -7,6 +7,7 @@
 #### Android
 
 * **[Fix]** Fix a Unity warning that appears when building for Android.
+* **[Fix]** Fix a `java.lang.IllegalArgumentException: Unknown pattern character 'X'` in `JavaHelper.JavaDateFormatter` on Android 6.
 
 ### App Center Auth
 
