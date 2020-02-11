@@ -27,6 +27,9 @@ namespace Microsoft.AppCenter.Unity.Internal.Utility
 
         public static AndroidJavaObject DateTimeConvert(DateTime date)
         {
+            // 'DotNetDateFormat' contains timezone info with time separator. 
+            // 'javaDateFormatter' uses date format with timezone info without time separator.
+            // Time separator should be removed from date string before 'parse' call.
             var dateString = date.ToString(DotNetDateFormat);
             int separatorIndex = dateString.LastIndexOf(CultureInfo.CurrentCulture.DateTimeFormat.TimeSeparator);
             dateString = dateString.Remove(separatorIndex, 1);
