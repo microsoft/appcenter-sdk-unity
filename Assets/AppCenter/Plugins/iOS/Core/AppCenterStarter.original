@@ -44,9 +44,11 @@ static NSString *const kMSStartTargetKey = @"MSAppCenterStartTargetUnityKey";
 static NSString *const kMSStorageSizeKey = @"MSAppCenterMaxStorageSizeUnityKey";
 static NSString *const kMSLogUrlKey = @"MSAppCenterLogUrlUnityKey";
 static NSString *const kMSAppSecretKey = @"MSAppCenterAppSecretUnityKey";
+static NSString *const kMSUpdateTrackKey = @"MSAppCenterUpdateTrackUnityKey";
 
 static const int kMSLogLevel = 0 /*LOG_LEVEL*/;
 static const int kMSStartupType = 0 /*STARTUP_TYPE*/;
+static const int kMSUpdateTrack = 1 /*UPDATE_TRACK*/;
 
 + (void)load {
   [[NSNotificationCenter defaultCenter] addObserver:self
@@ -94,6 +96,8 @@ static const int kMSStartupType = 0 /*STARTUP_TYPE*/;
 
 #ifdef APPCENTER_UNITY_USE_DISTRIBUTE
 
+[MSDistribute setUpdateTrack:(MSUpdateTrack)kMSUpdateTrack];
+  
 #ifdef APPCENTER_UNITY_USE_CUSTOM_API_URL
   [MSDistribute setApiUrl:kMSCustomApiUrl];
 #endif // APPCENTER_UNITY_USE_CUSTOM_API_URL

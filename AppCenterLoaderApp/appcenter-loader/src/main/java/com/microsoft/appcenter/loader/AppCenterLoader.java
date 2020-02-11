@@ -32,6 +32,7 @@ public class AppCenterLoader extends ContentProvider {
     private static final String USE_CUSTOM_LOG_URL_KEY = "appcenter_use_custom_log_url";
     private static final String MAX_STORAGE_SIZE = "appcenter_max_storage_size";
     private static final String INITIAL_LOG_LEVEL_KEY = "appcenter_initial_log_level";
+    private static final String UPDATE_TRACK_KEY = "appcenter_update_track";
     private static final String USE_PUSH_KEY = "appcenter_use_push";
     private static final String SENDER_ID_KEY = "appcenter_sender_id";
     private static final String ENABLE_FIREBASE_ANALYTICS_KEY = "appcenter_enable_firebase_analytics";
@@ -101,6 +102,10 @@ public class AppCenterLoader extends ContentProvider {
                 if (customInstallUrl != null) {
                     Distribute.setInstallUrl(customInstallUrl);
                 }
+            }
+            String updateTrackValue = getStringResource(UPDATE_TRACK_KEY);
+            if (updateTrackValue != null) {
+                Distribute.setUpdateTrack(Integer.parseInt(updateTrackValue));
             }
             classes.add(Distribute.class);
         }

@@ -19,7 +19,6 @@ namespace Microsoft.AppCenter.Unity.Distribute.Internal
 
         static ReleaseAvailableDelegate del;
         static IntPtr ptr;
-
         [MonoPInvokeCallback(typeof(ReleaseAvailableDelegate))]
         static bool ReleaseAvailableFunc(IntPtr details)
         {

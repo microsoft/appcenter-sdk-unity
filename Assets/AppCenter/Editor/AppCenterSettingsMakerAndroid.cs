@@ -24,6 +24,7 @@ public class AppCenterSettingsMakerAndroid : IAppCenterSettingsMaker
     private const string UseCustomInstallUrlKey = "appcenter_use_custom_install_url";
     private const string EnableFirebaseAnalyticsKey = "appcenter_enable_firebase_analytics";
     private const string MaxStorageSizeKey = "appcenter_max_storage_size";
+    private const string UpdateTrackKey = "appcenter_update_track";
     private const string EnableDistributeForDebuggableBuildKey = "appcenter_enable_distribute_for_debuggable_build";
 
     private readonly IDictionary<string, string> _resourceValues = new Dictionary<string, string>();
@@ -44,6 +45,11 @@ public class AppCenterSettingsMakerAndroid : IAppCenterSettingsMaker
     public void SetStartupType(int startupType)
     {
         _resourceValues[StartupTypeKey] = startupType.ToString();
+    }
+
+    public void SetUpdateTrack(int updateTrack)
+    {
+        _resourceValues[UpdateTrackKey] = updateTrack.ToString();
     }
 
     public void SetLogUrl(string logUrl)
