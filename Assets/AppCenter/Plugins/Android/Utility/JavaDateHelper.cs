@@ -19,7 +19,7 @@ namespace Microsoft.AppCenter.Unity.Internal.Utility
             {
                 if (_javaDateFormatter == null)
                 {
-                    _javaDateFormatter = new AndroidJavaObject("java.text.SimpleDateFormat", "yyyy-MM-dd'T'HH:mm:ss.SSSXXX");
+                    _javaDateFormatter = new AndroidJavaObject("java.text.SimpleDateFormat", "yyyy-MM-dd'T'HH:mm:ss.SSSZ");
                 }
                 return _javaDateFormatter;
             }
@@ -27,7 +27,12 @@ namespace Microsoft.AppCenter.Unity.Internal.Utility
 
         public static AndroidJavaObject DateTimeConvert(DateTime date)
         {
+            // 'DotNetDateFormat' contains timezone info with time separator. 
+            // 'javaDateFormatter' uses date format with timezone info without time separator.
+            // Time separator should be removed from date string before 'parse' call.
             var dateString = date.ToString(DotNetDateFormat);
+            int separatorIndex = dateString.LastIndexOf(CultureInfo.CurrentCulture.DateTimeFormat.TimeSeparator);
+            dateString = dateString.Remove(separatorIndex, 1);
             return JavaDateFormatter.Call<AndroidJavaObject>("parse", dateString);
         }
 
