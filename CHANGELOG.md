@@ -4,7 +4,7 @@
 
 ### App Center
 
-* **[Fix]** Fix converting string properties to chars.
+* **[Fix]** Fix converting string properties to chars after converting to UTF-8.
 
 #### Android
 
