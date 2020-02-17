@@ -4,6 +4,8 @@
 
 ### App Center
 
+* **[Fix]** Fix converting string properties to chars.
+
 #### Android
 
 * **[Fix]** Fix a Unity warning that appears when building for Android.

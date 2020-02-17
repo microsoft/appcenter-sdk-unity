@@ -15,8 +15,8 @@ const char* appcenter_unity_ns_string_to_cstr(NSString* nsstring)
   // converted to a System.String in C#, the char array is freed - which causes
   // a double-deallocation if ARC also tries to free it. To prevent this, we
   // must return a manually allocated copy of the string returned by "UTF8String"
-  size_t cstringLength = [nsstring length] + 1; // +1 for '\0'
   const char *cstring = [nsstring UTF8String];
+  size_t cstringLength = strlen(cstring) + 1; // +1 for '\0'
   char *cstring_copy = (char*)malloc(cstringLength);
   strncpy(cstring_copy, cstring, cstringLength);
   return cstring_copy;
