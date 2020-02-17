@@ -4,12 +4,14 @@
 
 ### App Center
 
-* **[Fix]** Fix converting string properties to chars after converting to UTF-8.
-
 #### Android
 
 * **[Fix]** Fix a Unity warning that appears when building for Android.
 * **[Fix]** Fix a `java.lang.IllegalArgumentException: Unknown pattern character 'X'` in `JavaHelper.JavaDateFormatter` on Android 6.
+
+#### iOS
+
+* **[Fix]** Fix converting string with the Unicode symbols (for example in push notification).
 
 ### App Center Auth
 
