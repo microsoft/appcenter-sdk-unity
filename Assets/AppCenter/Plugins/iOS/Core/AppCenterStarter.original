@@ -108,7 +108,7 @@ static const int kMSUpdateTrack = 1 /*UPDATE_TRACK*/;
   [classes addObject:MSDistribute.class];
 
 #ifdef APPCENTER_DISTRIBUTE_DISABLE_CHECK_FOR_UPDATE
-  [MSDistribute disableAutomaticCheckForUpdates];
+  [MSDistribute disableAutomaticCheckForUpdate];
 #endif // APPCENTER_DISTRIBUTE_DISABLE_CHECK_FOR_UPDATE
 
 #endif // APPCENTER_UNITY_USE_DISTRIBUTE
