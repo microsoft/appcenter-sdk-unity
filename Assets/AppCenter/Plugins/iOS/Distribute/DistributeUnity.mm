@@ -20,6 +20,11 @@ bool appcenter_unity_distribute_is_enabled()
   return [MSDistribute isEnabled];
 }
 
+void appcenter_unity_distribute_check_for_update()
+{
+  [MSDistribute checkForUpdate];
+}
+
 void appcenter_unity_distribute_set_install_url(char* installUrl)
 {
   [MSDistribute setInstallUrl:[NSString stringWithUTF8String:installUrl]];
@@ -43,11 +48,6 @@ void appcenter_unity_distribute_set_release_available_impl(ReleaseAvailableFunct
 void appcenter_unity_distribute_replay_release_available()
 {
   [[UnityDistributeDelegate sharedInstance] replayReleaseAvailable];
-}
-
-void appcenter_unity_distribute_check_for_update()
-{
-  [[UnityDistributeDelegate sharedInstance] checkForUpdate];
 }
 
 void appcenter_unity_distribute_set_delegate()
