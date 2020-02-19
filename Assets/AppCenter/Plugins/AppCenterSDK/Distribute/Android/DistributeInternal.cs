@@ -71,6 +71,11 @@ namespace Microsoft.AppCenter.Unity.Distribute.Internal
             }
             _distribute.CallStatic("notifyUpdateAction", nativeAction);
         }
+
+        public static void CheckForUpdate()
+        {
+            _distribute.CallStatic("checkForUpdate");
+        }
     }
 }
 #endif
