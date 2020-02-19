@@ -109,8 +109,7 @@ public class AppCenterLoader extends ContentProvider {
                 Distribute.setUpdateTrack(Integer.parseInt(updateTrackValue));
             }
             if (isTrueValue(getStringResource(DISTRIBUTE_DISABLE_CHECK_FOR_UPDATE_KEY))) {
-                AppCenterLog.debug(AppCenterLog.LOG_TAG, "TEST_1243");
-                //Distribute.disableAutomaticCheckForUpdate();
+                Distribute.disableAutomaticCheckForUpdate();
             }
             classes.add(Distribute.class);
         }
