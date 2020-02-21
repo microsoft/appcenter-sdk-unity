@@ -38,6 +38,11 @@ namespace Microsoft.AppCenter.Unity.Distribute
             return DistributeInternal.SetEnabledAsync(enabled);
         }
 
+        public static void CheckForUpdate()
+        {
+            DistributeInternal.CheckForUpdate();
+        }
+
         /// <summary>
         /// Change the base URL opened in the browser to get update token from user login information.
         /// </summary>
