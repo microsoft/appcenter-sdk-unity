@@ -12,9 +12,9 @@ using System.Runtime.Versioning;
 using NuGet;
 
 // Native SDK versions
-var AndroidSdkVersion = "3.0.0-0+594536359";
-var IosSdkVersion = "3.0.0-19+9c7bee9895b5165a1825132d4a86ca3f6037ea98";
-var UwpSdkVersion = "2.6.4";
+var AndroidSdkVersion = "3.0.0";
+var IosSdkVersion = "3.0.0";
+var UwpSdkVersion = "3.0.0";
 
 // URLs for downloading binaries.
 /*
