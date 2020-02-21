@@ -1,6 +1,13 @@
 # App Center SDK for Unity Change Log
 
-## Release 3.0.0 (Under development)
+## Release 3.1.0 (Under development)
+
+### App Center Distribute
+
+* **[Feature]** Add a **Disable Automatic Check For Update** checkbox that needs to be set in order to turn off automatic check for update. 
+* **[Feature]** Add a `CheckForUpdate` API to manually check for update.
+
+## Release 3.0.0
 
 ### App Center
 
