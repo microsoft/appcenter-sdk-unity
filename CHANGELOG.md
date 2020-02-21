@@ -5,7 +5,6 @@
 Updated native SDK versions:
 * Android from `2.5.1` to [3.0.0](https://github.com/Microsoft/AppCenter-SDK-Android/releases/tag/3.0.0)
 * iOS from `2.5.3` to [3.0.0](https://github.com/Microsoft/AppCenter-SDK-Apple/releases/tag/3.0.0)
-* UWP from `2.6.4` to [3.0.0](https://github.com/Microsoft/AppCenter-SDK-DotNet/releases/tag/3.0.0)
 
 ### App Center
 
@@ -54,11 +53,6 @@ App Center Auth is [retired](https://aka.ms/MBaaS-retirement-blog-post) and has 
 * **[Fix]** Avoid opening browser to check for sign-in information after receiving an SSL error while checking for app updates (which often happens when using a public WIFI).
 * **[Fix]** When in-app update permissions become invalid and need to open browser again, updates are no longer postponed after sign-in (if user previously selected the action to postpone for a day).
 * **[Fix]** Fix a possible deadlock when activity resumes during background operation for some `Distribute` public APIs like `Distribute.isEnabled()`.
-
-#### UWP
-
-* **[Feature]** Support ARM64 architecture.
-* **[Breaking change]** The minimum supported Window 10 version is now `10.0.16299.0`.
 
 ### App Center Push
 
