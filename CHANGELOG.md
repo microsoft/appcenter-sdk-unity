@@ -9,6 +9,10 @@
 * **[Fix]** Fix a Unity warning that appears when building for Android.
 * **[Fix]** Fix a `java.lang.IllegalArgumentException: Unknown pattern character 'X'` in `JavaHelper.JavaDateFormatter` on Android 6.
 
+#### iOS
+
+* **[Fix]** Fix converting string with the Unicode symbols (for example in push notification).
+
 ### App Center Auth
 
 App Center Auth is [retired](https://aka.ms/MBaaS-retirement-blog-post) and has been removed from the SDK.
