@@ -67,6 +67,11 @@ public class PuppetAppCenter : MonoBehaviour
         StartCoroutine(SetDistributeEnabledCoroutine(enabled));
     }
 
+    public void CheckForUpdate()
+    {
+        Distribute.CheckForUpdate();
+    }
+
     private IEnumerator SetDistributeEnabledCoroutine(bool enabled)
     {
         yield return Distribute.SetEnabledAsync(enabled);
