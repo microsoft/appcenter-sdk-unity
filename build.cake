@@ -394,7 +394,7 @@ Task("Install-Unity-Windows").Does(() => {
 
 async void GetRecursiveDependenciesCore(string id, string version, string frameworkName, List<NugetDependency> dependencies)
 {
-    var packageSource = "https://www.nuget.org/api/";
+    var packageSource = "https://api.nuget.org/v3/index.json";
     var sourceRepository = new SourceRepository(new PackageSource(packageSource), Repository.Provider.GetCoreV3());
     var dependencyResource = sourceRepository.GetResource<DependencyInfoResource>(CancellationToken.None);
     var package = await dependencyResource.ResolvePackage(new PackageIdentity(id, NuGetVersion.Parse(version)), NuGetFramework.Parse(frameworkName), new SourceCacheContext(), new NullLogger(), CancellationToken.None);
