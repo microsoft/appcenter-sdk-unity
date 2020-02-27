@@ -63,7 +63,7 @@ var ExternalUnityPackages = new [] {
 
 // UWP IL2CPP dependencies.
 var UwpIL2CPPDependencies = new [] {
-    new NugetDependency("SQLitePCLRaw.core", "2.0.2", "UAP10.0.1.2")
+    new NugetDependency("SQLitePCLRaw.core", "2.0.2", ".NETStandard,Version=v2.0")
 };
 var UwpIL2CPPJsonUrl = SdkStorageUrl + "Newtonsoft.Json.dll";
 
@@ -397,7 +397,7 @@ async void GetRecursiveDependenciesCore(string id, string version, string framew
     var packageSource = "https://www.nuget.org/api/";
     var sourceRepository = new SourceRepository(new PackageSource(packageSource), Repository.Provider.GetCoreV3());
     var dependencyResource = sourceRepository.GetResource<DependencyInfoResource>(CancellationToken.None);
-    var package = await dependencyResource.ResolvePackage(new PackageIdentity(id, NuGetVersion.Parse(version)), NuGetFramework.Parse(new FrameworkName(".NETStandard", Version.Parse("2.0"))), new SourceCacheContext(), new NullLogger(), CancellationToken.None);
+    var package = await dependencyResource.ResolvePackage(new PackageIdentity(id, NuGetVersion.Parse(version)), NuGetFramework.Parse(frameworkName), new SourceCacheContext(), new NullLogger(), CancellationToken.None);
     foreach (var dependency in package.Dependencies)
     {
         dependencies.Add(new NugetDependency(dependency.Id, $"{dependency.VersionRange.MinVersion}", frameworkName));
