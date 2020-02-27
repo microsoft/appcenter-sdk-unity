@@ -1,6 +1,12 @@
 #addin nuget:?package=Cake.FileHelpers
 #addin nuget:?package=Cake.AzureStorage
-#addin nuget:?package=NuGet.Core
+#addin nuget:?package=NuGet.Client&loaddependencies=true
+// #addin nuget:?package=NuGet.Packaging
+// #addin nuget:?package=NuGet.ContentModel
+// #addin nuget:?package=NuGet.Repositories
+// #addin nuget:?package=NuGet.Versioning
+// #addin nuget:?package=NuGet.RuntimeModel
+#addin nuget:?package=NuGet.Protocol&version=4.2.0.0
 #addin nuget:?package=Cake.Xcode
 #load "utility.cake"
 
@@ -9,7 +15,16 @@ using System.Linq;
 using System.Net;
 using System.Collections.Generic;
 using System.Runtime.Versioning;
-using NuGet;
+using System.Threading;
+using NuGet.Common;
+using NuGet.Configuration;
+using NuGet.Frameworks;
+using NuGet.Packaging;
+using NuGet.Packaging.Core;
+using NuGet.Protocol;
+using NuGet.Protocol.Core.Types;
+using NuGet.Resolver;
+using NuGet.Versioning;
 
 // Native SDK versions
 var AndroidSdkVersion = "3.0.0-0+594536359";
@@ -259,27 +274,27 @@ Task("Externals-Ios")
 // Downloading UWP binaries.
 Task ("Externals-Uwp")
     .Does (() => {
-        var feedIdNugetEnv = Argument("NuGetFeedId", EnvironmentVariable("NUGET_FEED_ID"));
-        var userNugetEnv = EnvironmentVariable("NUGET_USER");
-        var passwordNugetEnv = Argument("NuGetPassword", EnvironmentVariable("NUGET_PASSWORD"));
-        var usePublicFeed = (string.IsNullOrEmpty (feedIdNugetEnv) || string.IsNullOrEmpty (userNugetEnv) || string.IsNullOrEmpty (passwordNugetEnv));
+        // var feedIdNugetEnv = Argument("NuGetFeedId", EnvironmentVariable("NUGET_FEED_ID"));
+        // var userNugetEnv = EnvironmentVariable("NUGET_USER");
+        // var passwordNugetEnv = Argument("NuGetPassword", EnvironmentVariable("NUGET_PASSWORD"));
+        // var usePublicFeed = (string.IsNullOrEmpty (feedIdNugetEnv) || string.IsNullOrEmpty (userNugetEnv) || string.IsNullOrEmpty (passwordNugetEnv));
 
-        CleanDirectory ("externals/uwp");
-        EnsureDirectoryExists ("Assets/AppCenter/Plugins/WSA/");
-        foreach (var module in AppCenterModules) {
-            if (module.Moniker == "Distribute") {
-                Warning ("Skipping 'Distribute' for UWP.");
-                continue;
-            }
-            if (module.Moniker == "Crashes") {
-                Warning ("Skipping 'Crashes' for UWP.");
-                continue;
-            }
-            Information ("Downloading " + module.DotNetModule + "...");
-            // Download nuget package
+        // CleanDirectory ("externals/uwp");
+        // EnsureDirectoryExists ("Assets/AppCenter/Plugins/WSA/");
+        // foreach (var module in AppCenterModules) {
+        //     if (module.Moniker == "Distribute") {
+        //         Warning ("Skipping 'Distribute' for UWP.");
+        //         continue;
+        //     }
+        //     if (module.Moniker == "Crashes") {
+        //         Warning ("Skipping 'Crashes' for UWP.");
+        //         continue;
+        //     }
+        //     Information ("Downloading " + module.DotNetModule + "...");
+        //     // Download nuget package
 
-            GetUwpPackage (module, usePublicFeed);
-        }
+        //     GetUwpPackage (module, usePublicFeed);
+        // }
     }).OnError (HandleError);
 
 // Builds the ContentProvider for the Android package and puts it in the
@@ -378,6 +393,25 @@ Task("Install-Unity-Windows").Does(() => {
     }
 }).OnError(HandleError);
 
+void GetRecursiveDependenciesCore(string id, string version, string frameworkName, List<NugetDependency> dependencies)
+{
+    var packageSource = "https://www.nuget.org/api/";
+    var sourceRepository = new SourceRepository(new PackageSource(packageSource), Repository.Provider.GetCoreV3());
+    var dependencyResource = sourceRepository.GetResource<DependencyInfoResource>(CancellationToken.None);
+    Information(dependencyResource.GetType().FullName);
+    var package = dependencyResource.ResolvePackage(new PackageIdentity(id, new NuGetVersion(version)), NuGetFramework.AnyFramework, NullLogger.Instance, CancellationToken.None);
+    if (package == null)
+    {
+        throw new InvalidOperationException("Could not locate dependency!");
+    }
+
+    // foreach (var dependency in package.Dependencies)
+    // {
+    //     dependencies.Add(new NugetDependency(dependency.Id, dependency.VersionRange.MinVersion, frameworkName));
+    //     GetRecursiveDependenciesCore(dependency.Id, dependency.VersionRange.MinVersion.ToNormalizedString(), dependencies);
+    // }
+}
+
 // Downloading UWP IL2CPP dependencies.
 Task ("Externals-Uwp-IL2CPP-Dependencies")
     .Does (() => {
@@ -388,26 +422,32 @@ Task ("Externals-Uwp-IL2CPP-Dependencies")
         EnsureDirectoryExists (targetPath + "/X64");
 
         // NuGet.Core support only v2.
-        var packageSource = "https://www.nuget.org/api/v2/";
-        var repository = PackageRepositoryFactory.Default.CreateRepository (packageSource);
+        // var packageSource = "https://www.nuget.org/api/v2/";
+        // var repository = PackageRepositoryFactory.Default.CreateRepository (packageSource);
         foreach (var i in UwpIL2CPPDependencies) {
+            List<NugetDependency> dependencies = new List<NugetDependency>();
+            GetRecursiveDependenciesCore(i.Name, i.Version, i.Framework, dependencies);
+
             var frameworkName = new FrameworkName (i.Framework);
-            var package = repository.FindPackage (i.Name, SemanticVersion.Parse (i.Version));
-            IEnumerable<IPackage> dependencies;
-            if (i.IncludeDependencies) {
-                dependencies = GetNuGetDependencies (repository, frameworkName, package);
-            } else {
-                dependencies = new [] { package };
-            }
-            var fileSystem = new PhysicalFileSystem (Environment.CurrentDirectory);
+            // var package = repository.FindPackage (i.Name, SemanticVersion.Parse (i.Version));
+            // IEnumerable<IPackage> dependencies;
+            // if (i.IncludeDependencies) {
+            //     dependencies = GetNuGetDependencies (repository, frameworkName, package);
+            // } else {
+            //     dependencies = new [] { package };
+            // }
+
+            
+
+            //var fileSystem = new PhysicalFileSystem (Environment.CurrentDirectory);
             foreach (var depPackage in dependencies) {
-                Information ("Extract NuGet package: " + depPackage);
+                Information ("Extract NuGet package: " + depPackage.Name);
 
                 // Extract.
-                var path = "externals/uwp/" + depPackage.Id;
-                depPackage.ExtractContents (fileSystem, path);
+                var path = "externals/uwp/" + depPackage.Name;
+                //depPackage.ExtractContents (fileSystem, path);
 
-                ExtractNuGetPackage (depPackage, frameworkName, path, targetPath);
+                //ExtractNuGetPackage (depPackage, frameworkName, path, targetPath);
             }
         }
 
@@ -469,12 +509,12 @@ Task("RemovePackagesFromDemoApp").Does(()=>
 // or steps that run Unity commands might cause the *.meta files to be deleted!
 // (Unity deletes meta data files when it is opened if the corresponding files are not on disk.)
 Task("Externals")
-    .IsDependentOn("Externals-Uwp")
-    .IsDependentOn("Externals-Ios")
-    .IsDependentOn("Externals-Android")
-    .IsDependentOn("BuildAndroidContentProvider")
+    // .IsDependentOn("Externals-Uwp")
+    // .IsDependentOn("Externals-Ios")
+    // .IsDependentOn("Externals-Android")
+    // .IsDependentOn("BuildAndroidContentProvider")
     .IsDependentOn("Externals-Uwp-IL2CPP-Dependencies")
-    .IsDependentOn("Externals-Unity-Packages")
+    // .IsDependentOn("Externals-Unity-Packages")
     .Does(()=>
 {
     DeleteDirectoryIfExists("externals");
@@ -554,42 +594,42 @@ Task("DownloadNdk")
     }
 }).OnError(HandleError);
 
-void GetUwpPackage (AppCenterModule module, bool usePublicFeed) {
-    // Prepare destination
-    var destination = "Assets/AppCenter/Plugins/WSA/" + module.Moniker + "/";
-    EnsureDirectoryExists (destination);
-    DeleteFiles (destination + "*.dll");
-    DeleteFiles (destination + "*.winmd");
-    var nupkgPath = "externals/uwp/";
-    if (usePublicFeed) {
-        var packageSource = "https://www.nuget.org/api/v2/";
-        var repository = PackageRepositoryFactory.Default.CreateRepository (packageSource);
+// void GetUwpPackage (AppCenterModule module, bool usePublicFeed) {
+//     // Prepare destination
+//     var destination = "Assets/AppCenter/Plugins/WSA/" + module.Moniker + "/";
+//     EnsureDirectoryExists (destination);
+//     DeleteFiles (destination + "*.dll");
+//     DeleteFiles (destination + "*.winmd");
+//     var nupkgPath = "externals/uwp/";
+//     if (usePublicFeed) {
+//         var packageSource = "https://www.nuget.org/api/v2/";
+//         var repository = PackageRepositoryFactory.Default.CreateRepository (packageSource);
 
-        var package = repository.FindPackage (module.DotNetModule, SemanticVersion.Parse (UwpSdkVersion));
-        IEnumerable<IPackage> dependencies = new [] { package };
-        var fileSystem = new PhysicalFileSystem (Environment.CurrentDirectory);
-        foreach (var depPackage in dependencies) {
-            Information ("Extract NuGet package: " + depPackage);
-            // Extract.
-            nupkgPath = "externals/uwp/" + depPackage.Id + "/";
-            depPackage.ExtractContents (fileSystem, nupkgPath);
+//         var package = repository.FindPackage (module.DotNetModule, SemanticVersion.Parse (UwpSdkVersion));
+//         IEnumerable<IPackage> dependencies = new [] { package };
+//         var fileSystem = new PhysicalFileSystem (Environment.CurrentDirectory);
+//         foreach (var depPackage in dependencies) {
+//             Information ("Extract NuGet package: " + depPackage);
+//             // Extract.
+//             nupkgPath = "externals/uwp/" + depPackage.Id + "/";
+//             depPackage.ExtractContents (fileSystem, nupkgPath);
 
-            // Move assemblies.
-            ExtractNuGetPackage (depPackage, new FrameworkName ("UAP, Version=v10.0"), nupkgPath, destination);
-            // Delete the package
-            DeleteFiles (nupkgPath);
-        }
-    } else {
-        nupkgPath = GetNuGetPackage (module.DotNetModule, UwpSdkVersion);
-        var tempContentPath = "externals/uwp/" + module.Moniker + "/";
-        DeleteDirectoryIfExists (tempContentPath);
-        // Unzip into externals/uwp/
-        Unzip (nupkgPath, tempContentPath);
-        ExtractNuGetPackage (null, new FrameworkName ("UAP, Version=v10.0"), tempContentPath, destination);
-        // Delete the package
-        DeleteFiles (nupkgPath);
-    }
-}
+//             // Move assemblies.
+//             ExtractNuGetPackage (depPackage, new FrameworkName ("UAP, Version=v10.0"), nupkgPath, destination);
+//             // Delete the package
+//             DeleteFiles (nupkgPath);
+//         }
+//     } else {
+//         nupkgPath = GetNuGetPackage (module.DotNetModule, UwpSdkVersion);
+//         var tempContentPath = "externals/uwp/" + module.Moniker + "/";
+//         DeleteDirectoryIfExists (tempContentPath);
+//         // Unzip into externals/uwp/
+//         Unzip (nupkgPath, tempContentPath);
+//         ExtractNuGetPackage (null, new FrameworkName ("UAP, Version=v10.0"), tempContentPath, destination);
+//         // Delete the package
+//         DeleteFiles (nupkgPath);
+//     }
+// }
 
 void BuildApps(string type, string projectPath = ".")
 {
@@ -772,98 +812,98 @@ Task("clean")
     CleanDirectories("./**/obj");
 });
 
-string GetNuGetPackage(string packageId, string packageVersion)
-{
-    var nugetUser = EnvironmentVariable("NUGET_USER");
-    var nugetPassword = Argument("NuGetPassword", EnvironmentVariable("NUGET_PASSWORD"));
-    var nugetFeedId = Argument("NuGetFeedId", EnvironmentVariable("NUGET_FEED_ID"));
-    packageId = packageId.ToLower();
+// string GetNuGetPackage(string packageId, string packageVersion)
+// {
+//     var nugetUser = EnvironmentVariable("NUGET_USER");
+//     var nugetPassword = Argument("NuGetPassword", EnvironmentVariable("NUGET_PASSWORD"));
+//     var nugetFeedId = Argument("NuGetFeedId", EnvironmentVariable("NUGET_FEED_ID"));
+//     packageId = packageId.ToLower();
 
-    var url = "https://msmobilecenter.pkgs.visualstudio.com/_packaging/";
-    url += nugetFeedId + "/nuget/v3/flat2/" + packageId + "/" + packageVersion + "/" + packageId + "." + packageVersion + ".nupkg";
+//     var url = "https://msmobilecenter.pkgs.visualstudio.com/_packaging/";
+//     url += nugetFeedId + "/nuget/v3/flat2/" + packageId + "/" + packageVersion + "/" + packageId + "." + packageVersion + ".nupkg";
 
-    // Get the NuGet package
-    HttpWebRequest request = (HttpWebRequest)WebRequest.Create (url);
-    request.Headers["X-NuGet-ApiKey"] = nugetPassword;
-    request.Credentials = new NetworkCredential(nugetUser, nugetPassword);
-    HttpWebResponse response = (HttpWebResponse)request.GetResponse();
-    var responseString = String.Empty;
-    var filename = packageId + "." + packageVersion +  ".nupkg";
-    using (var fstream = new FileStream(filename, FileMode.Create, FileAccess.ReadWrite))
-    {
-        response.GetResponseStream().CopyTo(fstream);
-    }
-    return filename;
-}
+//     // Get the NuGet package
+//     HttpWebRequest request = (HttpWebRequest)WebRequest.Create (url);
+//     request.Headers["X-NuGet-ApiKey"] = nugetPassword;
+//     request.Credentials = new NetworkCredential(nugetUser, nugetPassword);
+//     HttpWebResponse response = (HttpWebResponse)request.GetResponse();
+//     var responseString = String.Empty;
+//     var filename = packageId + "." + packageVersion +  ".nupkg";
+//     using (var fstream = new FileStream(filename, FileMode.Create, FileAccess.ReadWrite))
+//     {
+//         response.GetResponseStream().CopyTo(fstream);
+//     }
+//     return filename;
+// }
 
-void ExtractNuGetPackage (IPackage package, FrameworkName frameworkName, string tempContentPath, string destination) {
-    if (package != null) {
-        IEnumerable<IPackageAssemblyReference> assemblies;
-        VersionUtility.TryGetCompatibleItems (frameworkName, package.AssemblyReferences, out assemblies);
+// void ExtractNuGetPackage (IPackage package, FrameworkName frameworkName, string tempContentPath, string destination) {
+//     if (package != null) {
+//         IEnumerable<IPackageAssemblyReference> assemblies;
+//         VersionUtility.TryGetCompatibleItems (frameworkName, package.AssemblyReferences, out assemblies);
 
-        // Move assemblies.
-        foreach (var i in assemblies) {
-            if (!FileExists (destination + "/" + i.Name)) {
-                MoveFile (tempContentPath + "/" + i.Path, destination + "/" + i.Name);
-            }
-        }
+//         // Move assemblies.
+//         foreach (var i in assemblies) {
+//             if (!FileExists (destination + "/" + i.Name)) {
+//                 MoveFile (tempContentPath + "/" + i.Path, destination + "/" + i.Name);
+//             }
+//         }
 
-    }
-    // Move native binaries.
-    var contentPathSuffix = "lib/uap10.0/";
-    var runtimesPath = tempContentPath + "/runtimes";
-    if (DirectoryExists (runtimesPath)) {
-        var oneArch = "x86";
-        foreach (var runtime in GetDirectories (runtimesPath + "/win10-*")) {
-            var arch = runtime.GetDirectoryName ().ToString ().Replace ("win10-", "").ToUpper ();
-            oneArch = arch;
-            var nativeFiles = GetFiles (runtime + "/native/*");
-            var targetArchPath = destination + "/" + arch;
-            EnsureDirectoryExists (targetArchPath);
-            foreach (var nativeFile in nativeFiles) {
-                if (!FileExists (targetArchPath + "/" + nativeFile.GetFilename ())) {
-                    MoveFileToDirectory (nativeFile, targetArchPath);
-                }
-            }
-        }
-        contentPathSuffix = "runtimes/win10-" + oneArch + "/" + contentPathSuffix;
-    }
+//     }
+//     // Move native binaries.
+//     var contentPathSuffix = "lib/uap10.0/";
+//     var runtimesPath = tempContentPath + "/runtimes";
+//     if (DirectoryExists (runtimesPath)) {
+//         var oneArch = "x86";
+//         foreach (var runtime in GetDirectories (runtimesPath + "/win10-*")) {
+//             var arch = runtime.GetDirectoryName ().ToString ().Replace ("win10-", "").ToUpper ();
+//             oneArch = arch;
+//             var nativeFiles = GetFiles (runtime + "/native/*");
+//             var targetArchPath = destination + "/" + arch;
+//             EnsureDirectoryExists (targetArchPath);
+//             foreach (var nativeFile in nativeFiles) {
+//                 if (!FileExists (targetArchPath + "/" + nativeFile.GetFilename ())) {
+//                     MoveFileToDirectory (nativeFile, targetArchPath);
+//                 }
+//             }
+//         }
+//         contentPathSuffix = "runtimes/win10-" + oneArch + "/" + contentPathSuffix;
+//     }
 
-    if (package == null) {
-        var files = GetFiles (tempContentPath + contentPathSuffix + "*");
-        MoveFiles (files, destination);
-    }
-}
+//     if (package == null) {
+//         var files = GetFiles (tempContentPath + contentPathSuffix + "*");
+//         MoveFiles (files, destination);
+//     }
+// }
 
-IList<IPackage> GetNuGetDependencies(IPackageRepository repository, FrameworkName frameworkName, IPackage package)
-{
-    var dependencies = new List<IPackage>();
-    GetNuGetDependencies(dependencies, repository, frameworkName, package);
-    return dependencies;
-}
+// IList<IPackage> GetNuGetDependencies(IPackageRepository repository, FrameworkName frameworkName, IPackage package)
+// {
+//     var dependencies = new List<IPackage>();
+//     GetNuGetDependencies(dependencies, repository, frameworkName, package);
+//     return dependencies;
+// }
 
-void GetNuGetDependencies(IList<IPackage> dependencies, IPackageRepository repository, FrameworkName frameworkName, IPackage package)
-{
-    // Declaring this outside the method causes a parse error on Cake for Mac.
-    string[] IgnoreNuGetDependencies = {
-        "Microsoft.NETCore.UniversalWindowsPlatform",
-        "NETStandard.Library"
-    };
+// void GetNuGetDependencies(IList<IPackage> dependencies, IPackageRepository repository, FrameworkName frameworkName, IPackage package)
+// {
+//     // Declaring this outside the method causes a parse error on Cake for Mac.
+//     string[] IgnoreNuGetDependencies = {
+//         "Microsoft.NETCore.UniversalWindowsPlatform",
+//         "NETStandard.Library"
+//     };
 
-    dependencies.Add(package);
-    foreach (var dependency in package.GetCompatiblePackageDependencies(frameworkName))
-    {
-        if (IgnoreNuGetDependencies.Contains(dependency.Id))
-        {
-            continue;
-        }
-        var subPackage = repository.ResolveDependency(dependency, false, true);
-        if (!dependencies.Contains(subPackage))
-        {
-            GetNuGetDependencies(dependencies, repository, frameworkName, subPackage);
-        }
-    }
-}
+//     dependencies.Add(package);
+//     foreach (var dependency in package.GetCompatiblePackageDependencies(frameworkName))
+//     {
+//         if (IgnoreNuGetDependencies.Contains(dependency.Id))
+//         {
+//             continue;
+//         }
+//         var subPackage = repository.ResolveDependency(dependency, false, true);
+//         if (!dependencies.Contains(subPackage))
+//         {
+//             GetNuGetDependencies(dependencies, repository, frameworkName, subPackage);
+//         }
+//     }
+// }
 
 void BuildXcodeProject(string projectPath)
 {
