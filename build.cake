@@ -72,6 +72,8 @@ var UwpIL2CPPJsonUrl = SdkStorageUrl + "Newtonsoft.Json.dll";
 // Unity 2017.3 requires NDK r13b.
 // The destination for the NDK download.
 var NdkFolder = "android_ndk";
+var ExternalsFolder = "externals/uwp/";
+var NuPkgExtension = ".nupkg";
 
 // Task TARGET for build
 var Target = Argument("target", Argument("t", "Default"));
@@ -507,6 +509,10 @@ async void GetRecursiveDependenciesCore(string id, NuGetVersion version, NuGetFr
     var sourceRepository = new SourceRepository(new PackageSource(packageSource), Repository.Provider.GetCoreV3());
     var dependencyResource = sourceRepository.GetResource<DependencyInfoResource>(CancellationToken.None);
     var package = await dependencyResource.ResolvePackage(new PackageIdentity(id, version), frameworkName, new SourceCacheContext(), new NullLogger(), CancellationToken.None);
+    dependencies.Add(new NugetDependency(package.Id, NuGetVersion.Parse(package.Version.ToNormalizedString()), frameworkName));
+    var uri = package.DownloadUri.ToString();
+    Information("Downloading " + package.Id + " from " + uri);
+    DownloadFile (uri, ExternalsFolder + package.Id + NuPkgExtension);
     foreach (var dependency in package.Dependencies)
     {
         dependencies.Add(new NugetDependency(dependency.Id, NuGetVersion.Parse(dependency.VersionRange.MinVersion.ToNormalizedString()), frameworkName));
@@ -519,6 +525,7 @@ Task ("Externals-Uwp-IL2CPP-Dependencies")
     .Does (() => {
         var targetPath = "Assets/AppCenter/Plugins/WSA/IL2CPP";
         EnsureDirectoryExists (targetPath);
+        EnsureDirectoryExists (ExternalsFolder);
         EnsureDirectoryExists (targetPath + "/ARM");
         EnsureDirectoryExists (targetPath + "/X86");
         EnsureDirectoryExists (targetPath + "/X64");
@@ -546,7 +553,7 @@ Task ("Externals-Uwp-IL2CPP-Dependencies")
                 Information ("Extract NuGet package: " + depPackage.Name);
 
                 // Extract.
-                var path = "externals/uwp/" + depPackage.Name;
+                var path = ExternalsFolder + depPackage.Name + NuPkgExtension;
                 PackageExtractor.Extract(path);
                 //depPackage.ExtractContents (fileSystem, path);
 
