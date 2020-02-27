@@ -1,12 +1,11 @@
 #addin nuget:?package=Cake.FileHelpers
 #addin nuget:?package=Cake.AzureStorage
 #addin nuget:?package=NuGet.Client&loaddependencies=true
-// #addin nuget:?package=NuGet.Packaging
 // #addin nuget:?package=NuGet.ContentModel
 // #addin nuget:?package=NuGet.Repositories
 // #addin nuget:?package=NuGet.Versioning
 // #addin nuget:?package=NuGet.RuntimeModel
-#addin nuget:?package=NuGet.Protocol&version=4.2.0.0
+#addin nuget:?package=NuGet.Protocol&version=4.3.0.0&loaddependencies=true
 #addin nuget:?package=Cake.Xcode
 #load "utility.cake"
 
@@ -399,11 +398,7 @@ void GetRecursiveDependenciesCore(string id, string version, string frameworkNam
     var sourceRepository = new SourceRepository(new PackageSource(packageSource), Repository.Provider.GetCoreV3());
     var dependencyResource = sourceRepository.GetResource<DependencyInfoResource>(CancellationToken.None);
     Information(dependencyResource.GetType().FullName);
-    var package = dependencyResource.ResolvePackage(new PackageIdentity(id, new NuGetVersion(version)), NuGetFramework.AnyFramework, NullLogger.Instance, CancellationToken.None);
-    if (package == null)
-    {
-        throw new InvalidOperationException("Could not locate dependency!");
-    }
+    // vs
 
     // foreach (var dependency in package.Dependencies)
     // {
