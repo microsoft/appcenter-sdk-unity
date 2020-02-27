@@ -1,11 +1,11 @@
 #addin nuget:?package=Cake.FileHelpers
 #addin nuget:?package=Cake.AzureStorage
-#addin nuget:?package=NuGet.Client&loaddependencies=true
+#addin nuget:?package=NuGet.Resolver&loaddependencies=true
 // #addin nuget:?package=NuGet.ContentModel
 // #addin nuget:?package=NuGet.Repositories
 // #addin nuget:?package=NuGet.Versioning
 // #addin nuget:?package=NuGet.RuntimeModel
-#addin nuget:?package=NuGet.Protocol&version=4.3.0.0&loaddependencies=true
+#addin nuget:?package=NuGet.Protocol&loaddependencies=true
 #addin nuget:?package=Cake.Xcode
 #load "utility.cake"
 
@@ -63,7 +63,7 @@ var ExternalUnityPackages = new [] {
 
 // UWP IL2CPP dependencies.
 var UwpIL2CPPDependencies = new [] {
-    new NugetDependency("sqlite-net-pcl", "1.3.1", "UAP, Version=v10.0")
+    new NugetDependency("SQLitePCLRaw.core", "2.0.2", "UAP10.0.1.2")
 };
 var UwpIL2CPPJsonUrl = SdkStorageUrl + "Newtonsoft.Json.dll";
 
@@ -392,19 +392,17 @@ Task("Install-Unity-Windows").Does(() => {
     }
 }).OnError(HandleError);
 
-void GetRecursiveDependenciesCore(string id, string version, string frameworkName, List<NugetDependency> dependencies)
+async void GetRecursiveDependenciesCore(string id, string version, string frameworkName, List<NugetDependency> dependencies)
 {
     var packageSource = "https://www.nuget.org/api/";
     var sourceRepository = new SourceRepository(new PackageSource(packageSource), Repository.Provider.GetCoreV3());
     var dependencyResource = sourceRepository.GetResource<DependencyInfoResource>(CancellationToken.None);
-    Information(dependencyResource.GetType().FullName);
-    // vs
-
-    // foreach (var dependency in package.Dependencies)
-    // {
-    //     dependencies.Add(new NugetDependency(dependency.Id, dependency.VersionRange.MinVersion, frameworkName));
-    //     GetRecursiveDependenciesCore(dependency.Id, dependency.VersionRange.MinVersion.ToNormalizedString(), dependencies);
-    // }
+    var package = await dependencyResource.ResolvePackage(new PackageIdentity(id, NuGetVersion.Parse(version)), NuGetFramework.Parse(new FrameworkName(".NETStandard", Version.Parse("2.0"))), new SourceCacheContext(), new NullLogger(), CancellationToken.None);
+    foreach (var dependency in package.Dependencies)
+    {
+        dependencies.Add(new NugetDependency(dependency.Id, $"{dependency.VersionRange.MinVersion}", frameworkName));
+       // GetRecursiveDependenciesCore(dependency.Id, dependency.VersionRange.MinVersion.ToNormalizedString(), dependencies);
+    }
 }
 
 // Downloading UWP IL2CPP dependencies.
