@@ -128,12 +128,19 @@ class ExternalUnityPackage
 class NugetDependency
 {
     public string Name { get; set; }
-    public string Version { get; set; }
-    public string Framework { get; set; }
+    public NuGetVersion Version { get; set; }
+    public NuGetFramework Framework { get; set; }
     public bool IncludeDependencies { get; set; }
 
     public NugetDependency(string name, string version, string framework, bool includeDependencies = true)
     {
+        Name = name;
+        IncludeDependencies = includeDependencies;
+        Version = NuGetVersion.Parse(version);
+        Framework = NuGetFramework.Parse(framework);
+    }
+
+    public NugetDependency(string name, NuGetVersion version, NuGetFramework framework, bool includeDependencies = true) {
         Name = name;
         Version = version;
         Framework = framework;
@@ -392,16 +399,16 @@ Task("Install-Unity-Windows").Does(() => {
     }
 }).OnError(HandleError);
 
-async void GetRecursiveDependenciesCore(string id, string version, string frameworkName, List<NugetDependency> dependencies)
+async void GetRecursiveDependenciesCore(string id, NuGetVersion version, NuGetFramework frameworkName, List<NugetDependency> dependencies)
 {
     var packageSource = "https://api.nuget.org/v3/index.json";
     var sourceRepository = new SourceRepository(new PackageSource(packageSource), Repository.Provider.GetCoreV3());
     var dependencyResource = sourceRepository.GetResource<DependencyInfoResource>(CancellationToken.None);
-    var package = await dependencyResource.ResolvePackage(new PackageIdentity(id, NuGetVersion.Parse(version)), NuGetFramework.Parse(frameworkName), new SourceCacheContext(), new NullLogger(), CancellationToken.None);
+    var package = await dependencyResource.ResolvePackage(new PackageIdentity(id, version), frameworkName, new SourceCacheContext(), new NullLogger(), CancellationToken.None);
     foreach (var dependency in package.Dependencies)
     {
-        dependencies.Add(new NugetDependency(dependency.Id, $"{dependency.VersionRange.MinVersion}", frameworkName));
-       // GetRecursiveDependenciesCore(dependency.Id, dependency.VersionRange.MinVersion.ToNormalizedString(), dependencies);
+        dependencies.Add(new NugetDependency(dependency.Id, NuGetVersion.Parse(dependency.VersionRange.MinVersion.ToNormalizedString()), frameworkName));
+        GetRecursiveDependenciesCore(dependency.Id, NuGetVersion.Parse(dependency.VersionRange.MinVersion.ToNormalizedString()), frameworkName, dependencies);
     }
 }
 
@@ -421,7 +428,7 @@ Task ("Externals-Uwp-IL2CPP-Dependencies")
             List<NugetDependency> dependencies = new List<NugetDependency>();
             GetRecursiveDependenciesCore(i.Name, i.Version, i.Framework, dependencies);
 
-            var frameworkName = new FrameworkName (i.Framework);
+            var frameworkName = i.Framework;
             // var package = repository.FindPackage (i.Name, SemanticVersion.Parse (i.Version));
             // IEnumerable<IPackage> dependencies;
             // if (i.IncludeDependencies) {
