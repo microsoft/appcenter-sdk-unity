@@ -64,7 +64,7 @@ var ExternalUnityPackages = new [] {
 // UWP IL2CPP dependencies.
 var UwpIL2CPPDependencies = new [] {
     new NugetDependency("SQLitePCLRaw.core", "2.0.2", ".NETStandard,Version=v2.0"),
-    //new NugetDependency("Microsoft.NETCore.UniversalWindowsPlatform", "6.2.9", "UAP10.0.15138"),
+    new NugetDependency("Microsoft.NETCore.UniversalWindowsPlatform", "6.2.9", "UAP10.0.15138"),
     new NugetDependency("Newtonsoft.Json", "12.0.3", ".NETStandard,Version=v1.3"),
     new NugetDependency("System.Collections.NonGeneric", "4.3.0", ".NETStandard,Version=v1.3")
 };
@@ -968,14 +968,13 @@ void ExtractNuGetPackage (NugetDependency package, NuGetFramework frameworkName,
         if (!FileExists(targetPath)) {
             Console.WriteLine($"MOVE {tempContentPath}/lib/{frameworkFolder}/{package.Name}.dll to " + targetPath);
             var mainPath = $"{tempContentPath}/lib/{frameworkFolder}/{package.Name}.dll";
-            var fallbackPath = $"{tempContentPath}/ref/{frameworkFolder}/{package.Name}.dll";
             if (FileExists(mainPath)) 
             {
                 MoveFile(mainPath, targetPath);
             }
             else 
             {
-                MoveFile(fallbackPath, targetPath);
+                Warning($"Haven't found anything under {mainPath} - make sure it's expected.");
             }
         }
     }
