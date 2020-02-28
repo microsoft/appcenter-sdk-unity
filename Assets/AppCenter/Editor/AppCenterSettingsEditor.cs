@@ -35,11 +35,11 @@ public class AppCenterSettingsEditor : Editor
             Header("Distribute");
             var serializedProperty = serializedObject.FindProperty("UseDistribute");
             EditorGUILayout.PropertyField(serializedProperty);
+            EditorGUILayout.PropertyField(serializedObject.FindProperty("UpdateTrack"));
+            EditorGUILayout.PropertyField(serializedObject.FindProperty("AutomaticCheckForUpdate"));
             EditorGUILayout.PropertyField(serializedObject.FindProperty("EnableDistributeForDebuggableBuild"));
             EditorGUILayout.PropertyField(serializedObject.FindProperty("CustomApiUrl"));
             EditorGUILayout.PropertyField(serializedObject.FindProperty("CustomInstallUrl"));
-            EditorGUILayout.PropertyField(serializedObject.FindProperty("DisableAutomaticCheckForUpdate"));
-            EditorGUILayout.PropertyField(serializedObject.FindProperty("UpdateTrack"));
         }
         if (AppCenter.Push != null)
         {

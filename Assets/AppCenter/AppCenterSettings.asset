@@ -3,8 +3,9 @@
 --- !u!114 &11400000
 MonoBehaviour:
   m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 0}
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
@@ -25,10 +26,12 @@ MonoBehaviour:
     UrlName: Install
     UseCustomUrl: 1
     Url: https://install.portal-server-core-integration.dev.avalanch.es
-  EnableDistributeForDebuggableBuild: 0
+  EnableDistributeForDebuggableBuild: 1
+  AutomaticCheckForUpdate: 1
   UsePush: 1
   EnableFirebaseAnalytics: 0
   InitialLogLevel: 2
+  UpdateTrack: 1
   CustomLogUrl:
     UrlName: Log
     UseCustomUrl: 1

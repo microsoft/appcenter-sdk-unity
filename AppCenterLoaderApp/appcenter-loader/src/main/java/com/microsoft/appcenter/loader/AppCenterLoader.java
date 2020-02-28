@@ -38,7 +38,7 @@ public class AppCenterLoader extends ContentProvider {
     private static final String ENABLE_FIREBASE_ANALYTICS_KEY = "appcenter_enable_firebase_analytics";
     private static final String USE_ANALYTICS_KEY = "appcenter_use_analytics";
     private static final String USE_DISTRIBUTE_KEY = "appcenter_use_distribute";
-    private static final String DISTRIBUTE_DISABLE_CHECK_FOR_UPDATE_KEY = "appcenter_distribute_disable_check_for_update";
+    private static final String DISTRIBUTE_DISABLE_AUTOMATIC_CHECK_FOR_UPDATE_KEY = "appcenter_distribute_disable_automatic_check_for_update";
     private static final String USE_CUSTOM_API_URL_KEY = "appcenter_use_custom_api_url";
     private static final String USE_CUSTOM_INSTALL_URL_KEY = "appcenter_use_custom_install_url";  
     private static final String CUSTOM_API_URL_KEY = "appcenter_custom_api_url";
@@ -108,7 +108,7 @@ public class AppCenterLoader extends ContentProvider {
             if (updateTrackValue != null) {
                 Distribute.setUpdateTrack(Integer.parseInt(updateTrackValue));
             }
-            if (isTrueValue(getStringResource(DISTRIBUTE_DISABLE_CHECK_FOR_UPDATE_KEY))) {
+            if (isTrueValue(getStringResource(DISTRIBUTE_DISABLE_AUTOMATIC_CHECK_FOR_UPDATE_KEY))) {
                 Distribute.disableAutomaticCheckForUpdate();
             }
             classes.add(Distribute.class);

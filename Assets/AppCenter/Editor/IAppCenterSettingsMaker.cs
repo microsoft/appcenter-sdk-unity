@@ -23,6 +23,6 @@ public interface IAppCenterSettingsMaker
     void EnableFirebaseAnalytics();
     void CommitSettings();
     void SetShouldEnableDistributeForDebuggableBuild();
-    void SetDistributeDisableCheckForUpdate();
+    void SetDistributeDisableAutomaticCheckForUpdate();
     void SetUpdateTrack(int updateTrack);
 }
