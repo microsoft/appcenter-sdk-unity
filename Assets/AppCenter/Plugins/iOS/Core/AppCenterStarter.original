@@ -91,6 +91,7 @@ static const int kMSUpdateTrack = 1 /*UPDATE_TRACK*/;
 #endif
 
 #ifdef APPCENTER_UNITY_USE_PUSH
+  [classes addObject:MSPush.class];
   [MSPush setDelegate:[UnityPushDelegate sharedInstance]];
 #endif
 
@@ -117,7 +118,6 @@ static const int kMSUpdateTrack = 1 /*UPDATE_TRACK*/;
     [MSAppCenter setLogUrl:kMSCustomLogUrl];
 #endif
   }
-  [classes addObject:MSPush.class];
   NSString *customAppSecret = [[NSUserDefaults standardUserDefaults] objectForKey:kMSAppSecretKey];
   NSString *customAppSecretValue = customAppSecret == nil ? kMSAppSecret : customAppSecret;
   switch (startTargetValue) {
