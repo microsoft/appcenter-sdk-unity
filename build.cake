@@ -1,10 +1,6 @@
 #addin nuget:?package=Cake.FileHelpers
 #addin nuget:?package=Cake.AzureStorage
 #addin nuget:?package=NuGet.Resolver&loaddependencies=true
-// #addin nuget:?package=NuGet.ContentModel
-// #addin nuget:?package=NuGet.Repositories
-// #addin nuget:?package=NuGet.Versioning
-// #addin nuget:?package=NuGet.RuntimeModel
 #addin nuget:?package=NuGet.Protocol&loaddependencies=true
 #addin nuget:?package=Cake.Xcode
 #load "utility.cake"
@@ -67,7 +63,6 @@ var UwpIL2CPPDependencies = new [] {
     new NugetDependency("Microsoft.NETCore.UniversalWindowsPlatform", "6.2.9", ".NETStandard,Version=v2.0"),
     new NugetDependency("Newtonsoft.Json", "12.0.3", ".NETStandard,Version=v1.3")
 };
-var UwpIL2CPPJsonUrl = SdkStorageUrl + "Newtonsoft.Json.dll";
 
 // Unity requires a specific NDK version for building Android with IL2CPP.
 // Download from a link here: https://developer.android.com/ndk/downloads/older_releases.html
@@ -405,7 +400,7 @@ Task ("Externals-Uwp")
             Information ("Downloading " + module.DotNetModule + "...");
             // Download nuget package
 
-            GetUwpPackage (module, usePublicFeed);
+            GetUwpPackage(module, usePublicFeed);
         }
     }).OnError (HandleError);
 
@@ -570,10 +565,6 @@ Task ("Externals-Uwp-IL2CPP-Dependencies")
             }
         }
 
-        // Download patched Newtonsoft.Json library to avoid Unity issue.
-        // Details: https://forum.unity3d.com/threads/332335/
-        DownloadFile (UwpIL2CPPJsonUrl, targetPath + "/Newtonsoft.Json.dll");
-
         // Process UWP IL2CPP dependencies.
         Information ("Processing UWP IL2CPP dependencies. This could take a minute.");
         var result = ExecuteUnityCommand ("-executeMethod AppCenterPostBuild.ProcessUwpIl2CppDependencies");
@@ -724,7 +715,7 @@ void GetUwpPackage (AppCenterModule module, bool usePublicFeed) {
         Console.WriteLine("GetUwpPackage publicfeed");
         List<NugetDependency> dependencies = new List<NugetDependency>();
         HashSet<int> uniqueIds = new HashSet<int>();
-        var dep = new NugetDependency(module.DotNetModule, UwpSdkVersion, ".NETStandard,Version=v2.0");
+        var dep = new NugetDependency(module.DotNetModule, UwpSdkVersion, ".NETStandard,Version=v1.0");
         GetRecursiveDependenciesCore(dep.Name, dep.Version, dep.Framework, dependencies, uniqueIds);
         foreach (var depPackage in dependencies) {
             Information ("Extract NuGet package: " + depPackage.Name);
@@ -741,20 +732,18 @@ void GetUwpPackage (AppCenterModule module, bool usePublicFeed) {
             ExtractNuGetPackage(depPackage, dep.Framework, tempPackageFolder, destination);
 
             // Delete the package
-            // DeleteFiles (nupkgPath);
+            DeleteFiles (nupkgPath);
         }
     } else {
-
         // TODO
-
-        // nupkgPath = GetNuGetPackage (module.DotNetModule, UwpSdkVersion);
-        // var tempContentPath = "externals/uwp/" + module.Moniker + "/";
-        // DeleteDirectoryIfExists (tempContentPath);
-        // // Unzip into externals/uwp/
-        // Unzip (nupkgPath, tempContentPath);
-        // ExtractNuGetPackage (null, new FrameworkName ("UAP, Version=v10.0"), tempContentPath, destination);
-        // // Delete the package
-        // DeleteFiles (nupkgPath);
+        nupkgPath = GetNuGetPackage(module.DotNetModule, UwpSdkVersion);
+        var tempContentPath = "externals/uwp/" + module.Moniker + "/";
+        DeleteDirectoryIfExists (tempContentPath);
+        // Unzip into externals/uwp/
+        Unzip (nupkgPath, tempContentPath);
+        ExtractNuGetPackage (null, NuGetFramework.Parse(".NETStandard,Version=v1.0"), tempContentPath, destination);
+        // Delete the package
+        DeleteFiles (nupkgPath);
     }
 }
 
@@ -939,33 +928,33 @@ Task("clean")
     CleanDirectories("./**/obj");
 });
 
-// string GetNuGetPackage(string packageId, string packageVersion)
-// {
-//     var nugetUser = EnvironmentVariable("NUGET_USER");
-//     var nugetPassword = Argument("NuGetPassword", EnvironmentVariable("NUGET_PASSWORD"));
-//     var nugetFeedId = Argument("NuGetFeedId", EnvironmentVariable("NUGET_FEED_ID"));
-//     packageId = packageId.ToLower();
+string GetNuGetPackage(string packageId, string packageVersion)
+{
+    var nugetUser = EnvironmentVariable("NUGET_USER");
+    var nugetPassword = Argument("NuGetPassword", EnvironmentVariable("NUGET_PASSWORD"));
+    var nugetFeedId = Argument("NuGetFeedId", EnvironmentVariable("NUGET_FEED_ID"));
+    packageId = packageId.ToLower();
 
-//     var url = "https://msmobilecenter.pkgs.visualstudio.com/_packaging/";
-//     url += nugetFeedId + "/nuget/v3/flat2/" + packageId + "/" + packageVersion + "/" + packageId + "." + packageVersion + ".nupkg";
+    var url = "https://msmobilecenter.pkgs.visualstudio.com/_packaging/";
+    url += nugetFeedId + "/nuget/v3/flat2/" + packageId + "/" + packageVersion + "/" + packageId + "." + packageVersion + ".nupkg";
 
-//     // Get the NuGet package
-//     HttpWebRequest request = (HttpWebRequest)WebRequest.Create (url);
-//     request.Headers["X-NuGet-ApiKey"] = nugetPassword;
-//     request.Credentials = new NetworkCredential(nugetUser, nugetPassword);
-//     HttpWebResponse response = (HttpWebResponse)request.GetResponse();
-//     var responseString = String.Empty;
-//     var filename = packageId + "." + packageVersion +  ".nupkg";
-//     using (var fstream = new FileStream(filename, FileMode.Create, FileAccess.ReadWrite))
-//     {
-//         response.GetResponseStream().CopyTo(fstream);
-//     }
-//     return filename;
-// }
+    // Get the NuGet package
+    HttpWebRequest request = (HttpWebRequest)WebRequest.Create (url);
+    request.Headers["X-NuGet-ApiKey"] = nugetPassword;
+    request.Credentials = new NetworkCredential(nugetUser, nugetPassword);
+    HttpWebResponse response = (HttpWebResponse)request.GetResponse();
+    var responseString = String.Empty;
+    var filename = packageId + "." + packageVersion +  ".nupkg";
+    using (var fstream = new FileStream(filename, FileMode.Create, FileAccess.ReadWrite))
+    {
+        response.GetResponseStream().CopyTo(fstream);
+    }
+    return filename;
+}
 
 void ExtractNuGetPackage (NugetDependency package, NuGetFramework frameworkName, string tempContentPath, string destination) {
-    Console.WriteLine($"ExtractNuget " + package.Name + " frameworkName: " + frameworkName + " tempcontentpath " + tempContentPath + " destination " + destination);
     if (package != null) {
+        Console.WriteLine($"ExtractNuget " + package.Name + " frameworkName: " + frameworkName + " tempcontentpath " + tempContentPath + " destination " + destination);
         // Move assemblies.
         var targetPath = $"{destination}/{package.Name}.dll";
         var frameworkFolder = frameworkName.GetShortFolderName();
@@ -974,7 +963,6 @@ void ExtractNuGetPackage (NugetDependency package, NuGetFramework frameworkName,
             
             var mainUwpPath = $"{tempContentPath}/lib/{uwpFrameworkFolder}/*.dll";
             var files = GetFiles(mainUwpPath);
-            
             if (!files.Any()) 
             {
                 var mainDefaultPath = $"{tempContentPath}/lib/{frameworkFolder}/*.dll";
@@ -993,7 +981,7 @@ void ExtractNuGetPackage (NugetDependency package, NuGetFramework frameworkName,
         }
     }
     // Move native binaries.
-    // var contentPathSuffix = "lib/uap10.0/";
+    var contentPathSuffix = "lib/uap10.0/";
     // var runtimesPath = tempContentPath + "/runtimes";
     // Console.WriteLine("runtimesPath " + runtimesPath);
     // if (DirectoryExists (runtimesPath)) {
@@ -1014,10 +1002,10 @@ void ExtractNuGetPackage (NugetDependency package, NuGetFramework frameworkName,
         // }
         // contentPathSuffix = "runtimes/win10-" + oneArch + "/" + contentPathSuffix;
     // }
-    // if (package == null) {
-    //     var files = GetFiles (tempContentPath + contentPathSuffix + "*");
-    //     MoveFiles (files, destination);
-    // }
+    if (package == null) {
+        var files = GetFiles (tempContentPath + contentPathSuffix + "*");
+        MoveFiles (files, destination);
+    }
 }
 
 // IList<IPackage> GetNuGetDependencies(IPackageRepository repository, FrameworkName frameworkName, IPackage package)
