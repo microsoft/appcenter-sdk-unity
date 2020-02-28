@@ -250,7 +250,6 @@ class PackageExtractor
             return true;
             }
 }
-    
 
 // Spec files can have up to one dependency.
 class UnityPackage
@@ -530,34 +529,17 @@ Task ("Externals-Uwp-IL2CPP-Dependencies")
         EnsureDirectoryExists (targetPath + "/X86");
         EnsureDirectoryExists (targetPath + "/X64");
 
-        // NuGet.Core support only v2.
-        // var packageSource = "https://www.nuget.org/api/v2/";
-        // var repository = PackageRepositoryFactory.Default.CreateRepository (packageSource);
         foreach (var i in UwpIL2CPPDependencies) {
             List<NugetDependency> dependencies = new List<NugetDependency>();
             GetRecursiveDependenciesCore(i.Name, i.Version, i.Framework, dependencies);
-
-            var frameworkName = i.Framework;
-            // var package = repository.FindPackage (i.Name, SemanticVersion.Parse (i.Version));
-            // IEnumerable<IPackage> dependencies;
-            // if (i.IncludeDependencies) {
-            //     dependencies = GetNuGetDependencies (repository, frameworkName, package);
-            // } else {
-            //     dependencies = new [] { package };
-            // }
-
-            
-
-            //var fileSystem = new PhysicalFileSystem (Environment.CurrentDirectory);
             foreach (var depPackage in dependencies) {
                 Information ("Extract NuGet package: " + depPackage.Name);
 
                 // Extract.
                 var path = ExternalsFolder + depPackage.Name + NuPkgExtension;
-                PackageExtractor.Extract(path);
-                //depPackage.ExtractContents (fileSystem, path);
-
-                //ExtractNuGetPackage (depPackage, frameworkName, path, targetPath);
+                var tempPackageFolder = ExternalsFolder + depPackage.Name;
+                PackageExtractor.Extract(path, tempPackageFolder);
+                ExtractNuGetPackage(depPackage, i.Framework, tempPackageFolder, targetPath);
             }
         }
 
@@ -946,44 +928,40 @@ Task("clean")
 //     return filename;
 // }
 
-// void ExtractNuGetPackage (IPackage package, FrameworkName frameworkName, string tempContentPath, string destination) {
-//     if (package != null) {
-//         IEnumerable<IPackageAssemblyReference> assemblies;
-//         VersionUtility.TryGetCompatibleItems (frameworkName, package.AssemblyReferences, out assemblies);
+void ExtractNuGetPackage (NugetDependency package, NuGetFramework frameworkName, string tempContentPath, string destination) {
+    if (package != null) {
+        // Move assemblies.
+        var targetPath = $"{destination}/{package.Name}.dll";
+        var frameworkFolder = frameworkName.GetShortFolderName();
+        if (!FileExists(targetPath)) {
+            MoveFile($"{tempContentPath}/lib/{frameworkFolder}/{package.Name}.dll", targetPath);
+        }
+    }
+    // Move native binaries.
+    // var contentPathSuffix = "lib/uap10.0/";
+    // var runtimesPath = tempContentPath + "/runtimes";
+    // if (DirectoryExists (runtimesPath)) {
+    //     var oneArch = "x86";
+    //     foreach (var runtime in GetDirectories (runtimesPath + "/win10-*")) {
+    //         var arch = runtime.GetDirectoryName ().ToString ().Replace ("win10-", "").ToUpper ();
+    //         oneArch = arch;
+    //         var nativeFiles = GetFiles (runtime + "/native/*");
+    //         var targetArchPath = destination + "/" + arch;
+    //         EnsureDirectoryExists (targetArchPath);
+    //         foreach (var nativeFile in nativeFiles) {
+    //             if (!FileExists (targetArchPath + "/" + nativeFile.GetFilename ())) {
+    //                 MoveFileToDirectory (nativeFile, targetArchPath);
+    //             }
+    //         }
+    //     }
+    //     contentPathSuffix = "runtimes/win10-" + oneArch + "/" + contentPathSuffix;
+    // }
 
-//         // Move assemblies.
-//         foreach (var i in assemblies) {
-//             if (!FileExists (destination + "/" + i.Name)) {
-//                 MoveFile (tempContentPath + "/" + i.Path, destination + "/" + i.Name);
-//             }
-//         }
-
-//     }
-//     // Move native binaries.
-//     var contentPathSuffix = "lib/uap10.0/";
-//     var runtimesPath = tempContentPath + "/runtimes";
-//     if (DirectoryExists (runtimesPath)) {
-//         var oneArch = "x86";
-//         foreach (var runtime in GetDirectories (runtimesPath + "/win10-*")) {
-//             var arch = runtime.GetDirectoryName ().ToString ().Replace ("win10-", "").ToUpper ();
-//             oneArch = arch;
-//             var nativeFiles = GetFiles (runtime + "/native/*");
-//             var targetArchPath = destination + "/" + arch;
-//             EnsureDirectoryExists (targetArchPath);
-//             foreach (var nativeFile in nativeFiles) {
-//                 if (!FileExists (targetArchPath + "/" + nativeFile.GetFilename ())) {
-//                     MoveFileToDirectory (nativeFile, targetArchPath);
-//                 }
-//             }
-//         }
-//         contentPathSuffix = "runtimes/win10-" + oneArch + "/" + contentPathSuffix;
-//     }
-
-//     if (package == null) {
-//         var files = GetFiles (tempContentPath + contentPathSuffix + "*");
-//         MoveFiles (files, destination);
-//     }
-// }
+    // if (package == null) {
+    //     var files = GetFiles (tempContentPath + contentPathSuffix + "*");
+    //     MoveFiles (files, destination);
+    // }
+}
 
 // IList<IPackage> GetNuGetDependencies(IPackageRepository repository, FrameworkName frameworkName, IPackage package)
 // {
