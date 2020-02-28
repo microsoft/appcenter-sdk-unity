@@ -63,10 +63,9 @@ var ExternalUnityPackages = new [] {
 
 // UWP IL2CPP dependencies.
 var UwpIL2CPPDependencies = new [] {
-    new NugetDependency("SQLitePCLRaw.core", "2.0.2", ".NETStandard,Version=v2.0"),
-    new NugetDependency("Microsoft.NETCore.UniversalWindowsPlatform", "6.2.9", "UAP10.0.15138"),
-    new NugetDependency("Newtonsoft.Json", "12.0.3", ".NETStandard,Version=v1.3"),
-    new NugetDependency("System.Collections.NonGeneric", "4.3.0", ".NETStandard,Version=v1.3")
+    new NugetDependency("SQLitePCLRaw.bundle_green", "2.0.2", ".NETStandard,Version=v2.0"),
+    new NugetDependency("Microsoft.NETCore.UniversalWindowsPlatform", "6.2.9", ".NETStandard,Version=v2.0"),
+    new NugetDependency("Newtonsoft.Json", "12.0.3", ".NETStandard,Version=v1.3")
 };
 var UwpIL2CPPJsonUrl = SdkStorageUrl + "Newtonsoft.Json.dll";
 
@@ -77,6 +76,7 @@ var UwpIL2CPPJsonUrl = SdkStorageUrl + "Newtonsoft.Json.dll";
 var NdkFolder = "android_ndk";
 var ExternalsFolder = "externals/uwp/";
 var NuPkgExtension = ".nupkg";
+var UwpFrameworkName = NuGetFramework.Parse("UAP10.0");
 
 // Task TARGET for build
 var Target = Argument("target", Argument("t", "Default"));
@@ -106,7 +106,7 @@ class AppCenterModule
         UWPHasNativeCode = hasNative;
         if (hasNative)
         {
-            NativeArchitectures = new string[] {"x86", "x64", "arm"};
+            NativeArchitectures = new string[] {"x86", "x64", "arm", "arm64"};
         }
     }
 }
@@ -511,7 +511,11 @@ async void GetRecursiveDependenciesCore(string id, NuGetVersion version, NuGetFr
     var packageSource = "https://api.nuget.org/v3/index.json";
     var sourceRepository = new SourceRepository(new PackageSource(packageSource), Repository.Provider.GetCoreV3());
     var dependencyResource = sourceRepository.GetResource<DependencyInfoResource>(CancellationToken.None);
-    var package = await dependencyResource.ResolvePackage(new PackageIdentity(id, version), frameworkName, new SourceCacheContext(), new NullLogger(), CancellationToken.None);
+    var package = await dependencyResource.ResolvePackage(new PackageIdentity(id, version), UwpFrameworkName, new SourceCacheContext(), new NullLogger(), CancellationToken.None);
+    if (package == null) {
+        Information($"Haven't found UWP version for {id} framework. Searching for {frameworkName.ToString()}");
+        package = await dependencyResource.ResolvePackage(new PackageIdentity(id, version), frameworkName, new SourceCacheContext(), new NullLogger(), CancellationToken.None);
+    }
     dependencies.Add(new NugetDependency(package.Id, NuGetVersion.Parse(package.Version.ToNormalizedString()), frameworkName));
     var hashPackageId = GetStringHash(package.Id);
     if (!uniqueIds.Contains(hashPackageId))
@@ -965,16 +969,26 @@ void ExtractNuGetPackage (NugetDependency package, NuGetFramework frameworkName,
         // Move assemblies.
         var targetPath = $"{destination}/{package.Name}.dll";
         var frameworkFolder = frameworkName.GetShortFolderName();
+        var uwpFrameworkFolder = UwpFrameworkName.GetShortFolderName();
         if (!FileExists(targetPath)) {
-            Console.WriteLine($"MOVE {tempContentPath}/lib/{frameworkFolder}/{package.Name}.dll to " + targetPath);
-            var mainPath = $"{tempContentPath}/lib/{frameworkFolder}/{package.Name}.dll";
-            if (FileExists(mainPath)) 
+            
+            var mainUwpPath = $"{tempContentPath}/lib/{uwpFrameworkFolder}/*.dll";
+            var files = GetFiles(mainUwpPath);
+            
+            if (!files.Any()) 
             {
-                MoveFile(mainPath, targetPath);
+                var mainDefaultPath = $"{tempContentPath}/lib/{frameworkFolder}/*.dll";
+                files = GetFiles(mainDefaultPath);
+                if (!files.Any()) 
+                {
+                    Warning($"Haven't found anything under {mainUwpPath} and {mainDefaultPath} - make sure it's expected.");
+                    return;
+                }
             }
-            else 
+            foreach (var matchingFile in files) 
             {
-                Warning($"Haven't found anything under {mainPath} - make sure it's expected.");
+                MoveFile(matchingFile.FullPath, targetPath);
+                Console.WriteLine($"Moving {matchingFile.FullPath} to {targetPath}");
             }
         }
     }
