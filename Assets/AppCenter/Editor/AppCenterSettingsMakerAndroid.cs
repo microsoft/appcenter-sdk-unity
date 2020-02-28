@@ -18,7 +18,7 @@ public class AppCenterSettingsMakerAndroid : IAppCenterSettingsMaker
     private const string UsePushKey = "appcenter_use_push";
     private const string UseAnalyticsKey = "appcenter_use_analytics";
     private const string UseDistributeKey = "appcenter_use_distribute";
-    private const string DistributeDisableCheckForUpdateKey = "appcenter_distribute_disable_check_for_update";
+    private const string DistributeDisableAutomaticCheckForUpdateKey = "appcenter_distribute_disable_automatic_check_for_update";
     private const string CustomApiUrlKey = "appcenter_custom_api_url";
     private const string UseCustomApiUrlKey = "appcenter_use_custom_api_url";
     private const string CustomInstallUrlKey = "appcenter_custom_install_url";
@@ -94,9 +94,9 @@ public class AppCenterSettingsMakerAndroid : IAppCenterSettingsMaker
         _resourceValues[UseDistributeKey] = true.ToString();
     }
 
-    public void SetDistributeDisableCheckForUpdate()
+    public void SetDistributeDisableAutomaticCheckForUpdate()
     {
-        _resourceValues[DistributeDisableCheckForUpdateKey] = true.ToString();
+        _resourceValues[DistributeDisableAutomaticCheckForUpdateKey] = true.ToString();
     }
 
     public void SetApiUrl(string apiUrl)

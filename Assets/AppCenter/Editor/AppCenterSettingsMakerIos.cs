@@ -18,7 +18,7 @@ public class AppCenterSettingsMakerIos : IAppCenterSettingsMaker
     private const string UsePushToken = "APPCENTER_UNITY_USE_PUSH";
     private const string UseAnalyticsToken = "APPCENTER_UNITY_USE_ANALYTICS";
     private const string UseDistributeToken = "APPCENTER_UNITY_USE_DISTRIBUTE";
-    private const string DistributeDisableCheckForUpdateToken = "APPCENTER_DISTRIBUTE_DISABLE_CHECK_FOR_UPDATE";
+    private const string DistributeDisableAutomaticCheckForUpdateToken = "APPCENTER_DISTRIBUTE_DISABLE_AUTOMATIC_CHECK_FOR_UPDATE";
     private const string ApiUrlSearchText = "custom-api-url";
     private const string ApiUrlToken = "APPCENTER_UNITY_USE_CUSTOM_API_URL";
     private const string InstallUrlSearchText = "custom-install-url";
@@ -147,9 +147,9 @@ public class AppCenterSettingsMakerIos : IAppCenterSettingsMaker
         _enableDistributeForDebuggableBuild = true;
     }
 
-    public void SetDistributeDisableCheckForUpdate()
+    public void SetDistributeDisableAutomaticCheckForUpdate()
     {
-        AddToken(DistributeDisableCheckForUpdateToken);
+        AddToken(DistributeDisableAutomaticCheckForUpdateToken);
     }
 
     public void SetUpdateTrack(int updateTrack)
