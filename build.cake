@@ -503,18 +503,46 @@ Task("Install-Unity-Windows").Does(() => {
     }
 }).OnError(HandleError);
 
-async void GetRecursiveDependenciesCore(string id, NuGetVersion version, NuGetFramework frameworkName, List<NugetDependency> dependencies, HashSet<int> uniqueIds)
+
+async Task<SourcePackageDependencyInfo> ResolvePackage(DependencyInfoResource dependencyResource, PackageIdentity identity) 
 {
-    Information("GetRecursiveDependenciesCore " + id + " version " + version.Version.ToString() + " frameworkName " + frameworkName.Framework);
+    var cacheContext = new SourceCacheContext();
+    var logger = NullLogger.Instance;
+
+    var package = await dependencyResource.ResolvePackage(identity, UwpFrameworkName, cacheContext, logger, CancellationToken.None);
+    if (package != null) 
+    {
+        return package;
+    }
+    Information($"Haven't found UWP version for {identity.Id} framework for {UwpFrameworkName.ToString()}. Searching for {Netstandard2FrameworkName.ToString()}");
+    package = await dependencyResource.ResolvePackage(identity, Netstandard2FrameworkName, cacheContext, logger, CancellationToken.None);
+    if (package != null) 
+    {
+        return package;
+    }
+    Information($"Haven't found UWP version for {identity.Id} framework for {Netstandard2FrameworkName.ToString()}. Searching for {Netstandard13FrameworkName.ToString()}");
+    package = await dependencyResource.ResolvePackage(identity, Netstandard13FrameworkName, cacheContext, logger, CancellationToken.None);
+    if (package != null) 
+    {
+        return package;
+    }
+    Information($"Haven't found UWP version for {identity.Id} framework for {Netstandard13FrameworkName.ToString()}. Searching for {Netstandard1FrameworkName.ToString()}");
+    package = await dependencyResource.ResolvePackage(identity, Netstandard1FrameworkName, cacheContext, logger, CancellationToken.None);
+    if (package == null) 
+    {
+        throw new Exception($"Package {identity.Id} not found!");
+    }
+    return null;
+}
+
+async Task GetRecursiveDependenciesCore(string id, NuGetVersion version, List<NugetDependency> dependencies, HashSet<int> uniqueIds)
+{
+    Information($"GetRecursiveDependenciesCore {id} version {version.Version.ToString()}");
     var packageSource = "https://api.nuget.org/v3/index.json";
     var sourceRepository = new SourceRepository(new PackageSource(packageSource), Repository.Provider.GetCoreV3());
     var dependencyResource = sourceRepository.GetResource<DependencyInfoResource>(CancellationToken.None);
-    var package = await dependencyResource.ResolvePackage(new PackageIdentity(id, version), UwpFrameworkName, new SourceCacheContext(), new NullLogger(), CancellationToken.None);
-    if (package == null) {
-        Information($"Haven't found UWP version for {id} framework. Searching for {frameworkName.ToString()}");
-        package = await dependencyResource.ResolvePackage(new PackageIdentity(id, version), frameworkName, new SourceCacheContext(), new NullLogger(), CancellationToken.None);
-    }
-    dependencies.Add(new NugetDependency(package.Id, NuGetVersion.Parse(package.Version.ToNormalizedString()), frameworkName));
+    var package = await ResolvePackage(dependencyResource, new PackageIdentity(id, version));
+    dependencies.Add(new NugetDependency(package.Id, NuGetVersion.Parse(package.Version.ToNormalizedString())));
     var hashPackageId = GetStringHash(package.Id);
     if (!uniqueIds.Contains(hashPackageId))
     {
@@ -527,8 +555,8 @@ async void GetRecursiveDependenciesCore(string id, NuGetVersion version, NuGetFr
             var hashDepId = GetStringHash(dependency.Id);
             if (!uniqueIds.Contains(hashDepId))
             {
-                dependencies.Add(new NugetDependency(dependency.Id, NuGetVersion.Parse(dependency.VersionRange.MinVersion.ToNormalizedString()), frameworkName));
-                GetRecursiveDependenciesCore(dependency.Id, NuGetVersion.Parse(dependency.VersionRange.MinVersion.ToNormalizedString()), frameworkName, dependencies, uniqueIds);
+                dependencies.Add(new NugetDependency(dependency.Id, NuGetVersion.Parse(dependency.VersionRange.MinVersion.ToNormalizedString())));
+                await GetRecursiveDependenciesCore(dependency.Id, NuGetVersion.Parse(dependency.VersionRange.MinVersion.ToNormalizedString()), dependencies, uniqueIds);
             }
         }
     }
@@ -925,7 +953,7 @@ Task("clean")
     .IsDependentOn("RemoveTemporaries")
     .Does(() =>
 {
-    DeleteDirectoryIfExists("externals");
+   // DeleteDirectoryIfExists("externals");
     DeleteDirectoryIfExists("output");
     CleanDirectories("./**/bin");
     CleanDirectories("./**/obj");
@@ -955,28 +983,48 @@ string GetNuGetPackage(string packageId, string packageVersion)
     return filename;
 }
 
-void ExtractNuGetPackage (NugetDependency package, NuGetFramework frameworkName, string tempContentPath, string destination) {
+FilePathCollection ResolveDllFiles(string tempContentPath) 
+{
+    var uwpPath = $"{tempContentPath}/lib/{UwpFrameworkName.GetShortFolderName()}/*.dll";
+    var files = GetFiles(uwpPath);
+    if (files.Any()) 
+    {
+        return files;
+    }
+    var netStandard2Path = $"{tempContentPath}/lib/{Netstandard2FrameworkName.GetShortFolderName()}/*.dll";
+    files = GetFiles(netStandard2Path);
+    if (files.Any()) 
+    {
+        return files;
+    }
+    var netStandard13Path = $"{tempContentPath}/lib/{Netstandard13FrameworkName.GetShortFolderName()}/*.dll";
+    files = GetFiles(netStandard13Path);
+    if (files.Any()) 
+    {
+        return files;
+    }
+    var netStandard1Path = $"{tempContentPath}/lib/{Netstandard1FrameworkName.GetShortFolderName()}/*.dll";
+    files = GetFiles(netStandard1Path);
+    if (files.Any()) 
+    {
+        return files;
+    }
+    Warning($"Haven't found anything under {tempContentPath} - make sure it's expected.");
+    return null;
+}
+
+void ExtractNuGetPackage (NugetDependency package, string tempContentPath, string destination) {
     if (package != null) {
-        Console.WriteLine($"ExtractNuget " + package.Name + " frameworkName: " + frameworkName + " tempcontentpath " + tempContentPath + " destination " + destination);
+        Console.WriteLine($"ExtractNuget {package.Name}; tempcontentpath {tempContentPath}; destination {destination}");
         // Move assemblies.
         var targetPath = $"{destination}/{package.Name}.dll";
-        var frameworkFolder = frameworkName.GetShortFolderName();
-        var uwpFrameworkFolder = UwpFrameworkName.GetShortFolderName();
         if (!FileExists(targetPath)) {
-            
-            var mainUwpPath = $"{tempContentPath}/lib/{uwpFrameworkFolder}/*.dll";
-            var files = GetFiles(mainUwpPath);
-            if (!files.Any()) 
+            var dllFiles = ResolveDllFiles(tempContentPath);
+            if (dllFiles == null)
             {
-                var mainDefaultPath = $"{tempContentPath}/lib/{frameworkFolder}/*.dll";
-                files = GetFiles(mainDefaultPath);
-                if (!files.Any()) 
-                {
-                    Warning($"Haven't found anything under {mainUwpPath} and {mainDefaultPath} - make sure it's expected.");
-                    return;
-                }
+                return;
             }
-            foreach (var matchingFile in files) 
+            foreach (var matchingFile in dllFiles) 
             {
                 MoveFile(matchingFile.FullPath, targetPath);
                 Console.WriteLine($"Moving {matchingFile.FullPath} to {targetPath}");
