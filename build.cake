@@ -61,11 +61,11 @@ var ExternalUnityPackages = new [] {
 //TODO We don't need this right?
 
 // UWP IL2CPP dependencies.
-//var UwpIL2CPPDependencies = new [] {
-//    new NugetDependency("SQLitePCLRaw.bundle_green", "2.0.2",
-//    new NugetDependency("Microsoft.NETCore.UniversalWindowsPlatform", "6.2.9"),
-//    new NugetDependency("Newtonsoft.Json", "12.0.3)
-//};
+var UwpIL2CPPDependencies = new [] {
+   new NugetDependency("SQLitePCLRaw.bundle_green", "2.0.2"),
+   new NugetDependency("Microsoft.NETCore.UniversalWindowsPlatform", "6.2.9"),
+   new NugetDependency("Newtonsoft.Json", "12.0.3")
+};
 
 // Unity requires a specific NDK version for building Android with IL2CPP.
 // Download from a link here: https://developer.android.com/ndk/downloads/older_releases.html
@@ -535,7 +535,7 @@ async Task<SourcePackageDependencyInfo> ResolvePackage(DependencyInfoResource de
     return null;
 }
 
-async Task GetRecursiveDependenciesCore(string id, NuGetVersion version, List<NugetDependency> dependencies, HashSet<int> uniqueIds)
+async Task GetRecursiveDependenciesCore(string id, NuGetVersion version, List<NugetDependency> dependencies, HashSet<int> uniqueIds, bool addDependencies = true)
 {
     Information($"GetRecursiveDependenciesCore {id} version {version.Version.ToString()}");
     var packageSource = "https://api.nuget.org/v3/index.json";
@@ -550,17 +550,19 @@ async Task GetRecursiveDependenciesCore(string id, NuGetVersion version, List<Nu
         var uri = package.DownloadUri.ToString();
         Information("Downloading " + package.Id + " from " + uri);
         DownloadFile (uri, ExternalsFolder + package.Id + NuPkgExtension);
-        foreach (var dependency in package.Dependencies)
+        if (addDependencies) 
         {
-            var hashDepId = GetStringHash(dependency.Id);
-            if (!uniqueIds.Contains(hashDepId))
+            foreach (var dependency in package.Dependencies)
             {
-                dependencies.Add(new NugetDependency(dependency.Id, NuGetVersion.Parse(dependency.VersionRange.MinVersion.ToNormalizedString())));
-                await GetRecursiveDependenciesCore(dependency.Id, NuGetVersion.Parse(dependency.VersionRange.MinVersion.ToNormalizedString()), dependencies, uniqueIds);
+                var hashDepId = GetStringHash(dependency.Id);
+                if (!uniqueIds.Contains(hashDepId))
+                {
+                    dependencies.Add(new NugetDependency(dependency.Id, NuGetVersion.Parse(dependency.VersionRange.MinVersion.ToNormalizedString())));
+                    await GetRecursiveDependenciesCore(dependency.Id, NuGetVersion.Parse(dependency.VersionRange.MinVersion.ToNormalizedString()), dependencies, uniqueIds);
+                }
             }
         }
-    }
-    
+    } 
 }
 
 private int GetStringHash(string input) 
@@ -571,39 +573,39 @@ private int GetStringHash(string input)
     }
 }
 
-// Downloading UWP IL2CPP dependencies.
-// Task ("Externals-Uwp-IL2CPP-Dependencies")
-//     .Does (async () => {
-//         var targetPath = "Assets/AppCenter/Plugins/WSA/IL2CPP";
-//         EnsureDirectoryExists (targetPath);
-//         EnsureDirectoryExists (ExternalsFolder);
-//         EnsureDirectoryExists (targetPath + "/ARM");
-//         EnsureDirectoryExists (targetPath + "/X86");
-//         EnsureDirectoryExists (targetPath + "/X64");
+//Downloading UWP IL2CPP dependencies.
+Task ("Externals-Uwp-IL2CPP-Dependencies")
+    .Does (async () => {
+        var targetPath = "Assets/AppCenter/Plugins/WSA/IL2CPP";
+        EnsureDirectoryExists (targetPath);
+        EnsureDirectoryExists (ExternalsFolder);
+        EnsureDirectoryExists (targetPath + "/ARM");
+        EnsureDirectoryExists (targetPath + "/X86");
+        EnsureDirectoryExists (targetPath + "/X64");
 
-//         foreach (var i in UwpIL2CPPDependencies) {
-//             List<NugetDependency> dependencies = new List<NugetDependency>();
-//             HashSet<int> uniqueIds = new HashSet<int>();
-//             await GetRecursiveDependenciesCore(i.Name, i.Version, dependencies, uniqueIds);
-//             foreach (var depPackage in dependencies) {
-//                 Information ("Extract NuGet package: " + depPackage.Name);
+        foreach (var i in UwpIL2CPPDependencies) {
+            List<NugetDependency> dependencies = new List<NugetDependency>();
+            HashSet<int> uniqueIds = new HashSet<int>();
+            await GetRecursiveDependenciesCore(i.Name, i.Version, dependencies, uniqueIds);
+            foreach (var depPackage in dependencies) {
+                Information ("Extract NuGet package: " + depPackage.Name);
 
-//                 // Extract.
-//                 var path = ExternalsFolder + depPackage.Name + NuPkgExtension;
-//                 var tempPackageFolder = ExternalsFolder + depPackage.Name;
-//                 PackageExtractor.Extract(path, tempPackageFolder);
-//                 ExtractNuGetPackage(depPackage, tempPackageFolder, targetPath);
-//             }
-//         }
+                // Extract.
+                var path = ExternalsFolder + depPackage.Name + NuPkgExtension;
+                var tempPackageFolder = ExternalsFolder + depPackage.Name;
+                PackageExtractor.Extract(path, tempPackageFolder);
+                ExtractNuGetPackage(depPackage, tempPackageFolder, targetPath);
+            }
+        }
 
-//         // Process UWP IL2CPP dependencies.
-//         Information ("Processing UWP IL2CPP dependencies. This could take a minute.");
-//         var result = ExecuteUnityCommand ("-executeMethod AppCenterPostBuild.ProcessUwpIl2CppDependencies");
-//         if (result != 0)
-//         {
-//             throw new Exception("Something went wrong while executing post build script. Unity result code: " + result);
-//         }
-//     }).OnError (HandleError);
+        // Process UWP IL2CPP dependencies.
+        Information ("Processing UWP IL2CPP dependencies. This could take a minute.");
+        var result = ExecuteUnityCommand ("-executeMethod AppCenterPostBuild.ProcessUwpIl2CppDependencies");
+        if (result != 0)
+        {
+            throw new Exception("Something went wrong while executing post build script. Unity result code: " + result);
+        }
+    }).OnError (HandleError);
 
 // Download and install all external Unity packages required.
 Task("Externals-Unity-Packages").Does(()=>
@@ -654,7 +656,7 @@ Task("Externals")
     // .IsDependentOn("Externals-Ios")
     // .IsDependentOn("Externals-Android")
     // .IsDependentOn("BuildAndroidContentProvider")
-    // .IsDependentOn("Externals-Uwp-IL2CPP-Dependencies")
+     .IsDependentOn("Externals-Uwp-IL2CPP-Dependencies")
      .IsDependentOn("Externals-Unity-Packages")
     .Does(()=>
 {
@@ -747,7 +749,7 @@ async Task GetUwpPackage (AppCenterModule module, bool usePublicFeed) {
         List<NugetDependency> dependencies = new List<NugetDependency>();
         HashSet<int> uniqueIds = new HashSet<int>();
         var dep = new NugetDependency(module.DotNetModule, UwpSdkVersion);
-        await GetRecursiveDependenciesCore(dep.Name, dep.Version, dependencies, uniqueIds);
+        await GetRecursiveDependenciesCore(dep.Name, dep.Version, dependencies, uniqueIds, false);
         foreach (var depPackage in dependencies) {
             Information ("Extract NuGet package: " + depPackage.Name);
 
