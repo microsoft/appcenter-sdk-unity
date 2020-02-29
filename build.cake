@@ -57,12 +57,15 @@ var ExternalUnityPackages = new [] {
                              "-gvh_disable")
 };
 
+
+//TODO We don't need this right?
+
 // UWP IL2CPP dependencies.
-var UwpIL2CPPDependencies = new [] {
-    new NugetDependency("SQLitePCLRaw.bundle_green", "2.0.2", ".NETStandard,Version=v2.0"),
-    new NugetDependency("Microsoft.NETCore.UniversalWindowsPlatform", "6.2.9", ".NETStandard,Version=v2.0"),
-    new NugetDependency("Newtonsoft.Json", "12.0.3", ".NETStandard,Version=v1.3")
-};
+//var UwpIL2CPPDependencies = new [] {
+//    new NugetDependency("SQLitePCLRaw.bundle_green", "2.0.2",
+//    new NugetDependency("Microsoft.NETCore.UniversalWindowsPlatform", "6.2.9"),
+//    new NugetDependency("Newtonsoft.Json", "12.0.3)
+//};
 
 // Unity requires a specific NDK version for building Android with IL2CPP.
 // Download from a link here: https://developer.android.com/ndk/downloads/older_releases.html
@@ -72,6 +75,9 @@ var NdkFolder = "android_ndk";
 var ExternalsFolder = "externals/uwp/";
 var NuPkgExtension = ".nupkg";
 var UwpFrameworkName = NuGetFramework.Parse("UAP10.0");
+var Netstandard2FrameworkName = NuGetFramework.Parse(".NETStandard,Version=v2.0");
+var Netstandard13FrameworkName = NuGetFramework.Parse(".NETStandard,Version=v1.3");
+var Netstandard1FrameworkName = NuGetFramework.Parse(".NETStandard,Version=v1.0");
 
 // Task TARGET for build
 var Target = Argument("target", Argument("t", "Default"));
@@ -129,21 +135,18 @@ class NugetDependency
 {
     public string Name { get; set; }
     public NuGetVersion Version { get; set; }
-    public NuGetFramework Framework { get; set; }
     public bool IncludeDependencies { get; set; }
 
-    public NugetDependency(string name, string version, string framework, bool includeDependencies = true)
+    public NugetDependency(string name, string version, bool includeDependencies = true)
     {
         Name = name;
         IncludeDependencies = includeDependencies;
         Version = NuGetVersion.Parse(version);
-        Framework = NuGetFramework.Parse(framework);
     }
 
-    public NugetDependency(string name, NuGetVersion version, NuGetFramework framework, bool includeDependencies = true) {
+    public NugetDependency(string name, NuGetVersion version, bool includeDependencies = true) {
         Name = name;
         Version = version;
-        Framework = framework;
         IncludeDependencies = includeDependencies;
     }
 }
@@ -380,7 +383,7 @@ Task("Externals-Ios")
 
 // Downloading UWP binaries.
 Task ("Externals-Uwp")
-    .Does (() => {
+    .Does (async () => {
         var feedIdNugetEnv = Argument("NuGetFeedId", EnvironmentVariable("NUGET_FEED_ID"));
         var userNugetEnv = EnvironmentVariable("NUGET_USER");
         var passwordNugetEnv = Argument("NuGetPassword", EnvironmentVariable("NUGET_PASSWORD"));
@@ -400,7 +403,7 @@ Task ("Externals-Uwp")
             Information ("Downloading " + module.DotNetModule + "...");
             // Download nuget package
 
-            GetUwpPackage(module, usePublicFeed);
+            await GetUwpPackage(module, usePublicFeed);
         }
     }).OnError (HandleError);
 
@@ -541,38 +544,38 @@ private int GetStringHash(string input)
 }
 
 // Downloading UWP IL2CPP dependencies.
-Task ("Externals-Uwp-IL2CPP-Dependencies")
-    .Does (() => {
-        var targetPath = "Assets/AppCenter/Plugins/WSA/IL2CPP";
-        EnsureDirectoryExists (targetPath);
-        EnsureDirectoryExists (ExternalsFolder);
-        EnsureDirectoryExists (targetPath + "/ARM");
-        EnsureDirectoryExists (targetPath + "/X86");
-        EnsureDirectoryExists (targetPath + "/X64");
+// Task ("Externals-Uwp-IL2CPP-Dependencies")
+//     .Does (async () => {
+//         var targetPath = "Assets/AppCenter/Plugins/WSA/IL2CPP";
+//         EnsureDirectoryExists (targetPath);
+//         EnsureDirectoryExists (ExternalsFolder);
+//         EnsureDirectoryExists (targetPath + "/ARM");
+//         EnsureDirectoryExists (targetPath + "/X86");
+//         EnsureDirectoryExists (targetPath + "/X64");
 
-        foreach (var i in UwpIL2CPPDependencies) {
-            List<NugetDependency> dependencies = new List<NugetDependency>();
-            HashSet<int> uniqueIds = new HashSet<int>();
-            GetRecursiveDependenciesCore(i.Name, i.Version, i.Framework, dependencies, uniqueIds);
-            foreach (var depPackage in dependencies) {
-                Information ("Extract NuGet package: " + depPackage.Name);
+//         foreach (var i in UwpIL2CPPDependencies) {
+//             List<NugetDependency> dependencies = new List<NugetDependency>();
+//             HashSet<int> uniqueIds = new HashSet<int>();
+//             await GetRecursiveDependenciesCore(i.Name, i.Version, dependencies, uniqueIds);
+//             foreach (var depPackage in dependencies) {
+//                 Information ("Extract NuGet package: " + depPackage.Name);
 
-                // Extract.
-                var path = ExternalsFolder + depPackage.Name + NuPkgExtension;
-                var tempPackageFolder = ExternalsFolder + depPackage.Name;
-                PackageExtractor.Extract(path, tempPackageFolder);
-                ExtractNuGetPackage(depPackage, i.Framework, tempPackageFolder, targetPath);
-            }
-        }
+//                 // Extract.
+//                 var path = ExternalsFolder + depPackage.Name + NuPkgExtension;
+//                 var tempPackageFolder = ExternalsFolder + depPackage.Name;
+//                 PackageExtractor.Extract(path, tempPackageFolder);
+//                 ExtractNuGetPackage(depPackage, tempPackageFolder, targetPath);
+//             }
+//         }
 
-        // Process UWP IL2CPP dependencies.
-        Information ("Processing UWP IL2CPP dependencies. This could take a minute.");
-        var result = ExecuteUnityCommand ("-executeMethod AppCenterPostBuild.ProcessUwpIl2CppDependencies");
-        if (result != 0)
-        {
-            throw new Exception("Something went wrong while executing post build script. Unity result code: " + result);
-        }
-    }).OnError (HandleError);
+//         // Process UWP IL2CPP dependencies.
+//         Information ("Processing UWP IL2CPP dependencies. This could take a minute.");
+//         var result = ExecuteUnityCommand ("-executeMethod AppCenterPostBuild.ProcessUwpIl2CppDependencies");
+//         if (result != 0)
+//         {
+//             throw new Exception("Something went wrong while executing post build script. Unity result code: " + result);
+//         }
+//     }).OnError (HandleError);
 
 // Download and install all external Unity packages required.
 Task("Externals-Unity-Packages").Does(()=>
@@ -624,7 +627,7 @@ Task("Externals")
     // .IsDependentOn("Externals-Android")
     // .IsDependentOn("BuildAndroidContentProvider")
     // .IsDependentOn("Externals-Uwp-IL2CPP-Dependencies")
-    // .IsDependentOn("Externals-Unity-Packages")
+     .IsDependentOn("Externals-Unity-Packages")
     .Does(()=>
 {
     // DeleteDirectoryIfExists("externals");
@@ -704,7 +707,7 @@ Task("DownloadNdk")
     }
 }).OnError(HandleError);
 
-void GetUwpPackage (AppCenterModule module, bool usePublicFeed) {
+async Task GetUwpPackage (AppCenterModule module, bool usePublicFeed) {
     // Prepare destination
     var destination = "Assets/AppCenter/Plugins/WSA/" + module.Moniker + "/";
     EnsureDirectoryExists (destination);
@@ -715,8 +718,8 @@ void GetUwpPackage (AppCenterModule module, bool usePublicFeed) {
         Console.WriteLine("GetUwpPackage publicfeed");
         List<NugetDependency> dependencies = new List<NugetDependency>();
         HashSet<int> uniqueIds = new HashSet<int>();
-        var dep = new NugetDependency(module.DotNetModule, UwpSdkVersion, ".NETStandard,Version=v1.0");
-        GetRecursiveDependenciesCore(dep.Name, dep.Version, dep.Framework, dependencies, uniqueIds);
+        var dep = new NugetDependency(module.DotNetModule, UwpSdkVersion);
+        await GetRecursiveDependenciesCore(dep.Name, dep.Version, dependencies, uniqueIds);
         foreach (var depPackage in dependencies) {
             Information ("Extract NuGet package: " + depPackage.Name);
 
@@ -729,7 +732,7 @@ void GetUwpPackage (AppCenterModule module, bool usePublicFeed) {
             PackageExtractor.Extract(path, tempPackageFolder);
 
             // Move assemblies.
-            ExtractNuGetPackage(depPackage, dep.Framework, tempPackageFolder, destination);
+            ExtractNuGetPackage(depPackage,tempPackageFolder, destination);
 
             // Delete the package
             DeleteFiles (nupkgPath);
@@ -741,7 +744,7 @@ void GetUwpPackage (AppCenterModule module, bool usePublicFeed) {
         DeleteDirectoryIfExists (tempContentPath);
         // Unzip into externals/uwp/
         Unzip (nupkgPath, tempContentPath);
-        ExtractNuGetPackage (null, NuGetFramework.Parse(".NETStandard,Version=v1.0"), tempContentPath, destination);
+        ExtractNuGetPackage (null, tempContentPath, destination);
         // Delete the package
         DeleteFiles (nupkgPath);
     }
