@@ -1026,6 +1026,10 @@ void ExtractNuGetPackage (NugetDependency package, string tempContentPath, strin
             }
             foreach (var matchingFile in dllFiles) 
             {
+                if (FileExists(targetPath)) 
+                {
+                    DeleteFile(targetPath);
+                }
                 MoveFile(matchingFile.FullPath, targetPath);
                 Console.WriteLine($"Moving {matchingFile.FullPath} to {targetPath}");
             }
