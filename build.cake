@@ -553,7 +553,6 @@ async Task GetRecursiveDependenciesCore(string id, NuGetVersion version, List<Nu
                 var hashDepId = GetStringHash(dependency.Id);
                 if (!uniqueIds.Contains(hashDepId))
                 {
-                    dependencies.Add(new NugetDependency(dependency.Id, NuGetVersion.Parse(dependency.VersionRange.MinVersion.ToNormalizedString())));
                     await GetRecursiveDependenciesCore(dependency.Id, NuGetVersion.Parse(dependency.VersionRange.MinVersion.ToNormalizedString()), dependencies, uniqueIds, addDependencies);
                 }
             }
