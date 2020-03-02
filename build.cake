@@ -4,6 +4,7 @@
 #addin nuget:?package=NuGet.Protocol&loaddependencies=true
 #addin nuget:?package=Cake.Xcode
 #load "utility.cake"
+#load "packageextractor.cake"
 
 using System;
 using System.Linq;
@@ -57,9 +58,6 @@ var ExternalUnityPackages = new [] {
                              "-gvh_disable")
 };
 
-
-//TODO We don't need this right?
-
 // UWP IL2CPP dependencies.
 var UwpIL2CPPDependencies = new [] {
    new NugetDependency("SQLitePCLRaw.bundle_green", "2.0.2"),
@@ -78,8 +76,7 @@ var NuPkgExtension = ".nupkg";
 var UwpFrameworkName = NuGetFramework.Parse("UAP10.0");
 var Netstandard2FrameworkName = NuGetFramework.Parse(".NETStandard,Version=v2.0");
 
-// Declaring this outside the method causes a parse error on Cake for Mac.
-string[] IgnoreNuGetDependencies = {
+var IgnoreNuGetDependencies = new[] {
     "Microsoft.NETCore.UniversalWindowsPlatform",
     "NETStandard.Library"
 };
@@ -151,107 +148,6 @@ class NugetDependency
         Name = name;
         Version = version;
     }
-}
-
-class PackageExtractor
-{
-
-        static PackageSaveMode packageSaveMode = PackageSaveMode.Defaultv3;
-
-        public static void Extract(string fileName)
-        {
-            string dir = Environment.CurrentDirectory;
-            Extract(fileName, dir);
-        }
-
-        public static void Extract(string fileName, string targetPath)
-        {
-            using (var stream = new FileStream(fileName, FileMode.Open, FileAccess.Read))
-            {
-                Extract(stream, targetPath);
-            }
-        }
-
-        public static void Extract(Stream nupkgStream, string targetPath)
-        {
-            var tempHashPath = System.IO.Path.Combine(targetPath, System.IO.Path.GetRandomFileName());
-            var targetNuspec = System.IO.Path.Combine(targetPath, System.IO.Path.GetRandomFileName());
-            var targetNupkg = System.IO.Path.Combine(targetPath, System.IO.Path.GetRandomFileName());
-            targetNupkg = System.IO.Path.ChangeExtension(targetNupkg, ".nupkg");
-            var hashPath = System.IO.Path.Combine(targetPath, System.IO.Path.GetRandomFileName());
-
-            using (var packageReader = new PackageArchiveReader(nupkgStream))
-            {
-                var nuspecFile = packageReader.GetNuspecFile();
-                if ((packageSaveMode & PackageSaveMode.Nuspec) == PackageSaveMode.Nuspec)
-                {
-                    packageReader.ExtractFile(nuspecFile, targetNuspec, new NullLogger());
-                }
-
-                if ((packageSaveMode & PackageSaveMode.Files) == PackageSaveMode.Files)
-                {
-                    var nupkgFileName = System.IO.Path.GetFileName(targetNupkg);
-                    var hashFileName = System.IO.Path.GetFileName(hashPath);
-                    var packageFiles = packageReader.GetFiles()
-                        .Where(file => ShouldInclude(file, nupkgFileName, nuspecFile, hashFileName));
-                    var packageFileExtractor = new PackageFileExtractor(
-                        packageFiles,
-                        XmlDocFileSaveMode.None);
-                    packageReader.CopyFiles(
-                        targetPath,
-                        packageFiles,
-                        packageFileExtractor.ExtractPackageFile,
-                        new NullLogger(),
-                        CancellationToken.None);
-                }
-
-                string packageHash;
-                nupkgStream.Position = 0;
-                packageHash = Convert.ToBase64String(new CryptoHashProvider("SHA512").CalculateHash(nupkgStream));
-
-                System.IO.File.WriteAllText(tempHashPath, packageHash);
-            }
-        }
-
-        private static bool ShouldInclude(
-            string fullName,
-            string nupkgFileName,
-            string nuspecFile,
-            string hashFileName)
-        {
-            // Not all the files from a zip file are needed
-            // So, files such as '.rels' and '[Content_Types].xml' are not extracted
-            var fileName = System.IO.Path.GetFileName(fullName);
-            if (fileName != null)
-            {
-                if (fileName == ".rels")
-                {
-                    return false;
-                }
-                if (fileName == "[Content_Types].xml")
-                {
-                    return false;
-                }
-            }
-
-            var extension = System.IO.Path.GetExtension(fullName);
-            if (extension == ".psmdcp")
-            {
-                return false;
-            }
-
-            if (string.Equals(fullName, nupkgFileName, StringComparison.OrdinalIgnoreCase)
-                || string.Equals(fullName, hashFileName, StringComparison.OrdinalIgnoreCase)
-                || string.Equals(fullName, nuspecFile, StringComparison.OrdinalIgnoreCase))
-            {
-                // Return false when the fullName is the nupkg file or the hash file.
-                // Some packages accidentally have the nupkg file or the nupkg hash file in the package.
-                // We filter them out during package extraction
-                return false;
-            }
-
-            return true;
-            }
 }
 
 // Spec files can have up to one dependency.
@@ -529,12 +425,9 @@ async Task<SourcePackageDependencyInfo> ResolvePackage(DependencyInfoResource de
     return null;
 }
 
-async Task GetRecursiveDependenciesCore(string id, NuGetVersion version, List<NugetDependency> dependencies, HashSet<int> uniqueIds, bool addDependencies = true)
+async Task GetRecursiveDependenciesCore(DependencyInfoResource dependencyResource, string id, NuGetVersion version, List<NugetDependency> dependencies, HashSet<int> uniqueIds, bool addDependencies = true)
 {
     Information($"GetRecursiveDependenciesCore {id} version {version.Version.ToString()}");
-    var packageSource = "https://api.nuget.org/v3/index.json";
-    var sourceRepository = new SourceRepository(new PackageSource(packageSource), Repository.Provider.GetCoreV3());
-    var dependencyResource = sourceRepository.GetResource<DependencyInfoResource>(CancellationToken.None);
     var package = await ResolvePackage(dependencyResource, new PackageIdentity(id, version));
     dependencies.Add(new NugetDependency(package.Id, NuGetVersion.Parse(package.Version.ToNormalizedString())));
     var hashPackageId = GetStringHash(package.Id);
@@ -544,19 +437,20 @@ async Task GetRecursiveDependenciesCore(string id, NuGetVersion version, List<Nu
         var uri = package.DownloadUri.ToString();
         Information("Downloading " + package.Id + " from " + uri);
         DownloadFile (uri, ExternalsFolder + package.Id + NuPkgExtension);
-        if (addDependencies) 
+        if (!addDependencies) 
         {
-            foreach (var dependency in package.Dependencies) 
+            return;
+        }
+        foreach (var dependency in package.Dependencies) 
+        {
+            if (IgnoreNuGetDependencies.Contains(dependency.Id) || dependency.Id.StartsWith("System")) 
             {
-                if (IgnoreNuGetDependencies.Contains(dependency.Id) || dependency.Id.StartsWith("System")) 
-                {
-                    continue;
-                }
-                var hashDepId = GetStringHash(dependency.Id);
-                if (!uniqueIds.Contains(hashDepId))
-                {
-                    await GetRecursiveDependenciesCore(dependency.Id, NuGetVersion.Parse(dependency.VersionRange.MinVersion.ToNormalizedString()), dependencies, uniqueIds, addDependencies);
-                }
+                continue;
+            }
+            var hashDepId = GetStringHash(dependency.Id);
+            if (!uniqueIds.Contains(hashDepId))
+            {
+                await GetRecursiveDependenciesCore(dependencyResource, dependency.Id, NuGetVersion.Parse(dependency.VersionRange.MinVersion.ToNormalizedString()), dependencies, uniqueIds, addDependencies);
             }
         }
     } 
@@ -570,6 +464,13 @@ private int GetStringHash(string input)
     }
 }
 
+private DependencyInfoResource GetDefaultDependencyResource() 
+{
+    var packageSource = "https://api.nuget.org/v3/index.json";
+    var sourceRepository = new SourceRepository(new PackageSource(packageSource), Repository.Provider.GetCoreV3());
+    return sourceRepository.GetResource<DependencyInfoResource>(CancellationToken.None);
+}
+
 //Downloading UWP IL2CPP dependencies.
 Task ("Externals-Uwp-IL2CPP-Dependencies")
     .Does (async () => {
@@ -579,11 +480,11 @@ Task ("Externals-Uwp-IL2CPP-Dependencies")
         EnsureDirectoryExists (targetPath + "/ARM");
         EnsureDirectoryExists (targetPath + "/X86");
         EnsureDirectoryExists (targetPath + "/X64");
-
+        
         foreach (var i in UwpIL2CPPDependencies) {
             List<NugetDependency> dependencies = new List<NugetDependency>();
             HashSet<int> uniqueIds = new HashSet<int>();
-            await GetRecursiveDependenciesCore(i.Name, i.Version, dependencies, uniqueIds);
+            await GetRecursiveDependenciesCore(GetDefaultDependencyResource(), i.Name, i.Version, dependencies, uniqueIds);
             foreach (var depPackage in dependencies) {
                 Information ("Extract NuGet package: " + depPackage.Name);
 
@@ -594,7 +495,7 @@ Task ("Externals-Uwp-IL2CPP-Dependencies")
                 ExtractNuGetPackage(depPackage, tempPackageFolder, targetPath);
             }
         }
-        
+
         // Download patched Newtonsoft.Json library to avoid Unity issue.
         // Details: https://forum.unity3d.com/threads/332335/
         DownloadFile (UwpIL2CPPJsonUrl, targetPath + "/Newtonsoft.Json.dll");
@@ -750,7 +651,7 @@ async Task GetUwpPackage (AppCenterModule module, bool usePublicFeed) {
         List<NugetDependency> dependencies = new List<NugetDependency>();
         HashSet<int> uniqueIds = new HashSet<int>();
         var dep = new NugetDependency(module.DotNetModule, UwpSdkVersion);
-        await GetRecursiveDependenciesCore(dep.Name, dep.Version, dependencies, uniqueIds, false);
+        await GetRecursiveDependenciesCore(GetDefaultDependencyResource(), dep.Name, dep.Version, dependencies, uniqueIds, false);
         foreach (var depPackage in dependencies) {
             Information ("Extract NuGet package: " + depPackage.Name);
 
