@@ -7,6 +7,7 @@
 #load "packageextractor.cake"
 
 using System;
+using System.IO;
 using System.Linq;
 using System.Net;
 using System.Collections.Generic;
@@ -175,7 +176,7 @@ class UnityPackage
         var needsCore = Statics.Context.XmlPeek(specFilePath, "package/@needsCore") == "true";
         if (needsCore)
         {
-            var specFileDirectory = System.IO.Path.GetDirectoryName(specFilePath);
+            var specFileDirectory = Path.GetDirectoryName(specFilePath);
             if (!AddFilesFromSpec(specFileDirectory + "/AppCenter.unitypackagespec")) 
             {
                 return false;
@@ -340,11 +341,11 @@ Task("BuildAndroidContentProvider").Does(()=>
 }).OnError(HandleError);
 
 void BuildAndroidLibrary(string appName, string libraryName, bool copyBinary = true) {
-    var libraryFolder = System.IO.Path.Combine(appName, libraryName);
-    var gradleScript = System.IO.Path.Combine(libraryFolder, "build.gradle");
+    var libraryFolder = Path.Combine(appName, libraryName);
+    var gradleScript = Path.Combine(libraryFolder, "build.gradle");
 
     // Compile the library
-    var gradleWrapper = System.IO.Path.Combine(appName, "gradlew");
+    var gradleWrapper = Path.Combine(appName, "gradlew");
     if (IsRunningOnWindows())
     {
         gradleWrapper += ".bat";
@@ -365,11 +366,11 @@ void BuildAndroidLibrary(string appName, string libraryName, bool copyBinary = t
         }
         // Source and destination of generated aar
         var aarName = libraryName + "-release.aar";
-        var aarSource = System.IO.Path.Combine(libraryFolder, "build/outputs/aar/" + aarName);
+        var aarSource = Path.Combine(libraryFolder, "build/outputs/aar/" + aarName);
         var aarDestination = "Assets/AppCenter/Plugins/Android";
 
         // Delete the aar in case it already exists in the Assets folder
-        var existingAar = System.IO.Path.Combine(aarDestination, aarName);
+        var existingAar = Path.Combine(aarDestination, aarName);
         if (FileExists(existingAar))
         {
             DeleteFile(existingAar);
@@ -515,7 +516,7 @@ Task("Package").Does(()=>
 {
     // Remove AndroidManifest.xml
     var path = "Assets/Plugins/Android/appcenter/AndroidManifest.xml";
-    if (System.IO.File.Exists(path))
+    if (File.Exists(path))
     {
         DeleteFile(path);
     }
@@ -743,7 +744,7 @@ Task("PublishPackagesToStorage").Does(()=>
     foreach (var package in GetBuiltPackages())
     {
         Information("Publishing packages to blob storage: " + package);
-        var fileName = System.IO.Path.GetFileNameWithoutExtension(package); // AppCenterAnalytics-v1.0.0
+        var fileName = Path.GetFileNameWithoutExtension(package); // AppCenterAnalytics-v1.0.0
         var index = fileName.IndexOf('-'); // 18
         var fileNameLatest = fileName.Substring(0, index) + "Latest.unitypackage"; // AppCenterAnalyticsLatest.unitypackage
         AzureStorage.UploadFileToBlob(new AzureStorageSettings
@@ -771,8 +772,8 @@ Task("RegisterUnity").Does(()=>
     {
         found = GetFiles("/Library/Application Support/Unity/*.ulf").Count > 0;
     } else {
-        var localAppDataUnityPath = System.IO.Path.Combine(EnvironmentVariable("LOCALAPPDATA"), @"VirtualStore\ProgramData\Unity\*.ulf");
-        found = GetFiles(localAppDataUnityPath).Count + GetFiles(System.IO.Path.Combine(EnvironmentVariable("PROGRAMDATA"), @"Unity\*.ulf")).Count > 0;
+        var localAppDataUnityPath = Path.Combine(EnvironmentVariable("LOCALAPPDATA"), @"VirtualStore\ProgramData\Unity\*.ulf");
+        found = GetFiles(localAppDataUnityPath).Count + GetFiles(Path.Combine(EnvironmentVariable("PROGRAMDATA"), @"Unity\*.ulf")).Count > 0;
     }
     if (!found)
     {
@@ -908,8 +909,8 @@ void ExtractNuGetPackage (NugetDependency package, string tempContentPath, strin
 
 void BuildXcodeProject(string projectPath)
 {
-    var projectFolder = System.IO.Path.GetDirectoryName(projectPath);
-    var buildOutputFolder =  System.IO.Path.Combine(projectFolder, "build");
+    var projectFolder = Path.GetDirectoryName(projectPath);
+    var buildOutputFolder =  Path.Combine(projectFolder, "build");
     XCodeBuild(new XCodeBuildSettings {
         Project = projectPath,
         Scheme = "Unity-iPhone",
