@@ -63,7 +63,6 @@ var ExternalUnityPackages = new [] {
 // UWP IL2CPP dependencies.
 var UwpIL2CPPDependencies = new [] {
    new NugetDependency("SQLitePCLRaw.bundle_green", "2.0.2"),
-   new NugetDependency("Microsoft.NETCore.UniversalWindowsPlatform", "6.2.9"),
    new NugetDependency("Newtonsoft.Json", "12.0.3")
 };
 
@@ -76,8 +75,12 @@ var ExternalsFolder = "externals/uwp/";
 var NuPkgExtension = ".nupkg";
 var UwpFrameworkName = NuGetFramework.Parse("UAP10.0");
 var Netstandard2FrameworkName = NuGetFramework.Parse(".NETStandard,Version=v2.0");
-var Netstandard13FrameworkName = NuGetFramework.Parse(".NETStandard,Version=v1.3");
-var Netstandard1FrameworkName = NuGetFramework.Parse(".NETStandard,Version=v1.0");
+
+// Declaring this outside the method causes a parse error on Cake for Mac.
+string[] IgnoreNuGetDependencies = {
+    "Microsoft.NETCore.UniversalWindowsPlatform",
+    "NETStandard.Library"
+};
 
 // Task TARGET for build
 var Target = Argument("target", Argument("t", "Default"));
@@ -135,19 +138,16 @@ class NugetDependency
 {
     public string Name { get; set; }
     public NuGetVersion Version { get; set; }
-    public bool IncludeDependencies { get; set; }
 
-    public NugetDependency(string name, string version, bool includeDependencies = true)
+    public NugetDependency(string name, string version)
     {
         Name = name;
-        IncludeDependencies = includeDependencies;
         Version = NuGetVersion.Parse(version);
     }
 
-    public NugetDependency(string name, NuGetVersion version, bool includeDependencies = true) {
+    public NugetDependency(string name, NuGetVersion version) {
         Name = name;
         Version = version;
-        IncludeDependencies = includeDependencies;
     }
 }
 
@@ -509,25 +509,17 @@ async Task<SourcePackageDependencyInfo> ResolvePackage(DependencyInfoResource de
     var cacheContext = new SourceCacheContext();
     var logger = NullLogger.Instance;
 
-    var package = await dependencyResource.ResolvePackage(identity, UwpFrameworkName, cacheContext, logger, CancellationToken.None);
+    var package = await dependencyResource.ResolvePackage(identity, Netstandard2FrameworkName, cacheContext, logger, CancellationToken.None);
     if (package != null) 
     {
         return package;
     }
-    Information($"Haven't found UWP version for {identity.Id} framework for {UwpFrameworkName.ToString()}. Searching for {Netstandard2FrameworkName.ToString()}");
-    package = await dependencyResource.ResolvePackage(identity, Netstandard2FrameworkName, cacheContext, logger, CancellationToken.None);
+    Information($"Haven't found UWP version for {identity.Id} framework for {Netstandard2FrameworkName.ToString()}. Searching for {Netstandard2FrameworkName.ToString()}");
+    package = await dependencyResource.ResolvePackage(identity, UwpFrameworkName, cacheContext, logger, CancellationToken.None);
     if (package != null) 
     {
         return package;
     }
-    Information($"Haven't found UWP version for {identity.Id} framework for {Netstandard2FrameworkName.ToString()}. Searching for {Netstandard13FrameworkName.ToString()}");
-    package = await dependencyResource.ResolvePackage(identity, Netstandard13FrameworkName, cacheContext, logger, CancellationToken.None);
-    if (package != null) 
-    {
-        return package;
-    }
-    Information($"Haven't found UWP version for {identity.Id} framework for {Netstandard13FrameworkName.ToString()}. Searching for {Netstandard1FrameworkName.ToString()}");
-    package = await dependencyResource.ResolvePackage(identity, Netstandard1FrameworkName, cacheContext, logger, CancellationToken.None);
     if (package == null) 
     {
         throw new Exception($"Package {identity.Id} not found!");
@@ -552,13 +544,17 @@ async Task GetRecursiveDependenciesCore(string id, NuGetVersion version, List<Nu
         DownloadFile (uri, ExternalsFolder + package.Id + NuPkgExtension);
         if (addDependencies) 
         {
-            foreach (var dependency in package.Dependencies)
+            foreach (var dependency in package.Dependencies) 
             {
+                if (IgnoreNuGetDependencies.Contains(dependency.Id)) 
+                {
+                    continue;
+                }
                 var hashDepId = GetStringHash(dependency.Id);
                 if (!uniqueIds.Contains(hashDepId))
                 {
                     dependencies.Add(new NugetDependency(dependency.Id, NuGetVersion.Parse(dependency.VersionRange.MinVersion.ToNormalizedString())));
-                    await GetRecursiveDependenciesCore(dependency.Id, NuGetVersion.Parse(dependency.VersionRange.MinVersion.ToNormalizedString()), dependencies, uniqueIds);
+                    await GetRecursiveDependenciesCore(dependency.Id, NuGetVersion.Parse(dependency.VersionRange.MinVersion.ToNormalizedString()), dependencies, uniqueIds, addDependencies);
                 }
             }
         }
@@ -1000,14 +996,6 @@ FilePathCollection ResolveDllFiles(string tempContentPath)
     {
         return files;
     }
-    var netStandard13Path = $"{tempContentPath}/lib/{Netstandard13FrameworkName.GetShortFolderName()}/*.dll";
-    files = GetFiles(netStandard13Path);
-    if (files.Any()) 
-    {
-        return files;
-    }
-    var netStandard1Path = $"{tempContentPath}/lib/{Netstandard1FrameworkName.GetShortFolderName()}/*.dll";
-    files = GetFiles(netStandard1Path);
     if (files.Any()) 
     {
         return files;
