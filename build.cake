@@ -740,8 +740,8 @@ async Task GetUwpPackage (AppCenterModule module, bool usePublicFeed) {
     DeleteFiles (destination + "*.dll");
     DeleteFiles (destination + "*.winmd");
     var nupkgPath = "externals/uwp/";
+    Console.WriteLine($"GetUwpPackage use public feed {usePublicFeed}");
     if (usePublicFeed) {
-        Console.WriteLine("GetUwpPackage publicfeed");
         List<NugetDependency> dependencies = new List<NugetDependency>();
         HashSet<int> uniqueIds = new HashSet<int>();
         var dep = new NugetDependency(module.DotNetModule, UwpSdkVersion);
@@ -1004,31 +1004,69 @@ FilePathCollection ResolveDllFiles(string tempContentPath)
     return null;
 }
 
-void ExtractNuGetPackage (NugetDependency package, string tempContentPath, string destination) {
-    if (package != null) {
-        Console.WriteLine($"ExtractNuget {package.Name}; tempcontentpath {tempContentPath}; destination {destination}");
-        // Move assemblies.
-        var targetPath = $"{destination}/{package.Name}.dll";
-        if (!FileExists(targetPath)) {
-            var dllFiles = ResolveDllFiles(tempContentPath);
-            if (dllFiles == null)
-            {
-                return;
-            }
-            foreach (var matchingFile in dllFiles) 
-            {
-                if (FileExists(targetPath)) 
-                {
-                    DeleteFile(targetPath);
+string MoveNativeBinaries(string tempContentPath, string destination)
+{
+    var runtimesPath = tempContentPath + "/runtimes";
+    if (DirectoryExists (runtimesPath)) {
+        Console.WriteLine("MoveNativeBinaries");
+        var oneArch = "x86";
+        foreach (var runtime in GetDirectories (runtimesPath + "/win10-*")) {
+            var arch = runtime.GetDirectoryName ().ToString ().Replace ("win10-", "").ToUpper ();
+            oneArch = arch;
+            var nativeFiles = GetFiles (runtime + "/**/*.dll");
+            var targetArchPath = destination + "/" + arch;
+            EnsureDirectoryExists (targetArchPath);
+            foreach (var nativeFile in nativeFiles) {
+                if (!FileExists (targetArchPath + "/" + nativeFile.GetFilename ())) {
+                    MoveFileToDirectory (nativeFile, targetArchPath);
+                    Console.WriteLine($"Moved native binary file {nativeFile} to {targetArchPath}");
+                } else {
+                    Console.WriteLine("Native binary file already exists");
                 }
-                MoveFile(matchingFile.FullPath, targetPath);
-                Console.WriteLine($"Moving {matchingFile.FullPath} to {targetPath}");
             }
         }
+        return oneArch;
+    } 
+    return null;
+}
+
+void MoveAssemblies(NugetDependency package, string tempContentPath, string destination)
+{   
+    var targetPath = $"{destination}/{package.Name}.dll";
+    if (!FileExists(targetPath)) {
+        Console.WriteLine($"MoveAssemblies");
+        var dllFiles = ResolveDllFiles(tempContentPath);
+        if (dllFiles == null)
+        {
+            return;
+        }
+        foreach (var matchingFile in dllFiles) 
+        {
+            if (FileExists(targetPath)) 
+            {
+                DeleteFile(targetPath);
+            }
+            MoveFile(matchingFile.FullPath, targetPath);
+            Console.WriteLine($"Moving {matchingFile.FullPath} to {targetPath}");
+        }
     }
-    // Move native binaries.
-    var contentPathSuffix = "lib/uap10.0/";
+}
+
+void ExtractNuGetPackage (NugetDependency package, string tempContentPath, string destination)
+{
+    var packageName = package != null ? package.Name : "null";
+    Console.WriteLine($"ExtractNuGetPackage {packageName}; tempcontentpath {tempContentPath}; destination {destination}");
+    var oneArch = MoveNativeBinaries(tempContentPath, destination);
+    if (package != null) {
+        MoveAssemblies(package, tempContentPath, destination);
+    }
     if (package == null) {
+        var contentPathSuffix = "lib/uap10.0/";
+        if (oneArch != null) {
+            //todo check, the result path may be incorrect
+            contentPathSuffix = "runtimes/win10-" + oneArch + "/" + contentPathSuffix;
+        }
+        Console.WriteLine($"package is null, move from " + tempContentPath + contentPathSuffix + "* to " + destination);
         var files = GetFiles (tempContentPath + contentPathSuffix + "*");
         MoveFiles (files, destination);
     }
