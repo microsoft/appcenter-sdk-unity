@@ -546,7 +546,7 @@ async Task GetRecursiveDependenciesCore(string id, NuGetVersion version, List<Nu
         {
             foreach (var dependency in package.Dependencies) 
             {
-                if (IgnoreNuGetDependencies.Contains(dependency.Id)) 
+                if (IgnoreNuGetDependencies.Contains(dependency.Id) || dependency.Id.StartsWith("System")) 
                 {
                     continue;
                 }
