@@ -7,7 +7,7 @@
 #load "packageextractor.cake"
 
 using System;
-using System.IO;
+using Path =  System.IO.Path;
 using System.Linq;
 using System.Net;
 using System.Collections.Generic;
