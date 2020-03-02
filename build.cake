@@ -412,7 +412,7 @@ async Task<SourcePackageDependencyInfo> ResolvePackage(DependencyInfoResource de
     {
         return package;
     }
-    Information($"Haven't found UWP version for {identity.Id} framework for {Netstandard2FrameworkName.ToString()}. Searching for {Netstandard2FrameworkName.ToString()}");
+    Information($"Haven't found UWP version for {identity.Id} framework for {Netstandard2FrameworkName.ToString()}. Searching for {UwpFrameworkName.ToString()}");
     package = await dependencyResource.ResolvePackage(identity, UwpFrameworkName, cacheContext, logger, CancellationToken.None);
     if (package != null) 
     {
