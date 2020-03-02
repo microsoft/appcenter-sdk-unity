@@ -53,23 +53,11 @@ public class AppCenterPreBuild : IPreprocessBuild
     }
 
     public void CleanOldDependencies() {
-        var dirsToDelete = new[] {"ARM", "X86", "X64"};
 
-        //We don't delete Newtonsoft.Json and SQLitePCLRaw.core 
+        //We don't delete Newtonsoft.Json, SQLitePCLRaw.provider.e_sqlite3, 
+        //SQLitePCLRaw.core, SQLitePCLRaw.batteries_green and SQLitePCLRaw.batteries_v2
         //as they have the same name and will be replaced automatically upon import.
-        var filesToDelete = new[] {"SQLite-net", "SQLitePCLRaw.batteries_green", "SQLitePCLRaw.batteries_v2", "SQLitePCLRaw.provider.e_sqlite3"};
-        foreach(var directory in dirsToDelete) {
-            var directoryPath = AppCenterSettingsContext.AppCenterPath + "/Plugins/WSA/IL2CPP/" + directory;
-            if (Directory.Exists(directoryPath))
-            {
-                Directory.Delete(directoryPath, true);
-            }
-            var filePath = directoryPath + ".meta";
-            if (File.Exists(filePath))
-            {
-                File.Delete(filePath);
-            }
-        }
+        var filesToDelete = new[] {"SQLite-net"};
         foreach(var file in filesToDelete) {
             var dllPath = AppCenterSettingsContext.AppCenterPath + "/Plugins/WSA/IL2CPP/" + file + ".dll";
             var metaFilePath = dllPath + ".meta";
