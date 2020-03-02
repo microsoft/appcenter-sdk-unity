@@ -60,8 +60,11 @@ var ExternalUnityPackages = new [] {
 
 // UWP IL2CPP dependencies.
 var UwpIL2CPPDependencies = new [] {
-   new NugetDependency("SQLitePCLRaw.bundle_green", "2.0.2"),
-   new NugetDependency("Newtonsoft.Json", "12.0.3")
+   new NugetDependency("SQLitePCLRaw.bundle_green", "2.0.2", ".NETStandard,Version=v2.0"),
+   new NugetDependency("Newtonsoft.Json", "12.0.3", ".NETStandard,Version=v2.0"),
+   new NugetDependency("SQLitePCLRaw.provider.e_sqlite3", "2.0.2", ".NETStandard,Version=v2.0"),
+   new NugetDependency("SQLitePCLRaw.core", "2.0.2", ".NETStandard,Version=v2.0"),
+   new NugetDependency("SQLitePCLRaw.lib.e_sqlite3", "2.0.2", "UAP10.0")
 };
 
 var UwpIL2CPPJsonUrl = SdkStorageUrl + "Newtonsoft.Json.dll";
@@ -73,8 +76,6 @@ var UwpIL2CPPJsonUrl = SdkStorageUrl + "Newtonsoft.Json.dll";
 var NdkFolder = "android_ndk";
 var ExternalsFolder = "externals/uwp/";
 var NuPkgExtension = ".nupkg";
-var UwpFrameworkName = NuGetFramework.Parse("UAP10.0");
-var Netstandard2FrameworkName = NuGetFramework.Parse(".NETStandard,Version=v2.0");
 
 var IgnoreNuGetDependencies = new[] {
     "Microsoft.NETCore.UniversalWindowsPlatform",
@@ -137,16 +138,19 @@ class NugetDependency
 {
     public string Name { get; set; }
     public NuGetVersion Version { get; set; }
+    public NuGetFramework Framework { get; set; }
 
-    public NugetDependency(string name, string version)
+    public NugetDependency(string name, string version, string framework)
     {
         Name = name;
         Version = NuGetVersion.Parse(version);
+        Framework = NuGetFramework.Parse(framework);
     }
 
-    public NugetDependency(string name, NuGetVersion version) {
+    public NugetDependency(string name, NuGetVersion version, NuGetFramework framework) {
         Name = name;
         Version = version;
+        Framework = framework;
     }
 }
 
@@ -401,67 +405,13 @@ Task("Install-Unity-Windows").Does(() => {
     }
 }).OnError(HandleError);
 
-
-async Task<SourcePackageDependencyInfo> ResolvePackage(DependencyInfoResource dependencyResource, PackageIdentity identity) 
+async Task GetDependency(DependencyInfoResource dependencyResource, NugetDependency dependency)
 {
-    var cacheContext = new SourceCacheContext();
-    var logger = NullLogger.Instance;
-
-    var package = await dependencyResource.ResolvePackage(identity, Netstandard2FrameworkName, cacheContext, logger, CancellationToken.None);
-    if (package != null) 
-    {
-        return package;
-    }
-    Information($"Haven't found UWP version for {identity.Id} framework for {Netstandard2FrameworkName.ToString()}. Searching for {UwpFrameworkName.ToString()}");
-    package = await dependencyResource.ResolvePackage(identity, UwpFrameworkName, cacheContext, logger, CancellationToken.None);
-    if (package != null) 
-    {
-        return package;
-    }
-    if (package == null) 
-    {
-        throw new Exception($"Package {identity.Id} not found!");
-    }
-    return null;
-}
-
-async Task GetRecursiveDependenciesCore(DependencyInfoResource dependencyResource, string id, NuGetVersion version, List<NugetDependency> dependencies, HashSet<int> uniqueIds, bool addDependencies = true)
-{
-    Information($"GetRecursiveDependenciesCore {id} version {version.Version.ToString()}");
-    var package = await ResolvePackage(dependencyResource, new PackageIdentity(id, version));
-    dependencies.Add(new NugetDependency(package.Id, NuGetVersion.Parse(package.Version.ToNormalizedString())));
-    var hashPackageId = GetStringHash(package.Id);
-    if (!uniqueIds.Contains(hashPackageId))
-    {
-        uniqueIds.Add(hashPackageId);
-        var uri = package.DownloadUri.ToString();
-        Information("Downloading " + package.Id + " from " + uri);
-        DownloadFile (uri, ExternalsFolder + package.Id + NuPkgExtension);
-        if (!addDependencies) 
-        {
-            return;
-        }
-        foreach (var dependency in package.Dependencies) 
-        {
-            if (IgnoreNuGetDependencies.Contains(dependency.Id) || dependency.Id.StartsWith("System")) 
-            {
-                continue;
-            }
-            var hashDepId = GetStringHash(dependency.Id);
-            if (!uniqueIds.Contains(hashDepId))
-            {
-                await GetRecursiveDependenciesCore(dependencyResource, dependency.Id, NuGetVersion.Parse(dependency.VersionRange.MinVersion.ToNormalizedString()), dependencies, uniqueIds, addDependencies);
-            }
-        }
-    } 
-}
-
-private int GetStringHash(string input) 
-{
-    using (System.Security.Cryptography.HashAlgorithm algorithm = System.Security.Cryptography.SHA256.Create()) 
-    {
-        return BitConverter.ToInt32(algorithm.ComputeHash(Encoding.UTF8.GetBytes(input)), 0);
-    }
+    Information($"GetDependency {dependency.Name} version {dependency.Version.ToString()}");
+    var package = await dependencyResource.ResolvePackage(new PackageIdentity(dependency.Name, dependency.Version), dependency.Framework, new SourceCacheContext(), NullLogger.Instance, CancellationToken.None);
+    var uri = package.DownloadUri.ToString();
+    Information("Downloading " + package.Id + " from " + uri);
+    DownloadFile (uri, ExternalsFolder + package.Id + NuPkgExtension);
 }
 
 private DependencyInfoResource GetDefaultDependencyResource() 
@@ -482,18 +432,12 @@ Task ("Externals-Uwp-IL2CPP-Dependencies")
         EnsureDirectoryExists (targetPath + "/X64");
         
         foreach (var i in UwpIL2CPPDependencies) {
-            List<NugetDependency> dependencies = new List<NugetDependency>();
-            HashSet<int> uniqueIds = new HashSet<int>();
-            await GetRecursiveDependenciesCore(GetDefaultDependencyResource(), i.Name, i.Version, dependencies, uniqueIds);
-            foreach (var depPackage in dependencies) {
-                Information ("Extract NuGet package: " + depPackage.Name);
-
-                // Extract.
-                var path = ExternalsFolder + depPackage.Name + NuPkgExtension;
-                var tempPackageFolder = ExternalsFolder + depPackage.Name;
-                PackageExtractor.Extract(path, tempPackageFolder);
-                ExtractNuGetPackage(depPackage, tempPackageFolder, targetPath);
-            }
+            await GetDependency(GetDefaultDependencyResource(), i);
+            Information ("Extract NuGet package: " + i.Name);
+            var path = ExternalsFolder + i.Name + NuPkgExtension;
+            var tempPackageFolder = ExternalsFolder + i.Name;
+            PackageExtractor.Extract(path, tempPackageFolder);
+            ExtractNuGetPackage(i, tempPackageFolder, targetPath);
         }
 
         // Download patched Newtonsoft.Json library to avoid Unity issue.
@@ -648,27 +592,23 @@ async Task GetUwpPackage (AppCenterModule module, bool usePublicFeed) {
     var nupkgPath = "externals/uwp/";
     Console.WriteLine($"GetUwpPackage use public feed {usePublicFeed}");
     if (usePublicFeed) {
-        List<NugetDependency> dependencies = new List<NugetDependency>();
-        HashSet<int> uniqueIds = new HashSet<int>();
-        var dep = new NugetDependency(module.DotNetModule, UwpSdkVersion);
-        await GetRecursiveDependenciesCore(GetDefaultDependencyResource(), dep.Name, dep.Version, dependencies, uniqueIds, false);
-        foreach (var depPackage in dependencies) {
-            Information ("Extract NuGet package: " + depPackage.Name);
+        var dep = new NugetDependency(module.DotNetModule, UwpSdkVersion, "UAP10.0");
+        await GetDependency(GetDefaultDependencyResource(), dep);
+        Information ("Extract NuGet package: " + dep.Name);
 
-            // Extract.
-            //externals/uwp/depPackageName.nupkg
-            var path = ExternalsFolder + depPackage.Name + NuPkgExtension;
+        // Extract.
+        //externals/uwp/dep.nupkg
+        var path = ExternalsFolder + dep.Name + NuPkgExtension;
 
-            //externals/uwp/depPackageName
-            var tempPackageFolder = ExternalsFolder + depPackage.Name;
-            PackageExtractor.Extract(path, tempPackageFolder);
+        //externals/uwp/dep
+        var tempPackageFolder = ExternalsFolder + dep.Name;
+        PackageExtractor.Extract(path, tempPackageFolder);
 
-            // Move assemblies.
-            ExtractNuGetPackage(depPackage,tempPackageFolder, destination);
+        // Move assemblies.
+        ExtractNuGetPackage(dep, tempPackageFolder, destination);
 
-            // Delete the package
-            DeleteFiles (nupkgPath);
-        }
+        // Delete the package
+        DeleteFiles (nupkgPath);
     } else {
         nupkgPath = GetNuGetPackage(module.DotNetModule, UwpSdkVersion);
         var tempContentPath = "externals/uwp/" + module.Moniker + "/";
@@ -888,20 +828,10 @@ string GetNuGetPackage(string packageId, string packageVersion)
     return filename;
 }
 
-FilePathCollection ResolveDllFiles(string tempContentPath) 
+FilePathCollection ResolveDllFiles(string tempContentPath, NuGetFramework frameworkName) 
 {
-    var uwpPath = $"{tempContentPath}/lib/{UwpFrameworkName.GetShortFolderName()}/*.dll";
-    var files = GetFiles(uwpPath);
-    if (files.Any()) 
-    {
-        return files;
-    }
-    var netStandard2Path = $"{tempContentPath}/lib/{Netstandard2FrameworkName.GetShortFolderName()}/*.dll";
-    files = GetFiles(netStandard2Path);
-    if (files.Any()) 
-    {
-        return files;
-    }
+    var destinationPath = $"{tempContentPath}/lib/{frameworkName.GetShortFolderName()}/*.dll";
+    var files = GetFiles(destinationPath);
     if (files.Any()) 
     {
         return files;
@@ -939,7 +869,7 @@ string MoveNativeBinaries(string tempContentPath, string destination)
 void MoveAssemblies(NugetDependency package, string tempContentPath, string destination)
 {
     Console.WriteLine($"MoveAssemblies");
-    var dllFiles = ResolveDllFiles(tempContentPath);
+    var dllFiles = ResolveDllFiles(tempContentPath, package.Framework);
     if (dllFiles == null)
     {
         return;
