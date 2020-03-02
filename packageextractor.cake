@@ -1,5 +1,6 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT license.
+using Path =  System.IO.Path;
 
 class PackageExtractor
 {
@@ -21,11 +22,11 @@ class PackageExtractor
 
     public static void Extract(Stream nupkgStream, string targetPath)
     {
-        var tempHashPath = System.IO.Path.Combine(targetPath, System.IO.Path.GetRandomFileName());
-        var targetNuspec = System.IO.Path.Combine(targetPath, System.IO.Path.GetRandomFileName());
-        var targetNupkg = System.IO.Path.Combine(targetPath, System.IO.Path.GetRandomFileName());
-        targetNupkg = System.IO.Path.ChangeExtension(targetNupkg, ".nupkg");
-        var hashPath = System.IO.Path.Combine(targetPath, System.IO.Path.GetRandomFileName());
+        var tempHashPath = Path.Combine(targetPath, Path.GetRandomFileName());
+        var targetNuspec = Path.Combine(targetPath, Path.GetRandomFileName());
+        var targetNupkg = Path.Combine(targetPath, Path.GetRandomFileName());
+        targetNupkg = Path.ChangeExtension(targetNupkg, ".nupkg");
+        var hashPath = Path.Combine(targetPath, Path.GetRandomFileName());
 
         using (var packageReader = new PackageArchiveReader(nupkgStream))
         {
@@ -37,8 +38,8 @@ class PackageExtractor
 
             if ((packageSaveMode & PackageSaveMode.Files) == PackageSaveMode.Files)
             {
-                var nupkgFileName = System.IO.Path.GetFileName(targetNupkg);
-                var hashFileName = System.IO.Path.GetFileName(hashPath);
+                var nupkgFileName = Path.GetFileName(targetNupkg);
+                var hashFileName = Path.GetFileName(hashPath);
                 var packageFiles = packageReader.GetFiles()
                     .Where(file => ShouldInclude(file, nupkgFileName, nuspecFile, hashFileName));
                 var packageFileExtractor = new PackageFileExtractor(
@@ -68,7 +69,7 @@ class PackageExtractor
     {
         // Not all the files from a zip file are needed
         // So, files such as '.rels' and '[Content_Types].xml' are not extracted
-        var fileName = System.IO.Path.GetFileName(fullName);
+        var fileName = Path.GetFileName(fullName);
         if (fileName != null)
         {
             if (fileName == ".rels")
@@ -81,7 +82,7 @@ class PackageExtractor
             }
         }
 
-        var extension = System.IO.Path.GetExtension(fullName);
+        var extension = Path.GetExtension(fullName);
         if (extension == ".psmdcp")
         {
             return false;
