@@ -7,7 +7,7 @@ class PackageExtractor
 
     public static void Extract(string fileName)
     {
-        string dir = Environment.CurrentDirectory;
+        var dir = Environment.CurrentDirectory;
         Extract(fileName, dir);
     }
 
