@@ -51,7 +51,6 @@ var ExternalUnityPackages = new [] {
 var UwpIL2CPPDependencies = new [] {
     new NugetDependency("sqlite-net-pcl", "1.3.1", "UAP, Version=v10.0")
 };
-var UwpIL2CPPJsonUrl = SdkStorageUrl + "Newtonsoft.Json.dll";
 
 // Unity requires a specific NDK version for building Android with IL2CPP.
 // Download from a link here: https://developer.android.com/ndk/downloads/older_releases.html
@@ -410,10 +409,6 @@ Task ("Externals-Uwp-IL2CPP-Dependencies")
                 ExtractNuGetPackage (depPackage, frameworkName, path, targetPath);
             }
         }
-
-        // Download patched Newtonsoft.Json library to avoid Unity issue.
-        // Details: https://forum.unity3d.com/threads/332335/
-        DownloadFile (UwpIL2CPPJsonUrl, targetPath + "/Newtonsoft.Json.dll");
 
         // Process UWP IL2CPP dependencies.
         Information ("Processing UWP IL2CPP dependencies. This could take a minute.");
