@@ -1030,25 +1030,23 @@ string MoveNativeBinaries(string tempContentPath, string destination)
 }
 
 void MoveAssemblies(NugetDependency package, string tempContentPath, string destination)
-{   
-    var targetPath = $"{destination}/{package.Name}.dll";
-    if (!FileExists(targetPath)) {
-        Console.WriteLine($"MoveAssemblies");
-        var dllFiles = ResolveDllFiles(tempContentPath);
-        if (dllFiles == null)
-        {
-            return;
-        }
-        foreach (var matchingFile in dllFiles) 
-        {
-            if (FileExists(targetPath)) 
-            {
-                DeleteFile(targetPath);
-            }
-            MoveFile(matchingFile.FullPath, targetPath);
-            Console.WriteLine($"Moving {matchingFile.FullPath} to {targetPath}");
-        }
+{
+    Console.WriteLine($"MoveAssemblies");
+    var dllFiles = ResolveDllFiles(tempContentPath);
+    if (dllFiles == null)
+    {
+        return;
     }
+    foreach (var matchingFile in dllFiles) 
+    {
+        var targetPath = $"{destination}/{matchingFile.GetFilename()}";
+        if (FileExists(targetPath)) 
+        {
+            DeleteFile(targetPath);
+        }
+        MoveFile(matchingFile.FullPath, targetPath);
+        Console.WriteLine($"Moving {matchingFile.FullPath} to {targetPath}");
+    } 
 }
 
 void ExtractNuGetPackage (NugetDependency package, string tempContentPath, string destination)
