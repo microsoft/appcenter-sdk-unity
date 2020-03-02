@@ -167,6 +167,7 @@ void ExtractNuGetPackage (NugetDependency package, string tempContentPath, strin
         }
         Information($"package is null, move from " + tempContentPath + contentPathSuffix + "* to " + destination);
         var files = GetFiles (tempContentPath + contentPathSuffix + "*");
+        CleanDirectories(destination);
         MoveFiles (files, destination);
     }
 }
