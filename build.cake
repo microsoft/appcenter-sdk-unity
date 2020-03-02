@@ -193,7 +193,7 @@ class UnityPackage
         var xpathPrefix = "/package/include/file[";
         var xpathSuffix= "]/@path";
 
-        string lastPath = Statics.Context.XmlPeek(specFilePath, xpathPrefix + "last()" + xpathSuffix);
+        var lastPath = Statics.Context.XmlPeek(specFilePath, xpathPrefix + "last()" + xpathSuffix);
         var currentIdx = 1;
         var currentPath =  Statics.Context.XmlPeek(specFilePath, xpathPrefix + currentIdx++ + xpathSuffix);
 
@@ -406,13 +406,10 @@ Task("Install-Unity-Windows").Does(() => {
     }
 }).OnError(HandleError);
 
-async Task GetDependency(DependencyInfoResource dependencyResource, NugetDependency dependency)
+async Task<SourcePackageDependencyInfo> GetDependency(DependencyInfoResource dependencyResource, NugetDependency dependency)
 {
     Information($"GetDependency {dependency.Name} version {dependency.Version.ToString()}");
-    var package = await dependencyResource.ResolvePackage(new PackageIdentity(dependency.Name, dependency.Version), dependency.Framework, new SourceCacheContext(), NullLogger.Instance, CancellationToken.None);
-    var uri = package.DownloadUri.ToString();
-    Information("Downloading " + package.Id + " from " + uri);
-    DownloadFile (uri, ExternalsFolder + package.Id + NuPkgExtension);
+    return await dependencyResource.ResolvePackage(new PackageIdentity(dependency.Name, dependency.Version), dependency.Framework, new SourceCacheContext(), NullLogger.Instance, CancellationToken.None); 
 }
 
 private DependencyInfoResource GetDefaultDependencyResource() 
@@ -432,13 +429,8 @@ Task ("Externals-Uwp-IL2CPP-Dependencies")
         EnsureDirectoryExists (targetPath + "/X86");
         EnsureDirectoryExists (targetPath + "/X64");
         
-        foreach (var i in UwpIL2CPPDependencies) {
-            await GetDependency(GetDefaultDependencyResource(), i);
-            Information ("Extract NuGet package: " + i.Name);
-            var path = ExternalsFolder + i.Name + NuPkgExtension;
-            var tempPackageFolder = ExternalsFolder + i.Name;
-            PackageExtractor.Extract(path, tempPackageFolder);
-            ExtractNuGetPackage(i, tempPackageFolder, targetPath);
+        foreach (var dependency in UwpIL2CPPDependencies) {
+            ProcessDependency(dependency, targetPath);
         }
 
         // Download patched Newtonsoft.Json library to avoid Unity issue.
@@ -516,7 +508,7 @@ Task("Package").Does(()=>
 {
     // Remove AndroidManifest.xml
     var path = "Assets/Plugins/Android/appcenter/AndroidManifest.xml";
-    if (System.IO.File.Exists(path))
+    if (FileExists(path))
     {
         DeleteFile(path);
     }
@@ -593,23 +585,7 @@ async Task GetUwpPackage (AppCenterModule module, bool usePublicFeed) {
     var nupkgPath = "externals/uwp/";
     Information($"GetUwpPackage use public feed {usePublicFeed}");
     if (usePublicFeed) {
-        var dep = new NugetDependency(module.DotNetModule, UwpSdkVersion, "UAP10.0");
-        await GetDependency(GetDefaultDependencyResource(), dep);
-        Information ("Extract NuGet package: " + dep.Name);
-
-        // Extract.
-        //externals/uwp/dep.nupkg
-        var path = ExternalsFolder + dep.Name + NuPkgExtension;
-
-        //externals/uwp/dep
-        var tempPackageFolder = ExternalsFolder + dep.Name;
-        PackageExtractor.Extract(path, tempPackageFolder);
-
-        // Move assemblies.
-        ExtractNuGetPackage(dep, tempPackageFolder, destination);
-
-        // Delete the package
-        DeleteFiles (nupkgPath);
+        ProcessDependency(new NugetDependency(module.DotNetModule, UwpSdkVersion, "UAP10.0"), destination);
     } else {
         nupkgPath = GetNuGetPackage(module.DotNetModule, UwpSdkVersion);
         var tempContentPath = "externals/uwp/" + module.Moniker + "/";
@@ -618,10 +594,21 @@ async Task GetUwpPackage (AppCenterModule module, bool usePublicFeed) {
         // Unzip into externals/uwp/
         Unzip (nupkgPath, tempContentPath);
         ExtractNuGetPackage (null, tempContentPath, destination);
-        
-        // Delete the package
-        DeleteFiles (nupkgPath);
     }
+    DeleteFiles (nupkgPath);
+}
+
+private async void ProcessDependency(NugetDependency dependency, string destination) 
+{
+    var package = await GetDependency(GetDefaultDependencyResource(), dependency);
+    var uri = package.DownloadUri.ToString();
+    Information("Downloading " + package.Id + " from " + uri);
+    DownloadFile (uri, ExternalsFolder + package.Id + NuPkgExtension);
+    Information ("Extract NuGet package: " + dependency.Name);
+    var path = ExternalsFolder + dependency.Name + NuPkgExtension;
+    var tempPackageFolder = ExternalsFolder + dependency.Name;
+    PackageExtractor.Extract(path, tempPackageFolder);
+    ExtractNuGetPackage(dependency, tempPackageFolder, destination);
 }
 
 void BuildApps(string type, string projectPath = ".")
