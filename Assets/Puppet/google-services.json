@@ -1,0 +1,22 @@
+{
+  "project_info": {
+    "project_number": "329412940947",
+    "project_id": "unity-puppet-android"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:329412940947:android:21eb9d6cc3817b4d80e966",
+        "android_client_info": {
+          "package_name": "com.microsoft.appcenter.unity.puppet"
+        }
+      },
+      "api_key": [
+        {
+          "current_key": ""
+        }
+      ]
+    }
+  ],
+  "configuration_version": "1"
+}
