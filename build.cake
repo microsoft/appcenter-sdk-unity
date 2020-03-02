@@ -653,14 +653,14 @@ Task("RemovePackagesFromDemoApp").Does(()=>
 // (Unity deletes meta data files when it is opened if the corresponding files are not on disk.)
 Task("Externals")
     .IsDependentOn("Externals-Uwp")
-    // .IsDependentOn("Externals-Ios")
-    // .IsDependentOn("Externals-Android")
-    // .IsDependentOn("BuildAndroidContentProvider")
-     .IsDependentOn("Externals-Uwp-IL2CPP-Dependencies")
-     .IsDependentOn("Externals-Unity-Packages")
+    .IsDependentOn("Externals-Ios")
+    .IsDependentOn("Externals-Android")
+    .IsDependentOn("BuildAndroidContentProvider")
+    .IsDependentOn("Externals-Uwp-IL2CPP-Dependencies")
+    .IsDependentOn("Externals-Unity-Packages")
     .Does(()=>
 {
-    // DeleteDirectoryIfExists("externals");
+    DeleteDirectoryIfExists("externals");
 });
 
 // Creates Unity packages corresponding to all ".unitypackagespec" files
@@ -768,13 +768,14 @@ async Task GetUwpPackage (AppCenterModule module, bool usePublicFeed) {
             DeleteFiles (nupkgPath);
         }
     } else {
-        // TODO
         nupkgPath = GetNuGetPackage(module.DotNetModule, UwpSdkVersion);
         var tempContentPath = "externals/uwp/" + module.Moniker + "/";
         DeleteDirectoryIfExists (tempContentPath);
+
         // Unzip into externals/uwp/
         Unzip (nupkgPath, tempContentPath);
         ExtractNuGetPackage (null, tempContentPath, destination);
+        
         // Delete the package
         DeleteFiles (nupkgPath);
     }
@@ -955,7 +956,7 @@ Task("clean")
     .IsDependentOn("RemoveTemporaries")
     .Does(() =>
 {
-   // DeleteDirectoryIfExists("externals");
+    DeleteDirectoryIfExists("externals");
     DeleteDirectoryIfExists("output");
     CleanDirectories("./**/bin");
     CleanDirectories("./**/obj");
@@ -1039,61 +1040,11 @@ void ExtractNuGetPackage (NugetDependency package, string tempContentPath, strin
     }
     // Move native binaries.
     var contentPathSuffix = "lib/uap10.0/";
-    // var runtimesPath = tempContentPath + "/runtimes";
-    // Console.WriteLine("runtimesPath " + runtimesPath);
-    // if (DirectoryExists (runtimesPath)) {
-    //     Console.WriteLine("runtimesPath directory exists" + runtimesPath);
-    //     var oneArch = "x86";
-    //     foreach (var runtime in GetDirectories (runtimesPath + "/win10-*")) {
-    //         var arch = runtime.GetDirectoryName ().ToString ().Replace ("win10-", "").ToUpper ();
-    //         oneArch = arch;
-    //         var nativeFiles = GetFiles (runtime + "/native/*");
-    //         var targetArchPath = destination + "/" + arch;
-    //         EnsureDirectoryExists (targetArchPath);
-    //         Console.WriteLine("runtimesPath subdir" + targetArchPath);
-            // foreach (var nativeFile in nativeFiles) {
-            //     if (!FileExists (targetArchPath + "/" + nativeFile.GetFilename ())) {
-            //         MoveFileToDirectory (nativeFile, targetArchPath);
-            //     }
-            // }
-        // }
-        // contentPathSuffix = "runtimes/win10-" + oneArch + "/" + contentPathSuffix;
-    // }
     if (package == null) {
         var files = GetFiles (tempContentPath + contentPathSuffix + "*");
         MoveFiles (files, destination);
     }
 }
-
-// IList<IPackage> GetNuGetDependencies(IPackageRepository repository, FrameworkName frameworkName, IPackage package)
-// {
-//     var dependencies = new List<IPackage>();
-//     GetNuGetDependencies(dependencies, repository, frameworkName, package);
-//     return dependencies;
-// }
-
-// void GetNuGetDependencies(IList<IPackage> dependencies, IPackageRepository repository, FrameworkName frameworkName, IPackage package)
-// {
-//     // Declaring this outside the method causes a parse error on Cake for Mac.
-//     string[] IgnoreNuGetDependencies = {
-//         "Microsoft.NETCore.UniversalWindowsPlatform",
-//         "NETStandard.Library"
-//     };
-
-//     dependencies.Add(package);
-//     foreach (var dependency in package.GetCompatiblePackageDependencies(frameworkName))
-//     {
-//         if (IgnoreNuGetDependencies.Contains(dependency.Id))
-//         {
-//             continue;
-//         }
-//         var subPackage = repository.ResolveDependency(dependency, false, true);
-//         if (!dependencies.Contains(subPackage))
-//         {
-//             GetNuGetDependencies(dependencies, repository, frameworkName, subPackage);
-//         }
-//     }
-// }
 
 void BuildXcodeProject(string projectPath)
 {
