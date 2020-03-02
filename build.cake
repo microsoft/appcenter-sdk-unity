@@ -40,6 +40,7 @@ var UwpSdkVersion = "3.0.0";
 var SdkStorageUrl = "https://mobilecentersdkdev.blob.core.windows.net/sdk/";
 var AndroidUrl = SdkStorageUrl + "AppCenter-SDK-Android-" + AndroidSdkVersion + ".zip";
 var IosUrl = SdkStorageUrl + "AppCenter-SDK-Apple-" + IosSdkVersion + ".zip";
+var NugetUrl = "https://api.nuget.org/v3/index.json";
 
 var AppCenterModules = new [] {
     new AppCenterModule("appcenter-release.aar", "AppCenter.framework", "Microsoft.AppCenter", "Core"),
@@ -414,8 +415,7 @@ async Task<SourcePackageDependencyInfo> GetDependency(DependencyInfoResource dep
 
 private DependencyInfoResource GetDefaultDependencyResource() 
 {
-    var packageSource = "https://api.nuget.org/v3/index.json";
-    var sourceRepository = new SourceRepository(new PackageSource(packageSource), Repository.Provider.GetCoreV3());
+    var sourceRepository = new SourceRepository(new PackageSource(NugetUrl), Repository.Provider.GetCoreV3());
     return sourceRepository.GetResource<DependencyInfoResource>(CancellationToken.None);
 }
 
