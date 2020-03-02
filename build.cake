@@ -66,6 +66,8 @@ var UwpIL2CPPDependencies = new [] {
    new NugetDependency("Newtonsoft.Json", "12.0.3")
 };
 
+var UwpIL2CPPJsonUrl = SdkStorageUrl + "Newtonsoft.Json.dll";
+
 // Unity requires a specific NDK version for building Android with IL2CPP.
 // Download from a link here: https://developer.android.com/ndk/downloads/older_releases.html
 // Unity 2017.3 requires NDK r13b.
@@ -592,6 +594,10 @@ Task ("Externals-Uwp-IL2CPP-Dependencies")
                 ExtractNuGetPackage(depPackage, tempPackageFolder, targetPath);
             }
         }
+        
+        // Download patched Newtonsoft.Json library to avoid Unity issue.
+        // Details: https://forum.unity3d.com/threads/332335/
+        DownloadFile (UwpIL2CPPJsonUrl, targetPath + "/Newtonsoft.Json.dll");
 
         // Process UWP IL2CPP dependencies.
         Information ("Processing UWP IL2CPP dependencies. This could take a minute.");
