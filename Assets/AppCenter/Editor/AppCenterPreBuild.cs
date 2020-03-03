@@ -47,40 +47,6 @@ public class AppCenterPreBuild : IPreprocessBuild
 #if !APPCENTER_DONT_USE_NATIVE_STARTER
             AddStartupCode(new AppCenterSettingsMakerIos());
 #endif
-        } else if (target == BuildTarget.WSAPlayer) {
-            CleanOldDependencies();
-        }
-    }
-
-    public void CleanOldDependencies() {
-        var dirsToDelete = new[] {"ARM", "X86", "X64"};
-
-        //We don't delete Newtonsoft.Json and SQLitePCLRaw.core 
-        //as they have the same name and will be replaced automatically upon import.
-        var filesToDelete = new[] {"SQLite-net", "SQLitePCLRaw.batteries_green", "SQLitePCLRaw.batteries_v2", "SQLitePCLRaw.provider.e_sqlite3"};
-        foreach(var directory in dirsToDelete) {
-            var directoryPath = AppCenterSettingsContext.AppCenterPath + "/Plugins/WSA/IL2CPP/" + directory;
-            if (Directory.Exists(directoryPath))
-            {
-                Directory.Delete(directoryPath, true);
-            }
-            var filePath = directoryPath + ".meta";
-            if (File.Exists(filePath))
-            {
-                File.Delete(filePath);
-            }
-        }
-        foreach(var file in filesToDelete) {
-            var dllPath = AppCenterSettingsContext.AppCenterPath + "/Plugins/WSA/IL2CPP/" + file + ".dll";
-            var metaFilePath = dllPath + ".meta";
-            if (File.Exists(dllPath))
-            {
-                File.Delete(dllPath);
-            }
-            if (File.Exists(metaFilePath))
-            {
-                File.Delete(metaFilePath);
-            }
         }
     }
 

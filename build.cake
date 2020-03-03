@@ -7,8 +7,8 @@
 #load "utility.cake"
 #load "nuget-tools.cake"
 
-using System;
 using Path =  System.IO.Path;
+using System;
 using System.Linq;
 using System.Net;
 using System.Collections.Generic;
@@ -33,7 +33,8 @@ var SdkStorageUrl = "https://mobilecentersdkdev.blob.core.windows.net/sdk/";
 var AndroidUrl = SdkStorageUrl + "AppCenter-SDK-Android-" + AndroidSdkVersion + ".zip";
 var IosUrl = SdkStorageUrl + "AppCenter-SDK-Apple-" + IosSdkVersion + ".zip";
 
-var AppCenterModules = new [] {
+var AppCenterModules = new [] 
+{
     new AppCenterModule("appcenter-release.aar", "AppCenter.framework", "Microsoft.AppCenter", "Core"),
     new AppCenterModule("appcenter-analytics-release.aar", "AppCenterAnalytics.framework", "Microsoft.AppCenter.Analytics", "Analytics"),
     new AppCenterModule("appcenter-distribute-release.aar", new[] { "AppCenterDistribute.framework", "AppCenterDistributeResources.bundle" }, "Microsoft.AppCenter.Distribute", "Distribute"),
@@ -41,7 +42,8 @@ var AppCenterModules = new [] {
     new AppCenterModule("appcenter-crashes-release.aar", "AppCenterCrashes.framework", "Microsoft.AppCenter.Crashes", "Crashes")
 };
 
-var ExternalUnityPackages = new [] {
+var ExternalUnityPackages = new [] 
+{
     // From https://github.com/googlesamples/unity-jar-resolver#getting-started
     // Import the play-services-resolver-*.unitypackage into your plugin project <...> ensuring that you add the -gvh_disable option.
     // You must specify the -gvh_disable option in order for the Version Handler to work correctly!
@@ -248,12 +250,15 @@ Task ("Externals-Uwp")
 
         CleanDirectory ("externals/uwp");
         EnsureDirectoryExists ("Assets/AppCenter/Plugins/WSA/");
-        foreach (var module in AppCenterModules) {
-            if (module.Moniker == "Distribute") {
+        foreach (var module in AppCenterModules) 
+        {
+            if (module.Moniker == "Distribute") 
+            {
                 Warning ("Skipping 'Distribute' for UWP.");
                 continue;
             }
-            if (module.Moniker == "Crashes") {
+            if (module.Moniker == "Crashes") 
+            {
                 Warning ("Skipping 'Crashes' for UWP.");
                 continue;
             }
@@ -371,7 +376,8 @@ Task ("Externals-Uwp-IL2CPP-Dependencies")
         EnsureDirectoryExists (targetPath + "/X86");
         EnsureDirectoryExists (targetPath + "/X64");
         
-        foreach (var dependency in UwpIL2CPPDependencies) {
+        foreach (var dependency in UwpIL2CPPDependencies) 
+        {
             await ProcessDependency(dependency, targetPath);
         }
 
@@ -429,12 +435,12 @@ Task("RemovePackagesFromDemoApp").Does(()=>
 // or steps that run Unity commands might cause the *.meta files to be deleted!
 // (Unity deletes meta data files when it is opened if the corresponding files are not on disk.)
 Task("Externals")
-    // .IsDependentOn("Externals-Uwp")
-    // .IsDependentOn("Externals-Ios")
-    // .IsDependentOn("Externals-Android")
-    // .IsDependentOn("BuildAndroidContentProvider")
+    .IsDependentOn("Externals-Uwp")
+    .IsDependentOn("Externals-Ios")
+    .IsDependentOn("Externals-Android")
+    .IsDependentOn("BuildAndroidContentProvider")
     .IsDependentOn("Externals-Uwp-IL2CPP-Dependencies")
-    // .IsDependentOn("Externals-Unity-Packages")
+    .IsDependentOn("Externals-Unity-Packages")
     .Does(()=>
 {
     DeleteDirectoryIfExists("externals");
@@ -514,16 +520,19 @@ Task("DownloadNdk")
     }
 }).OnError(HandleError);
 
-async Task GetUwpPackage (AppCenterModule module, bool usePublicFeed) {
+async Task GetUwpPackage (AppCenterModule module, bool usePublicFeed) 
+{
     // Prepare destination
     var destination = "Assets/AppCenter/Plugins/WSA/" + module.Moniker + "/";
     EnsureDirectoryExists (destination);
     DeleteFiles (destination + "*.dll");
     DeleteFiles (destination + "*.winmd");
     var nupkgPath = "externals/uwp/";
-    if (usePublicFeed) {
+    if (usePublicFeed) 
+    {
         await ProcessDependency(new NugetDependency(module.DotNetModule, UwpSdkVersion, "UAP10.0"), destination);
-    } else {
+    } else 
+    {
         nupkgPath = GetNuGetPackage(module.DotNetModule, UwpSdkVersion);
         var tempContentPath = "externals/uwp/" + module.Moniker + "/";
         DeleteDirectoryIfExists (tempContentPath);
