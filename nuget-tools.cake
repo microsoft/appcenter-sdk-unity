@@ -1,3 +1,6 @@
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT license.
+
 var NugetUrl = "https://api.nuget.org/v3/index.json";
 
 // UWP IL2CPP dependencies.
