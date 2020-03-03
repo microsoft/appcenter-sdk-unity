@@ -100,16 +100,14 @@ FilePathCollection ResolveDllFiles(string tempContentPath, NuGetFramework framew
     return null;
 }
 
-string MoveNativeBinaries(string tempContentPath, string destination)
+void MoveNativeBinaries(string tempContentPath, string destination)
 {
     var runtimesPath = tempContentPath + "/runtimes";
     if (DirectoryExists (runtimesPath)) 
     {
         Information("MoveNativeBinaries");
-        var oneArch = "x86";
         foreach (var runtime in GetDirectories (runtimesPath + "/win10-*")) {
             var arch = runtime.GetDirectoryName ().ToString ().Replace ("win10-", "").ToUpper ();
-            oneArch = arch;
             var nativeFiles = GetFiles (runtime + "/**/*.dll");
             var targetArchPath = destination + "/" + arch;
             EnsureDirectoryExists (targetArchPath);
@@ -124,9 +122,7 @@ string MoveNativeBinaries(string tempContentPath, string destination)
                 }
             }
         }
-        return oneArch;
     } 
-    return null;
 }
 
 void MoveAssemblies(NugetDependency package, string tempContentPath, string destination)
@@ -153,7 +149,7 @@ void ExtractNuGetPackage (NugetDependency package, string tempContentPath, strin
 {
     var packageName = package != null ? package.Name : "null";
     Information($"ExtractNuGetPackage {packageName}; tempcontentpath {tempContentPath}; destination {destination}");
-    var oneArch = MoveNativeBinaries(tempContentPath, destination);
+    MoveNativeBinaries(tempContentPath, destination);
     if (package != null) 
     {
         MoveAssemblies(package, tempContentPath, destination);
@@ -161,11 +157,6 @@ void ExtractNuGetPackage (NugetDependency package, string tempContentPath, strin
     if (package == null) 
     {
         var contentPathSuffix = "lib/uap10.0/";
-        if (oneArch != null) 
-        {
-            //todo check, the result path may be incorrect
-            contentPathSuffix = "runtimes/win10-" + oneArch + "/" + contentPathSuffix;
-        }
         Information($"package is null, move from " + tempContentPath + contentPathSuffix + "* to " + destination);
         var files = GetFiles (tempContentPath + contentPathSuffix + "*");
         CleanDirectories(destination);
