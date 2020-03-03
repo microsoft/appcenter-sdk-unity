@@ -12,7 +12,6 @@ var PrivateNugetFeedUrl = "https://msmobilecenter.pkgs.visualstudio.com/_packagi
 
 var UwpIL2CPPDependencies = new [] {
    new NugetDependency("SQLitePCLRaw.bundle_green", "2.0.2", ".NETStandard,Version=v2.0"),
-   new NugetDependency("Newtonsoft.Json", "12.0.3", ".NETStandard,Version=v2.0"),
    new NugetDependency("SQLitePCLRaw.provider.e_sqlite3", "2.0.2", ".NETStandard,Version=v2.0"),
    new NugetDependency("SQLitePCLRaw.core", "2.0.2", ".NETStandard,Version=v2.0"),
    new NugetDependency("SQLitePCLRaw.lib.e_sqlite3", "2.0.2", "UAP10.0")
