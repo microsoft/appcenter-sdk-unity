@@ -3,8 +3,6 @@
 
 #addin nuget:?package=Cake.FileHelpers
 #addin nuget:?package=Cake.AzureStorage
-#addin nuget:?package=NuGet.Resolver&loaddependencies=true
-#addin nuget:?package=NuGet.Protocol&loaddependencies=true
 #addin nuget:?package=Cake.Xcode
 #load "utility.cake"
 #load "packageextractor.cake"

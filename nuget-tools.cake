@@ -1,6 +1,8 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT license.
 
+#addin nuget:?package=NuGet.Resolver&loaddependencies=true
+#addin nuget:?package=NuGet.Protocol&loaddependencies=true
 using NuGet.Common;
 using NuGet.Configuration;
 using NuGet.Frameworks;
@@ -9,7 +11,6 @@ using NuGet.Protocol.Core.Types;
 using NuGet.Versioning;
 
 var PrivateNugetFeedUrl = "https://msmobilecenter.pkgs.visualstudio.com/_packaging/";
-
 
 // This list includes all the dependencies required for the SDK
 // plus any dependencies of the dependecies. In case of any change or version bump
@@ -134,7 +135,7 @@ void MoveNativeBinaries(string tempContentPath, string destination)
 
 void MoveAssemblies(NugetDependency package, string tempContentPath, string destination)
 {
-    Information($"MoveAssemblies");
+    Information($"MoveAssemblies for {package.Name} from {tempContentPath} to {destination}.");
     var dllFiles = ResolveDllFiles(tempContentPath, package.Framework);
     if (dllFiles == null)
     {
