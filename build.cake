@@ -49,7 +49,8 @@ var ExternalUnityPackages = new [] {
 
 // UWP IL2CPP dependencies.
 var UwpIL2CPPDependencies = new [] {
-    new NugetDependency("sqlite-net-pcl", "1.3.1", "UAP, Version=v10.0")
+    new NugetDependency("sqlite-net-pcl", "1.3.1", "UAP, Version=v10.0"),
+    new NugetDependency("Newtonsoft.Json", "12.0.3", ".NETStandard,Version=v2.0")
 };
 
 // Unity requires a specific NDK version for building Android with IL2CPP.
