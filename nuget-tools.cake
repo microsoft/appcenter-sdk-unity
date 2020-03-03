@@ -10,7 +10,7 @@ using NuGet.Packaging;
 using NuGet.Packaging.Core;
 using NuGet.Protocol.Core.Types;
 using NuGet.Versioning;
-using Path =  System.IO.Path;
+using Path = System.IO.Path;
 
 var PrivateNugetFeedUrl = "https://msmobilecenter.pkgs.visualstudio.com/_packaging/";
 
@@ -129,7 +129,8 @@ void MoveNativeBinaries(string tempContentPath, string destination)
             {
                 MoveFileToDirectory(nativeFile, targetArchPath);
                 Information($"Moved native binary file {nativeFile} to {targetArchPath}");
-            } else {
+            } else 
+            {
                 Information("Native binary file already exists");
             }
         }
