@@ -17,15 +17,6 @@ using System.Net;
 using System.Collections.Generic;
 using System.Runtime.Versioning;
 using System.Threading;
-using NuGet.Common;
-using NuGet.Configuration;
-using NuGet.Frameworks;
-using NuGet.Packaging;
-using NuGet.Packaging.Core;
-using NuGet.Protocol;
-using NuGet.Protocol.Core.Types;
-using NuGet.Resolver;
-using NuGet.Versioning;
 
 // Native SDK versions
 var AndroidSdkVersion = "3.0.0-0+594536359";

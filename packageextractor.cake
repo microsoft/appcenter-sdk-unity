@@ -1,7 +1,9 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT license.
 
-using Path =  System.IO.Path;
+using Path = System.IO.Path;
+using NuGet.Common;
+using NuGet.Packaging;
 
 class PackageExtractor
 {

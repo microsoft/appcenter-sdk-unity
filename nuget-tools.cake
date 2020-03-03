@@ -1,9 +1,15 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT license.
 
+using NuGet.Common;
+using NuGet.Configuration;
+using NuGet.Frameworks;
+using NuGet.Packaging.Core;
+using NuGet.Protocol.Core.Types;
+using NuGet.Versioning;
+
 var PrivateNugetFeedUrl = "https://msmobilecenter.pkgs.visualstudio.com/_packaging/";
 
-// UWP IL2CPP dependencies.
 var UwpIL2CPPDependencies = new [] {
    new NugetDependency("SQLitePCLRaw.bundle_green", "2.0.2", ".NETStandard,Version=v2.0"),
    new NugetDependency("Newtonsoft.Json", "12.0.3", ".NETStandard,Version=v2.0"),
