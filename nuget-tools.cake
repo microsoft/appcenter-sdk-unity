@@ -1,7 +1,6 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT license.
 
-var NugetUrl = "https://api.nuget.org/v3/index.json";
 var PrivateNugetFeedUrl = "https://msmobilecenter.pkgs.visualstudio.com/_packaging/";
 
 // UWP IL2CPP dependencies.
@@ -50,7 +49,7 @@ async Task<SourcePackageDependencyInfo> GetDependency(DependencyInfoResource dep
 
 DependencyInfoResource GetDefaultDependencyResource() 
 {
-    var sourceRepository = new SourceRepository(new PackageSource(NugetUrl), Repository.Provider.GetCoreV3());
+    var sourceRepository = new SourceRepository(new PackageSource(NuGetConstants.V3FeedUrl), Repository.Provider.GetCoreV3());
     return sourceRepository.GetResource<DependencyInfoResource>(CancellationToken.None);
 }
 
