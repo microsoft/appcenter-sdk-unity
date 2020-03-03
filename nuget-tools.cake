@@ -2,6 +2,7 @@
 // Licensed under the MIT license.
 
 var NugetUrl = "https://api.nuget.org/v3/index.json";
+var PrivateNugetFeedUrl = "https://msmobilecenter.pkgs.visualstudio.com/_packaging/";
 
 // UWP IL2CPP dependencies.
 var UwpIL2CPPDependencies = new [] {
@@ -72,9 +73,7 @@ string GetNuGetPackage(string packageId, string packageVersion)
     var nugetPassword = Argument("NuGetPassword", EnvironmentVariable("NUGET_PASSWORD"));
     var nugetFeedId = Argument("NuGetFeedId", EnvironmentVariable("NUGET_FEED_ID"));
     packageId = packageId.ToLower();
-
-    var url = "https://msmobilecenter.pkgs.visualstudio.com/_packaging/";
-    url += nugetFeedId + "/nuget/v3/flat2/" + packageId + "/" + packageVersion + "/" + packageId + "." + packageVersion + ".nupkg";
+    var url = PrivateNugetFeedUrl + nugetFeedId + "/nuget/v3/flat2/" + packageId + "/" + packageVersion + "/" + packageId + "." + packageVersion + ".nupkg";
 
     // Get the NuGet package
     HttpWebRequest request = (HttpWebRequest)WebRequest.Create (url);

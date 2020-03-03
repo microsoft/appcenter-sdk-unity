@@ -533,7 +533,6 @@ async Task GetUwpPackage (AppCenterModule module, bool usePublicFeed) {
     DeleteFiles (destination + "*.dll");
     DeleteFiles (destination + "*.winmd");
     var nupkgPath = "externals/uwp/";
-    Information($"GetUwpPackage use public feed {usePublicFeed}");
     if (usePublicFeed) {
         await ProcessDependency(new NugetDependency(module.DotNetModule, UwpSdkVersion, "UAP10.0"), destination);
     } else {
