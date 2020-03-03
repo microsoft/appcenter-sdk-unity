@@ -16,9 +16,9 @@ using System.Runtime.Versioning;
 using System.Threading;
 
 // Native SDK versions
-var AndroidSdkVersion = "3.0.0-0+594536359";
-var IosSdkVersion = "3.0.0-19+9c7bee9895b5165a1825132d4a86ca3f6037ea98";
-var UwpSdkVersion = "3.0.0";
+const string AndroidSdkVersion = "3.0.0-0+594536359";
+const string IosSdkVersion = "3.0.0-19+9c7bee9895b5165a1825132d4a86ca3f6037ea98";
+const string UwpSdkVersion = "3.0.0";
 
 // URLs for downloading binaries.
 /*
@@ -29,9 +29,9 @@ var UwpSdkVersion = "3.0.0";
  *     By running mozroots and install part of Mozilla's root certificates can make it work.
  */
 
-var SdkStorageUrl = "https://mobilecentersdkdev.blob.core.windows.net/sdk/";
-var AndroidUrl = SdkStorageUrl + "AppCenter-SDK-Android-" + AndroidSdkVersion + ".zip";
-var IosUrl = SdkStorageUrl + "AppCenter-SDK-Apple-" + IosSdkVersion + ".zip";
+const string SdkStorageUrl = "https://mobilecentersdkdev.blob.core.windows.net/sdk/";
+const string AndroidUrl = SdkStorageUrl + "AppCenter-SDK-Android-" + AndroidSdkVersion + ".zip";
+const string IosUrl = SdkStorageUrl + "AppCenter-SDK-Apple-" + IosSdkVersion + ".zip";
 
 var AppCenterModules = new [] 
 {
@@ -57,7 +57,7 @@ var ExternalUnityPackages = new []
 // Download from a link here: https://developer.android.com/ndk/downloads/older_releases.html
 // Unity 2017.3 requires NDK r13b.
 // The destination for the NDK download.
-var NdkFolder = "android_ndk";
+const string NdkFolder = "android_ndk";
 
 // Task TARGET for build
 var Target = Argument("target", Argument("t", "Default"));
@@ -151,7 +151,7 @@ class UnityPackage
 
         var lastPath = Statics.Context.XmlPeek(specFilePath, xpathPrefix + "last()" + xpathSuffix);
         var currentIdx = 1;
-        var currentPath =  Statics.Context.XmlPeek(specFilePath, xpathPrefix + currentIdx++ + xpathSuffix);
+        var currentPath = Statics.Context.XmlPeek(specFilePath, xpathPrefix + currentIdx++ + xpathSuffix);
 
         if (currentPath != null)
         {
@@ -159,7 +159,7 @@ class UnityPackage
         }
         while (currentPath != lastPath)
         {
-            currentPath =  Statics.Context.XmlPeek(specFilePath, xpathPrefix + currentIdx++ + xpathSuffix);
+            currentPath = Statics.Context.XmlPeek(specFilePath, xpathPrefix + currentIdx++ + xpathSuffix);
             _includePaths.Add(currentPath);
         }
         return true;
@@ -175,7 +175,7 @@ class UnityPackage
         {
             args += " " + path;
         }
-        var fullPackageName =  _packageName + "-v" + _packageVersion + ".unitypackage";
+        var fullPackageName = _packageName + "-v" + _packageVersion + ".unitypackage";
         args += " " + targetDirectory + "/" + fullPackageName;
         var result = ExecuteUnityCommand(args);
         if (result != 0)
@@ -246,28 +246,28 @@ Task ("Externals-Uwp")
         var feedIdNugetEnv = Argument("NuGetFeedId", EnvironmentVariable("NUGET_FEED_ID"));
         var userNugetEnv = EnvironmentVariable("NUGET_USER");
         var passwordNugetEnv = Argument("NuGetPassword", EnvironmentVariable("NUGET_PASSWORD"));
-        var usePublicFeed = (string.IsNullOrEmpty (feedIdNugetEnv) || string.IsNullOrEmpty (userNugetEnv) || string.IsNullOrEmpty (passwordNugetEnv));
+        var usePublicFeed = (string.IsNullOrEmpty(feedIdNugetEnv) || string.IsNullOrEmpty(userNugetEnv) || string.IsNullOrEmpty(passwordNugetEnv));
 
-        CleanDirectory ("externals/uwp");
-        EnsureDirectoryExists ("Assets/AppCenter/Plugins/WSA/");
+        CleanDirectory("externals/uwp");
+        EnsureDirectoryExists("Assets/AppCenter/Plugins/WSA/");
         foreach (var module in AppCenterModules) 
         {
             if (module.Moniker == "Distribute") 
             {
-                Warning ("Skipping 'Distribute' for UWP.");
+                Warning("Skipping 'Distribute' for UWP.");
                 continue;
             }
             if (module.Moniker == "Crashes") 
             {
-                Warning ("Skipping 'Crashes' for UWP.");
+                Warning("Skipping 'Crashes' for UWP.");
                 continue;
             }
-            Information ("Downloading " + module.DotNetModule + "...");
+            Information("Downloading " + module.DotNetModule + "...");
             // Download nuget package
 
             await GetUwpPackage(module, usePublicFeed);
         }
-    }).OnError (HandleError);
+    }).OnError(HandleError);
 
 // Builds the ContentProvider for the Android package and puts it in the
 // proper folder.
@@ -291,7 +291,7 @@ Task("BuildAndroidContentProvider").Does(()=>
 
         // The build fails with an error that libPuppetBreakpad.so is not found but it's generated properly.
         // Might be related to the fact the the path to generate the library is relative, in any case it's a false negative.
-        Warning ("Ignoring BreakpadSupport build failure... It's ok. Unity complains that the .so is not found which is not true. It's a false negative.");
+        Warning("Ignoring BreakpadSupport build failure... It's ok. Unity complains that the .so is not found which is not true. It's a false negative.");
         if (!FileExists("AppCenterDemoApp/Assets/Plugins/Android/libPuppetBreakpad.so")) 
         {
             throw new Exception("Building breakpad library failed.");
@@ -365,16 +365,16 @@ Task("Install-Unity-Windows").Does(() => {
     }
 }).OnError(HandleError);
 
-//Downloading UWP IL2CPP dependencies.
+// Downloading UWP IL2CPP dependencies.
 Task ("Externals-Uwp-IL2CPP-Dependencies")
     .Does (async () => {
         var targetPath = "Assets/AppCenter/Plugins/WSA/IL2CPP";
-        EnsureDirectoryExists (targetPath);
-        EnsureDirectoryExists (ExternalsFolder);
-        EnsureDirectoryExists (targetPath + "/ARM");
-        EnsureDirectoryExists (targetPath + "/ARM64");
-        EnsureDirectoryExists (targetPath + "/X86");
-        EnsureDirectoryExists (targetPath + "/X64");
+        EnsureDirectoryExists(targetPath);
+        EnsureDirectoryExists(ExternalsFolder);
+        EnsureDirectoryExists(targetPath + "/ARM");
+        EnsureDirectoryExists(targetPath + "/ARM64");
+        EnsureDirectoryExists(targetPath + "/X86");
+        EnsureDirectoryExists(targetPath + "/X64");
         
         foreach (var dependency in UwpIL2CPPDependencies) 
         {
@@ -382,8 +382,8 @@ Task ("Externals-Uwp-IL2CPP-Dependencies")
         }
 
         // Process UWP IL2CPP dependencies.
-        Information ("Processing UWP IL2CPP dependencies. This could take a minute.");
-        var result = ExecuteUnityCommand ("-executeMethod AppCenterPostBuild.ProcessUwpIl2CppDependencies");
+        Information("Processing UWP IL2CPP dependencies. This could take a minute.");
+        var result = ExecuteUnityCommand("-executeMethod AppCenterPostBuild.ProcessUwpIl2CppDependencies");
         if (result != 0)
         {
             throw new Exception("Something went wrong while executing post build script. Unity result code: " + result);
@@ -520,26 +520,27 @@ Task("DownloadNdk")
     }
 }).OnError(HandleError);
 
-async Task GetUwpPackage (AppCenterModule module, bool usePublicFeed) 
+async Task GetUwpPackage(AppCenterModule module, bool usePublicFeed) 
 {
     // Prepare destination
     var destination = "Assets/AppCenter/Plugins/WSA/" + module.Moniker + "/";
-    EnsureDirectoryExists (destination);
-    DeleteFiles (destination + "*.dll");
-    DeleteFiles (destination + "*.winmd");
+    EnsureDirectoryExists(destination);
+    DeleteFiles(destination + "*.dll");
+    DeleteFiles(destination + "*.winmd");
     var nupkgPath = "externals/uwp/";
     if (usePublicFeed) 
     {
         await ProcessDependency(new NugetDependency(module.DotNetModule, UwpSdkVersion, "UAP10.0"), destination);
-    } else 
+    } 
+    else 
     {
         nupkgPath = GetNuGetPackage(module.DotNetModule, UwpSdkVersion);
         var tempContentPath = "externals/uwp/" + module.Moniker + "/";
-        DeleteDirectoryIfExists (tempContentPath);
-        Unzip (nupkgPath, tempContentPath);
-        ProcessAppCenterDlls (tempContentPath, destination);
+        DeleteDirectoryIfExists(tempContentPath);
+        Unzip(nupkgPath, tempContentPath);
+        ProcessAppCenterDlls(tempContentPath, destination);
     }
-    DeleteFiles (nupkgPath);
+    DeleteFiles(nupkgPath);
 }
 
 void BuildApps(string type, string projectPath = ".")
@@ -689,7 +690,9 @@ Task("RegisterUnity").Does(()=>
     if (Statics.Context.IsRunningOnUnix())
     {
         found = GetFiles("/Library/Application Support/Unity/*.ulf").Count > 0;
-    } else {
+    } 
+    else 
+    {
         var localAppDataUnityPath = Path.Combine(EnvironmentVariable("LOCALAPPDATA"), @"VirtualStore\ProgramData\Unity\*.ulf");
         found = GetFiles(localAppDataUnityPath).Count + GetFiles(Path.Combine(EnvironmentVariable("PROGRAMDATA"), @"Unity\*.ulf")).Count > 0;
     }
@@ -726,7 +729,7 @@ Task("clean")
 void BuildXcodeProject(string projectPath)
 {
     var projectFolder = Path.GetDirectoryName(projectPath);
-    var buildOutputFolder =  Path.Combine(projectFolder, "build");
+    var buildOutputFolder = Path.Combine(projectFolder, "build");
     XCodeBuild(new XCodeBuildSettings {
         Project = projectPath,
         Scheme = "Unity-iPhone",
