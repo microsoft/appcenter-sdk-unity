@@ -59,7 +59,7 @@ async Task ProcessDependency(NugetDependency dependency, string destination)
     var uri = package.DownloadUri.ToString();
     Information("Downloading " + package.Id + " from " + uri);
     DownloadFile (uri, ExternalsFolder + package.Id + NuPkgExtension);
-    Information ("Extract NuGet package: " + dependency.Name);
+    Information ($"Extract NuGet package: {dependency.Name}");
     var path = ExternalsFolder + dependency.Name + NuPkgExtension;
     var tempPackageFolder = ExternalsFolder + dependency.Name;
     PackageExtractor.Extract(path, tempPackageFolder);
@@ -105,7 +105,7 @@ void MoveNativeBinaries(string tempContentPath, string destination)
     var runtimesPath = tempContentPath + "/runtimes";
     if (DirectoryExists (runtimesPath)) 
     {
-        Information("MoveNativeBinaries");
+        Information($"MoveNativeBinaries from {tempContentPath} to {destination}");
         foreach (var runtime in GetDirectories (runtimesPath + "/win10-*")) {
             var arch = runtime.GetDirectoryName ().ToString ().Replace ("win10-", "").ToUpper ();
             var nativeFiles = GetFiles (runtime + "/**/*.dll");
