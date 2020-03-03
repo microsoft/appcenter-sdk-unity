@@ -262,9 +262,6 @@ Task ("Externals-Uwp")
                 Warning("Skipping 'Crashes' for UWP.");
                 continue;
             }
-            Information("Downloading " + module.DotNetModule + "...");
-            // Download nuget package
-
             await GetUwpPackage(module, usePublicFeed);
         }
     }).OnError(HandleError);
@@ -527,20 +524,14 @@ async Task GetUwpPackage(AppCenterModule module, bool usePublicFeed)
     EnsureDirectoryExists(destination);
     DeleteFiles(destination + "*.dll");
     DeleteFiles(destination + "*.winmd");
-    var nupkgPath = "externals/uwp/";
     if (usePublicFeed) 
     {
         await ProcessDependency(new NugetDependency(module.DotNetModule, UwpSdkVersion, "UAP10.0"), destination);
     } 
     else 
     {
-        nupkgPath = GetNuGetPackage(module.DotNetModule, UwpSdkVersion);
-        var tempContentPath = "externals/uwp/" + module.Moniker + "/";
-        DeleteDirectoryIfExists(tempContentPath);
-        Unzip(nupkgPath, tempContentPath);
-        ProcessAppCenterDlls(tempContentPath, destination);
+        ProcessInternalAppCenterDependency(module.DotNetModule, module.Moniker, UwpSdkVersion, destination);
     }
-    DeleteFiles(nupkgPath);
 }
 
 void BuildApps(string type, string projectPath = ".")

@@ -13,6 +13,8 @@ using NuGet.Versioning;
 using Path = System.IO.Path;
 
 const string PrivateNugetFeedUrl = "https://msmobilecenter.pkgs.visualstudio.com/_packaging/";
+const string UwpIL2CPPJsonUrl = SdkStorageUrl + "Newtonsoft.Json.dll";
+const string ExternalsFolder = "externals/uwp/";
 const PackageSaveMode packageSaveMode = PackageSaveMode.Defaultv3;
 
 // This list includes all the dependencies required for the SDK
@@ -24,9 +26,6 @@ var UwpIL2CPPDependencies = new [] {
    new NugetDependency("SQLitePCLRaw.core", "2.0.2"),
    new NugetDependency("SQLitePCLRaw.lib.e_sqlite3", "2.0.2", "UAP10.0")
 };
-
-const string UwpIL2CPPJsonUrl = SdkStorageUrl + "Newtonsoft.Json.dll";
-const string ExternalsFolder = "externals/uwp/";
 
 class NugetDependency
 {
@@ -52,16 +51,16 @@ class NugetDependency
     }
 }
 
-async Task<SourcePackageDependencyInfo> GetDependency(DependencyInfoResource dependencyResource, NugetDependency dependency)
-{
-    Information($"Get dependency {dependency.Name} version {dependency.Version.ToString()}");
-    return await dependencyResource.ResolvePackage(new PackageIdentity(dependency.Name, dependency.Version), dependency.Framework, new SourceCacheContext(), NullLogger.Instance, CancellationToken.None); 
-}
-
 DependencyInfoResource GetDefaultDependencyResource() 
 {
     var sourceRepository = new SourceRepository(new PackageSource(NuGetConstants.V3FeedUrl), Repository.Provider.GetCoreV3());
     return sourceRepository.GetResource<DependencyInfoResource>(CancellationToken.None);
+}
+
+async Task<SourcePackageDependencyInfo> GetDependency(DependencyInfoResource dependencyResource, NugetDependency dependency)
+{
+    Information($"Get dependency {dependency.Name} version {dependency.Version.ToString()}");
+    return await dependencyResource.ResolvePackage(new PackageIdentity(dependency.Name, dependency.Version), dependency.Framework, new SourceCacheContext(), NullLogger.Instance, CancellationToken.None); 
 }
 
 async Task ProcessDependency(NugetDependency dependency, string destination) 
@@ -75,9 +74,20 @@ async Task ProcessDependency(NugetDependency dependency, string destination)
     var tempPackageFolder = ExternalsFolder + dependency.Name;
     ExtractPackage(path, tempPackageFolder);
     ProcessPackageDlls(dependency, tempPackageFolder, destination);
+    DeleteFiles(ExternalsFolder);
 }
 
-string GetNuGetPackage(string packageId, string packageVersion)
+void ProcessInternalAppCenterDependency(string module, string moniker, string version, string destination) 
+{
+    var nupkgPath = GetPrivateNuGetPackage(module, UwpSdkVersion);
+    var tempContentPath = "externals/uwp/" + moniker + "/";
+    DeleteDirectoryIfExists(tempContentPath);
+    Unzip(nupkgPath, tempContentPath);
+    ProcessAppCenterDlls(tempContentPath, destination);
+    DeleteFiles(nupkgPath);
+}
+
+string GetPrivateNuGetPackage(string packageId, string packageVersion)
 {
     var nugetUser = EnvironmentVariable("NUGET_USER");
     var nugetPassword = Argument("NuGetPassword", EnvironmentVariable("NUGET_PASSWORD"));
@@ -111,14 +121,14 @@ FilePathCollection ResolveDllFiles(string tempContentPath, NuGetFramework framew
     return null;
 }
 
-void MoveNativeBinaries(string tempContentPath, string destination)
+void MoveDllsByArchitecture(string tempContentPath, string destination)
 {
     var runtimesPath = tempContentPath + "/runtimes";
     if (!DirectoryExists(runtimesPath)) 
     {
         return;
     }
-    Information($"Move native binaries from {tempContentPath} to {destination}");
+    Information($"Move dlls by architecture from {tempContentPath} to {destination}");
     foreach (var runtime in GetDirectories($"{runtimesPath}/win10-*")) {
         var arch = runtime.GetDirectoryName().ToString().Replace("win10-", "").ToUpper();
         var nativeFiles = GetFiles(runtime + "/**/*.dll");
@@ -139,7 +149,7 @@ void MoveNativeBinaries(string tempContentPath, string destination)
     } 
 }
 
-void MoveAssemblies(NugetDependency package, string tempContentPath, string destination)
+void MoveDlls(NugetDependency package, string tempContentPath, string destination)
 {
     Information($"Move assemblies for {package.Name} from {tempContentPath} to {destination}.");
     var dllFiles = ResolveDllFiles(tempContentPath, package.Framework);
@@ -161,14 +171,14 @@ void MoveAssemblies(NugetDependency package, string tempContentPath, string dest
 
 void ProcessPackageDlls(NugetDependency package, string tempContentPath, string destination)
 {
-    Information($"Process {package.Name} dll. Temp content path is {tempContentPath}; Destination is {destination}");
-    MoveNativeBinaries(tempContentPath, destination);
-    MoveAssemblies(package, tempContentPath, destination);
+    Information($"Process {package.Name} dlls. Temp content path is {tempContentPath}; Destination is {destination}");
+    MoveDllsByArchitecture(tempContentPath, destination);
+    MoveDlls(package, tempContentPath, destination);
 }
 
 void ProcessAppCenterDlls(string tempContentPath, string destination) 
 {
-    MoveNativeBinaries(tempContentPath, destination);
+    MoveDllsByArchitecture(tempContentPath, destination);
     var contentPathSuffix = "lib/uap10.0/";
     var filesMask = tempContentPath + contentPathSuffix + '*';
     Information($"Moving SDK package, move from {filesMask} to {destination}");
