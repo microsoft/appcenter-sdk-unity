@@ -312,9 +312,10 @@ public class AppCenterPostBuild : IPostprocessBuild
             return;
         }
         var jsonString = File.ReadAllText(projectJsonPath);
-        jsonString = AddDependencyToProjectJson(jsonString, "Microsoft.NETCore.UniversalWindowsPlatform", "6.2.9");
-        jsonString = AddDependencyToProjectJson(jsonString, "Newtonsoft.Json", "12.0.3");
-        jsonString = AddDependencyToProjectJson(jsonString, "SQLitePCLRaw.bundle_green", "2.0.2");
+        jsonString = AddDependencyToProjectJson(jsonString, "Microsoft.NETCore.UniversalWindowsPlatform", "5.2.2");
+        jsonString = AddDependencyToProjectJson(jsonString, "Newtonsoft.Json", "10.0.3");
+        jsonString = AddDependencyToProjectJson(jsonString, "sqlite-net-pcl", "1.3.1");
+        jsonString = AddDependencyToProjectJson(jsonString, "System.Collections.NonGeneric", "4.0.1");
         File.WriteAllText(projectJsonPath, jsonString);
     }
 
