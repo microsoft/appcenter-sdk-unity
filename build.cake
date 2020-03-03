@@ -368,9 +368,9 @@ Task ("Externals-Uwp-IL2CPP-Dependencies")
         EnsureDirectoryExists (targetPath);
         EnsureDirectoryExists (ExternalsFolder);
         EnsureDirectoryExists (targetPath + "/ARM");
+        EnsureDirectoryExists (targetPath + "/ARM64");
         EnsureDirectoryExists (targetPath + "/X86");
         EnsureDirectoryExists (targetPath + "/X64");
-        EnsureDirectoryExists (targetPath + "/ARM64");
         
         foreach (var dependency in UwpIL2CPPDependencies) {
             await ProcessDependency(dependency, targetPath);

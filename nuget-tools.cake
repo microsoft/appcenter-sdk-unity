@@ -80,7 +80,8 @@ string GetNuGetPackage(string packageId, string packageVersion)
     var nugetPassword = Argument("NuGetPassword", EnvironmentVariable("NUGET_PASSWORD"));
     var nugetFeedId = Argument("NuGetFeedId", EnvironmentVariable("NUGET_FEED_ID"));
     packageId = packageId.ToLower();
-    var url = PrivateNugetFeedUrl + nugetFeedId + "/nuget/v3/flat2/" + packageId + "/" + packageVersion + "/" + packageId + "." + packageVersion + ".nupkg";
+    var filename = packageId + "." + packageVersion +  ".nupkg";
+    var url = $"{PrivateNugetFeedUrl}{nugetFeedId}/nuget/v3/flat2/{packageId}/{packageVersion}/{filename}";
 
     // Get the NuGet package
     HttpWebRequest request = (HttpWebRequest)WebRequest.Create(url);
@@ -88,7 +89,6 @@ string GetNuGetPackage(string packageId, string packageVersion)
     request.Credentials = new NetworkCredential(nugetUser, nugetPassword);
     HttpWebResponse response = (HttpWebResponse)request.GetResponse();
     var responseString = String.Empty;
-    var filename = packageId + "." + packageVersion +  ".nupkg";
     using (var fstream = new FileStream(filename, FileMode.Create, FileAccess.ReadWrite))
     {
         response.GetResponseStream().CopyTo(fstream);
