@@ -56,8 +56,6 @@ var ExternalUnityPackages = new [] {
 // Unity 2017.3 requires NDK r13b.
 // The destination for the NDK download.
 var NdkFolder = "android_ndk";
-var ExternalsFolder = "externals/uwp/";
-var NuPkgExtension = ".nupkg";
 
 // Task TARGET for build
 var Target = Argument("target", Argument("t", "Default"));

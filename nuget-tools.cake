@@ -68,9 +68,9 @@ async Task ProcessDependency(NugetDependency dependency, string destination)
     var package = await GetDependency(GetDefaultDependencyResource(), dependency);
     var uri = package.DownloadUri.ToString();
     Information($"Downloading {package.Id} from {uri}");
-    DownloadFile(uri, ExternalsFolder + package.Id + ".nupkg");
-    Information($"Extract NuGet package: {dependency.Name}");
     var path = ExternalsFolder + dependency.Name + ".nupkg";
+    DownloadFile(uri, path);
+    Information($"Extract NuGet package: {dependency.Name}");
     var tempPackageFolder = ExternalsFolder + dependency.Name;
     PackageExtractor.Extract(path, tempPackageFolder);
     ProcessPackageDlls(dependency, tempPackageFolder, destination);
@@ -86,10 +86,10 @@ string GetNuGetPackage(string packageId, string packageVersion)
     var url = $"{PrivateNugetFeedUrl}{nugetFeedId}/nuget/v3/flat2/{packageId}/{packageVersion}/{filename}";
 
     // Get the NuGet package
-    HttpWebRequest request = (HttpWebRequest)WebRequest.Create(url);
+    var request = (HttpWebRequest)WebRequest.Create(url);
     request.Headers["X-NuGet-ApiKey"] = nugetPassword;
     request.Credentials = new NetworkCredential(nugetUser, nugetPassword);
-    HttpWebResponse response = (HttpWebResponse)request.GetResponse();
+    var response = (HttpWebResponse)request.GetResponse();
     var responseString = String.Empty;
     using (var fstream = new FileStream(filename, FileMode.Create, FileAccess.ReadWrite))
     {
@@ -113,23 +113,24 @@ FilePathCollection ResolveDllFiles(string tempContentPath, NuGetFramework framew
 void MoveNativeBinaries(string tempContentPath, string destination)
 {
     var runtimesPath = tempContentPath + "/runtimes";
-    if (DirectoryExists(runtimesPath)) 
+    if (!DirectoryExists(runtimesPath)) 
     {
-        Information($"MoveNativeBinaries from {tempContentPath} to {destination}");
-        foreach (var runtime in GetDirectories(runtimesPath + "/win10-*")) {
-            var arch = runtime.GetDirectoryName().ToString().Replace("win10-", "").ToUpper();
-            var nativeFiles = GetFiles(runtime + "/**/*.dll");
-            var targetArchPath = destination + "/" + arch;
-            EnsureDirectoryExists(targetArchPath);
-            foreach (var nativeFile in nativeFiles) 
+        return;
+    }
+    Information($"MoveNativeBinaries from {tempContentPath} to {destination}");
+    foreach (var runtime in GetDirectories(runtimesPath + "/win10-*")) {
+        var arch = runtime.GetDirectoryName().ToString().Replace("win10-", "").ToUpper();
+        var nativeFiles = GetFiles(runtime + "/**/*.dll");
+        var targetArchPath = destination + "/" + arch;
+        EnsureDirectoryExists(targetArchPath);
+        foreach (var nativeFile in nativeFiles) 
+        {
+            if (!FileExists(targetArchPath + "/" + nativeFile.GetFilename())) 
             {
-                if (!FileExists(targetArchPath + "/" + nativeFile.GetFilename())) 
-                {
-                    MoveFileToDirectory(nativeFile, targetArchPath);
-                    Information($"Moved native binary file {nativeFile} to {targetArchPath}");
-                } else {
-                    Information("Native binary file already exists");
-                }
+                MoveFileToDirectory(nativeFile, targetArchPath);
+                Information($"Moved native binary file {nativeFile} to {targetArchPath}");
+            } else {
+                Information("Native binary file already exists");
             }
         }
     } 
@@ -157,7 +158,7 @@ void MoveAssemblies(NugetDependency package, string tempContentPath, string dest
 
 void ProcessPackageDlls(NugetDependency package, string tempContentPath, string destination)
 {
-    Information($"ProcessPackageDlls for {package.Name}; tempcontentpath {tempContentPath}; destination {destination}");
+    Information($"ProcessPackageDlls; tempcontentpath {tempContentPath}; destination {destination}");
     MoveNativeBinaries(tempContentPath, destination);
     MoveAssemblies(package, tempContentPath, destination);
 }
@@ -166,8 +167,9 @@ void ProcessAppCenterDlls(string tempContentPath, string destination)
 {
     MoveNativeBinaries(tempContentPath, destination);
     var contentPathSuffix = "lib/uap10.0/";
-    Information($"Moving SDK package, move from {tempContentPath + contentPathSuffix + '*'} to {destination}");
-    var files = GetFiles(tempContentPath + contentPathSuffix + "*");
+    var filesMask = tempContentPath + contentPathSuffix + '*';
+    Information($"Moving SDK package, move from {filesMask} to {destination}");
+    var files = GetFiles(filesMask);
     CleanDirectories(destination);
     MoveFiles(files, destination);
 }
