@@ -10,27 +10,29 @@ using NuGet.Versioning;
 
 var PrivateNugetFeedUrl = "https://msmobilecenter.pkgs.visualstudio.com/_packaging/";
 
+
+// This list includes all the dependencies required for the SDK
+// plus any dependencies of the dependecies. In case of any change or version bump
+// this list MUST be changed manually.
 var UwpIL2CPPDependencies = new [] {
-   new NugetDependency("SQLitePCLRaw.bundle_green", "2.0.2", ".NETStandard,Version=v2.0"),
-   new NugetDependency("SQLitePCLRaw.provider.e_sqlite3", "2.0.2", ".NETStandard,Version=v2.0"),
-   new NugetDependency("SQLitePCLRaw.core", "2.0.2", ".NETStandard,Version=v2.0"),
+   new NugetDependency("SQLitePCLRaw.bundle_green", "2.0.2"),
+   new NugetDependency("SQLitePCLRaw.provider.e_sqlite3", "2.0.2"),
+   new NugetDependency("SQLitePCLRaw.core", "2.0.2"),
    new NugetDependency("SQLitePCLRaw.lib.e_sqlite3", "2.0.2", "UAP10.0")
 };
 
 var UwpIL2CPPJsonUrl = SdkStorageUrl + "Newtonsoft.Json.dll";
 var ExternalsFolder = "externals/uwp/";
-var NuPkgExtension = ".nupkg";
-
-var IgnoreNuGetDependencies = new[] {
-    "Microsoft.NETCore.UniversalWindowsPlatform",
-    "NETStandard.Library"
-};
 
 class NugetDependency
 {
     public string Name { get; set; }
     public NuGetVersion Version { get; set; }
     public NuGetFramework Framework { get; set; }
+
+    public NugetDependency(string name, string version) : this(name, version, ".NETStandard,Version=v2.0")
+    { 
+    }
 
     public NugetDependency(string name, string version, string framework)
     {
@@ -62,10 +64,10 @@ async Task ProcessDependency(NugetDependency dependency, string destination)
 {
     var package = await GetDependency(GetDefaultDependencyResource(), dependency);
     var uri = package.DownloadUri.ToString();
-    Information("Downloading " + package.Id + " from " + uri);
-    DownloadFile (uri, ExternalsFolder + package.Id + NuPkgExtension);
-    Information ($"Extract NuGet package: {dependency.Name}");
-    var path = ExternalsFolder + dependency.Name + NuPkgExtension;
+    Information($"Downloading {package.Id} from {uri}");
+    DownloadFile(uri, ExternalsFolder + package.Id + ".nupkg");
+    Information($"Extract NuGet package: {dependency.Name}");
+    var path = ExternalsFolder + dependency.Name + ".nupkg";
     var tempPackageFolder = ExternalsFolder + dependency.Name;
     PackageExtractor.Extract(path, tempPackageFolder);
     ExtractNuGetPackage(dependency, tempPackageFolder, destination);
@@ -80,7 +82,7 @@ string GetNuGetPackage(string packageId, string packageVersion)
     var url = PrivateNugetFeedUrl + nugetFeedId + "/nuget/v3/flat2/" + packageId + "/" + packageVersion + "/" + packageId + "." + packageVersion + ".nupkg";
 
     // Get the NuGet package
-    HttpWebRequest request = (HttpWebRequest)WebRequest.Create (url);
+    HttpWebRequest request = (HttpWebRequest)WebRequest.Create(url);
     request.Headers["X-NuGet-ApiKey"] = nugetPassword;
     request.Credentials = new NetworkCredential(nugetUser, nugetPassword);
     HttpWebResponse response = (HttpWebResponse)request.GetResponse();
@@ -108,19 +110,19 @@ FilePathCollection ResolveDllFiles(string tempContentPath, NuGetFramework framew
 void MoveNativeBinaries(string tempContentPath, string destination)
 {
     var runtimesPath = tempContentPath + "/runtimes";
-    if (DirectoryExists (runtimesPath)) 
+    if (DirectoryExists(runtimesPath)) 
     {
         Information($"MoveNativeBinaries from {tempContentPath} to {destination}");
-        foreach (var runtime in GetDirectories (runtimesPath + "/win10-*")) {
-            var arch = runtime.GetDirectoryName ().ToString ().Replace ("win10-", "").ToUpper ();
-            var nativeFiles = GetFiles (runtime + "/**/*.dll");
+        foreach (var runtime in GetDirectories(runtimesPath + "/win10-*")) {
+            var arch = runtime.GetDirectoryName().ToString().Replace("win10-", "").ToUpper();
+            var nativeFiles = GetFiles(runtime + "/**/*.dll");
             var targetArchPath = destination + "/" + arch;
-            EnsureDirectoryExists (targetArchPath);
+            EnsureDirectoryExists(targetArchPath);
             foreach (var nativeFile in nativeFiles) 
             {
-                if (!FileExists (targetArchPath + "/" + nativeFile.GetFilename ())) 
+                if (!FileExists(targetArchPath + "/" + nativeFile.GetFilename())) 
                 {
-                    MoveFileToDirectory (nativeFile, targetArchPath);
+                    MoveFileToDirectory(nativeFile, targetArchPath);
                     Information($"Moved native binary file {nativeFile} to {targetArchPath}");
                 } else {
                     Information("Native binary file already exists");
@@ -150,7 +152,7 @@ void MoveAssemblies(NugetDependency package, string tempContentPath, string dest
     } 
 }
 
-void ExtractNuGetPackage (NugetDependency package, string tempContentPath, string destination)
+void ExtractNuGetPackage(NugetDependency package, string tempContentPath, string destination)
 {
     var packageName = package != null ? package.Name : "null";
     Information($"ExtractNuGetPackage {packageName}; tempcontentpath {tempContentPath}; destination {destination}");
@@ -162,9 +164,9 @@ void ExtractNuGetPackage (NugetDependency package, string tempContentPath, strin
     if (package == null) 
     {
         var contentPathSuffix = "lib/uap10.0/";
-        Information($"package is null, move from " + tempContentPath + contentPathSuffix + "* to " + destination);
-        var files = GetFiles (tempContentPath + contentPathSuffix + "*");
+        Information($"package is null, move from {tempContentPath + contentPathSuffix + '*'} to {destination}");
+        var files = GetFiles(tempContentPath + contentPathSuffix + "*");
         CleanDirectories(destination);
-        MoveFiles (files, destination);
+        MoveFiles(files, destination);
     }
 }
