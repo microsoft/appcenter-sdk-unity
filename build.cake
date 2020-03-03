@@ -5,7 +5,6 @@
 #addin nuget:?package=Cake.AzureStorage
 #addin nuget:?package=Cake.Xcode
 #load "utility.cake"
-#load "packageextractor.cake"
 #load "nuget-tools.cake"
 
 using System;
@@ -528,10 +527,8 @@ async Task GetUwpPackage (AppCenterModule module, bool usePublicFeed) {
         nupkgPath = GetNuGetPackage(module.DotNetModule, UwpSdkVersion);
         var tempContentPath = "externals/uwp/" + module.Moniker + "/";
         DeleteDirectoryIfExists (tempContentPath);
-
-        // Unzip into externals/uwp/
         Unzip (nupkgPath, tempContentPath);
-        ExtractNuGetPackage (null, tempContentPath, destination);
+        ProcessAppCenterDlls (tempContentPath, destination);
     }
     DeleteFiles (nupkgPath);
 }

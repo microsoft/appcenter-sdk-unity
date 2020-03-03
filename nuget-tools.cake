@@ -6,9 +6,11 @@
 using NuGet.Common;
 using NuGet.Configuration;
 using NuGet.Frameworks;
+using NuGet.Packaging;
 using NuGet.Packaging.Core;
 using NuGet.Protocol.Core.Types;
 using NuGet.Versioning;
+using Path =  System.IO.Path;
 
 var PrivateNugetFeedUrl = "https://msmobilecenter.pkgs.visualstudio.com/_packaging/";
 
@@ -71,7 +73,7 @@ async Task ProcessDependency(NugetDependency dependency, string destination)
     var path = ExternalsFolder + dependency.Name + ".nupkg";
     var tempPackageFolder = ExternalsFolder + dependency.Name;
     PackageExtractor.Extract(path, tempPackageFolder);
-    ExtractNuGetPackage(dependency, tempPackageFolder, destination);
+    ProcessPackageDlls(dependency, tempPackageFolder, destination);
 }
 
 string GetNuGetPackage(string packageId, string packageVersion)
@@ -153,21 +155,65 @@ void MoveAssemblies(NugetDependency package, string tempContentPath, string dest
     } 
 }
 
-void ExtractNuGetPackage(NugetDependency package, string tempContentPath, string destination)
+void ProcessPackageDlls(NugetDependency package, string tempContentPath, string destination)
 {
-    var packageName = package != null ? package.Name : "null";
-    Information($"ExtractNuGetPackage {packageName}; tempcontentpath {tempContentPath}; destination {destination}");
+    Information($"ProcessPackageDlls for {package.Name}; tempcontentpath {tempContentPath}; destination {destination}");
     MoveNativeBinaries(tempContentPath, destination);
-    if (package != null) 
+    MoveAssemblies(package, tempContentPath, destination);
+}
+
+void ProcessAppCenterDlls(string tempContentPath, string destination) 
+{
+    MoveNativeBinaries(tempContentPath, destination);
+    var contentPathSuffix = "lib/uap10.0/";
+    Information($"Moving SDK package, move from {tempContentPath + contentPathSuffix + '*'} to {destination}");
+    var files = GetFiles(tempContentPath + contentPathSuffix + "*");
+    CleanDirectories(destination);
+    MoveFiles(files, destination);
+}
+
+class PackageExtractor
+{
+    static PackageSaveMode packageSaveMode = PackageSaveMode.Defaultv3;
+
+    public static void Extract(string fileName, string targetPath)
     {
-        MoveAssemblies(package, tempContentPath, destination);
+        using (var stream = new FileStream(fileName, FileMode.Open, FileAccess.Read))
+        {
+            Extract(stream, targetPath);
+        }
     }
-    if (package == null) 
+
+    public static void Extract(Stream nupkgStream, string targetPath)
     {
-        var contentPathSuffix = "lib/uap10.0/";
-        Information($"package is null, move from {tempContentPath + contentPathSuffix + '*'} to {destination}");
-        var files = GetFiles(tempContentPath + contentPathSuffix + "*");
-        CleanDirectories(destination);
-        MoveFiles(files, destination);
+        var targetNuspec = Path.Combine(targetPath, Path.GetRandomFileName());
+        var targetNupkg = Path.Combine(targetPath, Path.GetRandomFileName());
+        targetNupkg = Path.ChangeExtension(targetNupkg, ".nupkg");
+
+        using (var packageReader = new PackageArchiveReader(nupkgStream))
+        {
+            var nuspecFile = packageReader.GetNuspecFile();
+            if ((packageSaveMode & PackageSaveMode.Nuspec) == PackageSaveMode.Nuspec)
+            {
+                packageReader.ExtractFile(nuspecFile, targetNuspec, new NullLogger());
+            }
+
+            if ((packageSaveMode & PackageSaveMode.Files) == PackageSaveMode.Files)
+            {
+                var nupkgFileName = Path.GetFileName(targetNupkg);
+                var packageFiles = packageReader.GetFiles()
+                    .Where(file => Path.GetExtension(file) == ".dll");
+                var packageFileExtractor = new PackageFileExtractor(
+                    packageFiles,
+                    XmlDocFileSaveMode.None);
+                packageReader.CopyFiles(
+                    targetPath,
+                    packageFiles,
+                    packageFileExtractor.ExtractPackageFile,
+                    new NullLogger(),
+                    CancellationToken.None);
+            }
+        }
     }
 }
+
