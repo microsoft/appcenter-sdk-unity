@@ -384,10 +384,6 @@ Task ("Externals-Uwp-IL2CPP-Dependencies")
             await ProcessDependency(dependency, targetPath);
         }
 
-        // Download patched Newtonsoft.Json library to avoid Unity issue.
-        // Details: https://forum.unity3d.com/threads/332335/
-        DownloadFile (UwpIL2CPPJsonUrl, targetPath + "/Newtonsoft.Json.dll");
-
         // Process UWP IL2CPP dependencies.
         Information ("Processing UWP IL2CPP dependencies. This could take a minute.");
         var result = ExecuteUnityCommand ("-executeMethod AppCenterPostBuild.ProcessUwpIl2CppDependencies");
