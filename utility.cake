@@ -66,7 +66,7 @@ static int ExecuteUnityCommand(string extraArgs, string projectPath = ".")
         {
             unityProcess.WaitForExit();
             result = unityProcess.GetExitCode();
-            if (logProcess.WaitForExit(1000) && (logProcess.GetExitCode() != 0))
+            if (logProcess.WaitForExit(0) && (logProcess.GetExitCode() != 0))
             {
                 Statics.Context.Warning("There was an error logging, but command still executed.");
             }
