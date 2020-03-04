@@ -9,10 +9,7 @@
 
 using Path = System.IO.Path;
 using System;
-using System.Linq;
 using System.Net;
-using System.Collections.Generic;
-using System.Runtime.Versioning;
 using System.Threading;
 
 // Native SDK versions
