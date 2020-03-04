@@ -199,33 +199,9 @@ namespace Microsoft.AppCenter.Unity.Internal
                 {
                     UnityScreenSizeProvider.Initialize();
                     DeviceInformationHelper.SetScreenSizeProviderFactory(new UnityScreenSizeProviderFactory());
-
-#if ENABLE_IL2CPP
-#pragma warning disable 612
-                    /**
-                     * Workaround for known IL2CPP issue.
-                     * See https://issuetracker.unity3d.com/issues/il2cpp-use-of-windows-dot-foundation-dot-collections-dot-propertyset-throws-a-notsupportedexception-on-uwp
-                     *
-                     * NotSupportedException: Cannot call method
-                     * 'System.Boolean System.Runtime.InteropServices.WindowsRuntime.IMapToIDictionaryAdapter`2::System.Collections.Generic.IDictionary`2.TryGetValue(TKey,TValue&)'.
-                     * IL2CPP does not yet support calling this projected method.
-                     * Can be removed after minimum unity version is bumped.
-                     * Fixed in 5.6, 2017.1, 2017.2
-                     */
                     UnityApplicationSettings.Initialize();
                     UWPAppCenter.SetApplicationSettingsFactory(new UnityApplicationSettingsFactory());
-
-                    /**
-                     * Workaround for another IL2CPP issue.
-                     * System.Net.Http.HttpClient doesn't work properly so, replace to unity specific implementation.
-                     * I found various related issues in tracker, with different Unity versions marked as ones which fixed the issue:
-                     * https://issuetracker.unity3d.com/issues/reference-to-httpclient-statement-is-not-found-in-vs2017
-                     * https://issuetracker.unity3d.com/issues/httpclient-namespace-is-not-recognized-in-vs-with-net-4-dot-x
-                     * Can be removed after minimum unity version is bumped, and after verifying that it is actually fixed.
-                     */
                     UWPAppCenter.SetChannelGroupFactory(new UnityChannelGroupFactory());
-#pragma warning restore 612
-#endif
                     _prepared = true;
                 }
             }

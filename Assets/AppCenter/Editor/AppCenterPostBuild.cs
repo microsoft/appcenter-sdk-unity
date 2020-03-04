@@ -8,9 +8,7 @@ using System.Text.RegularExpressions;
 using System.Xml.Linq;
 using System;
 using System.Collections.Generic;
-#if UNITY_2018_1_OR_NEWER
 using UnityEditor.Build.Reporting;
-#endif
 using UnityEditor.Build;
 using UnityEditor;
 using UnityEngine;
@@ -18,11 +16,7 @@ using UnityEngine;
 // Warning: Don't use #if #endif for conditional compilation here as Unity
 // doesn't always set the flags early enough.
 
-#if UNITY_2018_1_OR_NEWER
 public class AppCenterPostBuild : IPostprocessBuildWithReport
-#else
-public class AppCenterPostBuild : IPostprocessBuild
-#endif
 {
     public int callbackOrder { get { return 0; } }
 
@@ -36,12 +30,10 @@ public class AppCenterPostBuild : IPostprocessBuild
     private const string AppIl2cppXaml = "App.xaml.cpp";
     private const string AppIl2cppD3d = "App.cpp";
 
-#if UNITY_2018_1_OR_NEWER
     public void OnPostprocessBuild(BuildReport report)
     {
         OnPostprocessBuild(report.summary.platform, report.summary.outputPath);
     }
-#endif
 
     public void OnPostprocessBuild(BuildTarget target, string pathToBuiltProject)
     {
