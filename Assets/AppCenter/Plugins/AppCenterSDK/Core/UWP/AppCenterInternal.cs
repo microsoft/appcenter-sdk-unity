@@ -2,6 +2,11 @@
 // Licensed under the MIT license.
 
 #if UNITY_WSA_10_0 && !UNITY_EDITOR
+
+#if ENABLE_DOTNET
+#error .NET scripting backed is not supported. Use IL2CPP instead.
+#endif
+
 using Microsoft.AppCenter.Unity.Internal.Utils;
 using Microsoft.AppCenter.Utils;
 using System.Collections.Generic;
