@@ -1,7 +1,6 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT license.
 
-#addin nuget:?package=NuGet.Resolver&loaddependencies=true
 #addin nuget:?package=NuGet.Protocol&loaddependencies=true
 using NuGet.Common;
 using NuGet.Configuration;
@@ -80,7 +79,7 @@ async Task ProcessDependency(NugetDependency dependency, string destination)
 void ProcessInternalAppCenterDependency(string module, string moniker, string version, string destination) 
 {
     var nupkgPath = GetPrivateNuGetPackage(module, UwpSdkVersion);
-    var tempContentPath = "externals/uwp/" + moniker + "/";
+    var tempContentPath = ExternalsFolder + moniker + "/";
     DeleteDirectoryIfExists(tempContentPath);
     Unzip(nupkgPath, tempContentPath);
     ProcessAppCenterDlls(tempContentPath, destination);

@@ -7,7 +7,7 @@
 #load "utility.cake"
 #load "nuget-tools.cake"
 
-using Path =  System.IO.Path;
+using Path = System.IO.Path;
 using System;
 using System.Linq;
 using System.Net;
