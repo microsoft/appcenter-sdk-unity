@@ -94,24 +94,8 @@ public class AppCenterPostBuild : IPostprocessBuildWithReport
             return;
         }
 
-        // .NET, D3D
-        if (EditorUserBuildSettings.wsaUWPBuildType == WSAUWPBuildType.D3D &&
-            PlayerSettings.GetScriptingBackend(BuildTargetGroup.WSA) == ScriptingImplementation.WinRTDotNET)
-        {
-            var appFilePath = GetAppFilePath(pathToBuiltProject, AppNetD3d);
-            var regexPattern = "private void ApplicationView_Activated \\( CoreApplicationView [a-zA-Z0-9_]*, IActivatedEventArgs args \\) {".Replace(" ", "[\\s]*");
-            InjectCodeToFile(appFilePath, AppNetD3d, regexPattern, "d3ddotnet.txt");
-        }
-        // .NET, XAML
-        else if (EditorUserBuildSettings.wsaUWPBuildType == WSAUWPBuildType.XAML &&
-                 PlayerSettings.GetScriptingBackend(BuildTargetGroup.WSA) == ScriptingImplementation.WinRTDotNET)
-        {
-            var appFilePath = GetAppFilePath(pathToBuiltProject, AppNetXaml);
-            var regexPattern = "InitializeUnity\\(args.Arguments\\);";
-            InjectCodeToFile(appFilePath, AppNetXaml, regexPattern, "xamldotnet.txt", false);
-        }
         // IL2CPP, XAML
-        else if (EditorUserBuildSettings.wsaUWPBuildType == WSAUWPBuildType.XAML &&
+        if (EditorUserBuildSettings.wsaUWPBuildType == WSAUWPBuildType.XAML &&
                  PlayerSettings.GetScriptingBackend(BuildTargetGroup.WSA) == ScriptingImplementation.IL2CPP)
         {
             var appFilePath = GetAppFilePath(pathToBuiltProject, AppIl2cppXaml);
