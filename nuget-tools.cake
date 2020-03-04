@@ -9,7 +9,6 @@ using NuGet.Packaging;
 using NuGet.Packaging.Core;
 using NuGet.Protocol.Core.Types;
 using NuGet.Versioning;
-using Path = System.IO.Path;
 
 const string PrivateNugetFeedUrl = "https://msmobilecenter.pkgs.visualstudio.com/_packaging/";
 const string UwpIL2CPPJsonUrl = SdkStorageUrl + "Newtonsoft.Json.dll";
@@ -71,7 +70,7 @@ async Task ProcessDependency(NugetDependency dependency, string destination)
     DownloadFile(uri, path);
     Information($"Extract NuGet package: {dependency.Name}");
     var tempPackageFolder = ExternalsFolder + dependency.Name;
-    ExtractPackage(path, tempPackageFolder);
+    Unzip(path, tempPackageFolder);
     ProcessPackageDlls(dependency, tempPackageFolder, destination);
     DeleteFiles(ExternalsFolder);
 }
@@ -185,39 +184,3 @@ void ProcessAppCenterDlls(string tempContentPath, string destination)
     CleanDirectories(destination);
     MoveFiles(files, destination);
 }
-
-private void ExtractPackage(string fileName, string targetPath)
-{
-    using (var stream = new FileStream(fileName, FileMode.Open, FileAccess.Read))
-    {
-        var targetNuspec = Path.Combine(targetPath, Path.GetRandomFileName());
-        var targetNupkg = Path.Combine(targetPath, Path.GetRandomFileName());
-        targetNupkg = Path.ChangeExtension(targetNupkg, ".nupkg");
-
-        using (var packageReader = new PackageArchiveReader(stream))
-        {
-            var nuspecFile = packageReader.GetNuspecFile();
-            if ((packageSaveMode & PackageSaveMode.Nuspec) == PackageSaveMode.Nuspec)
-            {
-                packageReader.ExtractFile(nuspecFile, targetNuspec, new NullLogger());
-            }
-
-            if ((packageSaveMode & PackageSaveMode.Files) == PackageSaveMode.Files)
-            {
-                var nupkgFileName = Path.GetFileName(targetNupkg);
-                var packageFiles = packageReader.GetFiles()
-                    .Where(file => Path.GetExtension(file) == ".dll");
-                var packageFileExtractor = new PackageFileExtractor(
-                    packageFiles,
-                    XmlDocFileSaveMode.None);
-                packageReader.CopyFiles(
-                    targetPath,
-                    packageFiles,
-                    packageFileExtractor.ExtractPackageFile,
-                    new NullLogger(),
-                    CancellationToken.None);
-            }
-        }
-    }
-}
-
