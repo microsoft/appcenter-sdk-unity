@@ -4,9 +4,7 @@
 
 ### App Center
 
-#### Breaking changes
-
-* Bump the minimal supported Unity version from **5.6** to **2018.1**.
+* **[Breaking change]** Bump the minimal supported Unity version from **5.6** to **2018.1**.
 
 #### Android
 
