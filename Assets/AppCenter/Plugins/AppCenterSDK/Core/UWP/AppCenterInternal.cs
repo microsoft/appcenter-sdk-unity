@@ -199,9 +199,18 @@ namespace Microsoft.AppCenter.Unity.Internal
                 {
                     UnityScreenSizeProvider.Initialize();
                     DeviceInformationHelper.SetScreenSizeProviderFactory(new UnityScreenSizeProviderFactory());
+
+                    /**
+                     * Workaround for known IL2CPP issue.
+                     * See https://issuetracker.unity3d.com/issues/il2cpp-use-of-windows-dot-foundation-dot-collections-dot-propertyset-throws-a-notsupportedexception-on-uwp
+                     *
+                     * NotSupportedException: Cannot call method
+                     * 'System.Boolean System.Runtime.InteropServices.WindowsRuntime.IMapToIDictionaryAdapter`2::System.Collections.Generic.IDictionary`2.TryGetValue(TKey,TValue&)'.
+                     * IL2CPP does not yet support calling this projected method.
+                     * TODO: Can be removed after migration for settings is added.
+                     */
                     UnityApplicationSettings.Initialize();
                     UWPAppCenter.SetApplicationSettingsFactory(new UnityApplicationSettingsFactory());
-                    UWPAppCenter.SetChannelGroupFactory(new UnityChannelGroupFactory());
                     _prepared = true;
                 }
             }
