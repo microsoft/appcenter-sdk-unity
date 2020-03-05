@@ -13,7 +13,7 @@ The App Center SDK for Unity supports the following platforms:
 
 * iOS (9.0 or later)
 * Android (5.0/API 21 or later)
-* UWP (Build 10240 or later)
+* UWP (Build 16299 or later)
 
 Also note that the App Center SDK for Unity is only available in C#.
 

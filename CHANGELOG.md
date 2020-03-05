@@ -17,7 +17,8 @@
 
 #### UWP
 
-* **[Feature]** App Center SDK supports **arm64** on UWP.
+* **[Feature]** Support **ARM64** architecture on Unity 2019.x or above.
+* **[Breaking change]** Drop support for .NET scripting backend in favor of IL2CPP.
 
 ### App Center Auth
 
