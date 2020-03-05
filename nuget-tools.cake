@@ -11,7 +11,6 @@ using NuGet.Protocol.Core.Types;
 using NuGet.Versioning;
 
 const string PrivateNugetFeedUrl = "https://msmobilecenter.pkgs.visualstudio.com/_packaging/";
-const string UwpIL2CPPJsonUrl = SdkStorageUrl + "Newtonsoft.Json.dll";
 const string ExternalsFolder = "externals/uwp/";
 const PackageSaveMode packageSaveMode = PackageSaveMode.Defaultv3;
 

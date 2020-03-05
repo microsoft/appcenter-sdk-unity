@@ -6,6 +6,7 @@
 #addin nuget:?package=Cake.Xcode
 #load "utility.cake"
 #load "nuget-tools.cake"
+#load "dll-tools.cake"
 
 using Path = System.IO.Path;
 using System;
@@ -529,6 +530,9 @@ async Task GetUwpPackage(AppCenterModule module, bool usePublicFeed)
     {
         ProcessInternalAppCenterDependency(module.DotNetModule, module.Moniker, UwpSdkVersion, destination);
     }
+
+    // Download dlls.
+    await ProcessDownloadDllDependency(module.Moniker, destination);
 }
 
 void BuildApps(string type, string projectPath = ".")
