@@ -207,6 +207,8 @@ namespace Microsoft.AppCenter.Unity.Internal
 
                     /**
                      * Workaround for known IL2CPP issue.
+                     * Currently it is not required, but since this workaround stores settings in separate file, 
+                     * and not generic unity mechanism, a migration is required to transition users who store data in old file to built-in mechanism. 
                      * See https://issuetracker.unity3d.com/issues/il2cpp-use-of-windows-dot-foundation-dot-collections-dot-propertyset-throws-a-notsupportedexception-on-uwp
                      *
                      * NotSupportedException: Cannot call method
