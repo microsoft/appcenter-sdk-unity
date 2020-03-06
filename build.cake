@@ -31,7 +31,7 @@ const string AndroidUrl = SdkStorageUrl + "AppCenter-SDK-Android-" + AndroidSdkV
 const string IosUrl = SdkStorageUrl + "AppCenter-SDK-Apple-" + IosSdkVersion + ".zip";
 const string UwpUrl = SdkStorageUrl + "AppCenter-SDK-Unity-UWP-" + UwpSdkVersion + ".zip";
 
-var AppCenterModules = new [] 
+var AppCenterModules = new []
 {
     new AppCenterModule("appcenter-release.aar", "AppCenter.framework", "Microsoft.AppCenter", "Core"),
     new AppCenterModule("appcenter-analytics-release.aar", "AppCenterAnalytics.framework", "Microsoft.AppCenter.Analytics", "Analytics"),
@@ -40,7 +40,7 @@ var AppCenterModules = new []
     new AppCenterModule("appcenter-crashes-release.aar", "AppCenterCrashes.framework", "Microsoft.AppCenter.Crashes", "Crashes")
 };
 
-var ExternalUnityPackages = new [] 
+var ExternalUnityPackages = new []
 {
     // From https://github.com/googlesamples/unity-jar-resolver#getting-started
     // Import the play-services-resolver-*.unitypackage into your plugin project <...> ensuring that you add the -gvh_disable option.
@@ -131,7 +131,7 @@ class UnityPackage
         if (needsCore)
         {
             var specFileDirectory = Path.GetDirectoryName(specFilePath);
-            if (!AddFilesFromSpec(specFileDirectory + "/AppCenter.unitypackagespec")) 
+            if (!AddFilesFromSpec(specFileDirectory + "/AppCenter.unitypackagespec"))
             {
                 return false;
             }
@@ -306,7 +306,7 @@ Task("BuildAndroidContentProvider").Does(()=>
 
     // This is a workaround for NDK build making an error where it claims
     // it can't find the built .so library (which is built successfully).
-    // This error is breaking the CI build on Windows. If you are seeing this, 
+    // This error is breaking the CI build on Windows. If you are seeing this,
     // most likely we haven't found a fix and this is an NDK bug.
     if (!IsRunningOnWindows())
     {
@@ -316,7 +316,7 @@ Task("BuildAndroidContentProvider").Does(()=>
         // The build fails with an error that libPuppetBreakpad.so is not found but it's generated properly.
         // Might be related to the fact the the path to generate the library is relative, in any case it's a false negative.
         Warning("Ignoring BreakpadSupport build failure... It's ok. Unity complains that the .so is not found which is not true. It's a false negative.");
-        if (!FileExists("AppCenterDemoApp/Assets/Plugins/Android/libPuppetBreakpad.so")) 
+        if (!FileExists("AppCenterDemoApp/Assets/Plugins/Android/libPuppetBreakpad.so"))
         {
             throw new Exception("Building breakpad library failed.");
         }
@@ -399,8 +399,8 @@ Task ("Externals-Uwp-IL2CPP-Dependencies")
         EnsureDirectoryExists(targetPath + "/ARM64");
         EnsureDirectoryExists(targetPath + "/X86");
         EnsureDirectoryExists(targetPath + "/X64");
-        
-        foreach (var dependency in UwpIL2CPPDependencies) 
+
+        foreach (var dependency in UwpIL2CPPDependencies)
         {
             await ProcessDependency(dependency, targetPath);
         }
@@ -691,8 +691,8 @@ Task("RegisterUnity").Does(()=>
     if (Statics.Context.IsRunningOnUnix())
     {
         found = GetFiles("/Library/Application Support/Unity/*.ulf").Count > 0;
-    } 
-    else 
+    }
+    else
     {
         var localAppDataUnityPath = Path.Combine(EnvironmentVariable("LOCALAPPDATA"), @"VirtualStore\ProgramData\Unity\*.ulf");
         found = GetFiles(localAppDataUnityPath).Count + GetFiles(Path.Combine(EnvironmentVariable("PROGRAMDATA"), @"Unity\*.ulf")).Count > 0;
