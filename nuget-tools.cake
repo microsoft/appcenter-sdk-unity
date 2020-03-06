@@ -74,16 +74,6 @@ async Task ProcessDependency(NugetDependency dependency, string destination)
     DeleteFiles(ExternalsFolder);
 }
 
-void ProcessInternalAppCenterDependency(string module, string moniker, string version, string destination) 
-{
-    var nupkgPath = GetPrivateNuGetPackage(module, UwpSdkVersion);
-    var tempContentPath = ExternalsFolder + moniker + "/";
-    DeleteDirectoryIfExists(tempContentPath);
-    Unzip(nupkgPath, tempContentPath);
-    ProcessAppCenterDlls(tempContentPath, destination);
-    DeleteFiles(nupkgPath);
-}
-
 string GetPrivateNuGetPackage(string packageId, string packageVersion)
 {
     var nugetUser = EnvironmentVariable("NUGET_USER");
