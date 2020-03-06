@@ -19,7 +19,7 @@ async Task ProcessDownloadDllDependencies() {
     Unzip(path, tempPackageFolder);
     foreach (var module in AppCenterModules)
     {
-         if (module.Moniker == "Distribute") 
+        if (module.Moniker == "Distribute") 
         {
             Warning("Skipping 'Distribute' for UWP.");
             continue;
