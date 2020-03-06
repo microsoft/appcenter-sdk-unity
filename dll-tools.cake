@@ -33,4 +33,5 @@ async Task ProcessDownloadDllDependencies() {
         Information($"Copy module {module.DotNetModule}.");
         CopyFiles(files, "Assets/AppCenter/Plugins/WSA/" + module.Moniker + "/");
     }
+    DeleteFiles(ExternalsFolder);
 }
