@@ -25,8 +25,6 @@ public class AppCenterPostBuild : IPostprocessBuildWithReport
     private const string CapabilityElement = "Capability";
     private const string CapabilityNameAttribute = "Name";
     private const string CapabilityNameAttributeValue = "internetClient";
-    private const string AppNetD3d = "App.cs";
-    private const string AppNetXaml = "App.xaml.cs";
     private const string AppIl2cppXaml = "App.xaml.cpp";
     private const string AppIl2cppD3d = "App.cpp";
 
