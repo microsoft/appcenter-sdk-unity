@@ -6,7 +6,6 @@
 #addin nuget:?package=Cake.Xcode
 #load "utility.cake"
 #load "nuget-tools.cake"
-#load "dll-tools.cake"
 
 using Path = System.IO.Path;
 using System;
@@ -199,6 +198,46 @@ class UnityPackage
     }
 }
 
+async Task ProcessDownloadUwpPackages() {
+
+    // Prepare destination
+    var path = ExternalsFolder + "uwp.zip";
+    var tempPackageFolder = ExternalsFolder;
+
+    // Downloading files.
+    Information($"Downloading UWP packages from {UwpUrl} to {path}.");
+    DownloadFile(UwpUrl, path);
+
+    // Unzipping files.
+    Information($"Unzipping UWP packages from {path} to {tempPackageFolder}.");
+    Unzip(path, tempPackageFolder);
+    foreach (var module in AppCenterModules)
+    {
+        if (module.Moniker == "Distribute") 
+        {
+            Warning("Skipping 'Distribute' for UWP.");
+            continue;
+        }
+        if (module.Moniker == "Crashes") 
+        {
+            Warning("Skipping 'Crashes' for UWP.");
+            continue;
+        }
+
+        // Prepare folders.
+        var destination = "Assets/AppCenter/Plugins/WSA/" + module.Moniker + "/";
+        EnsureDirectoryExists(destination);
+        DeleteFiles(destination + "*.dll");
+        DeleteFiles(destination + "*.winmd");
+
+        // Copy files.
+        var files = GetFiles(ExternalsFolder + module.DotNetModule + ".dll");
+        Information($"Copy module {module.DotNetModule}.");
+        CopyFiles(files, destination);
+    }
+    DeleteFiles(ExternalsFolder);
+}
+
 // Downloading Android binaries.
 Task("Externals-Android")
     .Does(() =>
@@ -250,8 +289,8 @@ Task ("Externals-Uwp")
         CleanDirectory("externals/uwp");
         EnsureDirectoryExists("Assets/AppCenter/Plugins/WSA/");
 
-        // Download dlls.
-        await ProcessDownloadDllDependencies();
+        // Download packages.
+        await ProcessDownloadUwpPackages();
     }).OnError(HandleError);
 
 // Builds the ContentProvider for the Android package and puts it in the

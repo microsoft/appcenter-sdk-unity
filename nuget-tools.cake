@@ -10,7 +10,7 @@ using NuGet.Packaging.Core;
 using NuGet.Protocol.Core.Types;
 using NuGet.Versioning;
 
-const string PrivateNugetFeedUrl = "https://msmobilecenter.pkgs.visualstudio.com/_packaging/";
+const string UwpIL2CPPJsonUrl = SdkStorageUrl + "Newtonsoft.Json.dll";
 const string ExternalsFolder = "externals/uwp/";
 const PackageSaveMode packageSaveMode = PackageSaveMode.Defaultv3;
 
@@ -72,28 +72,6 @@ async Task ProcessDependency(NugetDependency dependency, string destination)
     Unzip(path, tempPackageFolder);
     ProcessPackageDlls(dependency, tempPackageFolder, destination);
     DeleteFiles(ExternalsFolder);
-}
-
-string GetPrivateNuGetPackage(string packageId, string packageVersion)
-{
-    var nugetUser = EnvironmentVariable("NUGET_USER");
-    var nugetPassword = Argument("NuGetPassword", EnvironmentVariable("NUGET_PASSWORD"));
-    var nugetFeedId = Argument("NuGetFeedId", EnvironmentVariable("NUGET_FEED_ID"));
-    packageId = packageId.ToLower();
-    var filename = packageId + "." + packageVersion + ".nupkg";
-    var url = $"{PrivateNugetFeedUrl}{nugetFeedId}/nuget/v3/flat2/{packageId}/{packageVersion}/{filename}";
-
-    // Get the NuGet package.
-    var request = (HttpWebRequest)WebRequest.Create(url);
-    request.Headers["X-NuGet-ApiKey"] = nugetPassword;
-    request.Credentials = new NetworkCredential(nugetUser, nugetPassword);
-    var response = (HttpWebResponse)request.GetResponse();
-    var responseString = String.Empty;
-    using (var fstream = new FileStream(filename, FileMode.Create, FileAccess.ReadWrite))
-    {
-        response.GetResponseStream().CopyTo(fstream);
-    }
-    return filename;
 }
 
 FilePathCollection ResolveDllFiles(string tempContentPath, NuGetFramework frameworkName) 
