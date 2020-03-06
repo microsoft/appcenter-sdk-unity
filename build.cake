@@ -200,7 +200,6 @@ class UnityPackage
 
 async Task ProcessDownloadUwpPackages() 
 {
-
     // Prepare destination
     var path = ExternalsFolder + "uwp.zip";
     var tempPackageFolder = ExternalsFolder;
