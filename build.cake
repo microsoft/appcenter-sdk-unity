@@ -16,7 +16,7 @@ using System.Threading;
 // Native SDK versions
 const string AndroidSdkVersion = "3.0.0-0+594536359";
 const string IosSdkVersion = "3.0.0-19+9c7bee9895b5165a1825132d4a86ca3f6037ea98";
-const string UwpSdkVersion = "3.0.0";
+const string UwpSdkVersion = "3.0.1-r0006-997d669";
 
 // URLs for downloading binaries.
 /*
@@ -30,6 +30,7 @@ const string UwpSdkVersion = "3.0.0";
 const string SdkStorageUrl = "https://mobilecentersdkdev.blob.core.windows.net/sdk/";
 const string AndroidUrl = SdkStorageUrl + "AppCenter-SDK-Android-" + AndroidSdkVersion + ".zip";
 const string IosUrl = SdkStorageUrl + "AppCenter-SDK-Apple-" + IosSdkVersion + ".zip";
+const string UwpUrl = SdkStorageUrl + "AppCenter-SDK-Unity-UWP-" + UwpSdkVersion + ".zip";
 
 var AppCenterModules = new [] 
 {
@@ -248,20 +249,9 @@ Task ("Externals-Uwp")
 
         CleanDirectory("externals/uwp");
         EnsureDirectoryExists("Assets/AppCenter/Plugins/WSA/");
-        foreach (var module in AppCenterModules) 
-        {
-            if (module.Moniker == "Distribute") 
-            {
-                Warning("Skipping 'Distribute' for UWP.");
-                continue;
-            }
-            if (module.Moniker == "Crashes") 
-            {
-                Warning("Skipping 'Crashes' for UWP.");
-                continue;
-            }
-            await GetUwpPackage(module, usePublicFeed);
-        }
+        
+        // Download dlls.
+        await ProcessDownloadDllDependencies();
     }).OnError(HandleError);
 
 // Builds the ContentProvider for the Android package and puts it in the
@@ -530,9 +520,6 @@ async Task GetUwpPackage(AppCenterModule module, bool usePublicFeed)
     {
         ProcessInternalAppCenterDependency(module.DotNetModule, module.Moniker, UwpSdkVersion, destination);
     }
-
-    // Download dlls.
-    await ProcessDownloadDllDependency(module.Moniker, destination);
 }
 
 void BuildApps(string type, string projectPath = ".")

@@ -4,13 +4,32 @@
 #addin nuget:?package=Cake.FileHelpers
 #addin nuget:?package=Cake.AzureStorage
 
-var UwpDllDependencies = new Dictionary<string, string> { 
-                                  {"Push", "Newtonsoft.Json.dll"},
-                                  {"Analytics", "Newtonsoft.Json.dll"},
-                                  {"Core", "Newtonsoft.Json.dll"}
-                              };
+async Task ProcessDownloadDllDependencies() {
+    var path = ExternalsFolder + "uwp.zip";
+    var tempPackageFolder = ExternalsFolder;
 
-async Task ProcessDownloadDllDependency(string moniker, string destination) {
-    var dllName = UwpDllDependencies[moniker];
-    DownloadFile(SdkStorageUrl + dllName, destination + dllName);
+    // // Downloading files.
+    Information($"Downloading UWP packages from {UwpUrl} to {path}");
+    DownloadFile(UwpUrl, path);
+
+    // Unzipping files.
+    Information($"Unzipping UWP packages from {path} to {tempPackageFolder}");
+    Unzip(path, tempPackageFolder);
+
+    // Copy files.
+    foreach (var module in AppCenterModules)
+    {
+        if (module.Moniker == "Distribute") 
+        {
+            Warning("Skipping 'Distribute' for UWP.");
+            continue;
+        }
+        if (module.Moniker == "Crashes") 
+        {
+            Warning("Skipping 'Crashes' for UWP.");
+            continue;
+        }
+        var files = GetFiles(ExternalsFolder + module.DotNetModule + ".dll");
+        CopyFiles(files, "Assets/AppCenter/Plugins/WSA/" + module.Moniker + "/");
+    }
 }
