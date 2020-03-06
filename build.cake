@@ -249,7 +249,14 @@ Task ("Externals-Uwp")
 
         CleanDirectory("externals/uwp");
         EnsureDirectoryExists("Assets/AppCenter/Plugins/WSA/");
-        
+        foreach (var module in AppCenterModules) 
+        {
+            if (module.Moniker == "Distribute" || module.Moniker == "Crashes") 
+            {
+                continue;
+            }
+        }
+
         // Download dlls.
         await ProcessDownloadDllDependencies();
     }).OnError(HandleError);
@@ -512,14 +519,6 @@ async Task GetUwpPackage(AppCenterModule module, bool usePublicFeed)
     EnsureDirectoryExists(destination);
     DeleteFiles(destination + "*.dll");
     DeleteFiles(destination + "*.winmd");
-    if (usePublicFeed) 
-    {
-        await ProcessDependency(new NugetDependency(module.DotNetModule, UwpSdkVersion, "UAP10.0"), destination);
-    } 
-    else 
-    {
-        ProcessInternalAppCenterDependency(module.DotNetModule, module.Moniker, UwpSdkVersion, destination);
-    }
 }
 
 void BuildApps(string type, string projectPath = ".")

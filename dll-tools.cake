@@ -8,12 +8,12 @@ async Task ProcessDownloadDllDependencies() {
     var path = ExternalsFolder + "uwp.zip";
     var tempPackageFolder = ExternalsFolder;
 
-    // // Downloading files.
-    Information($"Downloading UWP packages from {UwpUrl} to {path}");
+    // Downloading files.
+    Information($"Downloading UWP packages from {UwpUrl} to {path}.");
     DownloadFile(UwpUrl, path);
 
     // Unzipping files.
-    Information($"Unzipping UWP packages from {path} to {tempPackageFolder}");
+    Information($"Unzipping UWP packages from {path} to {tempPackageFolder}.");
     Unzip(path, tempPackageFolder);
 
     // Copy files.
@@ -30,6 +30,7 @@ async Task ProcessDownloadDllDependencies() {
             continue;
         }
         var files = GetFiles(ExternalsFolder + module.DotNetModule + ".dll");
+        Information($"Copy module {module.DotNetModule}.");
         CopyFiles(files, "Assets/AppCenter/Plugins/WSA/" + module.Moniker + "/");
     }
 }
