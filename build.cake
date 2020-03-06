@@ -249,13 +249,6 @@ Task ("Externals-Uwp")
 
         CleanDirectory("externals/uwp");
         EnsureDirectoryExists("Assets/AppCenter/Plugins/WSA/");
-        foreach (var module in AppCenterModules) 
-        {
-            if (module.Moniker == "Distribute" || module.Moniker == "Crashes") 
-            {
-                continue;
-            }
-        }
 
         // Download dlls.
         await ProcessDownloadDllDependencies();
@@ -511,15 +504,6 @@ Task("DownloadNdk")
         Unzip(zipDestination, NdkFolder);
     }
 }).OnError(HandleError);
-
-async Task GetUwpPackage(AppCenterModule module, bool usePublicFeed) 
-{
-    // Prepare destination
-    var destination = "Assets/AppCenter/Plugins/WSA/" + module.Moniker + "/";
-    EnsureDirectoryExists(destination);
-    DeleteFiles(destination + "*.dll");
-    DeleteFiles(destination + "*.winmd");
-}
 
 void BuildApps(string type, string projectPath = ".")
 {

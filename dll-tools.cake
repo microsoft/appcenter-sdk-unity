@@ -5,6 +5,8 @@
 #addin nuget:?package=Cake.AzureStorage
 
 async Task ProcessDownloadDllDependencies() {
+
+    // Prepare destination
     var path = ExternalsFolder + "uwp.zip";
     var tempPackageFolder = ExternalsFolder;
 
@@ -15,11 +17,9 @@ async Task ProcessDownloadDllDependencies() {
     // Unzipping files.
     Information($"Unzipping UWP packages from {path} to {tempPackageFolder}.");
     Unzip(path, tempPackageFolder);
-
-    // Copy files.
     foreach (var module in AppCenterModules)
     {
-        if (module.Moniker == "Distribute") 
+         if (module.Moniker == "Distribute") 
         {
             Warning("Skipping 'Distribute' for UWP.");
             continue;
@@ -29,9 +29,17 @@ async Task ProcessDownloadDllDependencies() {
             Warning("Skipping 'Crashes' for UWP.");
             continue;
         }
+
+        // Prepare folders.
+        var destination = "Assets/AppCenter/Plugins/WSA/" + module.Moniker + "/";
+        EnsureDirectoryExists(destination);
+        DeleteFiles(destination + "*.dll");
+        DeleteFiles(destination + "*.winmd");
+
+        // Copy files.
         var files = GetFiles(ExternalsFolder + module.DotNetModule + ".dll");
         Information($"Copy module {module.DotNetModule}.");
-        CopyFiles(files, "Assets/AppCenter/Plugins/WSA/" + module.Moniker + "/");
+        CopyFiles(files, destination);
     }
     DeleteFiles(ExternalsFolder);
 }
