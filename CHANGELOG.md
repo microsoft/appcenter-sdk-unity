@@ -4,6 +4,8 @@
 
 ### App Center
 
+* **[Breaking change]** Bump the minimal supported Unity version from **5.6** to **2018.1**.
+
 #### Android
 
 * **[Fix]** Fix a Unity warning that appears when building for Android.
@@ -12,6 +14,11 @@
 #### iOS
 
 * **[Fix]** Fix converting string with the Unicode symbols (for example in push notification).
+
+#### UWP
+
+* **[Feature]** Support **ARM64** architecture on Unity 2019.x or above.
+* **[Breaking change]** Drop support for .NET scripting backend in favor of IL2CPP.
 
 ### App Center Auth
 
@@ -205,8 +212,8 @@ Updated native SDK versions:
 * iOS from `1.13.2` to [1.14.0](https://github.com/Microsoft/AppCenter-SDK-Apple/releases/tag/1.14.0)
 * UWP from `1.13.2` to [1.14.0](https://github.com/Microsoft/AppCenter-SDK-DotNet/releases/tag/1.14.0)
 
-* **[Fix]** Fixed `async`/`await` operators support by SDK’s methods for .NETStandard 2.0 profile
-* **[Fix]** Fixed iOS application crash when trying to pass exception without stack trace to `Crashes.TrackError`
+* **[Fix]** Fixed `async`/`await` operators support by SDK's methods for .NETStandard 2.0 profile.
+* **[Fix]** Fixed iOS application crash when trying to pass exception without stack trace to `Crashes.TrackError`.
 
 ___
 
