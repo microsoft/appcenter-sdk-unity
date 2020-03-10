@@ -3,9 +3,9 @@
 # Note: Registering and unregistering is handled by build.cake.
 
 # Unity tool download URLs.
-EDITOR_URL="$EDITOR_URL_NEW"
-ANDROID_URL="$ANDROID_SUPPORT_URL_NEW"
-IOS_URL="$IOS_SUPPORT_URL_NEW"
+EDITOR_URL="$EDITOR_URL"
+ANDROID_URL="$ANDROID_SUPPORT_URL"
+IOS_URL="$IOS_SUPPORT_URL"
 
 # Put downloads in a temporary folder
 TEMP_FOLDER="UnityTempDownloads"

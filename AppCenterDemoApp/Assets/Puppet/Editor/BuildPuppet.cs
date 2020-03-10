@@ -44,6 +44,7 @@ public class BuildPuppet
                 var subdir = System.IO.Directory.GetDirectories(ndkLocation).Single();
                 Debug.Log("Setting NDK location to " + subdir);
                 EditorPrefs.SetString("AndroidNdkRoot", subdir);
+                EditorPrefs.SetString("AndroidNdkRootR16b", subdir);
                 Debug.Log("NDK Location is now '" + EditorPrefs.GetString("AndroidNdkRoot") + "'");
                 break;
             }

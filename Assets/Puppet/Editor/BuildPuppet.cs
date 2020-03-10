@@ -33,6 +33,7 @@ public class BuildPuppet
     public static void BuildPuppetSceneAndroidIl2CPP()
     {
         CreateGoogleServicesJsonIfNotPresent();
+        
         // Set NDK location if provided
         var args = Environment.GetCommandLineArgs();
         bool next = false;
@@ -44,6 +45,7 @@ public class BuildPuppet
                 var subdir = System.IO.Directory.GetDirectories(ndkLocation).Single();
                 Debug.Log("Setting NDK location to " + subdir);
                 EditorPrefs.SetString("AndroidNdkRoot", subdir);
+                EditorPrefs.SetString("AndroidNdkRootR16b", subdir);
                 Debug.Log("NDK Location is now '" + EditorPrefs.GetString("AndroidNdkRoot") + "'");
                 break;
             }
