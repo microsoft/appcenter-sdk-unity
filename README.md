@@ -1,24 +1,19 @@
 
 # Introduction
-The App Center Unity SDK enables you to use App Center Analytics, Crash and Distribution within your Unity games. 
+
+The App Center Unity SDK enables you to use App Center Analytics, Crash and Distribution within your Unity games.
 
 # Getting Started
 
 ## 1. Prerequisites
 
-Before you begin, make sure that your project is set up in Unity 5.6 or later.
+Before you begin, make sure that your project is set up in Unity 2018.1 or later.
 
 The App Center SDK for Unity supports the following platforms:
 
 * iOS (9.0 or later)
 * Android (5.0/API 21 or later)
-* UWP (Build 10240 or later)
-
-> [!NOTE]
-> For versions of Unity with UWP lower than 2017.4, only a .NET scripting backend is supported. IL2CPP as a backend is not supported.
-
-> [!NOTE]
-> For versions of Unity with iOS lower than 2017.4, it is required to enable Push notifications capability in XCode manually.
+* UWP (Build 16299 or later)
 
 Also note that the App Center SDK for Unity is only available in C#.
 
