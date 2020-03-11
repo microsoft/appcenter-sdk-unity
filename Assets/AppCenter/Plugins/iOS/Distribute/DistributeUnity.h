@@ -16,5 +16,6 @@ extern "C" void appcenter_unity_distribute_notify_update_action(int updateAction
 extern "C" void appcenter_unity_distribute_replay_release_available();
 extern "C" void appcenter_unity_distribute_set_release_available_impl(ReleaseAvailableFunction handler);
 extern "C" void appcenter_unity_distribute_set_delegate();
+extern "C" void appcenter_unity_distribute_check_for_update();
 
 #endif

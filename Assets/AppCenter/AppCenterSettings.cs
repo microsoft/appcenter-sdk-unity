@@ -37,6 +37,9 @@ public class AppCenterSettings : ScriptableObject
     [Tooltip("By default, App Center Distribute is disabled for debuggable builds. Check this to enable it.")]
     public bool EnableDistributeForDebuggableBuild = false;
 
+    [Tooltip("By default, App Center Distribute checks for update at application startup automatically. Uncheck this to check for updates manually instead.")]
+    public bool AutomaticCheckForUpdate = true;
+
     [Tooltip("App Center Push enables you to send push notifications to users of your app from the App Center portal.")]
     public bool UsePush = true;
 

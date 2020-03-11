@@ -108,6 +108,10 @@ static const int kMSUpdateTrack = 1 /*UPDATE_TRACK*/;
 #endif // APPCENTER_UNITY_USE_CUSTOM_INSTALL_URL
   [classes addObject:MSDistribute.class];
 
+#ifdef APPCENTER_DISTRIBUTE_DISABLE_AUTOMATIC_CHECK_FOR_UPDATE
+  [MSDistribute disableAutomaticCheckForUpdate];
+#endif // APPCENTER_DISTRIBUTE_DISABLE_AUTOMATIC_CHECK_FOR_UPDATE
+
 #endif // APPCENTER_UNITY_USE_DISTRIBUTE
 
   NSString *customLogUrl = [[NSUserDefaults standardUserDefaults] objectForKey:kMSLogUrlKey];

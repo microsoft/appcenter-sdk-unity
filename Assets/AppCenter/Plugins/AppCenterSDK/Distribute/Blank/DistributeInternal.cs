@@ -43,6 +43,10 @@ namespace Microsoft.AppCenter.Unity.Distribute.Internal
         public static void NotifyUpdateAction(int updateAction)
         {
         }
+
+        public static void CheckForUpdate()
+        {
+        }
     }
 }
 #endif
