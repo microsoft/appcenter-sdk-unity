@@ -2,6 +2,11 @@
 // Licensed under the MIT license.
 
 #if UNITY_WSA_10_0 && !UNITY_EDITOR
+
+#if ENABLE_DOTNET
+#error .NET scripting backed is not supported. Use IL2CPP instead.
+#endif
+
 using Microsoft.AppCenter.Unity.Internal.Utils;
 using Microsoft.AppCenter.Utils;
 using System.Collections.Generic;
@@ -200,26 +205,19 @@ namespace Microsoft.AppCenter.Unity.Internal
                     UnityScreenSizeProvider.Initialize();
                     DeviceInformationHelper.SetScreenSizeProviderFactory(new UnityScreenSizeProviderFactory());
 
-#if ENABLE_IL2CPP
-#pragma warning disable 612
                     /**
                      * Workaround for known IL2CPP issue.
+                     * Currently it is not required, but since this workaround stores settings in separate file, 
+                     * and not generic unity mechanism, a migration is required to transition users who store data in old file to built-in mechanism. 
                      * See https://issuetracker.unity3d.com/issues/il2cpp-use-of-windows-dot-foundation-dot-collections-dot-propertyset-throws-a-notsupportedexception-on-uwp
                      *
                      * NotSupportedException: Cannot call method
                      * 'System.Boolean System.Runtime.InteropServices.WindowsRuntime.IMapToIDictionaryAdapter`2::System.Collections.Generic.IDictionary`2.TryGetValue(TKey,TValue&)'.
                      * IL2CPP does not yet support calling this projected method.
+                     * TODO: Can be removed after migration for settings is added.
                      */
                     UnityApplicationSettings.Initialize();
                     UWPAppCenter.SetApplicationSettingsFactory(new UnityApplicationSettingsFactory());
-
-                    /**
-                     * Workaround for another IL2CPP issue.
-                     * System.Net.Http.HttpClient doesn't work properly so, replace to unity specific implementation.
-                     */
-                    UWPAppCenter.SetChannelGroupFactory(new UnityChannelGroupFactory());
-#pragma warning restore 612
-#endif
                     _prepared = true;
                 }
             }

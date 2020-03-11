@@ -5,25 +5,17 @@ using Microsoft.AppCenter.Unity;
 using System.IO;
 using UnityEditor;
 using UnityEditor.Build;
-#if UNITY_2018_1_OR_NEWER
 using UnityEditor.Build.Reporting;
 using UnityEngine;
-#endif
 
-#if UNITY_2018_1_OR_NEWER
 public class AppCenterPreBuild : IPreprocessBuildWithReport
-#else
-public class AppCenterPreBuild : IPreprocessBuild
-#endif
 {
     public int callbackOrder { get { return 0; } }
 
-#if UNITY_2018_1_OR_NEWER
     public void OnPreprocessBuild(BuildReport report)
     {
         OnPreprocessBuild(report.summary.platform, report.summary.outputPath);
     }
-#endif
 
     public void OnPreprocessBuild(BuildTarget target, string path)
     {

@@ -8,9 +8,7 @@ using System.Text.RegularExpressions;
 using System.Xml.Linq;
 using System;
 using System.Collections.Generic;
-#if UNITY_2018_1_OR_NEWER
 using UnityEditor.Build.Reporting;
-#endif
 using UnityEditor.Build;
 using UnityEditor;
 using UnityEngine;
@@ -18,11 +16,7 @@ using UnityEngine;
 // Warning: Don't use #if #endif for conditional compilation here as Unity
 // doesn't always set the flags early enough.
 
-#if UNITY_2018_1_OR_NEWER
 public class AppCenterPostBuild : IPostprocessBuildWithReport
-#else
-public class AppCenterPostBuild : IPostprocessBuild
-#endif
 {
     public int callbackOrder { get { return 0; } }
 
@@ -31,17 +25,13 @@ public class AppCenterPostBuild : IPostprocessBuild
     private const string CapabilityElement = "Capability";
     private const string CapabilityNameAttribute = "Name";
     private const string CapabilityNameAttributeValue = "internetClient";
-    private const string AppNetD3d = "App.cs";
-    private const string AppNetXaml = "App.xaml.cs";
     private const string AppIl2cppXaml = "App.xaml.cpp";
     private const string AppIl2cppD3d = "App.cpp";
 
-#if UNITY_2018_1_OR_NEWER
     public void OnPostprocessBuild(BuildReport report)
     {
         OnPostprocessBuild(report.summary.platform, report.summary.outputPath);
     }
-#endif
 
     public void OnPostprocessBuild(BuildTarget target, string pathToBuiltProject)
     {
@@ -102,24 +92,8 @@ public class AppCenterPostBuild : IPostprocessBuild
             return;
         }
 
-        // .NET, D3D
-        if (EditorUserBuildSettings.wsaUWPBuildType == WSAUWPBuildType.D3D &&
-            PlayerSettings.GetScriptingBackend(BuildTargetGroup.WSA) == ScriptingImplementation.WinRTDotNET)
-        {
-            var appFilePath = GetAppFilePath(pathToBuiltProject, AppNetD3d);
-            var regexPattern = "private void ApplicationView_Activated \\( CoreApplicationView [a-zA-Z0-9_]*, IActivatedEventArgs args \\) {".Replace(" ", "[\\s]*");
-            InjectCodeToFile(appFilePath, AppNetD3d, regexPattern, "d3ddotnet.txt");
-        }
-        // .NET, XAML
-        else if (EditorUserBuildSettings.wsaUWPBuildType == WSAUWPBuildType.XAML &&
-                 PlayerSettings.GetScriptingBackend(BuildTargetGroup.WSA) == ScriptingImplementation.WinRTDotNET)
-        {
-            var appFilePath = GetAppFilePath(pathToBuiltProject, AppNetXaml);
-            var regexPattern = "InitializeUnity\\(args.Arguments\\);";
-            InjectCodeToFile(appFilePath, AppNetXaml, regexPattern, "xamldotnet.txt", false);
-        }
         // IL2CPP, XAML
-        else if (EditorUserBuildSettings.wsaUWPBuildType == WSAUWPBuildType.XAML &&
+        if (EditorUserBuildSettings.wsaUWPBuildType == WSAUWPBuildType.XAML &&
                  PlayerSettings.GetScriptingBackend(BuildTargetGroup.WSA) == ScriptingImplementation.IL2CPP)
         {
             var appFilePath = GetAppFilePath(pathToBuiltProject, AppIl2cppXaml);
