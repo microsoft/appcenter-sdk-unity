@@ -39,16 +39,7 @@ public class AppCenterPostBuild : IPostprocessBuildWithReport
         {
             AddInternetClientCapability(pathToBuiltProject);
             AddHelperCodeToUWPProject(pathToBuiltProject);
-            if (PlayerSettings.GetScriptingBackend(BuildTargetGroup.WSA) != ScriptingImplementation.IL2CPP)
-            {
-                // If UWP with .NET scripting backend, need to add NuGet packages.
-                var projectJson = pathToBuiltProject + "/" + PlayerSettings.productName + "/project.json";
-                AddDependenciesToProjectJson(projectJson);
-
-                var nuget = EditorApplication.applicationContentsPath + "/PlaybackEngines/MetroSupport/Tools/nuget.exe";
-                ExecuteCommand(nuget, "restore \"" + projectJson + "\" -NonInteractive");
-            }
-            else
+            if (PlayerSettings.GetScriptingBackend(BuildTargetGroup.WSA) == ScriptingImplementation.IL2CPP)
             {
                 // Fix System.Diagnostics.Debug IL2CPP implementation.
                 FixIl2CppLogging(pathToBuiltProject);
@@ -276,39 +267,6 @@ public class AppCenterPostBuild : IPostprocessBuildWithReport
                 importer.SaveAndReimport();
             }
         }
-    }
-
-    private static void AddDependenciesToProjectJson(string projectJsonPath)
-    {
-        if (!File.Exists(projectJsonPath))
-        {
-            Debug.LogWarning(projectJsonPath + " not found!");
-            return;
-        }
-        var jsonString = File.ReadAllText(projectJsonPath);
-        jsonString = AddDependencyToProjectJson(jsonString, "Microsoft.NETCore.UniversalWindowsPlatform", "5.2.2");
-        jsonString = AddDependencyToProjectJson(jsonString, "Newtonsoft.Json", "10.0.3");
-        jsonString = AddDependencyToProjectJson(jsonString, "sqlite-net-pcl", "1.3.1");
-        jsonString = AddDependencyToProjectJson(jsonString, "System.Collections.NonGeneric", "4.0.1");
-        File.WriteAllText(projectJsonPath, jsonString);
-    }
-
-    private static string AddDependencyToProjectJson(string projectJson, string packageId, string packageVersion)
-    {
-        const string quote = @"\" + "\"";
-        var dependencyString = "\"" + packageId + "\": \"" + packageVersion + "\"";
-        var pattern = quote + packageId + quote + @":[\s]+" + quote + "[^" + quote + "]*" + quote;
-        var regex = new Regex(pattern);
-        var match = regex.Match(projectJson);
-        if (match.Success)
-        {
-            return projectJson.Replace(match.Value, dependencyString);
-        }
-        pattern = quote + "dependencies" + quote + @":[\s]+{";
-        regex = new Regex(pattern);
-        match = regex.Match(projectJson);
-        var idx = projectJson.IndexOf(match.Value, StringComparison.Ordinal) + match.Value.Length;
-        return projectJson.Insert(idx, "\n" + dependencyString + ",");
     }
 
     private static void ExecuteCommand(string command, string arguments, int timeout = 600)
