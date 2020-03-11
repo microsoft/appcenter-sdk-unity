@@ -1,0 +1,33 @@
+{
+    "Registrations": [
+        {
+            "Component": {
+                "Type": "other",
+                "Other": {
+                    "Name": "play-services-resolver",
+                    "Version": "1.2.135",
+                    "DownloadUrl": "https://github.com/googlesamples/unity-jar-resolver/raw/v1.2.135/play-services-resolver-1.2.135.0.unitypackage"
+                }
+            }
+        },
+        {
+            "Component": {
+                "Type": "NuGet",
+                "NuGet": {
+                    "Name": "Newtonsoft.Json",
+                    "Version": "12.0.2"
+                }
+            }
+        },
+        {
+            "Component": {
+                "Type": "NuGet",
+                "NuGet": {
+                    "Name": "SQLitePCLRaw.bundle_green",
+                    "Version": "2.0.2"
+                }
+            }
+        }
+    ],
+    "Version": 1
+}

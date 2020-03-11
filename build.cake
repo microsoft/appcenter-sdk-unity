@@ -45,9 +45,9 @@ var ExternalUnityPackages = new []
     // From https://github.com/googlesamples/unity-jar-resolver#getting-started
     // Import the play-services-resolver-*.unitypackage into your plugin project <...> ensuring that you add the -gvh_disable option.
     // You must specify the -gvh_disable option in order for the Version Handler to work correctly!
-    new ExternalUnityPackage("play-services-resolver-" + ExternalUnityPackage.VersionPlaceholder + ".unitypackage",
+    new ExternalUnityPackage($"play-services-resolver-{ExternalUnityPackage.VersionPlaceholder}.0.unitypackage",
                              "1.2.135",
-                             SdkStorageUrl + ExternalUnityPackage.NamePlaceholder,
+                             $"https://github.com/googlesamples/unity-jar-resolver/raw/v{ExternalUnityPackage.VersionPlaceholder}/{ExternalUnityPackage.NamePlaceholder}",
                              "-gvh_disable")
 };
 
@@ -198,7 +198,7 @@ class UnityPackage
     }
 }
 
-async Task ProcessDownloadUwpPackages() 
+async Task ProcessDownloadUwpPackages()
 {
     // Prepare destination
     var path = ExternalsFolder + "uwp.zip";
@@ -213,12 +213,12 @@ async Task ProcessDownloadUwpPackages()
     Unzip(path, tempPackageFolder);
     foreach (var module in AppCenterModules)
     {
-        if (module.Moniker == "Distribute") 
+        if (module.Moniker == "Distribute")
         {
             Warning("Skipping 'Distribute' for UWP.");
             continue;
         }
-        if (module.Moniker == "Crashes") 
+        if (module.Moniker == "Crashes")
         {
             Warning("Skipping 'Crashes' for UWP.");
             continue;
@@ -368,7 +368,7 @@ void BuildAndroidLibrary(string appName, string libraryName, bool copyBinary = t
 Task("Install-Unity-Windows").Does(() => {
     string unityDownloadUrl = EnvironmentVariable("EDITOR_URL_WIN");
     string il2cppSupportDownloadUrl = EnvironmentVariable("IL2CPP_SUPPORT_URL");
-   
+
     Information("Downloading Unity Editor...");
     DownloadFile(unityDownloadUrl, "./UnitySetup64.exe");
     Information("Installing Unity Editor...");
