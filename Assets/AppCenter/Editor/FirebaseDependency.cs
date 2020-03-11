@@ -54,7 +54,7 @@ public class FirebaseDependency
         }
         object svcSupport = versionHandler.InvokeMember("InvokeStaticMethod", BindingFlags.Public | BindingFlags.Static | BindingFlags.InvokeMethod, null, null, new object[]
         {
-            playServicesSupport, "CreateInstance", new object[] { "FirebaseMessaging", EditorPrefs.GetString("AndroidSdkRoot"), "ProjectSettings" }, null
+            playServicesSupport, "CreateInstance", new object[] { "FirebaseMessaging", Environment.GetEnvironmentVariable("ANDROID_HOME"), "ProjectSettings" }, null
         });
         versionHandler.InvokeMember("InvokeInstanceMethod", BindingFlags.Public | BindingFlags.Static | BindingFlags.InvokeMethod, null, null, new object[]
         {

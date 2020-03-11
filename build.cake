@@ -53,7 +53,7 @@ var ExternalUnityPackages = new []
 
 // Unity requires a specific NDK version for building Android with IL2CPP.
 // Download from a link here: https://developer.android.com/ndk/downloads/older_releases.html
-// Unity 2017.3 requires NDK r13b.
+// Unity 2018.4.18 requires NDK r16b.
 // The destination for the NDK download.
 const string NdkFolder = "android_ndk";
 
@@ -368,8 +368,7 @@ void BuildAndroidLibrary(string appName, string libraryName, bool copyBinary = t
 Task("Install-Unity-Windows").Does(() => {
     string unityDownloadUrl = EnvironmentVariable("EDITOR_URL_WIN");
     string il2cppSupportDownloadUrl = EnvironmentVariable("IL2CPP_SUPPORT_URL");
-    // const string dotNetSupportDownloadUrl = @"https://netstorage.unity3d.com/unity/88933597c842/TargetSupportInstaller/UnitySetup-UWP-.NET-Support-for-Editor-2018.2.17f1.exe";
-
+   
     Information("Downloading Unity Editor...");
     DownloadFile(unityDownloadUrl, "./UnitySetup64.exe");
     Information("Installing Unity Editor...");
@@ -560,7 +559,8 @@ void BuildApps(string type, string projectPath = ".")
 void VerifyIosAppsBuild(string type, string projectPath)
 {
     VerifyAppsBuild(type, "ios", projectPath,
-    new string[] { "IosMono", "IosIl2CPP" },
+    // From Unity 2018.3 changelog: "iOS: Marked Mono scripting backend as deprecated."
+    new string[] { "IosIl2CPP" },
     outputDirectory =>
     {
         var directories = GetDirectories(outputDirectory + "/*/*.xcodeproj");
@@ -584,7 +584,7 @@ void VerifyAndroidAppsBuild(string type, string projectPath)
         extraArgs += "-NdkLocation \"" + absoluteNdkFolder + "\"";
     }
     VerifyAppsBuild(type, "android", projectPath,
-    new string[] { "AndroidMono", "AndroidIl2CPP" },
+    new string[] { "AndroidIl2CPP" },
     outputDirectory =>
     {
         // Verify that an APK was generated.
