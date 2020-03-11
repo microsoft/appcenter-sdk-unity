@@ -15,7 +15,7 @@ using System.Threading;
 // Native SDK versions
 const string AndroidSdkVersion = "3.0.0-0+594536359";
 const string IosSdkVersion = "3.0.0-19+9c7bee9895b5165a1825132d4a86ca3f6037ea98";
-const string UwpSdkVersion = "3.0.0";
+const string UwpSdkVersion = "3.0.1-r0006-997d669";
 
 // URLs for downloading binaries.
 /*
@@ -29,6 +29,7 @@ const string UwpSdkVersion = "3.0.0";
 const string SdkStorageUrl = "https://mobilecentersdkdev.blob.core.windows.net/sdk/";
 const string AndroidUrl = SdkStorageUrl + "AppCenter-SDK-Android-" + AndroidSdkVersion + ".zip";
 const string IosUrl = SdkStorageUrl + "AppCenter-SDK-Apple-" + IosSdkVersion + ".zip";
+const string UwpUrl = SdkStorageUrl + "AppCenter-SDK-Unity-UWP-" + UwpSdkVersion + ".zip";
 
 var AppCenterModules = new []
 {
@@ -197,6 +198,46 @@ class UnityPackage
     }
 }
 
+async Task ProcessDownloadUwpPackages() 
+{
+    // Prepare destination
+    var path = ExternalsFolder + "uwp.zip";
+    var tempPackageFolder = ExternalsFolder;
+
+    // Downloading files.
+    Information($"Downloading UWP packages from {UwpUrl} to {path}.");
+    DownloadFile(UwpUrl, path);
+
+    // Unzipping files.
+    Information($"Unzipping UWP packages from {path} to {tempPackageFolder}.");
+    Unzip(path, tempPackageFolder);
+    foreach (var module in AppCenterModules)
+    {
+        if (module.Moniker == "Distribute") 
+        {
+            Warning("Skipping 'Distribute' for UWP.");
+            continue;
+        }
+        if (module.Moniker == "Crashes") 
+        {
+            Warning("Skipping 'Crashes' for UWP.");
+            continue;
+        }
+
+        // Prepare folders.
+        var destination = "Assets/AppCenter/Plugins/WSA/" + module.Moniker + "/";
+        EnsureDirectoryExists(destination);
+        DeleteFiles(destination + "*.dll");
+        DeleteFiles(destination + "*.winmd");
+
+        // Copy files.
+        var files = GetFiles(ExternalsFolder + module.DotNetModule + ".dll");
+        Information($"Copy module {module.DotNetModule}.");
+        CopyFiles(files, destination);
+    }
+    DeleteFiles(ExternalsFolder);
+}
+
 // Downloading Android binaries.
 Task("Externals-Android")
     .Does(() =>
@@ -247,20 +288,9 @@ Task ("Externals-Uwp")
 
         CleanDirectory("externals/uwp");
         EnsureDirectoryExists("Assets/AppCenter/Plugins/WSA/");
-        foreach (var module in AppCenterModules)
-        {
-            if (module.Moniker == "Distribute")
-            {
-                Warning("Skipping 'Distribute' for UWP.");
-                continue;
-            }
-            if (module.Moniker == "Crashes")
-            {
-                Warning("Skipping 'Crashes' for UWP.");
-                continue;
-            }
-            await GetUwpPackage(module, usePublicFeed);
-        }
+
+        // Download packages.
+        await ProcessDownloadUwpPackages();
     }).OnError(HandleError);
 
 // Builds the ContentProvider for the Android package and puts it in the
@@ -513,23 +543,6 @@ Task("DownloadNdk")
         Unzip(zipDestination, NdkFolder);
     }
 }).OnError(HandleError);
-
-async Task GetUwpPackage(AppCenterModule module, bool usePublicFeed)
-{
-    // Prepare destination
-    var destination = "Assets/AppCenter/Plugins/WSA/" + module.Moniker + "/";
-    EnsureDirectoryExists(destination);
-    DeleteFiles(destination + "*.dll");
-    DeleteFiles(destination + "*.winmd");
-    if (usePublicFeed)
-    {
-        await ProcessDependency(new NuGetDependency(module.DotNetModule, UwpSdkVersion, "UAP10.0"), destination);
-    }
-    else
-    {
-        ProcessInternalAppCenterDependency(module.DotNetModule, module.Moniker, UwpSdkVersion, destination);
-    }
-}
 
 void BuildApps(string type, string projectPath = ".")
 {
