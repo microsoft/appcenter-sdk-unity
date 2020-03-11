@@ -4,7 +4,7 @@
 
 ### App Center Distribute
 
-* **[Feature]** Add a **Automatic Check For Update** checkbox that can be unchecked to turn off automatic check for update. 
+* **[Feature]** Add a **Automatic Check For Update** checkbox that can be unchecked to turn off automatic check for update.
 * **[Feature]** Add a `CheckForUpdate` API to manually check for update.
 
 ## Release 3.0.0
@@ -12,7 +12,6 @@
 ### App Center
 
 * **[Breaking change]** Bump the minimal supported Unity version from **5.6** to **2018.1**.
-* **[Breaking change]** Drop .NET 3.5 scripting runtime version.
 
 #### Android
 
@@ -27,6 +26,7 @@
 
 * **[Feature]** Support **ARM64** architecture on Unity 2019.x or above.
 * **[Breaking change]** Drop support for .NET scripting backend in favor of IL2CPP.
+* **[Breaking change]** Drop .NET 3.5 scripting runtime version.
 
 ### App Center Auth
 
