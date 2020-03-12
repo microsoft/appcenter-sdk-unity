@@ -15,6 +15,8 @@ The App Center SDK for Unity supports the following platforms:
 * Android (5.0/API 21 or later)
 * UWP (Build 16299 or later)
 
+> .NET 3.5 scripting runtime version and .NET scripting backend are no longer supported on the UWP platform.
+
 Also note that the App Center SDK for Unity is only available in C#.
 
 ## 2. Create your app in the App Center Portal to obtain the App Secret
