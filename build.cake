@@ -207,7 +207,7 @@ Task("Externals-Android").Does(() =>
     EnsureDirectoryExists(outputDirectory);
 
     // Download zip file.
-    Information($"Downloading Android libraries from {UwpUrl}...");
+    Information($"Downloading Android libraries from {AndroidUrl}...");
     DownloadFile(AndroidUrl, zipFilePath);
     Information($"Unzipping Android libraries from \"{zipFilePath}\" to \"{externalsDirectory}\".");
     Unzip(zipFilePath, externalsDirectory);
@@ -231,7 +231,7 @@ Task("Externals-Ios").Does(() =>
     EnsureDirectoryExists(outputDirectory);
 
     // Download zip file containing AppCenter frameworks.
-    Information($"Downloading iOS frameworks from {UwpUrl}...");
+    Information($"Downloading iOS frameworks from {IosUrl}...");
     DownloadFile(IosUrl, zipFilePath);
     Information($"Unzipping iOS frameworks from \"{zipFilePath}\" to \"{externalsDirectory}\".");
     Unzip(zipFilePath, externalsDirectory);
