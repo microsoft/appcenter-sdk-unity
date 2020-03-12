@@ -15,7 +15,7 @@ using System.Threading;
 // Native SDK versions
 const string AndroidSdkVersion = "3.0.1-1+f4bafd4b2";
 const string IosSdkVersion = "3.0.1-9+b0b0b83295631713675ce8c40147f2ca6115c60f";
-const string UwpSdkVersion = "3.0.1-r0006-997d669";
+const string UwpSdkVersion = "3.0.1-r0010-44b04cb";
 
 // URLs for downloading binaries.
 /*
@@ -198,7 +198,7 @@ class UnityPackage
     }
 }
 
-async Task ProcessDownloadUwpPackages() 
+async Task ProcessDownloadUwpPackages()
 {
     // Prepare destination
     var path = ExternalsFolder + "uwp.zip";
@@ -213,12 +213,12 @@ async Task ProcessDownloadUwpPackages()
     Unzip(path, tempPackageFolder);
     foreach (var module in AppCenterModules)
     {
-        if (module.Moniker == "Distribute") 
+        if (module.Moniker == "Distribute")
         {
             Warning("Skipping 'Distribute' for UWP.");
             continue;
         }
-        if (module.Moniker == "Crashes") 
+        if (module.Moniker == "Crashes")
         {
             Warning("Skipping 'Crashes' for UWP.");
             continue;
@@ -368,7 +368,7 @@ void BuildAndroidLibrary(string appName, string libraryName, bool copyBinary = t
 Task("Install-Unity-Windows").Does(() => {
     string unityDownloadUrl = EnvironmentVariable("EDITOR_URL_WIN");
     string il2cppSupportDownloadUrl = EnvironmentVariable("IL2CPP_SUPPORT_URL");
-   
+
     Information("Downloading Unity Editor...");
     DownloadFile(unityDownloadUrl, "./UnitySetup64.exe");
     Information("Installing Unity Editor...");
