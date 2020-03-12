@@ -458,6 +458,7 @@ Task("RemovePackagesFromDemoApp").Does(()=>
 // or steps that run Unity commands might cause the *.meta files to be deleted!
 // (Unity deletes meta data files when it is opened if the corresponding files are not on disk.)
 Task("Externals")
+    .IsDependentOn("BuildNewtonsoftJson")
     .IsDependentOn("Externals-Uwp")
     .IsDependentOn("Externals-Ios")
     .IsDependentOn("Externals-Android")
@@ -738,5 +739,36 @@ void BuildXcodeProject(string projectPath)
         DerivedDataPath = buildOutputFolder
     });
 }
+
+// Download json package.
+Task("BuildNewtonsoftJson")
+    .Does(() =>
+{
+    var packageDestination = "Assets/AppCenter/Plugins/WSA/IL2CPP";
+    var progectPath = "./Newtonsoft.Json-for-Unity/Src/Newtonsoft.Json";
+    var pathSolution = $"./{progectPath}/Newtonsoft.Json.csproj";
+
+    // Build project.
+    MSBuild(pathSolution, configurator =>
+    configurator
+        .WithRestore()
+        .WithProperty("UnityBuild", "AOT")
+        .UseToolVersion(MSBuildToolVersion.VS2019)
+        .SetConfiguration("Release"));
+
+    // Source and destination of generated .dll.
+    var packageName = "Newtonsoft.Json.dll";
+    var packageSource = $"./{progectPath}/bin/Release/unity-aot/{packageName}";
+
+    // Delete the .dll in case it already exists in the Assets folder
+    var existingPackage = $"{packageDestination}/{packageName}";
+    if (FileExists(existingPackage))
+    {
+        DeleteFile(existingPackage);
+    }
+
+    // Move .dll to Assets/AppCenter/Plugins/WSA/L2CCP.
+    MoveFileToDirectory("./" + packageSource, packageDestination);
+}).OnError(HandleError);
 
 RunTarget(Target);

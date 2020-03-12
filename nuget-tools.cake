@@ -18,7 +18,6 @@ const PackageSaveMode packageSaveMode = PackageSaveMode.Defaultv3;
  * In case of any change or version bump this list MUST be changed manually.
  */
 var UwpIL2CPPDependencies = new [] {
-    /* #      */ new NuGetDependency("Newtonsoft.Json", "12.0.2"),
     /* #      */ new NuGetDependency("SQLitePCLRaw.bundle_green", "2.0.2"),
     /* ├─#    */ new NuGetDependency("SQLitePCLRaw.core", "2.0.2"),
     /* | └─#  */ new NuGetDependency("System.Memory", "4.5.3"),
