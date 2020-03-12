@@ -29,7 +29,7 @@ public class BuildPuppet
     public static void BuildPuppetSceneAndroidIl2CPP()
     {
         CreateGoogleServicesJsonIfNotPresent();
-        
+
         // Set NDK location if provided
         var args = Environment.GetCommandLineArgs();
         bool next = false;
@@ -84,7 +84,7 @@ public class BuildPuppet
         BuildPuppetScene(BuildTarget.WSAPlayer, BuildTargetGroup.WSA, ScriptingImplementation.IL2CPP, "WSAIL2CPPBuildXaml");
     }
 
-    public static void BuildPuppetSceneWsaIl2CPPD3D()   
+    public static void BuildPuppetSceneWsaIl2CPPD3D()
     {
         EditorUserBuildSettings.wsaUWPBuildType = WSAUWPBuildType.D3D;
         PlayerSettings.SetApiCompatibilityLevel(BuildTargetGroup.WSA, ApiCompatibilityLevel.NET_4_6);
