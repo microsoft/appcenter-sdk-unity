@@ -749,9 +749,11 @@ Task("Externals-Uwp-IL2CPP-Dependencies-BuildNewtonsoftJson")
     var progectPath = "./Newtonsoft.Json-for-Unity/Src/Newtonsoft.Json";
     var pathSolution = $"./{progectPath}/Newtonsoft.Json.csproj";
     
-    //Build tool path.
-    DirectoryPath buildToolsInstallation  = VSWhereProducts("Microsoft.VisualStudio.Product.BuildTools").FirstOrDefault();
-    var toolPath = buildToolsInstallation.CombineWithFilePath("./MSBuild/15.0/Bin/amd64/MSBuild.exe");
+    //Build tool path from the last installation.
+    DirectoryPath vsLatest  = VSWhereLatest(new VSWhereLatestSettings { Requires = "Microsoft.VisualStudio.Workload.ManagedDesktop"});
+    FilePath toolPath = (vsLatest == null)
+                            ? null
+                            : vsLatest.CombineWithFilePath("./MSBuild/15.0/Bin/amd64/MSBuild.exe");
 
     // Build project.
     MSBuild(pathSolution, configurator =>
