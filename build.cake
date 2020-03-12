@@ -753,6 +753,7 @@ Task("BuildNewtonsoftJson")
     configurator
         .WithRestore()
         .WithProperty("UnityBuild", "AOT")
+        .WithProperty("ToolPath", "C:/Program Files (x86)/Microsoft Visual Studio/2019/Preview/MSBuild/Current/Bin/MSBuild.exe")
         .UseToolVersion(MSBuildToolVersion.VS2019)
         .SetConfiguration("Release"));
 
