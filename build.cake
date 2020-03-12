@@ -4,6 +4,7 @@
 #addin nuget:?package=Cake.FileHelpers
 #addin nuget:?package=Cake.AzureStorage
 #addin nuget:?package=Cake.Xcode
+#tool nuget:?package=vswhere
 #load "utility.cake"
 #load "nuget-tools.cake"
 
@@ -458,12 +459,12 @@ Task("RemovePackagesFromDemoApp").Does(()=>
 // or steps that run Unity commands might cause the *.meta files to be deleted!
 // (Unity deletes meta data files when it is opened if the corresponding files are not on disk.)
 Task("Externals")
-    .IsDependentOn("BuildNewtonsoftJson")
     .IsDependentOn("Externals-Uwp")
     .IsDependentOn("Externals-Ios")
     .IsDependentOn("Externals-Android")
     .IsDependentOn("BuildAndroidContentProvider")
     .IsDependentOn("Externals-Uwp-IL2CPP-Dependencies")
+    .IsDependentOn("Externals-Uwp-IL2CPP-Dependencies-BuildNewtonsoftJson")
     .IsDependentOn("Externals-Unity-Packages")
     .Does(()=>
 {
@@ -741,19 +742,23 @@ void BuildXcodeProject(string projectPath)
 }
 
 // Download json package.
-Task("BuildNewtonsoftJson")
+Task("Externals-Uwp-IL2CPP-Dependencies-BuildNewtonsoftJson")
     .Does(() =>
 {
     var packageDestination = "Assets/AppCenter/Plugins/WSA/IL2CPP";
     var progectPath = "./Newtonsoft.Json-for-Unity/Src/Newtonsoft.Json";
     var pathSolution = $"./{progectPath}/Newtonsoft.Json.csproj";
+    
+    //Build tool path.
+    DirectoryPath buildToolsInstallation  = VSWhereProducts("Microsoft.VisualStudio.Product.BuildTools").FirstOrDefault();
+    var toolPath = buildToolsInstallation.CombineWithFilePath("./MSBuild/15.0/Bin/amd64/MSBuild.exe");
 
     // Build project.
     MSBuild(pathSolution, configurator =>
     configurator
         .WithRestore()
         .WithProperty("UnityBuild", "AOT")
-        .WithProperty("ToolPath", "C:/Program Files (x86)/Microsoft Visual Studio/2019/Preview/MSBuild/Current/Bin/MSBuild.exe")
+        .WithProperty("ToolPath", toolPath.FullPath)
         .UseToolVersion(MSBuildToolVersion.VS2019)
         .SetConfiguration("Release"));
 
