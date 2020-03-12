@@ -1,5 +1,4 @@
 #addin nuget:?package=Cake.FileHelpers
-#addin nuget:?package=Cake.Git
 #load "utility.cake"
 
 using System.Text.RegularExpressions;
@@ -23,7 +22,9 @@ Task("StartNewVersion").Does(()=>
 
     // Increment app versions (they will use wrappersdkversion). The platform doesn't matter.
     ExecuteUnityMethod("BuildPuppet.SetVersionNumber", "ios");
-    ExecuteUnityMethod("BuildDemo.SetVersionNumber", "ios", "AppCenterDemoApp");
+
+    // FIXME there is no BuildDemo class in the project now.
+    // ExecuteUnityMethod("BuildDemo.SetVersionNumber", "ios", "AppCenterDemoApp");
 });
 
 // Changes the Version field in WrapperSdk.cs to the given version
