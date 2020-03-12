@@ -18,8 +18,7 @@
 #### UWP
 
 * **[Feature]** Support **ARM64** architecture on Unity 2019.x or above.
-* **[Breaking change]** Drop support for .NET scripting backend in favor of IL2CPP.
-* **[Breaking change]** Drop .NET 3.5 scripting runtime version.
+* **[Breaking change]** Native UWP libraries require .NETStandard now, therefore .NET 3.5 scripting runtime version and .NET scripting backend are no longer supported.
 
 ### App Center Auth
 
