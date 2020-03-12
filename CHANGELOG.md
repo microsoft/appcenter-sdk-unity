@@ -2,13 +2,6 @@
 
 ## Release 3.1.0 (Under development)
 
-### App Center Distribute
-
-* **[Feature]** Add a **Automatic Check For Update** checkbox that can be unchecked to turn off automatic check for update.
-* **[Feature]** Add a `CheckForUpdate` API to manually check for update.
-
-## Release 3.0.0
-
 ### App Center
 
 * **[Breaking change]** Bump the minimal supported Unity version from **5.6** to **2018.1**.
@@ -42,6 +35,8 @@ App Center Auth is [retired](https://aka.ms/MBaaS-retirement-blog-post) and has 
 
 * **[Feature]** Add `UpdateTrack` property to be able to explicitly set either `Private` or `Public` update track. By default, a public distribution group is used. **Breaking change**: To allow users to access releases of private groups you now need to migrate your application to call `Distribute.UpdateTrack = UpdateTrack.Private` before the SDK start. Please read the documentation for more details.
 * **[Behavior change]** The public distribution is simplified to provide only one public group. If you have existing public groups defined for your application your users will receive the latest version of all public groups.
+* **[Feature]** Add a **Automatic Check For Update** checkbox that can be unchecked to turn off automatic check for update.
+* **[Feature]** Add a `CheckForUpdate` API to manually check for update.
 
 ### App Center Push
 
