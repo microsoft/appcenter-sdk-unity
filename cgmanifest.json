@@ -1,6 +1,33 @@
 {
     "Registrations": [
         {
+            "component": {
+                "type": "git",
+                "git": {
+                    "repositoryUrl": "https://github.com/microsoft/appcenter-sdk-android.git",
+                    "commitHash": "f4bafd4b22999d6df0d00650d6621b8db82e52e1"
+                }
+            }
+        },
+        {
+            "component": {
+                "type": "git",
+                "git": {
+                    "repositoryUrl": "https://github.com/microsoft/appcenter-sdk-apple.git",
+                    "commitHash": "b0b0b83295631713675ce8c40147f2ca6115c60f"
+                }
+            }
+        },
+        {
+            "component": {
+                "type": "git",
+                "git": {
+                    "repositoryUrl": "https://github.com/microsoft/appcenter-sdk-dotnet.git",
+                    "commitHash": "44b04cbed93fc12e6a14ac0775ae2521ea86edb4"
+                }
+            }
+        },
+        {
             "Component": {
                 "Type": "other",
                 "Other": {
