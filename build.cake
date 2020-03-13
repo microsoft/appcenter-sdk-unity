@@ -4,7 +4,6 @@
 #addin nuget:?package=Cake.FileHelpers
 #addin nuget:?package=Cake.AzureStorage
 #addin nuget:?package=Cake.Xcode
-#tool nuget:?package=vswhere
 #load "utility.cake"
 #load "nuget-tools.cake"
 
@@ -746,7 +745,7 @@ Task("Externals-Uwp-IL2CPP-Dependencies-BuildNewtonsoftJson")
     .Does(() =>
 {
     var packageDestination = "Assets/AppCenter/Plugins/WSA/IL2CPP";
-    var progectPath = "./Newtonsoft.Json-for-Unity/Src/Newtonsoft.Json";
+    var progectPath = "./Modules/Newtonsoft.Json-for-Unity/Src/Newtonsoft.Json";
     var pathSolution = $"./{progectPath}/Newtonsoft.Json.csproj";
 
     // Build project.
