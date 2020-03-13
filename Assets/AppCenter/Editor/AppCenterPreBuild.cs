@@ -50,7 +50,7 @@ public class AppCenterPreBuild : IPreprocessBuildWithReport
             var currentMinimalPlatformVersion = new Version(EditorUserBuildSettings.wsaMinUWPSDK);
             if (currentMinimalPlatformVersion < RequiredMinimalUWPVersion)
             {
-                Debug.LogWarning($"Minimum platform version should be set to {RequiredMinimalUWPVersion}. App Center does not support lower versions but it is set to {currentMinimalPlatformVersion}");
+                Debug.LogWarning($"Minimum platform version should be set to {RequiredMinimalUWPVersion} or higher. App Center does not support lower versions but it is set to {currentMinimalPlatformVersion}");
             }
 #endif
         }
