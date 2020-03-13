@@ -45,9 +45,9 @@ var ExternalUnityPackages = new []
     // From https://github.com/googlesamples/unity-jar-resolver#getting-started
     // Import the play-services-resolver-*.unitypackage into your plugin project <...> ensuring that you add the -gvh_disable option.
     // You must specify the -gvh_disable option in order for the Version Handler to work correctly!
-    new ExternalUnityPackage("play-services-resolver-" + ExternalUnityPackage.VersionPlaceholder + ".unitypackage",
+    new ExternalUnityPackage($"play-services-resolver-{ExternalUnityPackage.VersionPlaceholder}.0.unitypackage",
                              "1.2.135",
-                             SdkStorageUrl + ExternalUnityPackage.NamePlaceholder,
+                             $"https://github.com/googlesamples/unity-jar-resolver/raw/v{ExternalUnityPackage.VersionPlaceholder}/{ExternalUnityPackage.NamePlaceholder}",
                              "-gvh_disable")
 };
 
