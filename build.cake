@@ -463,7 +463,6 @@ Task("Externals")
     .IsDependentOn("Externals-Android")
     .IsDependentOn("BuildAndroidContentProvider")
     .IsDependentOn("Externals-Uwp-IL2CPP-Dependencies")
-    .IsDependentOn("Externals-Uwp-IL2CPP-Dependencies-BuildNewtonsoftJson")
     .IsDependentOn("Externals-Unity-Packages")
     .Does(()=>
 {
@@ -741,8 +740,7 @@ void BuildXcodeProject(string projectPath)
 }
 
 // Download json package.
-Task("Externals-Uwp-IL2CPP-Dependencies-BuildNewtonsoftJson")
-    .Does(() =>
+Task("BuildNewtonsoftJson").IsDependentOn("Externals-Uwp-IL2CPP-Dependencies").Does(() =>
 {
     var packageDestination = "Assets/AppCenter/Plugins/WSA/IL2CPP";
     var progectPath = "./Modules/Newtonsoft.Json-for-Unity/Src/Newtonsoft.Json";
