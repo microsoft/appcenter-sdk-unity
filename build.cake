@@ -390,6 +390,7 @@ Task("Install-Unity-Windows").Does(() => {
 
 // Downloading UWP IL2CPP dependencies.
 Task ("Externals-Uwp-IL2CPP-Dependencies")
+    .IsDependentOn("BuildNewtonsoftJson")
     .Does (async () => {
         var targetPath = "Assets/AppCenter/Plugins/WSA/IL2CPP";
         EnsureDirectoryExists(targetPath);
@@ -740,7 +741,7 @@ void BuildXcodeProject(string projectPath)
 }
 
 // Download json package.
-Task("BuildNewtonsoftJson").IsDependentOn("Externals-Uwp-IL2CPP-Dependencies").Does(() =>
+Task("BuildNewtonsoftJson").Does(() =>
 {
     var packageDestination = "Assets/AppCenter/Plugins/WSA/IL2CPP";
     var progectPath = "./Modules/Newtonsoft.Json-for-Unity/Src/Newtonsoft.Json";
