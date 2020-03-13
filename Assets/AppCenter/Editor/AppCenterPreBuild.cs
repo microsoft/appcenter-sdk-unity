@@ -12,6 +12,9 @@ using UnityEngine;
 public class AppCenterPreBuild : IPreprocessBuildWithReport
 {
     public int callbackOrder { get { return 0; } }
+#if UNITY_WSA
+    private readonly Version minRequiredUWPVersion = new Version("10.0.16299.0");
+#endif
 
     public void OnPreprocessBuild(BuildReport report)
     {
@@ -44,12 +47,10 @@ public class AppCenterPreBuild : IPreprocessBuildWithReport
         else if (target == BuildTarget.WSAPlayer)
         {
 #if UNITY_WSA
-            const string requiredUWPVersion = "10.0.16299.0";
-            string currentMinPlatformVersion = EditorUserBuildSettings.wsaMinUWPSDK;
-            Version minRequiredUWPVersion = new Version(requiredUWPVersion);
+            var currentMinPlatformVersion = EditorUserBuildSettings.wsaMinUWPSDK;
             if (!string.IsNullOrEmpty(currentMinPlatformVersion) && (new Version(currentMinPlatformVersion) < minRequiredUWPVersion))
             {
-                Debug.LogWarning($"Minimum platform version should be set to {requiredUWPVersion} but it is set to {currentMinPlatformVersion}");
+                Debug.LogWarning($"Minimum platform version should be set to {minRequiredUWPVersion} because of App Center does not support lower versions but it is set to {currentMinPlatformVersion}");
             }
 #endif
         }
