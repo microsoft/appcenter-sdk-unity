@@ -748,20 +748,12 @@ Task("Externals-Uwp-IL2CPP-Dependencies-BuildNewtonsoftJson")
     var packageDestination = "Assets/AppCenter/Plugins/WSA/IL2CPP";
     var progectPath = "./Newtonsoft.Json-for-Unity/Src/Newtonsoft.Json";
     var pathSolution = $"./{progectPath}/Newtonsoft.Json.csproj";
-    
-    //Build tool path from the last installation.
-    DirectoryPath vsLatest  = VSWhereLatest(new VSWhereLatestSettings { Requires = "Microsoft.VisualStudio.Workload.ManagedDesktop"});
-    FilePath toolPath = (vsLatest == null)
-                            ? null
-                            : vsLatest.CombineWithFilePath("./MSBuild/15.0/Bin/amd64/MSBuild.exe");
 
     // Build project.
-    MSBuild(pathSolution, configurator =>
+    Statics.Context.MSBuild(pathSolution, configurator =>
     configurator
         .WithRestore()
         .WithProperty("UnityBuild", "AOT")
-        .WithProperty("ToolPath", toolPath.FullPath)
-        .UseToolVersion(MSBuildToolVersion.VS2019)
         .SetConfiguration("Release"));
 
     // Source and destination of generated .dll.

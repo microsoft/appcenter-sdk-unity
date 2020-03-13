@@ -1,6 +1,6 @@
 [submodule "BreakpadSupport/breakpad-support/src/main/cpp/google-breakpad"]
 	path = BreakpadSupport/breakpad-support/src/main/cpp/google-breakpad
 	url = https://github.com/microsoft/appcenter-sdk-android-breakpad.git
-[submodule "Newtonsoft.Json-for-Unity"]
-	path = Newtonsoft.Json-for-Unity
+[submodule "Modules/Newtonsoft.Json-for-Unity"]
+	path = Modules/Newtonsoft.Json-for-Unity
 	url = https://github.com/jilleJr/Newtonsoft.Json-for-Unity.git
