@@ -2,6 +2,7 @@
 // Licensed under the MIT license.
 
 using Microsoft.AppCenter.Unity;
+using System;
 using System.IO;
 using UnityEditor;
 using UnityEditor.Build;
@@ -38,6 +39,18 @@ public class AppCenterPreBuild : IPreprocessBuildWithReport
         {
 #if !APPCENTER_DONT_USE_NATIVE_STARTER
             AddStartupCode(new AppCenterSettingsMakerIos());
+#endif
+        }
+        else if (target == BuildTarget.WSAPlayer)
+        {
+#if UNITY_WSA
+            const string requiredUWPVersion = "10.0.16299.0";
+            string currentMinPlatformVersion = EditorUserBuildSettings.wsaMinUWPSDK;
+            Version minRequiredUWPVersion = new Version(requiredUWPVersion);
+            if (!string.IsNullOrEmpty(currentMinPlatformVersion) && (new Version(currentMinPlatformVersion) < minRequiredUWPVersion))
+            {
+                Debug.LogWarning($"Minimum platform version should be set to {requiredUWPVersion} but it is set to {currentMinPlatformVersion}");
+            }
 #endif
         }
     }
