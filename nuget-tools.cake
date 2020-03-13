@@ -10,7 +10,7 @@ using NuGet.Packaging.Core;
 using NuGet.Protocol.Core.Types;
 using NuGet.Versioning;
 
-const string ExternalsFolder = "externals/uwp/";
+const string ExternalsUwpFolder = "externals/uwp/";
 const PackageSaveMode packageSaveMode = PackageSaveMode.Defaultv3;
 
 /*
@@ -68,13 +68,12 @@ async Task ProcessDependency(NuGetDependency dependency, string destination)
     var package = await GetDependency(GetDefaultDependencyResource(), dependency);
     var uri = package.DownloadUri.ToString();
     Debug($"Downloading {package.Id} from {uri}");
-    var path = ExternalsFolder + dependency.Name + ".nupkg";
+    var path = ExternalsUwpFolder + dependency.Name + ".nupkg";
     DownloadFile(uri, path);
     Debug($"Extract NuGet package: {dependency.Name}");
-    var tempPackageFolder = ExternalsFolder + dependency.Name;
+    var tempPackageFolder = ExternalsUwpFolder + dependency.Name;
     Unzip(path, tempPackageFolder);
     ProcessPackageAssemblies(dependency, tempPackageFolder, destination);
-    DeleteFiles(ExternalsFolder);
 }
 
 FilePathCollection ResolveDllFiles(string tempContentPath, NuGetFramework frameworkName)

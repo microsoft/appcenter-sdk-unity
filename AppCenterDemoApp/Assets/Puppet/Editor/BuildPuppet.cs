@@ -17,11 +17,7 @@ public class BuildPuppet
 
     static BuildPuppet()
     {
-#if UNITY_5_6_OR_NEWER
         PlayerSettings.applicationIdentifier = AppIdentifier;
-#else
-        PlayerSettings.bundleIdentifier = AppIdentifier;
-#endif
     }
 
     public static void BuildPuppetSceneAndroidMono()
@@ -80,25 +76,11 @@ public class BuildPuppet
         BuildPuppetScene(BuildTarget.iOS, BuildTargetGroup.iOS, ScriptingImplementation.IL2CPP, "iOSIL2CPPBuild");
     }
 
-    public static void BuildPuppetSceneWsaNetXaml()
-    {
-        EditorUserBuildSettings.wsaUWPBuildType = WSAUWPBuildType.XAML;
-        PlayerSettings.SetApiCompatibilityLevel(BuildTargetGroup.WSA, ApiCompatibilityLevel.NET_4_6);
-        BuildPuppetScene(BuildTarget.WSAPlayer, BuildTargetGroup.WSA, ScriptingImplementation.WinRTDotNET, "WSANetBuildXaml");
-    }
-
     public static void BuildPuppetSceneWsaIl2CPPXaml()
     {
         EditorUserBuildSettings.wsaUWPBuildType = WSAUWPBuildType.XAML;
         PlayerSettings.SetApiCompatibilityLevel(BuildTargetGroup.WSA, ApiCompatibilityLevel.NET_4_6);
         BuildPuppetScene(BuildTarget.WSAPlayer, BuildTargetGroup.WSA, ScriptingImplementation.IL2CPP, "WSAIL2CPPBuildXaml");
-    }
-
-    public static void BuildPuppetSceneWsaNetD3D()
-    {
-        EditorUserBuildSettings.wsaUWPBuildType = WSAUWPBuildType.D3D;
-        PlayerSettings.SetApiCompatibilityLevel(BuildTargetGroup.WSA, ApiCompatibilityLevel.NET_4_6);
-        BuildPuppetScene(BuildTarget.WSAPlayer, BuildTargetGroup.WSA, ScriptingImplementation.WinRTDotNET, "WSANetBuildD3D");
     }
 
     public static void BuildPuppetSceneWsaIl2CPPD3D()
