@@ -744,29 +744,28 @@ void BuildXcodeProject(string projectPath)
 Task("BuildNewtonsoftJson").Does(() =>
 {
     var packageDestination = "Assets/AppCenter/Plugins/WSA/IL2CPP";
-    var progectPath = "./Modules/Newtonsoft.Json-for-Unity/Src/Newtonsoft.Json";
-    var pathSolution = $"./{progectPath}/Newtonsoft.Json.csproj";
+    var progectPath = "Modules/Newtonsoft.Json-for-Unity/Src/Newtonsoft.Json";
+    var pathSolution = $"{progectPath}/Newtonsoft.Json.csproj";
 
-    // Build project.
-    Statics.Context.MSBuild(pathSolution, configurator =>
-    configurator
-        .WithRestore()
-        .WithProperty("UnityBuild", "AOT")
-        .SetConfiguration("Release"));
+    Information("Build project.");
+    MSBuild(pathSolution, c => c
+    .WithRestore()
+    .WithProperty("UnityBuild", "AOT")
+    .SetConfiguration("Release"));
 
-    // Source and destination of generated .dll.
+    Information("Source and destination of generated assemble.");
     var packageName = "Newtonsoft.Json.dll";
-    var packageSource = $"./{progectPath}/bin/Release/unity-aot/{packageName}";
+    var packageSource = $"{progectPath}/bin/Release/unity-aot/{packageName}";
 
-    // Delete the .dll in case it already exists in the Assets folder
+    Information("Delete the assemble in case it already exists in the Assets folder.");
     var existingPackage = $"{packageDestination}/{packageName}";
     if (FileExists(existingPackage))
     {
         DeleteFile(existingPackage);
     }
 
-    // Move .dll to Assets/AppCenter/Plugins/WSA/L2CCP.
-    MoveFileToDirectory("./" + packageSource, packageDestination);
+    Information($"Move assemble to {packageDestination} path.");
+    MoveFileToDirectory(packageSource, packageDestination);
 }).OnError(HandleError);
 
 RunTarget(Target);
