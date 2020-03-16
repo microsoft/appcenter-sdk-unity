@@ -739,6 +739,11 @@ void BuildXcodeProject(string projectPath)
 // Download json package.
 Task("BuildNewtonsoftJson").Does(() =>
 {
+    if (IsRunningOnUnix()) {
+        Information("Skip building newtonsoft task on unix.");
+        return;
+    }
+
     var packageDestination = "Assets/AppCenter/Plugins/WSA/IL2CPP";
     var progectPath = "Modules/Newtonsoft.Json-for-Unity/Src/Newtonsoft.Json";
     var pathSolution = $"{progectPath}/Newtonsoft.Json.csproj";
