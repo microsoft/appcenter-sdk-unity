@@ -83,10 +83,10 @@ IList<ApplicationInfo> Applications = new List<ApplicationInfo>
     new ApplicationInfo(Environment.Int, Platform.Android, ScriptingBackend.Il2Cpp, "alchocro", "Unity-Android-Puppet", "BuildPuppet.BuildPuppetSceneAndroidIl2CPP", "BuildPuppet.IncrementVersionNumber", "apk"),
     new ApplicationInfo(Environment.Int, Platform.UWP, ScriptingBackend.DotNet, "alchocro", "UWP-Unity-Puppet"),
     new ApplicationInfo(Environment.Int, Platform.UWP, ScriptingBackend.Il2Cpp, "alchocro", "UWP-Unity-Puppet"),
-    new ApplicationInfo(Environment.Prod, Platform.iOS, ScriptingBackend.Mono, "mobile-center-sdk", "iOS-Unity-Demo-App", "BuildDemo.BuildDemoSceneIosMonoDeviceSdk", "BuildDemo.IncrementVersionNumber", "ipa"),
-    new ApplicationInfo(Environment.Prod, Platform.iOS, ScriptingBackend.Il2Cpp, "mobile-center-sdk", "iOS-Unity-Demo-App", "BuildDemo.BuildDemoSceneIosIl2CPPDeviceSdk", "BuildDemo.IncrementVersionNumber", "ipa"),
-    new ApplicationInfo(Environment.Prod, Platform.Android, ScriptingBackend.Mono, "mobile-center-sdk", "Android-Unity-Demo-App", "BuildDemo.BuildDemoSceneAndroidMono", "BuildDemo.IncrementVersionNumber", "apk"),
-    new ApplicationInfo(Environment.Prod, Platform.Android, ScriptingBackend.Il2Cpp, "mobile-center-sdk", "Android-Unity-Demo-App", "BuildDemo.BuildDemoSceneAndroidIl2CPP", "BuildDemo.IncrementVersionNumber", "apk"),
+    new ApplicationInfo(Environment.Prod, Platform.iOS, ScriptingBackend.Mono, "mobile-center-sdk", "iOS-Unity-Demo-App", "BuildPuppet.BuildPuppetSceneIosMonoDeviceSdk", "BuildPuppet.IncrementVersionNumber", "ipa"),
+    new ApplicationInfo(Environment.Prod, Platform.iOS, ScriptingBackend.Il2Cpp, "mobile-center-sdk", "iOS-Unity-Demo-App", "BuildPuppet.BuildPuppetSceneIosIl2CPPDeviceSdk", "BuildPuppet.IncrementVersionNumber", "ipa"),
+    new ApplicationInfo(Environment.Prod, Platform.Android, ScriptingBackend.Mono, "mobile-center-sdk", "Android-Unity-Demo-App", "BuildPuppet.BuildPuppetSceneAndroidMono", "BuildPuppet.IncrementVersionNumber", "apk"),
+    new ApplicationInfo(Environment.Prod, Platform.Android, ScriptingBackend.Il2Cpp, "mobile-center-sdk", "Android-Unity-Demo-App", "BuildPuppet.BuildPuppetSceneAndroidIl2CPP", "BuildPuppet.IncrementVersionNumber", "apk"),
     new ApplicationInfo(Environment.Prod, Platform.UWP, ScriptingBackend.DotNet, "mobile-center-sdk", "UWP-Unity-Demo-App"),
     new ApplicationInfo(Environment.Prod, Platform.UWP, ScriptingBackend.Il2Cpp, "mobile-center-sdk", "UWP-Unity-Demo-App")
 };
