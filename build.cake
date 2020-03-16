@@ -222,7 +222,9 @@ Task("Externals-Android").Does(() =>
 }).OnError(HandleError);
 
 // Downloading iOS binaries.
-Task("Externals-Ios").Does(() =>
+Task("Externals-Ios")
+    .WithCriteria(IsRunningOnUnix)
+    .Does(() =>
 {
     var externalsDirectory = "externals/ios/";
     var outputDirectory = "Assets/AppCenter/Plugins/iOS/";
@@ -250,7 +252,9 @@ Task("Externals-Ios").Does(() =>
 }).OnError(HandleError);
 
 // Downloading UWP binaries.
-Task("Externals-Uwp").Does(() =>
+Task("Externals-Uwp")
+    .WithCriteria(IsRunningOnWindows)
+    .Does(() =>
 {
     var externalsDirectory = "externals/uwp/";
     var outputDirectory = "Assets/AppCenter/Plugins/WSA/";
@@ -349,20 +353,16 @@ void BuildAndroidLibrary(string appName, string libraryName, bool copyBinary = t
         var aarSource = Path.Combine(libraryFolder, "build/outputs/aar/" + aarName);
         var aarDestination = "Assets/AppCenter/Plugins/Android";
 
-        // Delete the aar in case it already exists in the Assets folder
-        var existingAar = Path.Combine(aarDestination, aarName);
-        if (FileExists(existingAar))
-        {
-            DeleteFile(existingAar);
-        }
-
-        // Move the .aar to Assets/AppCenter/Plugins/Android
+        // Move the .aar to destination folder.
+        DeleteFileIfExists(Path.Combine(aarDestination, aarName));
         MoveFileToDirectory(aarSource, aarDestination);
     }
 }
 
 // Install Unity Editor for Windows
-Task("Install-Unity-Windows").Does(() =>
+Task("Install-Unity-Windows")
+    .WithCriteria(IsRunningOnWindows)
+    .Does(() =>
 {
     string unityDownloadUrl = EnvironmentVariable("EDITOR_URL_WIN");
     string il2cppSupportDownloadUrl = EnvironmentVariable("IL2CPP_SUPPORT_URL");
@@ -388,27 +388,50 @@ Task("Install-Unity-Windows").Does(() =>
 
 // Downloading UWP IL2CPP dependencies.
 Task("Externals-Uwp-IL2CPP-Dependencies")
-    .Does(async () => {
-        var targetPath = "Assets/AppCenter/Plugins/WSA/IL2CPP";
-        EnsureDirectoryExists(targetPath);
-        EnsureDirectoryExists(targetPath + "/ARM");
-        EnsureDirectoryExists(targetPath + "/ARM64");
-        EnsureDirectoryExists(targetPath + "/X86");
-        EnsureDirectoryExists(targetPath + "/X64");
+    .WithCriteria(IsRunningOnWindows)
+    .IsDependentOn("BuildNewtonsoftJson")
+    .Does (async () =>
+{
+    var targetPath = "Assets/AppCenter/Plugins/WSA/IL2CPP";
+    EnsureDirectoryExists(targetPath);
+    EnsureDirectoryExists(targetPath + "/ARM");
+    EnsureDirectoryExists(targetPath + "/ARM64");
+    EnsureDirectoryExists(targetPath + "/X86");
+    EnsureDirectoryExists(targetPath + "/X64");
 
-        foreach (var dependency in UwpIL2CPPDependencies)
-        {
-            await ProcessDependency(dependency, targetPath);
-        }
+    foreach (var dependency in UwpIL2CPPDependencies)
+    {
+        await ProcessDependency(dependency, targetPath);
+    }
 
-        // Process UWP IL2CPP dependencies.
-        Information("Processing UWP IL2CPP dependencies. This could take a minute.");
-        var result = ExecuteUnityCommand("-executeMethod AppCenterPostBuild.ProcessUwpIl2CppDependencies");
-        if (result != 0)
-        {
-            throw new Exception("Something went wrong while executing post build script. Unity result code: " + result);
-        }
-    }).OnError (HandleError);
+    // Process UWP IL2CPP dependencies.
+    Information("Processing UWP IL2CPP dependencies. This could take a minute.");
+    var result = ExecuteUnityCommand("-executeMethod AppCenterPostBuild.ProcessUwpIl2CppDependencies");
+    if (result != 0)
+    {
+        throw new Exception("Something went wrong while executing post build script. Unity result code: " + result);
+    }
+}).OnError(HandleError);
+
+Task("BuildNewtonsoftJson")
+    .WithCriteria(IsRunningOnWindows)
+    .Does(() =>
+{
+    var outputDirectory = "Assets/AppCenter/Plugins/WSA/IL2CPP";
+    var projectPath = "Modules/Newtonsoft.Json-for-Unity/Src/Newtonsoft.Json";
+    var assemblyName = "Newtonsoft.Json.dll";
+    var assemblyPath = $"{projectPath}/bin/Release/unity-aot/{assemblyName}";
+
+    Information("Building Newtonsoft.Json project...");
+    MSBuild(Path.Combine(projectPath, "Newtonsoft.Json.csproj"), c => c
+        .WithRestore()
+        .WithProperty("UnityBuild", "AOT")
+        .SetConfiguration("Release"));
+
+    Information($"Moveing Newtonsoft.Json to {outputDirectory}...");
+    DeleteFileIfExists(Path.Combine(outputDirectory, assemblyName));
+    MoveFileToDirectory(assemblyPath, outputDirectory);
+}).OnError(HandleError);
 
 // Download and install all external Unity packages required.
 Task("Externals-Unity-Packages").Does(() =>
@@ -472,10 +495,7 @@ Task("Package").Does(() =>
 {
     // Remove AndroidManifest.xml
     var path = "Assets/Plugins/Android/appcenter/AndroidManifest.xml";
-    if (FileExists(path))
-    {
-        DeleteFile(path);
-    }
+    DeleteFileIfExists(path);
 
     // Store packages in a clean folder.
     const string outputDirectory = "output";
@@ -611,10 +631,10 @@ void VerifyWindowsAppsBuild(string type, string projectPath)
         var solutionFilePath = slnFiles.Single();
         Statics.Context.Information("Attempting to build '" + solutionFilePath.ToString() + "'...");
         Statics.Context.MSBuild(solutionFilePath.ToString(), c => c
-        .SetConfiguration("Master")
-        .WithProperty("Platform", "x86")
-        .SetVerbosity(Verbosity.Minimal)
-        .SetMSBuildPlatform(MSBuildPlatform.x86));
+            .SetConfiguration("Master")
+            .WithProperty("Platform", "x86")
+            .SetVerbosity(Verbosity.Minimal)
+            .SetMSBuildPlatform(MSBuildPlatform.x86));
         Statics.Context.Information("Successfully built '" + solutionFilePath.ToString() + "'");
     });
 }
