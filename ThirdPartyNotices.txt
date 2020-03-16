@@ -11,7 +11,8 @@ App Center Unity SDK incorporates third party material from the projects listed 
 4.	Protobuf 2.0.3  (https://github.com/protocolbuffers/protobuf)
 5.	Protobuf-c (https://github.com/protobuf-c/protobuf-c)
 6.	Reachability  (https://developer.apple.com/library/content/samplecode/Reachability/Introduction/Intro.html#//apple_ref/doc/uid/DTS40007324-Intro-DontLinkElementID_2)
-7.  NewtonsoftJson for Unity (https://github.com/jilleJr/Newtonsoft.Json-for-Unity)
+7.	NewtonsoftJson for Unity (https://github.com/jilleJr/Newtonsoft.Json-for-Unity)
+
 
 %% Google Play Services Jar Resolver Library for Unity NOTICES, INFORMATION, AND LICENSE BEGIN HERE
 =========================================
