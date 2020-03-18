@@ -29,7 +29,7 @@ namespace Microsoft.AppCenter.Unity.Internal.Utils
                     return (T)result;
                 }
             }
-            SetValue(key, defaultValue);
+            SetValue(key, (T)defaultValue);
             return defaultValue;
         }
         public void SetValue(string key, object value)
@@ -61,7 +61,7 @@ namespace Microsoft.AppCenter.Unity.Internal.Utils
         private static IDictionary<string, object> ReadAll()
         {
             var json = PlayerPrefs.GetString(AppCenterSettingsKey, null);
-            var settings = JsonConvert.DeserializeObject(json) as IDictionary<string, object>;
+            var settings = JsonConvert.DeserializeObject<Dictionary<string, object>>(json);
             return settings != null ? settings : new Dictionary<string, object>();
         }
 
