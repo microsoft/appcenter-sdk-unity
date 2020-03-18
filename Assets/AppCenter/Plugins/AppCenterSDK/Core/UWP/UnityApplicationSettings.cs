@@ -3,6 +3,7 @@
 
 #if UNITY_WSA_10_0 && ENABLE_IL2CPP && !UNITY_EDITOR
 using System.Collections;
+using System;
 using System.Collections.Generic;
 using Microsoft.AppCenter.Utils;
 using Newtonsoft.Json;
@@ -26,12 +27,18 @@ namespace Microsoft.AppCenter.Unity.Internal.Utils
                 var found = _current.TryGetValue(key, out result);
                 if (found)
                 {
+                    if ((typeof(T) == typeof(Guid?)) && (result is string))
+                    {
+                        object guid = (object)(new Guid((string)result));
+                        return (T)guid;
+                    }
                     return (T)result;
                 }
             }
-            SetValue(key, (T)defaultValue);
+            SetValue(key, defaultValue);
             return defaultValue;
         }
+
         public void SetValue(string key, object value)
         {
             lock (_lockObject)
