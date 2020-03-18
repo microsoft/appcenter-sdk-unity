@@ -13,5 +13,5 @@ LOCAL_LDFLAGS := -latomic
 
 LOCAL_LALIBS += -llog
 LOCAL_STATIC_LIBRARIES += breakpad_client
-TARGET_OUT = ../../AppCenterDemoApp/Assets/Plugins/Android/
+TARGET_OUT = ../../Assets/Plugins/Android/
 include $(BUILD_SHARED_LIBRARY)
