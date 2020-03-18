@@ -2,11 +2,11 @@
 // Licensed under the MIT license.
 
 #if UNITY_WSA_10_0 && ENABLE_IL2CPP && !UNITY_EDITOR
-using System.Collections;
-using System;
-using System.Collections.Generic;
 using Microsoft.AppCenter.Utils;
 using Newtonsoft.Json;
+using System;
+using System.Collections;
+using System.Collections.Generic;
 using UnityEngine;
 
 namespace Microsoft.AppCenter.Unity.Internal.Utils
@@ -29,16 +29,16 @@ namespace Microsoft.AppCenter.Unity.Internal.Utils
                 {
                     // This is a workaround for a bug on UWP where Install-Id cannot be read 
                     // from Unity.PlayerPrefs, because it is saved as System.Guid, but read as a string.
-                    if ((typeof(T) == typeof(Guid?)) && (result is string))
+                    if (typeof(T) == typeof(Guid?) && result is string)
                     {
                         try 
                         {
-                            object guid = (object)(new Guid((string)result));
+                            object guid = new Guid((string)result);
                             return (T)guid;
                         }
-                        catch (FormatException)
+                        catch (FormatException ex)
                         {
-                            Debug.LogError("Guid cannot be parsed due to a format exception.");
+                            Debug.LogErrorFormat("Guid cannot be parsed due to a format exception: {0}", ex.Message);
                             return defaultValue;
                         }
                     }
