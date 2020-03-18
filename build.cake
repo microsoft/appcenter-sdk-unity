@@ -317,7 +317,7 @@ Task("BuildAndroidContentProvider").Does(() =>
 
         // The build fails with an error that libPuppetBreakpad.so is not found but it's generated properly.
         // Might be related to the fact the the path to generate the library is relative, in any case it's a false negative.
-        Warning ("Ignoring BreakpadSupport build failure... It's ok. Unity complains that the .so is not found which is not true. It's a false negative.");
+        Warning("Ignoring BreakpadSupport build failure... It's ok. Unity complains that the .so is not found which is not true. It's a false negative.");
         if (!FileExists("Assets/Plugins/Android/libPuppetBreakpad.so"))
         {
             throw new Exception("Building breakpad library failed.");
