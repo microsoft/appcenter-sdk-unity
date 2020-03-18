@@ -2,28 +2,24 @@
 // Licensed under the MIT license.
 
 using Microsoft.AppCenter.Unity;
+using System;
 using System.IO;
 using UnityEditor;
 using UnityEditor.Build;
-#if UNITY_2018_1_OR_NEWER
 using UnityEditor.Build.Reporting;
 using UnityEngine;
-#endif
 
-#if UNITY_2018_1_OR_NEWER
 public class AppCenterPreBuild : IPreprocessBuildWithReport
-#else
-public class AppCenterPreBuild : IPreprocessBuild
-#endif
 {
     public int callbackOrder { get { return 0; } }
+#if UNITY_WSA
+    private readonly Version RequiredMinimalUWPVersion = new Version("10.0.16299.0");
+#endif
 
-#if UNITY_2018_1_OR_NEWER
     public void OnPreprocessBuild(BuildReport report)
     {
         OnPreprocessBuild(report.summary.platform, report.summary.outputPath);
     }
-#endif
 
     public void OnPreprocessBuild(BuildTarget target, string path)
     {
@@ -46,6 +42,16 @@ public class AppCenterPreBuild : IPreprocessBuild
         {
 #if !APPCENTER_DONT_USE_NATIVE_STARTER
             AddStartupCode(new AppCenterSettingsMakerIos());
+#endif
+        }
+        else if (target == BuildTarget.WSAPlayer)
+        {
+#if UNITY_WSA
+            var currentMinimalPlatformVersion = new Version(EditorUserBuildSettings.wsaMinUWPSDK);
+            if (currentMinimalPlatformVersion < RequiredMinimalUWPVersion)
+            {
+                Debug.LogWarning($"Minimum platform version should be set to {RequiredMinimalUWPVersion} or higher. App Center does not support lower versions but it is set to {currentMinimalPlatformVersion}");
+            }
 #endif
         }
     }
