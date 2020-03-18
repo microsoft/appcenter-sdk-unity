@@ -1,20 +1,21 @@
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT license.
+
 #addin nuget:?package=Cake.FileHelpers
 #addin nuget:?package=Cake.AzureStorage
-#addin nuget:?package=NuGet.Core
 #addin nuget:?package=Cake.Xcode
 #load "utility.cake"
+#load "nuget-tools.cake"
 
+using Path = System.IO.Path;
 using System;
-using System.Linq;
 using System.Net;
-using System.Collections.Generic;
-using System.Runtime.Versioning;
-using NuGet;
+using System.Threading;
 
 // Native SDK versions
-var AndroidSdkVersion = "3.0.1-1+f4bafd4b2";
-var IosSdkVersion = "3.0.1-9+b0b0b83295631713675ce8c40147f2ca6115c60f";
-var UwpSdkVersion = "2.6.4";
+const string AndroidSdkVersion = "3.0.1-1+f4bafd4b2";
+const string IosSdkVersion = "3.0.1-9+b0b0b83295631713675ce8c40147f2ca6115c60f";
+const string UwpSdkVersion = "3.0.1-r0010-44b04cb";
 
 // URLs for downloading binaries.
 /*
@@ -25,11 +26,13 @@ var UwpSdkVersion = "2.6.4";
  *     By running mozroots and install part of Mozilla's root certificates can make it work.
  */
 
-var SdkStorageUrl = "https://mobilecentersdkdev.blob.core.windows.net/sdk/";
-var AndroidUrl = SdkStorageUrl + "AppCenter-SDK-Android-" + AndroidSdkVersion + ".zip";
-var IosUrl = SdkStorageUrl + "AppCenter-SDK-Apple-" + IosSdkVersion + ".zip";
+const string SdkStorageUrl = "https://mobilecentersdkdev.blob.core.windows.net/sdk/";
+const string AndroidUrl = SdkStorageUrl + "AppCenter-SDK-Android-" + AndroidSdkVersion + ".zip";
+const string IosUrl = SdkStorageUrl + "AppCenter-SDK-Apple-" + IosSdkVersion + ".zip";
+const string UwpUrl = SdkStorageUrl + "AppCenter-SDK-Unity-UWP-" + UwpSdkVersion + ".zip";
 
-var AppCenterModules = new [] {
+var AppCenterModules = new []
+{
     new AppCenterModule("appcenter-release.aar", "AppCenter.framework", "Microsoft.AppCenter", "Core"),
     new AppCenterModule("appcenter-analytics-release.aar", "AppCenterAnalytics.framework", "Microsoft.AppCenter.Analytics", "Analytics"),
     new AppCenterModule("appcenter-distribute-release.aar", new[] { "AppCenterDistribute.framework", "AppCenterDistributeResources.bundle" }, "Microsoft.AppCenter.Distribute", "Distribute"),
@@ -37,33 +40,27 @@ var AppCenterModules = new [] {
     new AppCenterModule("appcenter-crashes-release.aar", "AppCenterCrashes.framework", "Microsoft.AppCenter.Crashes", "Crashes")
 };
 
-var ExternalUnityPackages = new [] {
+var ExternalUnityPackages = new []
+{
     // From https://github.com/googlesamples/unity-jar-resolver#getting-started
     // Import the play-services-resolver-*.unitypackage into your plugin project <...> ensuring that you add the -gvh_disable option.
     // You must specify the -gvh_disable option in order for the Version Handler to work correctly!
-    new ExternalUnityPackage("play-services-resolver-" + ExternalUnityPackage.VersionPlaceholder + ".unitypackage",
+    new ExternalUnityPackage($"play-services-resolver-{ExternalUnityPackage.VersionPlaceholder}.0.unitypackage",
                              "1.2.135",
-                             SdkStorageUrl + ExternalUnityPackage.NamePlaceholder,
+                             $"https://github.com/googlesamples/unity-jar-resolver/raw/v{ExternalUnityPackage.VersionPlaceholder}/{ExternalUnityPackage.NamePlaceholder}",
                              "-gvh_disable")
 };
 
-// UWP IL2CPP dependencies.
-var UwpIL2CPPDependencies = new [] {
-    new NugetDependency("sqlite-net-pcl", "1.3.1", "UAP, Version=v10.0")
-};
-var UwpIL2CPPJsonUrl = SdkStorageUrl + "Newtonsoft.Json.dll";
-
 // Unity requires a specific NDK version for building Android with IL2CPP.
 // Download from a link here: https://developer.android.com/ndk/downloads/older_releases.html
-// Unity 2017.3 requires NDK r13b.
+// Unity 2018.4.18 requires NDK r16b.
 // The destination for the NDK download.
-var NdkFolder = "android_ndk";
+const string NdkFolder = "android_ndk";
 
 // Task TARGET for build
 var Target = Argument("target", Argument("t", "Default"));
 
-// Available AppCenter modules.
-// AppCenter module class definition.
+// App Center module class definition.
 class AppCenterModule
 {
     public string AndroidModule { get; private set; }
@@ -87,7 +84,7 @@ class AppCenterModule
         UWPHasNativeCode = hasNative;
         if (hasNative)
         {
-            NativeArchitectures = new string[] {"x86", "x64", "arm"};
+            NativeArchitectures = new string[] {"x86", "x64", "arm", "arm64"};
         }
     }
 }
@@ -108,22 +105,6 @@ class ExternalUnityPackage
         Version = version;
         Name = name.Replace(VersionPlaceholder, Version);
         Url = url.Replace(NamePlaceholder, Name).Replace(VersionPlaceholder, Version);
-    }
-}
-
-class NugetDependency
-{
-    public string Name { get; set; }
-    public string Version { get; set; }
-    public string Framework { get; set; }
-    public bool IncludeDependencies { get; set; }
-
-    public NugetDependency(string name, string version, string framework, bool includeDependencies = true)
-    {
-        Name = name;
-        Version = version;
-        Framework = framework;
-        IncludeDependencies = includeDependencies;
     }
 }
 
@@ -148,8 +129,8 @@ class UnityPackage
         var needsCore = Statics.Context.XmlPeek(specFilePath, "package/@needsCore") == "true";
         if (needsCore)
         {
-            var specFileDirectory = System.IO.Path.GetDirectoryName(specFilePath);
-            if (!AddFilesFromSpec(specFileDirectory + "/AppCenter.unitypackagespec")) 
+            var specFileDirectory = Path.GetDirectoryName(specFilePath);
+            if (!AddFilesFromSpec(specFileDirectory + "/AppCenter.unitypackagespec"))
             {
                 return false;
             }
@@ -165,9 +146,9 @@ class UnityPackage
         var xpathPrefix = "/package/include/file[";
         var xpathSuffix= "]/@path";
 
-        string lastPath = Statics.Context.XmlPeek(specFilePath, xpathPrefix + "last()" + xpathSuffix);
+        var lastPath = Statics.Context.XmlPeek(specFilePath, xpathPrefix + "last()" + xpathSuffix);
         var currentIdx = 1;
-        var currentPath =  Statics.Context.XmlPeek(specFilePath, xpathPrefix + currentIdx++ + xpathSuffix);
+        var currentPath = Statics.Context.XmlPeek(specFilePath, xpathPrefix + currentIdx++ + xpathSuffix);
 
         if (currentPath != null)
         {
@@ -175,7 +156,7 @@ class UnityPackage
         }
         while (currentPath != lastPath)
         {
-            currentPath =  Statics.Context.XmlPeek(specFilePath, xpathPrefix + currentIdx++ + xpathSuffix);
+            currentPath = Statics.Context.XmlPeek(specFilePath, xpathPrefix + currentIdx++ + xpathSuffix);
             _includePaths.Add(currentPath);
         }
         return true;
@@ -191,7 +172,7 @@ class UnityPackage
         {
             args += " " + path;
         }
-        var fullPackageName =  _packageName + "-v" + _packageVersion + ".unitypackage";
+        var fullPackageName = _packageName + "-v" + _packageVersion + ".unitypackage";
         args += " " + targetDirectory + "/" + fullPackageName;
         var result = ExecuteUnityCommand(args);
         if (result != 0)
@@ -217,74 +198,106 @@ class UnityPackage
 }
 
 // Downloading Android binaries.
-Task("Externals-Android")
-    .Does(() =>
+Task("Externals-Android").Does(() =>
 {
-    CleanDirectory("./externals/android");
+    var externalsDirectory = "externals/android/";
+    var outputDirectory = "Assets/AppCenter/Plugins/Android/";
+    var zipFilePath = externalsDirectory + "android.zip";
+    CleanDirectory(externalsDirectory);
+    EnsureDirectoryExists(outputDirectory);
 
     // Download zip file.
-    DownloadFile(AndroidUrl, "./externals/android/android.zip");
-    Unzip("./externals/android/android.zip", "./externals/android/");
+    Information($"Downloading Android libraries from {AndroidUrl}...");
+    DownloadFile(AndroidUrl, zipFilePath);
+    Information($"Unzipping Android libraries from \"{zipFilePath}\" to \"{externalsDirectory}\".");
+    Unzip(zipFilePath, externalsDirectory);
 
-    // Copy files
+    // Copy files.
     foreach (var module in AppCenterModules)
     {
-        var files = GetFiles("./externals/android/*/" + module.AndroidModule);
-        CopyFiles(files, "Assets/AppCenter/Plugins/Android/");
+        Information($"Copying module \"{module.Moniker}\"...");
+        var files = GetFiles($"{externalsDirectory}*/{module.AndroidModule}");
+        CopyFiles(files, outputDirectory);
     }
 }).OnError(HandleError);
 
 // Downloading iOS binaries.
 Task("Externals-Ios")
+    .WithCriteria(IsRunningOnUnix)
     .Does(() =>
 {
-    CleanDirectory("./externals/ios");
+    var externalsDirectory = "externals/ios/";
+    var outputDirectory = "Assets/AppCenter/Plugins/iOS/";
+    var zipFilePath = externalsDirectory + "ios.zip";
+    CleanDirectory(externalsDirectory);
+    EnsureDirectoryExists(outputDirectory);
 
-    // Download zip file containing AppCenter frameworks
-    DownloadFile(IosUrl, "./externals/ios/ios.zip");
-    Unzip("./externals/ios/ios.zip", "./externals/ios/");
+    // Download zip file containing AppCenter frameworks.
+    Information($"Downloading iOS frameworks from {IosUrl}...");
+    DownloadFile(IosUrl, zipFilePath);
+    Information($"Unzipping iOS frameworks from \"{zipFilePath}\" to \"{externalsDirectory}\".");
+    Unzip(zipFilePath, externalsDirectory);
 
-    // Copy files
+    // Copy files.
     foreach (var module in AppCenterModules)
     {
+        Information($"Copying module \"{module.Moniker}\"...");
         foreach (var iosModule in module.IosModules)
         {
-            var destinationFolder = "Assets/AppCenter/Plugins/iOS/" + module.Moniker + "/" + iosModule;
-            DeleteDirectoryIfExists(destinationFolder);
-            MoveDirectory("./externals/ios/AppCenter-SDK-Apple/iOS/" + iosModule, destinationFolder);
+            var destinationDirectory = $"{outputDirectory}{module.Moniker}/{iosModule}";
+            DeleteDirectoryIfExists(destinationDirectory);
+            MoveDirectory(externalsDirectory + "AppCenter-SDK-Apple/iOS/" + iosModule, destinationDirectory);
         }
     }
 }).OnError(HandleError);
 
 // Downloading UWP binaries.
-Task ("Externals-Uwp")
-    .Does (() => {
-        var feedIdNugetEnv = Argument("NuGetFeedId", EnvironmentVariable("NUGET_FEED_ID"));
-        var userNugetEnv = EnvironmentVariable("NUGET_USER");
-        var passwordNugetEnv = Argument("NuGetPassword", EnvironmentVariable("NUGET_PASSWORD"));
-        var usePublicFeed = (string.IsNullOrEmpty (feedIdNugetEnv) || string.IsNullOrEmpty (userNugetEnv) || string.IsNullOrEmpty (passwordNugetEnv));
+Task("Externals-Uwp")
+    .WithCriteria(IsRunningOnWindows)
+    .Does(() =>
+{
+    var externalsDirectory = "externals/uwp/";
+    var outputDirectory = "Assets/AppCenter/Plugins/WSA/";
+    var zipFilePath = externalsDirectory + "uwp.zip";
+    CleanDirectory(externalsDirectory);
+    EnsureDirectoryExists(outputDirectory);
 
-        CleanDirectory ("externals/uwp");
-        EnsureDirectoryExists ("Assets/AppCenter/Plugins/WSA/");
-        foreach (var module in AppCenterModules) {
-            if (module.Moniker == "Distribute") {
-                Warning ("Skipping 'Distribute' for UWP.");
-                continue;
-            }
-            if (module.Moniker == "Crashes") {
-                Warning ("Skipping 'Crashes' for UWP.");
-                continue;
-            }
-            Information ("Downloading " + module.DotNetModule + "...");
-            // Download nuget package
+    // Downloading files.
+    Information($"Downloading UWP packages from {UwpUrl}...");
+    DownloadFile(UwpUrl, zipFilePath);
 
-            GetUwpPackage (module, usePublicFeed);
+    // Unzipping files.
+    Information($"Unzipping UWP packages from \"{zipFilePath}\" to \"{externalsDirectory}\".");
+    Unzip(zipFilePath, externalsDirectory);
+    foreach (var module in AppCenterModules)
+    {
+        if (module.Moniker == "Distribute")
+        {
+            Warning("Skipping 'Distribute' for UWP.");
+            continue;
         }
-    }).OnError (HandleError);
+        if (module.Moniker == "Crashes")
+        {
+            Warning("Skipping 'Crashes' for UWP.");
+            continue;
+        }
+        Information($"Copying module \"{module.Moniker}\"...");
+
+        // Prepare folders.
+        var destination = $"{outputDirectory}{module.Moniker}/";
+        EnsureDirectoryExists(destination);
+        DeleteFiles(destination + "*.dll");
+        DeleteFiles(destination + "*.winmd");
+
+        // Copy files.
+        var files = GetFiles($"{externalsDirectory}{module.DotNetModule}.dll");
+        CopyFiles(files, destination);
+    }
+}).OnError(HandleError);
 
 // Builds the ContentProvider for the Android package and puts it in the
 // proper folder.
-Task("BuildAndroidContentProvider").Does(()=>
+Task("BuildAndroidContentProvider").Does(() =>
 {
     // Folder and script locations
     var appName = "AppCenterLoaderApp";
@@ -295,7 +308,7 @@ Task("BuildAndroidContentProvider").Does(()=>
 
     // This is a workaround for NDK build making an error where it claims
     // it can't find the built .so library (which is built successfully).
-    // This error is breaking the CI build on Windows. If you are seeing this, 
+    // This error is breaking the CI build on Windows. If you are seeing this,
     // most likely we haven't found a fix and this is an NDK bug.
     if (!IsRunningOnWindows())
     {
@@ -305,29 +318,28 @@ Task("BuildAndroidContentProvider").Does(()=>
         // The build fails with an error that libPuppetBreakpad.so is not found but it's generated properly.
         // Might be related to the fact the the path to generate the library is relative, in any case it's a false negative.
         Warning ("Ignoring BreakpadSupport build failure... It's ok. Unity complains that the .so is not found which is not true. It's a false negative.");
-        if (!FileExists("Assets/Plugins/Android/libPuppetBreakpad.so")) 
+        if (!FileExists("Assets/Plugins/Android/libPuppetBreakpad.so"))
         {
             throw new Exception("Building breakpad library failed.");
         }
     }
 }).OnError(HandleError);
 
-void BuildAndroidLibrary(string appName, string libraryName, bool copyBinary = true) {
-    var libraryFolder = System.IO.Path.Combine(appName, libraryName);
-    var gradleScript = System.IO.Path.Combine(libraryFolder, "build.gradle");
+void BuildAndroidLibrary(string appName, string libraryName, bool copyBinary = true)
+{
+    var libraryFolder = Path.Combine(appName, libraryName);
+    var gradleScript = Path.Combine(libraryFolder, "build.gradle");
 
     // Compile the library
-    var gradleWrapper = System.IO.Path.Combine(appName, "gradlew");
+    var gradleWrapper = Path.Combine(appName, "gradlew");
     if (IsRunningOnWindows())
     {
         gradleWrapper += ".bat";
     }
     var fullArgs = "-b " + gradleScript + " assembleRelease";
-
     var result = StartProcess(gradleWrapper, fullArgs);
-
-    if (copyBinary) {
-
+    if (copyBinary)
+    {
         // We check the result of the build only here because we need to check build
         // result only in case we build native binary.
         // In another case, when we build breakpad, we don't check it
@@ -338,26 +350,22 @@ void BuildAndroidLibrary(string appName, string libraryName, bool copyBinary = t
         }
         // Source and destination of generated aar
         var aarName = libraryName + "-release.aar";
-        var aarSource = System.IO.Path.Combine(libraryFolder, "build/outputs/aar/" + aarName);
+        var aarSource = Path.Combine(libraryFolder, "build/outputs/aar/" + aarName);
         var aarDestination = "Assets/AppCenter/Plugins/Android";
 
-        // Delete the aar in case it already exists in the Assets folder
-        var existingAar = System.IO.Path.Combine(aarDestination, aarName);
-        if (FileExists(existingAar))
-        {
-            DeleteFile(existingAar);
-        }
-
-        // Move the .aar to Assets/AppCenter/Plugins/Android
+        // Move the .aar to destination folder.
+        DeleteFileIfExists(Path.Combine(aarDestination, aarName));
         MoveFileToDirectory(aarSource, aarDestination);
     }
 }
 
 // Install Unity Editor for Windows
-Task("Install-Unity-Windows").Does(() => {
+Task("Install-Unity-Windows")
+    .WithCriteria(IsRunningOnWindows)
+    .Does(() =>
+{
     string unityDownloadUrl = EnvironmentVariable("EDITOR_URL_WIN");
     string il2cppSupportDownloadUrl = EnvironmentVariable("IL2CPP_SUPPORT_URL");
-    // const string dotNetSupportDownloadUrl = @"https://netstorage.unity3d.com/unity/88933597c842/TargetSupportInstaller/UnitySetup-UWP-.NET-Support-for-Editor-2018.2.17f1.exe";
 
     Information("Downloading Unity Editor...");
     DownloadFile(unityDownloadUrl, "./UnitySetup64.exe");
@@ -379,53 +387,54 @@ Task("Install-Unity-Windows").Does(() => {
 }).OnError(HandleError);
 
 // Downloading UWP IL2CPP dependencies.
-Task ("Externals-Uwp-IL2CPP-Dependencies")
-    .Does (() => {
-        var targetPath = "Assets/AppCenter/Plugins/WSA/IL2CPP";
-        EnsureDirectoryExists (targetPath);
-        EnsureDirectoryExists (targetPath + "/ARM");
-        EnsureDirectoryExists (targetPath + "/X86");
-        EnsureDirectoryExists (targetPath + "/X64");
+Task("Externals-Uwp-IL2CPP-Dependencies")
+    .WithCriteria(IsRunningOnWindows)
+    .IsDependentOn("BuildNewtonsoftJson")
+    .Does (async () =>
+{
+    var targetPath = "Assets/AppCenter/Plugins/WSA/IL2CPP";
+    EnsureDirectoryExists(targetPath);
+    EnsureDirectoryExists(targetPath + "/ARM");
+    EnsureDirectoryExists(targetPath + "/ARM64");
+    EnsureDirectoryExists(targetPath + "/X86");
+    EnsureDirectoryExists(targetPath + "/X64");
 
-        // NuGet.Core support only v2.
-        var packageSource = "https://www.nuget.org/api/v2/";
-        var repository = PackageRepositoryFactory.Default.CreateRepository (packageSource);
-        foreach (var i in UwpIL2CPPDependencies) {
-            var frameworkName = new FrameworkName (i.Framework);
-            var package = repository.FindPackage (i.Name, SemanticVersion.Parse (i.Version));
-            IEnumerable<IPackage> dependencies;
-            if (i.IncludeDependencies) {
-                dependencies = GetNuGetDependencies (repository, frameworkName, package);
-            } else {
-                dependencies = new [] { package };
-            }
-            var fileSystem = new PhysicalFileSystem (Environment.CurrentDirectory);
-            foreach (var depPackage in dependencies) {
-                Information ("Extract NuGet package: " + depPackage);
+    foreach (var dependency in UwpIL2CPPDependencies)
+    {
+        await ProcessDependency(dependency, targetPath);
+    }
 
-                // Extract.
-                var path = "externals/uwp/" + depPackage.Id;
-                depPackage.ExtractContents (fileSystem, path);
+    // Process UWP IL2CPP dependencies.
+    Information("Processing UWP IL2CPP dependencies. This could take a minute.");
+    var result = ExecuteUnityCommand("-executeMethod AppCenterPostBuild.ProcessUwpIl2CppDependencies");
+    if (result != 0)
+    {
+        throw new Exception("Something went wrong while executing post build script. Unity result code: " + result);
+    }
+}).OnError(HandleError);
 
-                ExtractNuGetPackage (depPackage, frameworkName, path, targetPath);
-            }
-        }
+Task("BuildNewtonsoftJson")
+    .WithCriteria(IsRunningOnWindows)
+    .Does(() =>
+{
+    var outputDirectory = "Assets/AppCenter/Plugins/WSA/IL2CPP";
+    var projectPath = "Modules/Newtonsoft.Json-for-Unity/Src/Newtonsoft.Json";
+    var assemblyName = "Newtonsoft.Json.dll";
+    var assemblyPath = $"{projectPath}/bin/Release/unity-aot/{assemblyName}";
 
-        // Download patched Newtonsoft.Json library to avoid Unity issue.
-        // Details: https://forum.unity3d.com/threads/332335/
-        DownloadFile (UwpIL2CPPJsonUrl, targetPath + "/Newtonsoft.Json.dll");
+    Information("Building Newtonsoft.Json project...");
+    MSBuild(Path.Combine(projectPath, "Newtonsoft.Json.csproj"), c => c
+        .WithRestore()
+        .WithProperty("UnityBuild", "AOT")
+        .SetConfiguration("Release"));
 
-        // Process UWP IL2CPP dependencies.
-        Information ("Processing UWP IL2CPP dependencies. This could take a minute.");
-        var result = ExecuteUnityCommand ("-executeMethod AppCenterPostBuild.ProcessUwpIl2CppDependencies");
-        if (result != 0)
-        {
-            throw new Exception("Something went wrong while executing post build script. Unity result code: " + result);
-        }
-    }).OnError (HandleError);
+    Information($"Moveing Newtonsoft.Json to {outputDirectory}...");
+    DeleteFileIfExists(Path.Combine(outputDirectory, assemblyName));
+    MoveFileToDirectory(assemblyPath, outputDirectory);
+}).OnError(HandleError);
 
 // Download and install all external Unity packages required.
-Task("Externals-Unity-Packages").Does(()=>
+Task("Externals-Unity-Packages").Does(() =>
 {
     var directoryPath = new DirectoryPath("externals/unity-packages");
     CleanDirectory(directoryPath);
@@ -458,7 +467,7 @@ Task("AddPackagesToDemoApp")
 }).OnError(HandleError);
 
 // Remove package files from demo app.
-Task("RemovePackagesFromDemoApp").Does(()=>
+Task("RemovePackagesFromDemoApp").Does(() =>
 {
     DeleteDirectoryIfExists("AppCenterDemoApp/Assets/AppCenter");
     DeleteDirectoryIfExists("AppCenterDemoApp/Assets/Plugins");
@@ -475,21 +484,18 @@ Task("Externals")
     .IsDependentOn("BuildAndroidContentProvider")
     .IsDependentOn("Externals-Uwp-IL2CPP-Dependencies")
     .IsDependentOn("Externals-Unity-Packages")
-    .Does(()=>
+    .Does(() =>
 {
     DeleteDirectoryIfExists("externals");
 });
 
 // Creates Unity packages corresponding to all ".unitypackagespec" files
 // in "UnityPackageSpecs" folder.
-Task("Package").Does(()=>
+Task("Package").Does(() =>
 {
     // Remove AndroidManifest.xml
     var path = "Assets/Plugins/Android/appcenter/AndroidManifest.xml";
-    if (System.IO.File.Exists(path))
-    {
-        DeleteFile(path);
-    }
+    DeleteFileIfExists(path);
 
     // Store packages in a clean folder.
     const string outputDirectory = "output";
@@ -511,7 +517,7 @@ Task("CreatePackages").IsDependentOn("PrepareAssets").IsDependentOn("Package");
 // Builds the puppet applications and throws an exception on failure.
 Task("BuildPuppetApps")
     .IsDependentOn("PrepareAssets")
-    .Does(()=>
+    .Does(() =>
 {
     BuildApps("Puppet");
 }).OnError(HandleError);
@@ -519,14 +525,13 @@ Task("BuildPuppetApps")
 // Builds the demo applications and throws an exception on failure.
 Task("BuildDemoApps")
     .IsDependentOn("AddPackagesToDemoApp")
-    .Does(()=>
+    .Does(() =>
 {
     BuildApps("Demo", "AppCenterDemoApp");
 }).OnError(HandleError);
 
 // Downloads the NDK from the specified location.
-Task("DownloadNdk")
-    .Does(()=>
+Task("DownloadNdk").Does(() =>
 {
     var ndkUrl = EnvironmentVariable("ANDROID_NDK_URL");
     if (string.IsNullOrEmpty(ndkUrl))
@@ -554,43 +559,6 @@ Task("DownloadNdk")
     }
 }).OnError(HandleError);
 
-void GetUwpPackage (AppCenterModule module, bool usePublicFeed) {
-    // Prepare destination
-    var destination = "Assets/AppCenter/Plugins/WSA/" + module.Moniker + "/";
-    EnsureDirectoryExists (destination);
-    DeleteFiles (destination + "*.dll");
-    DeleteFiles (destination + "*.winmd");
-    var nupkgPath = "externals/uwp/";
-    if (usePublicFeed) {
-        var packageSource = "https://www.nuget.org/api/v2/";
-        var repository = PackageRepositoryFactory.Default.CreateRepository (packageSource);
-
-        var package = repository.FindPackage (module.DotNetModule, SemanticVersion.Parse (UwpSdkVersion));
-        IEnumerable<IPackage> dependencies = new [] { package };
-        var fileSystem = new PhysicalFileSystem (Environment.CurrentDirectory);
-        foreach (var depPackage in dependencies) {
-            Information ("Extract NuGet package: " + depPackage);
-            // Extract.
-            nupkgPath = "externals/uwp/" + depPackage.Id + "/";
-            depPackage.ExtractContents (fileSystem, nupkgPath);
-
-            // Move assemblies.
-            ExtractNuGetPackage (depPackage, new FrameworkName ("UAP, Version=v10.0"), nupkgPath, destination);
-            // Delete the package
-            DeleteFiles (nupkgPath);
-        }
-    } else {
-        nupkgPath = GetNuGetPackage (module.DotNetModule, UwpSdkVersion);
-        var tempContentPath = "externals/uwp/" + module.Moniker + "/";
-        DeleteDirectoryIfExists (tempContentPath);
-        // Unzip into externals/uwp/
-        Unzip (nupkgPath, tempContentPath);
-        ExtractNuGetPackage (null, new FrameworkName ("UAP, Version=v10.0"), tempContentPath, destination);
-        // Delete the package
-        DeleteFiles (nupkgPath);
-    }
-}
-
 void BuildApps(string type, string projectPath = ".")
 {
     if (Statics.Context.IsRunningOnUnix())
@@ -607,7 +575,8 @@ void BuildApps(string type, string projectPath = ".")
 void VerifyIosAppsBuild(string type, string projectPath)
 {
     VerifyAppsBuild(type, "ios", projectPath,
-    new string[] { "IosMono", "IosIl2CPP" },
+    // From Unity 2018.3 changelog: "iOS: Marked Mono scripting backend as deprecated."
+    new string[] { "IosIl2CPP" },
     outputDirectory =>
     {
         var directories = GetDirectories(outputDirectory + "/*/*.xcodeproj");
@@ -631,7 +600,7 @@ void VerifyAndroidAppsBuild(string type, string projectPath)
         extraArgs += "-NdkLocation \"" + absoluteNdkFolder + "\"";
     }
     VerifyAppsBuild(type, "android", projectPath,
-    new string[] { "AndroidMono", "AndroidIl2CPP" },
+    new string[] { "AndroidIl2CPP" },
     outputDirectory =>
     {
         // Verify that an APK was generated.
@@ -662,10 +631,10 @@ void VerifyWindowsAppsBuild(string type, string projectPath)
         var solutionFilePath = slnFiles.Single();
         Statics.Context.Information("Attempting to build '" + solutionFilePath.ToString() + "'...");
         Statics.Context.MSBuild(solutionFilePath.ToString(), c => c
-        .SetConfiguration("Master")
-        .WithProperty("Platform", "x86")
-        .SetVerbosity(Verbosity.Minimal)
-        .SetMSBuildPlatform(MSBuildPlatform.x86));
+            .SetConfiguration("Master")
+            .WithProperty("Platform", "x86")
+            .SetVerbosity(Verbosity.Minimal)
+            .SetMSBuildPlatform(MSBuildPlatform.x86));
         Statics.Context.Information("Successfully built '" + solutionFilePath.ToString() + "'");
     });
 }
@@ -689,7 +658,7 @@ void VerifyAppsBuild(string type, string platformIdentifier, string projectPath,
     Statics.Context.CleanDirectory(outputDirectory);
 }
 
-Task("PublishPackagesToStorage").Does(()=>
+Task("PublishPackagesToStorage").Does(() =>
 {
     // The environment variables below must be set for this task to succeed
     var apiKey = Argument("AzureStorageAccessKey", EnvironmentVariable("AZURE_STORAGE_ACCESS_KEY"));
@@ -711,7 +680,7 @@ Task("PublishPackagesToStorage").Does(()=>
     foreach (var package in GetBuiltPackages())
     {
         Information("Publishing packages to blob storage: " + package);
-        var fileName = System.IO.Path.GetFileNameWithoutExtension(package); // AppCenterAnalytics-v1.0.0
+        var fileName = Path.GetFileNameWithoutExtension(package); // AppCenterAnalytics-v1.0.0
         var index = fileName.IndexOf('-'); // 18
         var fileNameLatest = fileName.Substring(0, index) + "Latest.unitypackage"; // AppCenterAnalyticsLatest.unitypackage
         AzureStorage.UploadFileToBlob(new AzureStorageSettings
@@ -725,7 +694,7 @@ Task("PublishPackagesToStorage").Does(()=>
     }
 }).OnError(HandleError);
 
-Task("RegisterUnity").Does(()=>
+Task("RegisterUnity").Does(() =>
 {
     var serialNumber = Argument<string>("UnitySerialNumber");
     var username = Argument<string>("UnityUsername");
@@ -738,9 +707,11 @@ Task("RegisterUnity").Does(()=>
     if (Statics.Context.IsRunningOnUnix())
     {
         found = GetFiles("/Library/Application Support/Unity/*.ulf").Count > 0;
-    } else {
-        var localAppDataUnityPath = System.IO.Path.Combine(EnvironmentVariable("LOCALAPPDATA"), @"VirtualStore\ProgramData\Unity\*.ulf");
-        found = GetFiles(localAppDataUnityPath).Count + GetFiles(System.IO.Path.Combine(EnvironmentVariable("PROGRAMDATA"), @"Unity\*.ulf")).Count > 0;
+    }
+    else
+    {
+        var localAppDataUnityPath = Path.Combine(EnvironmentVariable("LOCALAPPDATA"), @"VirtualStore\ProgramData\Unity\*.ulf");
+        found = GetFiles(localAppDataUnityPath).Count + GetFiles(Path.Combine(EnvironmentVariable("PROGRAMDATA"), @"Unity\*.ulf")).Count > 0;
     }
     if (!found)
     {
@@ -748,7 +719,7 @@ Task("RegisterUnity").Does(()=>
     }
 }).OnError(HandleError);
 
-Task("UnregisterUnity").Does(()=>
+Task("UnregisterUnity").Does(() =>
 {
     var result = ExecuteUnityCommand("-returnLicense", null);
     if (result != 0)
@@ -772,103 +743,10 @@ Task("clean")
     CleanDirectories("./**/obj");
 });
 
-string GetNuGetPackage(string packageId, string packageVersion)
-{
-    var nugetUser = EnvironmentVariable("NUGET_USER");
-    var nugetPassword = Argument("NuGetPassword", EnvironmentVariable("NUGET_PASSWORD"));
-    var nugetFeedId = Argument("NuGetFeedId", EnvironmentVariable("NUGET_FEED_ID"));
-    packageId = packageId.ToLower();
-
-    var url = "https://msmobilecenter.pkgs.visualstudio.com/_packaging/";
-    url += nugetFeedId + "/nuget/v3/flat2/" + packageId + "/" + packageVersion + "/" + packageId + "." + packageVersion + ".nupkg";
-
-    // Get the NuGet package
-    HttpWebRequest request = (HttpWebRequest)WebRequest.Create (url);
-    request.Headers["X-NuGet-ApiKey"] = nugetPassword;
-    request.Credentials = new NetworkCredential(nugetUser, nugetPassword);
-    HttpWebResponse response = (HttpWebResponse)request.GetResponse();
-    var responseString = String.Empty;
-    var filename = packageId + "." + packageVersion +  ".nupkg";
-    using (var fstream = new FileStream(filename, FileMode.Create, FileAccess.ReadWrite))
-    {
-        response.GetResponseStream().CopyTo(fstream);
-    }
-    return filename;
-}
-
-void ExtractNuGetPackage (IPackage package, FrameworkName frameworkName, string tempContentPath, string destination) {
-    if (package != null) {
-        IEnumerable<IPackageAssemblyReference> assemblies;
-        VersionUtility.TryGetCompatibleItems (frameworkName, package.AssemblyReferences, out assemblies);
-
-        // Move assemblies.
-        foreach (var i in assemblies) {
-            if (!FileExists (destination + "/" + i.Name)) {
-                MoveFile (tempContentPath + "/" + i.Path, destination + "/" + i.Name);
-            }
-        }
-
-    }
-    // Move native binaries.
-    var contentPathSuffix = "lib/uap10.0/";
-    var runtimesPath = tempContentPath + "/runtimes";
-    if (DirectoryExists (runtimesPath)) {
-        var oneArch = "x86";
-        foreach (var runtime in GetDirectories (runtimesPath + "/win10-*")) {
-            var arch = runtime.GetDirectoryName ().ToString ().Replace ("win10-", "").ToUpper ();
-            oneArch = arch;
-            var nativeFiles = GetFiles (runtime + "/native/*");
-            var targetArchPath = destination + "/" + arch;
-            EnsureDirectoryExists (targetArchPath);
-            foreach (var nativeFile in nativeFiles) {
-                if (!FileExists (targetArchPath + "/" + nativeFile.GetFilename ())) {
-                    MoveFileToDirectory (nativeFile, targetArchPath);
-                }
-            }
-        }
-        contentPathSuffix = "runtimes/win10-" + oneArch + "/" + contentPathSuffix;
-    }
-
-    if (package == null) {
-        var files = GetFiles (tempContentPath + contentPathSuffix + "*");
-        MoveFiles (files, destination);
-    }
-}
-
-IList<IPackage> GetNuGetDependencies(IPackageRepository repository, FrameworkName frameworkName, IPackage package)
-{
-    var dependencies = new List<IPackage>();
-    GetNuGetDependencies(dependencies, repository, frameworkName, package);
-    return dependencies;
-}
-
-void GetNuGetDependencies(IList<IPackage> dependencies, IPackageRepository repository, FrameworkName frameworkName, IPackage package)
-{
-    // Declaring this outside the method causes a parse error on Cake for Mac.
-    string[] IgnoreNuGetDependencies = {
-        "Microsoft.NETCore.UniversalWindowsPlatform",
-        "NETStandard.Library"
-    };
-
-    dependencies.Add(package);
-    foreach (var dependency in package.GetCompatiblePackageDependencies(frameworkName))
-    {
-        if (IgnoreNuGetDependencies.Contains(dependency.Id))
-        {
-            continue;
-        }
-        var subPackage = repository.ResolveDependency(dependency, false, true);
-        if (!dependencies.Contains(subPackage))
-        {
-            GetNuGetDependencies(dependencies, repository, frameworkName, subPackage);
-        }
-    }
-}
-
 void BuildXcodeProject(string projectPath)
 {
-    var projectFolder = System.IO.Path.GetDirectoryName(projectPath);
-    var buildOutputFolder =  System.IO.Path.Combine(projectFolder, "build");
+    var projectFolder = Path.GetDirectoryName(projectPath);
+    var buildOutputFolder = Path.Combine(projectFolder, "build");
     XCodeBuild(new XCodeBuildSettings {
         Project = projectPath,
         Scheme = "Unity-iPhone",
