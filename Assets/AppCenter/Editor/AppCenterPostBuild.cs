@@ -8,9 +8,7 @@ using System.Text.RegularExpressions;
 using System.Xml.Linq;
 using System;
 using System.Collections.Generic;
-#if UNITY_2018_1_OR_NEWER
 using UnityEditor.Build.Reporting;
-#endif
 using UnityEditor.Build;
 using UnityEditor;
 using UnityEngine;
@@ -18,11 +16,7 @@ using UnityEngine;
 // Warning: Don't use #if #endif for conditional compilation here as Unity
 // doesn't always set the flags early enough.
 
-#if UNITY_2018_1_OR_NEWER
 public class AppCenterPostBuild : IPostprocessBuildWithReport
-#else
-public class AppCenterPostBuild : IPostprocessBuild
-#endif
 {
     public int callbackOrder { get { return 0; } }
 
@@ -31,17 +25,13 @@ public class AppCenterPostBuild : IPostprocessBuild
     private const string CapabilityElement = "Capability";
     private const string CapabilityNameAttribute = "Name";
     private const string CapabilityNameAttributeValue = "internetClient";
-    private const string AppNetD3d = "App.cs";
-    private const string AppNetXaml = "App.xaml.cs";
     private const string AppIl2cppXaml = "App.xaml.cpp";
     private const string AppIl2cppD3d = "App.cpp";
 
-#if UNITY_2018_1_OR_NEWER
     public void OnPostprocessBuild(BuildReport report)
     {
         OnPostprocessBuild(report.summary.platform, report.summary.outputPath);
     }
-#endif
 
     public void OnPostprocessBuild(BuildTarget target, string pathToBuiltProject)
     {
@@ -49,16 +39,7 @@ public class AppCenterPostBuild : IPostprocessBuild
         {
             AddInternetClientCapability(pathToBuiltProject);
             AddHelperCodeToUWPProject(pathToBuiltProject);
-            if (PlayerSettings.GetScriptingBackend(BuildTargetGroup.WSA) != ScriptingImplementation.IL2CPP)
-            {
-                // If UWP with .NET scripting backend, need to add NuGet packages.
-                var projectJson = pathToBuiltProject + "/" + PlayerSettings.productName + "/project.json";
-                AddDependenciesToProjectJson(projectJson);
-
-                var nuget = EditorApplication.applicationContentsPath + "/PlaybackEngines/MetroSupport/Tools/nuget.exe";
-                ExecuteCommand(nuget, "restore \"" + projectJson + "\" -NonInteractive");
-            }
-            else
+            if (PlayerSettings.GetScriptingBackend(BuildTargetGroup.WSA) == ScriptingImplementation.IL2CPP)
             {
                 // Fix System.Diagnostics.Debug IL2CPP implementation.
                 FixIl2CppLogging(pathToBuiltProject);
@@ -102,24 +83,8 @@ public class AppCenterPostBuild : IPostprocessBuild
             return;
         }
 
-        // .NET, D3D
-        if (EditorUserBuildSettings.wsaUWPBuildType == WSAUWPBuildType.D3D &&
-            PlayerSettings.GetScriptingBackend(BuildTargetGroup.WSA) == ScriptingImplementation.WinRTDotNET)
-        {
-            var appFilePath = GetAppFilePath(pathToBuiltProject, AppNetD3d);
-            var regexPattern = "private void ApplicationView_Activated \\( CoreApplicationView [a-zA-Z0-9_]*, IActivatedEventArgs args \\) {".Replace(" ", "[\\s]*");
-            InjectCodeToFile(appFilePath, AppNetD3d, regexPattern, "d3ddotnet.txt");
-        }
-        // .NET, XAML
-        else if (EditorUserBuildSettings.wsaUWPBuildType == WSAUWPBuildType.XAML &&
-                 PlayerSettings.GetScriptingBackend(BuildTargetGroup.WSA) == ScriptingImplementation.WinRTDotNET)
-        {
-            var appFilePath = GetAppFilePath(pathToBuiltProject, AppNetXaml);
-            var regexPattern = "InitializeUnity\\(args.Arguments\\);";
-            InjectCodeToFile(appFilePath, AppNetXaml, regexPattern, "xamldotnet.txt", false);
-        }
         // IL2CPP, XAML
-        else if (EditorUserBuildSettings.wsaUWPBuildType == WSAUWPBuildType.XAML &&
+        if (EditorUserBuildSettings.wsaUWPBuildType == WSAUWPBuildType.XAML &&
                  PlayerSettings.GetScriptingBackend(BuildTargetGroup.WSA) == ScriptingImplementation.IL2CPP)
         {
             var appFilePath = GetAppFilePath(pathToBuiltProject, AppIl2cppXaml);
@@ -302,39 +267,6 @@ public class AppCenterPostBuild : IPostprocessBuild
                 importer.SaveAndReimport();
             }
         }
-    }
-
-    private static void AddDependenciesToProjectJson(string projectJsonPath)
-    {
-        if (!File.Exists(projectJsonPath))
-        {
-            Debug.LogWarning(projectJsonPath + " not found!");
-            return;
-        }
-        var jsonString = File.ReadAllText(projectJsonPath);
-        jsonString = AddDependencyToProjectJson(jsonString, "Microsoft.NETCore.UniversalWindowsPlatform", "5.2.2");
-        jsonString = AddDependencyToProjectJson(jsonString, "Newtonsoft.Json", "10.0.3");
-        jsonString = AddDependencyToProjectJson(jsonString, "sqlite-net-pcl", "1.3.1");
-        jsonString = AddDependencyToProjectJson(jsonString, "System.Collections.NonGeneric", "4.0.1");
-        File.WriteAllText(projectJsonPath, jsonString);
-    }
-
-    private static string AddDependencyToProjectJson(string projectJson, string packageId, string packageVersion)
-    {
-        const string quote = @"\" + "\"";
-        var dependencyString = "\"" + packageId + "\": \"" + packageVersion + "\"";
-        var pattern = quote + packageId + quote + @":[\s]+" + quote + "[^" + quote + "]*" + quote;
-        var regex = new Regex(pattern);
-        var match = regex.Match(projectJson);
-        if (match.Success)
-        {
-            return projectJson.Replace(match.Value, dependencyString);
-        }
-        pattern = quote + "dependencies" + quote + @":[\s]+{";
-        regex = new Regex(pattern);
-        match = regex.Match(projectJson);
-        var idx = projectJson.IndexOf(match.Value, StringComparison.Ordinal) + match.Value.Length;
-        return projectJson.Insert(idx, "\n" + dependencyString + ",");
     }
 
     private static void ExecuteCommand(string command, string arguments, int timeout = 600)

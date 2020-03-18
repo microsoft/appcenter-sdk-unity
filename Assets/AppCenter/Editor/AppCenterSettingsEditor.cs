@@ -47,12 +47,6 @@ public class AppCenterSettingsEditor : Editor
             var serializedProperty = serializedObject.FindProperty("UsePush");
             EditorGUILayout.PropertyField(serializedProperty);
             EditorGUILayout.PropertyField(serializedObject.FindProperty("EnableFirebaseAnalytics"));
-#if !UNITY_2017_1_OR_NEWER
-            if (serializedProperty.boolValue)
-            {
-                EditorGUILayout.HelpBox ("In Unity versions prior to 2017.1 you need to add required capabilities in Xcode manually.", MessageType.Info);
-            }
-#endif
         }
 
         // Draw other.
