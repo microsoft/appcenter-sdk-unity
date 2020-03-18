@@ -140,9 +140,7 @@ public class BuildPuppet
     // Sets version number for puppet app
     public static void SetVersionNumber()
     {
-        var currentVersion = PlayerSettings.bundleVersion;
-        var puppetVersion = Microsoft.AppCenter.Unity.WrapperSdk.WrapperSdkVersion;
-        PlayerSettings.bundleVersion = puppetVersion;
+        PlayerSettings.bundleVersion = Microsoft.AppCenter.Unity.WrapperSdk.WrapperSdkVersion;
         PlayerSettings.Android.bundleVersionCode++;
     }
 }
