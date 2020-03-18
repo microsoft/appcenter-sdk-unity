@@ -27,10 +27,20 @@ namespace Microsoft.AppCenter.Unity.Internal.Utils
                 var found = _current.TryGetValue(key, out result);
                 if (found)
                 {
+                    // This is a workaround for a bug on UWP where Install-Id cannot be read 
+                    // from Unity.PlayerPrefs, because it is saved as System.Guid, but read as a string.
                     if ((typeof(T) == typeof(Guid?)) && (result is string))
                     {
-                        object guid = (object)(new Guid((string)result));
-                        return (T)guid;
+                        try 
+                        {
+                            object guid = (object)(new Guid((string)result));
+                            return (T)guid;
+                        }
+                        catch (FormatException)
+                        {
+                            Debug.LogError("Guid cannot be parsed due to a format exception.");
+                            return defaultValue;
+                        }
                     }
                     return (T)result;
                 }
