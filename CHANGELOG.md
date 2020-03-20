@@ -19,6 +19,7 @@
 
 * **[Feature]** Support **ARM64** architecture on Unity 2019.x or above.
 * **[Breaking change]** Native UWP libraries require .NETStandard now, therefore .NET 3.5 scripting runtime version and .NET scripting backend are no longer supported.
+* **[Fix]** Fix the bug that caused **Install-Id** to be generated every time the application was launched.
 
 ### App Center Auth
 
