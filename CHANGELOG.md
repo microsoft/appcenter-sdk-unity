@@ -1,6 +1,6 @@
 # App Center SDK for Unity Change Log
 
-## Release 3.1.0 (Under development)
+## Release 3.1.0
 
 ### App Center
 
@@ -10,10 +10,16 @@
 
 * **[Fix]** Fix a Unity warning that appears when building for Android.
 * **[Fix]** Fix a `java.lang.IllegalArgumentException: Unknown pattern character 'X'` in `JavaHelper.JavaDateFormatter` on Android 6.
+* **[Fix]** Fix infinite recursion when handling encryption errors.
 
 #### iOS
 
 * **[Fix]** Fix converting string with the Unicode symbols (for example in push notification).
+* **[Fix]** Optimization of release objects from memory during the execution of a large number of operations.
+* **[Fix]** Disable module debugging for release mode in the SDK to fix dSYM warnings.
+* **[Fix]** Fix SDK crash at application launch on iOS 12.0 (`CTTelephonyNetworkInfo.serviceSubscriberCellularProviders` issue).
+* **[Fix]** The SDK was considering 201-299 status code as HTTP errors and is now fixed to accept all 2XX codes as successful.
+* **[Improvement]** Replaced sqlite query concatenation with more secure bindings.
 
 #### UWP
 
@@ -37,6 +43,17 @@ App Center Auth is [retired](https://aka.ms/MBaaS-retirement-blog-post) and has 
 * **[Behavior change]** The public distribution is simplified to provide only one public group. If you have existing public groups defined for your application your users will receive the latest version of all public groups.
 * **[Feature]** Add a **Automatic Check For Update** checkbox that can be unchecked to turn off automatic check for update.
 * **[Feature]** Add a `CheckForUpdate` API to manually check for update.
+
+#### iOS
+
+* **[Fix]** Fix a crash when `SFAuthenticationSession` accesses the controller which is in the process of being released.
+* **[Fix]** Fix sign-in when switching to third-party apps while activating updates.
+
+#### Android
+
+* **[Fix]** Avoid opening browser to check for sign-in information after receiving an SSL error while checking for app updates (which often happens when using a public WIFI).
+* **[Fix]** When in-app update permissions become invalid and need to open browser again, updates are no longer postponed after sign-in (if user previously selected the action to postpone for a day).
+* **[Fix]** Fix a possible deadlock when activity resumes during background operation for some `Distribute` public APIs like `Distribute.isEnabled()`.
 
 ### App Center Push
 
