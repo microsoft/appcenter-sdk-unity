@@ -7,20 +7,22 @@ using UnityEngine;
 // Very simple release handler.
 public class PuppetReleaseHandler : MonoBehaviour
 {
-    private static ReleaseDetails _releaseDetails = null;
+    private static ReleaseDetails _releaseDetails;
     private static readonly object _releaseLock = new object();
+    public static bool IsDialogCustom;
     public PuppetUpdateDialog Dialog;
 
     void Awake()
     {
         Distribute.ReleaseAvailable = OnReleaseAvailable;
+        IsDialogCustom = PlayerPrefs.GetInt(PuppetAppCenter.FlagCustomDialog, 0) == 1;
     }
 
     bool OnReleaseAvailable(ReleaseDetails details)
     {
         lock (_releaseLock)
         {
-            if (PlayerPrefs.GetInt(PuppetAppCenter.FlagCustomDialog, 0) == 1)
+            if (IsDialogCustom)
             {
                 _releaseDetails = details;
                 return true;
@@ -37,15 +39,12 @@ public class PuppetReleaseHandler : MonoBehaviour
         }
         lock (_releaseLock)
         {
-            if (_releaseDetails != null)
-            {
-                if (Dialog != null)
-                {
-                    Dialog.Show(_releaseDetails);
-                }
-                print("There's a release available! Version = " + _releaseDetails.Version);
-                _releaseDetails = null;
-            }
+           if (Dialog != null && IsDialogCustom)
+           {
+               Dialog.Show(_releaseDetails);
+           }
+           Debug.Log("There's a release available! Version = " + _releaseDetails.Version);
+           _releaseDetails = null;
         }
     }
 

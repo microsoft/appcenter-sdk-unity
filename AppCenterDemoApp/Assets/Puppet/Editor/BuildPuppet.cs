@@ -29,6 +29,7 @@ public class BuildPuppet
     public static void BuildPuppetSceneAndroidIl2CPP()
     {
         CreateGoogleServicesJsonIfNotPresent();
+
         // Set NDK location if provided
         var args = Environment.GetCommandLineArgs();
         bool next = false;

@@ -67,6 +67,11 @@ public class PuppetAppCenter : MonoBehaviour
         StartCoroutine(SetDistributeEnabledCoroutine(enabled));
     }
 
+    public void CheckForUpdate()
+    {
+        Distribute.CheckForUpdate();
+    }
+
     private IEnumerator SetDistributeEnabledCoroutine(bool enabled)
     {
         yield return Distribute.SetEnabledAsync(enabled);
@@ -220,6 +225,7 @@ public class PuppetAppCenter : MonoBehaviour
         int isEnable = enable ? 1 : 0;
         PlayerPrefs.SetInt(FlagCustomDialog, isEnable);
         PlayerPrefs.Save();
+        PuppetReleaseHandler.IsDialogCustom = enable;
     }
 
     public void SetStartupMode(int startupMode)
