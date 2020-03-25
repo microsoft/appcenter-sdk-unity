@@ -223,7 +223,6 @@ Task("Externals-Android").Does(() =>
 
 // Downloading iOS binaries.
 Task("Externals-Ios")
-    .WithCriteria(IsRunningOnUnix)
     .Does(() =>
 {
     var externalsDirectory = "externals/ios/";
