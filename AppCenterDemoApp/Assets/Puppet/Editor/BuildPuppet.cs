@@ -13,7 +13,7 @@ public class BuildPuppet
 {
     private static readonly string BuildFolder = "CAKE_SCRIPT_TEMPPuppetBuilds";
     private static readonly string AssetsFolder = "Assets";
-    private static readonly string AppIdentifier = "com.microsoft.appcenter.unity.puppet";
+    private static readonly string AppIdentifier = "com.microsoft.appcenter.unity.demo";
 
     static BuildPuppet()
     {
