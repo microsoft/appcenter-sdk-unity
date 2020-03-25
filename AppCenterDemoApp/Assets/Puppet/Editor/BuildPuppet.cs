@@ -13,7 +13,7 @@ public class BuildPuppet
 {
     private static readonly string BuildFolder = "CAKE_SCRIPT_TEMPPuppetBuilds";
     private static readonly string AssetsFolder = "Assets";
-    private static readonly string AppIdentifier = "com.microsoft.appcenter.unity.demo";
+    private static readonly string AppIdentifier = "com.microsoft.appcenter.unity.puppet";
 
     static BuildPuppet()
     {
@@ -29,6 +29,7 @@ public class BuildPuppet
     public static void BuildPuppetSceneAndroidIl2CPP()
     {
         CreateGoogleServicesJsonIfNotPresent();
+
         // Set NDK location if provided
         var args = Environment.GetCommandLineArgs();
         bool next = false;
