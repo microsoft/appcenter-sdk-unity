@@ -316,9 +316,12 @@ public class PuppetTransmission : MonoBehaviour
     {
         var properties = PropertiesHelper.GetStringProperties(eventProperties);
         var propertyConfigurator = transmissionTarget.GetPropertyConfigurator();
-        foreach (var property in properties)
+        if (properties != null) 
         {
-            propertyConfigurator.SetEventProperty(property.Key, property.Value);
+            foreach (var property in properties)
+            {
+                propertyConfigurator.SetEventProperty(property.Key, property.Value);
+            }
         }
         propertyConfigurator.SetEventProperty("extraEventProperty", "should be removed!");
         propertyConfigurator.RemoveEventProperty("extraEventProperty");
