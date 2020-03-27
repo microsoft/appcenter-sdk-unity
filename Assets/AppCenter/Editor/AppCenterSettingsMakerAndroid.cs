@@ -6,8 +6,6 @@ using System.IO;
 
 public class AppCenterSettingsMakerAndroid : IAppCenterSettingsMaker
 {
-    public const string AppCenterLoaderResourcesFolderPath = "AppCenterLoaderApp/appcenter-loader/src/main/res/values/";
-    public const string AppCenterLoaderResourcesPath = AppCenterLoaderResourcesFolderPath + "appcenter-settings.xml";
     private const string AppSecretKey = "appcenter_app_secret";
     private const string TransmissionTargetTokenKey = "appcenter_transmission_target_token";
     private const string CustomLogUrlKey = "appcenter_custom_log_url";
@@ -29,14 +27,6 @@ public class AppCenterSettingsMakerAndroid : IAppCenterSettingsMaker
     private const string EnableDistributeForDebuggableBuildKey = "appcenter_enable_distribute_for_debuggable_build";
 
     private readonly IDictionary<string, string> _resourceValues = new Dictionary<string, string>();
-
-    static AppCenterSettingsMakerAndroid()
-    {
-        if (!Directory.Exists(AppCenterLoaderResourcesFolderPath))
-        {
-            Directory.CreateDirectory(AppCenterLoaderResourcesFolderPath);
-        }
-    }
 
     public void SetLogLevel(int logLevel)
     {
@@ -118,7 +108,6 @@ public class AppCenterSettingsMakerAndroid : IAppCenterSettingsMaker
 
     public void CommitSettings()
     {
-        CommitSettings(AppCenterLoaderResourcesPath);
     }
 
     public void CommitSettings(string filePath)
