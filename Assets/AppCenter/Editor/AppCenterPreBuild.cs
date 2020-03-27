@@ -66,8 +66,7 @@ public class AppCenterPreBuild : IPreprocessBuildWithReport
 
         if (!File.Exists(loaderZipFile))
         {
-            Debug.LogWarning("Failed to load dependency file appcenter-loader-release.aar");
-            return;
+            throw new IOException("Failed to load dependency file appcenter-loader-release.aar");
         }
 
         // Delete unzipped directory if it already exists.
@@ -79,8 +78,7 @@ public class AppCenterPreBuild : IPreprocessBuildWithReport
         AndroidLibraryHelper.UnzipFile(loaderZipFile, loaderFolder);
         if (!Directory.Exists(loaderFolder))
         {
-            Debug.LogWarning("Unzipping loader folder failed.");
-            return;
+            throw new IOException("Unzipping loader folder failed.");
         }
 
         settingsMaker.CommitSettings(settingsFilePath);
@@ -159,8 +157,6 @@ public class AppCenterPreBuild : IPreprocessBuildWithReport
         {
             settingsMaker.SetStartupType((int)StartupType.AppCenter);
         }
-#if !UNITY_ANDROID
         settingsMaker.CommitSettings();
-#endif
     }
 }
