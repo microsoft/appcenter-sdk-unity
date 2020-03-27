@@ -1,3 +1,6 @@
+# Copyright (c) Microsoft Corporation. All rights reserved.
+# Licensed under the MIT license.
+
 param
 (
     [Parameter(Position=0, Mandatory = $false, HelpMessage="Source file", ValueFromPipeline = $true)] 
