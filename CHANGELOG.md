@@ -1,5 +1,15 @@
 # App Center SDK for Unity Change Log
 
+## Release 3.1.1 (Under development)
+
+### App Center
+
+#### iOS
+
+* **[Fix]** Add missing system dependencies that aren't implicitly included when `APPCENTER_DONT_USE_NATIVE_STARTER` flag is used.
+
+___
+
 ## Release 3.1.0
 
 ### App Center

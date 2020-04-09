@@ -362,9 +362,8 @@ public class AppCenterPostBuild : IPostprocessBuildWithReport
     #region iOS Methods
     private static void OnPostprocessProject(PBXProjectWrapper project)
     {
-        // Need to add "-lsqlite3" linker flag to "Other linker flags" due to
-        // SQLite dependency.
-        project.AddBuildProperty("OTHER_LDFLAGS", "-lsqlite3");
+        // Need to add SQLite and zlib dependencies.
+        project.AddBuildProperty("OTHER_LDFLAGS", "-lsqlite3 -lz");
 #if UNITY_2019_3_OR_NEWER
         project.AddBuildProperty("CLANG_ENABLE_MODULES", "YES", true);
 #else
