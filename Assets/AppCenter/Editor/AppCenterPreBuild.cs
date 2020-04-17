@@ -144,7 +144,7 @@ public class AppCenterPreBuild : IPreprocessBuildWithReport
             {
                 settingsMaker.SetDistributeDisableAutomaticCheckForUpdate();
             }
-            settingsMaker.SetUpdateTrack((int)settings.UpdateTrack);
+            settingsMaker.SetUpdateTrack(settings.UpdateTrack);
             settingsMaker.StartDistributeClass();
         }
         if (advancedSettings != null)
