@@ -9,31 +9,31 @@ using UnityEngine;
 [CustomPropertyDrawer(typeof(CustomDropDownPropertyAttribute))]
 public class CustomDropDownPropertyDrawer : PropertyDrawer
 {
-    bool initialized = false;
-    object[] attributes = null;
-    Dictionary<string, int> optionsDictionary = new Dictionary<string, int>();
-    string[] options = null;
-    int selectedIndex = 0;
+    bool _initialized = false;
+    object[] _attributes = null;
+    Dictionary<string, int> _optionsDictionary = new Dictionary<string, int>();
+    string[] _options = null;
+    int _selectedIndex = 0;
 
     public override void OnGUI(Rect position, SerializedProperty property, GUIContent label)
     {
-        if (!initialized)
+        if (!_initialized)
         {
-            attributes = fieldInfo.GetCustomAttributes(typeof(CustomDropDownPropertyAttribute), false);
-            foreach (var itemAttribute in attributes)
+            _attributes = fieldInfo.GetCustomAttributes(typeof(CustomDropDownPropertyAttribute), false);
+            foreach (var itemAttribute in _attributes)
             {
                 var customPropertyAttribute = itemAttribute as CustomDropDownPropertyAttribute;
-                optionsDictionary.Add(customPropertyAttribute.SelectedKey, customPropertyAttribute.SelectedValue);
+                _optionsDictionary.Add(customPropertyAttribute.SelectedKey, customPropertyAttribute.SelectedValue);
                 if (customPropertyAttribute.SelectedValue == AppCenterSettingsContext.SettingsInstance.UpdateTrack)
                 {
-                    selectedIndex = ArrayUtility.IndexOf(attributes, itemAttribute);
+                    _selectedIndex = ArrayUtility.IndexOf(_attributes, itemAttribute);
                 }
             }
-            options = optionsDictionary.Keys.ToArray();
-            initialized = true;
+            _options = _optionsDictionary.Keys.ToArray();
+            _initialized = true;
         }
 
-        selectedIndex = EditorGUI.Popup(position, property.displayName, selectedIndex, options);
-        property.intValue = optionsDictionary[options[selectedIndex]];
+        _selectedIndex = EditorGUI.Popup(position, property.displayName, _selectedIndex, _options);
+        property.intValue = _optionsDictionary[_options[_selectedIndex]];
     }
 }

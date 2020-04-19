@@ -7,15 +7,16 @@ using UnityEngine;
 [AttributeUsage(AttributeTargets.Field, AllowMultiple = true)]
 public class CustomDropDownPropertyAttribute : PropertyAttribute
 {
-    public CustomDropDownPropertyAttribute(string _key, int _value)
+    public CustomDropDownPropertyAttribute(string key, int value)
     {
-        SelectedKey = _key;
-        SelectedValue = _value;
+        SelectedKey = key;
+        SelectedValue = value;
     }
 
     public CustomDropDownPropertyAttribute()
-    { }
+    {
+    }
 
-    public string SelectedKey;
-    public int SelectedValue;
+    public string SelectedKey { get; private set; }
+    public int SelectedValue { get; private set; }
 }
