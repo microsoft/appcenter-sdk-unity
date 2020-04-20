@@ -4,6 +4,8 @@
 
 ### App Center
 
+* **[Fix]** Fix SDK doesn't work without `Distribute` package.
+
 #### iOS
 
 * **[Fix]** Add missing system dependencies that aren't implicitly included when `APPCENTER_DONT_USE_NATIVE_STARTER` flag is used.

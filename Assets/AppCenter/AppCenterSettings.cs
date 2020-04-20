@@ -6,7 +6,6 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
 using Microsoft.AppCenter.Unity;
-using Microsoft.AppCenter.Unity.Distribute;
 using UnityEngine;
 
 [Serializable]
@@ -48,7 +47,9 @@ public class AppCenterSettings : ScriptableObject
 
     public LogLevel InitialLogLevel = LogLevel.Info;
 
-    public UpdateTrack UpdateTrack = UpdateTrack.Public;
+    [CustomDropDownProperty("Public", 1)]
+    [CustomDropDownProperty("Private", 2)]
+    public int UpdateTrack;
 
     public CustomUrlProperty CustomLogUrl = new CustomUrlProperty("Log");
 
