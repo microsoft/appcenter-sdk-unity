@@ -1,3 +1,37 @@
+## Release 3.2.0
+
+### App Center
+
+* **[Fix]** Fix SDK doesn't work without `Distribute` package.
+
+#### iOS
+
+* **[Fix]** Add missing system dependencies that aren't implicitly included when `APPCENTER_DONT_USE_NATIVE_STARTER` flag is used.
+
+#### UWP
+
+* **[Fix]** Fix retry sending logs after timeout exception.
+
+### App Center Crashes
+
+* **[Fix]** Remove the multiple attachments warning as that is now supported by the portal.
+
+#### Android
+
+* **[Fix]** Change minidump filter to use file extension instead of name.
+* **[Fix]** Fix removing minidump files when the sending crash report was discarded.
+
+#### iOS
+
+* **[Improvement]** Update PLCrashReporter to 1.5.1.
+
+### App Center Distribute
+
+#### Android
+
+* **[Feature]** Automatically check for update when application switches from background to foreground (unless automatic checks are disabled).
+* **[Fix]** Fix checking for updates after disabling the Distribute module while downloading the release.
+
 ## Release 3.1.0
 
 ### App Center
