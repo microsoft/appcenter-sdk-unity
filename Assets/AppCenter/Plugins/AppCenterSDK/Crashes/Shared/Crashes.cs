@@ -54,7 +54,7 @@ namespace Microsoft.AppCenter.Unity.Crashes
             }
             else
             {
-                Debug.LogWarning("Cannot sending track exception without enabling unhandled exception reporting.");
+                Debug.LogWarning($"'Crashes.TrackException' wasn't sent. Make sure that unhandled exception reporting is enabled and 'exception' value isn't null.");
             }
         }
 

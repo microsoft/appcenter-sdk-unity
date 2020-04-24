@@ -5,6 +5,9 @@
 ### App Center
 
 * **[Fix]** Fix SDK doesn't work without `Distribute` package.
+
+### App Center Crashes
+
 * **[Fix]** Fix sending `Crashes.TrackException` after disabling `Crashes.ReportUnhandledExceptions`.
 
 #### iOS
