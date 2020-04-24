@@ -47,7 +47,6 @@ namespace Microsoft.AppCenter.Unity.Crashes
 
         public static void TrackError(Exception exception, IDictionary<string, string> properties = null, params ErrorAttachmentLog[] attachments)
         {
-            if (exception != null)
             if (exception != null && _reportUnhandledExceptions)
             {
                 var exceptionWrapper = CreateWrapperException(exception);
