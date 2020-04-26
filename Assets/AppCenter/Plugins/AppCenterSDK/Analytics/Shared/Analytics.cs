@@ -1,4 +1,4 @@
-﻿// Copyright (c) Microsoft Corporation. All rights reserved.
+// Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT license.
 
 using System;
@@ -16,7 +16,7 @@ namespace Microsoft.AppCenter.Unity.Analytics
     public class Analytics
     {
         // Used by App Center Unity Editor Extensions: https://github.com/Microsoft/AppCenter-SDK-Unity-Extension
-        public const string AnalyticsSDKVersion = "3.1.0";
+        public const string AnalyticsSDKVersion = "3.2.0";
 
         public static void PrepareEventHandlers()
         {
