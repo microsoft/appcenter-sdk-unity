@@ -78,11 +78,20 @@ namespace Microsoft.AppCenter.Unity.Crashes
             if (exception != null)
             {
                 Debug.Log("Unhandled exception: " + exception.ToString());
+#if UNITY_IOS && !UNITY_EDITOR
+                var exceptionWrapper = CreateWrapperException(exception);
+                var errorId = CrashesInternal.TrackException(exceptionWrapper.GetRawObject(), null, null);
+                if (_enableErrorAttachmentsCallbacks)
+                {
+                    SendErrorAttachments(errorId);
+                }
+#else
                 lock (_unhandledExceptions)
                 {
                     _unhandledExceptions.Enqueue(exception);
                 }
                 UnityCoroutineHelper.StartCoroutine(SendUnhandledExceptionReports);
+#endif
             }
         }
 #endif
