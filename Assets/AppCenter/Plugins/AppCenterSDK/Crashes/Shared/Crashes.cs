@@ -338,11 +338,11 @@ namespace Microsoft.AppCenter.Unity.Crashes
 #endif
 
         private static void TrackErrorWithAttachments(Exception exception)
-		{
+        {
             var exceptionWrapper = CreateWrapperException(exception);
             var errorId = CrashesInternal.TrackException(exceptionWrapper.GetRawObject(), null, null);
 
-            // when the main thread was not crashed attachments should be sent
+            // If the main thread is not crashed, attachments should be sent.
             if (_enableErrorAttachmentsCallbacks)
             {
                 SendErrorAttachments(errorId);
