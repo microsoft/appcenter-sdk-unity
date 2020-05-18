@@ -1,5 +1,13 @@
 # App Center SDK for Unity Change Log
 
+## Release 3.2.1 (in development)
+
+### App Center
+
+#### iOS
+
+* **[Fix]** Fix new thread exception crash report don't send.
+
 ## Release 3.2.0
 
 ### App Center
