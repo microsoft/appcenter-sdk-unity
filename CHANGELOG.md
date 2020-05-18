@@ -6,7 +6,7 @@
 
 #### iOS
 
-* **[Fix]** Fix new thread exception crash report don't send.
+* **[Fix]** Fix reporting crashes caused by a thread exception.
 
 ## Release 3.2.0
 
