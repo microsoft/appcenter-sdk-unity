@@ -1,5 +1,13 @@
 # App Center SDK for Unity Change Log
 
+## Release 3.2.1 (in development)
+
+### App Center
+
+#### iOS
+
+* **[Fix]** Fix reporting crashes caused by a thread exception.
+
 ## Release 3.2.0
 
 ### App Center

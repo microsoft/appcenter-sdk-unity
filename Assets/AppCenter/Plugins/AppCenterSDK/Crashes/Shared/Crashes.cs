@@ -78,11 +78,15 @@ namespace Microsoft.AppCenter.Unity.Crashes
             if (exception != null)
             {
                 Debug.Log("Unhandled exception: " + exception.ToString());
+#if UNITY_IOS && !UNITY_EDITOR
+                TrackErrorWithAttachments(exception);
+#else
                 lock (_unhandledExceptions)
                 {
                     _unhandledExceptions.Enqueue(exception);
                 }
                 UnityCoroutineHelper.StartCoroutine(SendUnhandledExceptionReports);
+#endif
             }
         }
 #endif
@@ -326,17 +330,24 @@ namespace Microsoft.AppCenter.Unity.Crashes
                 }
                 if (exception != null)
                 {
-                    var exceptionWrapper = CreateWrapperException(exception);
-                    var errorId = CrashesInternal.TrackException(exceptionWrapper.GetRawObject(), null, null);
-                    if (_enableErrorAttachmentsCallbacks)
-                    {
-                        SendErrorAttachments(errorId);
-                    }
+                    TrackErrorWithAttachments(exception);
                 }
                 yield return null; // report remaining exceptions on next frames
             }
         }
 #endif
+
+        private static void TrackErrorWithAttachments(Exception exception)
+        {
+            var exceptionWrapper = CreateWrapperException(exception);
+            var errorId = CrashesInternal.TrackException(exceptionWrapper.GetRawObject(), null, null);
+
+            // If the main thread is not crashed, attachments should be sent.
+            if (_enableErrorAttachmentsCallbacks)
+            {
+                SendErrorAttachments(errorId);
+            }
+        }
 
         private static WrapperException CreateWrapperException(Exception exception)
         {
