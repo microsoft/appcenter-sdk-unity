@@ -16,7 +16,7 @@ namespace Microsoft.AppCenter.Unity.Analytics
     public class Analytics
     {
         // Used by App Center Unity Editor Extensions: https://github.com/Microsoft/AppCenter-SDK-Unity-Extension
-        public const string AnalyticsSDKVersion = "3.3.0";
+        public const string AnalyticsSDKVersion = "3.2.1";
 
         public static void PrepareEventHandlers()
         {
