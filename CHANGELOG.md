@@ -1,12 +1,21 @@
 # App Center SDK for Unity Change Log
 
-## Release 3.2.1 (in development)
+## Release 3.3.0
 
 ### App Center
 
 #### iOS
 
 * **[Fix]** Fix reporting crashes caused by a thread exception.
+* **[Improvement]** Use namespaced `NSUserDefaults` keys with the **MSAppCenter** prefix for all the keys set by the SDK. Fixed a few keys missing namespace.
+
+### App Center Crashes
+
+#### iOS
+
+* **[Improvement]** Update PLCrashReporter to 1.6.0.
+
+___
 
 ## Release 3.2.0
 
