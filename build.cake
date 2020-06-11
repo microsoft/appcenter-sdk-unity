@@ -36,6 +36,13 @@ const string AndroidRepoUrl = "https://github.com/microsoft/appcenter-sdk-androi
 const string AppleRepoUrl = "https://github.com/microsoft/appcenter-sdk-apple.git";
 const string DotNetRepoUrl = "https://github.com/microsoft/appcenter-sdk-dotnet.git";
 
+var ReposToUpdate = new List<string>()
+{ 
+    AndroidRepoUrl,
+    AppleRepoUrl,
+    DotNetRepoUrl
+};
+
 var AppCenterModules = new []
 {
     new AppCenterModule("appcenter-release.aar", "AppCenter.framework", "Microsoft.AppCenter", "Core"),
@@ -800,17 +807,9 @@ void HanldeRegistration(JToken registration)
 
 void UpdateCommitHash(JToken component)
 {
-    var reposToUpdate = new List<string>()
-    { 
-        AndroidRepoUrl,
-        AppleRepoUrl,
-        DotNetRepoUrl
-    };
-    var gitHubApiPrefix = "https://api.github.com/repos";
-    var gitHubPrefix = "https://github.com";
     var gitData = component["git"];
     var repoUrl = gitData["repositoryUrl"].Value<string>();
-    if (reposToUpdate.IndexOf(repoUrl) < 0)
+    if (ReposToUpdate.IndexOf(repoUrl) < 0)
     {
         Warning($"Repository url: {repoUrl}. Current component should not be updated.");
         return;
@@ -823,7 +822,7 @@ void UpdateCommitHash(JToken component)
         return;
     }
 
-    var tagsUrl = repoUrl.Replace(".git", "/tags").Replace(gitHubPrefix, gitHubApiPrefix);
+    var tagsUrl = repoUrl.Replace(".git", "/tags").Replace("https://github.com", "https://api.github.com/repos");
     var tagsListJson = HttpGet(tagsUrl);
     var tag = JArray.Parse(tagsListJson).Children().FirstOrDefault(t => t["name"].Value<string>() == releaseTag);
     if (tag == null)
