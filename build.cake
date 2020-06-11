@@ -763,63 +763,12 @@ Task("UpdateCgManifestSHA").Does(()=>
 {
     try
     {
-        var reposToUpdate = new List<string>()
-        { 
-            AndroidRepoUrl,
-            AppleRepoUrl,
-            DotNetRepoUrl
-        };
         var manifestFilePath = "cgmanifest.json";
-        var gitHubApiPrefix = "https://api.github.com/repos";
-        var gitHubPrefix = "https://github.com";
         var content = ParseJsonFromFile(manifestFilePath);
         var registrations = (JArray)content["Registrations"];
         foreach (var registration in registrations.Children())
         {
-            var component = registration["component"];
-            if (component != null) 
-            {
-                var typeObject = component["type"];
-                if (typeObject != null && typeObject.Value<string>() == "git")
-                {
-                    var gitData = component["git"];
-                    var repoUrl = gitData["repositoryUrl"].Value<string>();
-                    if (reposToUpdate.IndexOf(repoUrl) >= 0)
-                    {
-                        var releaseTag = GetReleaseTag(repoUrl);
-                        if (!string.IsNullOrEmpty(releaseTag))
-                        {
-                            var tagsUrl = repoUrl.Replace(".git", "/tags").Replace(gitHubPrefix, gitHubApiPrefix);
-                            var tagsListJson = HttpGet(tagsUrl);
-                            var tags = JArray.Parse(tagsListJson);
-                            foreach (var tag in tags.Children())
-                            {
-                                if (tag["name"].Value<string>() == releaseTag)
-                                {
-                                    gitData["commitHash"] = tag["commit"]["sha"].Value<string>();
-                                    break;
-                                }
-                            }
-                        }
-                        else
-                        {
-                            Warning($"Repository url: {repoUrl}. Release tag was not found.");
-                        }
-                    }
-                    else
-                    {
-                        Warning($"Repository url: {repoUrl}. Current component should not be updated.");
-                    }
-                }
-                else
-                {
-                    Warning("Current component has no field 'type' or 'type' is not 'git'.");
-                }
-            }
-            else
-            {
-                Warning("Current registration has no 'component' property.");
-            }
+            HanldeRegistration(registration);
         }
 
         SerializeJsonToPrettyFile(manifestFilePath, content);
@@ -829,6 +778,67 @@ Task("UpdateCgManifestSHA").Does(()=>
         Warning($"Can't update 'cgmanifest.json'. Error message: {e.Message}");
     }
 });
+
+void HanldeRegistration(JToken registration)
+{
+    var component = registration["component"];
+    if (component != null) 
+    {
+        var typeObject = component["type"];
+        if (typeObject != null && typeObject.Value<string>() == "git")
+        {
+            UpdateCommitHash(component);
+        }
+        else
+        {
+            Warning("Current component has no field 'type' or 'type' is not 'git'.");
+        }
+    }
+    else
+    {
+        Warning("Current registration has no 'component' property.");
+    }
+}
+
+void UpdateCommitHash(JToken component)
+{
+    var reposToUpdate = new List<string>()
+    { 
+        AndroidRepoUrl,
+        AppleRepoUrl,
+        DotNetRepoUrl
+    };
+    var gitHubApiPrefix = "https://api.github.com/repos";
+    var gitHubPrefix = "https://github.com";
+    var gitData = component["git"];
+    var repoUrl = gitData["repositoryUrl"].Value<string>();
+    if (reposToUpdate.IndexOf(repoUrl) >= 0)
+    {
+        var releaseTag = GetReleaseTag(repoUrl);
+        if (!string.IsNullOrEmpty(releaseTag))
+        {
+            var tagsUrl = repoUrl.Replace(".git", "/tags").Replace(gitHubPrefix, gitHubApiPrefix);
+            var tagsListJson = HttpGet(tagsUrl);
+            var tags = JArray.Parse(tagsListJson);
+            foreach (var tag in tags.Children())
+            {
+                if (tag["name"].Value<string>() == releaseTag)
+                {
+                    gitData["commitHash"] = tag["commit"]["sha"].Value<string>();
+                    break;
+                }
+            }
+        }
+        else
+        {
+            Warning($"Repository url: {repoUrl}. Release tag was not found.");
+        }
+    }
+    else
+    {
+        Warning($"Repository url: {repoUrl}. Current component should not be updated.");
+    }
+}
 
 string GetReleaseTag(string repoUrl)
 {
