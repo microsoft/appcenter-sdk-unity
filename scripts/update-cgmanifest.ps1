@@ -3,4 +3,4 @@
 
 # Note: Run this from within the root directory
 
-.\build.ps1 -Script "build.cake" -Target "UpdateCgManifestSHA"
+.\build.ps1 -Script "build.cake" -Target "UpdateCgManifest"

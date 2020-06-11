@@ -5,4 +5,4 @@
 
 # Note: Run this from within the root directory
 
-./build.sh -s "build.cake" -t=UpdateCgManifestSHA
+./build.sh -s "build.cake" -t=UpdateCgManifest

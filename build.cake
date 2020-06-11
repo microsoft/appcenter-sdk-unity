@@ -759,7 +759,7 @@ void BuildXcodeProject(string projectPath)
     });
 }
 
-Task("UpdateCgManifestSHA").Does(()=>
+Task("UpdateCgManifest").Does(()=>
 {
     try
     {
@@ -782,22 +782,20 @@ Task("UpdateCgManifestSHA").Does(()=>
 void HanldeRegistration(JToken registration)
 {
     var component = registration["component"];
-    if (component != null) 
-    {
-        var typeObject = component["type"];
-        if (typeObject != null && typeObject.Value<string>() == "git")
-        {
-            UpdateCommitHash(component);
-        }
-        else
-        {
-            Warning("Current component has no field 'type' or 'type' is not 'git'.");
-        }
-    }
-    else
+    if (component == null) 
     {
         Warning("Current registration has no 'component' property.");
+        return;
     }
+
+    var typeObject = component["type"];
+    if (typeObject == null || typeObject.Value<string>() != "git")
+    {
+        Warning("Current component has no field 'type' or 'type' is not 'git'.");
+        return;
+    }
+
+    UpdateCommitHash(component);
 }
 
 void UpdateCommitHash(JToken component)
@@ -812,38 +810,35 @@ void UpdateCommitHash(JToken component)
     var gitHubPrefix = "https://github.com";
     var gitData = component["git"];
     var repoUrl = gitData["repositoryUrl"].Value<string>();
-    if (reposToUpdate.IndexOf(repoUrl) >= 0)
-    {
-        var releaseTag = GetReleaseTag(repoUrl);
-        if (!string.IsNullOrEmpty(releaseTag))
-        {
-            var tagsUrl = repoUrl.Replace(".git", "/tags").Replace(gitHubPrefix, gitHubApiPrefix);
-            var tagsListJson = HttpGet(tagsUrl);
-            var tags = JArray.Parse(tagsListJson);
-            foreach (var tag in tags.Children())
-            {
-                if (tag["name"].Value<string>() == releaseTag)
-                {
-                    gitData["commitHash"] = tag["commit"]["sha"].Value<string>();
-                    break;
-                }
-            }
-        }
-        else
-        {
-            Warning($"Repository url: {repoUrl}. Release tag was not found.");
-        }
-    }
-    else
+    if (reposToUpdate.IndexOf(repoUrl) < 0)
     {
         Warning($"Repository url: {repoUrl}. Current component should not be updated.");
+        return;
     }
+
+    var releaseTag = GetReleaseTag(repoUrl);
+    if (string.IsNullOrEmpty(releaseTag))
+    {
+        Warning($"Repository url: {repoUrl}. Release tag '{releaseTag}' was not found.");
+        return;
+    }
+
+    var tagsUrl = repoUrl.Replace(".git", "/tags").Replace(gitHubPrefix, gitHubApiPrefix);
+    var tagsListJson = HttpGet(tagsUrl);
+    var tag = JArray.Parse(tagsListJson).Children().FirstOrDefault(t => t["name"].Value<string>() == releaseTag);
+    if (tag == null)
+    {
+        Warning($"Repository url: {repoUrl}. Tag '{tag}' was not found.");
+        return;
+    }
+
+    gitData["commitHash"] = tag["commit"]["sha"].Value<string>();
 }
 
 string GetReleaseTag(string repoUrl)
 {
-      switch (repoUrl)
-      {
+    switch (repoUrl)
+    {
         case AndroidRepoUrl:
             return AndroidSdkVersion;
         case AppleRepoUrl:
@@ -852,7 +847,7 @@ string GetReleaseTag(string repoUrl)
             return UwpSdkVersion;
         default:
             return null;
-      }
+    }
 }
 
 RunTarget(Target);
