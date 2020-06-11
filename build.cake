@@ -4,6 +4,8 @@
 #addin nuget:?package=Cake.FileHelpers
 #addin nuget:?package=Cake.AzureStorage
 #addin nuget:?package=Cake.Xcode
+#addin "Cake.Json"
+#addin "Cake.Http"
 #load "utility.cake"
 #load "nuget-tools.cake"
 
@@ -30,6 +32,9 @@ const string SdkStorageUrl = "https://mobilecentersdkdev.blob.core.windows.net/s
 const string AndroidUrl = SdkStorageUrl + "AppCenter-SDK-Android-" + AndroidSdkVersion + ".zip";
 const string IosUrl = SdkStorageUrl + "AppCenter-SDK-Apple-" + IosSdkVersion + ".zip";
 const string UwpUrl = SdkStorageUrl + "AppCenter-SDK-Unity-UWP-" + UwpSdkVersion + ".zip";
+const string AndroidRepoUrl = "https://github.com/microsoft/appcenter-sdk-android.git";
+const string AppleRepoUrl = "https://github.com/microsoft/appcenter-sdk-apple.git";
+const string DotNetRepoUrl = "https://github.com/microsoft/appcenter-sdk-dotnet.git";
 
 var AppCenterModules = new []
 {
@@ -752,6 +757,92 @@ void BuildXcodeProject(string projectPath)
         Configuration = "Release",
         DerivedDataPath = buildOutputFolder
     });
+}
+
+Task("UpdateCgManifestSHA").Does(()=>
+{
+    try
+    {
+        var reposToUpdate = new List<string>()
+        { 
+            AndroidRepoUrl,
+            AppleRepoUrl,
+            DotNetRepoUrl
+        };
+        var manifestFilePath = "cgmanifest.json";
+        var gitHubApiPrefix = "https://api.github.com/repos";
+        var gitHubPrefix = "https://github.com";
+        var content = ParseJsonFromFile(manifestFilePath);
+        var registrations = (JArray)content["Registrations"];
+        foreach (var registration in registrations.Children())
+        {
+            var component = registration["component"];
+            if (component != null) 
+            {
+                var typeObject = component["type"];
+                if (typeObject != null && typeObject.Value<string>() == "git")
+                {
+                    var gitData = component["git"];
+                    var repoUrl = gitData["repositoryUrl"].Value<string>();
+                    if (reposToUpdate.IndexOf(repoUrl) >= 0)
+                    {
+                        var releaseTag = GetReleaseTag(repoUrl);
+                        if (!string.IsNullOrEmpty(releaseTag))
+                        {
+                            var tagsUrl = repoUrl.Replace(".git", "/tags").Replace(gitHubPrefix, gitHubApiPrefix);
+                            var tagsListJson = HttpGet(tagsUrl);
+                            var tags = JArray.Parse(tagsListJson);
+                            foreach (var tag in tags.Children())
+                            {
+                                if (tag["name"].Value<string>() == releaseTag)
+                                {
+                                    gitData["commitHash"] = tag["commit"]["sha"].Value<string>();
+                                    break;
+                                }
+                            }
+                        }
+                        else
+                        {
+                            Warning($"Repository url: {repoUrl}. Release tag was not found.");
+                        }
+                    }
+                    else
+                    {
+                        Warning($"Repository url: {repoUrl}. Current component should not be updated.");
+                    }
+                }
+                else
+                {
+                    Warning("Current component has no field 'type' or 'type' is not 'git'.");
+                }
+            }
+            else
+            {
+                Warning("Current registration has no 'component' property.");
+            }
+        }
+
+        SerializeJsonToPrettyFile(manifestFilePath, content);
+    }
+    catch (Exception e)
+    {
+        Warning($"Can't update 'cgmanifest.json'. Error message: {e.Message}");
+    }
+});
+
+string GetReleaseTag(string repoUrl)
+{
+      switch (repoUrl)
+      {
+        case AndroidRepoUrl:
+            return AndroidSdkVersion;
+        case AppleRepoUrl:
+            return IosSdkVersion;
+        case DotNetRepoUrl:
+            return UwpSdkVersion;
+        default:
+            return null;
+      }
 }
 
 RunTarget(Target);
