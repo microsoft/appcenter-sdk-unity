@@ -40,49 +40,76 @@ void UpdateSDKVersion(string path, string patternPrefix, string newVersion)
 
 Task("UpdateCgManifestSHA").IsDependeeOf("StartNewVersion").Does(()=>
 {
-    var reposToUpdate = new List<string>(){ 
-        "https://github.com/microsoft/appcenter-sdk-android.git",
-        "https://github.com/microsoft/appcenter-sdk-apple.git",
-        "https://github.com/microsoft/appcenter-sdk-dotnet.git"
-    };
-    var manifestFilePath = "cgmanifest.json";
-    var gitHubApiPrefix = "https://api.github.com/repos";
-    var gitHubPrefix = "https://github.com";
-    var content = ParseJsonFromFile(manifestFilePath);
-    var registrations = (JArray)content["Registrations"];
-    foreach (var registration in registrations.Children())
+    try
     {
-        var component = registration["component"];
-        if (component != null) 
+        var reposToUpdate = new List<string>(){ 
+            "https://github.com/microsoft/appcenter-sdk-android.git",
+            "https://github.com/microsoft/appcenter-sdk-apple.git",
+            "https://github.com/microsoft/appcenter-sdk-dotnet.git"
+        };
+        var manifestFilePath = "cgmanifest.json";
+        var gitHubApiPrefix = "https://api.github.com/repos";
+        var gitHubPrefix = "https://github.com";
+        var content = ParseJsonFromFile(manifestFilePath);
+        var registrations = (JArray)content["Registrations"];
+        foreach (var registration in registrations.Children())
         {
-            var typeObject = component["type"];
-            if (typeObject != null && typeObject.Value<string>() == "git")
+            var component = registration["component"];
+            if (component != null) 
             {
-                var gitData = component["git"];
-                var repoUrl = gitData["repositoryUrl"].Value<string>();
-                if (reposToUpdate.IndexOf(repoUrl) >= 0)
+                var typeObject = component["type"];
+                if (typeObject != null && typeObject.Value<string>() == "git")
                 {
-                    var latestReleaseUrl = repoUrl.Replace(".git", "/releases/latest").Replace(gitHubPrefix, gitHubApiPrefix);
-                    var releaseJson = HttpGet(latestReleaseUrl);
-                    var releaseObject = ParseJson(releaseJson);
-                    var releaseTag = releaseObject["tag_name"].Value<string>();
-                    var tagsUrl = repoUrl.Replace(".git", "/tags").Replace(gitHubPrefix, gitHubApiPrefix);
-                    var tagsListJson = HttpGet(tagsUrl);
-                    var tags = JArray.Parse(tagsListJson);
-                    foreach (var tag in tags.Children())
+                    var gitData = component["git"];
+                    var repoUrl = gitData["repositoryUrl"].Value<string>();
+                    if (reposToUpdate.IndexOf(repoUrl) >= 0)
                     {
-                        if (tag["name"].Value<string>() == releaseTag)
+                        var latestReleaseUrl = repoUrl.Replace(".git", "/releases/latest").Replace(gitHubPrefix, gitHubApiPrefix);
+                        var releaseJson = HttpGet(latestReleaseUrl);
+                        var releaseObject = ParseJson(releaseJson);
+                        var releaseTagObject = releaseObject["tag_name"];
+                        if (releaseTagObject != null)
                         {
-                            gitData["commitHash"] = tag["commit"]["sha"].Value<string>();
-                            break;
+                            var releaseTag = releaseTagObject.Value<string>();
+                            var tagsUrl = repoUrl.Replace(".git", "/tags").Replace(gitHubPrefix, gitHubApiPrefix);
+                            var tagsListJson = HttpGet(tagsUrl);
+                            var tags = JArray.Parse(tagsListJson);
+                            foreach (var tag in tags.Children())
+                            {
+                                if (tag["name"].Value<string>() == releaseTag)
+                                {
+                                    gitData["commitHash"] = tag["commit"]["sha"].Value<string>();
+                                    break;
+                                }
+                            }
+                        }
+                        else
+                        {
+                            Warning($"Repository url: {repoUrl}. Latest release has no field 'tag_name'");
                         }
                     }
-                }              
+                    else
+                    {
+                        Warning($"Repository url: {repoUrl}. Current component should not be updated.");
+                    }
+                }
+                else
+                {
+                    Warning("Current component has no field 'type' or 'type' is not 'git'.");
+                }
+            }
+            else
+            {
+                Warning("Current registration has no 'component' property.");
             }
         }
-    }
 
-    SerializeJsonToPrettyFile(manifestFilePath, content);
+        SerializeJsonToPrettyFile(manifestFilePath, content);
+    }
+    catch (Exception e)
+    {
+        Warning($"Can't update 'cgmanifest.json'. Error message: {e.Message}");
+    }
 });
 
 RunTarget(Target);
