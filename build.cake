@@ -4,7 +4,7 @@
 #addin nuget:?package=Cake.FileHelpers
 #addin nuget:?package=Cake.AzureStorage
 #addin nuget:?package=Cake.Xcode
-#addin "Cake.Json"
+#addin nuget:?package=Cake.Json&version=3.0.1
 #addin "Cake.Http"
 #load "utility.cake"
 #load "nuget-tools.cake"
