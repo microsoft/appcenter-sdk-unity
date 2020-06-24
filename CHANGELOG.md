@@ -6,7 +6,7 @@
 
 #### iOS
 
-* **[Fix]** Fix track event crash caused by event property null value.
+* **[Fix]** Fix `Analytics.TrackEvent` crash if event properties contain `null` value.
 
 ___
 
