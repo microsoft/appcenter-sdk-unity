@@ -1,5 +1,30 @@
 # App Center SDK for Unity Change Log
 
+## Release 3.3.0
+
+This version has a breaking change on iOS - it drops Xcode 10 support, Xcode 11 is a minimal supported version now.
+
+### App Center
+
+#### Android
+
+* **[Fix]** Fix possible delays in UI thread when queueing a large number of events.
+
+#### iOS
+
+* **[Fix]** Fix crash when local binary data (where unsent logs or unprocessed crashed are stored) is corrupted.
+* **[Fix]** When carrier name is retrieved incorrectly by iOS, show `nil` as expected instead of "carrier" string.
+
+### App Center Crashes
+
+#### iOS
+
+* **[Improvement]** Update PLCrashReporter to 1.7.1.
+* **[Fix]** Fix reporting stacktraces on iOS simulator.
+* **[Fix]** Add attachments verification in `TrackError` function to handle explicitly passed `null` array to variable arguments parameter.
+
+___
+
 ## Release 3.2.1
 
 ### App Center
