@@ -76,7 +76,7 @@ public class AppCenterPostBuild : IPostprocessBuildWithReport
         if (target == BuildTarget.Android)
         {
             var pbxProject = new PBXProjectWrapper(pathToBuiltProject);
-            if (settings.UseDistribute && AppCenter.Distribute != null)
+            if (AppCenterSettingsContext.SettingsInstance.UseDistribute && AppCenter.Distribute != null)
             {
                 LinkDistribute(pathToBuiltProject);
             } else 
@@ -111,9 +111,15 @@ public class AppCenterPostBuild : IPostprocessBuildWithReport
         ParseDistributeAarMetaAndSetEnabled(false, distributeAar[0]);
     }
 
-    private static void ParseDistributeAarMetaAndSetEnabled(boolean isEnabled, string pathToFile) 
+    private static void ParseDistributeAarMetaAndSetEnabled(bool isEnabled, string pathToFile) 
     {
-
+        var codeLines = File.ReadAllLines(pathToFile).ToList();
+        var excludeAndroidLineIndex = SearchForLine(codeLines, "Exclude Android");
+        var androidLineIndex = SearchForLine(codeLines, "Android: Android");
+        codeLines.RemoveRange(excludeAndroidLineIndex, 1);
+        codeLines.Insert(excludeAndroidLineIndex, "Exclude Android: " + isEnabled ? "1" : "0");
+        codeLines.RemoveRange(androidLineIndex + 2, 1);
+        codeLines.Insert(androidLineIndex + 2, "enabled: " + isEnabled ? "1" : "0");
     }
 
     #endregion
