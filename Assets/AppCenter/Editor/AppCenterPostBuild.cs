@@ -21,7 +21,7 @@ public class AppCenterPostBuild : IPostprocessBuildWithReport
     public int callbackOrder { get { return 0; } }
 
     private const string AppManifestFileName = "Package.appxmanifest";
-    private const string DistributeAarMetaFile = "appcenter-distribute-release.aar.meta";
+    private const string DistributeAarFile = "appcenter-distribute-release";
     private const string CapabilitiesElement = "Capabilities";
     private const string CapabilityElement = "Capability";
     private const string CapabilityNameAttribute = "Name";
@@ -75,53 +75,29 @@ public class AppCenterPostBuild : IPostprocessBuildWithReport
         }
         if (target == BuildTarget.Android)
         {
-            var pbxProject = new PBXProjectWrapper(pathToBuiltProject);
-            if (AppCenterSettingsContext.SettingsInstance.UseDistribute && AppCenter.Distribute != null)
-            {
-                LinkDistribute(pathToBuiltProject);
-            } else 
-            {
-                UnlinkDistribute(pathToBuiltProject);
-            }
-            
+            var distributeEnabled = AppCenterSettingsContext.SettingsInstance.UseDistribute && AppCenter.Distribute != null;
+            LinkDistribute(distributeEnabled);
         }
     }
 
     #region Android Methods
 
-    private static void LinkDistribute(string pathToBuiltProject) 
+    private static void LinkDistribute(bool isEnabled) 
     {
-        var distributeAar = Directory.GetFiles(pathToBuiltProject, DistributeAarMetaFile, SearchOption.AllDirectories);
-        if (distributeAar.Length == 0)
+        var distributeAarFileAsset = AssetDatabase.FindAssets(DistributeAarFile, new[] { AppCenterSettingsContext.AppCenterPath + "/Plugins/Android" });
+        if (distributeAarFileAsset.Length == 0)
         {
-            Debug.LogWarning("Failed to link Distribute, file `" + DistributeAarMetaFile + "` is not found");
+            Debug.LogWarning("Failed to link Distribute, file `" + DistributeAarFile + "` is not found");
             return;
         }
-        ParseDistributeAarMetaAndSetEnabled(true, distributeAar[0]);
-    }
-
-    private static void UnlinkDistribute(string pathToBuiltProject) 
-    {
-        var distributeAar = Directory.GetFiles(pathToBuiltProject, DistributeAarMetaFile, SearchOption.AllDirectories);
-        if (distributeAar.Length == 0)
+        var assetPath = AssetDatabase.GUIDToAssetPath(distributeAarFileAsset[0]);
+        var importer = AssetImporter.GetAtPath(assetPath) as PluginImporter;
+        if (importer != null)
         {
-            Debug.LogWarning("Failed to unlink Distribute, file `" + DistributeAarMetaFile + "` is not found");
-            return;
+            importer.SetCompatibleWithPlatform(BuildTarget.Android, isEnabled);
+            importer.SaveAndReimport();
         }
-        ParseDistributeAarMetaAndSetEnabled(false, distributeAar[0]);
     }
-
-    private static void ParseDistributeAarMetaAndSetEnabled(bool isEnabled, string pathToFile) 
-    {
-        var codeLines = File.ReadAllLines(pathToFile).ToList();
-        var excludeAndroidLineIndex = SearchForLine(codeLines, "Exclude Android");
-        var androidLineIndex = SearchForLine(codeLines, "Android: Android");
-        codeLines.RemoveRange(excludeAndroidLineIndex, 1);
-        codeLines.Insert(excludeAndroidLineIndex, "Exclude Android: " + isEnabled ? "1" : "0");
-        codeLines.RemoveRange(androidLineIndex + 2, 1);
-        codeLines.Insert(androidLineIndex + 2, "enabled: " + isEnabled ? "1" : "0");
-    }
-
     #endregion
 
     #region UWP Methods
