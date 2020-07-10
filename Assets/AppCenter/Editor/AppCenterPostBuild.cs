@@ -21,6 +21,7 @@ public class AppCenterPostBuild : IPostprocessBuildWithReport
     public int callbackOrder { get { return 0; } }
 
     private const string AppManifestFileName = "Package.appxmanifest";
+    private const string DistributeAarMetaFile = "appcenter-distribute-release.aar.meta";
     private const string CapabilitiesElement = "Capabilities";
     private const string CapabilityElement = "Capability";
     private const string CapabilityNameAttribute = "Name";
@@ -72,7 +73,50 @@ public class AppCenterPostBuild : IPostprocessBuildWithReport
                 capabilityManager.WriteToFile();
             }
         }
+        if (target == BuildTarget.Android)
+        {
+            var pbxProject = new PBXProjectWrapper(pathToBuiltProject);
+            if (settings.UseDistribute && AppCenter.Distribute != null)
+            {
+                LinkDistribute(pathToBuiltProject);
+            } else 
+            {
+                UnlinkDistribute(pathToBuiltProject);
+            }
+            
+        }
     }
+
+    #region Android Methods
+
+    private static void LinkDistribute(string pathToBuiltProject) 
+    {
+        var distributeAar = Directory.GetFiles(pathToBuiltProject, DistributeAarMetaFile, SearchOption.AllDirectories);
+        if (distributeAar.Length == 0)
+        {
+            Debug.LogWarning("Failed to link Distribute, file `" + DistributeAarMetaFile + "` is not found");
+            return;
+        }
+        ParseDistributeAarMetaAndSetEnabled(true, distributeAar[0]);
+    }
+
+    private static void UnlinkDistribute(string pathToBuiltProject) 
+    {
+        var distributeAar = Directory.GetFiles(pathToBuiltProject, DistributeAarMetaFile, SearchOption.AllDirectories);
+        if (distributeAar.Length == 0)
+        {
+            Debug.LogWarning("Failed to unlink Distribute, file `" + DistributeAarMetaFile + "` is not found");
+            return;
+        }
+        ParseDistributeAarMetaAndSetEnabled(false, distributeAar[0]);
+    }
+
+    private static void ParseDistributeAarMetaAndSetEnabled(boolean isEnabled, string pathToFile) 
+    {
+
+    }
+
+    #endregion
 
     #region UWP Methods
     public static void AddHelperCodeToUWPProject(string pathToBuiltProject)
