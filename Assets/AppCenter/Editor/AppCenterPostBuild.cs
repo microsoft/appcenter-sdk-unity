@@ -75,8 +75,12 @@ public class AppCenterPostBuild : IPostprocessBuildWithReport
         }
         if (target == BuildTarget.Android)
         {
-            var distributeEnabled = AppCenterSettingsContext.SettingsInstance.UseDistribute && AppCenter.Distribute != null;
-            LinkDistribute(distributeEnabled);
+            // No linking/unlinking in case Distribute isn't added.
+            if (AppCenter.Distribute == null) 
+            {
+                return;
+            }
+            LinkDistribute(AppCenterSettingsContext.SettingsInstance.UseDistribute);
         }
     }
 
