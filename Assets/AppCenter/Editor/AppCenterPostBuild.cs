@@ -98,6 +98,8 @@ public class AppCenterPostBuild : IPostprocessBuildWithReport
         var importer = AssetImporter.GetAtPath(assetPath) as PluginImporter;
         if (importer != null)
         {
+            Debug.Log("Distribute is " + (isEnabled ? "" : "not ") + "enabled. " 
+            + (isEnabled ? "Linking " : "Unlinking ") + DistributeAarFile);
             importer.SetCompatibleWithPlatform(BuildTarget.Android, isEnabled);
             importer.SaveAndReimport();
         }
