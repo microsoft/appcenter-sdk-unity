@@ -1,9 +1,7 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT license.
 
-using Assets.AppCenter.Plugins.Android.Utility;
 using Microsoft.AppCenter.Unity;
-using Microsoft.AppCenter.Unity.Distribute;
 using Microsoft.AppCenter.Unity.Push;
 using System.Collections;
 using System.Threading;
@@ -43,7 +41,6 @@ public class PuppetAppCenter : MonoBehaviour
     private const string AppSecretAndroidKey = "AppCenter.Unity.AppSecretKey";
     public GameObject CustomProperty;
     public RectTransform PropertiesList;
-    public Toggle DistributeEnabled;
     public Toggle PushEnabled;
     public Toggle CustomDialog;
     public static string FlagCustomDialog = "FlagCustomDialog";
@@ -60,24 +57,6 @@ public class PuppetAppCenter : MonoBehaviour
         var isEnabled = Push.IsEnabledAsync();
         yield return isEnabled;
         PushEnabled.isOn = isEnabled.Result;
-    }
-
-    public void SetDistributeEnabled(bool enabled)
-    {
-        StartCoroutine(SetDistributeEnabledCoroutine(enabled));
-    }
-
-    public void CheckForUpdate()
-    {
-        Distribute.CheckForUpdate();
-    }
-
-    private IEnumerator SetDistributeEnabledCoroutine(bool enabled)
-    {
-        yield return Distribute.SetEnabledAsync(enabled);
-        var isEnabled = Distribute.IsEnabledAsync();
-        yield return isEnabled;
-        DistributeEnabled.isOn = isEnabled.Result;
     }
 
     public void AddProperty()
@@ -190,9 +169,6 @@ public class PuppetAppCenter : MonoBehaviour
         yield return isPushEnabled;
         PushEnabled.isOn = isPushEnabled.Result;
 
-        var isDistributeEnabled = Distribute.IsEnabledAsync();
-        yield return isDistributeEnabled;
-        DistributeEnabled.isOn = isDistributeEnabled.Result;
         UserId.text = _customUserId;
     }
 
@@ -210,22 +186,11 @@ public class PuppetAppCenter : MonoBehaviour
         var isPushEnabled = Push.IsEnabledAsync();
         yield return isPushEnabled;
         PushEnabled.isOn = isPushEnabled.Result;
-        var isDistributeEnabled = Distribute.IsEnabledAsync();
-        yield return isDistributeEnabled;
-        DistributeEnabled.isOn = isDistributeEnabled.Result;
     }
 
     public void SetLogLevel(int logLevel)
     {
         AppCenter.LogLevel = Microsoft.AppCenter.Unity.LogLevel.Verbose + logLevel;
-    }
-
-    public void SetCustomDialog(bool enable)
-    {
-        int isEnable = enable ? 1 : 0;
-        PlayerPrefs.SetInt(FlagCustomDialog, isEnable);
-        PlayerPrefs.Save();
-        PuppetReleaseHandler.IsDialogCustom = enable;
     }
 
     public void SetStartupMode(int startupMode)
