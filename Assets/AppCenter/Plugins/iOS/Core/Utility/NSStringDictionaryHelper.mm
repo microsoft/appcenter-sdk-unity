@@ -26,8 +26,8 @@ NSDictionary *appcenter_unity_create_ns_string_dictionary(char **keys, char **va
   // Convert the two arrays to a single dictionary
   NSMutableDictionary<NSString *, NSString *> *nsdictionary = [[NSMutableDictionary alloc] initWithCapacity:count];
   for (int i = 0; i < count; ++i) {
-    NSString *key = [NSString stringWithUTF8String:keys[i]];
-    NSString *value = [NSString stringWithUTF8String:values[i]];
+    NSString *key = appcenter_unity_cstr_to_ns_string(keys[i]);
+    NSString *value = appcenter_unity_cstr_to_ns_string(values[i]);
     [nsdictionary setValue:value forKey:key];
   }
   return nsdictionary;
