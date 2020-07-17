@@ -1,5 +1,13 @@
 # App Center SDK for Unity Change Log
 
+## Release 3.2.2 (Under development)
+
+### App Center Distribute
+
+Now when Distribute is turned off in **AppCenterBehavior**, it is unlinked from the application, in order to avoid Google Play flagging the application for malicious behavior. It must be turned off for build variants which are going to be published on Google Play. See the [public documentation](https://docs.microsoft.com/en-us/appcenter/sdk/distribute/unity) for more details about this change.
+
+___
+
 ## Release 3.2.1
 
 ### App Center
