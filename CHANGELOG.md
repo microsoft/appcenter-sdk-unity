@@ -20,6 +20,7 @@ Now when Distribute is turned off in **AppCenterBehavior**, it is unlinked from 
 #### iOS
 
 * **[Improvement]** Update PLCrashReporter to 1.6.0.
+
 ___
 
 ## Release 3.2.0
