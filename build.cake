@@ -4,6 +4,8 @@
 #addin nuget:?package=Cake.FileHelpers
 #addin nuget:?package=Cake.AzureStorage
 #addin nuget:?package=Cake.Xcode
+#addin nuget:?package=Cake.Json&version=3.0.1
+#addin "Cake.Http"
 #load "utility.cake"
 #load "nuget-tools.cake"
 
@@ -30,6 +32,16 @@ const string SdkStorageUrl = "https://mobilecentersdkdev.blob.core.windows.net/s
 const string AndroidUrl = SdkStorageUrl + "AppCenter-SDK-Android-" + AndroidSdkVersion + ".zip";
 const string IosUrl = SdkStorageUrl + "AppCenter-SDK-Apple-" + IosSdkVersion + ".zip";
 const string UwpUrl = SdkStorageUrl + "AppCenter-SDK-Unity-UWP-" + UwpSdkVersion + ".zip";
+const string AndroidRepoUrl = "https://github.com/microsoft/appcenter-sdk-android.git";
+const string AppleRepoUrl = "https://github.com/microsoft/appcenter-sdk-apple.git";
+const string DotNetRepoUrl = "https://github.com/microsoft/appcenter-sdk-dotnet.git";
+
+var ReposToUpdate = new List<string>()
+{ 
+    AndroidRepoUrl,
+    AppleRepoUrl,
+    DotNetRepoUrl
+};
 
 var AppCenterModules = new []
 {
@@ -752,6 +764,89 @@ void BuildXcodeProject(string projectPath)
         Configuration = "Release",
         DerivedDataPath = buildOutputFolder
     });
+}
+
+Task("UpdateCgManifest").Does(()=>
+{
+    try
+    {
+        var manifestFilePath = "cgmanifest.json";
+        var content = ParseJsonFromFile(manifestFilePath);
+        var registrations = (JArray)content["Registrations"];
+        foreach (var registration in registrations.Children())
+        {
+            HanldeRegistration(registration);
+        }
+
+        SerializeJsonToPrettyFile(manifestFilePath, content);
+    }
+    catch (Exception e)
+    {
+        Warning($"Can't update 'cgmanifest.json'. Error message: {e.Message}");
+    }
+});
+
+void HanldeRegistration(JToken registration)
+{
+    var component = registration["component"];
+    if (component == null) 
+    {
+        Warning("Current registration has no 'component' property.");
+        return;
+    }
+
+    var typeObject = component["type"];
+    if (typeObject == null || typeObject.Value<string>() != "git")
+    {
+        Warning("Current component has no field 'type' or 'type' is not 'git'.");
+        return;
+    }
+
+    UpdateCommitHash(component);
+}
+
+void UpdateCommitHash(JToken component)
+{
+    var gitData = component["git"];
+    var repoUrl = gitData["repositoryUrl"].Value<string>();
+    if (ReposToUpdate.IndexOf(repoUrl) < 0)
+    {
+        Warning($"Repository url: {repoUrl}. Current component should not be updated.");
+        return;
+    }
+
+    var releaseTag = GetReleaseTag(repoUrl);
+    if (string.IsNullOrEmpty(releaseTag))
+    {
+        Warning($"Repository url: {repoUrl}. Release tag '{releaseTag}' was not found.");
+        return;
+    }
+
+    var tagsUrl = repoUrl.Replace(".git", "/tags").Replace("https://github.com", "https://api.github.com/repos");
+    var tagsListJson = HttpGet(tagsUrl);
+    var tag = JArray.Parse(tagsListJson).Children().FirstOrDefault(t => t["name"].Value<string>() == releaseTag);
+    if (tag == null)
+    {
+        Warning($"Repository url: {repoUrl}. Tag '{tag}' was not found.");
+        return;
+    }
+
+    gitData["commitHash"] = tag["commit"]["sha"].Value<string>();
+}
+
+string GetReleaseTag(string repoUrl)
+{
+    switch (repoUrl)
+    {
+        case AndroidRepoUrl:
+            return AndroidSdkVersion;
+        case AppleRepoUrl:
+            return IosSdkVersion;
+        case DotNetRepoUrl:
+            return UwpSdkVersion;
+        default:
+            return null;
+    }
 }
 
 RunTarget(Target);

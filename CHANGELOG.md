@@ -1,6 +1,12 @@
 # App Center SDK for Unity Change Log
 
-## Release 3.2.2 (Under development)
+## Release 3.2.2 (in development)
+
+### App Center Analytics
+
+#### iOS
+
+* **[Fix]** Fix `Analytics.TrackEvent` crash if event properties contain `null` value.
 
 ### App Center Distribute
 
