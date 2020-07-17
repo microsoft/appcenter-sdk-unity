@@ -110,8 +110,8 @@ public class AppCenterPostBuild : IPostprocessBuildWithReport
         var importer = AssetImporter.GetAtPath(assetPath) as PluginImporter;
         if (importer != null)
         {
-            Debug.Log(moduleName + " is " + (isEnabled ? "" : "not ") + "enabled. " 
-            + (isEnabled ? "Linking " : "Unlinking ") + aarName);
+            Debug.Log (moduleName + " is " + (isEnabled ? "" : "not ") + "enabled. " +
+                (isEnabled ? "Linking " : "Unlinking ") + aarName);
             importer.SetCompatibleWithPlatform(BuildTarget.Android, isEnabled);
             importer.SaveAndReimport();
         }
