@@ -1,6 +1,21 @@
 # App Center SDK for Unity Change Log
 
-## Release 3.2.2 (in development)
+## Release 3.3.0
+
+This version has a breaking change on iOS - it drops Xcode 10 support, Xcode 11 is a minimal supported version now.
+
+### App Center
+
+#### Android
+
+* **[Fix]** Fix possible delays in UI thread when queueing a large number of events.
+* **[Fix]** Fix an `IncorrectContextUseViolation` warning when calculating screen size on Android 11.
+* **[Fix]** All SQL commands used in SDK are presented as raw strings to avoid any possible static analyzer's SQL injection false alarms.
+
+#### iOS
+
+* **[Fix]** Fix crash when local binary data (where unsent logs or unprocessed crashed are stored) is corrupted.
+* **[Fix]** When carrier name is retrieved incorrectly by iOS, show `nil` as expected instead of "carrier" string.
 
 ### App Center Analytics
 
@@ -8,9 +23,25 @@
 
 * **[Fix]** Fix `Analytics.TrackEvent` crash if event properties contain `null` value.
 
+### App Center Crashes
+
+#### iOS
+
+* **[Improvement]** Update PLCrashReporter to 1.7.1.
+* **[Fix]** Fix reporting stacktraces on iOS simulator.
+* **[Fix]** Add attachments verification in `TrackError` function to handle explicitly passed `null` array to variable arguments parameter.
+
 ### App Center Distribute
 
 Now when Distribute is turned off in **AppCenterBehavior**, it is unlinked from the application, in order to avoid Google Play flagging the application for malicious behavior. It must be turned off for build variants which are going to be published on Google Play. See the [public documentation](https://docs.microsoft.com/en-us/appcenter/sdk/distribute/unity) for more details about this change.
+
+#### Android
+
+* **[Fix]** Fix Distribute can't get updates for Realme devices which use Realme UI.
+
+#### iOS
+
+* **[Fix]** Obfuscate app secret value that appears as URI part in verbose logs when getting release updates info.
 
 ___
 
