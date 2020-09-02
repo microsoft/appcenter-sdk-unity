@@ -1,5 +1,15 @@
 # App Center SDK for Unity Change Log
 
+## Release 3.3.1 (Under development)
+
+### App Center
+
+#### iOS
+
+* **[Fix]** Fix override custom `URLScheme` in the post-build script.
+
+___
+
 ## Release 3.3.0
 
 This version has a breaking change on iOS - it drops Xcode 10 support, Xcode 11 is a minimal supported version now.
