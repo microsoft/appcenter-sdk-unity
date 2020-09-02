@@ -422,15 +422,19 @@ public class AppCenterPostBuild : IPostprocessBuildWithReport
         {
             // Add App Center URL scemes.
             var schemes = new List<string>() { "None" };
-            Type playerSettingsClass = typeof(PlayerSettings.iOS);
 
+            // Create a reflection call for getting custom schemes from iOS settings.
+            Type playerSettingsClass = typeof(PlayerSettings.iOS);
             MethodInfo iOSURLSchemesMethod = playerSettingsClass.GetMethod("GetURLSchemes", BindingFlags.Static | BindingFlags.NonPublic | BindingFlags.Static);
+
+            // Verify that method is exist and call it for getting custom schemes.
             if (iOSURLSchemesMethod != null)
             {
                 var schemesFromSettings = (string[])iOSURLSchemesMethod.Invoke(null, null);
                 schemes.AddRange(schemesFromSettings.ToList<string>());
             }
 
+            // Generate scheme information.
             var root = info.GetRoot();
             var urlTypes = root.GetType().GetMethod("CreateArray").Invoke(root, new object[] { "CFBundleURLTypes" });
             foreach (var scheme in schemes) 
