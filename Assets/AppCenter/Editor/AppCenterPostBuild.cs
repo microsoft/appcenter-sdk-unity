@@ -12,6 +12,7 @@ using UnityEditor.Build.Reporting;
 using UnityEditor.Build;
 using UnityEditor;
 using UnityEngine;
+using System.Reflection;
 
 // Warning: Don't use #if #endif for conditional compilation here as Unity
 // doesn't always set the flags early enough.
@@ -419,17 +420,30 @@ public class AppCenterPostBuild : IPostprocessBuildWithReport
     {
         if (settings.UseDistribute && AppCenter.Distribute != null)
         {
-            // Add App Center URL sceme.
+            // Add App Center URL scemes.
+            var schemes = new List<string>() { "None" };
+            Type playerSettingsClass = typeof(PlayerSettings.iOS);
+
+            MethodInfo iOSURLSchemesMethod = playerSettingsClass.GetMethod("GetURLSchemes", BindingFlags.Static | BindingFlags.NonPublic | BindingFlags.Static);
+            if (iOSURLSchemesMethod != null)
+            {
+                var schemesFromSettings = (string[])iOSURLSchemesMethod.Invoke(null, null);
+                schemes.AddRange(schemesFromSettings.ToList<string>());
+            }
+
             var root = info.GetRoot();
             var urlTypes = root.GetType().GetMethod("CreateArray").Invoke(root, new object[] { "CFBundleURLTypes" });
-            if (settings.UseDistribute && AppCenter.Distribute != null)
+            foreach (var scheme in schemes) 
             {
-                var urlType = urlTypes.GetType().GetMethod("AddDict").Invoke(urlTypes, null);
-                var setStringMethod = urlType.GetType().GetMethod("SetString");
-                setStringMethod.Invoke(urlType, new object[] { "CFBundleTypeRole", "None" });
-                setStringMethod.Invoke(urlType, new object[] { "CFBundleURLName", ApplicationIdHelper.GetApplicationId() });
-                var urlSchemes = urlType.GetType().GetMethod("CreateArray").Invoke(urlType, new[] { "CFBundleURLSchemes" });
-                urlSchemes.GetType().GetMethod("AddString").Invoke(urlSchemes, new[] { "appcenter-" + settings.iOSAppSecret });
+                if (settings.UseDistribute && AppCenter.Distribute != null)
+                {
+                    var urlType = urlTypes.GetType().GetMethod("AddDict").Invoke(urlTypes, null);
+                    var setStringMethod = urlType.GetType().GetMethod("SetString");
+                    setStringMethod.Invoke(urlType, new object[] { "CFBundleTypeRole", scheme });
+                    setStringMethod.Invoke(urlType, new object[] { "CFBundleURLName", ApplicationIdHelper.GetApplicationId() });
+                    var urlSchemes = urlType.GetType().GetMethod("CreateArray").Invoke(urlType, new[] { "CFBundleURLSchemes" });
+                    urlSchemes.GetType().GetMethod("AddString").Invoke(urlSchemes, new[] { "appcenter-" + settings.iOSAppSecret });
+                }
             }
         }
     }
