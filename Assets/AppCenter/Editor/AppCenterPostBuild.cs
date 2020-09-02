@@ -421,7 +421,7 @@ public class AppCenterPostBuild : IPostprocessBuildWithReport
         if (settings.UseDistribute && AppCenter.Distribute != null)
         {
             // Add App Center URL scemes.
-            var schemes = new List<string>() { "None" };
+            var schemes = new List<string>();
 
             // Create a reflection call for getting custom schemes from iOS settings.
             Type playerSettingsClass = typeof(PlayerSettings.iOS);
@@ -437,16 +437,18 @@ public class AppCenterPostBuild : IPostprocessBuildWithReport
             // Generate scheme information.
             var root = info.GetRoot();
             var urlTypes = root.GetType().GetMethod("CreateArray").Invoke(root, new object[] { "CFBundleURLTypes" });
-            foreach (var scheme in schemes) 
+            if (settings.UseDistribute && AppCenter.Distribute != null)
             {
-                if (settings.UseDistribute && AppCenter.Distribute != null)
+                var urlType = urlTypes.GetType().GetMethod("AddDict").Invoke(urlTypes, null);
+                var setStringMethod = urlType.GetType().GetMethod("SetString");
+                setStringMethod.Invoke(urlType, new object[] { "CFBundleTypeRole", "None" });
+                setStringMethod.Invoke(urlType, new object[] { "CFBundleURLName", ApplicationIdHelper.GetApplicationId() });
+                var urlSchemes = urlType.GetType().GetMethod("CreateArray").Invoke(urlType, new[] { "CFBundleURLSchemes" });
+                urlSchemes.GetType().GetMethod("AddString").Invoke(urlSchemes, new[] { "appcenter-" + settings.iOSAppSecret });
+                // Add custom schemes defined in Unity players settings.
+                foreach (var scheme in schemes)
                 {
-                    var urlType = urlTypes.GetType().GetMethod("AddDict").Invoke(urlTypes, null);
-                    var setStringMethod = urlType.GetType().GetMethod("SetString");
-                    setStringMethod.Invoke(urlType, new object[] { "CFBundleTypeRole", scheme });
-                    setStringMethod.Invoke(urlType, new object[] { "CFBundleURLName", ApplicationIdHelper.GetApplicationId() });
-                    var urlSchemes = urlType.GetType().GetMethod("CreateArray").Invoke(urlType, new[] { "CFBundleURLSchemes" });
-                    urlSchemes.GetType().GetMethod("AddString").Invoke(urlSchemes, new[] { "appcenter-" + settings.iOSAppSecret });
+                    urlSchemes.GetType().GetMethod("AddString").Invoke(urlSchemes, new[] { scheme });
                 }
             }
         }
