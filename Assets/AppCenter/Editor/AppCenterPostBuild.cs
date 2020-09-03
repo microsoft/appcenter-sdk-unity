@@ -421,11 +421,11 @@ public class AppCenterPostBuild : IPostprocessBuildWithReport
         if (settings.UseDistribute && AppCenter.Distribute != null)
         {
             // Add App Center URL scemes.
-            var schemes = new List<string>();
+            var schemes = new List<string>() { "appcenter-" + settings.iOSAppSecret  };
 
             // Create a reflection call for getting custom schemes from iOS settings.
             Type playerSettingsClass = typeof(PlayerSettings.iOS);
-            MethodInfo iOSURLSchemesMethod = playerSettingsClass.GetMethod("GetURLSchemes", BindingFlags.Static | BindingFlags.NonPublic | BindingFlags.Static);
+            MethodInfo iOSURLSchemesMethod = playerSettingsClass.GetMethod("GetURLSchemes", BindingFlags.Static | BindingFlags.NonPublic);
 
             // Verify that method is exist and call it for getting custom schemes.
             if (iOSURLSchemesMethod != null)
@@ -444,7 +444,7 @@ public class AppCenterPostBuild : IPostprocessBuildWithReport
                 setStringMethod.Invoke(urlType, new object[] { "CFBundleTypeRole", "None" });
                 setStringMethod.Invoke(urlType, new object[] { "CFBundleURLName", ApplicationIdHelper.GetApplicationId() });
                 var urlSchemes = urlType.GetType().GetMethod("CreateArray").Invoke(urlType, new[] { "CFBundleURLSchemes" });
-                urlSchemes.GetType().GetMethod("AddString").Invoke(urlSchemes, new[] { "appcenter-" + settings.iOSAppSecret });
+
                 // Add custom schemes defined in Unity players settings.
                 foreach (var scheme in schemes)
                 {
