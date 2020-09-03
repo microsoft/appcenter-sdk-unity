@@ -1,7 +1,18 @@
 
-# Introduction
+# Visual Studio App Center SDK for Unity
 
-The App Center Unity SDK enables you to use App Center Analytics, Crash and Distribution within your Unity games.
+App Center is your continuous integration, delivery and learning solution for iOS, Android, and UWP apps.
+Get faster release cycles, higher-quality apps, and the insights to build what users want.
+
+The App Center SDK uses a modular architecture so you can use any or all of the following services:
+
+1. **App Center Analytics**: App Center Analytics helps you understand user behavior and customer engagement to improve your app. The SDK automatically captures session count, device properties like model, OS version, etc. You can define your own custom events to measure things that matter to you. All the information captured is available in the App Center portal for you to analyze the data.
+
+2. **App Center Crashes**: App Center Crashes will automatically generate a crash log every time your app crashes. The log is first written to the device's storage and when the user starts the app again, the crash report will be sent to App Center. Collecting crashes works for both beta and live apps, i.e. those submitted to the App Store. Crash logs contain valuable information for you to help fix the crash.
+
+3. **App Center Distribute**: App Center Distribute will let your users install a new version of the app when you distribute it via the App Center. With a new version of the app available, the SDK will present an update dialog to the users to either download or postpone the new version. Once they choose to update, the SDK will start to update your application.
+    > **Google Play considers the in-app update code as malicious behavior even if it isn’t used at runtime. Please remove this code before submitting your app to Google Play. Failure to not remove the in-app update code can lead to noncompliance and removal of the app from Google Play.**
+    > See [Remove in-app updates for Google Play builds](https://docs.microsoft.com/en-us/appcenter/sdk/distribute/unity#remove-in-app-updates-for-google-play-builds) documentation for details.
 
 # Getting Started
 
@@ -35,7 +46,7 @@ Once you have created an app, you can obtain its **App Secret** on the **Getting
 
 The App Center SDK is integrated by importing Unity Packages into your project.
 
-__The easist way to get started is to use our [Editor Extensions plugin](https://github.com/Microsoft/AppCenter-SDK-Unity-Extension).__ This plugin provides a clean UI for automatically downloading, installing and upgrading the App Center SDK.
+__The easiest way to get started is to use our [Editor Extensions plugin](https://github.com/Microsoft/AppCenter-SDK-Unity-Extension).__ This plugin provides a clean UI for automatically downloading, installing and upgrading the App Center SDK.
 
 Alternatively you can install the latest Asset Packages directly. Please follow instructions below if you would like to install packages manually:
 

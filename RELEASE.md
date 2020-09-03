@@ -31,7 +31,7 @@ This version has a breaking change on iOS - it drops Xcode 10 support, Xcode 11 
 
 ### App Center Distribute
 
-Now when Distribute is turned off in **AppCenterBehavior**, it is unlinked from the application, in order to avoid Google Play flagging the application for malicious behavior. It must be turned off for build variants which are going to be published on Google Play. See the [public documentation](https://docs.microsoft.com/en-us/appcenter/sdk/distribute/unity) for more details about this change.
+Now when Distribute is turned off in **AppCenterBehavior**, it is unlinked from the application, in order to avoid Google Play flagging the application for malicious behavior. It must be turned off for build variants which are going to be published on Google Play. See the [public documentation](https://docs.microsoft.com/en-us/appcenter/sdk/distribute/unity#remove-in-app-updates-for-google-play-builds) for more details about this change.
 
 #### Android
 
