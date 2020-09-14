@@ -424,8 +424,8 @@ public class AppCenterPostBuild : IPostprocessBuildWithReport
             var schemes = new List<string>() { "appcenter-" + settings.iOSAppSecret  };
 
             // Create a reflection call for getting custom schemes from iOS settings.
-            Type playerSettingsClass = typeof(PlayerSettings.iOS);
-            MethodInfo iOSURLSchemesMethod = playerSettingsClass.GetMethod("GetURLSchemes", BindingFlags.Static | BindingFlags.NonPublic);
+            var playerSettingsClass = typeof(PlayerSettings.iOS);
+            var iOSURLSchemesMethod = playerSettingsClass.GetMethod("GetURLSchemes", BindingFlags.Static | BindingFlags.NonPublic);
 
             // Verify that method exists and call it for getting custom schemes.
             if (iOSURLSchemesMethod != null)
