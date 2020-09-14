@@ -427,7 +427,7 @@ public class AppCenterPostBuild : IPostprocessBuildWithReport
             Type playerSettingsClass = typeof(PlayerSettings.iOS);
             MethodInfo iOSURLSchemesMethod = playerSettingsClass.GetMethod("GetURLSchemes", BindingFlags.Static | BindingFlags.NonPublic);
 
-            // Verify that method is exist and call it for getting custom schemes.
+            // Verify that method exists and call it for getting custom schemes.
             if (iOSURLSchemesMethod != null)
             {
                 var schemesFromSettings = (string[])iOSURLSchemesMethod.Invoke(null, null);

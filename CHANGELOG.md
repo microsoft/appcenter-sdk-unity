@@ -6,7 +6,7 @@
 
 #### iOS
 
-* **[Fix]** Fix override custom `URLScheme` in the post-build script.
+* **[Fix]** Fix overriding custom `URLScheme` in the post-build script.
 
 ___
 
