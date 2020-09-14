@@ -12,6 +12,7 @@ using UnityEditor.Build.Reporting;
 using UnityEditor.Build;
 using UnityEditor;
 using UnityEngine;
+using System.Reflection;
 
 // Warning: Don't use #if #endif for conditional compilation here as Unity
 // doesn't always set the flags early enough.
@@ -419,7 +420,21 @@ public class AppCenterPostBuild : IPostprocessBuildWithReport
     {
         if (settings.UseDistribute && AppCenter.Distribute != null)
         {
-            // Add App Center URL sceme.
+            // Add App Center URL scemes.
+            var schemes = new List<string>() { "appcenter-" + settings.iOSAppSecret  };
+
+            // Create a reflection call for getting custom schemes from iOS settings.
+            var playerSettingsClass = typeof(PlayerSettings.iOS);
+            var iOSURLSchemesMethod = playerSettingsClass.GetMethod("GetURLSchemes", BindingFlags.Static | BindingFlags.NonPublic);
+
+            // Verify that method exists and call it for getting custom schemes.
+            if (iOSURLSchemesMethod != null)
+            {
+                var schemesFromSettings = (string[])iOSURLSchemesMethod.Invoke(null, null);
+                schemes.AddRange(schemesFromSettings.ToList<string>());
+            }
+
+            // Generate scheme information.
             var root = info.GetRoot();
             var urlTypes = root.GetType().GetMethod("CreateArray").Invoke(root, new object[] { "CFBundleURLTypes" });
             if (settings.UseDistribute && AppCenter.Distribute != null)
@@ -429,7 +444,12 @@ public class AppCenterPostBuild : IPostprocessBuildWithReport
                 setStringMethod.Invoke(urlType, new object[] { "CFBundleTypeRole", "None" });
                 setStringMethod.Invoke(urlType, new object[] { "CFBundleURLName", ApplicationIdHelper.GetApplicationId() });
                 var urlSchemes = urlType.GetType().GetMethod("CreateArray").Invoke(urlType, new[] { "CFBundleURLSchemes" });
-                urlSchemes.GetType().GetMethod("AddString").Invoke(urlSchemes, new[] { "appcenter-" + settings.iOSAppSecret });
+
+                // Add custom schemes defined in Unity players settings.
+                foreach (var scheme in schemes)
+                {
+                    urlSchemes.GetType().GetMethod("AddString").Invoke(urlSchemes, new[] { scheme });
+                }
             }
         }
     }
