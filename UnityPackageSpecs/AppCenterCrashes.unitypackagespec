@@ -1,5 +1,5 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<package name="AppCenterCrashes" version="3.3.0" needsCore="true">
+<package name="AppCenterCrashes" version="3.3.1" needsCore="true">
     <include>
         <!-- Shared files -->
         <file path="Assets/AppCenter/Plugins/AppCenterSDK/Crashes/Shared" />
