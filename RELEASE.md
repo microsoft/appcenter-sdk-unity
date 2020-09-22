@@ -1,3 +1,33 @@
+## Release 3.3.1
+
+### App Center
+
+#### iOS
+
+* **[Fix]** Fix overriding custom `URLScheme` in the post-build script.
+
+### App Center Analytics
+
+#### iOS
+
+* **[Fix]** Fix processing logs (e.g., events) emitted from the `applicationWillTerminate` application delegate method.
+
+### App Center Crashes
+
+#### Android/iOS
+
+* **[Fix]** Fix sending attachments with a `null` text value.
+
+#### iOS
+
+* **[Improvement]** Update PLCrashReporter to 1.7.2.
+
+### App Center Distribute
+
+#### iOS
+
+* **[Fix]** Fix manually checking for updates before `applicationDidBecomeActive` event.
+
 ## Release 3.3.0
 
 This version has a breaking change on iOS - it drops Xcode 10 support, Xcode 11 is a minimal supported version now.

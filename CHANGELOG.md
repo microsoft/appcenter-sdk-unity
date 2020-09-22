@@ -1,12 +1,34 @@
 # App Center SDK for Unity Change Log
 
-## Release 3.3.1 (Under development)
+## Release 3.3.1
 
 ### App Center
 
 #### iOS
 
 * **[Fix]** Fix overriding custom `URLScheme` in the post-build script.
+
+### App Center Analytics
+
+#### iOS
+
+* **[Fix]** Fix processing logs (e.g., events) emitted from the `applicationWillTerminate` application delegate method.
+
+### App Center Crashes
+
+#### Android/iOS
+
+* **[Fix]** Fix sending attachments with a `null` text value.
+
+#### iOS
+
+* **[Improvement]** Update PLCrashReporter to 1.7.2.
+
+### App Center Distribute
+
+#### iOS
+
+* **[Fix]** Fix manually checking for updates before `applicationDidBecomeActive` event.
 
 ___
 
