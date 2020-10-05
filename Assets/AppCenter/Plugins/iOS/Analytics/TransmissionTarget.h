@@ -3,18 +3,18 @@
 
 #import <Foundation/Foundation.h>
 
-@class MSAnalyticsTransmissionTarget;
-@class MSPropertyConfigurator;
-@class MSEventProperties;
+@class MSACAnalyticsTransmissionTarget;
+@class MSACPropertyConfigurator;
+@class MSACEventProperties;
 
-extern "C" void appcenter_unity_transmission_target_track_event(MSAnalyticsTransmissionTarget *transmission, char* eventName, int flags);
-extern "C" void appcenter_unity_transmission_target_set_enabled(MSAnalyticsTransmissionTarget *transmission, BOOL enabled);
-extern "C" BOOL appcenter_unity_transmission_target_is_enabled(MSAnalyticsTransmissionTarget *transmission);
-extern "C" void appcenter_unity_transmission_target_track_event_with_props(MSAnalyticsTransmissionTarget *transmission, char* eventName, char** keys, char** values, int count, int flags);
-extern "C" void appcenter_unity_transmission_target_track_event_with_typed_props(MSAnalyticsTransmissionTarget *transmission, char* eventName, MSEventProperties* properties, int flags);
-extern "C" MSAnalyticsTransmissionTarget *appcenter_unity_transmission_transmission_target_for_token(MSAnalyticsTransmissionTarget *transmissionParent, char* transmissionTargetToken);
-extern "C" MSPropertyConfigurator *appcenter_unity_transmission_get_property_configurator(MSAnalyticsTransmissionTarget *transmission);
-extern "C" void appcenter_unity_transmission_pause(MSAnalyticsTransmissionTarget *transmission);
-extern "C" void appcenter_unity_transmission_resume(MSAnalyticsTransmissionTarget *transmission);
+extern "C" void appcenter_unity_transmission_target_track_event(MSACAnalyticsTransmissionTarget *transmission, char* eventName, int flags);
+extern "C" void appcenter_unity_transmission_target_set_enabled(MSACAnalyticsTransmissionTarget *transmission, BOOL enabled);
+extern "C" BOOL appcenter_unity_transmission_target_is_enabled(MSACAnalyticsTransmissionTarget *transmission);
+extern "C" void appcenter_unity_transmission_target_track_event_with_props(MSACAnalyticsTransmissionTarget *transmission, char* eventName, char** keys, char** values, int count, int flags);
+extern "C" void appcenter_unity_transmission_target_track_event_with_typed_props(MSACAnalyticsTransmissionTarget *transmission, char* eventName, MSACEventProperties* properties, int flags);
+extern "C" MSACAnalyticsTransmissionTarget *appcenter_unity_transmission_transmission_target_for_token(MSACAnalyticsTransmissionTarget *transmissionParent, char* transmissionTargetToken);
+extern "C" MSACPropertyConfigurator *appcenter_unity_transmission_get_property_configurator(MSACAnalyticsTransmissionTarget *transmission);
+extern "C" void appcenter_unity_transmission_pause(MSACAnalyticsTransmissionTarget *transmission);
+extern "C" void appcenter_unity_transmission_resume(MSACAnalyticsTransmissionTarget *transmission);
 
 

@@ -7,37 +7,37 @@
 
 void* appcenter_unity_distribute_get_type()
 {
-  return (void *)CFBridgingRetain([MSDistribute class]);
+  return (void *)CFBridgingRetain([MSACDistribute class]);
 }
 
 void appcenter_unity_distribute_set_enabled(bool isEnabled)
 {
-  [MSDistribute setEnabled:isEnabled];
+  [MSACDistribute setEnabled:isEnabled];
 }
 
 bool appcenter_unity_distribute_is_enabled()
 {
-  return [MSDistribute isEnabled];
+  return [MSACDistribute isEnabled];
 }
 
 void appcenter_unity_distribute_check_for_update()
 {
-  [MSDistribute checkForUpdate];
+  [MSACDistribute checkForUpdate];
 }
 
 void appcenter_unity_distribute_set_install_url(char* installUrl)
 {
-  [MSDistribute setInstallUrl:[NSString stringWithUTF8String:installUrl]];
+  [MSACDistribute setInstallUrl:[NSString stringWithUTF8String:installUrl]];
 }
 
 void appcenter_unity_distribute_set_api_url(char* apiUrl)
 {
-  [MSDistribute setApiUrl:[NSString stringWithUTF8String:apiUrl]];
+  [MSACDistribute setApiUrl:[NSString stringWithUTF8String:apiUrl]];
 }
 
 void appcenter_unity_distribute_notify_update_action(int updateAction)
 {
-  [MSDistribute notifyUpdateAction:(MSUpdateAction)updateAction];
+  [MSACDistribute notifyUpdateAction:(MSACUpdateAction)updateAction];
 }
 
 void appcenter_unity_distribute_set_release_available_impl(ReleaseAvailableFunction function)
@@ -52,5 +52,5 @@ void appcenter_unity_distribute_replay_release_available()
 
 void appcenter_unity_distribute_set_delegate()
 {
-  [MSDistribute setDelegate:[UnityDistributeDelegate sharedInstance]];
+  [MSACDistribute setDelegate:[UnityDistributeDelegate sharedInstance]];
 }

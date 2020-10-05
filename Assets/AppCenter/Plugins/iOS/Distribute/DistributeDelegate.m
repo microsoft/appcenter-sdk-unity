@@ -6,7 +6,7 @@
 
 @interface UnityDistributeDelegate ()
 
-@property MSReleaseDetails *unprocessedDetails;
+@property MSACReleaseDetails *unprocessedDetails;
 @property NSObject *lockObject;
 @property ReleaseAvailableFunction releaseAvailableHandler;
 
@@ -39,7 +39,7 @@
   }
 }
 
-- (BOOL)distribute:(MSDistribute *)distribute releaseAvailableWithDetails:(MSReleaseDetails *)details {
+- (BOOL)distribute:(MSACDistribute *)distribute releaseAvailableWithDetails:(MSACReleaseDetails *)details {
   ReleaseAvailableFunction handlerCopy = nil;
   @synchronized (_lockObject) {
     handlerCopy = _releaseAvailableHandler;
@@ -52,7 +52,7 @@
 
 - (void) replayReleaseAvailable {
   ReleaseAvailableFunction handlerCopy = nil;
-  MSReleaseDetails *unprocessedCopy = _unprocessedDetails;
+  MSACReleaseDetails *unprocessedCopy = _unprocessedDetails;
   @synchronized (_lockObject) {
     unprocessedCopy = nil;
     handlerCopy = _releaseAvailableHandler;

@@ -60,7 +60,7 @@ static const int kMSUpdateTrack = 1 /*UPDATE_TRACK*/;
 + (void)startAppCenter {
   NSNumber *startTarget = [[NSUserDefaults standardUserDefaults] objectForKey:kMSStartTargetKey];
   int startTargetValue = startTarget == nil ? kMSStartupType : startTarget.intValue;
-  [MSAppCenter setLogLevel:(MSLogLevel)kMSLogLevel];
+  [MSACAppCenter setLogLevel:(MSACLogLevel)kMSLogLevel];
   if (startTargetValue == SKIP) {
     return;
   }
@@ -69,25 +69,25 @@ static const int kMSUpdateTrack = 1 /*UPDATE_TRACK*/;
 
   NSNumber *maxStorageSize = [[NSUserDefaults standardUserDefaults] objectForKey:kMSStorageSizeKey];
   if (maxStorageSize != nil) {
-    [MSAppCenter setMaxStorageSize:maxStorageSize
+    [MSACAppCenter setMaxStorageSize:maxStorageSize
                  completionHandler:^void(BOOL result) {
                    if (!result) {
-                     MSLogWarning(@"MSAppCenter", @"setMaxStorageSize failed");
+                     MSACLogWarning(@"MSACAppCenter", @"setMaxStorageSize failed");
                    }
                  }];
   } else {
 #ifdef APPCENTER_USE_CUSTOM_MAX_STORAGE_SIZE
-    [MSAppCenter setMaxStorageSize:APPCENTER_MAX_STORAGE_SIZE
+    [MSACAppCenter setMaxStorageSize:APPCENTER_MAX_STORAGE_SIZE
                  completionHandler:^void(BOOL result) {
                    if (!result) {
-                     MSLogWarning(@"MSAppCenter", @"setMaxStorageSize failed");
+                     MSACLogWarning(@"MSACAppCenter", @"setMaxStorageSize failed");
                    }
                  }];
 #endif
   }
 
 #ifdef APPCENTER_UNITY_USE_ANALYTICS
-  [classes addObject:MSAnalytics.class];
+  [classes addObject:MSACAnalytics.class];
 #endif
 
 #ifdef APPCENTER_UNITY_USE_PUSH
@@ -97,45 +97,45 @@ static const int kMSUpdateTrack = 1 /*UPDATE_TRACK*/;
 
 #ifdef APPCENTER_UNITY_USE_DISTRIBUTE
 
-[MSDistribute setUpdateTrack:(MSUpdateTrack)kMSUpdateTrack];
+[MSACDistribute setUpdateTrack:(MSACUpdateTrack)kMSUpdateTrack];
   
 #ifdef APPCENTER_UNITY_USE_CUSTOM_API_URL
-  [MSDistribute setApiUrl:kMSCustomApiUrl];
+  [MSACDistribute setApiUrl:kMSCustomApiUrl];
 #endif // APPCENTER_UNITY_USE_CUSTOM_API_URL
 
 #ifdef APPCENTER_UNITY_USE_CUSTOM_INSTALL_URL
-  [MSDistribute setInstallUrl:kMSCustomInstallUrl];
+  [MSACDistribute setInstallUrl:kMSCustomInstallUrl];
 #endif // APPCENTER_UNITY_USE_CUSTOM_INSTALL_URL
-  [classes addObject:MSDistribute.class];
+  [classes addObject:MSACDistribute.class];
 
 #ifdef APPCENTER_DISTRIBUTE_DISABLE_AUTOMATIC_CHECK_FOR_UPDATE
-  [MSDistribute disableAutomaticCheckForUpdate];
+  [MSACDistribute disableAutomaticCheckForUpdate];
 #endif // APPCENTER_DISTRIBUTE_DISABLE_AUTOMATIC_CHECK_FOR_UPDATE
 
 #endif // APPCENTER_UNITY_USE_DISTRIBUTE
 
   NSString *customLogUrl = [[NSUserDefaults standardUserDefaults] objectForKey:kMSLogUrlKey];
   if (customLogUrl != nil) {
-    [MSAppCenter setLogUrl:customLogUrl];
+    [MSACAppCenter setLogUrl:customLogUrl];
   } else {
 #ifdef APPCENTER_UNITY_USE_CUSTOM_LOG_URL
-    [MSAppCenter setLogUrl:kMSCustomLogUrl];
+    [MSACAppCenter setLogUrl:kMSCustomLogUrl];
 #endif
   }
   NSString *customAppSecret = [[NSUserDefaults standardUserDefaults] objectForKey:kMSAppSecretKey];
   NSString *customAppSecretValue = customAppSecret == nil ? kMSAppSecret : customAppSecret;
   switch (startTargetValue) {
     case APPCENTER:
-      [MSAppCenter start:customAppSecretValue withServices:classes];
+      [MSACAppCenter start:customAppSecretValue withServices:classes];
       break;
     case ONECOLLECTOR:
-      [MSAppCenter start:[NSString stringWithFormat:@"target=%@", kMSTargetToken] withServices:classes];
+      [MSACAppCenter start:[NSString stringWithFormat:@"target=%@", kMSTargetToken] withServices:classes];
       break;
     case BOTH:
-      [MSAppCenter start:[NSString stringWithFormat:@"appsecret=%@;target=%@", customAppSecretValue, kMSTargetToken] withServices:classes];
+      [MSACAppCenter start:[NSString stringWithFormat:@"appsecret=%@;target=%@", customAppSecretValue, kMSTargetToken] withServices:classes];
       break;
     case NONE:
-      [MSAppCenter startWithServices:classes];
+      [MSACAppCenter startWithServices:classes];
       break;
   }
 }

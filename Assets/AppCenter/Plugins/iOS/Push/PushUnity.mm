@@ -4,7 +4,7 @@
 #import "PushUnity.h"
 #import "PushDelegate.h"
 #import <AppCenterPush/AppCenterPush.h>
-#import <AppCenter/MSAppCenter.h>
+#import <AppCenter/MSACAppCenter.h>
 #import <Foundation/Foundation.h>
 
 void appcenter_unity_push_set_received_push_impl(ReceivedPushNotificationFunction functionPtr)
@@ -19,7 +19,7 @@ void appcenter_unity_push_replay_unprocessed_notifications()
 
 void appcenter_unity_start_push()
 {
-    [MSAppCenter startService:MSPush.class];
+    [MSACAppCenter startService:MSPush.class];
 }
 
 void* appcenter_unity_push_get_type()
