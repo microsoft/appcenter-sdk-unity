@@ -6,7 +6,7 @@
 
 #### iOS
 
-[Fix] Fix naming conflict with iOS 14 private Apple framework.
+* **[Fix]** Fix naming conflict with iOS 14 private Apple framework.
 
 ___
 
