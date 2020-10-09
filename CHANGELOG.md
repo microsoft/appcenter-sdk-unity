@@ -2,8 +2,6 @@
 
 ## Release 3.3.2 (Under development)
 
-### App Center Analytics
-
 #### iOS
 
 * **[Fix]** Fix naming conflict with iOS 14 private Apple framework.
