@@ -5,11 +5,11 @@
 #import <AppCenterCrashes/AppCenterCrashes.h>
 #import <Foundation/Foundation.h>
 
-static bool (*shouldProcessErrorReport)(MSErrorReport *);
-static NSArray<MSErrorAttachmentLog *>* (*getErrorAttachments)(MSErrorReport *);
-static void (*sendingErrorReport)(MSErrorReport *);
-static void (*sentErrorReport)(MSErrorReport *);
-static void (*failedToSendErrorReport)(MSErrorReport *, NSError *);
+static bool (*shouldProcessErrorReport)(MSACErrorReport *);
+static NSArray<MSACErrorAttachmentLog *>* (*getErrorAttachments)(MSACErrorReport *);
+static void (*sendingErrorReport)(MSACErrorReport *);
+static void (*sentErrorReport)(MSACErrorReport *);
+static void (*failedToSendErrorReport)(MSACErrorReport *, NSError *);
 
 // we need static instance var because we have weak reaf in native part
 static UnityCrashesDelegate *unityCrashesDelegate = NULL;
@@ -17,37 +17,37 @@ static UnityCrashesDelegate *unityCrashesDelegate = NULL;
 void app_center_unity_crashes_set_delegate()
 {
     unityCrashesDelegate = [[UnityCrashesDelegate alloc] init];
-    [MSCrashes setDelegate:unityCrashesDelegate];
+    [MSACCrashes setDelegate:unityCrashesDelegate];
 }
 
-void app_center_unity_crashes_delegate_set_should_process_error_report_delegate(bool(*handler)(MSErrorReport *))
+void app_center_unity_crashes_delegate_set_should_process_error_report_delegate(bool(*handler)(MSACErrorReport *))
 {
     shouldProcessErrorReport = handler;
 }
 
-void app_center_unity_crashes_delegate_set_get_error_attachments_delegate(NSArray<MSErrorAttachmentLog *> *(*handler)(MSErrorReport *))
+void app_center_unity_crashes_delegate_set_get_error_attachments_delegate(NSArray<MSACErrorAttachmentLog *> *(*handler)(MSACErrorReport *))
 {
     getErrorAttachments = handler;
 }
 
-void app_center_unity_crashes_delegate_set_sending_error_report_delegate(void(*handler)(MSErrorReport *))
+void app_center_unity_crashes_delegate_set_sending_error_report_delegate(void(*handler)(MSACErrorReport *))
 {
     sendingErrorReport = handler;
 }
 
-void app_center_unity_crashes_delegate_set_sent_error_report_delegate(void(*handler)(MSErrorReport *))
+void app_center_unity_crashes_delegate_set_sent_error_report_delegate(void(*handler)(MSACErrorReport *))
 {
     sentErrorReport = handler;
 }
 
-void app_center_unity_crashes_delegate_set_failed_to_send_error_report_delegate(void(*handler)(MSErrorReport *, NSError *))
+void app_center_unity_crashes_delegate_set_failed_to_send_error_report_delegate(void(*handler)(MSACErrorReport *, NSError *))
 {
     failedToSendErrorReport = handler;
 }
 
 @implementation UnityCrashesDelegate
 
--(BOOL)crashes:(MSCrashes *)crashes shouldProcessErrorReport:(MSErrorReport *)errorReport
+-(BOOL)crashes:(MSACCrashes *)crashes shouldProcessErrorReport:(MSACErrorReport *)errorReport
 {
     if (shouldProcessErrorReport)
     {
@@ -59,7 +59,7 @@ void app_center_unity_crashes_delegate_set_failed_to_send_error_report_delegate(
     }
 }
 
-- (NSArray<MSErrorAttachmentLog *> *)attachmentsWithCrashes:(MSCrashes *)crashes forErrorReport:(MSErrorReport *)errorReport
+- (NSArray<MSACErrorAttachmentLog *> *)attachmentsWithCrashes:(MSACCrashes *)crashes forErrorReport:(MSACErrorReport *)errorReport
 {
     if (getErrorAttachments)
     {
@@ -71,7 +71,7 @@ void app_center_unity_crashes_delegate_set_failed_to_send_error_report_delegate(
     }
 }
 
-- (void)crashes:(MSCrashes *)crashes willSendErrorReport:(MSErrorReport *)errorReport
+- (void)crashes:(MSACCrashes *)crashes willSendErrorReport:(MSACErrorReport *)errorReport
 {
     if (sendingErrorReport)
     {
@@ -79,7 +79,7 @@ void app_center_unity_crashes_delegate_set_failed_to_send_error_report_delegate(
     }
 }
 
-- (void)crashes:(MSCrashes *)crashes didSucceedSendingErrorReport:(MSErrorReport *)errorReport
+- (void)crashes:(MSACCrashes *)crashes didSucceedSendingErrorReport:(MSACErrorReport *)errorReport
 {
     if (sentErrorReport)
     {
@@ -87,7 +87,7 @@ void app_center_unity_crashes_delegate_set_failed_to_send_error_report_delegate(
     }
 }
 
-- (void)crashes:(MSCrashes *)crashes didFailSendingErrorReport:(MSErrorReport *)errorReport withError:(NSError *)error
+- (void)crashes:(MSACCrashes *)crashes didFailSendingErrorReport:(MSACErrorReport *)errorReport withError:(NSError *)error
 {
     if (failedToSendErrorReport)
     {

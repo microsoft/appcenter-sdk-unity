@@ -1,5 +1,13 @@
 # App Center SDK for Unity Change Log
 
+## Release 3.3.2 (Under development)
+
+#### iOS
+
+* **[Fix]** Fix naming conflict with iOS 14 private Apple framework.
+
+___
+
 ## Release 3.3.1
 
 ### App Center
