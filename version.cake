@@ -15,7 +15,6 @@ Task("StartNewVersion").Does(()=>
     UpdateSDKVersion("Assets/AppCenter/Plugins/AppCenterSDK/Analytics/Shared/Analytics.cs", "AnalyticsSDKVersion", newVersion);
     UpdateSDKVersion("Assets/AppCenter/Plugins/AppCenterSDK/Crashes/Shared/Crashes.cs", "CrashesSDKVersion", newVersion);
     UpdateSDKVersion("Assets/AppCenter/Plugins/AppCenterSDK/Distribute/Shared/Distribute.cs", "DistributeSDKVersion", newVersion);
-    UpdateSDKVersion("Assets/AppCenter/Plugins/AppCenterSDK/Push/Shared/Push.cs", "PushSDKVersion", newVersion);
     
     // Replace versions in unitypackagespecs.
     var specFiles = GetFiles("UnityPackageSpecs/*.unitypackagespec");
