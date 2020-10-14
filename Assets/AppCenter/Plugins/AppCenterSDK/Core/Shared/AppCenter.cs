@@ -233,11 +233,6 @@ namespace Microsoft.AppCenter.Unity
             get { return AppCenterAssembly.GetType("Microsoft.AppCenter.Unity.Distribute.Distribute"); }
         }
 
-        public static Type Push
-        {
-            get { return AppCenterAssembly.GetType("Microsoft.AppCenter.Unity.Push.Push"); }
-        }
-
         private static Assembly AppCenterAssembly
         {
             get

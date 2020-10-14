@@ -41,13 +41,6 @@ public class AppCenterSettingsEditor : Editor
             EditorGUILayout.PropertyField(serializedObject.FindProperty("CustomApiUrl"));
             EditorGUILayout.PropertyField(serializedObject.FindProperty("CustomInstallUrl"));
         }
-        if (AppCenter.Push != null)
-        {
-            Header("Push");
-            var serializedProperty = serializedObject.FindProperty("UsePush");
-            EditorGUILayout.PropertyField(serializedProperty);
-            EditorGUILayout.PropertyField(serializedObject.FindProperty("EnableFirebaseAnalytics"));
-        }
 
         // Draw other.
         Header("Other Setup");

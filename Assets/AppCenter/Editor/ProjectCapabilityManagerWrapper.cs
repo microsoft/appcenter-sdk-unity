@@ -18,12 +18,6 @@ public class ProjectCapabilityManagerWrapper
         }
     }
 
-    public void AddPushNotifications()
-    {
-        ProjectCapabilityManagerType.GetMethod("AddPushNotifications")
-                                    .Invoke(_capabilityManager, new object[] { true });
-    }
-
     public void AddRemoteNotificationsToBackgroundModes()
     {
         var backgroundModesEnumType = ProjectCapabilityManagerType.Assembly.GetType("UnityEditor.iOS.Xcode.BackgroundModesOptions");

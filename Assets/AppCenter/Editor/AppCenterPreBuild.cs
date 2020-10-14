@@ -25,11 +25,6 @@ public class AppCenterPreBuild : IPreprocessBuildWithReport
     {
         if (target == BuildTarget.Android)
         {
-            var settings = AppCenterSettingsContext.SettingsInstance;
-            if (settings.UsePush && AppCenter.Push != null)
-            {
-                FirebaseDependency.SetupPush();
-            }
 #if !APPCENTER_DONT_USE_NATIVE_STARTER
             var settingsMaker = new AppCenterSettingsMakerAndroid();
             AddStartupCode(settingsMaker);
@@ -109,14 +104,6 @@ public class AppCenterPreBuild : IPreprocessBuildWithReport
         if (settings.MaxStorageSize.UseCustomMaxStorageSize && settings.MaxStorageSize.Size > 0)
         {
             settingsMaker.SetMaxStorageSize(settings.MaxStorageSize.Size);
-        }
-        if (settings.UsePush && settingsMaker.IsPushAvailable())
-        {
-            settingsMaker.StartPushClass();
-            if (settings.EnableFirebaseAnalytics)
-            {
-                settingsMaker.EnableFirebaseAnalytics();
-            }
         }
         if (settings.UseAnalytics && settingsMaker.IsAnalyticsAvailable())
         {
