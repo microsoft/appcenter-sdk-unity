@@ -11,11 +11,6 @@
 @import AppCenterCrashes;
 #endif
 
-#ifdef APPCENTER_UNITY_USE_PUSH
-@import AppCenterPush;
-#import "../Push/PushDelegate.h"
-#endif
-
 #ifdef APPCENTER_UNITY_USE_ANALYTICS
 @import AppCenterAnalytics;
 #endif
@@ -88,11 +83,6 @@ static const int kMSUpdateTrack = 1 /*UPDATE_TRACK*/;
 
 #ifdef APPCENTER_UNITY_USE_ANALYTICS
   [classes addObject:MSACAnalytics.class];
-#endif
-
-#ifdef APPCENTER_UNITY_USE_PUSH
-  [classes addObject:MSPush.class];
-  [MSPush setDelegate:[UnityPushDelegate sharedInstance]];
 #endif
 
 #ifdef APPCENTER_UNITY_USE_DISTRIBUTE
