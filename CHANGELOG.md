@@ -6,6 +6,11 @@
 
 * **[Fix]** Fix naming conflict with iOS 14 private Apple framework.
 
+### App Center Push
+
+App Center Push has been removed from the SDK and will be [retired on December 31st, 2020](https://devblogs.microsoft.com/appcenter/migrating-off-app-center-push/). 
+Please follow [Push Migration Guide](https://docs.microsoft.com/en-us/appcenter/migration/push/) to migrate to [Azure Notification Hubs](https://docs.microsoft.com/en-us/azure/notification-hubs/notification-hubs-push-notification-overview).
+
 ___
 
 ## Release 3.3.1
