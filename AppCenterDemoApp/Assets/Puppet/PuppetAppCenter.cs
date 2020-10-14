@@ -4,7 +4,6 @@
 using Assets.AppCenter.Plugins.Android.Utility;
 using Microsoft.AppCenter.Unity;
 using Microsoft.AppCenter.Unity.Distribute;
-using Microsoft.AppCenter.Unity.Push;
 using System.Collections;
 using System.Threading;
 using UnityEngine;
@@ -44,23 +43,9 @@ public class PuppetAppCenter : MonoBehaviour
     public GameObject CustomProperty;
     public RectTransform PropertiesList;
     public Toggle DistributeEnabled;
-    public Toggle PushEnabled;
     public Toggle CustomDialog;
     public static string FlagCustomDialog = "FlagCustomDialog";
     private string _customUserId;
-
-    public void SetPushEnabled(bool enabled)
-    {
-        StartCoroutine(SetPushEnabledCoroutine(enabled));
-    }
-
-    private IEnumerator SetPushEnabledCoroutine(bool enabled)
-    {
-        yield return Push.SetEnabledAsync(enabled);
-        var isEnabled = Push.IsEnabledAsync();
-        yield return isEnabled;
-        PushEnabled.isOn = isEnabled.Result;
-    }
 
     public void SetDistributeEnabled(bool enabled)
     {
@@ -186,10 +171,6 @@ public class PuppetAppCenter : MonoBehaviour
         LogLevel.value = AppCenter.LogLevel - Microsoft.AppCenter.Unity.LogLevel.Verbose;
         StartupType.value = StartupTypeCached;
 
-        var isPushEnabled = Push.IsEnabledAsync();
-        yield return isPushEnabled;
-        PushEnabled.isOn = isPushEnabled.Result;
-
         var isDistributeEnabled = Distribute.IsEnabledAsync();
         yield return isDistributeEnabled;
         DistributeEnabled.isOn = isDistributeEnabled.Result;
@@ -207,9 +188,6 @@ public class PuppetAppCenter : MonoBehaviour
         var isEnabled = AppCenter.IsEnabledAsync();
         yield return isEnabled;
         Enabled.isOn = isEnabled.Result;
-        var isPushEnabled = Push.IsEnabledAsync();
-        yield return isPushEnabled;
-        PushEnabled.isOn = isPushEnabled.Result;
         var isDistributeEnabled = Distribute.IsEnabledAsync();
         yield return isDistributeEnabled;
         DistributeEnabled.isOn = isDistributeEnabled.Result;
