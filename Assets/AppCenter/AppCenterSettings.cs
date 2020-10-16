@@ -39,12 +39,6 @@ public class AppCenterSettings : ScriptableObject
     [Tooltip("By default, App Center Distribute checks for update at application startup automatically. Uncheck this to check for updates manually instead.")]
     public bool AutomaticCheckForUpdate = true;
 
-    [Tooltip("App Center Push enables you to send push notifications to users of your app from the App Center portal.")]
-    public bool UsePush = true;
-
-    [Tooltip("By default, App Center Push disables Firebase Analytics. Use this option to enable it. This only applies to Android applications.")]
-    public bool EnableFirebaseAnalytics = false;
-
     public LogLevel InitialLogLevel = LogLevel.Info;
 
     [CustomDropDownProperty("Public", 1)]
@@ -88,10 +82,6 @@ public class AppCenterSettings : ScriptableObject
             if (UseDistribute)
             {
                 services.Add(AppCenter.Distribute);
-            }
-            if (UsePush)
-            {
-                services.Add(AppCenter.Push);
             }
             return services.Where(i => i != null).ToArray();
         }

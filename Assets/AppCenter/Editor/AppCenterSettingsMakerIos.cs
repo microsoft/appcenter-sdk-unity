@@ -15,7 +15,6 @@ public class AppCenterSettingsMakerIos : IAppCenterSettingsMaker
     private const string LogLevelSearchText = "0/*LOG_LEVEL*/";
     private const string StartupTypeSearchText = "0/*STARTUP_TYPE*/";
     private const string UseCrashesToken = "APPCENTER_UNITY_USE_CRASHES";
-    private const string UsePushToken = "APPCENTER_UNITY_USE_PUSH";
     private const string UseAnalyticsToken = "APPCENTER_UNITY_USE_ANALYTICS";
     private const string UseDistributeToken = "APPCENTER_UNITY_USE_DISTRIBUTE";
     private const string DistributeDisableAutomaticCheckForUpdateToken = "APPCENTER_DISTRIBUTE_DISABLE_AUTOMATIC_CHECK_FOR_UPDATE";
@@ -91,15 +90,6 @@ public class AppCenterSettingsMakerIos : IAppCenterSettingsMaker
         _loaderFileText = _loaderFileText.Replace(InstallUrlSearchText, installUrl);
     }
 
-    public void StartPushClass()
-    {
-        AddToken(UsePushToken);
-    }
-
-    public void EnableFirebaseAnalytics()
-    {
-    }
-
     public void CommitSettings()
     {
         File.WriteAllText(TargetFilePath, _loaderFileText);
@@ -135,11 +125,6 @@ public class AppCenterSettingsMakerIos : IAppCenterSettingsMaker
     public bool IsDistributeAvailable()
     {
         return Directory.Exists(AppCenterSettingsContext.AppCenterPath + "/Plugins/iOS/Distribute");
-    }
-
-    public bool IsPushAvailable()
-    {
-        return Directory.Exists(AppCenterSettingsContext.AppCenterPath + "/Plugins/iOS/Push");
     }
 
     public void SetShouldEnableDistributeForDebuggableBuild()

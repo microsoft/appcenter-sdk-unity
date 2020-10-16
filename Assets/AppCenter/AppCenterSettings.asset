@@ -28,8 +28,6 @@ MonoBehaviour:
     Url: https://install.portal-server-core-integration.dev.avalanch.es
   EnableDistributeForDebuggableBuild: 1
   AutomaticCheckForUpdate: 1
-  UsePush: 1
-  EnableFirebaseAnalytics: 0
   InitialLogLevel: 2
   UpdateTrack: 1
   CustomLogUrl:

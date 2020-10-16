@@ -40,7 +40,6 @@ public class AppCenterPostBuild : IPostprocessBuildWithReport
         if (target == BuildTarget.WSAPlayer)
         {
             AddInternetClientCapability(pathToBuiltProject);
-            AddHelperCodeToUWPProject(pathToBuiltProject);
             if (PlayerSettings.GetScriptingBackend(BuildTargetGroup.WSA) == ScriptingImplementation.IL2CPP)
             {
                 // Fix System.Diagnostics.Debug IL2CPP implementation.
@@ -70,7 +69,6 @@ public class AppCenterPostBuild : IPostprocessBuildWithReport
                 var capabilityManager = new ProjectCapabilityManagerWrapper(pbxProject.ProjectPath,
                                                                             PBXProjectWrapper.GetUnityTargetName(),
                                                                             pbxProject.GetUnityTargetGuid());
-                OnPostprocessCapabilities(capabilityManager, settings);
                 capabilityManager.WriteToFile();
             }
         }
@@ -88,10 +86,6 @@ public class AppCenterPostBuild : IPostprocessBuildWithReport
             if (AppCenter.Crashes != null) 
             {
                 LinkModule(AppCenterSettingsContext.SettingsInstance.UseCrashes, "crashes");
-            }
-            if (AppCenter.Push != null) 
-            {
-                LinkModule(AppCenterSettingsContext.SettingsInstance.UsePush, "push");
             }
         }
     }
@@ -120,73 +114,6 @@ public class AppCenterPostBuild : IPostprocessBuildWithReport
     #endregion
 
     #region UWP Methods
-    public static void AddHelperCodeToUWPProject(string pathToBuiltProject)
-    {
-        var settings = AppCenterSettingsContext.SettingsInstance;
-        if (!settings.UsePush || AppCenter.Push == null)
-        {
-            return;
-        }
-
-        // IL2CPP, XAML
-        if (EditorUserBuildSettings.wsaUWPBuildType == WSAUWPBuildType.XAML &&
-                 PlayerSettings.GetScriptingBackend(BuildTargetGroup.WSA) == ScriptingImplementation.IL2CPP)
-        {
-            var appFilePath = GetAppFilePath(pathToBuiltProject, AppIl2cppXaml);
-            var regexPattern = "InitializeUnity\\(e->Arguments\\);";
-            InjectCodeToFile(appFilePath, AppIl2cppXaml, regexPattern, "xamlil2cpp.txt", false);
-        }
-        // IL2CPP, D3D
-        else if (EditorUserBuildSettings.wsaUWPBuildType == WSAUWPBuildType.D3D &&
-                 PlayerSettings.GetScriptingBackend(BuildTargetGroup.WSA) == ScriptingImplementation.IL2CPP)
-        {
-            var appFilePath = GetAppFilePath(pathToBuiltProject, AppIl2cppD3d);
-            var regexPattern = "void App::OnActivated\\(CoreApplicationView\\s*\\^ [a-zA-Z0-9_]+, IActivatedEventArgs\\s*\\^ [a-zA-Z0-9_]+\\) {".Replace(" ", "[\\s]*");
-            InjectCodeToFile(appFilePath, AppIl2cppD3d, regexPattern, "d3dil2cpp.txt");
-        }
-    }
-
-    public static void InjectCodeToFile(string appFilePath, string appFileName, string searchRegex, string codeToInsertFileName, bool includeSearchText = true)
-    {
-        if (string.IsNullOrEmpty(appFilePath))
-        {
-            LogInjectFailed(appFileName);
-            return;
-        }
-        var appAdditionsFolder = AppCenterSettingsContext.AppCenterPath + "/Plugins/WSA/Push/AppAdditions";
-        var commentText = "App Center Push code:";
-        var codeToInsert = Environment.NewLine + "            // " + commentText + Environment.NewLine
-            + File.ReadAllText(Path.Combine(appAdditionsFolder, codeToInsertFileName));
-        var fileText = File.ReadAllText(appFilePath);
-        if (fileText.Contains(commentText))
-        {
-            if (fileText.Contains(codeToInsert))
-            {
-                Debug.LogFormat("App Center Push: Code file `{0}` already contains the injection code. Will not re-inject", appFilePath);
-            }
-            else
-            {
-                Debug.LogWarningFormat("App Center Push: Code file `{0}` already contains the injection code but it does not match the latest code injection. Please rebuild the project into an empty folder", appFilePath);
-            }
-            return;
-        }
-        var regex = new Regex(searchRegex);
-        var matches = regex.Match(fileText);
-        if (matches.Success)
-        {
-            var codeToReplace = matches.ToString();
-            if (includeSearchText)
-            {
-                codeToInsert = codeToReplace + codeToInsert;
-            }
-            fileText = fileText.Replace(codeToReplace, codeToInsert);
-            File.WriteAllText(appFilePath, fileText);
-        }
-        else
-        {
-            LogInjectFailed(appFilePath);
-        }
-    }
 
     /// <summary>
     /// In order to have App Center SDK logs we are using 'OutputDebugStringW' func to display them.
@@ -397,11 +324,6 @@ public class AppCenterPostBuild : IPostprocessBuildWithReport
         return attribute == null ? null : attribute.Value;
     }
 
-    private static void LogInjectFailed(string fileName)
-    {
-        Debug.LogError("Unable to automatically modify file '" + fileName + "'. For App Center Push to work properly, " +
-                       "please follow troubleshooting instructions at https://docs.microsoft.com/en-us/appcenter/sdk/troubleshooting/unity");
-    }
     #endregion
 
     #region iOS Methods
@@ -454,13 +376,5 @@ public class AppCenterPostBuild : IPostprocessBuildWithReport
         }
     }
 
-    private static void OnPostprocessCapabilities(ProjectCapabilityManagerWrapper capabilityManager, AppCenterSettings settings)
-    {
-        if (settings.UsePush && AppCenter.Push != null)
-        {
-            capabilityManager.AddPushNotifications();
-            capabilityManager.AddRemoteNotificationsToBackgroundModes();
-        }
-    }
     #endregion
 }

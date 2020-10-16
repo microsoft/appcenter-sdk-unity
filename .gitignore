@@ -67,17 +67,6 @@ RegisterIcalls.cpp
 UnityPackageManager
 /Logs
 
-# Firebase
-**/Assets/Plugins/Android/firebase-*
-**/Assets/Plugins/Android/support-*
-**/Assets/Plugins/Android/play-services-*
-Assets/Plugins/Android/appcenter/res
-Assets/Plugins/Android/appcenter/res.meta
-Assets/Firebase/
-Assets/PlayServicesResolver/
-Assets/PlayServicesResolver.meta
-ProjectSettings/AndroidResolverDependencies.xml
-
 # Cake
 CAKE_SCRIPT_TEMP*
 android_ndk

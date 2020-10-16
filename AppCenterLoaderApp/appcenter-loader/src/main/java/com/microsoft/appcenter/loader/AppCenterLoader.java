@@ -17,8 +17,6 @@ import com.microsoft.appcenter.AppCenter;
 import com.microsoft.appcenter.AppCenterService;
 import com.microsoft.appcenter.analytics.Analytics;
 import com.microsoft.appcenter.distribute.Distribute;
-import com.microsoft.appcenter.push.Push;
-import com.microsoft.appcenter.push.PushListener;
 import com.microsoft.appcenter.utils.AppCenterLog;
 
 import java.util.ArrayList;
@@ -33,9 +31,7 @@ public class AppCenterLoader extends ContentProvider {
     private static final String MAX_STORAGE_SIZE = "appcenter_max_storage_size";
     private static final String INITIAL_LOG_LEVEL_KEY = "appcenter_initial_log_level";
     private static final String UPDATE_TRACK_KEY = "appcenter_update_track";
-    private static final String USE_PUSH_KEY = "appcenter_use_push";
     private static final String SENDER_ID_KEY = "appcenter_sender_id";
-    private static final String ENABLE_FIREBASE_ANALYTICS_KEY = "appcenter_enable_firebase_analytics";
     private static final String USE_ANALYTICS_KEY = "appcenter_use_analytics";
     private static final String USE_DISTRIBUTE_KEY = "appcenter_use_distribute";
     private static final String DISTRIBUTE_DISABLE_AUTOMATIC_CHECK_FOR_UPDATE_KEY = "appcenter_distribute_disable_automatic_check_for_update";
@@ -112,21 +108,6 @@ public class AppCenterLoader extends ContentProvider {
                 Distribute.disableAutomaticCheckForUpdate();
             }
             classes.add(Distribute.class);
-        }
-        if (isTrueValue(getStringResource(USE_PUSH_KEY)) &&
-            isModuleAvailable("com.microsoft.appcenter.push.Push", "Push")) {
-            try {
-                @SuppressWarnings("unchecked")
-                Class<PushListener> pushClass = (Class<PushListener>) Class.forName("com.microsoft.appcenter.pushdelegate.UnityAppCenterPushDelegate");
-                Push.setListener(pushClass.newInstance());
-            } catch (Exception e) {
-                AppCenterLog.error(TAG, "UnityAppCenterPushDelegate is not available", e);
-                return false;
-            }
-            classes.add(Push.class);
-            if (isTrueValue(getStringResource(ENABLE_FIREBASE_ANALYTICS_KEY))) {
-                Push.enableFirebaseAnalytics(mContext);
-            }
         }
         int logLevel = Integer.parseInt(getStringResource(INITIAL_LOG_LEVEL_KEY));
         AppCenter.setLogLevel(logLevel);

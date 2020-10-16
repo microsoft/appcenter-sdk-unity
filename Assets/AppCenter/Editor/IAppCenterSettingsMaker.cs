@@ -6,11 +6,9 @@ public interface IAppCenterSettingsMaker
     bool IsAnalyticsAvailable();
     bool IsCrashesAvailable();
     bool IsDistributeAvailable();
-    bool IsPushAvailable();
     void StartAnalyticsClass();
     void StartCrashesClass();
     void StartDistributeClass();
-    void StartPushClass();
     void SetAppSecret(AppCenterSettings settings);
     void SetTransmissionTargetToken(string transmissionTargetToken);
     void SetLogLevel(int logLevel);
@@ -20,7 +18,6 @@ public interface IAppCenterSettingsMaker
     void SetApiUrl(string apiUrl);
     void SetInstallUrl(string installUrl);
     void SetMaxStorageSize(long size);
-    void EnableFirebaseAnalytics();
     void CommitSettings();
     void SetShouldEnableDistributeForDebuggableBuild();
     void SetDistributeDisableAutomaticCheckForUpdate();

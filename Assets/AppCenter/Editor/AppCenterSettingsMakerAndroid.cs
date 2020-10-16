@@ -13,7 +13,6 @@ public class AppCenterSettingsMakerAndroid : IAppCenterSettingsMaker
     private const string InitialLogLevelKey = "appcenter_initial_log_level";
     private const string StartupTypeKey = "appcenter_startup_type";
     private const string UseCrashesKey = "appcenter_use_crashes";
-    private const string UsePushKey = "appcenter_use_push";
     private const string UseAnalyticsKey = "appcenter_use_analytics";
     private const string UseDistributeKey = "appcenter_use_distribute";
     private const string DistributeDisableAutomaticCheckForUpdateKey = "appcenter_distribute_disable_automatic_check_for_update";
@@ -21,7 +20,6 @@ public class AppCenterSettingsMakerAndroid : IAppCenterSettingsMaker
     private const string UseCustomApiUrlKey = "appcenter_use_custom_api_url";
     private const string CustomInstallUrlKey = "appcenter_custom_install_url";
     private const string UseCustomInstallUrlKey = "appcenter_use_custom_install_url";
-    private const string EnableFirebaseAnalyticsKey = "appcenter_enable_firebase_analytics";
     private const string MaxStorageSizeKey = "appcenter_max_storage_size";
     private const string UpdateTrackKey = "appcenter_update_track";
     private const string EnableDistributeForDebuggableBuildKey = "appcenter_enable_distribute_for_debuggable_build";
@@ -59,19 +57,9 @@ public class AppCenterSettingsMakerAndroid : IAppCenterSettingsMaker
         _resourceValues[TransmissionTargetTokenKey] = transmissionTargetToken;
     }
 
-    public void EnableFirebaseAnalytics()
-    {
-        _resourceValues[EnableFirebaseAnalyticsKey] = true.ToString();
-    }
-
     public void StartCrashesClass()
     {
         _resourceValues[UseCrashesKey] = true.ToString();
-    }
-
-    public void StartPushClass()
-    {
-        _resourceValues[UsePushKey] = true.ToString();
     }
 
     public void StartAnalyticsClass()
@@ -137,11 +125,6 @@ public class AppCenterSettingsMakerAndroid : IAppCenterSettingsMaker
     public bool IsDistributeAvailable()
     {
         return File.Exists(AppCenterSettingsContext.AppCenterPath + "/Plugins/Android/appcenter-distribute-release.aar");
-    }
-
-    public bool IsPushAvailable()
-    {
-        return File.Exists(AppCenterSettingsContext.AppCenterPath + "/Plugins/Android/appcenter-push-release.aar");
     }
 
     public void SetShouldEnableDistributeForDebuggableBuild()

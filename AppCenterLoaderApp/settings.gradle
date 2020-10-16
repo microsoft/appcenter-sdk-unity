@@ -1,1 +1,1 @@
-include ':appcenter-loader', ':appcenter-push-delegate'
+include ':appcenter-loader'
