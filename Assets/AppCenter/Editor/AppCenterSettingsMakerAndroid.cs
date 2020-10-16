@@ -127,7 +127,6 @@ public class AppCenterSettingsMakerAndroid : IAppCenterSettingsMaker
         return File.Exists(AppCenterSettingsContext.AppCenterPath + "/Plugins/Android/appcenter-distribute-release.aar");
     }
 
-
     public void SetShouldEnableDistributeForDebuggableBuild()
     {
         _resourceValues[EnableDistributeForDebuggableBuildKey] = true.ToString();
