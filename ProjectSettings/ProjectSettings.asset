@@ -163,7 +163,7 @@ PlayerSettings:
     iOS: com.microsoft.appcenter.unity.ios.puppet
   buildNumber: {}
   AndroidBundleVersionCode: 1
-  AndroidMinSdkVersion: 16
+  AndroidMinSdkVersion: 21
   AndroidTargetSdkVersion: 0
   AndroidPreferredInstallLocation: 1
   aotOptions: 
