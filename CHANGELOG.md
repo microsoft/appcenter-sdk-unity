@@ -2,6 +2,10 @@
 
 ## Release 3.3.2 (Under development)
 
+#### Android
+
+* **[Breaking change]** Bump minimum Android SDK version to 21 API level.
+
 #### iOS
 
 * **[Fix]** Fix naming conflict with iOS 14 private Apple framework.
