@@ -28,6 +28,16 @@ namespace Microsoft.AppCenter.Unity
             set { AppCenterInternal.SetLogLevel((int)value); }
         }
 
+        /// <summary>
+        /// Destroys static references
+        /// </summary>
+        public static void Cleanup()
+        {
+            _secretTask = null;
+            _logUrlTask = null;
+            _storageSizeTask = null;
+        }
+
         public static AppCenterTask SetEnabledAsync(bool enabled)
         {
             return AppCenterInternal.SetEnabledAsync(enabled);

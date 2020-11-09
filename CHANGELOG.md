@@ -6,6 +6,9 @@
 
 * **[Fix]** Fix naming conflict with iOS 14 private Apple framework.
 
+#### Android/iOS
+* **[Improvement]** Better support for Unity projects with "Reload Domain" disabled.
+
 ### App Center Push
 
 App Center Push has been removed from the SDK and will be [retired on December 31st, 2020](https://devblogs.microsoft.com/appcenter/migrating-off-app-center-push/). 
