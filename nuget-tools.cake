@@ -1,7 +1,7 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT license.
 
-#addin nuget:?package=NuGet.Protocol&loaddependencies=true
+#addin nuget:?package=NuGet.Protocol&version=5.7.0&loaddependencies=true
 using NuGet.Common;
 using NuGet.Configuration;
 using NuGet.Frameworks;
