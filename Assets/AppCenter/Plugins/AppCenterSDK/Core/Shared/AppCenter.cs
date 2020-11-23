@@ -28,8 +28,9 @@ namespace Microsoft.AppCenter.Unity
             set { AppCenterInternal.SetLogLevel((int)value); }
         }
 
+#if UNITY_2019_3_OR_NEWER && UNITY_EDITOR
         /// <summary>
-        /// Destroys static references
+        /// Clean up static references that may be around due to Domain Reload being disabled
         /// </summary>
         public static void Cleanup()
         {
@@ -37,6 +38,7 @@ namespace Microsoft.AppCenter.Unity
             _logUrlTask = null;
             _storageSizeTask = null;
         }
+#endif
 
         public static AppCenterTask SetEnabledAsync(bool enabled)
         {
