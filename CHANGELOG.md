@@ -1,13 +1,27 @@
 # App Center SDK for Unity Change Log
 
-## Release 3.3.2 (Under development)
+## Release 4.0.0
+
+### App Center
+
+#### Android
+
+* **[Breaking change]** Bumping the minimum Android SDK version to 21 API level (Android 5.0), because old Android versions do not support root certificate authority used by App Center and would not get CA certificates updates anymore.
 
 #### iOS
 
+* **[Fix]** Fix `NSInvalidArgumentException` when using non-string object as a key in `NSUserDefaults`.
+* **[Fix]** Fix `NSDateFormatter` initialization in a concurrent environment.
+
+### App Center Analytics
+
 * **[Fix]** Fix naming conflict with iOS 14 private Apple framework.
 
-#### Android/iOS
-* **[Improvement]** Better support for Unity projects with "Reload Domain" disabled.
+### App Center Crashes
+
+#### iOS
+
+* **[Improvement]** Update PLCrashReporter to 1.8.0.
 
 ### App Center Push
 
