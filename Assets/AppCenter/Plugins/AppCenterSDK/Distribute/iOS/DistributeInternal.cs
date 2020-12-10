@@ -31,6 +31,23 @@ namespace Microsoft.AppCenter.Unity.Distribute.Internal
         }
 #endregion
 
+#if ENABLE_IL2CPP
+        [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
+#endif
+        delegate void NoReleaseAvailableDelegate();
+
+        static NoReleaseAvailableDelegate noReleaseDel;
+        [MonoPInvokeCallback(typeof(NoReleaseAvailableDelegate))]
+        static void NoReleaseAvailableFunc()
+        {
+            if (Distribute.NoReleaseAvailable == null)
+            {
+                return;
+            }
+            return Distribute.NoReleaseAvailable.Invoke();
+        }
+#endregion
+
         public static void PrepareEventHandlers()
         {
             AppCenterBehavior.InitializingServices += Initialize;
@@ -46,7 +63,9 @@ namespace Microsoft.AppCenter.Unity.Distribute.Internal
         {
             appcenter_unity_distribute_set_delegate();
             del = ReleaseAvailableFunc;
+            noReleaseDel = NoReleaseAvailableFunc;
             appcenter_unity_distribute_set_release_available_impl(del);
+            appcenter_unity_distribute_set_no_release_available_impl(noReleaseDel);
         }
 
         public static void AddNativeType(List<IntPtr> nativeTypes)
@@ -108,6 +127,9 @@ namespace Microsoft.AppCenter.Unity.Distribute.Internal
 
         [DllImport("__Internal")]
         private static extern void appcenter_unity_distribute_set_release_available_impl(ReleaseAvailableDelegate functionPtr);
+
+        [DllImport("__Internal")]
+        private static extern void appcenter_unity_distribute_set_no_release_available_impl(NoReleaseAvailableDelegate functionPtr);
 
         [DllImport("__Internal")]
         private static extern void appcenter_unity_distribute_replay_release_available();

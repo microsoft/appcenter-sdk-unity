@@ -11,6 +11,7 @@ typedef bool (__cdecl *ReleaseAvailableFunction)(MSACReleaseDetails*);
 @interface UnityDistributeDelegate : NSObject<MSACDistributeDelegate>
 
 - (BOOL)distribute:(MSACDistribute *)distribute releaseAvailableWithDetails:(MSACReleaseDetails *)details;
+- (void)noReleaseAvailable;
 - (void)setReleaseAvailableImplementation:(ReleaseAvailableFunction)implementation;
 - (void)replayReleaseAvailable;
 + (instancetype) sharedInstance;

@@ -45,6 +45,11 @@ void appcenter_unity_distribute_set_release_available_impl(ReleaseAvailableFunct
   [[UnityDistributeDelegate sharedInstance] setReleaseAvailableImplementation:function];
 }
 
+void appcenter_unity_distribute_set_no_release_available_impl(NoReleaseAvailableFunction function)
+{
+  [[UnityDistributeDelegate sharedInstance] setNoReleaseAvailableImplementation:function];
+}
+
 void appcenter_unity_distribute_replay_release_available()
 {
   [[UnityDistributeDelegate sharedInstance] replayReleaseAvailable];

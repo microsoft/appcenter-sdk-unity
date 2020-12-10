@@ -27,6 +27,15 @@ namespace Microsoft.AppCenter.Unity.Distribute.Internal
             var releaseDetails = ReleaseDetailsHelper.ReleaseDetailsConvert(details);
             return Distribute.ReleaseAvailable.Invoke(releaseDetails);
         }
+
+        void onNoReleaseAvailable(AndroidJavaObject activity)
+        {
+            if (Distribute.NoReleaseAvailable == null)
+            {
+                return;
+            }
+            Distribute.NoReleaseAvailable.Invoke();
+        }
     }
 }
 #endif

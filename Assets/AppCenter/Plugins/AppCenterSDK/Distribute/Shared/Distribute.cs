@@ -71,6 +71,15 @@ namespace Microsoft.AppCenter.Unity.Distribute
         }
 
         /// <summary>
+        /// Sets the release available callback.
+        /// </summary>
+        /// <value>The release available callback.</value>
+        public static NoReleaseAvailableCallback NoReleaseAvailable
+        {
+            get; set;
+        }
+
+        /// <summary>
         /// If update dialog is customized by returning <c>true</c> in <see cref="ReleaseAvailableCallback"/>,
         /// You need to tell the distribute SDK using this function what is the user action.
         /// </summary>
