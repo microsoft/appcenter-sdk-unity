@@ -7,12 +7,14 @@
 #import <AppCenterDistribute/AppCenterDistribute.h>
 
 typedef bool (__cdecl *ReleaseAvailableFunction)(MSACReleaseDetails*);
+typedef void (__cdecl *NoReleaseAvailableFunction)();
 
 @interface UnityDistributeDelegate : NSObject<MSACDistributeDelegate>
 
 - (BOOL)distribute:(MSACDistribute *)distribute releaseAvailableWithDetails:(MSACReleaseDetails *)details;
 - (void)noReleaseAvailable;
 - (void)setReleaseAvailableImplementation:(ReleaseAvailableFunction)implementation;
+- (void)setNoReleaseAvailableImplementation:(NoReleaseAvailableFunction)implementation;
 - (void)replayReleaseAvailable;
 + (instancetype) sharedInstance;
 

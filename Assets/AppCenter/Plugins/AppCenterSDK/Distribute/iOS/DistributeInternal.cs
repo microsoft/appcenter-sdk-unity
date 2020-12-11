@@ -29,7 +29,6 @@ namespace Microsoft.AppCenter.Unity.Distribute.Internal
             var releaseDetails = ReleaseDetailsHelper.ReleaseDetailsConvert(details);
             return Distribute.ReleaseAvailable.Invoke(releaseDetails);
         }
-#endregion
 
 #if ENABLE_IL2CPP
         [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
@@ -44,7 +43,7 @@ namespace Microsoft.AppCenter.Unity.Distribute.Internal
             {
                 return;
             }
-            return Distribute.NoReleaseAvailable.Invoke();
+            Distribute.NoReleaseAvailable.Invoke();
         }
 #endregion
 
