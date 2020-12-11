@@ -71,9 +71,9 @@ namespace Microsoft.AppCenter.Unity.Distribute
         }
 
         /// <summary>
-        /// Sets the release available callback.
+        /// Sets the no release available callback.
         /// </summary>
-        /// <value>The release available callback.</value>
+        /// <value>The no release available callback.</value>
         public static NoReleaseAvailableCallback NoReleaseAvailable
         {
             get; set;
