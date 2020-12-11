@@ -71,6 +71,15 @@ namespace Microsoft.AppCenter.Unity.Distribute
         }
 
         /// <summary>
+        /// Sets the app will exit callback.
+        /// </summary>
+        /// <value>The app will exit callback.</value>
+        public static WillExitAppCallback WillExitApp
+        {
+            get; set;
+        }
+
+        /// <summary>
         /// If update dialog is customized by returning <c>true</c> in <see cref="ReleaseAvailableCallback"/>,
         /// You need to tell the distribute SDK using this function what is the user action.
         /// </summary>

@@ -1,5 +1,13 @@
 # App Center SDK for Unity Change Log
 
+## Version 4.0.1 (under development)
+
+ ### App Center Distribute
+
+ #### iOS
+
+ * **[Feature]** Add `WillExitApp` callback to distribute listener.
+
 ## Release 4.0.0
 
 ### App Center

@@ -16,8 +16,10 @@ namespace Microsoft.AppCenter.Unity.Distribute.Internal
         [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
 #endif
         delegate bool ReleaseAvailableDelegate(IntPtr details);
+        delegate void WillExitAppDelegate();
 
         static ReleaseAvailableDelegate del;
+        static WillExitAppDelegate willExitAppDel;
         static IntPtr ptr;
         [MonoPInvokeCallback(typeof(ReleaseAvailableDelegate))]
         static bool ReleaseAvailableFunc(IntPtr details)
@@ -28,6 +30,12 @@ namespace Microsoft.AppCenter.Unity.Distribute.Internal
             }
             var releaseDetails = ReleaseDetailsHelper.ReleaseDetailsConvert(details);
             return Distribute.ReleaseAvailable.Invoke(releaseDetails);
+        }
+
+        [MonoPInvokeCallback(typeof(WillExitAppDelegate))]
+        static void WillExitAppFunc()
+        {
+            Distribute.WillExitApp?.Invoke();
         }
 #endregion
 
@@ -46,7 +54,9 @@ namespace Microsoft.AppCenter.Unity.Distribute.Internal
         {
             appcenter_unity_distribute_set_delegate();
             del = ReleaseAvailableFunc;
+            willExitAppDel = WillExitAppFunc;
             appcenter_unity_distribute_set_release_available_impl(del);
+            appcenter_unity_distribute_set_will_exit_app_impl(willExitAppDel);
         }
 
         public static void AddNativeType(List<IntPtr> nativeTypes)
@@ -108,6 +118,9 @@ namespace Microsoft.AppCenter.Unity.Distribute.Internal
 
         [DllImport("__Internal")]
         private static extern void appcenter_unity_distribute_set_release_available_impl(ReleaseAvailableDelegate functionPtr);
+
+        [DllImport("__Internal")]
+        private static extern void appcenter_unity_distribute_set_will_exit_app_impl(WillExitAppDelegate functionPtr);
 
         [DllImport("__Internal")]
         private static extern void appcenter_unity_distribute_replay_release_available();
