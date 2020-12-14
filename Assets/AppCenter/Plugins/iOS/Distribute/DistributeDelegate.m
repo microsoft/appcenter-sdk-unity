@@ -40,7 +40,7 @@
   }
 }
 
-- (void)setWillExitAppImplementation:(ReleaseAvailableFunction)implementation {
+- (void)setWillExitAppImplementation:(WillExitAppFunction)implementation {
   @synchronized (_lockObject) {
     _willExitAppHandler = implementation;
   }
@@ -57,7 +57,7 @@
   }
 }
 
-- (void) distributeWillAppExit:(MSACDistribute *)distribute {
+- (void) distributeWillExitApp:(MSACDistribute *)distribute {
   WillExitAppFunction handlerCopy = nil;
   @synchronized (_lockObject) {
     handlerCopy = _willExitAppHandler;
