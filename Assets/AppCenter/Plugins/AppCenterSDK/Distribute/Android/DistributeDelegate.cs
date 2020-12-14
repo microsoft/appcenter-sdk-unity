@@ -30,11 +30,7 @@ namespace Microsoft.AppCenter.Unity.Distribute.Internal
 
         void onNoReleaseAvailable(AndroidJavaObject activity)
         {
-            if (Distribute.NoReleaseAvailable == null)
-            {
-                return;
-            }
-            Distribute.NoReleaseAvailable.Invoke();
+            Distribute.NoReleaseAvailable?.Invoke();
         }
     }
 }

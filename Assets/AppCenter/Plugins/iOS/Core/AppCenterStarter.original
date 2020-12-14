@@ -96,7 +96,6 @@ static const int kMSUpdateTrack = 1 /*UPDATE_TRACK*/;
 #ifdef APPCENTER_UNITY_USE_CUSTOM_INSTALL_URL
   [MSACDistribute setInstallUrl:kMSCustomInstallUrl];
 #endif // APPCENTER_UNITY_USE_CUSTOM_INSTALL_URL
-  [classes addObject:MSACDistribute.class];
 
 #ifdef APPCENTER_DISTRIBUTE_DISABLE_AUTOMATIC_CHECK_FOR_UPDATE
   [MSACDistribute disableAutomaticCheckForUpdate];

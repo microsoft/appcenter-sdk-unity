@@ -69,7 +69,7 @@
   }
 }
 
-- (void)noReleaseAvailable:(MSACDistribute *)distribute {
+- (void)distributeNoReleaseAvailable:(MSACDistribute *)distribute {
   NoReleaseAvailableFunction handlerCopy = nil;
   @synchronized (_lockObject) {
     handlerCopy = _noReleaseAvailableHandler;

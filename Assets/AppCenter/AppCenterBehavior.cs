@@ -107,6 +107,11 @@ public class AppCenterBehavior : MonoBehaviour
                 var startCrashes = service.GetMethod("StartCrashes");
                 if (startCrashes != null)
                     startCrashes.Invoke(null, null);
+
+                // On iOS and Android we start distribute service here, to give app an opportunity to assign handlers after distribute and restart in Awake method
+                var startDistribute = service.GetMethod("StartDistribute");
+                if (startDistribute != null)
+                    startDistribute.Invoke(null, null);
 #endif
             }
         }

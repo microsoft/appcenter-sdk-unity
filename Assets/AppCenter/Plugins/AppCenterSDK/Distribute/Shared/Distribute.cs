@@ -79,6 +79,11 @@ namespace Microsoft.AppCenter.Unity.Distribute
             get; set;
         }
 
+        public static void StartDistribute()
+        {
+            DistributeInternal.StartDistribute();
+        }
+
         /// <summary>
         /// If update dialog is customized by returning <c>true</c> in <see cref="ReleaseAvailableCallback"/>,
         /// You need to tell the distribute SDK using this function what is the user action.

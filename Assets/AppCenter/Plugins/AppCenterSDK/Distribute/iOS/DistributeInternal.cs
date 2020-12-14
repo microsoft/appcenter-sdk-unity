@@ -60,6 +60,11 @@ namespace Microsoft.AppCenter.Unity.Distribute.Internal
             appcenter_unity_distribute_set_no_release_available_impl(noReleaseDel);
         }
 
+        public static void StartDistribute()
+        {
+            appcenter_unity_start_distribute();
+        }
+
         public static void AddNativeType(List<IntPtr> nativeTypes)
         {
             nativeTypes.Add(appcenter_unity_distribute_get_type());
@@ -131,6 +136,9 @@ namespace Microsoft.AppCenter.Unity.Distribute.Internal
 
         [DllImport("__Internal")]
         private static extern void appcenter_unity_distribute_check_for_update();
+
+        [DllImport("__Internal")]
+        private static extern void appcenter_unity_start_distribute();
 
 #endregion
     }

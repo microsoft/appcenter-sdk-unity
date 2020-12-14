@@ -76,6 +76,11 @@ namespace Microsoft.AppCenter.Unity.Distribute.Internal
         {
             _distribute.CallStatic("checkForUpdate");
         }
+
+        public static void StartDistribute()
+        {
+            AppCenterInternal.Start(AppCenter.Distribute);
+        }
     }
 }
 #endif

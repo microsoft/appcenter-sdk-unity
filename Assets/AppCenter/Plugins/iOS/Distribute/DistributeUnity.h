@@ -18,5 +18,6 @@ extern "C" void appcenter_unity_distribute_set_release_available_impl(ReleaseAva
 extern "C" void appcenter_unity_distribute_set_no_release_available_impl(NoReleaseAvailableFunction handler);
 extern "C" void appcenter_unity_distribute_set_delegate();
 extern "C" void appcenter_unity_distribute_check_for_update();
+extern "C" void appcenter_unity_start_distribute(); 
 
 #endif
