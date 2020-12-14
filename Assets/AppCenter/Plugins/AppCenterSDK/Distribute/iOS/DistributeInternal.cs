@@ -30,20 +30,13 @@ namespace Microsoft.AppCenter.Unity.Distribute.Internal
             return Distribute.ReleaseAvailable.Invoke(releaseDetails);
         }
 
-#if ENABLE_IL2CPP
-        [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
-#endif
         delegate void NoReleaseAvailableDelegate();
 
         static NoReleaseAvailableDelegate noReleaseDel;
         [MonoPInvokeCallback(typeof(NoReleaseAvailableDelegate))]
         static void NoReleaseAvailableFunc()
         {
-            if (Distribute.NoReleaseAvailable == null)
-            {
-                return;
-            }
-            Distribute.NoReleaseAvailable.Invoke();
+            Distribute.NoReleaseAvailable?.Invoke();
         }
 #endregion
 

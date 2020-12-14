@@ -12,7 +12,7 @@ typedef void (__cdecl *NoReleaseAvailableFunction)();
 @interface UnityDistributeDelegate : NSObject<MSACDistributeDelegate>
 
 - (BOOL)distribute:(MSACDistribute *)distribute releaseAvailableWithDetails:(MSACReleaseDetails *)details;
-- (void)noReleaseAvailable;
+- (void)noReleaseAvailable:(MSACDistribute *)distribute;
 - (void)setReleaseAvailableImplementation:(ReleaseAvailableFunction)implementation;
 - (void)setNoReleaseAvailableImplementation:(NoReleaseAvailableFunction)implementation;
 - (void)replayReleaseAvailable;

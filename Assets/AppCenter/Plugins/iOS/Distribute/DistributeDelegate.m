@@ -57,7 +57,7 @@
   }
 }
 
-- (void) replayReleaseAvailable {
+- (void)replayReleaseAvailable {
   ReleaseAvailableFunction handlerCopy = nil;
   MSACReleaseDetails *unprocessedCopy = _unprocessedDetails;
   @synchronized (_lockObject) {
@@ -69,7 +69,7 @@
   }
 }
 
-- (void)noReleaseAvailable {
+- (void)noReleaseAvailable:(MSACDistribute *)distribute {
   NoReleaseAvailableFunction handlerCopy = nil;
   @synchronized (_lockObject) {
     handlerCopy = _noReleaseAvailableHandler;
