@@ -107,7 +107,6 @@ public class AppCenterLoader extends ContentProvider {
             if (isTrueValue(getStringResource(DISTRIBUTE_DISABLE_AUTOMATIC_CHECK_FOR_UPDATE_KEY))) {
                 Distribute.disableAutomaticCheckForUpdate();
             }
-            classes.add(Distribute.class);
         }
         int logLevel = Integer.parseInt(getStringResource(INITIAL_LOG_LEVEL_KEY));
         AppCenter.setLogLevel(logLevel);
