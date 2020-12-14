@@ -7,6 +7,7 @@
 #### iOS/Android
 
 * **[Feature]** Add `NoReleaseAvailable` callback to distribute listener.
+* **[Fix]** Fix show the custom dialog update after the application start.
 
 ## Release 4.0.0
 
