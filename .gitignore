@@ -36,6 +36,7 @@ Assets/Plugins.meta
 !Assets/Plugins/Android/
 Assets/Plugins/Android/*
 !Assets/Plugins/Android/mainTemplate.gradle
+!Assets/Plugins/Android/mainTemplate.gradle.meta
 
 # .NET Core
 project.lock.json
