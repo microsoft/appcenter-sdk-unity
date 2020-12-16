@@ -15,5 +15,8 @@
         <type fullname="Microsoft.AppCenter.Unity.Crashes.Crashes">
             <method name="StartCrashes"/>
         </type>
+        <type fullname="Microsoft.AppCenter.Unity.Distribute.Distribute">
+            <method name="StartDistribute"/>
+        </type>
     </assembly>
 </linker>

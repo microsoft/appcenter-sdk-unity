@@ -16,6 +16,7 @@ public class PuppetReleaseHandler : MonoBehaviour
     {
         Distribute.ReleaseAvailable = OnReleaseAvailable;
         Distribute.WillExitApp = OnWillExitApp;
+        Distribute.NoReleaseAvailable = OnNoReleaseAvailable;
         IsDialogCustom = PlayerPrefs.GetInt(PuppetAppCenter.FlagCustomDialog, 0) == 1;
     }
 
@@ -37,6 +38,14 @@ public class PuppetReleaseHandler : MonoBehaviour
         lock (_releaseLock)
         {
             Debug.Log("WillExitApp callback invoked.");
+        }
+    }
+
+    void OnNoReleaseAvailable()
+    {
+        lock (_releaseLock)
+        {
+            Debug.Log("No release available");
         }
     }
 

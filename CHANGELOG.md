@@ -2,9 +2,14 @@
 
 ## Version 4.0.1 (under development)
 
- ### App Center Distribute
+### App Center Distribute
 
- #### iOS
+#### iOS/Android
+
+* **[Feature]** Add `NoReleaseAvailable` callback to distribute listener.
+* **[Fix]** Fix show the custom dialog update after the application start.
+
+#### iOS
 
  * **[Feature]** Add `WillExitApp` callback to distribute listener.
 
