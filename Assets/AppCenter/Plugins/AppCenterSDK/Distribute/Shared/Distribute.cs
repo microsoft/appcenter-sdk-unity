@@ -79,6 +79,7 @@ namespace Microsoft.AppCenter.Unity.Distribute
             get; set;
         }
 
+        /// <summary>
         /// Sets the no release available callback.
         /// </summary>
         /// <value>The no release available callback.</value>

@@ -13,6 +13,7 @@ namespace Microsoft.AppCenter.Unity.Distribute
     /// </summary>
     public delegate void WillExitAppCallback();
 
+    /// <summary>
     /// No Release available callback.
     /// </summary>
     public delegate void NoReleaseAvailableCallback();

@@ -15,12 +15,15 @@ namespace Microsoft.AppCenter.Unity.Distribute.Internal
 #if ENABLE_IL2CPP
         [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
 #endif
-        delegate bool ReleaseAvailableDelegate(IntPtr details);
         delegate void WillExitAppDelegate();
+        delegate void NoReleaseAvailableDelegate();
+        delegate bool ReleaseAvailableDelegate(IntPtr details);
 
-        static ReleaseAvailableDelegate del;
         static WillExitAppDelegate willExitAppDel;
+        static NoReleaseAvailableDelegate noReleaseDel;
+        static ReleaseAvailableDelegate del;
         static IntPtr ptr;
+        
         [MonoPInvokeCallback(typeof(ReleaseAvailableDelegate))]
         static bool ReleaseAvailableFunc(IntPtr details)
         {
@@ -32,9 +35,6 @@ namespace Microsoft.AppCenter.Unity.Distribute.Internal
             return Distribute.ReleaseAvailable.Invoke(releaseDetails);
         }
 
-        delegate void NoReleaseAvailableDelegate();
-
-        static NoReleaseAvailableDelegate noReleaseDel;
         [MonoPInvokeCallback(typeof(NoReleaseAvailableDelegate))]
         static void NoReleaseAvailableFunc()
         {
