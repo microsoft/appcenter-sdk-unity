@@ -45,6 +45,7 @@
   @synchronized (_lockObject) {
     _willExitAppHandler = implementation;
   }
+}
 
 - (void)setNoReleaseAvailableImplementation:(NoReleaseAvailableFunction)implementation {
   @synchronized (_lockObject) {
