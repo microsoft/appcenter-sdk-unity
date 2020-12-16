@@ -4,6 +4,7 @@
 #if UNITY_ANDROID && !UNITY_EDITOR
 using System;
 using System.Collections.Generic;
+using Microsoft.AppCenter.Unity.Internal;
 using UnityEngine;
 
 namespace Microsoft.AppCenter.Unity.Distribute.Internal
@@ -75,6 +76,11 @@ namespace Microsoft.AppCenter.Unity.Distribute.Internal
         public static void CheckForUpdate()
         {
             _distribute.CallStatic("checkForUpdate");
+        }
+
+        public static void StartDistribute()
+        {
+            AppCenterInternal.Start(AppCenter.Distribute);
         }
     }
 }
