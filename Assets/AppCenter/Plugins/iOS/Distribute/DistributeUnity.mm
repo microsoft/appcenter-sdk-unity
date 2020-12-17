@@ -46,6 +46,11 @@ void appcenter_unity_distribute_set_release_available_impl(ReleaseAvailableFunct
   [[UnityDistributeDelegate sharedInstance] setReleaseAvailableImplementation:function];
 }
 
+void appcenter_unity_distribute_set_will_exit_app_impl(WillExitAppFunction function)
+{
+  [[UnityDistributeDelegate sharedInstance] setWillExitAppImplementation:function];
+}
+
 void appcenter_unity_distribute_set_no_release_available_impl(NoReleaseAvailableFunction function)
 {
   [[UnityDistributeDelegate sharedInstance] setNoReleaseAvailableImplementation:function];

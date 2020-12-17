@@ -15,10 +15,15 @@ namespace Microsoft.AppCenter.Unity.Distribute.Internal
 #if ENABLE_IL2CPP
         [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
 #endif
+        delegate void WillExitAppDelegate();
+        delegate void NoReleaseAvailableDelegate();
         delegate bool ReleaseAvailableDelegate(IntPtr details);
 
+        static WillExitAppDelegate willExitAppDel;
+        static NoReleaseAvailableDelegate noReleaseDel;
         static ReleaseAvailableDelegate del;
         static IntPtr ptr;
+        
         [MonoPInvokeCallback(typeof(ReleaseAvailableDelegate))]
         static bool ReleaseAvailableFunc(IntPtr details)
         {
@@ -30,13 +35,16 @@ namespace Microsoft.AppCenter.Unity.Distribute.Internal
             return Distribute.ReleaseAvailable.Invoke(releaseDetails);
         }
 
-        delegate void NoReleaseAvailableDelegate();
-
-        static NoReleaseAvailableDelegate noReleaseDel;
         [MonoPInvokeCallback(typeof(NoReleaseAvailableDelegate))]
         static void NoReleaseAvailableFunc()
         {
             Distribute.NoReleaseAvailable?.Invoke();
+        }
+
+        [MonoPInvokeCallback(typeof(WillExitAppDelegate))]
+        static void WillExitAppFunc()
+        {
+            Distribute.WillExitApp?.Invoke();
         }
 #endregion
 
@@ -55,9 +63,11 @@ namespace Microsoft.AppCenter.Unity.Distribute.Internal
         {
             appcenter_unity_distribute_set_delegate();
             del = ReleaseAvailableFunc;
+            willExitAppDel = WillExitAppFunc;
             noReleaseDel = NoReleaseAvailableFunc;
             appcenter_unity_distribute_set_release_available_impl(del);
             appcenter_unity_distribute_set_no_release_available_impl(noReleaseDel);
+            appcenter_unity_distribute_set_will_exit_app_impl(willExitAppDel);
         }
 
         public static void StartDistribute()
@@ -124,6 +134,9 @@ namespace Microsoft.AppCenter.Unity.Distribute.Internal
 
         [DllImport("__Internal")]
         private static extern void appcenter_unity_distribute_set_release_available_impl(ReleaseAvailableDelegate functionPtr);
+
+        [DllImport("__Internal")]
+        private static extern void appcenter_unity_distribute_set_will_exit_app_impl(WillExitAppDelegate functionPtr);
 
         [DllImport("__Internal")]
         private static extern void appcenter_unity_distribute_set_no_release_available_impl(NoReleaseAvailableDelegate functionPtr);

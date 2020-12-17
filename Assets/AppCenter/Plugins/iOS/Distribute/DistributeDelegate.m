@@ -9,6 +9,7 @@
 @property MSACReleaseDetails *unprocessedDetails;
 @property NSObject *lockObject;
 @property ReleaseAvailableFunction releaseAvailableHandler;
+@property WillExitAppFunction willExitAppHandler;
 @property NoReleaseAvailableFunction noReleaseAvailableHandler;
 
 @end
@@ -40,6 +41,12 @@
   }
 }
 
+- (void)setWillExitAppImplementation:(WillExitAppFunction)implementation {
+  @synchronized (_lockObject) {
+    _willExitAppHandler = implementation;
+  }
+}
+
 - (void)setNoReleaseAvailableImplementation:(NoReleaseAvailableFunction)implementation {
   @synchronized (_lockObject) {
     _noReleaseAvailableHandler = implementation;
@@ -54,6 +61,16 @@
       return handlerCopy(details);
     }
     return YES;
+  }
+}
+
+- (void) distributeWillExitApp:(MSACDistribute *)distribute {
+  WillExitAppFunction handlerCopy = nil;
+  @synchronized (_lockObject) {
+    handlerCopy = _willExitAppHandler;
+  }
+  if (handlerCopy) {
+    handlerCopy();
   }
 }
 

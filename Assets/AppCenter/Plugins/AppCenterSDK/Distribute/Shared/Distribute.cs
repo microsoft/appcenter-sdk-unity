@@ -71,6 +71,15 @@ namespace Microsoft.AppCenter.Unity.Distribute
         }
 
         /// <summary>
+        /// Sets the app will exit callback.
+        /// </summary>
+        /// <value>The app will exit callback.</value>
+        public static WillExitAppCallback WillExitApp
+        {
+            get; set;
+        }
+
+        /// <summary>
         /// Sets the no release available callback.
         /// </summary>
         /// <value>The no release available callback.</value>
