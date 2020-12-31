@@ -2,6 +2,8 @@
 
 ### AppCenter
 
+#### UWP
+
 * **[Feature]** Add a `SetMaxStorageSizeAsync` API which allows setting a maximum size limit on the local SQLite storage. The default value is 10MiB.
 
 #### iOS
