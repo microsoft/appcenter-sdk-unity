@@ -1,17 +1,40 @@
 # App Center SDK for Unity Change Log
 
-## Version 4.0.1 (under development)
+## Release 4.1.0
 
-### App Center Distribute
+### AppCenter
+
+#### UWP
+
+* **[Feature]** Add a `SetMaxStorageSizeAsync` API which allows setting a maximum size limit on the local SQLite storage. The default value is 10MiB.
 
 #### iOS
 
-* **[Feature]** Add `WillExitApp` callback to distribute listener.
+* **[Fix]** Fix a crash when SQLite returns zero for `page_size`.
+
+### App Center Distribute
 
 #### iOS/Android
 
 * **[Feature]** Add `NoReleaseAvailable` callback to distribute listener.
 * **[Fix]** Fix show the custom dialog update after the application start.
+
+#### iOS
+
+* **[Feature]** Add `WillExitApp` callback to distribute listener.
+
+#### Android
+
+* **[Fix]** Fix a crash when the app is trying to open the system settings screen from the background.
+* **[Fix]** Fix browser opening when using a private distribution group on Android 11.
+
+### App Center Crashes
+
+#### Android
+
+* **[Fix]** Fix removing throwable files after rewriting error logs due to small database size.
+
+___
 
 ## Release 4.0.0
 
