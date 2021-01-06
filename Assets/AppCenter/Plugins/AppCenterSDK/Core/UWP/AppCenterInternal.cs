@@ -194,6 +194,8 @@ namespace Microsoft.AppCenter.Unity.Internal
 
         public static void SetMaxStorageSize(long size)
         {
+            Prepare();
+            UWPAppCenter.SetMaxStorageSizeAsync(size);
         }
 
         private static void Prepare()
