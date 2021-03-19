@@ -1,5 +1,38 @@
 # App Center SDK for Unity Change Log
 
+## Version 4.2.0
+
+### AppCenter
+
+#### UWP
+
+* **[Feature]** In the App Center SDK was added support of strong-named signing assemblies for compatibility with applications that use strong-named signing. Read more about [strong-named assemblies](https://docs.microsoft.com/en-us/dotnet/standard/assembly/strong-named).
+* **[Fix]** Fix SDK not sending events when application is packed to self-contained single-file executable.
+
+#### iOS
+
+* **[Improvement]** Use ASWebAuthenticationSession for authentication on iOS 12 or later.
+
+### App Center Crashes
+
+#### Android
+
+* **[Fix]** Fix formatting of stack trace in the `ErrorReport`.
+
+### App Center Distribute
+
+#### Android
+
+* **[Fix]** Fix `NullPointerException` occurring when settings dialog was intended to be shown, but there is no foreground activity at that moment.
+* **[Fix]** Fix a crash when download manager application was disabled.
+* **[Fix]** Fix showing the title in the push notification while downloading a new release.
+
+#### iOS
+
+* **[Fix]** Fix `kMSACUpdateTokenRequestIdKey` never gets removed.
+
+___
+
 ## Release 4.1.0
 
 ### AppCenter
