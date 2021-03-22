@@ -1,3 +1,29 @@
+## Version 4.1.1
+
+### AppCenter
+
+#### iOS
+
+* **[Improvement]** Use ASWebAuthenticationSession for authentication on iOS 12 or later.
+
+### App Center Crashes
+
+#### Android
+
+* **[Fix]** Fix formatting of stack trace in the `ErrorReport`.
+
+### App Center Distribute
+
+#### Android
+
+* **[Fix]** Fix `NullPointerException` occurring when settings dialog was intended to be shown, but there is no foreground activity at that moment.
+* **[Fix]** Fix a crash when download manager application was disabled.
+* **[Fix]** Fix showing the title in the push notification while downloading a new release.
+
+#### iOS
+
+* **[Fix]** Fix `kMSACUpdateTokenRequestIdKey` never gets removed.
+
 ## Release 4.1.0
 
 ### AppCenter
