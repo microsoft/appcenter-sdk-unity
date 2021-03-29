@@ -12,7 +12,7 @@ namespace Microsoft.AppCenter.Unity
         private static bool _hasAttemptedToGetRuntimeVersion;
 
         public const string Name = "appcenter.unity";
-        public const string WrapperSdkVersion = "4.1.0";
+        public const string WrapperSdkVersion = "4.1.1";
 
         internal static string WrapperRuntimeVersion
         {
