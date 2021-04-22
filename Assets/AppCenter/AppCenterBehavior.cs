@@ -74,6 +74,7 @@ public class AppCenterBehavior : MonoBehaviour
         if (IsStartFromAppCenterBehavior(advancedSettings))
         {
             AppCenter.LogLevel = Settings.InitialLogLevel;
+            AppCenter.NetworkRequestsAllowed = Settings.AllowNetworkRequests;
             if (Settings.CustomLogUrl.UseCustomUrl)
             {
                 AppCenter.SetLogUrl(Settings.CustomLogUrl.Url);

@@ -7,6 +7,7 @@ using System.IO;
 public class AppCenterSettingsMakerAndroid : IAppCenterSettingsMaker
 {
     private const string AppSecretKey = "appcenter_app_secret";
+    private const string AllowNetworkRequestsKey = "allow_network_requests";
     private const string TransmissionTargetTokenKey = "appcenter_transmission_target_token";
     private const string CustomLogUrlKey = "appcenter_custom_log_url";
     private const string UseCustomLogUrlKey = "appcenter_use_custom_log_url";
@@ -45,6 +46,11 @@ public class AppCenterSettingsMakerAndroid : IAppCenterSettingsMaker
     {
         _resourceValues[CustomLogUrlKey] = logUrl;
         _resourceValues[UseCustomLogUrlKey] = true.ToString();
+    }
+
+    public void IsAllowNetworkRequests(bool isAllowed)
+    {
+        _resourceValues[AllowNetworkRequestsKey] = isAllowed.ToString();
     }
 
     public void SetAppSecret(AppCenterSettings settings)

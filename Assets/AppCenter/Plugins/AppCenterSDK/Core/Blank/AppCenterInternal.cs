@@ -75,6 +75,15 @@ namespace Microsoft.AppCenter.Unity.Internal
         {
         }
 
+        public static bool IsNetworkRequestsAllowed()
+        {
+            return true;
+        }
+        
+        public static void SetNetworkRequestsAllowed(bool isAllowed) 
+        {
+        }
+
         public static AppCenterTask SetEnabledAsync(bool enabled)
         {
             return AppCenterTask.FromCompleted();

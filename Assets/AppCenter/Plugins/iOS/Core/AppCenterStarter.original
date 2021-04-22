@@ -33,6 +33,7 @@ enum StartupMode {
 static NSString *const kMSAppSecret = @"appcenter-app-secret";
 static NSString *const kMSTargetToken = @"appcenter-transmission-target-token";
 static NSString *const kMSCustomLogUrl = @"custom-log-url";
+static NSString *const kMSCustomAllowNetworkRequests = @"allow-network-requests";
 static NSString *const kMSCustomApiUrl = @"custom-api-url";
 static NSString *const kMSCustomInstallUrl = @"custom-install-url";
 static NSString *const kMSStartTargetKey = @"MSAppCenterStartTargetUnityKey";
@@ -111,6 +112,7 @@ static const int kMSUpdateTrack = 1 /*UPDATE_TRACK*/;
     [MSACAppCenter setLogUrl:kMSCustomLogUrl];
 #endif
   }
+  [MSACAppCenter setNetworkRequestsAllowed:[kMSCustomAllowNetworkRequests boolValue]];
   NSString *customAppSecret = [[NSUserDefaults standardUserDefaults] objectForKey:kMSAppSecretKey];
   NSString *customAppSecretValue = customAppSecret == nil ? kMSAppSecret : customAppSecret;
   switch (startTargetValue) {

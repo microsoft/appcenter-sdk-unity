@@ -9,6 +9,7 @@ public class AppCenterSettingsMakerIos : IAppCenterSettingsMaker
     private static readonly string TemplateFilePath = AppCenterSettingsContext.AppCenterPath + "/Plugins/iOS/Core/AppCenterStarter.original";
     private static readonly string TargetFilePath = AppCenterSettingsContext.AppCenterPath + "/Plugins/iOS/Core/AppCenterStarter.m";
     private const string AppSecretSearchText = "appcenter-app-secret";
+    private const string AllowNetworkRequestsText = "allow-network-requests";
     private const string TransmissionTargetTokenSearchText = "appcenter-transmission-target-token";
     private const string LogUrlSearchText = "custom-log-url";
     private const string LogUrlToken = "APPCENTER_UNITY_USE_CUSTOM_LOG_URL";
@@ -37,6 +38,11 @@ public class AppCenterSettingsMakerIos : IAppCenterSettingsMaker
     public void SetLogLevel(int logLevel)
     {
         _loaderFileText = _loaderFileText.Replace(LogLevelSearchText, logLevel.ToString());
+    }
+
+    public void IsAllowNetworkRequests(bool isAllowed) 
+    {
+        _loaderFileText = _loaderFileText.Replace(AllowNetworkRequestsText, isAllowed ? "YES" : "NO");
     }
 
     public void SetStartupType(int startupType)

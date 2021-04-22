@@ -28,6 +28,7 @@ public class AppCenterLoader extends ContentProvider {
 
     private static final String CUSTOM_LOG_URL_KEY = "appcenter_custom_log_url";
     private static final String USE_CUSTOM_LOG_URL_KEY = "appcenter_use_custom_log_url";
+    private static final String ALLOW_NETWORK_REQUESTS_KEY = "allow_network_requests";
     private static final String MAX_STORAGE_SIZE = "appcenter_max_storage_size";
     private static final String INITIAL_LOG_LEVEL_KEY = "appcenter_initial_log_level";
     private static final String UPDATE_TRACK_KEY = "appcenter_update_track";
@@ -118,6 +119,9 @@ public class AppCenterLoader extends ContentProvider {
             if (customLogUrl != null) {
                 AppCenter.setLogUrl(customLogUrl);
             }
+        }
+        if (!isTrueValue(getStringResource(ALLOW_NETWORK_REQUESTS_KEY))) {
+            AppCenter.setNetworkRequestsAllowed(false);
         }
         if (startupType == SKIP_START) {
             return true;
