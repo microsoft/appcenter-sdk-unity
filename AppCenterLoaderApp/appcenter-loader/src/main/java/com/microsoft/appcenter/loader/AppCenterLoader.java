@@ -50,11 +50,13 @@ public class AppCenterLoader extends ContentProvider {
     private static final String MAX_STORAGE_SIZE_SHARED_PREFERENCES_KEY = "AppCenter.Unity.MaxStorageSizeKey";
     private static final String TRUE_VALUE = "True";
     private static final String TAG = "AppCenterLoader";
+    private static final String ALLOWED_NETWORK_REQUEST = "allowedNetworkRequests";
     private static final String ENABLE_DISTRIBUTE_FOR_DEBUGGABLE_BUILD_KEY = "appcenter_enable_distribute_for_debuggable_build";
 
     private Context mContext;
 
     public static final String PREFS_NAME = "AppCenterUserPrefs";
+    public static final String APPCENTER_PREF_NAME = "AppCenter";
 
     @Override
     public boolean onCreate() {
@@ -121,8 +123,9 @@ public class AppCenterLoader extends ContentProvider {
             }
         }
         if (!isTrueValue(getStringResource(ALLOW_NETWORK_REQUESTS_KEY))) {
-            AppCenter.setNetworkRequestsAllowed(false);
+            mContext.getSharedPreferences(APPCENTER_PREF_NAME, Context.MODE_PRIVATE).edit().putBoolean(ALLOWED_NETWORK_REQUEST, false).commit();
         }
+        mContext.getSharedPreferences(PREFS_NAME, Context.MODE_PRIVATE).getString(LOG_URL_SHARED_PREFERENCES_KEY, null);
         if (startupType == SKIP_START) {
             return true;
         }
