@@ -51,8 +51,7 @@ void appcenter_unity_set_network_requests_allowed(bool isAllowed)
 
 bool appcenter_unity_is_network_requests_allowed()
 {
-  // This is a workaround to convert the BOOL value.
-  return [MSACAppCenter isNetworkRequestsAllowed] ? [@"YES" boolValue] : [@"NO" boolValue];
+  return [MSACAppCenter isNetworkRequestsAllowed];
 }
 
 void appcenter_unity_start(const char* appSecret, void** services, int count) {

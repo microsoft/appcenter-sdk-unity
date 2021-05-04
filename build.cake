@@ -15,8 +15,8 @@ using System.Net;
 using System.Threading;
 
 // Native SDK versions
-const string AndroidSdkVersion = "4.1.2-5f5af27e6";
-const string IosSdkVersion = "4.1.2-6+c0eb1358b885e0ab16c0ae70e4969efed2ecb1bd";
+const string AndroidSdkVersion = "4.1.2-dbd2cc962";
+const string IosSdkVersion = "4.1.2-8+3368f36c784312b44d11a3f09607e1693165aa05";
 const string UwpSdkVersion = "4.2.1-r0006-552c70c";
 
 // URLs for downloading binaries.
