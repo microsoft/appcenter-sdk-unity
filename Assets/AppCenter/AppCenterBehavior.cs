@@ -71,10 +71,10 @@ public class AppCenterBehavior : MonoBehaviour
         }
         var appSecret = AppCenter.ParseAndSaveSecretForPlatform(Settings.AppSecret);
         var advancedSettings = GetComponent<AppCenterBehaviorAdvanced>();
+        AppCenter.NetworkRequestsAllowed = Settings.AllowNetworkRequests;
         if (IsStartFromAppCenterBehavior(advancedSettings))
         {
             AppCenter.LogLevel = Settings.InitialLogLevel;
-            AppCenter.NetworkRequestsAllowed = Settings.AllowNetworkRequests;
             if (Settings.CustomLogUrl.UseCustomUrl)
             {
                 AppCenter.SetLogUrl(Settings.CustomLogUrl.Url);
