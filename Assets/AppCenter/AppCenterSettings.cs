@@ -41,7 +41,7 @@ public class AppCenterSettings : ScriptableObject
 
     public LogLevel InitialLogLevel = LogLevel.Info;
 
-    [Tooltip("By default, the network requests is allowed. Uncheck this to check for updates manually instead.")]
+    [Tooltip("By default, the network requests is allowed. Uncheck this to disallow network requests.")]
     public bool AllowNetworkRequests = true;
 
     [CustomDropDownProperty("Public", 1)]
