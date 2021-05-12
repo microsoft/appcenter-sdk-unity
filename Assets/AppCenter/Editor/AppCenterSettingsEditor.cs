@@ -46,6 +46,7 @@ public class AppCenterSettingsEditor : Editor
         Header("Other Setup");
         EditorGUILayout.PropertyField(serializedObject.FindProperty("InitialLogLevel"));
         EditorGUILayout.PropertyField(serializedObject.FindProperty("CustomLogUrl"));
+        EditorGUILayout.PropertyField(serializedObject.FindProperty("AllowNetworkRequests"));
         serializedObject.ApplyModifiedProperties();
     }
 

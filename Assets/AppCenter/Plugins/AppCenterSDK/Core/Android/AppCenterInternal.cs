@@ -42,6 +42,16 @@ namespace Microsoft.AppCenter.Unity.Internal
         {
             return _appCenter.CallStatic<string>("getSdkVersion");
         }
+        
+        public static void SetNetworkRequestsAllowed(bool isAllowed) 
+        {
+            _appCenter.CallStatic("setNetworkRequestsAllowed", isAllowed);
+        }
+
+        public static bool IsNetworkRequestsAllowed() 
+        {
+           return _appCenter.CallStatic<bool>("isNetworkRequestsAllowed");
+        }
 
         public static AppCenterTask SetEnabledAsync(bool enabled)
         {

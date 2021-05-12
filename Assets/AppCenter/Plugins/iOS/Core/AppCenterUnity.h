@@ -9,6 +9,8 @@ extern "C" bool appcenter_unity_is_configured();
 extern "C" void appcenter_unity_set_log_url(const char* logUrl);
 extern "C" void appcenter_unity_set_user_id(char* userId);
 extern "C" void appcenter_unity_set_enabled(bool isEnabled);
+extern "C" void appcenter_unity_set_network_requests_allowed(bool isAllowed);
+extern "C" bool appcenter_unity_is_network_requests_allowed();
 extern "C" bool appcenter_unity_is_enabled();
 extern "C" const char* appcenter_unity_get_sdk_version();
 extern "C" const char* appcenter_unity_get_install_id();

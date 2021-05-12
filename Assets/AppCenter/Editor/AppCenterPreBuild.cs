@@ -97,6 +97,7 @@ public class AppCenterPreBuild : IPreprocessBuildWithReport
         var advancedSettings = AppCenterSettingsContext.SettingsInstanceAdvanced;
         settingsMaker.SetAppSecret(settings);
         settingsMaker.SetLogLevel((int)settings.InitialLogLevel);
+        settingsMaker.IsAllowNetworkRequests((bool)settings.AllowNetworkRequests);
         if (settings.CustomLogUrl.UseCustomUrl)
         {
             settingsMaker.SetLogUrl(settings.CustomLogUrl.Url);

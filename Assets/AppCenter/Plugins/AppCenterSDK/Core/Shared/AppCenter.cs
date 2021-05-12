@@ -93,6 +93,18 @@ namespace Microsoft.AppCenter.Unity
             AppCenterInternal.SetLogUrl(logUrl);
         }
 
+        public static bool NetworkRequestsAllowed
+        {
+            get
+            {
+                return AppCenterInternal.IsNetworkRequestsAllowed();
+            }
+            set
+            {
+                AppCenterInternal.SetNetworkRequestsAllowed(value);
+            }
+        }
+
         public static void CacheStorageSize(long storageSize)
         {
             if (_storageSizeTask != null)

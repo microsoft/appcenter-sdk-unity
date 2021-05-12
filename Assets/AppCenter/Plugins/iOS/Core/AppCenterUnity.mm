@@ -44,6 +44,16 @@ void appcenter_unity_set_enabled(bool isEnabled)
   [MSACAppCenter setEnabled:isEnabled];
 }
 
+void appcenter_unity_set_network_requests_allowed(bool isAllowed)
+{
+  [MSACAppCenter setNetworkRequestsAllowed:isAllowed];
+}
+
+bool appcenter_unity_is_network_requests_allowed()
+{
+  return [MSACAppCenter isNetworkRequestsAllowed];
+}
+
 void appcenter_unity_start(const char* appSecret, void** services, int count) {
   NSMutableArray<Class>* servicesArray = get_services_array(services, count);
   [MSACAppCenter start:appcenter_unity_cstr_to_ns_string(appSecret) withServices:servicesArray];

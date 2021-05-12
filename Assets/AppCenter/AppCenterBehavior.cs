@@ -71,6 +71,7 @@ public class AppCenterBehavior : MonoBehaviour
         }
         var appSecret = AppCenter.ParseAndSaveSecretForPlatform(Settings.AppSecret);
         var advancedSettings = GetComponent<AppCenterBehaviorAdvanced>();
+        AppCenter.NetworkRequestsAllowed = Settings.AllowNetworkRequests;
         if (IsStartFromAppCenterBehavior(advancedSettings))
         {
             AppCenter.LogLevel = Settings.InitialLogLevel;

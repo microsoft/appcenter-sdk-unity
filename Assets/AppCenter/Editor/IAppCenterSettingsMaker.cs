@@ -5,6 +5,7 @@ public interface IAppCenterSettingsMaker
 {
     bool IsAnalyticsAvailable();
     bool IsCrashesAvailable();
+    void IsAllowNetworkRequests(bool isAllowed);
     bool IsDistributeAvailable();
     void StartAnalyticsClass();
     void StartCrashesClass();

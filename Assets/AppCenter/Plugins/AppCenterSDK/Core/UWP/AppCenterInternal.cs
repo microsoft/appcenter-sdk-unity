@@ -87,6 +87,18 @@ namespace Microsoft.AppCenter.Unity.Internal
             Prepare();
             UWPAppCenter.SetLogUrl(logUrl);
         }
+        
+        public static void SetNetworkRequestsAllowed(bool isAllowed) 
+        {
+            Prepare();
+            UWPAppCenter.IsNetworkRequestsAllowed = isAllowed;
+        }
+
+        public static bool IsNetworkRequestsAllowed() 
+        {
+           Prepare();
+           return UWPAppCenter.IsNetworkRequestsAllowed;
+        }
 
         public static AppCenterTask SetEnabledAsync(bool isEnabled)
         {
