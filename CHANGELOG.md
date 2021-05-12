@@ -1,10 +1,10 @@
 # App Center SDK for Unity Change Log
 
-## Version 4.2.0  (Under development)
+## Version 4.2.0 (Under development)
 
 ### AppCenter
 
-* **[Feature]** Add a `IsNetworkRequestsAllowed` API to block network requests.
+* **[Feature]** Add a `AppCenter.IsNetworkRequestsAllowed` API to block any network requests without disabling the SDK.
 
 ___
 
