@@ -5,6 +5,7 @@
 ### AppCenter
 
 * **[Feature]** Add a `AppCenter.IsNetworkRequestsAllowed` API to block any network requests without disabling the SDK.
+* **[Fix]** Fix removing `android:allowBackup` and `android:supportsRtl` from AndroidManifest.xml in appcenter-loader-release.aar, as these attributes will be unintentionally merged into the final AndroidManifest.xml in the app.
 
 ___
 
