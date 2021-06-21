@@ -19,6 +19,7 @@ public class PuppetAppCenter : MonoBehaviour
     public static int StartupTypeCached = 2;
     public static readonly EventWaitHandle StorageReadyEvent = new ManualResetEvent(false);
     public Toggle Enabled;
+    public Toggle AllowNetworkRequests;
     public Text InstallIdLabel;
     public Text DeviceIdLabel;
     public Text SdkVersionLabel;
@@ -133,6 +134,7 @@ public class PuppetAppCenter : MonoBehaviour
 
     private IEnumerator OnEnableCoroutine()
     {
+        AllowNetworkRequests.isOn = AppCenter.NetworkRequestsAllowed;
         var isEnabled = AppCenter.IsEnabledAsync();
         yield return isEnabled;
         Enabled.isOn = isEnabled.Result;
@@ -180,6 +182,11 @@ public class PuppetAppCenter : MonoBehaviour
     public void SetEnabled(bool enabled)
     {
         StartCoroutine(SetEnabledCoroutine(enabled));
+    }
+
+    public void SetAllowNetworkRequests(bool isAllowed)
+    {
+        AppCenter.NetworkRequestsAllowed = isAllowed;
     }
 
     private IEnumerator SetEnabledCoroutine(bool enabled)
