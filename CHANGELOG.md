@@ -1,11 +1,29 @@
 # App Center SDK for Unity Change Log
 
-## Version 4.2.0 (Under development)
+## Version 4.2.0
 
 ### AppCenter
 
 * **[Feature]** Add a `AppCenter.IsNetworkRequestsAllowed` API to block any network requests without disabling the SDK.
-* **[Fix]** Fix removing `android:allowBackup` and `android:supportsRtl` from AndroidManifest.xml in appcenter-loader-release.aar, as these attributes will be unintentionally merged into the final AndroidManifest.xml in the app.
+* **[Fix]** Remove `android:allowBackup` and `android:supportsRtl` from `AndroidManifest.xml` in `appcenter-loader`, to prevent these attributes from merging into the final `AndroidManifest.xml` in a client app.
+
+#### UWP
+
+* **[Fix]** Fix infinite loop when old logs cannot be purged by a new one with a different channel name in a case when the storage is full.
+
+### App Center Crashes
+
+#### iOS
+
+* **[Fix]** Merge the device information from the crash report with the SDK's device information in order to fix some time sensitive cases where the reported application information was incorrect.
+* **[Improvement]** Update PLCrashReporter to 1.9.0.
+
+### App Center Distribute
+
+#### Android
+
+* **[Fix]** Fix crash during downloading a new release when `minifyEnabled` settings is true.
+* **[Fix]** Add a missing tag `android:exported` to the manifest required for Android 12.
 
 ___
 
