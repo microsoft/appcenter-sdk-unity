@@ -7,10 +7,10 @@
 #import <Foundation/Foundation.h>
 #import <AppCenterCrashes/AppCenterCrashes.h>
 
-@class MSACException;
+@class MSACExceptionModel;
 
 extern "C" void* appcenter_unity_crashes_get_type();
-extern "C" void* appcenter_unity_crashes_track_exception_with_properties_with_attachments(MSACException* exception, char** propertyKeys, char** propertyValues, int propertyCount, NSArray<MSACErrorAttachmentLog*>* attachments);
+extern "C" void* appcenter_unity_crashes_track_exception_with_properties_with_attachments(MSACExceptionModel* exception, char** propertyKeys, char** propertyValues, int propertyCount, NSArray<MSACErrorAttachmentLog*>* attachments);
 extern "C" void appcenter_unity_crashes_set_enabled(bool isEnabled);
 extern "C" bool appcenter_unity_crashes_has_received_memory_warning_in_last_session();
 extern "C" bool appcenter_unity_crashes_is_enabled();

@@ -16,10 +16,10 @@ void* appcenter_unity_crashes_get_type()
   return (void *)CFBridgingRetain([MSACCrashes class]);
 }
 
-void* appcenter_unity_crashes_track_exception_with_properties_with_attachments(MSACException* exception, char** propertyKeys, char** propertyValues, int propertyCount, NSArray<MSACErrorAttachmentLog*>* attachments)
+void* appcenter_unity_crashes_track_exception_with_properties_with_attachments(MSACExceptionModel* exception, char** propertyKeys, char** propertyValues, int propertyCount, NSArray<MSACErrorAttachmentLog*>* attachments)
 {
   NSDictionary<NSString*, NSString*> *properties = appcenter_unity_create_ns_string_dictionary(propertyKeys, propertyValues, propertyCount);
-  NSString *errorId = [MSACCrashes trackException:exception withProperties:properties withAttachments:attachments];
+  NSString *errorId = [MSACCrashes trackException:exception withProperties:properties attachments:attachments];
   return (void *)appcenter_unity_ns_string_to_cstr(errorId);
 }
 

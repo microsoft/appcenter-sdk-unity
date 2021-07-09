@@ -1,7 +1,7 @@
 #import <Foundation/Foundation.h>
-#import "MSACException.h"
+#import "MSACExceptionModel.h"
 
-@interface MSACExceptionInternal : MSACException
+@interface MSACExceptionInternal : MSACExceptionModel
 
 @property(nonatomic) NSArray<MSACExceptionInternal *> *innerExceptions;
 @property(nonatomic, copy) NSString *wrapperSdkName;

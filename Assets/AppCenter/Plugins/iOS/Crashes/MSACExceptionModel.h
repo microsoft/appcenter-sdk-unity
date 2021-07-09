@@ -1,6 +1,6 @@
 #import <Foundation/Foundation.h>
 
-@interface MSACException : NSObject
+@interface MSACExceptionModel : NSObject
 
 @property(nonatomic, copy) NSString *type;
 @property(nonatomic, copy) NSString *message;
