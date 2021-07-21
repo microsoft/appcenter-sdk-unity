@@ -23,7 +23,7 @@ namespace Microsoft.AppCenter.Unity.Crashes.Internal
             var values = properties == null ? null : properties.Values.ToArray();
             var propertyCount = properties == null ? 0 : properties.Count;
             var nativeAttachments = NativeObjectsConverter.ToNativeAttachments(attachments);
-            return appcenter_unity_crashes_track_model_exception_with_properties_with_attachments(exception, keys, values, propertyCount, nativeAttachments);
+            return appcenter_unity_crashes_track_exception_with_properties_with_attachments(exception, keys, values, propertyCount, nativeAttachments);
         }
 
         public static AppCenterTask SetEnabledAsync(bool isEnabled)
@@ -144,7 +144,7 @@ namespace Microsoft.AppCenter.Unity.Crashes.Internal
         private static extern bool appcenter_unity_crashes_has_received_memory_warning_in_last_session();
 
         [DllImport("__Internal")]
-        private static extern string appcenter_unity_crashes_track_model_exception_with_properties_with_attachments(IntPtr exception, string[] propertyKeys, string[] propertyValues, int propertyCount, IntPtr attachments);
+        private static extern string appcenter_unity_crashes_track_exception_with_properties_with_attachments(IntPtr exception, string[] propertyKeys, string[] propertyValues, int propertyCount, IntPtr attachments);
 
         [DllImport("__Internal")]
         private static extern void appcenter_unity_crashes_set_enabled(bool isEnabled);
