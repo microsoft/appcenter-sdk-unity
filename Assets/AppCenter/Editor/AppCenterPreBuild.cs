@@ -166,6 +166,7 @@ public class AppCenterPreBuild : IPreprocessBuildWithReport
     }
 
     #region Android Methods
+    
     private static void LinkModule(bool isEnabled, string moduleName) 
     {
         var aarName = string.Format(AarFilePattern, moduleName);
