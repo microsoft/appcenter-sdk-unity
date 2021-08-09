@@ -22,7 +22,6 @@ public class AppCenterPostBuild : IPostprocessBuildWithReport
     public int callbackOrder { get { return 0; } }
 
     private const string AppManifestFileName = "Package.appxmanifest";
-    
     private const string CapabilitiesElement = "Capabilities";
     private const string CapabilityElement = "Capability";
     private const string CapabilityNameAttribute = "Name";
