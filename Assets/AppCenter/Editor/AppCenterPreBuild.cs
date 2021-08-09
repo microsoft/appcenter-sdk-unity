@@ -166,7 +166,7 @@ public class AppCenterPreBuild : IPreprocessBuildWithReport
     }
 
     #region Android Methods
-        private static void LinkModule(bool isEnabled, string moduleName) 
+    private static void LinkModule(bool isEnabled, string moduleName) 
     {
         var aarName = string.Format(AarFilePattern, moduleName);
         var aarFileAsset = AssetDatabase.FindAssets(aarName, new[] { AppCenterSettingsContext.AppCenterPath + "/Plugins/Android" });
