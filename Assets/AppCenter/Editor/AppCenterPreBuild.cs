@@ -11,6 +11,7 @@ using UnityEngine;
 
 public class AppCenterPreBuild : IPreprocessBuildWithReport
 {
+    private const string AarFilePattern = "appcenter-{0}-release";
     public int callbackOrder { get { return 0; } }
 #if UNITY_WSA
     private readonly Version RequiredMinimalUWPVersion = new Version("10.0.16299.0");
@@ -48,6 +49,22 @@ public class AppCenterPreBuild : IPreprocessBuildWithReport
                 Debug.LogWarning($"Minimum platform version should be set to {RequiredMinimalUWPVersion} or higher. App Center does not support lower versions but it is set to {currentMinimalPlatformVersion}");
             }
 #endif
+        }
+        if (target == BuildTarget.Android)
+        {
+            // No linking/unlinking in case module isn't added.
+            if (AppCenter.Distribute != null) 
+            {
+                LinkModule(AppCenterSettingsContext.SettingsInstance.UseDistribute, "distribute");
+            }
+            if (AppCenter.Analytics != null) 
+            {
+                LinkModule(AppCenterSettingsContext.SettingsInstance.UseAnalytics, "analytics");
+            }
+            if (AppCenter.Crashes != null) 
+            {
+                LinkModule(AppCenterSettingsContext.SettingsInstance.UseCrashes, "crashes");
+            }
         }
     }
 
@@ -147,4 +164,27 @@ public class AppCenterPreBuild : IPreprocessBuildWithReport
         }
         settingsMaker.CommitSettings();
     }
+
+    #region Android Methods
+    
+    private static void LinkModule(bool isEnabled, string moduleName) 
+    {
+        var aarName = string.Format(AarFilePattern, moduleName);
+        var aarFileAsset = AssetDatabase.FindAssets(aarName, new[] { AppCenterSettingsContext.AppCenterPath + "/Plugins/Android" });
+        if (aarFileAsset.Length == 0)
+        {
+            Debug.LogWarning("Failed to link " + moduleName + ", file `" + aarName + "` is not found");
+            return;
+        }
+        var assetPath = AssetDatabase.GUIDToAssetPath(aarFileAsset[0]);
+        var importer = AssetImporter.GetAtPath(assetPath) as PluginImporter;
+        if (importer != null)
+        {
+            Debug.Log (moduleName + " is " + (isEnabled ? "" : "not ") + "enabled. " +
+                (isEnabled ? "Linking " : "Unlinking ") + aarName);
+            importer.SetCompatibleWithPlatform(BuildTarget.Android, isEnabled);
+            importer.SaveAndReimport();
+        }
+    }
+    #endregion
 }

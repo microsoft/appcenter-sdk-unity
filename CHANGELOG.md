@@ -24,6 +24,7 @@
 
 * **[Fix]** Fix crash during downloading a new release when `minifyEnabled` settings is true.
 * **[Fix]** Add a missing tag `android:exported` to the manifest required for Android 12.
+* **[Fix]** Fix ARR modules unlinking which worked correctly only if the project is built twice due to link/unlink logic stored in PostBuild. Logic has been moved to the PreBuild.
 
 ___
 
