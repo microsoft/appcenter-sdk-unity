@@ -19,6 +19,21 @@ public class AppCenterBehavior : MonoBehaviour
 
     public AppCenterSettings Settings;
 
+#if UNITY_2019_3_OR_NEWER && UNITY_EDITOR
+    /// <summary>
+    /// Clean up static references that may be around due to Domain Reload being disabled
+    /// </summary>
+    [RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.SubsystemRegistration)]
+    private static void Cleanup()
+    {
+        InitializingServices = null;
+        InitializedAppCenterAndServices = null;
+        Started = null;
+        _instance = null;
+        AppCenter.Cleanup();
+    }
+#endif
+
     private void Awake()
     {
         // Make sure that App Center have only one instance.
