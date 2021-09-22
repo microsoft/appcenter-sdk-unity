@@ -1,5 +1,32 @@
 # App Center SDK for Unity Change Log
 
+## Version 4.3.0
+
+### AppCenter
+
+#### UWP
+
+* **[Fix]** Fix sending pending logs after the first application start.
+
+#### iOS/Android
+
+* **[Feature]** Improved `AES` token encryption algorithm using `Encrypt-then-MAC` data authentication approach.
+
+### App Center Crashes
+
+#### iOS
+
+* **[Improvement]** Update PLCrashReporter to 1.10.
+
+### App Center Distribute
+
+#### Android
+
+* **[Fix]** Fix a rare deadlock case when a new version starts downloading and at the same moment the download status is checked.
+* **[Fix]** Fix passing pending intent flag for a completed download notification on Android lower then 23 API.
+
+___
+
 ## Version 4.2.0
 
 ### AppCenter
