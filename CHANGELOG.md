@@ -8,11 +8,7 @@
 
 * **[Fix]** Fix sending pending logs after the first application start.
 
-#### iOS
-
-* **[Feature]** Improved `AES` token encryption algorithm using `Encrypt-then-MAC` data authentication approach.
-
-#### Android
+#### iOS/Android
 
 * **[Feature]** Improved `AES` token encryption algorithm using `Encrypt-then-MAC` data authentication approach.
 
