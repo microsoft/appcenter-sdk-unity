@@ -125,13 +125,6 @@ namespace Microsoft.AppCenter.Unity.Internal
             return stringTask;
         }
 
-        public static void SetCustomProperties(object properties)
-        {
-            Prepare();
-            var uwpProperties = properties as Microsoft.AppCenter.CustomProperties;
-            UWPAppCenter.SetCustomProperties(uwpProperties);
-        }
-
         public static void SetWrapperSdk(string wrapperSdkVersion,
                                          string wrapperSdkName,
                                          string wrapperRuntimeVersion,

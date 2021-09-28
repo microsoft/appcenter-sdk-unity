@@ -129,16 +129,6 @@ namespace Microsoft.AppCenter.Unity
             get { return AppCenterInternal.IsConfigured(); }
         }
 
-        /// <summary>
-        /// Set the custom properties.
-        /// </summary>
-        /// <param name="customProperties">Custom properties object.</param>
-        public static void SetCustomProperties(Unity.CustomProperties customProperties)
-        {
-            var rawCustomProperties = customProperties.GetRawObject();
-            AppCenterInternal.SetCustomProperties(rawCustomProperties);
-        }
-
         public static void SetWrapperSdk()
         {
             AppCenterInternal.SetWrapperSdk(WrapperSdk.WrapperSdkVersion, WrapperSdk.Name, WrapperSdk.WrapperRuntimeVersion, null, null, null);
