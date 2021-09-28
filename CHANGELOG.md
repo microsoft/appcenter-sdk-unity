@@ -1,5 +1,13 @@
 # App Center SDK for Unity Change Log
 
+## Version 4.3.1 (Under active development)
+
+### App Center
+
+* **[Breaking change]** Remove `AppCenter.SetCustomProperties` API.
+
+___
+
 ## Version 4.3.0
 
 ### AppCenter
