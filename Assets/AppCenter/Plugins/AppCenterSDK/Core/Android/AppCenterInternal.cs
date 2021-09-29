@@ -78,11 +78,6 @@ namespace Microsoft.AppCenter.Unity.Internal
             return stringTask;
         }
 
-        public static void SetCustomProperties(AndroidJavaObject properties)
-        {
-            _appCenter.CallStatic("setCustomProperties", properties);
-        }
-
         private static AndroidJavaObject GetAndroidApplication()
         {
             AndroidJavaClass unityPlayer = new AndroidJavaClass("com.unity3d.player.UnityPlayer");

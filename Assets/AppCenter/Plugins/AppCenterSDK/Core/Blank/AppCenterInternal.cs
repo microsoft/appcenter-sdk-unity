@@ -99,10 +99,6 @@ namespace Microsoft.AppCenter.Unity.Internal
             return AppCenterTask<string>.FromCompleted("");
         }
 
-        public static void SetCustomProperties(RawType properties)
-        {
-        }
-
         public static void SetWrapperSdk(string wrapperSdkVersion,
                                          string wrapperSdkName,
                                          string wrapperRuntimeVersion,

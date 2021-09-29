@@ -85,11 +85,6 @@ const char* appcenter_unity_get_sdk_version()
   return appcenter_unity_ns_string_to_cstr([MSACAppCenter sdkVersion]);
 }
 
-void appcenter_unity_set_custom_properties(MSACCustomProperties* properties)
-{
-  [MSACAppCenter setCustomProperties:properties];
-}
-
 void appcenter_unity_set_wrapper_sdk(const char* wrapperSdkVersion,
                                      const char* wrapperSdkName,
                                      const char* wrapperRuntimeVersion,
