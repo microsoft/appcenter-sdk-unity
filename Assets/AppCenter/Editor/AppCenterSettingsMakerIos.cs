@@ -26,6 +26,7 @@ public class AppCenterSettingsMakerIos : IAppCenterSettingsMaker
     private const string UseCustomMaxStorageSize = "APPCENTER_USE_CUSTOM_MAX_STORAGE_SIZE";
     private const string MaxStorageSize = "APPCENTER_MAX_STORAGE_SIZE";
     private const string UpdateTrackSearchText = "1 /*UPDATE_TRACK*/";
+    private const string EnableManualSessionTracker = "ENABLE_MANUAL_SESSION_TRACKER";
     
     private string _loaderFileText;
     private bool _enableDistributeForDebuggableBuild;
@@ -33,6 +34,11 @@ public class AppCenterSettingsMakerIos : IAppCenterSettingsMaker
     public AppCenterSettingsMakerIos()
     {
         _loaderFileText = File.ReadAllText(TemplateFilePath);
+    }
+
+    public void EnableManualSessionTracker(bool isEnabled) 
+    {
+        _loaderFileText = _loaderFileText.Replace(EnableManualSessionTracker, isEnabled ? "YES" : "NO");
     }
 
     public void SetLogLevel(int logLevel)

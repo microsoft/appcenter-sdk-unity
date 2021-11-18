@@ -12,3 +12,5 @@ extern "C" bool appcenter_unity_analytics_is_enabled();
 extern "C" MSACAnalyticsTransmissionTarget *appcenter_unity_analytics_transmission_target_for_token(char* transmissionTargetToken);
 extern "C" void appcenter_unity_analytics_pause();
 extern "C" void appcenter_unity_analytics_resume();
+extern "C" void appcenter_unity_analytics_enable_manual_session_tracker();
+extern "C" void appcenter_unity_analytics_start_session();

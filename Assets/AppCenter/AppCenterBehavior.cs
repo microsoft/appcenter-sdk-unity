@@ -7,6 +7,7 @@ using System;
 using System.Reflection;
 using Microsoft.AppCenter.Unity.Internal;
 using System.Linq;
+using Microsoft.AppCenter.Unity.Analytics;
 
 [HelpURL("https://docs.microsoft.com/en-us/appcenter/sdk/crashes/unity")]
 public class AppCenterBehavior : MonoBehaviour
@@ -72,6 +73,7 @@ public class AppCenterBehavior : MonoBehaviour
         var appSecret = AppCenter.ParseAndSaveSecretForPlatform(Settings.AppSecret);
         var advancedSettings = GetComponent<AppCenterBehaviorAdvanced>();
         AppCenter.NetworkRequestsAllowed = Settings.AllowNetworkRequests;
+        Analytics.EnableManualSessionTracker = Settings.EnableManualSessionTracker;
         if (IsStartFromAppCenterBehavior(advancedSettings))
         {
             AppCenter.LogLevel = Settings.InitialLogLevel;

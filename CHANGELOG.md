@@ -1,5 +1,11 @@
 # App Center SDK for Unity Change Log
 
+## Version 4.3.1 (Under development)
+
+### App Center Analytics
+
+ * **[Feature]** Add `Analytics.EnableManualSessionTracker` and `Analytics.StartSession` APIs for tracking session manually.
+
 ## Version 4.3.0
 
 ### AppCenter

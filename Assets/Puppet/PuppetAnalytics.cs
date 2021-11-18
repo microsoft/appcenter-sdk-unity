@@ -8,8 +8,11 @@ using UnityEngine.UI;
 
 public class PuppetAnalytics : MonoBehaviour
 {
+    private const string ManualSessionTrackerKey = "ManualSessionTrackerKey";
+
     public Toggle Enabled;
     public Toggle IsCritical;
+    public Toggle IsEnableManualSessionTracker;
     public InputField EventName;
     public GameObject EventProperty;
     public RectTransform EventPropertiesList;
@@ -26,11 +29,26 @@ public class PuppetAnalytics : MonoBehaviour
         var task = Analytics.IsEnabledAsync();
         yield return task;
         Enabled.isOn = task.Result;
+        IsEnableManualSessionTracker.isOn = PlayerPrefs.GetInt(ManualSessionTrackerKey, 0) == 1;
     }
 
     public void SetEnabled(bool enabled)
     {
         StartCoroutine(SetEnabledCoroutine(enabled));
+    }
+
+    public void EnableManualSessionTrackerUpdate(bool enabled)
+    {
+        PlayerPrefs.SetInt(ManualSessionTrackerKey, enabled ? 1 : 0);
+        PlayerPrefs.Save();
+#if UNITY_ANDROID && !UNITY_EDITOR
+        AndroidUtility.SetPreferenceInt(ManualSessionTrackerKey, enabled ? 1 : 0);
+#endif
+    }
+
+    public void StartSession()
+    {
+        //TODO: Analytics.StartSession();
     }
 
     public void SetIsCritical(bool critical)
