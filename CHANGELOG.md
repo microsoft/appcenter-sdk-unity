@@ -1,10 +1,16 @@
 # App Center SDK for Unity Change Log
 
-## Version 4.3.1 (Under development)
+## Version 4.3.1 (Under active development)
+
+### App Center
+
+* **[Breaking change]** Remove `AppCenter.SetCustomProperties` API.
 
 ### App Center Analytics
 
  * **[Feature]** Add `Analytics.EnableManualSessionTracker` and `Analytics.StartSession` APIs for tracking session manually.
+
+___
 
 ## Version 4.3.0
 

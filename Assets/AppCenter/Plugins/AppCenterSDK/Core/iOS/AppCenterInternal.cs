@@ -71,11 +71,6 @@ namespace Microsoft.AppCenter.Unity.Internal
             return AppCenterTask<string>.FromCompleted(installId);
         }
 
-        public static void SetCustomProperties(IntPtr properties)
-        {
-            appcenter_unity_set_custom_properties(properties);
-        }
-
         public static void SetWrapperSdk(string wrapperSdkVersion,
                                          string wrapperSdkName,
                                          string wrapperRuntimeVersion,
@@ -179,9 +174,6 @@ namespace Microsoft.AppCenter.Unity.Internal
 
         [DllImport("__Internal")]
         private static extern void appcenter_unity_start_from_library(IntPtr[] classes, int count);
-
-        [DllImport("__Internal")]
-        private static extern void appcenter_unity_set_custom_properties(IntPtr properties);
 
         [DllImport("__Internal")]
         private static extern void appcenter_unity_set_wrapper_sdk(string wrapperSdkVersion,

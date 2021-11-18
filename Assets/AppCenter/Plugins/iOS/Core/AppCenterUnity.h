@@ -17,7 +17,6 @@ extern "C" const char* appcenter_unity_get_install_id();
 extern "C" void appcenter_unity_start(const char* appSecret, void** services, int count);
 extern "C" void appcenter_unity_start_no_secret(void** services, int count);
 extern "C" void appcenter_unity_start_from_library(void** services, int count);
-extern "C" void appcenter_unity_set_custom_properties(MSACCustomProperties* properties);
 extern "C" void appcenter_unity_set_wrapper_sdk(const char* wrapperSdkVersion,
                                                 const char* wrapperSdkName,
                                                 const char* wrapperRuntimeVersion,
