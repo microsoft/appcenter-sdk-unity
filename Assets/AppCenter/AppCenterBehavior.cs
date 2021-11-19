@@ -73,7 +73,9 @@ public class AppCenterBehavior : MonoBehaviour
         var appSecret = AppCenter.ParseAndSaveSecretForPlatform(Settings.AppSecret);
         var advancedSettings = GetComponent<AppCenterBehaviorAdvanced>();
         AppCenter.NetworkRequestsAllowed = Settings.AllowNetworkRequests;
-        Analytics.EnableManualSessionTracker = Settings.EnableManualSessionTracker;
+        if (Settings.EnableManualSessionTracker) {  
+            Analytics.EnableManualSessionTracker();
+        }        
         if (IsStartFromAppCenterBehavior(advancedSettings))
         {
             AppCenter.LogLevel = Settings.InitialLogLevel;
