@@ -3,6 +3,7 @@
 
 using System.Collections;
 using Microsoft.AppCenter.Unity.Analytics;
+using Assets.AppCenter.Plugins.Android.Utility;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -48,7 +49,7 @@ public class PuppetAnalytics : MonoBehaviour
 
     public void StartSession()
     {
-        //TODO: Analytics.StartSession();
+        Analytics.StartSession();
     }
 
     public void SetIsCritical(bool critical)
