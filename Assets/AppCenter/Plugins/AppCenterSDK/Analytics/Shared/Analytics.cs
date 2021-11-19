@@ -117,7 +117,6 @@ namespace Microsoft.AppCenter.Unity.Analytics
             AnalyticsInternal.Resume();
         }
 
-
         public static void EnableManualSessionTracker()
         {
             AnalyticsInternal.EnableManualSessionTracker();

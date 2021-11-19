@@ -17,7 +17,7 @@ MonoBehaviour:
   UWPAppSecret: 41870fa1-1ee5-4417-ad41-499c16fa1dda
   UseAnalytics: 1
   UseCrashes: 1
-  UseDistribute: 0
+  UseDistribute: 1
   CustomApiUrl:
     UrlName: API
     UseCustomUrl: 1
@@ -29,7 +29,6 @@ MonoBehaviour:
   EnableDistributeForDebuggableBuild: 1
   AutomaticCheckForUpdate: 1
   InitialLogLevel: 2
-  AllowNetworkRequests: 1
   UpdateTrack: 1
   CustomLogUrl:
     UrlName: Log

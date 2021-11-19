@@ -86,7 +86,6 @@ namespace Microsoft.AppCenter.Unity.Analytics.Internal
         public static void StartSession()
         {
         }
-
     }
 }
 #endif
