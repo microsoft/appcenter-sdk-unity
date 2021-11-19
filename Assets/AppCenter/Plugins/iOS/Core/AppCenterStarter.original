@@ -41,7 +41,7 @@ static NSString *const kMSStorageSizeKey = @"MSAppCenterMaxStorageSizeUnityKey";
 static NSString *const kMSLogUrlKey = @"MSAppCenterLogUrlUnityKey";
 static NSString *const kMSAppSecretKey = @"MSAppCenterAppSecretUnityKey";
 static NSString *const kMSUpdateTrackKey = @"MSAppCenterUpdateTrackUnityKey";
-static NSString *const kMSEnableManualSessionTrackerKey = @"kMSEnableManualSessionTrackerKey";
+static NSString *const kMSEnableManualSessionTrackerKey = @"enable-manual-session-tracker";
 
 static const int kMSLogLevel = 0 /*LOG_LEVEL*/;
 static const int kMSStartupType = 0 /*STARTUP_TYPE*/;
