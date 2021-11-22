@@ -118,6 +118,12 @@ namespace Microsoft.AppCenter.Unity.Analytics.Internal
         [DllImport("__Internal")]
         private static extern void appcenter_unity_analytics_resume();
 
+        [DllImport("__Internal")]
+        private static extern void appcenter_unity_analytics_enable_manual_session_tracker();
+
+        [DllImport("__Internal")]
+        private static extern void appcenter_unity_analytics_start_session();
+
 #endregion
     }
 }
