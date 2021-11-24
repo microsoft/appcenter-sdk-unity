@@ -41,6 +41,7 @@ static NSString *const kMSStorageSizeKey = @"MSAppCenterMaxStorageSizeUnityKey";
 static NSString *const kMSLogUrlKey = @"MSAppCenterLogUrlUnityKey";
 static NSString *const kMSAppSecretKey = @"MSAppCenterAppSecretUnityKey";
 static NSString *const kMSUpdateTrackKey = @"MSAppCenterUpdateTrackUnityKey";
+static NSString *const kMSEnableManualSessionTrackerKey = @"enable-manual-session-tracker";
 
 static const int kMSLogLevel = 0 /*LOG_LEVEL*/;
 static const int kMSStartupType = 0 /*STARTUP_TYPE*/;
@@ -113,6 +114,9 @@ static const int kMSUpdateTrack = 1 /*UPDATE_TRACK*/;
 #endif
   }
   [MSACAppCenter setNetworkRequestsAllowed:[kMSCustomAllowNetworkRequests boolValue]];
+  if ([kMSEnableManualSessionTrackerKey boolValue]) {
+    [MSACAnalytics enableManualSessionTracker];
+  }
   NSString *customAppSecret = [[NSUserDefaults standardUserDefaults] objectForKey:kMSAppSecretKey];
   NSString *customAppSecretValue = customAppSecret == nil ? kMSAppSecret : customAppSecret;
   switch (startTargetValue) {

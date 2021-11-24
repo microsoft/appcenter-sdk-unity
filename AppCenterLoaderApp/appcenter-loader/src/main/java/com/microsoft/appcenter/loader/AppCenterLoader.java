@@ -51,6 +51,7 @@ public class AppCenterLoader extends ContentProvider {
     private static final String TRUE_VALUE = "True";
     private static final String TAG = "AppCenterLoader";
     private static final String ENABLE_DISTRIBUTE_FOR_DEBUGGABLE_BUILD_KEY = "appcenter_enable_distribute_for_debuggable_build";
+    private static final String ENABLE_MANUAL_SESSION_TRACKER_KEY = "enable_manual_session_tracker";
 
     private Context mContext;
 
@@ -122,6 +123,9 @@ public class AppCenterLoader extends ContentProvider {
         }
         if (!isTrueValue(getStringResource(ALLOW_NETWORK_REQUESTS_KEY))) {
             AppCenter.setNetworkRequestsAllowed(false);
+        }
+        if (isTrueValue(getStringResource(ENABLE_MANUAL_SESSION_TRACKER_KEY))) {
+            Analytics.enableManualSessionTracker();
         }
         if (startupType == SKIP_START) {
             return true;

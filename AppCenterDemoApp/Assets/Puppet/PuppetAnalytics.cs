@@ -33,6 +33,11 @@ public class PuppetAnalytics : MonoBehaviour
         StartCoroutine(SetEnabledCoroutine(enabled));
     }
 
+    public void StartSession()
+    {
+        Analytics.StartSession();
+    }
+
     public void SetIsCritical(bool critical)
     {
         _isCritical = IsCritical.isOn;

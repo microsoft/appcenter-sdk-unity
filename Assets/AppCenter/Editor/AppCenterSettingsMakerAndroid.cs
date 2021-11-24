@@ -24,12 +24,18 @@ public class AppCenterSettingsMakerAndroid : IAppCenterSettingsMaker
     private const string MaxStorageSizeKey = "appcenter_max_storage_size";
     private const string UpdateTrackKey = "appcenter_update_track";
     private const string EnableDistributeForDebuggableBuildKey = "appcenter_enable_distribute_for_debuggable_build";
+    private const string EnableManualSessionTrackerKey = "enable_manual_session_tracker";
 
     private readonly IDictionary<string, string> _resourceValues = new Dictionary<string, string>();
 
     public void SetLogLevel(int logLevel)
     {
         _resourceValues[InitialLogLevelKey] = logLevel.ToString();
+    }
+
+    public void EnableManualSessionTracker(bool isEnabled) 
+    {
+        _resourceValues[EnableManualSessionTrackerKey] = isEnabled.ToString();
     }
 
     public void SetStartupType(int startupType)

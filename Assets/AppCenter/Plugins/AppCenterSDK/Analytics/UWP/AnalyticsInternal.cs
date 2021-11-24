@@ -82,6 +82,16 @@ namespace Microsoft.AppCenter.Unity.Analytics.Internal
         public static void Resume()
         {
         }
+
+        public static void EnableManualSessionTracker()
+        {
+            UWPAnalytics.EnableManualSessionTracker();
+        }
+
+        public static void StartSession()
+        {
+            UWPAnalytics.StartSession();
+        }
     }
 }
 #endif

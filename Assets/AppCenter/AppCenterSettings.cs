@@ -43,6 +43,9 @@ public class AppCenterSettings : ScriptableObject
 
     [Tooltip("By default, the network requests is allowed. Uncheck this to disallow network requests.")]
     public bool AllowNetworkRequests = true;
+    
+    [Tooltip("By default, the manual session tracker is disabled.")]
+    public bool EnableManualSessionTracker = false;
 
     [CustomDropDownProperty("Public", 1)]
     [CustomDropDownProperty("Private", 2)]
