@@ -199,7 +199,7 @@ public class AppCenterLoader extends ContentProvider {
     private Context getApplicationContext() {
 
         //TODO: if Unity supports instant apps, need to modify this method to account for them
-        return getContext();
+        return getContext().getApplicationContext();
     }
 
     private boolean isTrueValue(String value) {
