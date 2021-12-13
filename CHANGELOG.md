@@ -8,7 +8,7 @@
 
 #### Android
 
-* **[Fix]** Fix crash when `getContext()` in `appcenter-loader` doesn't return the Application Context
+* **[Fix]** Fix `getContext()` when in Application is used custom context. Custom context should contain `getApplicationContext()` API which must return default Android application context.
 
 ### App Center Analytics
 
