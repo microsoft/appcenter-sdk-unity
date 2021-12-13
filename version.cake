@@ -1,4 +1,3 @@
-#addin nuget:?package=Cake.FileHelpers
 #load "utility.cake"
 
 using System.Text.RegularExpressions;

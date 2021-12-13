@@ -1,7 +1,6 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT license.
 
-#addin nuget:?package=Cake.FileHelpers
 #addin nuget:?package=Cake.AzureStorage
 #addin nuget:?package=Cake.Xcode
 #addin nuget:?package=Cake.Json&version=3.0.1
