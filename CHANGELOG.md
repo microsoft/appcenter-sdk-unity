@@ -8,7 +8,7 @@
 
 #### Android
 
-* **[Fix]** Fix `getContext()` when in Application is used custom context. Custom context should contain `getApplicationContext()` API which must return default Android application context.
+* **[Fix]** Fix crash in `AppCenterLoader` during call `getContext()` API when an application uses a custom context for initializing SDK. Such context should contain `getApplicationContext()` API which must return default Android application context..
 
 ### App Center Analytics
 
