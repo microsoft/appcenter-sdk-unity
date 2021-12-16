@@ -6,6 +6,10 @@
 
 * **[Breaking change]** Remove `AppCenter.SetCustomProperties` API.
 
+#### Android
+
+* **[Fix]** Fix crash in `AppCenterLoader` during call `getContext()` API when an application uses a custom context for initializing SDK. Such context should contain `getApplicationContext()` API which must return default Android application context.
+
 ### App Center Analytics
 
  * **[Feature]** Add `Analytics.EnableManualSessionTracker` and `Analytics.StartSession` APIs for tracking session manually.

@@ -53,17 +53,17 @@ public class AppCenterLoader extends ContentProvider {
     private static final String ENABLE_DISTRIBUTE_FOR_DEBUGGABLE_BUILD_KEY = "appcenter_enable_distribute_for_debuggable_build";
     private static final String ENABLE_MANUAL_SESSION_TRACKER_KEY = "enable_manual_session_tracker";
 
-    private Context mContext;
+    private Application mApplication;
 
     public static final String PREFS_NAME = "AppCenterUserPrefs";
 
     @Override
     public boolean onCreate() {
-        mContext = getApplicationContext();
-        String appSecret = mContext.getSharedPreferences(PREFS_NAME, Context.MODE_PRIVATE).getString(APP_SECRET_SHARED_PREFERENCES_KEY, getStringResource(APP_SECRET_KEY));
+        mApplication = getApplication();
+        String appSecret = mApplication.getSharedPreferences(PREFS_NAME, Context.MODE_PRIVATE).getString(APP_SECRET_SHARED_PREFERENCES_KEY, getStringResource(APP_SECRET_KEY));
 
         String transmissionTargetToken = getStringResource(TRANSMISSION_TARGET_TOKEN_KEY);
-        int startupTypeInt = mContext.getSharedPreferences(PREFS_NAME, Context.MODE_PRIVATE).getInt(STARTUP_TYPE_SHARED_PREFERENCES_KEY, Integer.parseInt(getStringResource(STARTUP_TYPE_KEY)));
+        int startupTypeInt = mApplication.getSharedPreferences(PREFS_NAME, Context.MODE_PRIVATE).getInt(STARTUP_TYPE_SHARED_PREFERENCES_KEY, Integer.parseInt(getStringResource(STARTUP_TYPE_KEY)));
         StartupType startupType = StartupType.values()[startupTypeInt];
 
         /*
@@ -112,7 +112,7 @@ public class AppCenterLoader extends ContentProvider {
         }
         int logLevel = Integer.parseInt(getStringResource(INITIAL_LOG_LEVEL_KEY));
         AppCenter.setLogLevel(logLevel);
-        String customLogUrl = mContext.getSharedPreferences(PREFS_NAME, Context.MODE_PRIVATE).getString(LOG_URL_SHARED_PREFERENCES_KEY, null);
+        String customLogUrl = mApplication.getSharedPreferences(PREFS_NAME, Context.MODE_PRIVATE).getString(LOG_URL_SHARED_PREFERENCES_KEY, null);
         if (customLogUrl != null) {
             AppCenter.setLogUrl(customLogUrl);
         } else if (isTrueValue(getStringResource(USE_CUSTOM_LOG_URL_KEY))) {
@@ -145,21 +145,21 @@ public class AppCenterLoader extends ContentProvider {
             case NO_SECRET:
                 if (classes.size() > 0) {
                     Class<? extends AppCenterService>[] classesArray = GetClassesArray(classes);
-                    AppCenter.start((Application) mContext, classesArray);
+                    AppCenter.start(mApplication, classesArray);
                 }
                 return true;
         }
         if (classes.size() > 0) {
             Class<? extends AppCenterService>[] classesArray = GetClassesArray(classes);
-            AppCenter.start((Application) mContext, appIdArg, classesArray);
+            AppCenter.start(mApplication, appIdArg, classesArray);
         } else {
-            AppCenter.configure((Application) mContext, appIdArg);
+            AppCenter.configure(mApplication, appIdArg);
         }
         return true;
     }
 
     private void SetMaxStorageSize() {
-        String maxStorageSizeString = mContext.getSharedPreferences(PREFS_NAME, Context.MODE_PRIVATE).getString(MAX_STORAGE_SIZE_SHARED_PREFERENCES_KEY, getStringResource(MAX_STORAGE_SIZE));
+        String maxStorageSizeString = mApplication.getSharedPreferences(PREFS_NAME, Context.MODE_PRIVATE).getString(MAX_STORAGE_SIZE_SHARED_PREFERENCES_KEY, getStringResource(MAX_STORAGE_SIZE));
         if (maxStorageSizeString != null) {
             long maxStorageSize = Long.parseLong(maxStorageSizeString);
             if (maxStorageSize > 0) {
@@ -196,10 +196,13 @@ public class AppCenterLoader extends ContentProvider {
         return 0;
     }
 
-    private Context getApplicationContext() {
+    private Application getApplication() {
 
         //TODO: if Unity supports instant apps, need to modify this method to account for them
-        return getContext();
+        if (getContext() instanceof Application) {
+            return (Application)getContext();
+        }
+        return (Application)getContext().getApplicationContext();
     }
 
     private boolean isTrueValue(String value) {
@@ -207,11 +210,11 @@ public class AppCenterLoader extends ContentProvider {
     }
 
     private String getStringResource(String key) {
-        int identifier = mContext.getResources().getIdentifier(key, "string", mContext.getPackageName());
+        int identifier = mApplication.getResources().getIdentifier(key, "string", mApplication.getPackageName());
         if (identifier == 0) {
             return null;
         }
-        return mContext.getResources().getString(identifier);
+        return mApplication.getResources().getString(identifier);
     }
 
     private boolean isModuleAvailable(String className, String moduleName) {
