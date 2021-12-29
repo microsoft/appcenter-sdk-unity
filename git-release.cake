@@ -1,5 +1,6 @@
 // NOTE: This cannot be run from a Mac.
 
+#addin nuget:?package=Cake.FileHelpers&version=2.0.0
 #addin nuget:?package=Cake.Git
 #tool "nuget:?package=gitreleasemanager"
 #load "utility.cake"
