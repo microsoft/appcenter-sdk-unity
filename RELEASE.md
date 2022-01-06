@@ -1,3 +1,39 @@
+## Version 4.4.0
+
+### App Center
+
+#### iOS/Android/UWP
+
+* **[Breaking change]** Remove `AppCenter.SetCustomProperties` API.
+
+#### iOS
+
+* **[Fix]** Fix throw an exception when checking to authenticate MAC value during decryption.
+
+#### Android
+
+* **[Fix]** Fix crash in `AppCenterLoader` during call `getContext()` API when an application uses a custom context for initializing SDK. Such context should contain `getApplicationContext()` API which must return default Android application context.
+
+### App Center Analytics
+
+#### iOS/Android/UWP
+
+ * **[Feature]** Add `Analytics.EnableManualSessionTracker` and `Analytics.StartSession` APIs for tracking session manually.
+ * **[Feature]** Increase the interval between sending logs from 3 to 6 seconds for the backend load optimization.
+
+### App Center Distribute
+
+#### Android
+
+* **[Feature]** Replace installing a new release using the deprecated intent action `ACTION_INSTALL_PACKAGE` with the `PackageInstaller` API.
+* **[Feature]** Remove the download manager task if the download doesn't start within 10 seconds.
+* **[Feature]** Add sumcheck on the downloaded file before starting the install process.
+* **[Fix]** Fix a crash after discarding the installation if the download of a new release was interrupted in the previous application start and resumed in the current one.
+
+#### iOS
+
+* **[Fix]** Cancel authorization process if application is not active, otherwise `ASWebAuthenticationSession` will fail opening browser and update flow will end up being in a broken state. This only affects updating from a private distribution group.
+
 ## Release 4.3.0
 
 ### AppCenter
