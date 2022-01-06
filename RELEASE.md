@@ -1,8 +1,8 @@
-## Release 4.4.0
+## Version 4.4.0
 
 ### App Center
 
-#### iOS/Android
+#### iOS/Android/UWP
 
 * **[Breaking change]** Remove `AppCenter.SetCustomProperties` API.
 
@@ -12,22 +12,14 @@
 
 #### Android
 
-* **[Feature]** Add `AppCenter.setCountryCode(string)` API to set the country code manually.
-* **[Fix]** Remove `android.support.test.InstrumentationRegistry` string that caused an error when checking applications on availability of android support libraries.
 * **[Fix]** Fix crash in `AppCenterLoader` during call `getContext()` API when an application uses a custom context for initializing SDK. Such context should contain `getApplicationContext()` API which must return default Android application context.
-* **[Fix]** Fix print logs with `ASSERT` levels.
-* **[Fix]** Fix a crash during trying to get `startServiceLog` from the database after upgrading App Center SDK from the old versions.
 
 ### App Center Analytics
 
-#### iOS/Android
+#### iOS/Android/UWP
 
  * **[Feature]** Add `Analytics.EnableManualSessionTracker` and `Analytics.StartSession` APIs for tracking session manually.
  * **[Feature]** Increase the interval between sending logs from 3 to 6 seconds for the backend load optimization.
-
-#### Android
-
-* **[Feature]** Add `AppCenter.setLogger` API to set custom logger.
 
 ### App Center Distribute
 
@@ -40,15 +32,7 @@
 
 #### iOS
 
-* **[Fix]** Cancel authorization process if application is not active, otherwise `ASWebAuthenticationSession` will fail opening browswer and update flow will end up being in a broken state. This only affects updating from a private distribution group.
-
- ### App Center Crashes
-
-#### iOS
-
-* **[Feature]** Add `(NSString *)description` method to convert `MSACErrorReport` to a string and additional useful information about sending error.
-* **[Fix]** Fix sending `Crashes.trackError` logs after allowing network requests after the launch app.
-* **[Improvement]** Update PLCrashReporter to 1.10.1.
+* **[Fix]** Cancel authorization process if application is not active, otherwise `ASWebAuthenticationSession` will fail opening browser and update flow will end up being in a broken state. This only affects updating from a private distribution group.
 
 ## Release 4.3.0
 
