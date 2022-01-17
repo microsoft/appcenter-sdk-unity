@@ -12,9 +12,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 07ef30b23b2586041aedf18c9486176d, type: 3}
   m_Name: AppCenterSettings
   m_EditorClassIdentifier: 
-  iOSAppSecret: c7d464ba-8c6b-4e7b-a866-3d53112132eb
-  AndroidAppSecret: 6d4f2a96-71ea-4a6f-9fa8-27e0a6992750
-  UWPAppSecret: 41870fa1-1ee5-4417-ad41-499c16fa1dda
+  iOSAppSecret: ""
+  AndroidAppSecret: ""
+  UWPAppSecret: ""
   UseAnalytics: 1
   UseCrashes: 1
   UseDistribute: 1
