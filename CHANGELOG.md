@@ -2,6 +2,10 @@
 
 ## Version 4.4.1 (Under active development)
 
+#### Android
+
+* **[Fix]** Fix building the Unity Player Android client from a Linux OS.
+
 ___
 
 ## Version 4.4.0
