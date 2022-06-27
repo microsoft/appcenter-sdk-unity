@@ -1,11 +1,12 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT license.
 
-#addin nuget:?package=Cake.FileHelpers&version=2.0.0
-#addin nuget:?package=Cake.AzureStorage
-#addin nuget:?package=Cake.Xcode
-#addin nuget:?package=Cake.Json&version=3.0.1
-#addin "Cake.Http"
+#addin nuget:?package=Cake.FileHelpers&version=4.0.1
+#addin nuget:?package=Cake.AzureStorage&version=1.0.0
+#addin nuget:?package=Cake.Xcode&version=5.0.0
+#addin nuget:?package=Newtonsoft.Json&version=13.0.1
+#addin nuget:?package=Cake.Json&version=6.0.1
+#addin nuget:?package=Cake.Http&version=1.3.0
 #load "utility.cake"
 #load "nuget-tools.cake"
 
