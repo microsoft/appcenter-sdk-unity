@@ -97,6 +97,7 @@ public class AppCenterPostBuild : IPostprocessBuildWithReport
             throw new Exception("Unexpected content of Debugger.cpp");
         }
 
+#if UNITY_VERSION < UNITY_2021
         // Add '#include <Windows.h>' which provides 'OutputDebugStringW'.
         codeLines.Insert(lastIncludeLineIndex + 1, "#include <Windows.h>");
 
@@ -107,13 +108,14 @@ public class AppCenterPostBuild : IPostprocessBuildWithReport
         codeLines.Insert(lastIncludeLineIndex + 2, "#undef GetCurrentDirectory");
 
         // Add logging method.
+        var insertingPosition = GetFirstLineInMethodBody(codeLines, logMethodLineIndex);
+        codeLines.Insert(insertingPosition, "OutputDebugStringW(message->chars);");
+#endif
         var logMethodLineIndex = SearchForLine(codeLines, "void Debugger::Log");
         if (logMethodLineIndex == -1)
         {
             throw new Exception("Unexpected content of Debugger.cpp");
         }
-        var insertingPosition = GetFirstLineInMethodBody(codeLines, logMethodLineIndex);
-        codeLines.Insert(insertingPosition, "OutputDebugStringW(message->chars);");
 
         // Enable logging.
         var isLoggingMethodLineIndex = SearchForLine(codeLines, "bool Debugger::IsLogging");
@@ -284,9 +286,9 @@ public class AppCenterPostBuild : IPostprocessBuildWithReport
         return attribute == null ? null : attribute.Value;
     }
 
-    #endregion
+#endregion
 
-    #region iOS Methods
+#region iOS Methods
     private static void OnPostprocessProject(PBXProjectWrapper project)
     {
         // Need to add SQLite and zlib dependencies.
@@ -336,5 +338,5 @@ public class AppCenterPostBuild : IPostprocessBuildWithReport
         }
     }
 
-    #endregion
+#endregion
 }
