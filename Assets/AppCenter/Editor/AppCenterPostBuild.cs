@@ -106,16 +106,18 @@ public class AppCenterPostBuild : IPostprocessBuildWithReport
          * combine some files on the compilation so the changes in one file can affect another.
          */
         codeLines.Insert(lastIncludeLineIndex + 2, "#undef GetCurrentDirectory");
-
-        // Add logging method.
-        var insertingPosition = GetFirstLineInMethodBody(codeLines, logMethodLineIndex);
-        codeLines.Insert(insertingPosition, "OutputDebugStringW(message->chars);");
 #endif
+        // Add logging method.
         var logMethodLineIndex = SearchForLine(codeLines, "void Debugger::Log");
         if (logMethodLineIndex == -1)
         {
             throw new Exception("Unexpected content of Debugger.cpp");
         }
+
+#if UNITY_VERSION < UNITY_2021
+        var insertingPosition = GetFirstLineInMethodBody(codeLines, logMethodLineIndex);
+        codeLines.Insert(insertingPosition, "OutputDebugStringW(message->chars);");
+#endif
 
         // Enable logging.
         var isLoggingMethodLineIndex = SearchForLine(codeLines, "bool Debugger::IsLogging");
