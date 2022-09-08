@@ -97,7 +97,6 @@ public class AppCenterPostBuild : IPostprocessBuildWithReport
             throw new Exception("Unexpected content of Debugger.cpp");
         }
 
-#if UNITY_VERSION < UNITY_2021
         // Add '#include <Windows.h>' which provides 'OutputDebugStringW'.
         codeLines.Insert(lastIncludeLineIndex + 1, "#include <Windows.h>");
 
@@ -106,7 +105,9 @@ public class AppCenterPostBuild : IPostprocessBuildWithReport
          * combine some files on the compilation so the changes in one file can affect another.
          */
         codeLines.Insert(lastIncludeLineIndex + 2, "#undef GetCurrentDirectory");
-#endif
+        codeLines.Insert(lastIncludeLineIndex + 3, "#undef ZeroMemory");
+        codeLines.Insert(lastIncludeLineIndex + 4, "#undef MemoryBarrier");
+
         // Add logging method.
         var logMethodLineIndex = SearchForLine(codeLines, "void Debugger::Log");
         if (logMethodLineIndex == -1)
@@ -114,8 +115,26 @@ public class AppCenterPostBuild : IPostprocessBuildWithReport
             throw new Exception("Unexpected content of Debugger.cpp");
         }
 
-#if UNITY_VERSION < UNITY_2021
         var insertingPosition = GetFirstLineInMethodBody(codeLines, logMethodLineIndex);
+
+        /*
+        var counter = 5;
+        foreach (string s in codeLines)
+        {
+            codeLines.Insert(lastIncludeLineIndex + counter, $"\/* {s} *\/");
+            counter += 1;
+        }
+        */
+
+        var len = codeLines.Count;
+        
+        for (int i = 0; i < len; i++) {
+            codeLines.Insert(lastIncludeLineIndex, codeLines[i]);
+        }
+
+#if UNITY_2021_1_OR_NEWER
+        codeLines.Insert(insertingPosition, "OutputDebugStringW((*message)->chars);");
+#else
         codeLines.Insert(insertingPosition, "OutputDebugStringW(message->chars);");
 #endif
 
