@@ -8,10 +8,9 @@ include $(CLEAR_VARS)
 LOCAL_MODULE    := PuppetBreakpad
 LOCAL_SRC_FILES := main.cpp
 
-LOCAL_CPPFLAGS := -D__NDK_R16B__
 LOCAL_LDFLAGS := -latomic
 
 LOCAL_LALIBS += -llog
 LOCAL_STATIC_LIBRARIES += breakpad_client
-TARGET_OUT = ../../Assets/Plugins/Android/
+TARGET_OUT = $(LOCAL_PATH)/../../../../../Assets/Plugins/Android/$(TARGET_ARCH_ABI)
 include $(BUILD_SHARED_LIBRARY)
