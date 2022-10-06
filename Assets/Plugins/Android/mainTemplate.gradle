@@ -60,7 +60,7 @@ consumerProguardFiles 'proguard-unity.txt'**USER_PROGUARD**
     }
 
     aaptOptions {
-        noCompress = ['.unity3d', '.ress', '.resource', '.obb'**STREAMING_ASSETS**]
+        noCompress = ['.ress', '.resource', '.obb'] + unityStreamingAssets.tokenize(', ')
     }**SIGN**
 
     buildTypes {
