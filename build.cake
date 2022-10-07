@@ -725,7 +725,9 @@ Task("RegisterUnity").Does(() =>
 
 Task("UnregisterUnity").Does(() =>
 {
-    var result = ExecuteUnityCommand("-returnLicense", null);
+    var username = Argument<string>("UnityUsername");
+    var password = Argument<string>("UnityPassword");
+    var result = ExecuteUnityCommand($"-returnLicense -username {username} -password {password}", null);
     if (result != 0)
     {
         throw new Exception("Something went wrong while returning Unity license.");
