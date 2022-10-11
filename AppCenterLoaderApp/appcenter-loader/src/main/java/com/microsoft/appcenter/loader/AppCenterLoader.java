@@ -87,6 +87,8 @@ public class AppCenterLoader extends ContentProvider {
         // }
         if (isTrueValue(getStringResource(USE_DISTRIBUTE_KEY)) &&
             isModuleAvailable("com.microsoft.appcenter.distribute.Distribute", "Distribute")) {
+            classes.add(Distribute.class);
+            
             if (isTrueValue(getStringResource(ENABLE_DISTRIBUTE_FOR_DEBUGGABLE_BUILD_KEY))) {
                 Distribute.setEnabledForDebuggableBuild(true);
             }
