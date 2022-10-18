@@ -28,10 +28,15 @@ const string UwpSdkVersion = "4.5.0";
  *     By running mozroots and install part of Mozilla's root certificates can make it work.
  */
 
-const string SdkStorageUrl = "https://mobilecentersdkdev.blob.core.windows.net/sdk/";
-const string AndroidUrl = SdkStorageUrl + "AppCenter-SDK-Android-" + AndroidSdkVersion + ".zip";
-const string IosUrl = SdkStorageUrl + "AppCenter-SDK-Apple-" + IosSdkVersion + ".zip";
-const string UwpUrl = SdkStorageUrl + "AppCenter-SDK-Unity-UWP-" + UwpSdkVersion + ".zip";
+// const string SdkStorageUrl = "https://mobilecentersdkdev.blob.core.windows.net/sdk/";
+// const string AndroidUrl = SdkStorageUrl + "AppCenter-SDK-Android-" + AndroidSdkVersion + ".zip";
+// const string IosUrl = SdkStorageUrl + "AppCenter-SDK-Apple-" + IosSdkVersion + ".zip";
+// const string UwpUrl = SdkStorageUrl + "AppCenter-SDK-Unity-UWP-" + UwpSdkVersion + ".zip";
+
+var SdkStorageUrl = EnvironmentVariable("SdkStorageUrl");
+var AndroidUrl = EnvironmentVariable("AndroidUrl");
+var IosUrl = EnvironmentVariable("IosUrl");
+var UwpUrl = EnvironmentVariable("UwpUrl");
 const string AndroidRepoUrl = "https://github.com/microsoft/appcenter-sdk-android.git";
 const string AppleRepoUrl = "https://github.com/microsoft/appcenter-sdk-apple.git";
 const string DotNetRepoUrl = "https://github.com/microsoft/appcenter-sdk-dotnet.git";
