@@ -219,6 +219,7 @@ Task("Externals-Android").Does(() =>
     var externalsDirectory = "externals/android/";
     var outputDirectory = "Assets/AppCenter/Plugins/Android/";
     var zipFilePath = externalsDirectory + "android.zip";
+    var AndroidUrl = Argument<string>("AndroidUrl");
     CleanDirectory(externalsDirectory);
     EnsureDirectoryExists(outputDirectory);
 
@@ -244,6 +245,7 @@ Task("Externals-Ios")
     var externalsDirectory = "externals/ios/";
     var outputDirectory = "Assets/AppCenter/Plugins/iOS/";
     var zipFilePath = externalsDirectory + "ios.zip";
+    var IosUrl = Argument<string>("IosUrl");
     CleanDirectory(externalsDirectory);
     EnsureDirectoryExists(outputDirectory);
 
@@ -274,6 +276,7 @@ Task("Externals-Uwp")
     var externalsDirectory = "externals/uwp/";
     var outputDirectory = "Assets/AppCenter/Plugins/WSA/";
     var zipFilePath = externalsDirectory + "uwp.zip";
+    var UwpUrl = Argument<string>("UwpUrl");
     CleanDirectory(externalsDirectory);
     EnsureDirectoryExists(outputDirectory);
 
@@ -528,6 +531,10 @@ Task("BuildPuppetApps")
     .IsDependentOn("PrepareAssets")
     .Does(() =>
 {
+    var SdkStorageUrl = Argument<string>("SdkStorageUrl");
+    var AndroidUrl = Argument<string>("AndroidUrl");
+    var IosUrl = Argument<string>("IosUrl");
+    var UwpUrl = Argument<string>("UwpUrl");
     BuildApps("Puppet");
 }).OnError(HandleError);
 
