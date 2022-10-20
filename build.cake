@@ -67,7 +67,7 @@ var ExternalUnityPackages = new []
 // Download from a link here: https://developer.android.com/ndk/downloads/older_releases.html
 // Unity 2018.4.18 requires NDK r16b.
 // The destination for the NDK download.
-const string NdkFolder = "android_ndk";
+const string NdkFolder = "/Applications/Unity/PlaybackEngines/AndroidPlayer/NDK";
 
 // Task TARGET for build
 var Target = Argument("target", Argument("t", "Default"));
@@ -242,6 +242,7 @@ Task("Externals-Ios")
     var outputDirectory = "Assets/AppCenter/Plugins/iOS/";
     var zipFilePath = externalsDirectory + "ios.zip";
     var IosUrl = Argument<string>("IosUrl");
+    var IosUrl = "https://mobilecentersdkdev.blob.core.windows.net/sdk/AppCenter-SDK-Apple-4.4.1.zip?sp=r&st=2022-10-20T10:39:10Z&se=2033-10-20T18:39:10Z&spr=https&sv=2021-06-08&sr=c&sig=VGimskOSXzSmwfQL6yE91%2FKeXG9feSFyUepCdum5r9Q%3D";
     CleanDirectory(externalsDirectory);
     EnsureDirectoryExists(outputDirectory);
 
@@ -487,8 +488,10 @@ Task("RemovePackagesFromDemoApp").Does(() =>
 // (Unity deletes meta data files when it is opened if the corresponding files are not on disk.)
 Task("Externals")
     .IsDependentOn("Externals-Uwp")
+    //.IsDependentOn("Externals-Uwp")
     .IsDependentOn("Externals-Ios")
     .IsDependentOn("Externals-Android")
+    //.IsDependentOn("Externals-Android")
     .IsDependentOn("BuildAndroidContentProvider")
     .IsDependentOn("Externals-Uwp-IL2CPP-Dependencies")
     .IsDependentOn("Externals-Unity-Packages")
