@@ -558,6 +558,7 @@ Task("DownloadNdk").Does(() =>
     {
         CleanDirectory(NdkFolder);
         var result = StartProcess("unzip", new ProcessSettings{ Arguments = $"{zipDestination} -d {NdkFolder}"});
+        CopyDirectory("/Users/runner/work/1/s/android_ndk" ,"/Applications/Unity/PlaybackEngines/AndroidPlayer/NDK");
         if (result != 0)
         {
             throw new Exception("Failed to unzip ndk.");
@@ -566,6 +567,7 @@ Task("DownloadNdk").Does(() =>
     else
     {
         Unzip(zipDestination, NdkFolder);
+        CopyDirectory("/Users/runner/work/1/s/android_ndk" ,"/Applications/Unity/PlaybackEngines/AndroidPlayer/NDK");
     }
 }).OnError(HandleError);
 
