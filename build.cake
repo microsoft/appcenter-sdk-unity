@@ -33,10 +33,6 @@ const string UwpSdkVersion = "4.5.0";
 // const string IosUrl = SdkStorageUrl + "AppCenter-SDK-Apple-" + IosSdkVersion + ".zip";
 // const string UwpUrl = SdkStorageUrl + "AppCenter-SDK-Unity-UWP-" + UwpSdkVersion + ".zip";
 
-var SdkStorageUrl = EnvironmentVariable<string>("SdkStorageUrl", "42");
-var AndroidUrl = EnvironmentVariable<string>("AndroidUrl", "42");
-var IosUrl = EnvironmentVariable<string>("IosUrl", "42");
-var UwpUrl = EnvironmentVariable<string>("UwpUrl", "42");
 const string AndroidRepoUrl = "https://github.com/microsoft/appcenter-sdk-android.git";
 const string AppleRepoUrl = "https://github.com/microsoft/appcenter-sdk-apple.git";
 const string DotNetRepoUrl = "https://github.com/microsoft/appcenter-sdk-dotnet.git";
@@ -531,10 +527,6 @@ Task("BuildPuppetApps")
     .IsDependentOn("PrepareAssets")
     .Does(() =>
 {
-    var SdkStorageUrl = Argument<string>("SdkStorageUrl");
-    var AndroidUrl = Argument<string>("AndroidUrl");
-    var IosUrl = Argument<string>("IosUrl");
-    var UwpUrl = Argument<string>("UwpUrl");
     BuildApps("Puppet");
 }).OnError(HandleError);
 
