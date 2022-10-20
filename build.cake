@@ -67,7 +67,6 @@ var ExternalUnityPackages = new []
 // Download from a link here: https://developer.android.com/ndk/downloads/older_releases.html
 // Unity 2018.4.18 requires NDK r16b.
 // The destination for the NDK download.
-const string NdkFolder = "/Applications/Unity/PlaybackEngines/AndroidPlayer/NDK";
 
 // Task TARGET for build
 var Target = Argument("target", Argument("t", "Default"));
