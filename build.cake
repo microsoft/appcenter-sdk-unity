@@ -247,7 +247,7 @@ Task("Externals-Ios")
     // Download zip file containing AppCenter frameworks.
     var authParams = Argument("StorageAuthParams", EnvironmentVariable("STORAGE_AUTH_PARAMS"));
     var artifactUrl = $"{IosUrl}{authParams}";
-    Information($"Downloading iOS frameworks from {IosartifactUrlUrl}...");
+    Information($"Downloading iOS frameworks from {artifactUrl}...");
     DownloadFile(artifactUrl, zipFilePath);
     Information($"Unzipping iOS frameworks from \"{zipFilePath}\" to \"{externalsDirectory}\".");
     Unzip(zipFilePath, externalsDirectory);
