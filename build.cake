@@ -218,8 +218,10 @@ Task("Externals-Android").Does(() =>
     EnsureDirectoryExists(outputDirectory);
 
     // Download zip file.
-    Information($"Downloading Android libraries from {AndroidUrl}...");
-    DownloadFile(AndroidUrl, zipFilePath);
+    var authParams = Argument("StorageAuthParams", EnvironmentVariable("STORAGE_AUTH_PARAMS"));
+    var artifactUrl = $"{AndroidUrl}{authParams}";
+    Information($"Downloading Android libraries from {artifactUrl}...");
+    DownloadFile(artifactUrl, zipFilePath);
     Information($"Unzipping Android libraries from \"{zipFilePath}\" to \"{externalsDirectory}\".");
     Unzip(zipFilePath, externalsDirectory);
 
@@ -243,8 +245,10 @@ Task("Externals-Ios")
     EnsureDirectoryExists(outputDirectory);
 
     // Download zip file containing AppCenter frameworks.
-    Information($"Downloading iOS frameworks from {IosUrl}...");
-    DownloadFile(IosUrl, zipFilePath);
+    var authParams = Argument("StorageAuthParams", EnvironmentVariable("STORAGE_AUTH_PARAMS"));
+    var artifactUrl = $"{IosUrl}{authParams}";
+    Information($"Downloading iOS frameworks from {IosartifactUrlUrl}...");
+    DownloadFile(artifactUrl, zipFilePath);
     Information($"Unzipping iOS frameworks from \"{zipFilePath}\" to \"{externalsDirectory}\".");
     Unzip(zipFilePath, externalsDirectory);
 
@@ -273,8 +277,10 @@ Task("Externals-Uwp")
     EnsureDirectoryExists(outputDirectory);
 
     // Downloading files.
-    Information($"Downloading UWP packages from {UwpUrl}...");
-    DownloadFile(UwpUrl, zipFilePath);
+    var authParams = Argument("StorageAuthParams", EnvironmentVariable("STORAGE_AUTH_PARAMS"));
+    var artifactUrl = $"{UwpUrl}{authParams}";
+    Information($"Downloading UWP packages from {artifactUrl}...");
+    DownloadFile(artifactUrl, zipFilePath);
 
     // Unzipping files.
     Information($"Unzipping UWP packages from \"{zipFilePath}\" to \"{externalsDirectory}\".");
