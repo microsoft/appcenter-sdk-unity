@@ -16,6 +16,10 @@
  **BUILD_SCRIPT_DEPS**}
  }
 
+ configurations {
+     compileClasspath
+ }
+
  allprojects {
      repositories {**ARTIFACTORYREPOSITORY**
          mavenCentral()

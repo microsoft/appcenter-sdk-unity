@@ -13,6 +13,10 @@ buildscript {
     }
 }
 
+configurations {
+    compileClasspath
+}
+
 allprojects {
     repositories {
         google()
