@@ -380,7 +380,7 @@ Task("Install-Unity-Windows")
     Information("Downloading Unity Editor...");
     DownloadFile(unityDownloadUrl, "./UnitySetup64.exe");
     Information("Installing Unity Editor...");
-    var result = StartProcess("./UnitySetup64.exe");
+    var result = StartProcess("./UnitySetup64.exe", @" /D=C:\Program Files\Unity /S");
     if (result != 0)
     {
         throw new Exception("Failed to install Unity Editor");
