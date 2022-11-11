@@ -27,7 +27,7 @@ static int ExecuteUnityCommand(string extraArgs, string projectPath = ".")
         }
         else
         {
-            unityPath = "C:\\Program Files\\Unity\\Editor\\Unity.exe";
+            unityPath = "C:\\Program Files (x86)\\Unity\\Editor\\Unity.exe";
         }
     }
     if (!System.IO.File.Exists(unityPath)) 
