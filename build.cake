@@ -376,6 +376,7 @@ Task("Install-Unity-Windows")
 {
     string unityDownloadUrl = EnvironmentVariable("EDITOR_URL_WIN");
     string il2cppSupportDownloadUrl = EnvironmentVariable("IL2CPP_SUPPORT_URL");
+    string androidSupportDownloadUrl = EnvironmentVariable("ANDROID_SUPPORT_URL_WIN");
 
     Information("Downloading Unity Editor...");
     DownloadFile(unityDownloadUrl, "./UnitySetup64.exe");
@@ -393,6 +394,15 @@ Task("Install-Unity-Windows")
     if (result != 0)
     {
         throw new Exception("Failed to install IL2CPP support");
+    }
+
+    Information("Downloading Android support...");
+    DownloadFile(androidSupportDownloadUrl, "./AndroidSupport.exe");
+    Information("Installing Android support...");
+    result = StartProcess("./AndroidSupport.exe", " /S");
+    if (result != 0)
+    {
+        throw new Exception("Failed to install Android support");
     }
 }).OnError(HandleError);
 
