@@ -382,8 +382,8 @@ Task("Install-Unity-Windows")
     var URLs = new []
     { 
         unityDownloadUrl,
-        il2cppSupportDownloadUrl,
-        androidSupportDownloadUrl
+        il2cppSupportDownloadUrl
+        // androidSupportDownloadUrl
         // windowsStoreSupportDownloadUrl
     };
 
