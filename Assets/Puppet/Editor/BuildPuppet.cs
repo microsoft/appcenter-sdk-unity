@@ -4,7 +4,6 @@
 using System;
 using System.IO;
 using UnityEditor;
-using UnityEditor.Android;
 using UnityEngine;
 using System.Linq;
 
@@ -38,8 +37,19 @@ public class BuildPuppet
             {
                 var ndkLocation = arg;
                 var subdir = System.IO.Directory.GetDirectories(ndkLocation).Single();
-                Debug.Log($"Setting NDK location to {subdir}");
-                UnityEditor.Android.AndroidExternalToolsSettings.ndkRootPath = subdir;
+
+                if (Type.GetType("UnityEditor.Android.AndroidExternalToolsSettings") != null)
+                {
+                    Debug.Log($"Setting NDK location to {subdir}, via AndroidExternalToolsSettings");
+                    UnityEditor.Android.AndroidExternalToolsSettings.ndkRootPath = subdir;
+                }
+                else
+                {
+                    Debug.Log($"Setting NDK location to {subdir}, via EditorPrefs");
+                    EditorPrefs.SetString("AndroidNdkRoot", subdir);
+                    EditorPrefs.SetString("AndroidNdkRootR16b", subdir);
+                }
+
                 break;
             }
             if (arg == "-NdkLocation")
