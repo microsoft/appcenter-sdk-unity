@@ -395,7 +395,7 @@ Task("Install-Unity-Windows")
         Information($"Installing {fileName}  ...");
 
         // Specify installation path for Unity Editor.
-        var args = fileName == "UnitySetup64.exe" ? @"/S /D=C:\Program Files\Unity" : "/S";
+        var args = fileName.Contains("UnitySetup64-2021") ? @"/S /D=C:\Program Files\Unity" : "/S";
         var result = StartProcess($"./{fileName}", args);
         if (result != 0)
         {
