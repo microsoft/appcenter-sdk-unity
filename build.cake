@@ -377,22 +377,24 @@ Task("Install-Unity-Windows")
     string unityDownloadUrl = EnvironmentVariable("EDITOR_URL_WIN");
     string il2cppSupportDownloadUrl = EnvironmentVariable("IL2CPP_SUPPORT_URL");
 
-    Information("Downloading Unity Editor...");
-    DownloadFile(unityDownloadUrl, "./UnitySetup64.exe");
-    Information("Installing Unity Editor...");
-    var result = StartProcess("./UnitySetup64.exe", " /S");
-    if (result != 0)
-    {
-        throw new Exception("Failed to install Unity Editor");
-    }
+    var URLs = new []
+    { 
+        unityDownloadUrl,
+        il2cppSupportDownloadUrl
+    };
 
-    Information("Downloading IL2CPP support...");
-    DownloadFile(il2cppSupportDownloadUrl, "./UnityIl2CppSupport.exe");
-    Information("Installing IL2CPP support...");
-    result = StartProcess("./UnityIl2CppSupport.exe", " /S");
-    if (result != 0)
+    foreach (var url in URLs)
     {
-        throw new Exception("Failed to install IL2CPP support");
+        var fileName = Path.GetFileName(url);
+        Information($"Downloading component {fileName} ...");
+        DownloadFile(url, $"./{fileName}");
+        Information($"Installing {fileName}  ...");
+
+        var result = StartProcess($"./{fileName}", "/S");
+        if (result != 0)
+        {
+            throw new Exception($"Failed to install {fileName}");
+        }
     }
 }).OnError(HandleError);
 
