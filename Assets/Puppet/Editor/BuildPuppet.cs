@@ -38,7 +38,7 @@ public class BuildPuppet
                 var ndkLocation = arg;
                 var subdir = System.IO.Directory.GetDirectories(ndkLocation).Single();
 
-#if UNITY_2021_0_OR_NEWER
+#if UNITY_2021_3_OR_NEWER
                 Debug.Log($"Setting NDK location to {subdir}, via AndroidExternalToolsSettings");
                 UnityEditor.Android.AndroidExternalToolsSettings.ndkRootPath = subdir;
 #else
