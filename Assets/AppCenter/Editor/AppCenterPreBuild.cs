@@ -43,10 +43,17 @@ public class AppCenterPreBuild : IPreprocessBuildWithReport
         else if (target == BuildTarget.WSAPlayer)
         {
 #if UNITY_WSA
-            var currentMinimalPlatformVersion = new Version(EditorUserBuildSettings.wsaMinUWPSDK);
-            if (currentMinimalPlatformVersion < RequiredMinimalUWPVersion)
+            try
             {
-                Debug.LogWarning($"Minimum platform version should be set to {RequiredMinimalUWPVersion} or higher. App Center does not support lower versions but it is set to {currentMinimalPlatformVersion}");
+                var currentMinimalPlatformVersion = new Version(EditorUserBuildSettings.wsaMinUWPSDK);
+                if (currentMinimalPlatformVersion < RequiredMinimalUWPVersion)
+                {
+                    Debug.LogWarning($"Minimum platform version should be set to {RequiredMinimalUWPVersion} or higher. App Center does not support lower versions but it is set to {currentMinimalPlatformVersion}");
+                }
+            }
+            catch (Exception ex)
+            {
+                Debug.LogError($"Could not parse min UWP versin in editor: {EditorUserBuildSettings.wsaMinUWPSDK}. ex: {ex}");
             }
 #endif
         }
