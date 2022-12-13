@@ -1,4 +1,5 @@
 {
+  "$schema": "https://json.schemastore.org/component-detection-manifest.json",
   "Registrations": [
     {
       "component": {
@@ -58,10 +59,7 @@
     {
       "Component": {
         "Type": "NuGet",
-        "NuGet": {
-          "Name": "SQLitePCLRaw.bundle_green",
-          "Version": "2.0.2"
-        }
+        "NuGet": { "Name": "SQLitePCLRaw.bundle_green", "Version": "2.0.2" }
       }
     }
   ],
