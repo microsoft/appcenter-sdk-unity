@@ -44,6 +44,10 @@ namespace Microsoft.AppCenter.Unity.Distribute.Internal
         {
         }
 
+        public static void StartDistribute()
+        {
+        }
+
         public static void CheckForUpdate()
         {
         }

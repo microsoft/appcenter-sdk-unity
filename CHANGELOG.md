@@ -1,5 +1,170 @@
 # App Center SDK for Unity Change Log
 
+## Version 4.4.1 (Under active development)
+
+#### Android
+
+* **[Fix]** Fix building the Unity Player Android client from a Linux OS.
+
+___
+
+## Version 4.4.0
+
+### App Center
+
+#### iOS/Android/UWP
+
+* **[Breaking change]** Remove `AppCenter.SetCustomProperties` API.
+
+#### iOS
+
+* **[Fix]** Fix throw an exception when checking to authenticate MAC value during decryption.
+
+#### Android
+
+* **[Fix]** Fix crash in `AppCenterLoader` during call `getContext()` API when an application uses a custom context for initializing SDK. Such context should contain `getApplicationContext()` API which must return default Android application context.
+
+### App Center Analytics
+
+#### iOS/Android/UWP
+
+ * **[Feature]** Add `Analytics.EnableManualSessionTracker` and `Analytics.StartSession` APIs for tracking session manually.
+ * **[Feature]** Increase the interval between sending logs from 3 to 6 seconds for the backend load optimization.
+
+### App Center Distribute
+
+#### Android
+
+* **[Feature]** Replace installing a new release using the deprecated intent action `ACTION_INSTALL_PACKAGE` with the `PackageInstaller` API.
+* **[Feature]** Remove the download manager task if the download doesn't start within 10 seconds.
+* **[Feature]** Add sumcheck on the downloaded file before starting the install process.
+* **[Fix]** Fix a crash after discarding the installation if the download of a new release was interrupted in the previous application start and resumed in the current one.
+
+#### iOS
+
+* **[Fix]** Cancel authorization process if application is not active, otherwise `ASWebAuthenticationSession` will fail opening browser and update flow will end up being in a broken state. This only affects updating from a private distribution group.
+
+___
+
+## Version 4.3.0
+
+### AppCenter
+
+#### UWP
+
+* **[Fix]** Fix sending pending logs after the first application start.
+
+#### iOS/Android
+
+* **[Feature]** Improved `AES` token encryption algorithm using `Encrypt-then-MAC` data authentication approach.
+
+### App Center Crashes
+
+#### iOS
+
+* **[Improvement]** Update PLCrashReporter to 1.10.
+
+### App Center Distribute
+
+#### Android
+
+* **[Fix]** Fix a rare deadlock case when a new version starts downloading and at the same moment the download status is checked.
+* **[Fix]** Fix passing pending intent flag for a completed download notification on Android lower then 23 API.
+
+___
+
+## Version 4.2.0
+
+### AppCenter
+
+* **[Feature]** Add a `AppCenter.IsNetworkRequestsAllowed` API to block any network requests without disabling the SDK.
+* **[Fix]** Remove `android:allowBackup` and `android:supportsRtl` from `AndroidManifest.xml` in `appcenter-loader`, to prevent these attributes from merging into the final `AndroidManifest.xml` in a client app.
+
+#### UWP
+
+* **[Fix]** Fix infinite loop when old logs cannot be purged by a new one with a different channel name in a case when the storage is full.
+
+### App Center Crashes
+
+#### iOS
+
+* **[Fix]** Merge the device information from the crash report with the SDK's device information in order to fix some time sensitive cases where the reported application information was incorrect.
+* **[Improvement]** Update PLCrashReporter to 1.9.0.
+
+### App Center Distribute
+
+#### Android
+
+* **[Fix]** Fix crash during downloading a new release when `minifyEnabled` settings is true.
+* **[Fix]** Add a missing tag `android:exported` to the manifest required for Android 12.
+* **[Fix]** Fix ARR modules unlinking which worked correctly only if the project is built twice due to link/unlink logic stored in PostBuild. Logic has been moved to the PreBuild.
+
+___
+
+## Version 4.1.1
+
+### AppCenter
+
+#### iOS
+
+* **[Improvement]** Use ASWebAuthenticationSession for authentication on iOS 12 or later.
+
+### App Center Crashes
+
+#### Android
+
+* **[Fix]** Fix formatting of stack trace in the `ErrorReport`.
+
+### App Center Distribute
+
+#### Android
+
+* **[Fix]** Fix `NullPointerException` occurring when settings dialog was intended to be shown, but there is no foreground activity at that moment.
+* **[Fix]** Fix a crash when download manager application was disabled.
+* **[Fix]** Fix showing the title in the push notification while downloading a new release.
+
+#### iOS
+
+* **[Fix]** Fix `kMSACUpdateTokenRequestIdKey` never gets removed.
+
+___
+
+## Release 4.1.0
+
+### AppCenter
+
+#### UWP
+
+* **[Feature]** Add a `SetMaxStorageSizeAsync` API which allows setting a maximum size limit on the local SQLite storage. The default value is 10MiB.
+
+#### iOS
+
+* **[Fix]** Fix a crash when SQLite returns zero for `page_size`.
+
+### App Center Distribute
+
+#### iOS/Android
+
+* **[Feature]** Add `NoReleaseAvailable` callback to distribute listener.
+* **[Fix]** Fix show the custom dialog update after the application start.
+
+#### iOS
+
+* **[Feature]** Add `WillExitApp` callback to distribute listener.
+
+#### Android
+
+* **[Fix]** Fix a crash when the app is trying to open the system settings screen from the background.
+* **[Fix]** Fix browser opening when using a private distribution group on Android 11.
+
+### App Center Crashes
+
+#### Android
+
+* **[Fix]** Fix removing throwable files after rewriting error logs due to small database size.
+
+___
+
 ## Release 4.0.0
 
 ### App Center

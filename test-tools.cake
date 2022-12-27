@@ -1,6 +1,6 @@
 #tool nuget:?package=XamarinComponent
+#addin nuget:?package=Cake.FileHelpers&version=2.0.0
 #addin nuget:?package=Cake.Xamarin
-#addin nuget:?package=Cake.FileHelpers
 #addin nuget:?package=Newtonsoft.Json
 #load "utility.cake"
 

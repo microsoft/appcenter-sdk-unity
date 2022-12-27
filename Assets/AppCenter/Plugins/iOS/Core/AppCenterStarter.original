@@ -33,6 +33,7 @@ enum StartupMode {
 static NSString *const kMSAppSecret = @"appcenter-app-secret";
 static NSString *const kMSTargetToken = @"appcenter-transmission-target-token";
 static NSString *const kMSCustomLogUrl = @"custom-log-url";
+static NSString *const kMSCustomAllowNetworkRequests = @"allow-network-requests";
 static NSString *const kMSCustomApiUrl = @"custom-api-url";
 static NSString *const kMSCustomInstallUrl = @"custom-install-url";
 static NSString *const kMSStartTargetKey = @"MSAppCenterStartTargetUnityKey";
@@ -40,6 +41,7 @@ static NSString *const kMSStorageSizeKey = @"MSAppCenterMaxStorageSizeUnityKey";
 static NSString *const kMSLogUrlKey = @"MSAppCenterLogUrlUnityKey";
 static NSString *const kMSAppSecretKey = @"MSAppCenterAppSecretUnityKey";
 static NSString *const kMSUpdateTrackKey = @"MSAppCenterUpdateTrackUnityKey";
+static NSString *const kMSEnableManualSessionTrackerKey = @"enable-manual-session-tracker";
 
 static const int kMSLogLevel = 0 /*LOG_LEVEL*/;
 static const int kMSStartupType = 0 /*STARTUP_TYPE*/;
@@ -96,7 +98,6 @@ static const int kMSUpdateTrack = 1 /*UPDATE_TRACK*/;
 #ifdef APPCENTER_UNITY_USE_CUSTOM_INSTALL_URL
   [MSACDistribute setInstallUrl:kMSCustomInstallUrl];
 #endif // APPCENTER_UNITY_USE_CUSTOM_INSTALL_URL
-  [classes addObject:MSACDistribute.class];
 
 #ifdef APPCENTER_DISTRIBUTE_DISABLE_AUTOMATIC_CHECK_FOR_UPDATE
   [MSACDistribute disableAutomaticCheckForUpdate];
@@ -111,6 +112,10 @@ static const int kMSUpdateTrack = 1 /*UPDATE_TRACK*/;
 #ifdef APPCENTER_UNITY_USE_CUSTOM_LOG_URL
     [MSACAppCenter setLogUrl:kMSCustomLogUrl];
 #endif
+  }
+  [MSACAppCenter setNetworkRequestsAllowed:[kMSCustomAllowNetworkRequests boolValue]];
+  if ([kMSEnableManualSessionTrackerKey boolValue]) {
+    [MSACAnalytics enableManualSessionTracker];
   }
   NSString *customAppSecret = [[NSUserDefaults standardUserDefaults] objectForKey:kMSAppSecretKey];
   NSString *customAppSecretValue = customAppSecret == nil ? kMSAppSecret : customAppSecret;

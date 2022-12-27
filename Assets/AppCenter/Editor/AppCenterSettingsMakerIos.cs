@@ -9,6 +9,7 @@ public class AppCenterSettingsMakerIos : IAppCenterSettingsMaker
     private static readonly string TemplateFilePath = AppCenterSettingsContext.AppCenterPath + "/Plugins/iOS/Core/AppCenterStarter.original";
     private static readonly string TargetFilePath = AppCenterSettingsContext.AppCenterPath + "/Plugins/iOS/Core/AppCenterStarter.m";
     private const string AppSecretSearchText = "appcenter-app-secret";
+    private const string AllowNetworkRequestsText = "allow-network-requests";
     private const string TransmissionTargetTokenSearchText = "appcenter-transmission-target-token";
     private const string LogUrlSearchText = "custom-log-url";
     private const string LogUrlToken = "APPCENTER_UNITY_USE_CUSTOM_LOG_URL";
@@ -25,6 +26,7 @@ public class AppCenterSettingsMakerIos : IAppCenterSettingsMaker
     private const string UseCustomMaxStorageSize = "APPCENTER_USE_CUSTOM_MAX_STORAGE_SIZE";
     private const string MaxStorageSize = "APPCENTER_MAX_STORAGE_SIZE";
     private const string UpdateTrackSearchText = "1 /*UPDATE_TRACK*/";
+    private const string EnableManualSessionTrackerText = "enable-manual-session-tracker";
     
     private string _loaderFileText;
     private bool _enableDistributeForDebuggableBuild;
@@ -34,9 +36,19 @@ public class AppCenterSettingsMakerIos : IAppCenterSettingsMaker
         _loaderFileText = File.ReadAllText(TemplateFilePath);
     }
 
+    public void EnableManualSessionTracker(bool isEnabled) 
+    {
+        _loaderFileText = _loaderFileText.Replace(EnableManualSessionTrackerText, isEnabled ? "YES" : "NO");
+    }
+
     public void SetLogLevel(int logLevel)
     {
         _loaderFileText = _loaderFileText.Replace(LogLevelSearchText, logLevel.ToString());
+    }
+
+    public void IsAllowNetworkRequests(bool isAllowed) 
+    {
+        _loaderFileText = _loaderFileText.Replace(AllowNetworkRequestsText, isAllowed ? "YES" : "NO");
     }
 
     public void SetStartupType(int startupType)

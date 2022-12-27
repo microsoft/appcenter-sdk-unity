@@ -78,6 +78,14 @@ namespace Microsoft.AppCenter.Unity.Analytics.Internal
         public static void Resume()
         {
         }
+
+        public static void EnableManualSessionTracker()
+        {
+        }
+
+        public static void StartSession()
+        {
+        }
     }
 }
 #endif

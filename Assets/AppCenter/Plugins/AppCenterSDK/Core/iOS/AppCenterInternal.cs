@@ -43,6 +43,16 @@ namespace Microsoft.AppCenter.Unity.Internal
             appcenter_unity_set_log_url(logUrl);
         }
 
+        public static void SetNetworkRequestsAllowed(bool isAllowed) 
+        {
+            appcenter_unity_set_network_requests_allowed(isAllowed);
+        }
+
+        public static bool IsNetworkRequestsAllowed() 
+        {
+           return appcenter_unity_is_network_requests_allowed();
+        }
+
         public static AppCenterTask SetEnabledAsync(bool isEnabled)
         {
             appcenter_unity_set_enabled(isEnabled);
@@ -59,11 +69,6 @@ namespace Microsoft.AppCenter.Unity.Internal
         {
             var installId = appcenter_unity_get_install_id();
             return AppCenterTask<string>.FromCompleted(installId);
-        }
-
-        public static void SetCustomProperties(IntPtr properties)
-        {
-            appcenter_unity_set_custom_properties(properties);
         }
 
         public static void SetWrapperSdk(string wrapperSdkVersion,
@@ -150,6 +155,12 @@ namespace Microsoft.AppCenter.Unity.Internal
         private static extern void appcenter_unity_set_enabled(bool isEnabled);
 
         [DllImport("__Internal")]
+        private static extern void appcenter_unity_set_network_requests_allowed(bool isAllowed);
+
+        [DllImport("__Internal")]
+        private static extern bool appcenter_unity_is_network_requests_allowed();
+
+        [DllImport("__Internal")]
         private static extern bool appcenter_unity_is_enabled();
 
         [DllImport("__Internal")]
@@ -163,9 +174,6 @@ namespace Microsoft.AppCenter.Unity.Internal
 
         [DllImport("__Internal")]
         private static extern void appcenter_unity_start_from_library(IntPtr[] classes, int count);
-
-        [DllImport("__Internal")]
-        private static extern void appcenter_unity_set_custom_properties(IntPtr properties);
 
         [DllImport("__Internal")]
         private static extern void appcenter_unity_set_wrapper_sdk(string wrapperSdkVersion,

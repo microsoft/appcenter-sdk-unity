@@ -19,6 +19,7 @@ public class PuppetAppCenter : MonoBehaviour
     public static int StartupTypeCached = 2;
     public static readonly EventWaitHandle StorageReadyEvent = new ManualResetEvent(false);
     public Toggle Enabled;
+    public Toggle AllowNetworkRequests;
     public Text InstallIdLabel;
     public Text DeviceIdLabel;
     public Text SdkVersionLabel;
@@ -40,7 +41,6 @@ public class PuppetAppCenter : MonoBehaviour
     private const string LogUrlAndroidKey = "AppCenter.Unity.LogUrlKey";
     private const string AppSecretKey = "MSAppCenterAppSecretUnityKey";
     private const string AppSecretAndroidKey = "AppCenter.Unity.AppSecretKey";
-    public GameObject CustomProperty;
     public RectTransform PropertiesList;
     public Toggle DistributeEnabled;
     public Toggle CustomDialog;
@@ -63,32 +63,6 @@ public class PuppetAppCenter : MonoBehaviour
         var isEnabled = Distribute.IsEnabledAsync();
         yield return isEnabled;
         DistributeEnabled.isOn = isEnabled.Result;
-    }
-
-    public void AddProperty()
-    {
-        var property = Instantiate(CustomProperty);
-        property.transform.SetParent(PropertiesList, false);
-    }
-
-    public void Send()
-    {
-        AppCenter.SetCustomProperties(GetProperties());
-    }
-
-    private CustomProperties GetProperties()
-    {
-        var properties = PropertiesList.GetComponentsInChildren<PuppetCustomProperty>();
-        if (properties == null || properties.Length == 0)
-        {
-            return null;
-        }
-        var result = new CustomProperties();
-        foreach (var i in properties)
-        {
-            i.Set(result);
-        }
-        return result;
     }
 
     private void Awake()
@@ -133,6 +107,7 @@ public class PuppetAppCenter : MonoBehaviour
 
     private IEnumerator OnEnableCoroutine()
     {
+        AllowNetworkRequests.isOn = AppCenter.NetworkRequestsAllowed;
         var isEnabled = AppCenter.IsEnabledAsync();
         yield return isEnabled;
         Enabled.isOn = isEnabled.Result;
@@ -180,6 +155,11 @@ public class PuppetAppCenter : MonoBehaviour
     public void SetEnabled(bool enabled)
     {
         StartCoroutine(SetEnabledCoroutine(enabled));
+    }
+
+    public void SetAllowNetworkRequests(bool isAllowed)
+    {
+        AppCenter.NetworkRequestsAllowed = isAllowed;
     }
 
     private IEnumerator SetEnabledCoroutine(bool enabled)

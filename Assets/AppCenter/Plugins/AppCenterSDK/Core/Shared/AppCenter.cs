@@ -105,6 +105,18 @@ namespace Microsoft.AppCenter.Unity
             AppCenterInternal.SetLogUrl(logUrl);
         }
 
+        public static bool NetworkRequestsAllowed
+        {
+            get
+            {
+                return AppCenterInternal.IsNetworkRequestsAllowed();
+            }
+            set
+            {
+                AppCenterInternal.SetNetworkRequestsAllowed(value);
+            }
+        }
+
         public static void CacheStorageSize(long storageSize)
         {
             if (_storageSizeTask != null)
@@ -127,16 +139,6 @@ namespace Microsoft.AppCenter.Unity
         public static bool Configured
         {
             get { return AppCenterInternal.IsConfigured(); }
-        }
-
-        /// <summary>
-        /// Set the custom properties.
-        /// </summary>
-        /// <param name="customProperties">Custom properties object.</param>
-        public static void SetCustomProperties(Unity.CustomProperties customProperties)
-        {
-            var rawCustomProperties = customProperties.GetRawObject();
-            AppCenterInternal.SetCustomProperties(rawCustomProperties);
         }
 
         public static void SetWrapperSdk()

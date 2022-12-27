@@ -87,6 +87,18 @@ namespace Microsoft.AppCenter.Unity.Internal
             Prepare();
             UWPAppCenter.SetLogUrl(logUrl);
         }
+        
+        public static void SetNetworkRequestsAllowed(bool isAllowed) 
+        {
+            Prepare();
+            UWPAppCenter.IsNetworkRequestsAllowed = isAllowed;
+        }
+
+        public static bool IsNetworkRequestsAllowed() 
+        {
+           Prepare();
+           return UWPAppCenter.IsNetworkRequestsAllowed;
+        }
 
         public static AppCenterTask SetEnabledAsync(bool isEnabled)
         {
@@ -111,13 +123,6 @@ namespace Microsoft.AppCenter.Unity.Internal
                 stringTask.SetResult(installId);
             });
             return stringTask;
-        }
-
-        public static void SetCustomProperties(object properties)
-        {
-            Prepare();
-            var uwpProperties = properties as Microsoft.AppCenter.CustomProperties;
-            UWPAppCenter.SetCustomProperties(uwpProperties);
         }
 
         public static void SetWrapperSdk(string wrapperSdkVersion,
@@ -194,6 +199,8 @@ namespace Microsoft.AppCenter.Unity.Internal
 
         public static void SetMaxStorageSize(long size)
         {
+            Prepare();
+            UWPAppCenter.SetMaxStorageSizeAsync(size);
         }
 
         private static void Prepare()

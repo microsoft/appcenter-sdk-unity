@@ -1,69 +1,67 @@
 {
-    "Registrations": [
-        {
-            "component": {
-                "type": "git",
-                "git": {
-                    "repositoryUrl": "https://github.com/microsoft/appcenter-sdk-android.git",
-                    "commitHash": "18c5eeea1b24ee9e04294d2f9cee8e14ddd64445"
-                }
-            }
-        },
-        {
-            "component": {
-                "type": "git",
-                "git": {
-                    "repositoryUrl": "https://github.com/microsoft/appcenter-sdk-apple.git",
-                    "commitHash": "79d99eaff599d1b38adf81884fe220c75fd38867"
-                }
-            }
-        },
-        {
-            "component": {
-                "type": "git",
-                "git": {
-                    "repositoryUrl": "https://github.com/microsoft/appcenter-sdk-dotnet.git",
-                    "commitHash": "54ba74d2ea7cacf91367c2fb8742a621a5dd663a"
-                }
-            }
-        },
-        {
-            "component": {
-                "type": "git",
-                "git": {
-                    "repositoryUrl": "https://github.com/jilleJr/Newtonsoft.Json-for-Unity.git",
-                    "commitHash": "dcc556f12e7663526356c828da9736f69048bbf0"
-                }
-            }
-        },
-        {
-            "component": {
-                "type": "git",
-                "git": {
-                    "repositoryUrl": "https://github.com/microsoft/appcenter-sdk-android-breakpad.git",
-                    "commitHash": "0d8e4133e2b9caadb012d438c4c12cf6daff2a40"
-                }
-            }
-        },
-        {
-            "Component": {
-                "Type": "other",
-                "Other": {
-                    "Name": "play-services-resolver",
-                    "Version": "1.2.135",
-                    "DownloadUrl": "https://github.com/googlesamples/unity-jar-resolver/raw/v1.2.135/play-services-resolver-1.2.135.0.unitypackage"
-                }
-            }
-        },
-        {
-            "Component": {
-                "Type": "NuGet",
-                "NuGet": {
-                    "Name": "SQLitePCLRaw.bundle_green",
-                    "Version": "2.0.2"
-                }
-            }
+  "$schema": "https://json.schemastore.org/component-detection-manifest.json",
+  "Registrations": [
+    {
+      "component": {
+        "type": "git",
+        "git": {
+          "repositoryUrl": "https://github.com/microsoft/appcenter-sdk-android.git",
+          "commitHash": "cef970c6ab77af7d4d7a8997a586051729275a0f"
         }
-    ],
-    "Version": 1
+      }
+    },
+    {
+      "component": {
+        "type": "git",
+        "git": {
+          "repositoryUrl": "https://github.com/microsoft/appcenter-sdk-apple.git",
+          "commitHash": "b84bc8a39ff04bc8d5ae7b4d230c171c562891aa"
+        }
+      }
+    },
+    {
+      "component": {
+        "type": "git",
+        "git": {
+          "repositoryUrl": "https://github.com/microsoft/appcenter-sdk-dotnet.git",
+          "commitHash": "85e0cff6065a71d92a2433a5fe8d41b881e3a552"
+        }
+      }
+    },
+    {
+      "component": {
+        "type": "git",
+        "git": {
+          "repositoryUrl": "https://github.com/jilleJr/Newtonsoft.Json-for-Unity.git",
+          "commitHash": "dcc556f12e7663526356c828da9736f69048bbf0"
+        }
+      }
+    },
+    {
+      "component": {
+        "type": "git",
+        "git": {
+          "repositoryUrl": "https://github.com/microsoft/appcenter-sdk-android-breakpad.git",
+          "commitHash": "0d8e4133e2b9caadb012d438c4c12cf6daff2a40"
+        }
+      }
+    },
+    {
+      "Component": {
+        "Type": "other",
+        "Other": {
+          "Name": "play-services-resolver",
+          "Version": "1.2.135",
+          "DownloadUrl": "https://github.com/googlesamples/unity-jar-resolver/raw/v1.2.135/play-services-resolver-1.2.135.0.unitypackage"
+        }
+      }
+    },
+    {
+      "Component": {
+        "Type": "NuGet",
+        "NuGet": { "Name": "SQLitePCLRaw.bundle_green", "Version": "2.0.2" }
+      }
+    }
+  ],
+  "Version": 1
 }

@@ -7,6 +7,7 @@ using System;
 using System.Reflection;
 using Microsoft.AppCenter.Unity.Internal;
 using System.Linq;
+using Microsoft.AppCenter.Unity.Analytics;
 
 [HelpURL("https://docs.microsoft.com/en-us/appcenter/sdk/crashes/unity")]
 public class AppCenterBehavior : MonoBehaviour
@@ -86,9 +87,13 @@ public class AppCenterBehavior : MonoBehaviour
         }
         var appSecret = AppCenter.ParseAndSaveSecretForPlatform(Settings.AppSecret);
         var advancedSettings = GetComponent<AppCenterBehaviorAdvanced>();
+        AppCenter.NetworkRequestsAllowed = Settings.AllowNetworkRequests;
         if (IsStartFromAppCenterBehavior(advancedSettings))
         {
             AppCenter.LogLevel = Settings.InitialLogLevel;
+            if (Settings.EnableManualSessionTracker) {
+                Analytics.EnableManualSessionTracker();
+            }
             if (Settings.CustomLogUrl.UseCustomUrl)
             {
                 AppCenter.SetLogUrl(Settings.CustomLogUrl.Url);
@@ -122,6 +127,11 @@ public class AppCenterBehavior : MonoBehaviour
                 var startCrashes = service.GetMethod("StartCrashes");
                 if (startCrashes != null)
                     startCrashes.Invoke(null, null);
+
+                // On iOS and Android we start distribute service here, to give app an opportunity to assign handlers after distribute and restart in Awake method
+                var startDistribute = service.GetMethod("StartDistribute");
+                if (startDistribute != null)
+                    startDistribute.Invoke(null, null);
 #endif
             }
         }

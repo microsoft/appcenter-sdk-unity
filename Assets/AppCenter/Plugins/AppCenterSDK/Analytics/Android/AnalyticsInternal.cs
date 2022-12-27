@@ -91,6 +91,16 @@ namespace Microsoft.AppCenter.Unity.Analytics.Internal
         {
             _analytics.CallStatic("resume");
         }
+
+        public static void EnableManualSessionTracker()
+        {
+            _analytics.CallStatic("enableManualSessionTracker");
+        }
+
+        public static void StartSession()
+        {
+            _analytics.CallStatic("startSession");
+        }
     }
 }
 #endif

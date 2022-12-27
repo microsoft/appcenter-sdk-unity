@@ -5,6 +5,7 @@ public interface IAppCenterSettingsMaker
 {
     bool IsAnalyticsAvailable();
     bool IsCrashesAvailable();
+    void IsAllowNetworkRequests(bool isAllowed);
     bool IsDistributeAvailable();
     void StartAnalyticsClass();
     void StartCrashesClass();
@@ -22,4 +23,5 @@ public interface IAppCenterSettingsMaker
     void SetShouldEnableDistributeForDebuggableBuild();
     void SetDistributeDisableAutomaticCheckForUpdate();
     void SetUpdateTrack(int updateTrack);
+    void EnableManualSessionTracker(bool isEnabled);
 }

@@ -1,11 +1,11 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT license.
 
-#addin nuget:?package=Cake.FileHelpers
+#addin nuget:?package=Cake.FileHelpers&version=2.0.0
 #addin nuget:?package=Cake.AzureStorage
 #addin nuget:?package=Cake.Xcode
 #addin nuget:?package=Cake.Json&version=3.0.1
-#addin "Cake.Http"
+#addin nuget:?package=Cake.Http&version=1.3.0
 #load "utility.cake"
 #load "nuget-tools.cake"
 
@@ -15,9 +15,9 @@ using System.Net;
 using System.Threading;
 
 // Native SDK versions
-const string AndroidSdkVersion = "4.0.0";
-const string IosSdkVersion = "4.0.0";
-const string UwpSdkVersion = "4.0.0";
+const string AndroidSdkVersion = "4.4.2";
+const string IosSdkVersion = "4.4.1";
+const string UwpSdkVersion = "4.5.0";
 
 // URLs for downloading binaries.
 /*
@@ -218,8 +218,10 @@ Task("Externals-Android").Does(() =>
     EnsureDirectoryExists(outputDirectory);
 
     // Download zip file.
-    Information($"Downloading Android libraries from {AndroidUrl}...");
-    DownloadFile(AndroidUrl, zipFilePath);
+    var authParams = Argument("StorageAuthParams", EnvironmentVariable("STORAGE_AUTH_PARAMS"));
+    var artifactUrl = $"{AndroidUrl}{authParams}";
+    Information($"Downloading Android libraries from {artifactUrl}...");
+    DownloadFile(artifactUrl, zipFilePath);
     Information($"Unzipping Android libraries from \"{zipFilePath}\" to \"{externalsDirectory}\".");
     Unzip(zipFilePath, externalsDirectory);
 
@@ -243,8 +245,10 @@ Task("Externals-Ios")
     EnsureDirectoryExists(outputDirectory);
 
     // Download zip file containing AppCenter frameworks.
-    Information($"Downloading iOS frameworks from {IosUrl}...");
-    DownloadFile(IosUrl, zipFilePath);
+    var authParams = Argument("StorageAuthParams", EnvironmentVariable("STORAGE_AUTH_PARAMS"));
+    var artifactUrl = $"{IosUrl}{authParams}";
+    Information($"Downloading iOS frameworks from {artifactUrl}...");
+    DownloadFile(artifactUrl, zipFilePath);
     Information($"Unzipping iOS frameworks from \"{zipFilePath}\" to \"{externalsDirectory}\".");
     Unzip(zipFilePath, externalsDirectory);
 
@@ -273,8 +277,10 @@ Task("Externals-Uwp")
     EnsureDirectoryExists(outputDirectory);
 
     // Downloading files.
-    Information($"Downloading UWP packages from {UwpUrl}...");
-    DownloadFile(UwpUrl, zipFilePath);
+    var authParams = Argument("StorageAuthParams", EnvironmentVariable("STORAGE_AUTH_PARAMS"));
+    var artifactUrl = $"{UwpUrl}{authParams}";
+    Information($"Downloading UWP packages from {artifactUrl}...");
+    DownloadFile(artifactUrl, zipFilePath);
 
     // Unzipping files.
     Information($"Unzipping UWP packages from \"{zipFilePath}\" to \"{externalsDirectory}\".");
@@ -322,11 +328,7 @@ Task("BuildAndroidContentProvider").Does(() =>
     {
         appName = "BreakpadSupport";
         BuildAndroidLibrary(appName, "", false);
-
-        // The build fails with an error that libPuppetBreakpad.so is not found but it's generated properly.
-        // Might be related to the fact the the path to generate the library is relative, in any case it's a false negative.
-        Warning("Ignoring BreakpadSupport build failure... It's ok. Unity complains that the .so is not found which is not true. It's a false negative.");
-        if (!FileExists("Assets/Plugins/Android/libPuppetBreakpad.so"))
+        if (GetFiles("Assets/Plugins/Android/*/libPuppetBreakpad.so").Count() == 0)
         {
             throw new Exception("Building breakpad library failed.");
         }
@@ -375,22 +377,24 @@ Task("Install-Unity-Windows")
     string unityDownloadUrl = EnvironmentVariable("EDITOR_URL_WIN");
     string il2cppSupportDownloadUrl = EnvironmentVariable("IL2CPP_SUPPORT_URL");
 
-    Information("Downloading Unity Editor...");
-    DownloadFile(unityDownloadUrl, "./UnitySetup64.exe");
-    Information("Installing Unity Editor...");
-    var result = StartProcess("./UnitySetup64.exe", " /S");
-    if (result != 0)
-    {
-        throw new Exception("Failed to install Unity Editor");
-    }
+    var URLs = new []
+    { 
+        unityDownloadUrl,
+        il2cppSupportDownloadUrl
+    };
 
-    Information("Downloading IL2CPP support...");
-    DownloadFile(il2cppSupportDownloadUrl, "./UnityIl2CppSupport.exe");
-    Information("Installing IL2CPP support...");
-    result = StartProcess("./UnityIl2CppSupport.exe", " /S");
-    if (result != 0)
+    foreach (var url in URLs)
     {
-        throw new Exception("Failed to install IL2CPP support");
+        var fileName = Path.GetFileName(url);
+        Information($"Downloading component {fileName} ...");
+        DownloadFile(url, $"./{fileName}");
+        Information($"Installing {fileName}  ...");
+
+        var result = StartProcess($"./{fileName}", "/S");
+        if (result != 0)
+        {
+            throw new Exception($"Failed to install {fileName}");
+        }
     }
 }).OnError(HandleError);
 
@@ -729,7 +733,9 @@ Task("RegisterUnity").Does(() =>
 
 Task("UnregisterUnity").Does(() =>
 {
-    var result = ExecuteUnityCommand("-returnLicense", null);
+    var username = Argument<string>("UnityUsername");
+    var password = Argument<string>("UnityPassword");
+    var result = ExecuteUnityCommand($"-returnLicense -username {username} -password {password}", null);
     if (result != 0)
     {
         throw new Exception("Something went wrong while returning Unity license.");

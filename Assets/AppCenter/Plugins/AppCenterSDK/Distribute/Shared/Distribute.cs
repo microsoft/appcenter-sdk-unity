@@ -16,7 +16,7 @@ namespace Microsoft.AppCenter.Unity.Distribute
     public class Distribute
     {
         // Used by App Center Unity Editor Extensions: https://github.com/Microsoft/AppCenter-SDK-Unity-Extension
-        public const string DistributeSDKVersion = "4.0.0";
+        public const string DistributeSDKVersion = "4.4.0";
 
         public static void PrepareEventHandlers()
         {
@@ -68,6 +68,29 @@ namespace Microsoft.AppCenter.Unity.Distribute
         public static ReleaseAvailableCallback ReleaseAvailable
         {
             get; set;
+        }
+
+        /// <summary>
+        /// Sets the app will exit callback.
+        /// </summary>
+        /// <value>The app will exit callback.</value>
+        public static WillExitAppCallback WillExitApp
+        {
+            get; set;
+        }
+
+        /// <summary>
+        /// Sets the no release available callback.
+        /// </summary>
+        /// <value>The no release available callback.</value>
+        public static NoReleaseAvailableCallback NoReleaseAvailable
+        {
+            get; set;
+        }
+
+        public static void StartDistribute()
+        {
+            DistributeInternal.StartDistribute();
         }
 
         /// <summary>

@@ -9,6 +9,7 @@ gen/
 out/
 
 # Gradle files
+.cxx/
 .gradle/
 build/
 /*/build/

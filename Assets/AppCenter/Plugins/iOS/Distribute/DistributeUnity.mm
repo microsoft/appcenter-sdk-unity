@@ -2,6 +2,7 @@
 // Licensed under the MIT license.
 
 #import "DistributeUnity.h"
+#import <AppCenter/MSACAppCenter.h>
 #import "DistributeDelegate.h"
 #import <Foundation/Foundation.h>
 
@@ -43,6 +44,21 @@ void appcenter_unity_distribute_notify_update_action(int updateAction)
 void appcenter_unity_distribute_set_release_available_impl(ReleaseAvailableFunction function)
 {
   [[UnityDistributeDelegate sharedInstance] setReleaseAvailableImplementation:function];
+}
+
+void appcenter_unity_distribute_set_will_exit_app_impl(WillExitAppFunction function)
+{
+  [[UnityDistributeDelegate sharedInstance] setWillExitAppImplementation:function];
+}
+
+void appcenter_unity_distribute_set_no_release_available_impl(NoReleaseAvailableFunction function)
+{
+  [[UnityDistributeDelegate sharedInstance] setNoReleaseAvailableImplementation:function];
+}
+
+void appcenter_unity_start_distribute()
+{
+  [MSACAppCenter startService:MSACDistribute.class];
 }
 
 void appcenter_unity_distribute_replay_release_available()

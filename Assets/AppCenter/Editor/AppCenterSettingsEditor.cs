@@ -24,6 +24,7 @@ public class AppCenterSettingsEditor : Editor
             Header("Analytics");
             EditorGUILayout.PropertyField(serializedObject.FindProperty("UseAnalytics"));
             EditorGUILayout.PropertyField(serializedObject.FindProperty("MaxStorageSize"));
+            EditorGUILayout.PropertyField(serializedObject.FindProperty("EnableManualSessionTracker"));
         }
         if (AppCenter.Crashes != null)
         {
@@ -46,6 +47,7 @@ public class AppCenterSettingsEditor : Editor
         Header("Other Setup");
         EditorGUILayout.PropertyField(serializedObject.FindProperty("InitialLogLevel"));
         EditorGUILayout.PropertyField(serializedObject.FindProperty("CustomLogUrl"));
+        EditorGUILayout.PropertyField(serializedObject.FindProperty("AllowNetworkRequests"));
         serializedObject.ApplyModifiedProperties();
     }
 

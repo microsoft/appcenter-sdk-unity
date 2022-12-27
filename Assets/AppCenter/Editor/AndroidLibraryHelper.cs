@@ -27,7 +27,7 @@ public static class AndroidLibraryHelper
                 .ToString();
             processName = "cmd";
         }
-        else if (Application.platform == RuntimePlatform.OSXEditor)
+        else if (Application.platform == RuntimePlatform.OSXEditor || Application.platform == RuntimePlatform.LinuxEditor)
         {
             args = stringBuilder
                 .Append("-c \"cd ")
@@ -65,7 +65,7 @@ public static class AndroidLibraryHelper
                 .ToString();
             processName = "cmd";
         }
-        else if (Application.platform == RuntimePlatform.OSXEditor)
+        else if (Application.platform == RuntimePlatform.OSXEditor || Application.platform == RuntimePlatform.LinuxEditor)
         {
             args = stringBuilder
                    .Append("-c \"unzip ")

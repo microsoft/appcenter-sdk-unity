@@ -51,3 +51,13 @@ void appcenter_unity_analytics_resume()
 {
   [MSACAnalytics resume];
 }
+
+void appcenter_unity_analytics_enable_manual_session_tracker()
+{
+  [MSACAnalytics enableManualSessionTracker];
+}
+
+void appcenter_unity_analytics_start_session()
+{
+  [MSACAnalytics startSession];
+}
