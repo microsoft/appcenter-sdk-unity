@@ -34,8 +34,6 @@ namespace Microsoft.AppCenter.Unity
          /// </summary>
          public static void Cleanup()
          {
-AnatolyPristensky marked this conversation as resolved.
-Show resolved
              _secretTask = null;
              _logUrlTask = null;
              _storageSizeTask = null;
