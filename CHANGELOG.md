@@ -2,6 +2,11 @@
 
 ## Version 4.4.1 (Under active development)
 
+### App Center
+
+#### Unity Editor
+ * **[Improvement]** Better support for Unity projects with "Reload Domain" disabled.
+
 #### Android
 
 * **[Fix]** Fix building the Unity Player Android client from a Linux OS.
