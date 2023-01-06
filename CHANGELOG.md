@@ -169,6 +169,9 @@ ___
 
 ### App Center
 
+#### Unity Editor
+* **[Improvement]** Better support for Unity projects with "Reload Domain" disabled.
+
 #### Android
 
 * **[Breaking change]** Bumping the minimum Android SDK version to 21 API level (Android 5.0), because old Android versions do not support root certificate authority used by App Center and would not get CA certificates updates anymore.
