@@ -5,8 +5,8 @@ android {
 
     defaultConfig {
         minSdkVersion 16
-        targetSdkVersion 30
         versionCode 1
+        targetSdkVersion 30
         versionName "1.0"
         externalNativeBuild {
             ndkBuild {
