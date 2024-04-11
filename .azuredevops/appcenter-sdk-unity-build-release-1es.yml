@@ -1,0 +1,139 @@
+trigger:
+- master
+- develop
+pr:
+- master
+- develop
+resources:
+  repositories:
+  - repository: self
+    type: git
+    ref: refs/heads/develop
+  - repository: 1ESPipelineTemplates
+    type: git
+    name: 1ESPipelineTemplates/1ESPipelineTemplates
+    ref: refs/tags/release
+name: $(Build.SourceBranchName)_$(date:yyyyMMdd)$(rev:.r)
+extends:
+  ${{ if eq(variables['Build.SourceBranch'], 'refs/heads/master') }}:
+    template: v1/1ES.Official.PipelineTemplate.yml@1ESPipelineTemplates
+  ${{ else }}:
+    template: v1/1ES.Unofficial.PipelineTemplate.yml@1ESPipelineTemplates
+  parameters:
+    pool:
+      name: 1ES-PT-Windows-2022
+      os: windows
+    customBuildTags:
+    - ES365AIMigrationTooling-BulkMigrated
+    sdl:
+      sourceAnalysisPool: 1ES-PT-Windows-2022
+    stages:
+    - stage: BuildAppCenterSDKUnity
+      dependsOn: []
+      jobs:
+      - job: sdkBuildJob
+        displayName: BuildAppCenterSDKUnity
+        cancelTimeoutInMinutes: 1
+        templateContext:
+          outputs:
+          - output: pipelineArtifact
+            displayName: 'Publish Artifact: framework'
+            path: '$(Build.ArtifactStagingDirectory)'
+            artifactName: assemblies
+        steps:
+        - task: PowerShell@2
+          displayName: 'Install Unity'
+          inputs:
+            targetType: filePath
+            filePath: ./build.ps1
+            arguments: '-Target="Install-Unity-Windows" -Verbosity="Diagnostic"'
+
+        - task: UseDotNet@2
+          displayName: 'Use .Net Core sdk 3.0.100'
+          inputs:
+            version: 3.0.100
+
+        - task: PowerShell@2
+          displayName: 'Activate Unity'
+          inputs:
+            targetType: filePath
+            filePath: ./build.ps1
+            arguments: '-Target="RegisterUnity" -UnitySerialNumber="$(UNITY_SERIAL_NUMBER_WINDOWS)" -UnityUsername="$(UNITY_USERNAME)" -UnityPassword="$(UNITY_PASSWORD)" -Verbosity="Diagnostic"'
+
+        - script: |
+          echo After activating unity, some important .meta files are deleted, so they must be un-deleted
+          git config --global user.email "you@example.com"
+          git config --global user.name "Your Name"
+          git stash
+          displayName: 'git stash'
+
+        - task: PowerShell@2
+          displayName: 'Create Packages'
+          inputs:
+            targetType: filePath
+            filePath: ./build.ps1
+            arguments: '-Target="CreatePackages" -NuGetPassword="$(NUGET_PASSWORD)" -NuGetFeedId="$(NUGET_FEED_ID)" -StorageAuthParams="$(AZURE_STORAGE_CONNECTION_STRING)" -Verbosity="Diagnostic"'
+            ignoreLASTEXITCODE: true
+            pwsh: true
+
+        - task: PowerShell@2
+          displayName: 'Unregister Unity'
+          inputs:
+            targetType: filePath
+            filePath: ./build.ps1
+
+        - powershell: |
+            $change_log_found = $False
+            $change_log = Foreach ($line in Get-Content "CHANGELOG.md") {
+                if ($change_log_found) {
+                    if ($line -like "___") {
+                        break
+                    }
+                    $line
+                } elseif ($line -like "## Version*") {
+                    $change_log_found = $True
+                }
+            }
+            ($change_log | Out-String).Trim() | Set-Content "RELEASE.md"
+            displayName: 'Generate RELEASE.MD'
+
+        - powershell: |
+            $input = Get-Content .\UnityPackageSpecs\AppCenter.unitypackagespec -Raw 
+            $xml = [xml]$input
+            $version =  ($xml.package | Where { $_.name -eq "AppCenter" }).version
+            Write-Host $version
+            Write-Host "##vso[task.setvariable variable=version]$version"
+          displayName: 'Extract Version'
+
+        - task: ExtractFiles@1
+          displayName: 'Extract AppCenter for APIScan '
+          inputs:
+            archiveFilePatterns: 'output/AppCenter-*.unitypackage'
+            destinationFolder: 'apiscan-folder/AppCenter/'
+
+        - task: ExtractFiles@1
+          displayName: 'Extract AppCenterAnalytics for APIScan'
+          inputs:
+            archiveFilePatterns: 'output/AppCenterAnalytics-*.unitypackage'
+            destinationFolder: 'apiscan-folder/AppCenterAnalytics/'
+
+        - task: ExtractFiles@1
+          displayName: 'Extract AppCenterCrashes for APIScan'
+          inputs:
+            archiveFilePatterns: 'output/AppCenterCrashes-*.unitypackage'
+            destinationFolder: 'apiscan-folder/AppCenterCrashes/'
+
+        - task: ExtractFiles@1
+          displayName: 'Extract AppCenterDistribute for APIScan'
+          inputs:
+            archiveFilePatterns: 'output/AppCenterDistribute-*.unitypackage'
+            destinationFolder: 'apiscan-folder/AppCenterDistribute/'
+
+        - task: securedevelopmentteam.vss-secure-development-tools.build-task-apiscan.APIScan@2
+          displayName: 'Run APIScan'
+          inputs:
+            softwareFolder: 'apiscan-folder'
+            softwareName: 'appcenter-sdk-unity'
+            softwareVersionNum: Latest
+            isLargeApp: false
+            verbosityLevel: verbose
