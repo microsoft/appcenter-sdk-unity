@@ -48,6 +48,27 @@ extends:
             path: '$(Build.ArtifactStagingDirectory)'
             artifactName: assemblies
         steps:
+
+       - task: AzureKeyVault@2
+          inputs:
+            azureSubscription: 'AC - Dev Infra & Build Pool'
+            KeyVaultName: 'mobile-center-sdk'
+            SecretsFilter: 'appcenter-sdk-unity-serial-number-windows'
+            RunAsPreJob: false
+       - task: AzureKeyVault@2
+          inputs:
+            azureSubscription: 'AC - Dev Infra & Build Pool'
+            KeyVaultName: 'mobile-center-sdk'
+            SecretsFilter: 'appcenter-sdk-unity-username'
+            RunAsPreJob: false
+
+       - task: AzureKeyVault@2
+          inputs:
+            azureSubscription: 'AC - Dev Infra & Build Pool'
+            KeyVaultName: 'mobile-center-sdk'
+            SecretsFilter: 'appcenter-sdk-unity-password'
+            RunAsPreJob: false
+
         - task: PowerShell@2
           displayName: 'Install Unity'
           inputs:
@@ -65,7 +86,7 @@ extends:
           inputs:
             targetType: filePath
             filePath: ./build.ps1
-            arguments: '-Target="RegisterUnity" -UnitySerialNumber="$(UNITY_SERIAL_NUMBER_WINDOWS)" -UnityUsername="$(UNITY_USERNAME)" -UnityPassword="$(UNITY_PASSWORD)" -Verbosity="Diagnostic"'
+            arguments: '-Target="RegisterUnity" -UnitySerialNumber="$(appcenter-sdk-unity-serial-number-windows)" -UnityUsername="$(appcenter-sdk-unity-username)" -UnityPassword="$(appcenter-sdk-unity-password)" -Verbosity="Diagnostic"'
 
         - script: |
             echo After activating unity, some important .meta files are deleted, so they must be un-deleted
