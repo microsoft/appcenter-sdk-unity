@@ -49,24 +49,25 @@ extends:
             artifactName: assemblies
         steps:
         - task: AzureKeyVault@2
-            inputs:
-              azureSubscription: 'AC - Dev Infra & Build Pool'
-              KeyVaultName: 'mobile-center-sdk'
-              SecretsFilter: 'appcenter-sdk-unity-serial-number-windows'
-              RunAsPreJob: false
+          inputs:
+            azureSubscription: 'AC - Dev Infra & Build Pool'
+            KeyVaultName: 'mobile-center-sdk'
+            SecretsFilter: 'appcenter-sdk-unity-serial-number-windows'
+            RunAsPreJob: false
+              
         - task: AzureKeyVault@2
-            inputs:
-              azureSubscription: 'AC - Dev Infra & Build Pool'
-              KeyVaultName: 'mobile-center-sdk'
-              SecretsFilter: 'appcenter-sdk-unity-username'
-              RunAsPreJob: false
+          inputs:
+            azureSubscription: 'AC - Dev Infra & Build Pool'
+            KeyVaultName: 'mobile-center-sdk'
+            SecretsFilter: 'appcenter-sdk-unity-username'
+            RunAsPreJob: false
 
         - task: AzureKeyVault@2
-            inputs:
-              azureSubscription: 'AC - Dev Infra & Build Pool'
-              KeyVaultName: 'mobile-center-sdk'
-              SecretsFilter: 'appcenter-sdk-unity-password'
-              RunAsPreJob: false
+          inputs:
+            azureSubscription: 'AC - Dev Infra & Build Pool'
+            KeyVaultName: 'mobile-center-sdk'
+            SecretsFilter: 'appcenter-sdk-unity-password'
+            RunAsPreJob: false
 
           - task: PowerShell@2
             displayName: 'Install Unity'
@@ -122,7 +123,7 @@ extends:
                   }
               }
               ($change_log | Out-String).Trim() | Set-Content "RELEASE.md"
-              displayName: 'Generate RELEASE.MD'
+            displayName: 'Generate RELEASE.MD'
 
           - powershell: |
               $input = Get-Content .\UnityPackageSpecs\AppCenter.unitypackagespec -Raw 
