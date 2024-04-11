@@ -61,10 +61,10 @@ extends:
             arguments: '-Target="RegisterUnity" -UnitySerialNumber="$(UNITY_SERIAL_NUMBER_WINDOWS)" -UnityUsername="$(UNITY_USERNAME)" -UnityPassword="$(UNITY_PASSWORD)" -Verbosity="Diagnostic"'
 
         - script: |
-          echo After activating unity, some important .meta files are deleted, so they must be un-deleted
-          git config --global user.email "you@example.com"
-          git config --global user.name "Your Name"
-          git stash
+            echo After activating unity, some important .meta files are deleted, so they must be un-deleted
+            git config --global user.email "you@example.com"
+            git config --global user.name "Your Name"
+            git stash
           displayName: 'git stash'
 
         - task: PowerShell@2
