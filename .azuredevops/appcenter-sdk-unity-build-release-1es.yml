@@ -10,6 +10,12 @@ variables:
   value: 'https://download.unity3d.com/download_unity/61fce66342ad/Windows64EditorInstaller/UnitySetup64-2018.4.18f1.exe'
 - name: IL2CPP_SUPPORT_URL
   value: 'https://download.unity3d.com/download_unity/61fce66342ad/TargetSupportInstaller/UnitySetup-UWP-IL2CPP-Support-for-Editor-2018.4.18f1.exe'
+- name: NUGET_FEED_ID
+  value: 'AppCenter'
+- name: NUGET_USER
+  value: appcenter
+- name: AZURE_STORAGE_ACCOUNT
+  value: 'mobilecentersdkdev'
 
 resources:
   repositories:
