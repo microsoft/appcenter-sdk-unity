@@ -75,6 +75,13 @@ extends:
             SecretsFilter: 'appcenter-sdk-unity-password'
             RunAsPreJob: false
 
+        - task: AzureKeyVault@2
+          inputs:
+            azureSubscription: 'AC - Dev Infra & Build Pool'
+            KeyVaultName: 'mobile-center-sdk'
+            SecretsFilter: 'appcensk-appcenter-token'
+            RunAsPreJob: false
+
         - task: PowerShell@2
           displayName: 'Install Unity'
           inputs:
@@ -106,7 +113,7 @@ extends:
           inputs:
             targetType: filePath
             filePath: ./build.ps1
-            arguments: '-Target="CreatePackages" -NuGetPassword="$(NUGET_PASSWORD)" -NuGetFeedId="$(NUGET_FEED_ID)" -StorageAuthParams="$(AZURE_STORAGE_CONNECTION_STRING)" -Verbosity="Diagnostic"'
+            arguments: '-Target="CreatePackages" -NuGetPassword="$(appcensk-appcenter-token)" -NuGetFeedId="$(NUGET_FEED_ID)" -StorageAuthParams="$(AZURE_STORAGE_CONNECTION_STRING)" -Verbosity="Diagnostic"'
             ignoreLASTEXITCODE: true
             pwsh: true
 
