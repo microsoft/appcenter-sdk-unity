@@ -129,6 +129,8 @@ extends:
           inputs:
             targetType: filePath
             filePath: ./build.ps1
+            arguments: '-Target="UnregisterUnity" -UnitySerialNumber="$(appcenter-sdk-unity-serial-number-windows)" -UnityUsername="$(appcenter-sdk-unity-username)" -UnityPassword="$(appcenter-sdk-unity-password)" -Verbosity="Diagnostic"'
+          condition: always()
 
         - powershell: |
             $change_log_found = $False
