@@ -86,7 +86,7 @@ extends:
           inputs:
             azureSubscription: 'AC - Dev Infra & Build Pool'
             KeyVaultName: 'mobile-center-sdk'
-            SecretsFilter: 'AzureServicesAuthConnectionString'
+            SecretsFilter: 'appcenter-sdk-blob-storage-access-secret'
             RunAsPreJob: false
 
         - task: PowerShell@2
@@ -120,7 +120,7 @@ extends:
           inputs:
             targetType: filePath
             filePath: ./build.ps1
-            arguments: '-Target="CreatePackages" -NuGetPassword="$(appcensk-appcenter-token)" -NuGetFeedId="$(NUGET_FEED_ID)" -StorageAuthParams="$(AzureServicesAuthConnectionString)" -Verbosity="Diagnostic"'
+            arguments: '-Target="CreatePackages" -NuGetPassword="$(appcensk-appcenter-token)" -NuGetFeedId="$(NUGET_FEED_ID)" -StorageAuthParams="$(appcenter-sdk-blob-storage-access-secret)" -Verbosity="Diagnostic"'
             ignoreLASTEXITCODE: true
             pwsh: true
 
