@@ -115,6 +115,11 @@ extends:
             git stash
           displayName: 'git stash'
 
+        - script: |
+          git submodule init
+          git submodule update
+          displayName: 'git submodule'
+
         - task: PowerShell@2
           displayName: 'Create Packages'
           inputs:
