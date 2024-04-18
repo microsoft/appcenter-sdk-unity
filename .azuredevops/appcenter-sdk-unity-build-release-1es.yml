@@ -26,7 +26,7 @@ resources:
     type: git
     name: 1ESPipelineTemplates/1ESPipelineTemplates
     ref: refs/tags/release
-name: $(Build.SourceBranchName)_$(date:yyyyMMdd)$(rev:.r)
+name: ${{ replace(variables['Build.SourceBranchName'], '/', '-') }}_$(date:yyyyMMdd)$(rev:.r)
 extends:
   ${{ if eq(variables['Build.SourceBranch'], 'refs/heads/master') }}:
     template: v1/1ES.Official.PipelineTemplate.yml@1ESPipelineTemplates
@@ -42,7 +42,6 @@ extends:
       sourceAnalysisPool: 1ES-PT-Windows-2022
     stages:
     - stage: BuildAppCenterSDKUnity
-      dependsOn: []
       jobs:
       - job: sdkBuildJob
         displayName: BuildAppCenterSDKUnity
@@ -50,11 +49,12 @@ extends:
         templateContext:
           outputs:
           - output: pipelineArtifact
-            displayName: 'Publish Artifact: framework'
+            displayName: 'Publish Artifact: UnityPackages'
             path: 'output'
             artifactName: UnityPackages
         steps:
         - task: AzureKeyVault@2
+          displayName: 'Download KeyValult Variables'
           inputs:
             azureSubscription: 'AC - Dev Infra & Build Pool'
             KeyVaultName: 'mobile-center-sdk'
@@ -66,33 +66,28 @@ extends:
             targetType: filePath
             filePath: ./build.ps1
             arguments: '-Target="Install-Unity-Windows" -Verbosity="Diagnostic"'
-
         - task: UseDotNet@2
           displayName: 'Use .Net Core sdk 3.0.100'
           inputs:
             version: 3.0.100
-
         - task: PowerShell@2
           displayName: 'Activate Unity'
           inputs:
             targetType: filePath
             filePath: ./build.ps1
             arguments: '-Target="RegisterUnity" -UnitySerialNumber="$(appcenter-sdk-unity-serial-number-windows)" -UnityUsername="$(appcenter-sdk-unity-username)" -UnityPassword="$(appcenter-sdk-unity-password)" -Verbosity="Diagnostic"'
-
         - script: |
             echo After activating unity, some important .meta files are deleted, so they must be un-deleted
             git config --global user.email "you@example.com"
             git config --global user.name "Your Name"
             git stash
           displayName: 'git stash'
-
         - script: |
             git submodule init
             git submodule update
-            dir
+            # Removing unnecessary file to prevent Binskim failure. This file used for tests and not required for build.
             rm BreakpadSupport/breakpad-support/src/main/cpp/google-breakpad/src/tools/windows/dump_syms/testdata/dump_syms_regtest64.exe
           displayName: 'git submodule'
-
         - task: PowerShell@2
           displayName: 'Create Packages'
           inputs:
@@ -101,7 +96,6 @@ extends:
             arguments: '-Target="CreatePackages" -NuGetPassword="$(appcensk-appcenter-token)" -NuGetFeedId="$(NUGET_FEED_ID)" -StorageAuthParams="$(appcenter-sdk-blob-storage-access-secret)" -Verbosity="Diagnostic"'
             ignoreLASTEXITCODE: true
             pwsh: true
-
         - task: PowerShell@2
           displayName: 'Unregister Unity'
           inputs:
@@ -109,7 +103,6 @@ extends:
             filePath: ./build.ps1
             arguments: '-Target="UnregisterUnity" -UnitySerialNumber="$(appcenter-sdk-unity-serial-number-windows)" -UnityUsername="$(appcenter-sdk-unity-username)" -UnityPassword="$(appcenter-sdk-unity-password)" -Verbosity="Diagnostic"'
           condition: always()
-
         - powershell: |
             $change_log_found = $False
             $change_log = Foreach ($line in Get-Content "CHANGELOG.md") {
@@ -124,7 +117,6 @@ extends:
             }
             ($change_log | Out-String).Trim() | Set-Content "RELEASE.md"
           displayName: 'Generate RELEASE.MD'
-
         - powershell: |
             $input = Get-Content .\UnityPackageSpecs\AppCenter.unitypackagespec -Raw 
             $xml = [xml]$input
@@ -132,31 +124,26 @@ extends:
             Write-Host $version
             Write-Host "##vso[task.setvariable variable=version]$version"
           displayName: 'Extract Version'
-
         - task: ExtractFiles@1
           displayName: 'Extract AppCenter for APIScan '
           inputs:
             archiveFilePatterns: 'output/AppCenter-*.unitypackage'
             destinationFolder: 'apiscan-folder/AppCenter/'
-
         - task: ExtractFiles@1
           displayName: 'Extract AppCenterAnalytics for APIScan'
           inputs:
             archiveFilePatterns: 'output/AppCenterAnalytics-*.unitypackage'
             destinationFolder: 'apiscan-folder/AppCenterAnalytics/'
-
         - task: ExtractFiles@1
           displayName: 'Extract AppCenterCrashes for APIScan'
           inputs:
             archiveFilePatterns: 'output/AppCenterCrashes-*.unitypackage'
             destinationFolder: 'apiscan-folder/AppCenterCrashes/'
-
         - task: ExtractFiles@1
           displayName: 'Extract AppCenterDistribute for APIScan'
           inputs:
             archiveFilePatterns: 'output/AppCenterDistribute-*.unitypackage'
             destinationFolder: 'apiscan-folder/AppCenterDistribute/'
-
         - task: securedevelopmentteam.vss-secure-development-tools.build-task-apiscan.APIScan@2
           displayName: 'Run APIScan'
           inputs:
