@@ -54,8 +54,8 @@ extends:
           outputs:
           - output: pipelineArtifact
             displayName: 'Publish Artifact: framework'
-            path: '$(Build.ArtifactStagingDirectory)'
-            artifactName: assemblies
+            path: 'output'
+            artifactName: UnityPackages
         steps:
         - task: AzureKeyVault@2
           inputs:
