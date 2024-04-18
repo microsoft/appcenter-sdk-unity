@@ -121,6 +121,8 @@ extends:
         - script: |
             git submodule init
             git submodule update
+            dir
+            rm BreakpadSupport/breakpad-support/src/main/cpp/google-breakpad/src/tools/windows/dump_syms/testdata/dump_syms_regtest64.exe
           displayName: 'git submodule'
 
         - task: PowerShell@2
