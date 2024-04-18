@@ -58,37 +58,13 @@ extends:
           inputs:
             azureSubscription: 'AC - Dev Infra & Build Pool'
             KeyVaultName: 'mobile-center-sdk'
-            SecretsFilter: 'appcenter-sdk-unity-serial-number-windows'
+            SecretsFilter: |
+              appcenter-sdk-unity-serial-number-windows
+              appcenter-sdk-unity-username
+              appcenter-sdk-unity-password
+              appcensk-appcenter-token
+              appcenter-sdk-blob-storage-access-secret
             RunAsPreJob: false
-              
-        - task: AzureKeyVault@2
-          inputs:
-            azureSubscription: 'AC - Dev Infra & Build Pool'
-            KeyVaultName: 'mobile-center-sdk'
-            SecretsFilter: 'appcenter-sdk-unity-username'
-            RunAsPreJob: false
-
-        - task: AzureKeyVault@2
-          inputs:
-            azureSubscription: 'AC - Dev Infra & Build Pool'
-            KeyVaultName: 'mobile-center-sdk'
-            SecretsFilter: 'appcenter-sdk-unity-password'
-            RunAsPreJob: false
-
-        - task: AzureKeyVault@2
-          inputs:
-            azureSubscription: 'AC - Dev Infra & Build Pool'
-            KeyVaultName: 'mobile-center-sdk'
-            SecretsFilter: 'appcensk-appcenter-token'
-            RunAsPreJob: false
-
-        - task: AzureKeyVault@2
-          inputs:
-            azureSubscription: 'AC - Dev Infra & Build Pool'
-            KeyVaultName: 'mobile-center-sdk'
-            SecretsFilter: 'appcenter-sdk-blob-storage-access-secret'
-            RunAsPreJob: false
-
         - task: PowerShell@2
           displayName: 'Install Unity'
           inputs:
