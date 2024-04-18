@@ -82,10 +82,10 @@ extends:
             git config --global user.name "Your Name"
             git stash
           displayName: 'git stash'
+# Removing unnecessary file to prevent Binskim failure. This file used for tests and not required for build.
         - script: |
             git submodule init
             git submodule update
-            # Removing unnecessary file to prevent Binskim failure. This file used for tests and not required for build.
             rm BreakpadSupport/breakpad-support/src/main/cpp/google-breakpad/src/tools/windows/dump_syms/testdata/dump_syms_regtest64.exe
           displayName: 'git submodule'
         - task: PowerShell@2
