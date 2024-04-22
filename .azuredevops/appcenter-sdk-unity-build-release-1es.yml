@@ -76,18 +76,14 @@ extends:
             targetType: filePath
             filePath: ./build.ps1
             arguments: '-Target="RegisterUnity" -UnitySerialNumber="$(appcenter-sdk-unity-serial-number-windows)" -UnityUsername="$(appcenter-sdk-unity-username)" -UnityPassword="$(appcenter-sdk-unity-password)" -Verbosity="Diagnostic"'
-        - script: |
-            echo After activating unity, some important .meta files are deleted, so they must be un-deleted
-            git config --global user.email "you@example.com"
-            git config --global user.name "Your Name"
-            git stash
-          displayName: 'git stash'
 # Removing unnecessary file to prevent Binskim failure. This file used for tests and not required for build.
+        - script: |
+            rm BreakpadSupport/breakpad-support/src/main/cpp/google-breakpad/src/tools/windows/dump_syms/testdata/dump_syms_regtest64.exe
+          displayName: 'Remove dump_syms_regtest64.exe'
         - script: |
             git submodule init
             git submodule update
-            rm BreakpadSupport/breakpad-support/src/main/cpp/google-breakpad/src/tools/windows/dump_syms/testdata/dump_syms_regtest64.exe
-          displayName: 'git submodule'
+          displayName: 'Fetch submodules'
         - task: PowerShell@2
           displayName: 'Create Packages'
           inputs:
