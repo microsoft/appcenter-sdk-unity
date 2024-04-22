@@ -80,8 +80,8 @@ extends:
             git submodule init
             git submodule update
           displayName: 'Fetch submodules'
-# Removing unnecessary file to prevent Binskim failure. This file used for tests and not required for build.
         - script: |
+            echo Removing unnecessary file to prevent Binskim failure. This file used for tests and not required for build.
             rm BreakpadSupport/breakpad-support/src/main/cpp/google-breakpad/src/tools/windows/dump_syms/testdata/dump_syms_regtest64.exe
           displayName: 'Remove dump_syms_regtest64.exe'
         - task: PowerShell@2
