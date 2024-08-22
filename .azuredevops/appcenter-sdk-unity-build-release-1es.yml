@@ -43,6 +43,9 @@ extends:
         displayName: BuildAppCenterSDKUnity
         cancelTimeoutInMinutes: 1
         templateContext:
+          sdl:
+            codeql:
+              language: powershell, java, csharp
           outputs:
           - output: pipelineArtifact
             displayName: 'Publish Artifact: UnityPackages'
