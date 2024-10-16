@@ -1,0 +1,96 @@
+pr:
+- master
+
+pool:
+  vmImage: macos-latest
+
+variables:
+- name: Codeql.Cadence
+  value: 0
+
+jobs:
+- job:
+  displayName: Build and CodeQL PuppetApp Android
+  steps:
+  - checkout: self
+    submodules: recursive
+
+  - task: CodeQL3000Init@0
+    displayName: CodeQL Initialize
+
+  - task: Bash@3
+    displayName: 'List Android SDK installs / Remove unstable package'
+    inputs:
+      targetType: inline
+      script: |
+        $ANDROID_HOME/tools/bin/sdkmanager --uninstall 'build-tools;30.0.0-rc1'
+        $ANDROID_HOME/tools/bin/sdkmanager --list
+      arguments: '-target=DownloadGradle -GradleUrl="$(GRADLE_URL)" -Verbosity="Diagnostic" '
+    enabled: false
+
+  - task: Bash@3
+    displayName: 'Install Unity'
+    inputs:
+      targetType: filePath
+      filePath: 'scripts/install-unity.sh'
+
+  - task: Bash@3
+    displayName: 'Check Tokens'
+    inputs:
+      targetType: inline
+      script: |
+        echo $UNITY_SERIAL_NUMBER_MACOS
+        echo $UNITY_PASSWORD
+        echo $UNITY_USERNAME
+        
+        echo $AndroidUrl
+        echo $IosUrl
+        echo $UwpUrl
+
+  - task: Bash@3
+    displayName: 'Activate Unity'
+    inputs:
+      targetType: filePath
+      filePath: './build.sh'
+      arguments: '-target=RegisterUnity -UnitySerialNumber="$(UNITY_SERIAL_NUMBER_MACOS)" -UnityUsername="$(UNITY_USERNAME)" -UnityPassword="$(UNITY_PASSWORD)" -Verbosity="Diagnostic"'
+
+  - task: Bash@3
+    displayName: 'Restore .meta files'
+    inputs:
+      targetType: inline
+      script: |
+        # After activating unity, some important .meta files are deleted, so they must be un-deleted
+        git reset --hard
+
+  - task: Bash@3
+    displayName: 'Download gradle'
+    inputs:
+      targetType: filePath
+      filePath: './build.sh'
+      arguments: '-target=DownloadGradle -GradleUrl="$(GRADLE_URL)" -Verbosity="Diagnostic" '
+    enabled: false
+
+  - task: Bash@3
+    displayName: 'Download Android NDK'
+    inputs:
+      targetType: filePath
+      filePath: './build.sh'
+      arguments: '-target=DownloadNdk -NdkUrl="$(ANDROID_NDK_URL)" -Verbosity="Diagnostic" '
+
+  - task: Bash@3
+    displayName: 'Run Cake Target "BuildPuppetApps"'
+    inputs:
+      targetType: filePath
+      filePath: './build.sh'
+      arguments: '-target=BuildPuppetApps -NuGetPassword="$(NUGET_PASSWORD)" -NuGetFeedId="$(NUGET_FEED_ID)" -Verbosity="Diagnostic" -StorageAuthParams=$(STORAGE_AUTH_PARAMS)'
+
+  - task: Bash@3
+    displayName: 'Unregister Unity'
+    inputs:
+      targetType: filePath
+      filePath: './build.sh'
+      arguments: '-target=UnregisterUnity -UnityUsername="$(UNITY_USERNAME)" -UnityPassword="$(UNITY_PASSWORD)" -Verbosity="Diagnostic"'
+    condition: always()
+
+  - task: CodeQL3000Finalize@0
+    displayName: CodeQL Finalize
