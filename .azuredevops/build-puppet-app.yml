@@ -44,7 +44,7 @@ jobs:
     inputs:
       targetType: filePath
       filePath: './build.sh'
-      arguments: '-target=RegisterUnity  -UnitySerialNumber="$(UNITY_SERIAL_NUMBER_MACOS)" -UnityUsername="$(appcenter-sdk-unity-username)" -UnityPassword="$(appcenter-sdk-unity-password)" -Verbosity="Diagnostic"'
+      arguments: '-target=RegisterUnity  -UnitySerialNumber="$(appcenter-sdk-unity-serial-number-windows)" -UnityUsername="$(appcenter-sdk-unity-username)" -UnityPassword="$(appcenter-sdk-unity-password)" -Verbosity="Diagnostic"'
 
   - task: Bash@3
     displayName: 'Restore .meta files'
