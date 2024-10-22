@@ -20,15 +20,13 @@ jobs:
   - task: CodeQL3000Init@0
     displayName: CodeQL Initialize
 
-  - task: Bash@3
-    displayName: 'List Android SDK installs / Remove unstable package'
+  - task: AzureKeyVault@2
+    displayName: 'Download KeyValult Variables'
     inputs:
-      targetType: inline
-      script: |
-        $ANDROID_HOME/tools/bin/sdkmanager --uninstall 'build-tools;30.0.0-rc1'
-        $ANDROID_HOME/tools/bin/sdkmanager --list
-      arguments: '-target=DownloadGradle -GradleUrl="$(GRADLE_URL)" -Verbosity="Diagnostic" '
-    enabled: false
+      azureSubscription: 'AC - Dev Infra & Build Pool'
+      KeyVaultName: 'mobile-center-sdk'
+      SecretsFilter: 'appcenter-sdk-unity-username,appcenter-sdk-unity-password,appcensk-appcenter-token,appcenter-sdk-blob-storage-access-secret'
+      RunAsPreJob: false
 
   - task: Bash@3
     displayName: 'Install Unity'
@@ -36,25 +34,17 @@ jobs:
       targetType: filePath
       filePath: 'scripts/install-unity.sh'
 
-  - task: Bash@3
-    displayName: 'Check Tokens'
+  - task: UseDotNet@2
+    displayName: 'Use .Net Core sdk 3.0.100'
     inputs:
-      targetType: inline
-      script: |
-        echo $UNITY_SERIAL_NUMBER_MACOS
-        echo $UNITY_PASSWORD
-        echo $UNITY_USERNAME
-        
-        echo $AndroidUrl
-        echo $IosUrl
-        echo $UwpUrl
+      version: 3.0.100
 
   - task: Bash@3
     displayName: 'Activate Unity'
     inputs:
       targetType: filePath
       filePath: './build.sh'
-      arguments: '-target=RegisterUnity -UnitySerialNumber="$(UNITY_SERIAL_NUMBER_MACOS)" -UnityUsername="$(UNITY_USERNAME)" -UnityPassword="$(UNITY_PASSWORD)" -Verbosity="Diagnostic"'
+      arguments: '-target=RegisterUnity  -UnitySerialNumber="$(UNITY_SERIAL_NUMBER_MACOS)" -UnityUsername="$(appcenter-sdk-unity-username)" -UnityPassword="$(appcenter-sdk-unity-password)" -Verbosity="Diagnostic"'
 
   - task: Bash@3
     displayName: 'Restore .meta files'
