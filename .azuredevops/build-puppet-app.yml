@@ -68,18 +68,14 @@ jobs:
     inputs:
       targetType: 'inline'
       script: |
-        $NdkUrl = "$(ANDROID_NDK_URL)"
-        & ./build.ps1 -target "DownloadNdk" -NdkUrl $NdkUrl -Verbosity "Diagnostic"
+        & ./build.ps1 --target="DownloadNdk" --NdkUrl="$(ANDROID_NDK_URL)" --Verbosity="Diagnostic"
 
   - task: PowerShell@2
     displayName: 'Run Cake Target "BuildPuppetApps"'
     inputs:
       targetType: 'inline'
       script: |
-        $NuGetPassword = "$(NUGET_PASSWORD)"
-        $NuGetFeedId = "$(NUGET_FEED_ID)"
-        $StorageAuthParams = "$(STORAGE_AUTH_PARAMS)"
-        & ./build.ps1 -target "BuildPuppetApps" -NuGetPassword $NuGetPassword -NuGetFeedId $NuGetFeedId -Verbosity "Diagnostic" -StorageAuthParams $StorageAuthParams
+        & ./build.ps1 --target="BuildPuppetApps" --NuGetPassword="$(NUGET_PASSWORD)" --NuGetFeedId="$(NUGET_FEED_ID)" --Verbosity="Diagnostic" --StorageAuthParams="$(STORAGE_AUTH_PARAMS)"
 
   - task: PowerShell@2
     displayName: 'Unregister Unity'
