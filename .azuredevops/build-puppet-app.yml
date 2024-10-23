@@ -2,7 +2,7 @@ pr:
 - master
 
 pool:
-  vmImage: macos-latest
+  vmImage: 1ES-PT-Windows-2019
 
 variables:
 - group: 'AppCenter-SDK Unity Credentials and Info'
@@ -28,60 +28,65 @@ jobs:
       SecretsFilter: 'appcenter-sdk-unity-serial-number-windows,appcenter-sdk-unity-username,appcenter-sdk-unity-password,appcensk-appcenter-token,appcenter-sdk-blob-storage-access-secret'
       RunAsPreJob: false
 
-  - task: Bash@3
+  - task: PowerShell@2
     displayName: 'Install Unity'
     inputs:
       targetType: filePath
-      filePath: 'scripts/install-unity.sh'
+      filePath: ./build.ps1
+      arguments: '-Target="Install-Unity-Windows" -Verbosity="Diagnostic"'
 
   - task: UseDotNet@2
     displayName: 'Use .Net Core sdk 3.0.100'
     inputs:
       version: 3.0.100
 
-  - task: Bash@3
+  - task: PowerShell@2
     displayName: 'Activate Unity'
     inputs:
       targetType: filePath
-      filePath: './build.sh'
-      arguments: '-target=RegisterUnity  -UnitySerialNumber="$(appcenter-sdk-unity-serial-number-windows)" -UnityUsername="$(appcenter-sdk-unity-username)" -UnityPassword="$(appcenter-sdk-unity-password)" -Verbosity="Diagnostic"'
+      filePath: ./build.ps1
+      arguments: '-Target="RegisterUnity" -UnitySerialNumber="$(appcenter-sdk-unity-serial-number-windows)" -UnityUsername="$(appcenter-sdk-unity-username)" -UnityPassword="$(appcenter-sdk-unity-password)" -Verbosity="Diagnostic"'
 
-  - task: Bash@3
-    displayName: 'Restore .meta files'
-    inputs:
-      targetType: inline
-      script: |
-        # After activating unity, some important .meta files are deleted, so they must be un-deleted
-        git reset --hard
+  # - task: Bash@3
+  #   displayName: 'Restore .meta files'
+  #   inputs:
+  #     targetType: inline
+  #     script: |
+  #       # After activating unity, some important .meta files are deleted, so they must be un-deleted
+  #       git reset --hard
 
-  - task: Bash@3
-    displayName: 'Download gradle'
-    inputs:
-      targetType: filePath
-      filePath: './build.sh'
-      arguments: '-target=DownloadGradle -GradleUrl="$(GRADLE_URL)" -Verbosity="Diagnostic" '
-    enabled: false
+  # - task: Bash@3
+  #   displayName: 'Download gradle'
+  #   inputs:
+  #     targetType: filePath
+  #     filePath: './build.sh'
+  #     arguments: '-target=DownloadGradle -GradleUrl="$(GRADLE_URL)" -Verbosity="Diagnostic" '
+  #   enabled: false
 
-  - task: Bash@3
+  - task: PowerShell@2
     displayName: 'Download Android NDK'
     inputs:
-      targetType: filePath
-      filePath: './build.sh'
-      arguments: '-target=DownloadNdk -NdkUrl="$(ANDROID_NDK_URL)" -Verbosity="Diagnostic" '
+      targetType: 'inline'
+      script: |
+        $NdkUrl = "$(ANDROID_NDK_URL)"
+        & ./build.ps1 -target "DownloadNdk" -NdkUrl $NdkUrl -Verbosity "Diagnostic"
 
-  - task: Bash@3
+  - task: PowerShell@2
     displayName: 'Run Cake Target "BuildPuppetApps"'
     inputs:
-      targetType: filePath
-      filePath: './build.sh'
-      arguments: '-target=BuildPuppetApps -NuGetPassword="$(NUGET_PASSWORD)" -NuGetFeedId="$(NUGET_FEED_ID)" -Verbosity="Diagnostic" -StorageAuthParams=$(STORAGE_AUTH_PARAMS)'
+      targetType: 'inline'
+      script: |
+        $NuGetPassword = "$(NUGET_PASSWORD)"
+        $NuGetFeedId = "$(NUGET_FEED_ID)"
+        $StorageAuthParams = "$(STORAGE_AUTH_PARAMS)"
+        & ./build.ps1 -target "BuildPuppetApps" -NuGetPassword $NuGetPassword -NuGetFeedId $NuGetFeedId -Verbosity "Diagnostic" -StorageAuthParams $StorageAuthParams
 
-  - task: Bash@3
+  - task: PowerShell@2
     displayName: 'Unregister Unity'
     inputs:
       targetType: filePath
-      filePath: './build.sh'
-      arguments: '-target=UnregisterUnity -UnityUsername="$(UNITY_USERNAME)" -UnityPassword="$(UNITY_PASSWORD)" -Verbosity="Diagnostic"'
+      filePath: ./build.ps1
+      arguments: '-Target="UnregisterUnity" -UnitySerialNumber="$(appcenter-sdk-unity-serial-number-windows)" -UnityUsername="$(appcenter-sdk-unity-username)" -UnityPassword="$(appcenter-sdk-unity-password)" -Verbosity="Diagnostic"'
     condition: always()
 
   - task: CodeQL3000Finalize@0
