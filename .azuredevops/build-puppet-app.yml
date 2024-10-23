@@ -2,7 +2,7 @@ pr:
 - master
 
 pool:
-  vmImage: 1ES-PT-Windows-2019
+  vmImage: windows-latest
 
 variables:
 - group: 'AppCenter-SDK Unity Credentials and Info'
