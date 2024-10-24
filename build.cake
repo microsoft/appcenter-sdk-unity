@@ -425,14 +425,7 @@ Task("Externals-Uwp-IL2CPP-Dependencies")
     }
 }).OnError(HandleError);
 
-Task("RestorePackagesForNewtonsoftJson")
-    .Does(() =>
-{
-    NuGetRestore("./Modules/Newtonsoft.Json-for-Unity/Src/Newtonsoft.Json/Newtonsoft.Json.csproj");
-});
-
 Task("BuildNewtonsoftJson")
-    .IsDependentOn("RestorePackagesForNewtonsoftJson")
     .WithCriteria(IsRunningOnWindows)
     .Does(() =>
 {
