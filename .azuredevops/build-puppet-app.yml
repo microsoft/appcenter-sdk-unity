@@ -36,11 +36,6 @@ jobs:
       filePath: ./build.ps1
       arguments: '-Target="Install-Unity-Windows" -Verbosity="Diagnostic"'
 
-  - task: UseDotNet@2
-    displayName: 'Use .Net Core sdk 3.0.100'
-    inputs:
-      version: 3.0.100
-
   - task: PowerShell@2
     displayName: 'Activate Unity'
     inputs:
@@ -48,38 +43,12 @@ jobs:
       filePath: ./build.ps1
       arguments: '-Target="RegisterUnity" -UnitySerialNumber="$(appcenter-sdk-unity-serial-number-windows)" -UnityUsername="$(appcenter-sdk-unity-username)" -UnityPassword="$(appcenter-sdk-unity-password)" -Verbosity="Diagnostic"'
 
-  # - task: Bash@3
-  #   displayName: 'Restore .meta files'
-  #   inputs:
-  #     targetType: inline
-  #     script: |
-  #       # After activating unity, some important .meta files are deleted, so they must be un-deleted
-  #       git reset --hard
-
-  # - task: Bash@3
-  #   displayName: 'Download gradle'
-  #   inputs:
-  #     targetType: filePath
-  #     filePath: './build.sh'
-  #     arguments: '-target=DownloadGradle -GradleUrl="$(GRADLE_URL)" -Verbosity="Diagnostic" '
-  #   enabled: false
-
   - task: PowerShell@2
     displayName: 'Download Android NDK'
     inputs:
       targetType: 'inline'
       script: |
         & ./build.ps1 --target="DownloadNdk" --NdkUrl="$(ANDROID_NDK_URL)" --Verbosity="Diagnostic"
-
-  - script: |
-      git submodule init
-      git submodule update
-    displayName: 'Fetch submodules'
-    
-  - script: |
-      echo Removing unnecessary file to prevent Binskim failure. This file used for tests and not required for build.
-      rm BreakpadSupport/breakpad-support/src/main/cpp/google-breakpad/src/tools/windows/dump_syms/testdata/dump_syms_regtest64.exe
-    displayName: 'Remove dump_syms_regtest64.exe'
 
   - task: PowerShell@2
     displayName: 'Run Cake Target "BuildPuppetApps"'
