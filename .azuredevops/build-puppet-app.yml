@@ -50,6 +50,11 @@ jobs:
       script: |
         & ./build.ps1 --target="DownloadNdk" --NdkUrl="$(ANDROID_NDK_URL)" --Verbosity="Diagnostic"
 
+  - task: UseDotNet@2
+    displayName: 'Use .Net Core sdk 3.0.100'
+    inputs:
+      version: 3.0.100
+
   - task: PowerShell@2
     displayName: 'Run Cake Target "BuildPuppetApps"'
     inputs:
